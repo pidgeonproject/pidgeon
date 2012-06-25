@@ -1,0 +1,4 @@
+﻿window-menu-file=File;
+window-menu-quit=Exit;
+window-menu-conf=Preferences;
+window-menu-help=Help;
