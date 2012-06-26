@@ -119,7 +119,7 @@ namespace Client
             {
                 if (network.Connected)
                 {
-
+                    network._protocol.Command(command);
                     return false;
                 }
             }
