@@ -110,6 +110,8 @@ namespace Client
                     if (cu.Value == e.Node)
                     {
                         cu.Key.ShowChat("&system");
+                        Core.network = cu.Key;
+                        return;
                     }
                 }
             }
@@ -119,7 +121,10 @@ namespace Client
                 {
                     if (cu.Value == e.Node)
                     {
+                        Core.network = cu.Key._Network;
+                        Core._Main.UpdateStatus();
                         cu.Key._Network.ShowChat(cu.Key.Name);
+                        return;
                     }
                 }
             }

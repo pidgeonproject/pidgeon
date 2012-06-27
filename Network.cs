@@ -94,13 +94,18 @@ namespace Client
             {
                 Core._Main.listView.Visible = false;
                 Core._Main.Scrollback.Visible = false;
-                Core._Main.Chat = windows[name];
+                if (Core._Main.Chat != null)
+                {
+                    Core._Main.Chat.scrollback.Visible = false;
+                    Core._Main.Chat.userlist.Visible = false;
+                }
                 if (Current != null)
                 {
                     Current.userlist.Visible = false;
                     Current.scrollback.Visible = false;
                 }
                 Core._Main._Scrollback = windows[name].scrollback;
+                Core._Main.Chat = windows[name];
                 Current = windows[name];
                 windows[name].scrollback.Visible = true;
                 windows[name].userlist.Visible = true;

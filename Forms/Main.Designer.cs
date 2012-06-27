@@ -231,7 +231,6 @@
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";
             this.Load += new System.EventHandler(this.Main_Load);
-            this.MessageLine.richTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._Enter);
             this.Resize += new System.EventHandler(this.ResizeMe);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

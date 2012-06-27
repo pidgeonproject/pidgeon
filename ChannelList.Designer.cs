@@ -53,8 +53,8 @@
             this.Controls.Add(this.items);
             this.Name = "ChannelList";
             this.Size = new System.Drawing.Size(182, 321);
-            this.Resize += new System.EventHandler(Display);
             this.Load += new System.EventHandler(this.ChannelList_Load);
+            this.Resize += new System.EventHandler(this.Display);
             this.ResumeLayout(false);
 
         }

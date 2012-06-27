@@ -100,7 +100,7 @@ namespace Client
             {
                 foreach (ContentLine _c in Line)
                 {
-                    text += "<font face=Helvetica>[" + _c.time.ToShortTimeString() + "] " + _c.text + "</font><br>";
+                    text += "<font face=Helvetica>[" + _c.time.ToShortTimeString() + "] " +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                 }
             }
             text += "</body>";

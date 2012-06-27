@@ -40,6 +40,18 @@ namespace Client
             richTextBox1.Width = this.Width -2;
         }
 
+        private void _Enter(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar.Equals('\r'))
+            {
+                Core._Main._Scrollback.Last = this;
+                richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
+                history.Add(richTextBox1.Text);
+                Parser.parse(richTextBox1.Text);
+                richTextBox1.Text = "";
+            }
+        }
+
         public void resize()
         {
             richTextBox1.Height = this.Height - 2;

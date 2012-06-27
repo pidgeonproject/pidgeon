@@ -43,6 +43,11 @@ namespace Client
         public int Port;
         public bool SSL;
 
+        public string PRIVMSG(string user, string text)
+        {
+            return "<" + user + "> " + text + "";
+        }
+
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             return 0;

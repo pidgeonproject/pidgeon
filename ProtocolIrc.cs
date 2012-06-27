@@ -106,7 +106,7 @@ namespace Client
                                 if (message._Priority >= highest)
                                 {
                                     Processed.Add(message);
-                                    protocol.Message(message.message, message.channel);
+                                    protocol.Send(message.message, message.channel);
                                     System.Threading.Thread.Sleep(1000);
                                     if (highest != Configuration.Priority.High)
                                     {
@@ -212,7 +212,7 @@ namespace Client
                                 window = channel.retrieveWindow();
                                 if (window != null)
                                 {
-                                    channel.retrieveWindow().scrollback.InsertText("<" + user.Nick + "> " +  text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length), Scrollback.MessageStyle.Channel);
+                                    channel.retrieveWindow().scrollback.InsertText(PRIVMSG( user.Nick, text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length)), Scrollback.MessageStyle.Message);
                                     continue;
                                 }
                                 
@@ -240,9 +240,9 @@ namespace Client
             _writer.Flush();
         }
 
-        public override int Message(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
+        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            _messages.DeliverMessage(text, to, priority);
+            _messages.DeliverMessage(text, to, _priority);
             return 0;
         }
 

@@ -42,9 +42,9 @@ namespace Client
 
         public enum Priority
         {
-            High,
-            Normal,
-            Low
+            High = 8,
+            Normal = 2,
+            Low = 1
         }
     }
 }

@@ -45,6 +45,7 @@ namespace Client
             {
                 if (Core._Main.Chat.writable)
                 {
+                    Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, input), Scrollback.MessageStyle.Message);
                     Core.network._protocol.Message(input, Core._Main.Chat.name);
                 }
                 return 0;

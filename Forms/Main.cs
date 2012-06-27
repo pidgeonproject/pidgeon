@@ -85,18 +85,6 @@ namespace Client
             _Redraw();
         }
 
-        private void _Enter(object sender, KeyPressEventArgs e)
-        {
-            if (e.KeyChar.Equals( '\r' ))
-            {
-                _Scrollback.Last = MessageLine;
-                MessageLine.richTextBox1.Text = MessageLine.richTextBox1.Text.Replace("\n", "");
-                MessageLine.history.Add(MessageLine.richTextBox1.Text);
-                Parser.parse(MessageLine.richTextBox1.Text);
-                MessageLine.richTextBox1.Text = "";
-            }
-        }
-
         public Client.Scrollback CreateS()
         {
             Client.Scrollback SB = new Scrollback();
