@@ -38,6 +38,8 @@ namespace Client
         {
             public Scrollback scrollback;
             public System.Windows.Forms.ListView userlist;
+            public bool Making = true;
+            public TextBox textbox;
             public string name;
             public bool writable;
         }
@@ -73,7 +75,9 @@ namespace Client
             Chat.writable = _writable;
             windows.Add(_name, Chat);
             Chat.scrollback = Core._Main.CreateS();
+            Chat.textbox = Core._Main.CreateText();
             Chat.userlist = Core._Main.CreateList();
+            Chat.Making = false;
             Chat.name = _name;
         }
 
@@ -93,20 +97,25 @@ namespace Client
             if (windows.ContainsKey(name))
             {
                 Core._Main.listView.Visible = false;
+                Core._Main.MessageLine.Visible = false;
                 Core._Main.Scrollback.Visible = false;
                 if (Core._Main.Chat != null)
                 {
                     Core._Main.Chat.scrollback.Visible = false;
                     Core._Main.Chat.userlist.Visible = false;
+                    Core._Main.Chat.textbox.Visible = false;
                 }
                 if (Current != null)
                 {
                     Current.userlist.Visible = false;
                     Current.scrollback.Visible = false;
+                    Current.textbox.Visible = false;
                 }
                 Core._Main._Scrollback = windows[name].scrollback;
                 Core._Main.Chat = windows[name];
                 Current = windows[name];
+                windows[name].textbox.Visible = true;
+                windows[name].textbox.Focus();
                 windows[name].scrollback.Visible = true;
                 windows[name].userlist.Visible = true;
                 Core._Main.Reload();
@@ -120,7 +129,7 @@ namespace Client
             quit = Configuration.quit;
             nickname = Configuration.nick;
             Core._Main.channelList1.insertNetwork(this);
-            CreateChat("&system", true);
+            CreateChat("!system", true);
             username = Configuration.user;
             ident = Configuration.ident;
         }

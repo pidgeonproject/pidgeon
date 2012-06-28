@@ -9,3 +9,4 @@ nick-e1=This is not a valid nick;
 nick=Your nick has been set;
 invalid-channel=This is not a valid channel;
 error1=You need to be connected;
+topic-data=Topic was set at $2 by $1 (provided by server);

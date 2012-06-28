@@ -27,6 +27,7 @@ namespace Client
 {
     class Core
     {
+        public static Thread _KernelThread;
         public static DateTime LoadTime;
         public static string ConfigFile = "configuration.dat";
         public static string SelectedLanguage = "en";
@@ -36,6 +37,7 @@ namespace Client
 
         public static bool Load()
         {
+            _KernelThread = System.Threading.Thread.CurrentThread;
             ConfigurationLoad();
             LoadTime = DateTime.Now;
             messages.data.Add("en", new messages.container("en"));
@@ -142,6 +144,19 @@ namespace Client
             return false;
         }
 
+        public static bool windowReady(Network._window chat)
+        {
+            if (chat != null)
+            {
+                while (chat.Making)
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Connect to IRC
         /// </summary>
@@ -168,10 +183,12 @@ namespace Client
 
         public static bool Quit()
         {
+            _Main.Visible = false;
             foreach (Protocol server in Connections)
             {
                 server.Exit();
             }
+            System.Threading.Thread.Sleep(12000);
             System.Windows.Forms.Application.Exit();
             return true;
         }

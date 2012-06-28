@@ -99,6 +99,17 @@ namespace Client
                     }
                     Core._Main.W.Clear();
                 }
+                lock (Channels)
+                {
+                    foreach (var channel in Channels)
+                    {
+                        if (channel.Key.Redraw)
+                        {
+                            channel.Key.redrawUsers();
+                            channel.Key.Redraw = false;
+                        }
+                    }
+                }
         }
 
         private void items_AfterSelect(object sender, TreeViewEventArgs e)
@@ -109,7 +120,7 @@ namespace Client
                 {
                     if (cu.Value == e.Node)
                     {
-                        cu.Key.ShowChat("&system");
+                        cu.Key.ShowChat("!system");
                         Core.network = cu.Key;
                         return;
                     }

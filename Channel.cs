@@ -25,9 +25,105 @@ namespace Client
     public class Channel
     {
         public string Name;
-        private Network._window Chat;
         public Network _Network;
-        public List<User> UserList;
+        public List<User> UserList = new List<User>();
+        public string Topic;
+        public string TopicUser;
+        public int TopicDate;
+        private Network._window Chat;
+        public bool Redraw;
+        public bool ok;
+            
+        public class ChannelMode : Protocol.Mode
+        { 
+            
+        }
+
+        public bool containUser(string user)
+        {
+            foreach (var name in UserList)
+            {
+                if (name.Nick == user)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void redrawUsers()
+        {
+            if (Core._KernelThread == System.Threading.Thread.CurrentThread)
+            {
+                retrieveWindow();
+                List<string> owners = new List<string>();
+                List<string> admins = new List<string>();
+                List<string> oper = new List<string>();
+                List<string> halfop = new List<string>();
+                List<string> vs = new List<string>();
+                List<string> users = new List<string>();
+                if (Chat != null)
+                {
+                    Chat.userlist.Items.Clear();
+                    foreach (var nick in UserList)
+                    {
+                        switch (nick.Nick[0])
+                        {
+                            case '~':
+                                owners.Add(nick.Nick);
+                                continue;
+                            case '&':
+                                admins.Add(nick.Nick);
+                                continue;
+                            case '@':
+                                oper.Add(nick.Nick);
+                                continue;
+                            case '%':
+                                halfop.Add(nick.Nick);
+                                continue;
+                            case '+':
+                                vs.Add(nick.Nick);
+                                continue;
+                        }
+                        users.Add(nick.Nick);
+                    }
+                    owners.Sort();
+                    admins.Sort();
+                    halfop.Sort();
+                    oper.Sort();
+                    vs.Sort();
+                    users.Sort();
+                    foreach (string user in owners)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+                    foreach (string user in admins)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+                    foreach (string user in oper)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+                    foreach (string user in halfop)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+                    foreach (string user in vs)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+
+                    foreach (string user in users)
+                    {
+                        Chat.userlist.Items.Add(user);
+                    }
+                }
+                return;
+            }
+            Redraw = true;
+            return;
+        }
 
         public Network._window retrieveWindow()
         {

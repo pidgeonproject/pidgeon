@@ -74,8 +74,11 @@ namespace Client
             if (Chat != null)
             {
                 Chat.scrollback.Width = this.Width - 380;
+                Chat.textbox.Width = Chat.scrollback.Width;
                 Chat.scrollback.Height = this.Height - 160;
                 Chat.userlist.Left = Chat.scrollback.Left + Chat.scrollback.Width + 20;
+                Chat.textbox.Left = Chat.scrollback.Left;
+                Chat.textbox.Top = Chat.scrollback.Height + 40;
                 Chat.userlist.Height = Chat.scrollback.Height + 46;
             }
         }
@@ -84,6 +87,8 @@ namespace Client
         {
             _Redraw();
         }
+
+	private void _Enter(object sender, KeyPressEventArgs pt){}
 
         public Client.Scrollback CreateS()
         {
@@ -94,8 +99,29 @@ namespace Client
             SB.TabIndex = 6;
             SB.CreateControl();
             this.Controls.Add(SB);
-            this.PerformLayout();
             return SB;
+        }
+
+        public Client.TextBox CreateText()
+        {
+            TextBox T = new TextBox();
+            T.Location = new System.Drawing.Point(189, 278);
+            T.Visible = false;
+            T.Size = new System.Drawing.Size(448, 29);
+            T.CreateControl();
+            T.history = new List<string>();
+            this.Controls.Add(T);
+            if (Chat != null)
+            {
+                T.history.AddRange(Chat.textbox.history);
+                T.position = Chat.textbox.position;
+            }
+            else
+            {
+                T.position = MessageLine.position;
+                T.history.AddRange(MessageLine.history);
+            }
+            return T;
         }
 
         public System.Windows.Forms.ListView CreateList()
@@ -103,11 +129,13 @@ namespace Client
             System.Windows.Forms.ListView list = new ListView();
             list.Location = new System.Drawing.Point(12, 27);
             list.Size = new System.Drawing.Size(152, 332);
-            list.TabIndex = 2;
+            list.View = System.Windows.Forms.View.Details;
+            list.Columns.Clear();
+            list.Columns.Add("Username");
+            list.Columns[0].Width = list.Width - 20;
             list.CreateControl();
             list.Visible = false;
             this.Controls.Add(list);
-            this.PerformLayout();
             return list;
         }
 
@@ -157,6 +185,7 @@ namespace Client
 
         private void Main_Load(object sender, EventArgs e)
         {
+            MessageLine.history = new List<string>();
             _Load();
         }
 

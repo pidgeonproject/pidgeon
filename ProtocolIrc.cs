@@ -157,7 +157,7 @@ namespace Client
             deliveryqueue = new System.Threading.Thread(_messages.Run);
             deliveryqueue.Start();
 
-            while (_server.Connected)
+            while (_server.Connected && !_reader.EndOfStream)
             {
                 text = _reader.ReadLine();
                 if (text.StartsWith(":"))
@@ -165,17 +165,94 @@ namespace Client
                     string[] data = text.Split(':');
                     if (data.Length > 1)
                     {
-                        if (data[1].Contains("INFO"))
+                        string command;
+                        string source;
+                        string _value;
+                        source = text.Substring(1);
+                        source = source.Substring(0, source.IndexOf(" "));
+                        command = text.Substring(text.IndexOf(" ") + 1).ToUpper();
+                        _value = command.Substring(command.IndexOf(" "));
+                        command = command.Substring(0, command.IndexOf(" "));
+                        if (data[1].Contains(" "))
+                        {
+                            string[] code = data[1].Split(' ');
+                            switch (command)
+                            {
+                                case "313":
+                                //whois
+                                case "318":
+                                    break;
+                                case "332":
+                                    if (code.Length > 3)
+                                    {
+                                        string name = code[3];
+                                        string topic = text.Substring(text.IndexOf(data[1]) + data[1].Length + 1);
+                                        Channel channel = _server.getChannel(name);
+                                        if (channel != null)
+                                        {
+                                            Network._window curr = channel.retrieveWindow();
+                                            if (Core.windowReady(curr))
+                                            {
+                                                curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
+                                            }
+                                            channel.Topic = topic;
+                                        }
+                                    }
+                                    break;
+                                case "333":
+                                    if (code.Length > 5)
+                                    {
+                                        string name = code[3];
+                                        string user = code[4];
+                                        string time = code[5];
+                                        Channel channel = _server.getChannel(name);
+                                        if (channel != null)
+                                        {
+                                            channel.TopicDate = int.Parse(time);
+                                            channel.TopicUser = user;
+                                            Network._window curr = channel.retrieveWindow();
+                                            if (Core.windowReady(curr))
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                    break;
+                                case "353":
+                                    if (code.Length > 3)
+                                    {
+                                        string name = code[4];
+                                        Channel channel = _server.getChannel(name);
+                                        if (channel != null)
+                                        {
+                                            string[] _chan = data[2].Split(' ');
+                                            foreach (var user in _chan)
+                                            {
+                                                if (!channel.containUser(user) && user != "")
+                                                {
+                                                    channel.UserList.Add(new User(user, "", ""));
+                                                }
+                                            }
+                                            channel.redrawUsers();
+                                            continue;
+                                        }
+                                    }
+                                    break;
+                                case "366":
+                                    continue;
+                            }
+                        }
+                        if (command == "INFO")
                         {
                             Core._Main._Scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User);
                             continue;
                         }
-                        if (data[1].Contains("NOTICE"))
+                        if (command == "NOTICE")
                         {
-                            Core._Main._Scrollback.InsertText(text.Substring(text.IndexOf("NOTICE") + 7), Scrollback.MessageStyle.User);
+                            Core._Main._Scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.User);
                             continue;
                         }
-                        if (data[1].StartsWith(_server.nickname + "!"))
+                        if (source.StartsWith(_server.nickname + "!"))
                         {
                             string[] _data2 = data[1].Split(' ');
                             if (_data2.Length > 2)
@@ -191,17 +268,46 @@ namespace Client
                                     continue;
                                 }
                             }
+                            if (_data2.Length > 2)
+                            {
+                                if (_data2[1].Contains("PART"))
+                                {
+                                    string channel = _data2[2];
+                                    if (_data2[2].Contains("#") == false)
+                                    {
+                                        channel = data[2];
+                                        Channel c = _server.getChannel(channel);
+                                        if (c != null)
+                                        {
+                                            Network._window Chat = c.retrieveWindow();
+                                            if (Core.windowReady(Chat))
+                                            {
+                                                if (!c.ok)
+                                                {
+                                                    Chat.scrollback.InsertText("", Scrollback.MessageStyle.Message);
+                                                }
+                                                else
+                                                {
+                                                    Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage), Scrollback.MessageStyle.Message);
+                                                }
+                                            }
+                                            c.ok = false;
+                                        }
+                                    }
+                                    _server.Join(channel);
+                                    continue;
+                                }
+                            }
                         }
-                        if (data[1].Contains("PRIVMSG"))
+                        if (command == "PRIVMSG")
                         {
                             string _nick;
                             string _ident;
                             string _host;
                             string chan;
-                            _nick = data[1].Substring(0, data[1].IndexOf("!"));
-                            _host = data[1].Substring(data[1].IndexOf("@") + 1);
-                            _host = _host.Substring(0, _host.IndexOf(" PRIVMSG"));
-                            _ident = data[1].Substring(data[1].IndexOf("!") + 1);
+                            _nick = source.Substring(0, source.IndexOf("!"));
+                            _host = source.Substring(source.IndexOf("@") + 1);
+                            _ident = source.Substring(source.IndexOf("!") + 1);
                             _ident = _ident.Substring(0, _ident.IndexOf("@"));
                             chan = data[1].Substring(data[1].IndexOf("PRIVMSG") + "PRIVMSG ".Length).Replace(" ", "");
                             User user = new User(_nick, _host, _ident);
@@ -210,18 +316,81 @@ namespace Client
                             {
                                 Network._window window;
                                 window = channel.retrieveWindow();
-                                if (window != null)
+                                if (Core.windowReady(window))
                                 {
-                                    channel.retrieveWindow().scrollback.InsertText(PRIVMSG( user.Nick, text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length)), Scrollback.MessageStyle.Message);
+                                    channel.retrieveWindow().scrollback.InsertText(PRIVMSG(user.Nick, text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length)), Scrollback.MessageStyle.Message);
                                     continue;
                                 }
-                                
+
+                            }
+                        }
+                        if (command == "PART")
+                        {
+                            string chan = _value.Substring(0, _value.IndexOf(" "));
+                            string user = source.Substring(0, source.IndexOf("!"));
+                            Channel channel = _server.getChannel(chan);
+                            if (channel != null)
+                            {
+                                Network._window window;
+                                window = channel.retrieveWindow();
+                                User delete = null;
+                                if (Core.windowReady(window))
+                                {
+                                    channel.retrieveWindow().scrollback.InsertText(messages.get("part", Core.SelectedLanguage, new List<string> { source }), Scrollback.MessageStyle.Channel);
+
+                                    if (channel.containUser(user))
+                                    {
+                                        foreach (User _user in channel.UserList)
+                                        {
+                                            if (_user.Nick == user)
+                                            {
+                                                delete = _user;
+                                                break;
+                                            }
+                                        }
+
+                                        if (delete != null)
+                                        {
+                                            channel.UserList.Remove(delete);
+                                        }
+
+                                        channel.redrawUsers();
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                        if (command == "JOIN")
+                        {
+                            string chan = _value.Substring(0, _value.IndexOf(" "));
+                            string user = source.Substring(0, source.IndexOf("!"));
+                            string _ident;
+                            string _host;
+                            _host = source.Substring(source.IndexOf("@") + 1);
+                            _ident = source.Substring(source.IndexOf("!") + 1);
+                            _ident = _ident.Substring(0, _ident.IndexOf("@"));
+                            Channel channel = _server.getChannel(chan);
+                            if (channel != null)
+                            {
+                                Network._window window;
+                                window = channel.retrieveWindow();
+                                if (Core.windowReady(window))
+                                {
+                                    channel.retrieveWindow().scrollback.InsertText(messages.get("join",Core.SelectedLanguage, new List<string> { source }), Scrollback.MessageStyle.Channel);
+
+                                    if (!channel.containUser(user))
+                                    {
+                                        channel.UserList.Add(new User(user, _host, _ident));
+                                        channel.redrawUsers();
+                                    }
+                                    continue;
+                                }
                             }
                         }
                     }
-                    if (_server.windows.ContainsKey("&system"))
+                    if (_server.windows.ContainsKey("!system"))
                     {
-                        _server.windows["&system"].scrollback.InsertText(text, Scrollback.MessageStyle.User);
+                        _server.windows["!system"].scrollback.InsertText(text, Scrollback.MessageStyle.User);
                     }
                 }
             }
@@ -267,7 +436,11 @@ namespace Client
                 _writer.Flush();
             }
             _server.Connected = false;
-            main.Abort();
+            System.Threading.Thread.Sleep(1000);
+            if (main.ThreadState == System.Threading.ThreadState.Running)
+            {
+                main.Abort();
+            }
         }
 
         public override bool Open()

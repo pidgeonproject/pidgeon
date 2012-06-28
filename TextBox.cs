@@ -29,6 +29,8 @@ namespace Client
     public partial class TextBox : UserControl
     {
         public List<string> history;
+        public int position = 0;
+        public string original = "";
         public TextBox()
         {
             InitializeComponent();
@@ -40,15 +42,50 @@ namespace Client
             richTextBox1.Width = this.Width -2;
         }
 
-        private void _Enter(object sender, KeyPressEventArgs e)
+        private void _Enter(object sender, KeyEventArgs e)
         {
-            if (e.KeyChar.Equals('\r'))
+            switch (e.KeyCode)
             {
-                Core._Main._Scrollback.Last = this;
-                richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
-                history.Add(richTextBox1.Text);
-                Parser.parse(richTextBox1.Text);
-                richTextBox1.Text = "";
+                case Keys.Down:
+                    if (position == history.Count)
+                    {
+                        return;
+                    }
+                    int max = position + 1;
+                    if (history.Count <= max)
+                    {
+                        position = history.Count;
+                        richTextBox1.Text = original.Replace("\n", "");
+                        return;
+                    }
+                    position++;
+                    if (position >= history.Count)
+                    {
+                        position = history.Count - 1;
+                    }
+                    richTextBox1.Text = history[position];
+                    break;
+                case Keys.Up:
+                    if (position < 1)
+                    {
+                        return;
+                    }
+                    if (history.Count == position)
+                    {
+                        original = richTextBox1.Text;
+                    }
+                    position = position - 1;
+                    richTextBox1.Text = history[position];
+                    return;
+                case Keys.Enter:
+                    Core._Main._Scrollback.Last = this;
+                    richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
+                    history.Add(richTextBox1.Text);
+                    Parser.parse(richTextBox1.Text);
+                    original = "";
+                    richTextBox1.Text = "";
+                    position = history.Count;
+                    break;
             }
         }
 
@@ -60,7 +97,6 @@ namespace Client
 
         private void TextBox_Load(object sender, EventArgs e)
         {
-            history = new List<string>();
             resize();
         }
     }
