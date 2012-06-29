@@ -116,6 +116,7 @@ namespace Client
                 Current = windows[name];
                 windows[name].textbox.Visible = true;
                 windows[name].textbox.Focus();
+                Core._Main.UpdateStatus();
                 windows[name].scrollback.Visible = true;
                 windows[name].userlist.Visible = true;
                 Core._Main.Reload();

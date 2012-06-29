@@ -22,26 +22,22 @@ using System.Text;
 
 namespace Client
 {
-    public class Configuration
+    public class Skin
     {
-        public static bool Window_Maximized = true;
-        public static int Window_Left = 0;
+        public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
+        public string localfont;
+        public int fontsize;
+        public System.Drawing.Color fontcolor;
+        public System.Drawing.Color backgroundcolor;
+        public System.Drawing.Color othercolor;
 
-        public static string CommandPrefix = "/";
-
-        public static string ident = "pidgeon";
-        public static string quit = "Pidgeon client";
-        public static string nick = "PidgeonUser";
-
-        public static string user = "My name is hidden, dude";
-
-        public static Skin CurrentSkin = new Skin();
-
-        public enum Priority
+        public Skin()
         {
-            High = 8,
-            Normal = 2,
-            Low = 1
+            // defaults
+            fontcolor = System.Drawing.Color.White;
+            fontsize = 2;
+            localfont = "Helvetica";
+            backgroundcolor = System.Drawing.Color.Black;
         }
     }
 }

@@ -18,6 +18,7 @@
 using System.IO;
 using System.Threading;
 using System.Net;
+using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,9 +110,16 @@ namespace Client
                         return true;
                     }
                     string name = command.Substring("server ".Length);
+                    string b = command.Substring(command.IndexOf(name) + name.Length);
+                    int n2;
                     if (name == "")
                     {
                         _Main._Scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
+                        return true;
+                    }
+                    if (int.TryParse(b, out n2))
+                    {
+                        connectIRC(name, n2);
                         return true;
                     }
                     connectIRC(name);
@@ -130,6 +138,55 @@ namespace Client
             return false;
         }
 
+        public static bool Restore(string file)
+        {
+            if (!File.Exists(file + "~"))
+            {
+                return false;
+            }
+            File.Copy(file + "~", file);
+            return true;
+        }
+
+        public static bool Backup(string file)
+        {
+            if (File.Exists(file + "~"))
+            { 
+                string backup = System.IO.Path.GetRandomFileName();
+                File.Copy(file + "~", backup);
+            }
+            File.Copy(file, file + "~");
+            return true;
+        }
+
+        private static bool makenode(string config_key, string text, string type, XmlDocument conf)
+        {
+            System.Xml.XmlNode xmlnode = conf.CreateElement("configuration.pidgeon");
+            XmlAttribute datatype = conf.CreateAttribute("datatype");
+            datatype.Value = type;
+            xmlnode.Attributes.Append(datatype);
+            XmlAttribute confname = conf.CreateAttribute("confname");
+            confname.Value = config_key;
+            xmlnode.InnerText = text;
+            xmlnode.Attributes.Append(confname);
+            conf.AppendChild(xmlnode);
+            return true;
+        }
+
+        public static bool ConfigSave()
+        {
+            System.Xml.XmlDocument config = new System.Xml.XmlDocument();
+            makenode("ident", Configuration.ident, "string", config);
+            makenode("quitmessage", Configuration.quit, "string", config);
+            makenode("nick", Configuration.nick, "string", config);
+            makenode("maxi", Configuration.Window_Maximized.ToString(), "", config);
+            if (Backup(ConfigFile))
+            {
+                config.Save(ConfigFile);
+            }
+            return false;
+        }
+
         /// <summary>
         /// Conf
         /// </summary>
@@ -138,8 +195,31 @@ namespace Client
         {
             // Check if config file is present
             if (File.Exists(ConfigFile))
-            { 
+            {
+                XmlDocument configuration = new XmlDocument();
+                configuration.Load(ConfigFile);
+                foreach (XmlNode curr in configuration.ChildNodes)
+                {
+                    if (curr.Attributes.Count > 1)
+                    {
+                        if (curr.Attributes[1].Name == "confname" && curr.Attributes[0].Name == "dataype")
+                        {
+                            switch (curr.Attributes[1].Value)
+                            {
+                                case "nick":
+                                    Configuration.nick = curr.InnerText;
+                                    break;
+                                case "maxi":
+                                    Configuration.Window_Maximized = bool.Parse(curr.InnerText);
+                                    break;
+                                case "ident":
+                                    Configuration.ident = curr.InnerText;
+                                    break;
 
+                            }
+                        }
+                    }
+                }
             }
             return false;
         }

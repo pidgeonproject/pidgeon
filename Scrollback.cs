@@ -89,18 +89,19 @@ namespace Client
         private void Scrollback_Load(object sender, EventArgs e)
         {
             //Data.ContextMenuStrip.Enabled = false;
+            Reload();
             ResizeEv();
         }
 
         public void Reload()
         {
             Modified = false;
-            string text = "<html><head></head><body STYLE=\"background-color: " + Configuration.background.ToString() + "\"><script>javascript:var s = function() { window.scrollBy(0,100000); setTimeout(s, 10); }; s();</script>";
+            string text = "<html><head></head><body STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"><script>javascript:var s = function() { window.scrollBy(0,100000); setTimeout(s, 10); }; s();</script>";
             lock (Line)
             {
                 foreach (ContentLine _c in Line)
                 {
-                    text += "<font face=Helvetica>[" + _c.time.ToShortTimeString() + "] " +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
+                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + Configuration.CurrentSkin.fontcolor.Name + "\" face=" + Configuration.CurrentSkin.localfont + ">[" + _c.time.ToShortTimeString() + "] " +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                 }
             }
             text += "</body>";

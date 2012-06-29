@@ -32,6 +32,7 @@ namespace Client
         private string StatusBox;
         public Scrollback _Scrollback;
         public Network._window Chat;
+        private Preferences fPrefs;
 
         public class _WindowRequest 
         {
@@ -154,6 +155,7 @@ namespace Client
             Core.Load();
             shutDownToolStripMenuItem.Text = messages.get("window-menu-quit", Core.SelectedLanguage);
             preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
+            //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
             fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
             _Scrollback = Scrollback;
             if (Configuration.Window_Maximized)
@@ -187,6 +189,30 @@ namespace Client
         {
             MessageLine.history = new List<string>();
             _Load();
+        }
+
+        private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (fPrefs == null)
+            {
+                fPrefs = new Preferences();
+            }
+            fPrefs.Show();
+        }
+
+        private void newConnectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
 
 

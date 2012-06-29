@@ -65,27 +65,30 @@ namespace Client
                 if (Chat != null)
                 {
                     Chat.userlist.Items.Clear();
-                    foreach (var nick in UserList)
+                    lock (UserList)
                     {
-                        switch (nick.Nick[0])
+                        foreach (var nick in UserList)
                         {
-                            case '~':
-                                owners.Add(nick.Nick);
-                                continue;
-                            case '&':
-                                admins.Add(nick.Nick);
-                                continue;
-                            case '@':
-                                oper.Add(nick.Nick);
-                                continue;
-                            case '%':
-                                halfop.Add(nick.Nick);
-                                continue;
-                            case '+':
-                                vs.Add(nick.Nick);
-                                continue;
+                            switch (nick.Nick[0])
+                            {
+                                case '~':
+                                    owners.Add(nick.Nick);
+                                    continue;
+                                case '&':
+                                    admins.Add(nick.Nick);
+                                    continue;
+                                case '@':
+                                    oper.Add(nick.Nick);
+                                    continue;
+                                case '%':
+                                    halfop.Add(nick.Nick);
+                                    continue;
+                                case '+':
+                                    vs.Add(nick.Nick);
+                                    continue;
+                            }
+                            users.Add(nick.Nick);
                         }
-                        users.Add(nick.Nick);
                     }
                     owners.Sort();
                     admins.Sort();

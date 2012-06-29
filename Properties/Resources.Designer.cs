@@ -64,7 +64,14 @@ namespace Client.Properties {
         ///   Looks up a localized string similar to window-menu-file=File;
         ///window-menu-quit=Exit;
         ///window-menu-conf=Preferences;
-        ///window-menu-help=Help;.
+        ///window-menu-help=Help;
+        ///invalid-server=This is not a valid server name;
+        ///invalid-command=Invalid command;
+        ///loading-server=Connecting to $1;
+        ///nick-e1=This is not a valid nick;
+        ///nick=Your nick has been set;
+        ///invalid-channel=This is not a valid channel;
+        ///error1=You need to be connected;.
         /// </summary>
         internal static string en_english {
             get {

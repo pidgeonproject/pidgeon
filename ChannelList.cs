@@ -39,7 +39,9 @@ namespace Client
 
         private void ChannelList_Load(object sender, EventArgs e)
         {
-            
+            items.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            items.ForeColor = Configuration.CurrentSkin.fontcolor;
+            items.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
         }
 
         public void Redraw()
@@ -71,7 +73,7 @@ namespace Client
             this.items.Nodes.Add(text);
         }
 
-        private void Display(object sender, EventArgs e)
+        private void _Display(object sender, EventArgs e)
         {
             items.Height = Height;
             items.Width = Width;

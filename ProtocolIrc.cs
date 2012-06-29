@@ -170,9 +170,10 @@ namespace Client
                         string _value;
                         source = text.Substring(1);
                         source = source.Substring(0, source.IndexOf(" "));
-                        command = text.Substring(text.IndexOf(" ") + 1).ToUpper();
+                        command = text.Substring(text.IndexOf(" ") + 1);
                         _value = command.Substring(command.IndexOf(" "));
                         command = command.Substring(0, command.IndexOf(" "));
+                        command = command.ToUpper();
                         if (data[1].Contains(" "))
                         {
                             string[] code = data[1].Split(' ');
@@ -196,6 +197,7 @@ namespace Client
                                                 curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
                                             }
                                             channel.Topic = topic;
+                                            continue;
                                         }
                                     }
                                     break;
@@ -326,7 +328,8 @@ namespace Client
                         }
                         if (command == "PART")
                         {
-                            string chan = _value.Substring(0, _value.IndexOf(" "));
+                            string chan = _value;
+                            chan = chan.Replace(" ", "");
                             string user = source.Substring(0, source.IndexOf("!"));
                             Channel channel = _server.getChannel(chan);
                             if (channel != null)
@@ -340,12 +343,15 @@ namespace Client
 
                                     if (channel.containUser(user))
                                     {
-                                        foreach (User _user in channel.UserList)
+                                        lock (channel.UserList)
                                         {
-                                            if (_user.Nick == user)
+                                            foreach (User _user in channel.UserList)
                                             {
-                                                delete = _user;
-                                                break;
+                                                if (_user.Nick == user)
+                                                {
+                                                    delete = _user;
+                                                    break;
+                                                }
                                             }
                                         }
 
@@ -362,7 +368,8 @@ namespace Client
                         }
                         if (command == "JOIN")
                         {
-                            string chan = _value.Substring(0, _value.IndexOf(" "));
+                            string chan = _value;
+                            chan = chan.Replace(" ", "");
                             string user = source.Substring(0, source.IndexOf("!"));
                             string _ident;
                             string _host;
@@ -387,6 +394,7 @@ namespace Client
                                 }
                             }
                         }
+                        //if (command == "")
                     }
                     if (_server.windows.ContainsKey("!system"))
                     {
@@ -446,6 +454,7 @@ namespace Client
         public override bool Open()
         {
             main = new System.Threading.Thread(Start);
+            Core._Main.Status(messages.get("connecting", Core.SelectedLanguage));
             main.Start();
             return true;
         }

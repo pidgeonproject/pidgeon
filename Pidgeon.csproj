@@ -134,6 +134,7 @@
     <Compile Include="Scrollback.Designer.cs">
       <DependentUpon>Scrollback.cs</DependentUpon>
     </Compile>
+    <Compile Include="SkinCl.cs" />
     <Compile Include="TextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
