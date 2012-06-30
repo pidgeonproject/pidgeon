@@ -1,4 +1,22 @@
-﻿namespace Client
+﻿/***************************************************************************
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
+
+namespace Client
 {
     partial class Main
     {
@@ -46,12 +64,11 @@
             this.helToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.channelList1 = new Client.ChannelList();
-            this.Scrollback = new Client.Scrollback();
-            this.listView = new System.Windows.Forms.ListView();
-            this.MessageLine = new Client.TextBox();
+            this.sX = new System.Windows.Forms.SplitContainer();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
+            this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -139,7 +156,7 @@
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
             this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.preferencesToolStripMenuItem.Text = "Preferences";
-            this.preferencesToolStripMenuItem.Click += new System.EventHandler(preferencesToolStripMenuItem_Click);
+            this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
@@ -179,68 +196,43 @@
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
-            this.contentsToolStripMenuItem.Click += new System.EventHandler(contentsToolStripMenuItem_Click);
+            this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
             this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(aboutToolStripMenuItem_Click);
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // channelList1
+            // sX
             // 
-            this.channelList1.Location = new System.Drawing.Point(12, 27);
-            this.channelList1.Name = "channelList1";
-            this.channelList1.Size = new System.Drawing.Size(152, 332);
-            this.channelList1.TabIndex = 2;
-            this.channelList1.Load += new System.EventHandler(this.channelList1_Load);
-            // 
-            // Scrollback
-            // 
-            this.Scrollback.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Scrollback.Location = new System.Drawing.Point(189, 27);
-            this.Scrollback.Name = "Scrollback";
-            this.Scrollback.Size = new System.Drawing.Size(465, 195);
-            this.Scrollback.TabIndex = 9;
-            // 
-            // listView
-            // 
-            this.listView.Location = new System.Drawing.Point(669, 27);
-            this.listView.Name = "listView";
-            this.listView.Size = new System.Drawing.Size(155, 229);
-            this.listView.TabIndex = 8;
-            this.listView.UseCompatibleStateImageBehavior = false;
-            // 
-            // MessageLine
-            // 
-            this.MessageLine.Location = new System.Drawing.Point(189, 278);
-            this.MessageLine.Name = "MessageLine";
-            this.MessageLine.Size = new System.Drawing.Size(448, 29);
-            this.MessageLine.TabIndex = 7;
+            this.sX.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sX.Location = new System.Drawing.Point(0, 24);
+            this.sX.Name = "sX";
+            this.sX.Size = new System.Drawing.Size(874, 364);
+            this.sX.SplitterDistance = 291;
+            this.sX.TabIndex = 2;
             // 
             // Main
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(874, 410);
-            this.Controls.Add(this.Scrollback);
-            this.Controls.Add(this.listView);
-            this.Controls.Add(this.MessageLine);
-            this.Controls.Add(this.channelList1);
+            this.Controls.Add(this.sX);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.shutDownToolStripMenuItem_Click);
+            this.sX.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(Changed);
             this.Load += new System.EventHandler(this.Main_Load);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(shutDownToolStripMenuItem_Click);
-            this.MessageLine.richTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._Enter);
             this.Resize += new System.EventHandler(this.ResizeMe);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
+            this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -266,9 +258,6 @@
         private System.Windows.Forms.ToolStripMenuItem helToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        public Scrollback Scrollback;
-        public System.Windows.Forms.ListView listView;
-        public ChannelList channelList1;
-        public TextBox MessageLine;
+        private System.Windows.Forms.SplitContainer sX;
     }
 }

@@ -15,6 +15,7 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -26,18 +27,21 @@ using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class Preferences : Form
+    public partial class Recovery : Form
     {
-        public Preferences()
+        public Recovery()
         {
             InitializeComponent();
         }
 
-        private void Preferences_Load(object sender, EventArgs e)
+        private void __LP_Paint(object sender, PaintEventArgs e)
         {
 
         }
 
-       
+        private void Recovery_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -47,16 +47,12 @@ namespace Client
         }
         public bool Modified;
 
-        public void ResizeEv(object sender, EventArgs e)
-        {
-            ResizeEv();
-        }
-
-        public void ResizeEv()
+        public void Recreate(object sender, EventArgs e)
         {
             Data.Width = this.Width;
             Data.Height = this.Height;
         }
+
 
         public Scrollback()
         {
@@ -88,9 +84,8 @@ namespace Client
 
         private void Scrollback_Load(object sender, EventArgs e)
         {
-            //Data.ContextMenuStrip.Enabled = false;
             Reload();
-            ResizeEv();
+            Recreate(null, null);
         }
 
         public void Reload()

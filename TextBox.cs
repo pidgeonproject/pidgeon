@@ -77,8 +77,8 @@ namespace Client
                     position = position - 1;
                     richTextBox1.Text = history[position];
                     return;
-                case Keys.Enter:
-                    Core._Main._Scrollback.Last = this;
+                case Keys.Enter:        
+                    Core._Main.Chat.scrollback.Last = this;
                     richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
                     history.Add(richTextBox1.Text);
                     Parser.parse(richTextBox1.Text);

@@ -34,18 +34,8 @@ namespace Client
         public string quit;
         public Protocol _protocol;
 
-        public class _window
-        {
-            public Scrollback scrollback;
-            public System.Windows.Forms.ListView userlist;
-            public bool Making = true;
-            public TextBox textbox;
-            public string name;
-            public bool writable;
-        }
-
-        private _window Current;
-        public Dictionary<string, _window> windows = new Dictionary<string, _window>();
+        private Window Current;
+        public Dictionary<string, Window> windows = new Dictionary<string, Window>();
 
         public Channel getChannel(string name)
         {
@@ -71,13 +61,9 @@ namespace Client
 
         public void _Chat(string _name, bool _writable)
         {
-            _window Chat = new _window();
+            Window Chat = Core._Main.CreateChat();
             Chat.writable = _writable;
             windows.Add(_name, Chat);
-            Chat.scrollback = Core._Main.CreateS();
-            Chat.textbox = Core._Main.CreateText();
-            Chat.userlist = Core._Main.CreateList();
-            Chat.Making = false;
             Chat.name = _name;
         }
 
@@ -87,7 +73,7 @@ namespace Client
             _channel.Name = channel;
             _channel._Network = this;
             Channels.Add(_channel);
-            Core._Main.channelList1.insertChannel(_channel);
+            Core._Main.ChannelList.insertChannel(_channel);
             CreateChat(channel, true, true);
             return 0;
         }
@@ -96,30 +82,19 @@ namespace Client
         {
             if (windows.ContainsKey(name))
             {
-                Core._Main.listView.Visible = false;
-                Core._Main.MessageLine.Visible = false;
-                Core._Main.Scrollback.Visible = false;
                 if (Core._Main.Chat != null)
                 {
-                    Core._Main.Chat.scrollback.Visible = false;
-                    Core._Main.Chat.userlist.Visible = false;
-                    Core._Main.Chat.textbox.Visible = false;
+                    Core._Main.Chat.Visible = false;
                 }
-                if (Current != null)
-                {
-                    Current.userlist.Visible = false;
-                    Current.scrollback.Visible = false;
-                    Current.textbox.Visible = false;
-                }
-                Core._Main._Scrollback = windows[name].scrollback;
-                Core._Main.Chat = windows[name];
+                
                 Current = windows[name];
-                windows[name].textbox.Visible = true;
-                windows[name].textbox.Focus();
-                Core._Main.UpdateStatus();
-                windows[name].scrollback.Visible = true;
-                windows[name].userlist.Visible = true;
                 Core._Main.Reload();
+                Current.Redraw();
+                Current.Visible = true;
+                Current.textbox.Focus();
+                Core._Main.Chat = windows[name];
+                Current.Making = false;
+                Core._Main.UpdateStatus();
             }
             return true;
         }
@@ -129,7 +104,7 @@ namespace Client
             server = Server;
             quit = Configuration.quit;
             nickname = Configuration.nick;
-            Core._Main.channelList1.insertNetwork(this);
+            Core._Main.ChannelList.insertNetwork(this);
             CreateChat("!system", true);
             username = Configuration.user;
             ident = Configuration.ident;

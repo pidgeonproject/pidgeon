@@ -37,6 +37,8 @@ namespace Client
                 }
                 return "+" + _val;
             }
+            
+            
         }
 
         public string Server;
@@ -46,6 +48,11 @@ namespace Client
         public string PRIVMSG(string user, string text)
         {
             return "<" + user + "> " + text + "";
+        }
+
+        public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            
         }
 
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
@@ -61,6 +68,11 @@ namespace Client
         public virtual bool Command(string cm)
         {
             return false;
+        }
+
+        public virtual void WriteMode(Mode _x, string target, Network network = null)
+        {
+            return;
         }
 
         public virtual void Join(string name, Network network = null)

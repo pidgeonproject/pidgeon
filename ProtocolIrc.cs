@@ -41,18 +41,18 @@ namespace Client
             {
                 public Configuration.Priority _Priority;
                 public string message;
-                public string channel;
             }
             public List<Message> messages = new List<Message>();
             public List<Message> newmessages = new List<Message>();
             public ProtocolIrc protocol;
 
-            public void DeliverMessage(string Message, string Channel, Configuration.Priority Pr = Configuration.Priority.Normal)
+            
+
+            public void DeliverMessage(string Message, Configuration.Priority Pr = Configuration.Priority.Normal)
             {
                 Message text = new Message();
                 text._Priority = Pr;
                 text.message = Message;
-                text.channel = Channel;
                 lock (messages)
                 {
                     messages.Add(text);
@@ -106,7 +106,7 @@ namespace Client
                                 if (message._Priority >= highest)
                                 {
                                     Processed.Add(message);
-                                    protocol.Send(message.message, message.channel);
+                                    protocol.Send(message.message);
                                     System.Threading.Thread.Sleep(1000);
                                     if (highest != Configuration.Priority.High)
                                     {
@@ -129,10 +129,15 @@ namespace Client
             }
         }
 
+        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
+        {
+            _messages.DeliverMessage(text, Pr);
+        }
+
         public void Start()
         {
             _messages.protocol = this;
-            Core._Main.Scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }), Scrollback.MessageStyle.System);
+            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }), Scrollback.MessageStyle.System);
             try
             {
                 _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -149,7 +154,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main._Scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -191,7 +196,7 @@ namespace Client
                                         Channel channel = _server.getChannel(name);
                                         if (channel != null)
                                         {
-                                            Network._window curr = channel.retrieveWindow();
+                                            Window curr = channel.retrieveWindow();
                                             if (Core.windowReady(curr))
                                             {
                                                 curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
@@ -212,7 +217,7 @@ namespace Client
                                         {
                                             channel.TopicDate = int.Parse(time);
                                             channel.TopicUser = user;
-                                            Network._window curr = channel.retrieveWindow();
+                                            Window curr = channel.retrieveWindow();
                                             if (Core.windowReady(curr))
                                             {
                                                 continue;
@@ -246,12 +251,12 @@ namespace Client
                         }
                         if (command == "INFO")
                         {
-                            Core._Main._Scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User);
+                            Core._Main.Chat.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User);
                             continue;
                         }
                         if (command == "NOTICE")
                         {
-                            Core._Main._Scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.User);
+                            Core._Main.Chat.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.User);
                             continue;
                         }
                         if (source.StartsWith(_server.nickname + "!"))
@@ -281,7 +286,7 @@ namespace Client
                                         Channel c = _server.getChannel(channel);
                                         if (c != null)
                                         {
-                                            Network._window Chat = c.retrieveWindow();
+                                            Window Chat = c.retrieveWindow();
                                             if (Core.windowReady(Chat))
                                             {
                                                 if (!c.ok)
@@ -316,7 +321,7 @@ namespace Client
                             Channel channel = _server.getChannel(chan);
                             if (channel != null)
                             {
-                                Network._window window;
+                                Window window;
                                 window = channel.retrieveWindow();
                                 if (Core.windowReady(window))
                                 {
@@ -334,7 +339,7 @@ namespace Client
                             Channel channel = _server.getChannel(chan);
                             if (channel != null)
                             {
-                                Network._window window;
+                                Window window;
                                 window = channel.retrieveWindow();
                                 User delete = null;
                                 if (Core.windowReady(window))
@@ -379,7 +384,7 @@ namespace Client
                             Channel channel = _server.getChannel(chan);
                             if (channel != null)
                             {
-                                Network._window window;
+                                Window window;
                                 window = channel.retrieveWindow();
                                 if (Core.windowReady(window))
                                 {
@@ -411,28 +416,26 @@ namespace Client
             return false;
         }
 
-        private void Send(string data, string to)
+        private void Send(string ms)
         {
-            _writer.WriteLine("PRIVMSG " + to + " :" + data);
+            _writer.WriteLine(ms);
             _writer.Flush();
         }
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            _messages.DeliverMessage(text, to, _priority);
+            Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
 
         public override void Join(string name, Network network = null)
         {
-            _writer.WriteLine("JOIN " + name);
-            _writer.Flush();
+            Transfer("JOIN " + name);
         }
 
         public override int requestNick(string _Nick)
         {
-            _writer.WriteLine("NICK " + _Nick);
-            _writer.Flush();
+            Transfer("NICK " + _Nick);
             return 0;
         }
 

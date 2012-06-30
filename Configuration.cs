@@ -37,6 +37,10 @@ namespace Client
 
         public static Skin CurrentSkin = new Skin();
 
+        public static int x1 = 0;
+        public static int x4 = 0;
+        public static int window_size = 0;
+
         public enum Priority
         {
             High = 8,

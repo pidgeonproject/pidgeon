@@ -32,5 +32,10 @@ namespace Client.Forms
         {
             InitializeComponent();
         }
+
+        private void Logs_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

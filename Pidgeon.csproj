@@ -70,12 +70,6 @@
   <ItemGroup>
     <Compile Include="Buffers.cs" />
     <Compile Include="Channel.cs" />
-    <Compile Include="ChannelList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ChannelList.Designer.cs">
-      <DependentUpon>ChannelList.cs</DependentUpon>
-    </Compile>
     <Compile Include="Forms\Channels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +101,30 @@
     </Compile>
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PidgeonList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PidgeonList.Designer.cs">
+      <DependentUpon>PidgeonList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Recovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Recovery.Designer.cs">
+      <DependentUpon>Recovery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Channel_Window.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Channel_Window.Designer.cs">
+      <DependentUpon>Channel_Window.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Window.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Window.Designer.cs">
+      <DependentUpon>Window.cs</DependentUpon>
     </Compile>
     <Compile Include="Messages.cs" />
     <Compile Include="Network.cs" />
@@ -142,14 +160,17 @@
       <DependentUpon>TextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
-    <EmbeddedResource Include="ChannelList.resx">
-      <DependentUpon>ChannelList.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Channels.resx">
       <DependentUpon>Channels.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Channel_Window.resx">
+      <DependentUpon>Channel_Window.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Connection.resx">
       <DependentUpon>Connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Help.resx">
+      <DependentUpon>Help.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Logs.resx">
       <DependentUpon>Logs.cs</DependentUpon>
@@ -159,6 +180,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PidgeonList.resx">
+      <DependentUpon>PidgeonList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Recovery.resx">
+      <DependentUpon>Recovery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Window.resx">
+      <DependentUpon>Window.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -215,6 +245,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Stage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

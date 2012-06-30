@@ -30,9 +30,11 @@ namespace Client
     public partial class Main : Form
     {
         private string StatusBox;
-        public Scrollback _Scrollback;
-        public Network._window Chat;
+        public Window main;
+        public PidgeonList ChannelList;
+        public Window Chat;
         private Preferences fPrefs;
+        bool done = false;
 
         public class _WindowRequest 
         {
@@ -62,25 +64,14 @@ namespace Client
 
         public void _Redraw()
         {
-            channelList1.Top = listView.Top;
-            channelList1.Left = 20;
-            channelList1.Height = this.Height - 160;
-            Scrollback.Width = this.Width - 380;
-            Scrollback.Height = this.Height - 160;
-            listView.Left = Scrollback.Left + Scrollback.Width + 20;
-            listView.Height = Scrollback.Height + 46;
-            MessageLine.Left = Scrollback.Left;
-            MessageLine.Width = this.Width - 380;
-            MessageLine.Top = Scrollback.Height + 40;
-            if (Chat != null)
+
+        }
+
+        public void Changed(object sender, EventArgs dt)
+        {
+            if (done)
             {
-                Chat.scrollback.Width = this.Width - 380;
-                Chat.textbox.Width = Chat.scrollback.Width;
-                Chat.scrollback.Height = this.Height - 160;
-                Chat.userlist.Left = Chat.scrollback.Left + Chat.scrollback.Width + 20;
-                Chat.textbox.Left = Chat.scrollback.Left;
-                Chat.textbox.Top = Chat.scrollback.Height + 40;
-                Chat.userlist.Height = Chat.scrollback.Height + 46;
+                Configuration.window_size = sX.SplitterDistance;
             }
         }
 
@@ -89,55 +80,24 @@ namespace Client
             _Redraw();
         }
 
-	private void _Enter(object sender, KeyPressEventArgs pt){}
+	    private void _Enter(object sender, KeyPressEventArgs pt){}
 
-        public Client.Scrollback CreateS()
+        public Client.Window CreateChat()
         {
-            Client.Scrollback SB = new Scrollback();
-            SB.Location = new System.Drawing.Point(189, 27);
-            SB.Visible = false;
-            SB.Size = new System.Drawing.Size(465, 195);
-            SB.TabIndex = 6;
-            SB.CreateControl();
-            this.Controls.Add(SB);
-            return SB;
-        }
-
-        public Client.TextBox CreateText()
-        {
-            TextBox T = new TextBox();
-            T.Location = new System.Drawing.Point(189, 278);
-            T.Visible = false;
-            T.Size = new System.Drawing.Size(448, 29);
-            T.CreateControl();
-            T.history = new List<string>();
-            this.Controls.Add(T);
-            if (Chat != null)
+            Client.Window Chat = new Window();
+            Chat.Dock = DockStyle.Fill;
+            Chat.Location = new System.Drawing.Point(0, 0);
+            Chat.Visible = true;
+            Chat.TabIndex = 6;
+            Chat.Redraw();
+            Chat.CreateControl();
+            if (this.Chat != null)
             {
-                T.history.AddRange(Chat.textbox.history);
-                T.position = Chat.textbox.position;
+                Chat.textbox.history.AddRange(this.Chat.textbox.history);
             }
-            else
-            {
-                T.position = MessageLine.position;
-                T.history.AddRange(MessageLine.history);
-            }
-            return T;
-        }
-
-        public System.Windows.Forms.ListView CreateList()
-        {
-            System.Windows.Forms.ListView list = new ListView();
-            list.Location = new System.Drawing.Point(12, 27);
-            list.Size = new System.Drawing.Size(152, 332);
-            list.View = System.Windows.Forms.View.Details;
-            list.Columns.Clear();
-            list.Columns.Add("Username");
-            list.Columns[0].Width = list.Width - 20;
-            list.CreateControl();
-            list.Visible = false;
-            this.Controls.Add(list);
-            return list;
+            sX.Panel2.Controls.Add(Chat);
+            //Chat.Redraw();
+            return Chat;
         }
 
         /// <summary>
@@ -154,15 +114,36 @@ namespace Client
         {
             Core.Load();
             shutDownToolStripMenuItem.Text = messages.get("window-menu-quit", Core.SelectedLanguage);
-            preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
-            //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
-            fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
-            _Scrollback = Scrollback;
             if (Configuration.Window_Maximized)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
-            ResizeMe(null, null);
+            if (Configuration.x4 == 0)
+            {
+                Configuration.window_size = 80;
+                Configuration.x1 = Height - 80;
+                Configuration.x4 = 600;
+                if (Width > 200)
+                {
+                    Configuration.x4 = this.Width - 200;
+                }
+            }
+            sX.SplitterDistance = Configuration.window_size;
+            ChannelList = new PidgeonList();
+            ChannelList.Visible = true;
+            ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
+            ChannelList.Dock = DockStyle.Fill;
+            ChannelList.CreateControl();
+            sX.Panel1.Controls.Add(ChannelList);
+            main = CreateChat();
+            preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
+            //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
+            Chat = main;
+            main.Redraw();
+            Reload();
+            Chat.Making = false;
+            done = true;
+            fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
         }
 
         public void UpdateStatus()
@@ -187,13 +168,12 @@ namespace Client
 
         private void Main_Load(object sender, EventArgs e)
         {
-            MessageLine.history = new List<string>();
             _Load();
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fPrefs == null)
+            if (fPrefs == null || fPrefs.IsDisposed)
             {
                 fPrefs = new Preferences();
             }
@@ -212,7 +192,8 @@ namespace Client
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Help _Help = new Help();
+            _Help.Show();
         }
 
 

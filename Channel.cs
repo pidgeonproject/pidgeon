@@ -30,7 +30,7 @@ namespace Client
         public string Topic;
         public string TopicUser;
         public int TopicDate;
-        private Network._window Chat;
+        private Window Chat;
         public bool Redraw;
         public bool ok;
             
@@ -64,7 +64,7 @@ namespace Client
                 List<string> users = new List<string>();
                 if (Chat != null)
                 {
-                    Chat.userlist.Items.Clear();
+                    Chat.listView.Items.Clear();
                     lock (UserList)
                     {
                         foreach (var nick in UserList)
@@ -98,28 +98,28 @@ namespace Client
                     users.Sort();
                     foreach (string user in owners)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
                     foreach (string user in admins)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
                     foreach (string user in oper)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
                     foreach (string user in halfop)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
                     foreach (string user in vs)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
 
                     foreach (string user in users)
                     {
-                        Chat.userlist.Items.Add(user);
+                        Chat.listView.Items.Add(user);
                     }
                 }
                 return;
@@ -128,7 +128,7 @@ namespace Client
             return;
         }
 
-        public Network._window retrieveWindow()
+        public Window retrieveWindow()
         {
             if (Chat == null)
             {

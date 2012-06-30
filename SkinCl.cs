@@ -30,6 +30,7 @@ namespace Client
         public System.Drawing.Color fontcolor;
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
+        public bool italic;
 
         public Skin()
         {
