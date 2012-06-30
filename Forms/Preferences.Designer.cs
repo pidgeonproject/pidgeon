@@ -49,6 +49,7 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.bSave = new System.Windows.Forms.Button();
+            this.grIRC_ = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,6 +60,7 @@ namespace Client
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.bSave, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.grIRC_, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -87,6 +89,15 @@ namespace Client
             this.bSave.Text = "button1";
             this.bSave.UseVisualStyleBackColor = true;
             // 
+            // grIRC_
+            // 
+            this.grIRC_.Location = new System.Drawing.Point(203, 3);
+            this.grIRC_.Name = "grIRC_";
+            this.grIRC_.Size = new System.Drawing.Size(461, 365);
+            this.grIRC_.TabIndex = 4;
+            this.grIRC_.TabStop = false;
+            this.grIRC_.Text = "groupBox1";
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -108,6 +119,7 @@ namespace Client
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.Button bSave;
+        private System.Windows.Forms.GroupBox grIRC_;
 
     }
 }

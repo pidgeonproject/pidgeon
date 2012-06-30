@@ -97,10 +97,17 @@ namespace Client
 
         private void TextBox_Load(object sender, EventArgs e)
         {
-            richTextBox1.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
-            richTextBox1.ForeColor = Configuration.CurrentSkin.fontcolor;
-            richTextBox1.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            resize();
+            try
+            {
+                richTextBox1.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
+                richTextBox1.ForeColor = Configuration.CurrentSkin.fontcolor;
+                richTextBox1.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                resize();
+            }
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
         }
     }
 }

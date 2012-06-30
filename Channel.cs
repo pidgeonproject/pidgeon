@@ -33,7 +33,15 @@ namespace Client
         private Window Chat;
         public bool Redraw;
         public bool ok;
-            
+
+        public Channel()
+        {
+            ok = true;
+            Topic = "";
+            TopicUser = "";
+            Chat = null;
+        }
+
         public class ChannelMode : Protocol.Mode
         { 
             
@@ -69,22 +77,29 @@ namespace Client
                     {
                         foreach (var nick in UserList)
                         {
-                            switch (nick.Nick[0])
+                            if (nick.ChannelMode._Mode.Contains("q"))
                             {
-                                case '~':
-                                    owners.Add(nick.Nick);
+                                    owners.Add("~" + nick.Nick);
                                     continue;
-                                case '&':
-                                    admins.Add(nick.Nick);
+                            }
+                            if (nick.ChannelMode._Mode.Contains("a"))
+                            {
+                                    admins.Add("&" + nick.Nick);
                                     continue;
-                                case '@':
-                                    oper.Add(nick.Nick);
+                            }
+                            if (nick.ChannelMode._Mode.Contains("o"))
+                            {
+                                    oper.Add("@" + nick.Nick);
                                     continue;
-                                case '%':
-                                    halfop.Add(nick.Nick);
+                            }
+                            if (nick.ChannelMode._Mode.Contains("h"))
+                            {
+                                    halfop.Add("%" + nick.Nick);
                                     continue;
-                                case '+':
-                                    vs.Add(nick.Nick);
+                            }
+                            if (nick.ChannelMode._Mode.Contains("v"))
+                            {
+                                    vs.Add("+" + nick.Nick);
                                     continue;
                             }
                             users.Add(nick.Nick);

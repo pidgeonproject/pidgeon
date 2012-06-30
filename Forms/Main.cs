@@ -113,37 +113,44 @@ namespace Client
         public void _Load()
         {
             Core.Load();
+            fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
             shutDownToolStripMenuItem.Text = messages.get("window-menu-quit", Core.SelectedLanguage);
             if (Configuration.Window_Maximized)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
-            if (Configuration.x4 == 0)
+            try
             {
-                Configuration.window_size = 80;
-                Configuration.x1 = Height - 80;
-                Configuration.x4 = 600;
-                if (Width > 200)
+                if (Configuration.x4 == 0)
                 {
-                    Configuration.x4 = this.Width - 200;
+                    Configuration.window_size = 80;
+                    Configuration.x1 = Height - 80;
+                    Configuration.x4 = 600;
+                    if (Width > 200)
+                    {
+                        Configuration.x4 = this.Width - 200;
+                    }
                 }
+                sX.SplitterDistance = Configuration.window_size;
+                ChannelList = new PidgeonList();
+                ChannelList.Visible = true;
+                ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
+                ChannelList.Dock = DockStyle.Fill;
+                ChannelList.CreateControl();
+                sX.Panel1.Controls.Add(ChannelList);
+                main = CreateChat();
+                preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
+                //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
+                Chat = main;
+                main.Redraw();
+                Reload();
+                Chat.Making = false;
+                done = true;
             }
-            sX.SplitterDistance = Configuration.window_size;
-            ChannelList = new PidgeonList();
-            ChannelList.Visible = true;
-            ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
-            ChannelList.Dock = DockStyle.Fill;
-            ChannelList.CreateControl();
-            sX.Panel1.Controls.Add(ChannelList);
-            main = CreateChat();
-            preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
-            //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
-            Chat = main;
-            main.Redraw();
-            Reload();
-            Chat.Making = false;
-            done = true;
-            fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
         }
 
         public void UpdateStatus()

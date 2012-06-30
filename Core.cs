@@ -35,6 +35,7 @@ namespace Client
         public static List<Protocol> Connections = new List<Protocol>();
         public static Network network;
         public static Main _Main;
+        public static bool blocked = false; 
 
         public static bool Load()
         {
@@ -47,154 +48,161 @@ namespace Client
 
         public static bool ProcessCommand(string command)
         {
-            if (command.StartsWith(Configuration.CommandPrefix))
+            try
             {
-                command = command.Substring(1);
-            }
-            string[] values = command.Split(' ');
-            switch (values[0].ToLower())
-            {
-                case "quit":
-                    Core.Quit();
-                    return true;
-                case "nick":
-                    string Nick = "";
-                    if (command.Length > "nick ".Length)
-                    {
-                        Nick = command.Substring("nick ".Length);
-                    }
-                    if (network == null)
-                    {
-                        if (Nick != "")
-                        {
-                            Configuration.nick = Nick;
-                            _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
-                        }
+                if (command.StartsWith(Configuration.CommandPrefix))
+                {
+                    command = command.Substring(1);
+                }
+                string[] values = command.Split(' ');
+                switch (values[0].ToLower())
+                {
+                    case "quit":
+                        Core.Quit();
                         return true;
-                    }
-                    if (!network.Connected)
-                    {
-                        if (Nick != "")
+                    case "nick":
+                        string Nick = "";
+                        if (command.Length > "nick ".Length)
                         {
-                            Configuration.nick = Nick;
-                            _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
+                            Nick = command.Substring("nick ".Length);
                         }
-                        return false;
-                    }
-                    network._protocol.requestNick(Nick);
-                    return true;
-                case "msg":
-                    if (command.Length > "msg ".Length)
-                    {
-                        string channel = command;
-                        channel = command.Substring("msg ".Length);
-                        if (channel.Contains(" "))
+                        if (network == null)
                         {
-                            channel = channel.Substring(0, channel.IndexOf(" "));
-                            if (network != null)
+                            if (Nick != "")
                             {
-                                if (network.Connected)
+                                Configuration.nick = Nick;
+                                _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
+                            }
+                            return true;
+                        }
+                        if (!network.Connected)
+                        {
+                            if (Nick != "")
+                            {
+                                Configuration.nick = Nick;
+                                _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
+                            }
+                            return false;
+                        }
+                        network._protocol.requestNick(Nick);
+                        return true;
+                    case "msg":
+                        if (command.Length > "msg ".Length)
+                        {
+                            string channel = command;
+                            channel = command.Substring("msg ".Length);
+                            if (channel.Contains(" "))
+                            {
+                                channel = channel.Substring(0, channel.IndexOf(" "));
+                                if (network != null)
                                 {
-                                    network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
+                                    if (network.Connected)
+                                    {
+                                        network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
+                                        return false;
+                                    }
+                                    _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                                     return false;
                                 }
                                 _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                                 return false;
                             }
-                            _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                             return false;
                         }
                         return false;
-                    }
-                    return false;
-                case "query":
-                    if (command.Length > "query ".Length)
-                    {
-                        string channel = command;
-                        channel = command.Substring("query ".Length);
-                    }
-                    break;
-                case "join":
-                    if (command.Length > "join ".Length)
-                    {
-                        string channel = command;
-                        channel = command.Substring("join ".Length);
-                        if (network == null)
+                    case "query":
+                        if (command.Length > "query ".Length)
                         {
-                            _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return false;
+                            string channel = command;
+                            channel = command.Substring("query ".Length);
                         }
-                        if (!network.Connected)
+                        break;
+                    case "join":
+                        if (command.Length > "join ".Length)
                         {
-                            _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return false;
-                        }
-                        Channel curr = network.getChannel(channel);
-                        if (curr != null)
-                        {
-                            Window window = curr.retrieveWindow();
-                            if (window != null)
+                            string channel = command;
+                            channel = command.Substring("join ".Length);
+                            if (network == null)
                             {
-                                network.ShowChat(window.name);
-                            }
-                        }
-                        network._protocol.Join(channel);
-                        return false;
-                    }
-                    _Main.Chat.scrollback.InsertText(messages.get("invalid-channel", SelectedLanguage), Scrollback.MessageStyle.System);
-                    return false;
-                case "server":
-                    if (command.Length < "server ".Length)
-                    {
-                        _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                        return true;
-                    }
-                    string name = command.Substring("server ".Length);
-                    string b = command.Substring(command.IndexOf(name) + name.Length);
-                    int n2;
-                    if (name == "")
-                    {
-                        _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                        return true;
-                    }
-                    if (int.TryParse(b, out n2))
-                    {
-                        connectIRC(name, n2);
-                        return true;
-                    }
-                    connectIRC(name);
-                    return true;
-                case "pidgeon.config":
-                    //Core._Main.ShowPr();
-                    break;
-                case "raw":
-                    if (network != null)
-                    {
-                        if (command.Length > 4)
-                        {
-                            string text = command.Substring("raw ".Length);
-                            if (network.Connected)
-                            {
-                                network._protocol.Command(text);
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                                 return false;
                             }
-                            _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                            if (!network.Connected)
+                            {
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                            Channel curr = network.getChannel(channel);
+                            if (curr != null)
+                            {
+                                Window window = curr.retrieveWindow();
+                                if (window != null)
+                                {
+                                    network.ShowChat(window.name);
+                                }
+                            }
+                            network._protocol.Join(channel);
                             return false;
                         }
-                    }
-                    _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                    return false;
-            }
-            if (network != null)
-            {
-                if (network.Connected)
-                {
-                    network._protocol.Command(command);
-                    return false;
+                        _Main.Chat.scrollback.InsertText(messages.get("invalid-channel", SelectedLanguage), Scrollback.MessageStyle.System);
+                        return false;
+                    case "server":
+                        if (command.Length < "server ".Length)
+                        {
+                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
+                            return true;
+                        }
+                        string name = command.Substring("server ".Length);
+                        string b = command.Substring(command.IndexOf(name) + name.Length);
+                        int n2;
+                        if (name == "")
+                        {
+                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
+                            return true;
+                        }
+                        if (int.TryParse(b, out n2))
+                        {
+                            connectIRC(name, n2);
+                            return true;
+                        }
+                        connectIRC(name);
+                        return true;
+                    case "pidgeon.config":
+                        //Core._Main.ShowPr();
+                        break;
+                    case "raw":
+                        if (network != null)
+                        {
+                            if (command.Length > 4)
+                            {
+                                string text = command.Substring("raw ".Length);
+                                if (network.Connected)
+                                {
+                                    network._protocol.Command(text);
+                                    return false;
+                                }
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                        }
+                        _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                        return false;
                 }
+                if (network != null)
+                {
+                    if (network.Connected)
+                    {
+                        network._protocol.Command(command);
+                        return false;
+                    }
+                }
+                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Scrollback.MessageStyle.System);
+                return false;
             }
-            _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Scrollback.MessageStyle.System);
-
+            catch (Exception f)
+            {
+                handleException(f);
+            }
             return false;
         }
 

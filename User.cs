@@ -26,11 +26,37 @@ namespace Client
     {
         public string Host;
         public string Ident;
+        public Protocol.Mode ChannelMode = new Protocol.Mode();
         public string Nick;
         public List<Channel> ChannelList;
         public User(string _Nick, string host, string ident)
         {
             ChannelList = new List<Channel>();
+            if (_Nick.StartsWith("~"))
+            {
+                ChannelMode._Mode.Add("q");
+                _Nick = _Nick.Substring(1);
+            }
+            if (_Nick.StartsWith("&"))
+            {
+                ChannelMode._Mode.Add("a");
+                _Nick = _Nick.Substring(1);
+            }
+            if (_Nick.StartsWith("+"))
+            {
+                ChannelMode._Mode.Add("v");
+                _Nick = _Nick.Substring(1);
+            }
+            if (_Nick.StartsWith("@"))
+            {
+                _Nick = _Nick.Substring(1);
+                ChannelMode._Mode.Add("o");
+            }
+            if (_Nick.StartsWith("%"))
+            {
+                ChannelMode._Mode.Add("h");
+                _Nick = _Nick.Substring(1);
+            }
             Nick = _Nick;
             Ident = ident;
             Host = host;

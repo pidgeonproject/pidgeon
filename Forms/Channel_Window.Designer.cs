@@ -52,7 +52,7 @@
             this.ClientSize = new System.Drawing.Size(758, 349);
             this.Controls.Add(this.tableLayout1);
             this.Name = "Channel_Window";
-            this.Text = "ChannelWindow";
+            this.Text = "Channel";
             this.Load += new System.EventHandler(this.Channel_Window_Load);
             this.ResumeLayout(false);
 
