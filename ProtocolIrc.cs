@@ -167,6 +167,10 @@ namespace Client
 
                 while (_server.Connected && !_reader.EndOfStream)
                 {
+                    while (Core.blocked)
+                    {
+                        System.Threading.Thread.Sleep(100);
+                    }
                     text = _reader.ReadLine();
                     if (text.StartsWith(":"))
                     {
@@ -221,7 +225,10 @@ namespace Client
                                             if (channel != null)
                                             {
                                                 Window curr = channel.retrieveWindow();
-                                                curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
+                                                if (curr != null)
+                                                {
+                                                    curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
+                                                }
                                                 channel.Topic = topic;
                                                 continue;
                                             }
@@ -258,12 +265,49 @@ namespace Client
                                                 {
                                                     if (!channel.containUser(user) && user != "")
                                                     {
-                                                        channel.UserList.Add(new User(user, "", ""));
+                                                        channel.UserList.Add(new User(user, "", _server, ""));
                                                     }
                                                 }
                                                 channel.redrawUsers();
                                                 continue;
                                             }
+                                        }
+                                        break;
+                                    case "005":
+                                        // PREFIX=(qaohv)~&@%+ CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG 
+                                        if (parameters.Contains("PREFIX=("))
+                                        {
+                                            string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
+                                            cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
+                                            lock (this.CUModes)
+                                            {
+                                                CUModes.Clear();
+                                                CUModes.AddRange(cmodes.ToArray<char>());
+                                            }
+                                            cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
+                                            cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, CUModes.Count);
+                                            
+                                            UChars.Clear();
+                                            UChars.AddRange(cmodes.ToArray<char>());
+
+                                        }
+                                        if (parameters.Contains("CHANMODES="))
+                                        {
+                                            string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
+                                            xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
+                                            string[] _mode = xmodes.Split(',');
+                                            if (_mode.Length == 4)
+                                            {
+                                                PModes.Clear();
+                                                CModes.Clear();
+                                                XModes.Clear();
+                                                SModes.Clear();
+                                                PModes.AddRange(_mode[0].ToArray<char>());
+                                                XModes.AddRange(_mode[1].ToArray<char>());
+                                                SModes.AddRange(_mode[2].ToArray<char>());
+                                                CModes.AddRange(_mode[3].ToArray<char>());
+                                            }
+                                            
                                         }
                                         break;
                                     case "366":
@@ -316,9 +360,10 @@ namespace Client
                                                 Window Chat = c.retrieveWindow();
                                                 if (Core.windowReady(Chat))
                                                 {
-                                                    if (!c.ok)
+                                                    if (c.ok)
                                                     {
-                                                        Chat.scrollback.InsertText("", Scrollback.MessageStyle.Message);
+                                                        c.ok = false;
+                                                        Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage), Scrollback.MessageStyle.Message);
                                                     }
                                                     else
                                                     {
@@ -371,7 +416,7 @@ namespace Client
                                 _ident = source.Substring(source.IndexOf("!") + 1);
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
-                                User user = new User(_nick, _host, _ident);
+                                User user = new User(_nick, _host, _server, _ident);
                                 Channel channel = _server.getChannel(chan);
                                 if (channel != null)
                                 {
@@ -446,7 +491,7 @@ namespace Client
 
                                         if (!channel.containUser(user))
                                         {
-                                            channel.UserList.Add(new User(user, _host, _ident));
+                                            channel.UserList.Add(new User(user, _host, _server, _ident));
                                             channel.redrawUsers();
                                         }
                                         continue;
@@ -473,7 +518,9 @@ namespace Client
                 _writer.Flush();
             }
             catch (Exception ex)
-            { }
+            {
+                Core.handleException(ex);
+            }
             return false;
         }
 

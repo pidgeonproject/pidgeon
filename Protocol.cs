@@ -24,6 +24,13 @@ namespace Client
 {
     public class Protocol
     {
+        public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+        public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+        public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+        public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+        public List<char> SModes = new List<char> { 'k', 'L' };
+        public List<char> XModes = new List<char> { 'l' };
+        public List<char> PModes = new List<char> { 'b', 'I', 'e' };
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -37,8 +44,44 @@ namespace Client
                 }
                 return "+" + _val;
             }
-            
-            
+
+            public bool mode(string text)
+            {
+                char prefix = ' ';
+                foreach (char _x in text)
+                {
+                    if (_x == ' ')
+                    {
+                        break;
+                    }
+                    if (_x == '-')
+                    {
+                        prefix = _x;
+                        continue;
+                    }
+                    if (_x == '+')
+                    {
+                        prefix = _x;
+                        continue;
+                    }
+                    switch (prefix)
+                    { 
+                        case '+':
+                            if (!_Mode.Contains(_x.ToString()))
+                            {
+                                this._Mode.Add(_x.ToString());
+                            }
+                            continue;
+                        case '-':
+                            if (_Mode.Contains(_x.ToString()))
+                            {
+                                this._Mode.Remove(_x.ToString());
+                            }
+                            continue;
+                    }continue;
+                }
+                return false;
+            }
         }
 
         public string Server;

@@ -35,6 +35,8 @@ namespace Client
 
         public static string user = "My name is hidden, dude";
 
+        public static string LastHostName = "";
+
         public static Skin CurrentSkin = new Skin();
 
         public static int x1 = 0;

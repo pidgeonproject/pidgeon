@@ -24,7 +24,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Client.Forms
+namespace Client
 {
     public partial class Connection : Form
     {
@@ -35,13 +35,44 @@ namespace Client.Forms
 
         private void Connection_Load(object sender, EventArgs e)
         {
-            label1.Text = messages.get("connection.1", Core.SelectedLanguage);
+            label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
+            label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);
+            label3.Text = messages.get("nconnection-start-port", Core.SelectedLanguage);
+            label2.Text = messages.get("nconnection-ident", Core.SelectedLanguage);
+            label1.Text = messages.get("nconnection-name", Core.SelectedLanguage);
+            textBox2.Text = "6667";
+            textBox1.Text = Configuration.ident;
+            _Nickname.Text = Configuration.nick;
+            comboBox1.Items.Add("irc");
+            comboBox1.SelectedItem = "irc";
+            comboBox2.Text = Configuration.LastHostName;
+            comboBox1.Items.Add("quassel");
             Text  = messages.get("connection", Core.SelectedLanguage);
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void bConnect_Click(object sender, EventArgs e)
         {
-            this.Close();
+            int port;
+            if (textBox1.Text == "")
+            {
+                MessageBox.Show(messages.get("nconnection-2", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (textBox2.Text == "" || !int.TryParse(textBox2.Text, out port))
+            {
+                MessageBox.Show(messages.get("nconnection-3", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (_Nickname.Text == "")
+            {
+                MessageBox.Show(messages.get("nconnection-1", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            Configuration.nick = _Nickname.Text;
+            Configuration.ident = textBox1.Text;
+            Core.connectIRC(comboBox2.Text, port);
+            Close();
         }
+
     }
 }

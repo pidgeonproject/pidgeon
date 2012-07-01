@@ -25,37 +25,24 @@ namespace Client
     public class User
     {
         public string Host;
+        public Network network;
         public string Ident;
         public Protocol.Mode ChannelMode = new Protocol.Mode();
         public string Nick;
         public List<Channel> ChannelList;
-        public User(string _Nick, string host, string ident)
+        public User(string _Nick, string host, Network x, string ident)
         {
             ChannelList = new List<Channel>();
-            if (_Nick.StartsWith("~"))
+            network = x;
+            char prefix = _Nick[0];
+            if (x._protocol.UChars.Contains(prefix))
             {
-                ChannelMode._Mode.Add("q");
-                _Nick = _Nick.Substring(1);
-            }
-            if (_Nick.StartsWith("&"))
-            {
-                ChannelMode._Mode.Add("a");
-                _Nick = _Nick.Substring(1);
-            }
-            if (_Nick.StartsWith("+"))
-            {
-                ChannelMode._Mode.Add("v");
-                _Nick = _Nick.Substring(1);
-            }
-            if (_Nick.StartsWith("@"))
-            {
-                _Nick = _Nick.Substring(1);
-                ChannelMode._Mode.Add("o");
-            }
-            if (_Nick.StartsWith("%"))
-            {
-                ChannelMode._Mode.Add("h");
-                _Nick = _Nick.Substring(1);
+                int Mode = x._protocol.UChars.IndexOf(prefix);
+                if (x._protocol.CUModes.Count >= Mode + 1)
+                {
+                    ChannelMode.mode("+" + x._protocol.CUModes[Mode].ToString());
+                    _Nick = _Nick.Substring(1);
+                }
             }
             Nick = _Nick;
             Ident = ident;

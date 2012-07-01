@@ -33,11 +33,13 @@ namespace Client
         public Window main;
         public PidgeonList ChannelList;
         public Window Chat;
+        private Connection fConnection;
         private Preferences fPrefs;
         bool done = false;
 
         public class _WindowRequest 
         {
+            public Window window;
             public string name;
             public bool _Focus;
             public bool writable;
@@ -82,22 +84,20 @@ namespace Client
 
 	    private void _Enter(object sender, KeyPressEventArgs pt){}
 
-        public Client.Window CreateChat()
+        public void CreateChat(Window Chat)
         {
-            Client.Window Chat = new Window();
+            Chat.create();
+            Chat.Visible = true;
             Chat.Dock = DockStyle.Fill;
             Chat.Location = new System.Drawing.Point(0, 0);
-            Chat.Visible = true;
             Chat.TabIndex = 6;
             Chat.Redraw();
             Chat.CreateControl();
-            if (this.Chat != null)
+            if (Core._Main.Chat != null)
             {
-                Chat.textbox.history.AddRange(this.Chat.textbox.history);
+                Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-            sX.Panel2.Controls.Add(Chat);
-            //Chat.Redraw();
-            return Chat;
+            Core._Main.sX.Panel2.Controls.Add(Chat);
         }
 
         /// <summary>
@@ -138,7 +138,8 @@ namespace Client
                 ChannelList.Dock = DockStyle.Fill;
                 ChannelList.CreateControl();
                 sX.Panel1.Controls.Add(ChannelList);
-                main = CreateChat();
+                main = new Window();
+                CreateChat(main);
                 preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
                 Chat = main;
@@ -153,9 +154,24 @@ namespace Client
             }
         }
 
+        protected override bool IsInputKey(Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+                return true;
+            return base.IsInputKey(keyData);
+        }
+
         public void UpdateStatus()
         {
             statusStrip1.Text = StatusBox;
+            if (Core.network != null)
+            {
+                toolStripStatusNetwork.Text = Core.network.server;
+                if (Core.network.RenderedChannel != null)
+                {
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: ";
+                }
+            }
         }
 
         private void shutDownToolStripMenuItem_Click(object sender, EventArgs e)
@@ -201,6 +217,15 @@ namespace Client
         {
             Help _Help = new Help();
             _Help.Show();
+        }
+
+        private void newConnectionToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (fConnection == null || fConnection.IsDisposed)
+                fConnection = new Connection();
+
+
+            fConnection.Show();
         }
 
 

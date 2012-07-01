@@ -88,32 +88,27 @@ namespace Client
             // toolStripCurrent
             // 
             this.toolStripCurrent.Name = "toolStripCurrent";
-            this.toolStripCurrent.Size = new System.Drawing.Size(92, 17);
-            this.toolStripCurrent.Text = "toolStripCurrent";
+            this.toolStripCurrent.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStripInfo
             // 
             this.toolStripInfo.Name = "toolStripInfo";
-            this.toolStripInfo.Size = new System.Drawing.Size(73, 17);
-            this.toolStripInfo.Text = "toolStripInfo";
+            this.toolStripInfo.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStripStatusNetwork
             // 
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
-            this.toolStripStatusNetwork.Size = new System.Drawing.Size(129, 17);
-            this.toolStripStatusNetwork.Text = "toolStripStatusNetwork";
+            this.toolStripStatusNetwork.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStripStatusChannel
             // 
             this.toolStripStatusChannel.Name = "toolStripStatusChannel";
-            this.toolStripStatusChannel.Size = new System.Drawing.Size(128, 17);
-            this.toolStripStatusChannel.Text = "toolStripStatusChannel";
+            this.toolStripStatusChannel.Size = new System.Drawing.Size(0, 17);
             // 
             // toolStripCo
             // 
             this.toolStripCo.Name = "toolStripCo";
-            this.toolStripCo.Size = new System.Drawing.Size(67, 17);
-            this.toolStripCo.Text = "toolStripCo";
+            this.toolStripCo.Size = new System.Drawing.Size(0, 17);
             // 
             // menuStrip1
             // 
@@ -145,6 +140,7 @@ namespace Client
             this.newConnectionToolStripMenuItem.Name = "newConnectionToolStripMenuItem";
             this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.newConnectionToolStripMenuItem.Text = "New connection";
+            this.newConnectionToolStripMenuItem.Click += new System.EventHandler(this.newConnectionToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItem1
             // 
@@ -213,6 +209,7 @@ namespace Client
             this.sX.Size = new System.Drawing.Size(874, 364);
             this.sX.SplitterDistance = 291;
             this.sX.TabIndex = 2;
+            this.sX.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.Changed);
             // 
             // Main
             // 
@@ -224,7 +221,6 @@ namespace Client
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.shutDownToolStripMenuItem_Click);
-            this.sX.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(Changed);
             this.Load += new System.EventHandler(this.Main_Load);
             this.Resize += new System.EventHandler(this.ResizeMe);
             this.statusStrip1.ResumeLayout(false);
@@ -241,10 +237,7 @@ namespace Client
         #endregion
 
         private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripCurrent;
         private System.Windows.Forms.ToolStripStatusLabel toolStripInfo;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusChannel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripCo;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -259,5 +252,8 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.SplitContainer sX;
+        public System.Windows.Forms.ToolStripStatusLabel toolStripCurrent;
+        public System.Windows.Forms.ToolStripStatusLabel toolStripStatusChannel;
+        public System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
     }
 }

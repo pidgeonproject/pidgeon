@@ -1,4 +1,6 @@
-﻿namespace Client
+﻿
+
+namespace Client
 {
     partial class Recovery
     {
@@ -29,6 +31,12 @@
         private void InitializeComponent()
         {
             this.@__LP = new System.Windows.Forms.TableLayoutPanel();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.bShutdown = new System.Windows.Forms.Button();
+            this.bContinue = new System.Windows.Forms.Button();
+            this.@__LP.SuspendLayout();
+            this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // __LP
@@ -36,6 +44,8 @@
             this.@__LP.ColumnCount = 1;
             this.@__LP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.@__LP.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.@__LP.Controls.Add(this.flowLayoutPanel1, 0, 1);
+            this.@__LP.Controls.Add(this.textBox1, 0, 0);
             this.@__LP.Dock = System.Windows.Forms.DockStyle.Fill;
             this.@__LP.Location = new System.Drawing.Point(0, 0);
             this.@__LP.Name = "__LP";
@@ -46,6 +56,47 @@
             this.@__LP.TabIndex = 2;
             this.@__LP.Paint += new System.Windows.Forms.PaintEventHandler(this.@__LP_Paint);
             // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.bShutdown);
+            this.flowLayoutPanel1.Controls.Add(this.bContinue);
+            this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 345);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(760, 38);
+            this.flowLayoutPanel1.TabIndex = 0;
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.White;
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Location = new System.Drawing.Point(3, 3);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(760, 336);
+            this.textBox1.TabIndex = 1;
+            // 
+            // bShutdown
+            // 
+            this.bShutdown.Location = new System.Drawing.Point(3, 3);
+            this.bShutdown.Name = "bShutdown";
+            this.bShutdown.Size = new System.Drawing.Size(109, 26);
+            this.bShutdown.TabIndex = 0;
+            this.bShutdown.Text = "Shutdown";
+            this.bShutdown.UseVisualStyleBackColor = true;
+            this.bShutdown.Click += new System.EventHandler(this.bShutdown_Click);
+            // 
+            // bContinue
+            // 
+            this.bContinue.Location = new System.Drawing.Point(118, 3);
+            this.bContinue.Name = "bContinue";
+            this.bContinue.Size = new System.Drawing.Size(107, 26);
+            this.bContinue.TabIndex = 1;
+            this.bContinue.Text = "Recover";
+            this.bContinue.UseVisualStyleBackColor = true;
+            this.bContinue.Click += new System.EventHandler(this.bContinue_Click);
+            // 
             // Recovery
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -53,8 +104,12 @@
             this.ClientSize = new System.Drawing.Size(766, 386);
             this.Controls.Add(this.@__LP);
             this.Name = "Recovery";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Recovery";
             this.Load += new System.EventHandler(this.Recovery_Load);
+            this.@__LP.ResumeLayout(false);
+            this.@__LP.PerformLayout();
+            this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -62,5 +117,9 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel __LP;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button bShutdown;
+        private System.Windows.Forms.Button bContinue;
     }
 }

@@ -43,6 +43,11 @@ namespace Client
             textbox.history = new List<string>();
         }
 
+        public void create()
+        {
+            scrollback.create();
+        }
+
         public bool Redraw()
         {
                 this.xContainer1.SplitterDistance = Configuration.x1;
@@ -61,6 +66,13 @@ namespace Client
                 Configuration.x1 = xContainer1.SplitterDistance;
                 Configuration.x4 = xContainer4.SplitterDistance;
             }
+        }
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            if (keyData == Keys.Tab)
+                return true;
+            return base.IsInputKey(keyData);
         }
 
         private void splitContainer1_Panel1_Paint_1(object sender, PaintEventArgs e)

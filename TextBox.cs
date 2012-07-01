@@ -42,6 +42,7 @@ namespace Client
             richTextBox1.Width = this.Width -2;
         }
 
+
         private void _Enter(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
@@ -77,6 +78,10 @@ namespace Client
                     position = position - 1;
                     richTextBox1.Text = history[position];
                     return;
+                case Keys.Tab:
+                    int caret = richTextBox1.SelectionStart;
+                    //string current = richTextBox1.Text.Substring(0, richTextBox1
+                    break;
                 case Keys.Enter:        
                     Core._Main.Chat.scrollback.Last = this;
                     richTextBox1.Text = richTextBox1.Text.Replace("\n", "");

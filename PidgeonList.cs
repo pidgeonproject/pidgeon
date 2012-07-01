@@ -93,7 +93,8 @@ namespace Client
             {
                 foreach (Main._WindowRequest item in Core._Main.W)
                 {
-                    item.owner._Chat(item.name, item.writable);
+                    Core._Main.CreateChat(item.window);
+                    item.owner._Chat(item.name, item.writable, item);
                     if (item._Focus)
                     {
                         item.owner.ShowChat(item.name);

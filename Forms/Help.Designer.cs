@@ -45,21 +45,69 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.about = new System.Windows.Forms.Panel();
+            this.labelName = new System.Windows.Forms.Label();
+            this.tableLayoutPanel1.SuspendLayout();
+            this.about.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.51546F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.48454F));
+            this.tableLayoutPanel1.Controls.Add(this.about, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.22717F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.77283F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 427);
+            this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // about
+            // 
+            this.about.Controls.Add(this.labelName);
+            this.about.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.about.Location = new System.Drawing.Point(3, 3);
+            this.about.Name = "about";
+            this.about.Size = new System.Drawing.Size(613, 374);
+            this.about.TabIndex = 0;
+            // 
+            // labelName
+            // 
+            this.labelName.AutoSize = true;
+            this.labelName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.labelName.Location = new System.Drawing.Point(220, 27);
+            this.labelName.Name = "labelName";
+            this.labelName.Size = new System.Drawing.Size(91, 25);
+            this.labelName.TabIndex = 0;
+            this.labelName.Text = "Pidgeon";
             // 
             // Help
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(576, 350);
+            this.ClientSize = new System.Drawing.Size(619, 427);
+            this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "Help";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Help";
+            this.tableLayoutPanel1.ResumeLayout(false);
+            this.about.ResumeLayout(false);
+            this.about.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.Panel about;
+        private System.Windows.Forms.Label labelName;
 
     }
 }

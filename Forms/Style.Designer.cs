@@ -46,9 +46,17 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // Style
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(553, 356);
+            this.Name = "Style";
             this.Text = "Style";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

@@ -46,7 +46,7 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.richTextBox1 = new hackedRT();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -75,7 +75,19 @@ namespace Client
 
         #endregion
 
-        public System.Windows.Forms.RichTextBox richTextBox1;
+        public class hackedRT : System.Windows.Forms.RichTextBox
+        {
+            protected override bool IsInputKey(System.Windows.Forms.Keys keyData)
+            {
+                if (keyData == System.Windows.Forms.Keys.Tab)
+                    return true;
+                return base.IsInputKey(keyData);
+            }
+        }
+
+        public hackedRT richTextBox1;
+
+        
 
     }
 }

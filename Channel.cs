@@ -31,6 +31,7 @@ namespace Client
         public string TopicUser;
         public int TopicDate;
         private Window Chat;
+        public Protocol.Mode _mode = new Protocol.Mode();
         public bool Redraw;
         public bool ok;
 
@@ -70,6 +71,8 @@ namespace Client
                 List<string> halfop = new List<string>();
                 List<string> vs = new List<string>();
                 List<string> users = new List<string>();
+                bool Inserted;
+                Core._Main.UpdateStatus();
                 if (Chat != null)
                 {
                     Chat.listView.Items.Clear();
@@ -77,30 +80,50 @@ namespace Client
                     {
                         foreach (var nick in UserList)
                         {
-                            if (nick.ChannelMode._Mode.Contains("q"))
+                            Inserted = false;
+                            foreach (char mode in _Network._protocol.CUModes)
                             {
-                                    owners.Add("~" + nick.Nick);
-                                    continue;
+                                int _m;
+                                if (nick.ChannelMode._Mode.Contains(mode.ToString()))
+                                {
+                                    _m = _Network._protocol.CUModes.IndexOf(mode);
+                                    if (_Network._protocol.UChars.Count >= _m)
+                                    {
+                                        switch (mode)
+                                        {
+                                            case 'q':
+                                                owners.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                Inserted = true;
+                                                break;
+                                            case 'a':
+                                                admins.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                Inserted = true;
+                                                break;
+                                            case 'o':
+                                                Inserted = true;
+                                                oper.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                break;
+                                            case 'h':
+                                                Inserted = true;
+                                                halfop.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                break;
+                                            case 'v':
+                                                vs.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                Inserted = true;
+                                                break;
+                                        }
+                                        if (!Inserted)
+                                        {
+                                            users.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                            Inserted = true;
+                                        }
+                                    }
+                                    break;
+                                }
                             }
-                            if (nick.ChannelMode._Mode.Contains("a"))
+                            if (Inserted == true)
                             {
-                                    admins.Add("&" + nick.Nick);
-                                    continue;
-                            }
-                            if (nick.ChannelMode._Mode.Contains("o"))
-                            {
-                                    oper.Add("@" + nick.Nick);
-                                    continue;
-                            }
-                            if (nick.ChannelMode._Mode.Contains("h"))
-                            {
-                                    halfop.Add("%" + nick.Nick);
-                                    continue;
-                            }
-                            if (nick.ChannelMode._Mode.Contains("v"))
-                            {
-                                    vs.Add("+" + nick.Nick);
-                                    continue;
+                                continue;
                             }
                             users.Add(nick.Nick);
                         }

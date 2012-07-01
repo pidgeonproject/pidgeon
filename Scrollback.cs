@@ -47,6 +47,11 @@ namespace Client
         }
         public bool Modified;
 
+        public void create()
+        {
+            InitializeComponent();
+        }
+
         public void Recreate(object sender, EventArgs e)
         {
             Data.Width = this.Width;
@@ -56,7 +61,7 @@ namespace Client
 
         public Scrollback()
         {
-            InitializeComponent();
+            
         }
 
         public enum MessageStyle

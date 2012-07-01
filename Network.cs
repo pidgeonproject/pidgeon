@@ -29,6 +29,7 @@ namespace Client
         public Protocol.UserMode usermode = new Protocol.UserMode();
         public string username;
         public List<Channel> Channels = new List<Channel>();
+        public Channel RenderedChannel = null;
         public string nickname;
         public string ident;
         public string quit;
@@ -55,21 +56,29 @@ namespace Client
             request.owner = this;
             request.name = _name;
             request.writable = _writable;
+            request.window = new Window();
             request._Focus = _Focus;
+            request.window.name = _name;
+            request.window.writable = _writable;
+            windows.Add(_name, request.window);
             Core._Main.W.Add(request);
         }
 
-        public void _Chat(string _name, bool _writable)
+        /// <summary>
+        /// Initialise window - deprecated
+        /// </summary>
+        /// <param name="_name"></param>
+        /// <param name="_writable"></param>
+        /// <param name="window"></param>
+        public void _Chat(string _name, bool _writable, Main._WindowRequest window)
         {
-            Window Chat = Core._Main.CreateChat();
-            Chat.writable = _writable;
-            windows.Add(_name, Chat);
-            Chat.name = _name;
+            
         }
 
         public int Join(string channel)
         {
             Channel _channel = new Channel();
+            RenderedChannel = _channel;
             _channel.Name = channel;
             _channel._Network = this;
             Channels.Add(_channel);
@@ -90,6 +99,7 @@ namespace Client
                 Current = windows[name];
                 Core._Main.Reload();
                 Current.Redraw();
+                Core._Main.toolStripStatusChannel.Text = name;
                 Current.Visible = true;
                 Current.textbox.Focus();
                 Core._Main.Chat = windows[name];

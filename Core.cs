@@ -33,6 +33,10 @@ namespace Client
         public static string ConfigFile = "configuration.dat";
         public static string SelectedLanguage = "en";
         public static List<Protocol> Connections = new List<Protocol>();
+
+        public static Exception recovery_exception;
+        public static Thread _RecoveryThread;
+
         public static Network network;
         public static Main _Main;
         public static bool blocked = false; 
@@ -44,6 +48,12 @@ namespace Client
             LoadTime = DateTime.Now;
             messages.data.Add("en", new messages.container("en"));
             return true;
+        }
+
+        public static void Recover()
+        {
+            Recovery x = new Recovery();
+            System.Windows.Forms.Application.Run(x);
         }
 
         public static bool ProcessCommand(string command)
@@ -344,6 +354,18 @@ namespace Client
         public static int handleException(Exception _exception)
         {
             Console.WriteLine(_exception.InnerException);
+            if (Thread.CurrentThread == _KernelThread)
+            {
+                blocked = true;
+                
+            }
+            recovery_exception = _exception;
+            _RecoveryThread = new Thread(Recover);
+            _RecoveryThread.Start();
+            while (blocked)
+            {
+                Thread.Sleep(100);
+            }
             return 0;
         }
 

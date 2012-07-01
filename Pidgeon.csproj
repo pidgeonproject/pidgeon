@@ -181,6 +181,9 @@
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Style.resx">
+      <DependentUpon>Style.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="PidgeonList.resx">
       <DependentUpon>PidgeonList.cs</DependentUpon>
     </EmbeddedResource>
