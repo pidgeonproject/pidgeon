@@ -32,9 +32,16 @@ namespace Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Core._Main = new Main();
-            Core.network = null;
-            Application.Run(Core._Main);
+            try
+            {
+                Core._Main = new Main();
+                Core.network = null;
+                Application.Run(Core._Main);
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                Application.Exit();
+            }
         }
     }
 }

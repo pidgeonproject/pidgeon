@@ -28,6 +28,8 @@ namespace Client
     {
         public System.Threading.Thread main;
         public System.Threading.Thread deliveryqueue;
+        public System.Threading.Thread keep;
+        public DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _network;
         private System.IO.StreamReader _reader;
@@ -64,74 +66,100 @@ namespace Client
             {
                 while (true)
                 {
-                    if (messages.Count > 0)
+                    try
                     {
-                        lock (messages)
+                        if (messages.Count > 0)
                         {
-                            newmessages.AddRange(messages);
-                            messages.Clear();
-                        }
-                    }
-                    if (newmessages.Count > 0)
-                    {
-                        List<Message> Processed = new List<Message>();
-                        Configuration.Priority highest = Configuration.Priority.Low;
-                        while (newmessages.Count > 0)
-                        {
-                            // we need to get all messages that have been scheduled to be send
                             lock (messages)
                             {
-                                if (messages.Count > 0)
-                                {
-                                    newmessages.AddRange(messages);
-                                    messages.Clear();
-                                }
+                                newmessages.AddRange(messages);
+                                messages.Clear();
                             }
-                            highest = Configuration.Priority.Low;
-                            // we need to check the priority we need to handle first
-                            foreach (Message message in newmessages)
+                        }
+                        if (newmessages.Count > 0)
+                        {
+                            List<Message> Processed = new List<Message>();
+                            Configuration.Priority highest = Configuration.Priority.Low;
+                            while (newmessages.Count > 0)
                             {
-                                if (message._Priority > highest)
+                                // we need to get all messages that have been scheduled to be send
+                                lock (messages)
                                 {
-                                    highest = message._Priority;
-                                    if (message._Priority == Configuration.Priority.High)
+                                    if (messages.Count > 0)
                                     {
-                                        break;
+                                        newmessages.AddRange(messages);
+                                        messages.Clear();
                                     }
                                 }
-                            }
-                            // send highest priority first
-                            foreach (Message message in newmessages)
-                            {
-                                if (message._Priority >= highest)
+                                highest = Configuration.Priority.Low;
+                                // we need to check the priority we need to handle first
+                                foreach (Message message in newmessages)
                                 {
-                                    Processed.Add(message);
-                                    protocol.Send(message.message);
-                                    System.Threading.Thread.Sleep(1000);
-                                    if (highest != Configuration.Priority.High)
+                                    if (message._Priority > highest)
                                     {
-                                        break;
+                                        highest = message._Priority;
+                                        if (message._Priority == Configuration.Priority.High)
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            foreach (Message message in Processed)
-                            {
-                                if (newmessages.Contains(message))
+                                // send highest priority first
+                                foreach (Message message in newmessages)
                                 {
-                                    newmessages.Remove(message);
+                                    if (message._Priority >= highest)
+                                    {
+                                        Processed.Add(message);
+                                        protocol.Send(message.message);
+                                        System.Threading.Thread.Sleep(1000);
+                                        if (highest != Configuration.Priority.High)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                foreach (Message message in Processed)
+                                {
+                                    if (newmessages.Contains(message))
+                                    {
+                                        newmessages.Remove(message);
+                                    }
                                 }
                             }
                         }
+                        newmessages.Clear();
+                        System.Threading.Thread.Sleep(200);
                     }
-                    newmessages.Clear();
-                    System.Threading.Thread.Sleep(200);
+                    catch(System.Threading.ThreadAbortException f)
+                    {
+                        return;
+                    }
                 }
             }
+        }
+
+        public override void Part(string name, Network network = null)
+        {
+            Transfer("PART " + name);
         }
 
         public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
         {
             _messages.DeliverMessage(text, Pr);
+        }
+
+        public void _Ping()
+        {
+            try
+            {
+                while (_server.Connected)
+                {
+                    Transfer("PING :" + _server._protocol.Server, Configuration.Priority.High);
+                    System.Threading.Thread.Sleep(24000);
+                }
+            }
+            catch (Exception)
+            { }
         }
 
         public void Start()
@@ -150,6 +178,9 @@ namespace Client
                 _writer.WriteLine("USER " + _server.username + " 8 * :" + _server.ident);
                 _writer.WriteLine("NICK " + _server.nickname);
                 _writer.Flush();
+
+                keep = new System.Threading.Thread(_Ping);
+                keep.Start();
 
             }
             catch (Exception b)
@@ -202,7 +233,13 @@ namespace Client
                             {
                                 _value = _value.Substring(1);
                             }
-                            
+
+                            if (command == "PONG")
+                            {
+                                pong = DateTime.Now;
+                                continue;
+                            }
+
                             if (data[1].Contains(" "))
                             {
                                 string[] code = data[1].Split(' ');
@@ -379,6 +416,12 @@ namespace Client
                                 }
                             }
 
+                            if (command == "PING")
+                            {
+                                Transfer("PONG ", Configuration.Priority.High);
+                                continue;
+                            }
+
                             if (command == "NICK")
                             {
                                 string nick = source.Substring(0, source.IndexOf("!"));
@@ -416,15 +459,39 @@ namespace Client
                                 _ident = source.Substring(source.IndexOf("!") + 1);
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
+                                string message = text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length);
+                                if (message.StartsWith(delimiter.ToString()))
+                                {
+                                    string uc;
+                                    uc = message.Substring(1, message.IndexOf(delimiter.ToString()) - 1);
+                                    uc = uc.ToUpper();
+                                        switch (uc)
+                                        {
+                                            case "VERSION":
+                                                Transfer("NOTICE " + chan + " :" + delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/", Configuration.Priority.Low);
+                                                break;
+                                            case "TIME":
+                                                Transfer("NOTICE " + chan + " :" + delimiter.ToString() + "TIME " + DateTime.Now.ToString(), Configuration.Priority.Low);
+                                                break;
+                                            case "PING":
+                                                break;
+                                        }
+                                        
+                                        continue;
+                                }
                                 User user = new User(_nick, _host, _server, _ident);
-                                Channel channel = _server.getChannel(chan);
+                                Channel channel = null;
+                                if (chan.StartsWith(_server.channel_prefix))
+                                {
+                                    channel = _server.getChannel(chan);
+                                }
                                 if (channel != null)
                                 {
                                     Window window;
                                     window = channel.retrieveWindow();
                                     if (Core.windowReady(window))
                                     {
-                                        channel.retrieveWindow().scrollback.InsertText(PRIVMSG(user.Nick, text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length)), Scrollback.MessageStyle.Message);
+                                        channel.retrieveWindow().scrollback.InsertText(PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Message);
                                         continue;
                                     }
 
@@ -555,6 +622,9 @@ namespace Client
                 _writer.Flush();
             }
             _server.Connected = false;
+            System.Threading.Thread.Sleep(1000);
+            deliveryqueue.Abort();
+            keep.Abort();
             System.Threading.Thread.Sleep(1000);
             if (main.ThreadState == System.Threading.ThreadState.Running)
             {

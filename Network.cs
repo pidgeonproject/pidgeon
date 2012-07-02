@@ -35,6 +35,8 @@ namespace Client
         public string quit;
         public Protocol _protocol;
 
+        public string channel_prefix = "#";
+
         private Window Current;
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
 

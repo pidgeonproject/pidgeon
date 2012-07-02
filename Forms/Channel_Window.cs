@@ -34,6 +34,11 @@ namespace Client.Stage
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Prepare the control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Channel_Window_Load(object sender, EventArgs e)
         {
 

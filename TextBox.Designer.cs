@@ -20,6 +20,15 @@ namespace Client
 {
     partial class TextBox
     {
+        public class hackedRT : System.Windows.Forms.RichTextBox
+        {
+            protected override bool IsInputKey(System.Windows.Forms.Keys keyData)
+            {
+                if (keyData == System.Windows.Forms.Keys.Tab)
+                    return true;
+                return base.IsInputKey(keyData);
+            }
+        }
         /// <summary> 
         /// Required designer variable.
         /// </summary>
@@ -74,16 +83,6 @@ namespace Client
         }
 
         #endregion
-
-        public class hackedRT : System.Windows.Forms.RichTextBox
-        {
-            protected override bool IsInputKey(System.Windows.Forms.Keys keyData)
-            {
-                if (keyData == System.Windows.Forms.Keys.Tab)
-                    return true;
-                return base.IsInputKey(keyData);
-            }
-        }
 
         public hackedRT richTextBox1;
 

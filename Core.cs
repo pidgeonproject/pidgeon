@@ -26,8 +26,18 @@ using System.Text;
 
 namespace Client
 {
-    class Core
+    public class Core
     {
+        public enum Platform
+        { 
+            Linuxx64,
+            Linuxx86,
+            Windowsx64,
+            Windowsx86,
+            MacOSx64,
+            MacOSx86,
+        }
+
         public static Thread _KernelThread;
         public static DateTime LoadTime;
         public static string ConfigFile = "configuration.dat";
@@ -261,6 +271,7 @@ namespace Client
             makenode("ident", Configuration.ident, curr, confname, config, xmlnode);
             makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
             makenode("nick", Configuration.nick, curr, confname, config, xmlnode);
+            makenode("showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
             makenode("maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
             makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
             makenode("x1", Configuration.x1.ToString() , curr, confname, config, xmlnode);
@@ -310,6 +321,9 @@ namespace Client
                                 case "ident":
                                     Configuration.ident = curr.InnerText;
                                     break;
+                                case "showctcp":
+                                    Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
+                                    break;
                                 
 
                             }
@@ -354,11 +368,7 @@ namespace Client
         public static int handleException(Exception _exception)
         {
             Console.WriteLine(_exception.InnerException);
-            if (Thread.CurrentThread == _KernelThread)
-            {
-                blocked = true;
-                
-            }
+            blocked = true;
             recovery_exception = _exception;
             _RecoveryThread = new Thread(Recover);
             _RecoveryThread.Start();

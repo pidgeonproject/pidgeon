@@ -48,6 +48,7 @@ namespace Client
             comboBox2.Text = Configuration.LastHostName;
             comboBox1.Items.Add("quassel");
             Text  = messages.get("connection", Core.SelectedLanguage);
+            bConnect.Text = messages.get("bconnect", Core.SelectedLanguage);
         }
 
         private void bConnect_Click(object sender, EventArgs e)

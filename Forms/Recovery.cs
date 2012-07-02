@@ -41,11 +41,11 @@ namespace Client
 
         private void Recovery_Load(object sender, EventArgs e)
         {
-            textBox1.Text += "YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n";
-            textBox1.Text += Core.recovery_exception.Source + "\n\n";
-            textBox1.Text += "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n";
-            textBox1.Text += "Target\n" + Core.recovery_exception.TargetSite + "\n\n";
-            textBox1.Text += "\n\n" + Core.recovery_exception.Message;
+            textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
+                                + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
+                                + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
+                                + "\n\n" + Core.recovery_exception.Message + "\n\n"
+                                + Core.recovery_exception.Source + "\n\n").Split('\n');
         }
 
         private void bShutdown_Click(object sender, EventArgs e)

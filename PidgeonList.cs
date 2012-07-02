@@ -29,14 +29,21 @@ namespace Client
     public partial class PidgeonList : UserControl
     {
         public Dictionary<Network, TreeNode> Servers = new Dictionary<Network, TreeNode>();
+        public LinkedList<User> _User = new LinkedList<User>();
         public Dictionary<Channel, TreeNode> Channels = new Dictionary<Channel, TreeNode>();
         public LinkedList<Channel> ChannelsQueue = new LinkedList<Channel>();
+        public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
 
         public PidgeonList()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Prepare the control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChannelList_Load(object sender, EventArgs e)
         {
             items.BackColor = Configuration.CurrentSkin.backgroundcolor;
@@ -44,6 +51,9 @@ namespace Client
             items.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Redraw()
         {
 
@@ -52,6 +62,22 @@ namespace Client
         public void insertChannel(Channel chan)
         {
             ChannelsQueue.AddLast(chan);
+        }
+
+        public void insertUser(User _us)
+        {
+            _User.AddLast(_us);
+        }
+
+        private void _insertUs(User _us)
+        {
+            if (Servers.ContainsKey(_us.network))
+            {
+                TreeNode text = new TreeNode();
+                text.Text = _us.Nick;
+                Servers[_us.network].Nodes.Add(text);
+                UserList.Add(_us, text);
+            }
         }
 
         private void insertChan(Channel chan)
@@ -65,6 +91,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="network"></param>
         public void insertNetwork(Network network)
         {
             TreeNode text = new TreeNode();
@@ -75,8 +105,7 @@ namespace Client
 
         private void _Display(object sender, EventArgs e)
         {
-            items.Height = Height;
-            items.Width = Width;
+
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -115,8 +144,17 @@ namespace Client
             }
         }
 
+        public void RedrawMenu()
+        {
+            partToolStripMenuItem.Visible = false;
+            joinToolStripMenuItem.Visible = false;
+            disconnectToolStripMenuItem.Visible = false;
+        }
+
         private void items_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            try
+            {
             if (Servers.ContainsValue(e.Node))
             {
                 foreach (var cu in Servers)
@@ -142,6 +180,71 @@ namespace Client
                     }
                 }
             }
+            }
+            catch(Exception f)
+            {
+                Core.handleException(f);
+            }
+        }
+
+        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (items.SelectedNode == null)
+            { return; }
+                
+
+
+            try
+            {
+                if (Servers.ContainsValue(items.SelectedNode))
+                {
+                    Network network = null;
+                    foreach (var cu in Servers)
+                    {
+                        if (cu.Value == items.SelectedNode)
+                        {
+
+                        }
+                    }
+                }
+                if (Channels.ContainsValue(items.SelectedNode))
+                {
+                    Channel item = null;
+                    foreach (var cu in Channels)
+                    {
+                        if (cu.Value == items.SelectedNode)
+                        {
+                            if (cu.Key.ok)
+                            {
+                                cu.Key._Network._protocol.Part(cu.Key.Name);
+                                return;
+                            }
+                            item = cu.Key;
+                            break;
+                        }
+                    }
+                    if (item != null)
+                    {
+                        items.Nodes.Remove(items.SelectedNode);
+                        lock (item.retrieveWindow())
+                        {
+                            if (item.retrieveWindow() != null)
+                            {
+                                item.retrieveWindow().Visible = false;
+                                item.retrieveWindow().Dispose();
+                            }
+                            item._Network.Channels.Remove(item);
+                        }
+                        Channels.Remove(item);
+                        return;
+                    }
+                }
+            }
+            catch(Exception f)
+            {
+                Core.handleException(f);
+            }
+
         }
     }
 }

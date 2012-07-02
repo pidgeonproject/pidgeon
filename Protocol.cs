@@ -123,6 +123,12 @@ namespace Client
             return;
         }
 
+        public virtual void Part(string name, Network network = null)
+        {
+        
+        }
+
+
         public virtual void Exit() { }  
 
         public class UserMode : Mode

@@ -37,10 +37,16 @@ namespace Client
 
         public static string LastHostName = "";
 
+        public static Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        public static string Version = "Pidgeon v. 1.0.0";
+
         public static Skin CurrentSkin = new Skin();
+
+        public static bool DisplayCtcp = true;
 
         public static int x1 = 0;
         public static int x4 = 0;
+
         public static int window_size = 0;
 
         public enum Priority

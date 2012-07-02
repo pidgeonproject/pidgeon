@@ -45,9 +45,11 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Help));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.about = new System.Windows.Forms.Panel();
             this.labelName = new System.Windows.Forms.Label();
+            this.licensetext = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +71,7 @@ namespace Client
             // 
             // about
             // 
+            this.about.Controls.Add(this.licensetext);
             this.about.Controls.Add(this.labelName);
             this.about.Dock = System.Windows.Forms.DockStyle.Fill;
             this.about.Location = new System.Drawing.Point(3, 3);
@@ -85,6 +88,14 @@ namespace Client
             this.labelName.Size = new System.Drawing.Size(91, 25);
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Pidgeon";
+            // 
+            // licensetext
+            // 
+            this.licensetext.Location = new System.Drawing.Point(19, 211);
+            this.licensetext.Name = "licensetext";
+            this.licensetext.Size = new System.Drawing.Size(585, 145);
+            this.licensetext.TabIndex = 1;
+            this.licensetext.Text = resources.GetString("licensetext.Text");
             // 
             // Help
             // 
@@ -108,6 +119,7 @@ namespace Client
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel about;
         private System.Windows.Forms.Label labelName;
+        private System.Windows.Forms.Label licensetext;
 
     }
 }

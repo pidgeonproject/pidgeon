@@ -54,9 +54,9 @@ namespace Client
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.bConnect = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -75,7 +75,7 @@ namespace Client
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 87.53181F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.46819F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(581, 393);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(597, 393);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -103,7 +103,7 @@ namespace Client
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(390, 338);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(400, 338);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // label5
@@ -119,7 +119,7 @@ namespace Client
             this._Nickname.Dock = System.Windows.Forms.DockStyle.Top;
             this._Nickname.Location = new System.Drawing.Point(83, 3);
             this._Nickname.Name = "_Nickname";
-            this._Nickname.Size = new System.Drawing.Size(304, 20);
+            this._Nickname.Size = new System.Drawing.Size(314, 20);
             this._Nickname.TabIndex = 0;
             // 
             // label1
@@ -138,7 +138,7 @@ namespace Client
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(83, 243);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(304, 21);
+            this.comboBox1.Size = new System.Drawing.Size(314, 21);
             this.comboBox1.TabIndex = 2;
             // 
             // comboBox2
@@ -147,7 +147,7 @@ namespace Client
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(83, 183);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(304, 21);
+            this.comboBox2.Size = new System.Drawing.Size(314, 21);
             this.comboBox2.TabIndex = 3;
             // 
             // textBox1
@@ -155,7 +155,7 @@ namespace Client
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox1.Location = new System.Drawing.Point(83, 63);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(304, 20);
+            this.textBox1.Size = new System.Drawing.Size(314, 20);
             this.textBox1.TabIndex = 4;
             // 
             // textBox2
@@ -163,17 +163,8 @@ namespace Client
             this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox2.Location = new System.Drawing.Point(83, 123);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(304, 20);
+            this.textBox2.Size = new System.Drawing.Size(314, 20);
             this.textBox2.TabIndex = 5;
-            // 
-            // label2
-            // 
-            this.label2.Location = new System.Drawing.Point(3, 60);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 23);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "ident";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // label3
             // 
@@ -193,11 +184,20 @@ namespace Client
             this.label4.Text = "hostname";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // label2
+            // 
+            this.label2.Location = new System.Drawing.Point(3, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 23);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "ident";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // bConnect
             // 
-            this.bConnect.Location = new System.Drawing.Point(399, 347);
+            this.bConnect.Location = new System.Drawing.Point(409, 347);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(113, 30);
+            this.bConnect.Size = new System.Drawing.Size(176, 30);
             this.bConnect.TabIndex = 1;
             this.bConnect.Text = "button1";
             this.bConnect.UseVisualStyleBackColor = true;
@@ -207,7 +207,7 @@ namespace Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(581, 393);
+            this.ClientSize = new System.Drawing.Size(597, 393);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Connection";
             this.ShowIcon = false;

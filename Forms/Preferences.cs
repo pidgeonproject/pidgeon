@@ -33,6 +33,11 @@ namespace Client
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Prepare the control
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Preferences_Load(object sender, EventArgs e)
         {
 

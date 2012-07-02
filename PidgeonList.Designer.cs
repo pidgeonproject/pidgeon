@@ -54,6 +54,7 @@ namespace Client
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.versionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.list = new System.Windows.Forms.ImageList(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,8 +66,13 @@ namespace Client
             // items
             // 
             this.items.ContextMenuStrip = this.contextMenuStrip1;
+            this.items.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.items.ImageIndex = 0;
+            this.items.ImageList = this.list;
             this.items.Location = new System.Drawing.Point(0, 0);
             this.items.Name = "items";
+            this.items.SelectedImageIndex = 0;
+            this.items.ShowNodeToolTips = true;
             this.items.Size = new System.Drawing.Size(182, 321);
             this.items.TabIndex = 0;
             this.items.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.items_AfterSelect);
@@ -99,6 +105,7 @@ namespace Client
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
             this.closeToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // disconnectToolStripMenuItem
             // 
@@ -111,6 +118,12 @@ namespace Client
             this.versionToolStripMenuItem.Name = "versionToolStripMenuItem";
             this.versionToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.versionToolStripMenuItem.Text = "Version";
+            // 
+            // list
+            // 
+            this.list.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.list.ImageSize = new System.Drawing.Size(16, 16);
+            this.list.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // PidgeonList
             // 
@@ -136,6 +149,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem versionToolStripMenuItem;
+        private System.Windows.Forms.ImageList list;
 
 
 

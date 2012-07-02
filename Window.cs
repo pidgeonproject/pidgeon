@@ -100,5 +100,80 @@ namespace Client
             aToolStripMenuItem1.Text = messages.get("give-a", Core.SelectedLanguage);
             qToolStripMenuItem1.Text = messages.get("give-q", Core.SelectedLanguage);
         }
+
+        private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void qToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void qToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void aToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void oToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void hToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void vToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void banToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void krToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
