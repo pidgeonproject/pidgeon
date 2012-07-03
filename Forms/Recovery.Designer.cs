@@ -30,11 +30,13 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.@__LP = new System.Windows.Forms.TableLayoutPanel();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.bShutdown = new System.Windows.Forms.Button();
             this.bContinue = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.@__LP.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -66,17 +68,6 @@ namespace Client
             this.flowLayoutPanel1.Size = new System.Drawing.Size(760, 38);
             this.flowLayoutPanel1.TabIndex = 0;
             // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.White;
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(3, 3);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(760, 336);
-            this.textBox1.TabIndex = 1;
-            // 
             // bShutdown
             // 
             this.bShutdown.Location = new System.Drawing.Point(3, 3);
@@ -96,6 +87,23 @@ namespace Client
             this.bContinue.Text = "Recover";
             this.bContinue.UseVisualStyleBackColor = true;
             this.bContinue.Click += new System.EventHandler(this.bContinue_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.BackColor = System.Drawing.Color.White;
+            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox1.Location = new System.Drawing.Point(3, 3);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
+            this.textBox1.Size = new System.Drawing.Size(760, 336);
+            this.textBox1.TabIndex = 1;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // Recovery
             // 
@@ -121,5 +129,6 @@ namespace Client
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button bShutdown;
         private System.Windows.Forms.Button bContinue;
+        private System.Windows.Forms.Timer timer;
     }
 }

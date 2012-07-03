@@ -76,49 +76,57 @@ namespace Client
 
         public static string get(string item, string language = null, List<string> va = null)
         {
-            if (language == null)
+            try
             {
-                language = Language;
-            }
-            if (!data.ContainsKey(language))
-            {
-                return "error - invalid language: " + language;
-            }
-            if (data[language].Cache.ContainsKey(item))
-            {
-                return finalize(data[language].Cache[item], va);
-            }
-            string text = "";
-            switch (language)
-            {
-                case "en":
-                    text = Client.Properties.Resources.en_english;
-                    break;
-                case "cs":
+                if (language == null)
+                {
+                    language = Language;
+                }
+                if (!data.ContainsKey(language))
+                {
+                    return "error - invalid language: " + language;
+                }
+                if (data[language].Cache.ContainsKey(item))
+                {
+                    return finalize(data[language].Cache[item], va);
+                }
+                string text = "";
+                switch (language)
+                {
+                    case "en":
+                        text = Client.Properties.Resources.en_english;
+                        break;
+                    case "cs":
                     //text = MockingJay.Properties.Resources.cs_czech;
                     //break;
-                case "zh":
-                    //text = wmib.Properties.Resources.zh_chinese;
-                    text = "";
-                    break;
-                default:
-                    return "invalid language: " + language;
-            }
-            string value = parse(text, item);
-            if (value == "")
-            {
-                if (Language != language)
-                {
-                    return get(item, null, va);
+                    case "zh":
+                        //text = wmib.Properties.Resources.zh_chinese;
+                        text = "";
+                        break;
+                    default:
+                        return "invalid language: " + language;
                 }
-                else
+                string value = parse(text, item);
+                if (value == "")
                 {
-                    return "[" + item + "]";
+                    if (Language != language)
+                    {
+                        return get(item, null, va);
+                    }
+                    else
+                    {
+                        return "[" + item + "]";
+                    }
                 }
-            }
 
-            data[language].Cache.Add(item, value);
-            return finalize(value, va);
+                data[language].Cache.Add(item, value);
+                return finalize(value, va);
+            }
+            catch (Exception messagesys_error)
+            {
+                Core.handleException(messagesys_error);
+                return "";
+            }
         }
     }
 }

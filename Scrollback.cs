@@ -45,17 +45,18 @@ namespace Client
             public string text;
             public MessageStyle style;
         }
+        private bool db = false;
         public bool Modified;
 
         public void create()
         {
             InitializeComponent();
+            Data.Visible = false;
         }
 
         public void Recreate(object sender, EventArgs e)
         {
-            Data.Width = this.Width;
-            Data.Height = this.Height;
+
         }
 
 
@@ -76,7 +77,6 @@ namespace Client
             Part,
         }
 
-
         public bool InsertText(string text, MessageStyle _style)
         {
             lock(Line)
@@ -96,32 +96,49 @@ namespace Client
         public void Reload()
         {
             Modified = false;
-            string text = "<html><head></head><body STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"><script>javascript:var s = function() { window.scrollBy(0,100000); setTimeout(s, 10); }; s();</script>";
+            string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0,100000);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
             lock (Line)
             {
                 foreach (ContentLine _c in Line)
                 {
-                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + Configuration.CurrentSkin.fontcolor.Name + "\" face=" + Configuration.CurrentSkin.localfont + ">[" + _c.time.ToShortTimeString() + "] " +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
+                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + Configuration.CurrentSkin.fontcolor.Name + "\" face=" + Configuration.CurrentSkin.localfont + ">" + Configuration.format_date.Replace("$1", _c.time.ToShortTimeString())  +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                 }
             }
-            text += "</body>";
-
-            Data.DocumentText = text;
-            //Data.Refresh();
-
-            //Data.Document.Window.ScrollTo(0, Data.Document.Body.ScrollRectangle.Height);
-            
-
-            
-        }
-
-        private void Data_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
-        {
-
+            text += "</body>" + "</html>";
+            if (webBrowser1.Visible)
+            {
+                Data.DocumentText = text;
+            }
+            else
+            {
+                webBrowser1.DocumentText = text;
+            }
+            db = true;
         }
 
         private void refresh_Tick(object sender, EventArgs e)
         {
+            if (db)
+            {
+                if (webBrowser1.Visible)
+                {
+                    if (Data.ReadyState == WebBrowserReadyState.Complete)
+                    {
+                        db = false;
+                        Data.Visible = true;
+                        webBrowser1.Visible = false;
+                    }
+                }
+                else
+                {
+                    if (webBrowser1.ReadyState == WebBrowserReadyState.Complete)
+                    {
+                        db = false;
+                        webBrowser1.Visible = true;
+                        Data.Visible = false;
+                    }
+                }
+            }
             if (Modified)
             {
                 Reload();

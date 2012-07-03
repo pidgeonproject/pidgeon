@@ -46,17 +46,10 @@ namespace Client
         /// <param name="e"></param>
         private void ChannelList_Load(object sender, EventArgs e)
         {
+            RedrawMenu();
             items.BackColor = Configuration.CurrentSkin.backgroundcolor;
             items.ForeColor = Configuration.CurrentSkin.fontcolor;
             items.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public void Redraw()
-        {
-
         }
 
         public void insertChannel(Channel chan)
@@ -118,6 +111,23 @@ namespace Client
                 }
                 ChannelsQueue.Clear();
             }
+            List<Channel> _channels = new List<Channel>();
+            lock (Channels)
+            {
+                foreach (var chan in Channels)
+                {
+                    if (chan.Key.dispose)
+                    {
+                        chan.Key._Network.Channels.Remove(chan.Key);
+                        chan.Key.retrieveWindow().Dispose();
+                        _channels.Add(chan.Key);
+                    }
+                }
+            }
+            foreach (var chan in _channels)
+            {
+                Channels.Remove(chan);
+            }
             lock (Core._Main.W)
             {
                 foreach (Main._WindowRequest item in Core._Main.W)
@@ -131,6 +141,14 @@ namespace Client
                 }
                 Core._Main.W.Clear();
             }
+            lock (UserList)
+            {
+                foreach (User user in _User)
+                {
+                    _insertUs(user);
+                }
+                _User.Clear();
+            }
             lock (Channels)
             {
                 foreach (var channel in Channels)
@@ -138,7 +156,6 @@ namespace Client
                     if (channel.Key.Redraw)
                     {
                         channel.Key.redrawUsers();
-                        channel.Key.Redraw = false;
                     }
                 }
             }
@@ -153,35 +170,40 @@ namespace Client
 
         private void items_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            RedrawMenu();
             try
             {
-            if (Servers.ContainsValue(e.Node))
-            {
-                foreach (var cu in Servers)
+                if (Servers.ContainsValue(e.Node))
                 {
-                    if (cu.Value == e.Node)
+                    foreach (var cu in Servers)
                     {
-                        cu.Key.ShowChat("!system");
-                        Core.network = cu.Key;
-                        return;
+                        if (cu.Value == e.Node)
+                        {
+                            cu.Key.ShowChat("!system");
+                            Core.network = cu.Key;
+                            disconnectToolStripMenuItem.Visible = true;
+                            Core._Main.UpdateStatus();
+                            return;
+                        }
+                    }
+                }
+                if (Channels.ContainsValue(e.Node))
+                {
+                    foreach (var cu in Channels)
+                    {
+                        if (cu.Value == e.Node)
+                        {
+                            Core.network = cu.Key._Network;
+                            partToolStripMenuItem.Visible = true;
+                            closeToolStripMenuItem.Visible = true;
+                            cu.Key._Network.ShowChat(cu.Key.Name);
+                            Core._Main.UpdateStatus();
+                            return;
+                        }
                     }
                 }
             }
-            if (Channels.ContainsValue(e.Node))
-            {
-                foreach (var cu in Channels)
-                {
-                    if (cu.Value == e.Node)
-                    {
-                        Core.network = cu.Key._Network;
-                        Core._Main.UpdateStatus();
-                        cu.Key._Network.ShowChat(cu.Key.Name);
-                        return;
-                    }
-                }
-            }
-            }
-            catch(Exception f)
+            catch (Exception f)
             {
                 Core.handleException(f);
             }
@@ -191,7 +213,7 @@ namespace Client
         {
             if (items.SelectedNode == null)
             { return; }
-                
+
 
 
             try
@@ -203,8 +225,19 @@ namespace Client
                     {
                         if (cu.Value == items.SelectedNode)
                         {
+                            network = cu.Key;
+                            if (cu.Key.Connected)
+                            {
+                                return;
+                            }
 
                         }
+                    }
+                    if (network != null)
+                    {
+                        Core.Connections.Remove(network._protocol);
+                        Servers.Remove(network);
+                        items.Nodes.Remove(items.SelectedNode);
                     }
                 }
                 if (Channels.ContainsValue(items.SelectedNode))
@@ -217,6 +250,7 @@ namespace Client
                             if (cu.Key.ok)
                             {
                                 cu.Key._Network._protocol.Part(cu.Key.Name);
+                                cu.Key.dispose = true;
                                 return;
                             }
                             item = cu.Key;
@@ -240,11 +274,46 @@ namespace Client
                     }
                 }
             }
-            catch(Exception f)
+            catch (Exception f)
             {
                 Core.handleException(f);
             }
 
+        }
+
+        private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Servers.ContainsValue(items.SelectedNode))
+            {
+                Network dv = null;
+                foreach (var cu in Servers)
+                {
+                    if (cu.Value == items.SelectedNode)
+                    {
+                        cu.Key._protocol.Exit();
+                    }
+                }
+            }
+        }
+
+        private void partToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Channels.ContainsValue(items.SelectedNode))
+            {
+                foreach (var cu in Channels)
+                {
+                    if (cu.Value == items.SelectedNode)
+                    {
+                        if (cu.Key.ok)
+                        {
+                            cu.Key._Network._protocol.Part(cu.Key.Name);
+                            cu.Key.ok = false;
+                            return;
+                        }
+                        break;
+                    }
+                }
+            }
         }
     }
 }

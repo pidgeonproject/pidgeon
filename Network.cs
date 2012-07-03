@@ -25,6 +25,7 @@ namespace Client
     public class Network
     {
         public bool Connected;
+        public List<User> PrivateChat = new List<User>();
         public string server;
         public Protocol.UserMode usermode = new Protocol.UserMode();
         public string username;
@@ -67,6 +68,19 @@ namespace Client
         }
 
         /// <summary>
+        /// Create pm
+        /// </summary>
+        /// <param name="user"></param>
+        public void Private(string user)
+        {
+            User u = new User(user, "", this, "");
+            PrivateChat.Add(u);
+            Core._Main.ChannelList.insertUser(u);
+            CreateChat(user, true, true);
+            return;
+        }
+
+        /// <summary>
         /// Initialise window - deprecated
         /// </summary>
         /// <param name="_name"></param>
@@ -93,16 +107,16 @@ namespace Client
         {
             if (windows.ContainsKey(name))
             {
+                Current = windows[name];
+                Current.Visible = true;
                 if (Core._Main.Chat != null)
                 {
                     Core._Main.Chat.Visible = false;
                 }
-                
-                Current = windows[name];
                 Core._Main.Reload();
                 Current.Redraw();
                 Core._Main.toolStripStatusChannel.Text = name;
-                Current.Visible = true;
+                
                 Current.textbox.Focus();
                 Core._Main.Chat = windows[name];
                 Current.Making = false;

@@ -30,7 +30,9 @@ namespace Client
     {
         public List<string> history;
         public int position = 0;
+        public string prevtext = "";
         public string original = "";
+        public bool restore = false;
         public TextBox()
         {
             InitializeComponent();
@@ -39,12 +41,14 @@ namespace Client
         public void resize(object sender, EventArgs e)
         {
             richTextBox1.Height = this.Height - 2;
-            richTextBox1.Width = this.Width -2;
+            richTextBox1.Width = this.Width - 2;
         }
 
 
         private void _Enter(object sender, KeyEventArgs e)
         {
+            if (!(e.KeyCode == Keys.Tab))
+            { restore = false; }
             switch (e.KeyCode)
             {
                 case Keys.Down:
@@ -80,17 +84,197 @@ namespace Client
                     return;
                 case Keys.Tab:
                     int caret = richTextBox1.SelectionStart;
-                    //string current = richTextBox1.Text.Substring(0, richTextBox1
+                    restore = true;
+                    richTextBox1.Text = prevtext;
+                    richTextBox1.SelectionStart = caret;
+                    if (caret < 1) return;
+                    if (richTextBox1.Text == "") return;
+                    int x = caret - 1;
+                    if (x > richTextBox1.Text.Length)
+                    { x = richTextBox1.Text.Length - 2; }
+                    while (x >= 0)
+                    {
+                        if (richTextBox1.Text[x] == ' ')
+                        {
+                            x++;
+                            break;
+                        }
+                        x--;
+                    }
+                    if (x < 0)
+                    { x = 0; }
+                    string text = richTextBox1.Text.Substring(x);
+                    if (text.Contains(" "))
+                    {
+                        text = text.Substring(0, text.IndexOf(" "));
+                    }
+
+                    // check if it's a command :)
+
+                    List<string> commands = new List<string> { "server", "nick", "pidgeon.rehash" };
+
+                    if (Core.network != null && Core.network.Connected)
+                    {
+                        commands = new List<string> { "join", "part", "connect", "server", "squit", "quit", "query", "me", "msg", "mode", "oper", "who",
+                                                        "whois", "whowas", "help", "wall", "list", "pidgeon.rehash", "kill", "kline", "zline", "away", "gline",
+                                                        "stats", "nickserv", "chanserv", };
+                    }
+                    if (text.StartsWith(Configuration.CommandPrefix))
+                    {
+                        List<string> Results = new List<string>();
+                        string Resd = "";
+                        foreach (var item in commands)
+                        {
+                            if (item.StartsWith(text.Substring(1).ToLower()))
+                            {
+                                Resd += item + ", ";
+                                Results.Add(item);
+                            }
+                        }
+                        if (Results.Count > 1)
+                        {
+                            Core._Main.Chat.scrollback.InsertText("Multiple results found, refine your inp" + Resd, Scrollback.MessageStyle.User);
+                            string part = "";
+                            int curr = 0;
+                            bool match = true;
+                            while (match)
+                            {
+                                char diff = ' ';
+                                foreach (var item in Results)
+                                {
+                                    if (diff == ' ')
+                                    {
+                                        diff = item[curr];
+                                        continue;
+                                    }
+                                    if (item.Length <= curr || diff != item[curr])
+                                    {
+                                        match = false;
+                                        break;
+                                    }
+                                }
+                                if (match)
+                                {
+                                    curr = curr + 1;
+                                    part += diff.ToString();
+                                }
+                            }
+                            string result = richTextBox1.Text;
+                            result = result.Substring(0, x + 1);
+                            result = result + part + richTextBox1.Text.Substring(x + text.Length);
+                            richTextBox1.Text = result;
+                            richTextBox1.SelectionStart = result.Length;
+                            prevtext = result;
+                            return;
+                        }
+                        if (Results.Count == 1)
+                        {
+                            string result = richTextBox1.Text;
+                            result = result.Substring(0, x + 1);
+                            result = result + Results[0] + " " + richTextBox1.Text.Substring(x + text.Length);
+                            richTextBox1.Text = result;
+                            richTextBox1.SelectionStart = result.Length;
+                            prevtext = result;
+                            return;
+                        }
+                    }
+
+                    if (Core.network == null)
+                        return;
+
+                    if (text.StartsWith(Core.network.channel_prefix))
+                    {
+                    }
+                    // check if it's a nick
+
+                    List<string> Results2 = new List<string>();
+                    string Resd2 = "";
+                    if (Core.network.RenderedChannel == null) { return; }
+                    foreach (var item in Core.network.RenderedChannel.UserList)
+                    {
+                        if ((item.Nick).StartsWith(text))
+                        {
+                            Resd2 += item.Nick + ", ";
+                            Results2.Add(item.Nick);
+                        }
+                    }
+                    if (Results2.Count == 1)
+                    {
+                        string result = richTextBox1.Text;
+                            result = result.Substring(0, x);
+                        result = result + Results2[0] + richTextBox1.Text.Substring(x + text.Length);
+                        richTextBox1.Text = result;
+
+                        richTextBox1.SelectionStart = result.Length;
+
+                        prevtext = result;
+                        return;
+                    }
+
+                    if (Results2.Count > 1)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Multiple results found, refine your inp" + Resd2, Scrollback.MessageStyle.User);
+                        string part = "";
+                        int curr = 0;
+                        bool match = true;
+                        while (match)
+                        {
+                            char diff = ' ';
+                            foreach (var item in Results2)
+                            {
+                                if (diff == ' ')
+                                {
+                                    diff = item[curr];
+                                    continue;
+                                }
+                                if (item.Length <= curr || diff != item[curr])
+                                {
+                                    match = false;
+                                    break;
+                                }
+                            }
+                            if (match)
+                            {
+                                curr = curr + 1;
+                                part += diff.ToString();
+                            }
+                        }
+                        string result = richTextBox1.Text;
+                        result = result.Substring(0, x);
+                        result = result + part + richTextBox1.Text.Substring(x + text.Length);
+                        richTextBox1.Text = result;
+                        richTextBox1.SelectionStart = result.Length;
+                        prevtext = result;
+
+
+                        return;
+                    }
+
                     break;
-                case Keys.Enter:        
+                case Keys.Enter:
                     Core._Main.Chat.scrollback.Last = this;
+                    List<string> input = new List<string>();
+                    if (richTextBox1.Text.Contains("\n"))
+                    {
+                        input.AddRange(richTextBox1.Text.Split('\n'));
+                        foreach (var line in input)
+                        {
+                            if (line != "")
+                            {
+                                Parser.parse(line);
+                            }
+                        }
+                        original = "";
+                        richTextBox1.Text = "";
+                        return;
+                    }
                     richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
                     history.Add(richTextBox1.Text);
                     Parser.parse(richTextBox1.Text);
                     original = "";
                     richTextBox1.Text = "";
                     position = history.Count;
-                    break;
+                    return;
             }
         }
 
@@ -113,6 +297,28 @@ namespace Client
             {
                 Core.handleException(f);
             }
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (restore)
+            {
+                int selection = richTextBox1.SelectionStart;
+                if (richTextBox1.Text.Length != prevtext.Length)
+                {
+                    selection = selection - (richTextBox1.Text.Length - prevtext.Length);
+                }
+                if (selection < 0)
+                {
+                    selection = 0;
+                }
+                richTextBox1.Text = prevtext;
+
+                richTextBox1.SelectionStart = selection;
+                return;
+            }
+            prevtext = richTextBox1.Text;
+            //richTextBox1.Text = richTextBox1.Text.Replace("\t", ""
         }
     }
 }

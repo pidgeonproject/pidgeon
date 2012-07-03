@@ -32,6 +32,7 @@ namespace Client
         public bool Making = true;
         public string name;
         public bool writable;
+        public Network network = null;
 
         public Window()
         {
@@ -40,6 +41,11 @@ namespace Client
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
             listView.ForeColor = Configuration.CurrentSkin.fontcolor;
+            listViewd.View = View.Details;
+            listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
+            listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
+            listView.Visible = false;
             textbox.history = new List<string>();
         }
 
@@ -54,6 +60,9 @@ namespace Client
                 this.xContainer4.SplitterDistance = Configuration.x4;
 
 
+
+
+            listViewd.Columns[0].Width = listView.Width - 8;
             listView.Columns[0].Width = listView.Width - 8;
             return true;
         }
@@ -89,6 +98,8 @@ namespace Client
         {
             banToolStripMenuItem.Text = messages.get("ban", Core.SelectedLanguage);
             modeToolStripMenuItem.Text = messages.get("mode", Core.SelectedLanguage);
+            kbToolStripMenuItem.Text = messages.get("kickban+text", Core.SelectedLanguage);
+            kickrToolStripMenuItem.Text = messages.get("kick-text", Core.SelectedLanguage);
             vToolStripMenuItem.Text = messages.get("give+v", Core.SelectedLanguage);
             hToolStripMenuItem.Text = messages.get("give+h", Core.SelectedLanguage);
             oToolStripMenuItem.Text = messages.get("give+o", Core.SelectedLanguage);
@@ -174,6 +185,18 @@ namespace Client
         private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (network == null)
+                return;
+
+            Channel item = network.getChannel(name);
+            if (item != null)
+            {
+                item.redrawUsers();
+            }
         }
     }
 }

@@ -48,8 +48,8 @@ namespace Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Help));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.about = new System.Windows.Forms.Panel();
-            this.labelName = new System.Windows.Forms.Label();
             this.licensetext = new System.Windows.Forms.Label();
+            this.labelName = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
             this.SuspendLayout();
@@ -76,8 +76,16 @@ namespace Client
             this.about.Dock = System.Windows.Forms.DockStyle.Fill;
             this.about.Location = new System.Drawing.Point(3, 3);
             this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(613, 374);
+            this.about.Size = new System.Drawing.Size(613, 375);
             this.about.TabIndex = 0;
+            // 
+            // licensetext
+            // 
+            this.licensetext.Location = new System.Drawing.Point(19, 211);
+            this.licensetext.Name = "licensetext";
+            this.licensetext.Size = new System.Drawing.Size(585, 145);
+            this.licensetext.TabIndex = 1;
+            this.licensetext.Text = resources.GetString("licensetext.Text");
             // 
             // labelName
             // 
@@ -89,14 +97,6 @@ namespace Client
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Pidgeon";
             // 
-            // licensetext
-            // 
-            this.licensetext.Location = new System.Drawing.Point(19, 211);
-            this.licensetext.Name = "licensetext";
-            this.licensetext.Size = new System.Drawing.Size(585, 145);
-            this.licensetext.TabIndex = 1;
-            this.licensetext.Text = resources.GetString("licensetext.Text");
-            // 
             // Help
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -106,6 +106,7 @@ namespace Client
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Help";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Help";
             this.tableLayoutPanel1.ResumeLayout(false);
             this.about.ResumeLayout(false);

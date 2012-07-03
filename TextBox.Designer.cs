@@ -55,7 +55,7 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new hackedRT();
+            this.richTextBox1 = new Client.TextBox.hackedRT();
             this.SuspendLayout();
             // 
             // richTextBox1
@@ -66,6 +66,7 @@ namespace Client
             this.richTextBox1.Size = new System.Drawing.Size(147, 98);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
+            this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this._Enter);
             // 
             // TextBox

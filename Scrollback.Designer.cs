@@ -48,34 +48,91 @@ namespace Client
         {
             this.components = new System.ComponentModel.Container();
             this.Data = new System.Windows.Forms.WebBrowser();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.mrhToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.scrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Data
             // 
+            this.Data.ContextMenuStrip = this.contextMenuStrip1;
+            this.Data.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.Data.IsWebBrowserContextMenuEnabled = false;
             this.Data.Location = new System.Drawing.Point(0, 0);
             this.Data.MinimumSize = new System.Drawing.Size(20, 20);
             this.Data.Name = "Data";
             this.Data.ScriptErrorsSuppressed = true;
-            this.Data.Size = new System.Drawing.Size(346, 263);
+            this.Data.Size = new System.Drawing.Size(345, 262);
             this.Data.TabIndex = 1;
-            this.Data.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.Data_DocumentCompleted);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mrhToolStripMenuItem,
+            this.scrollToolStripMenuItem,
+            this.closeToolStripMenuItem,
+            this.channelToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 92);
+            // 
+            // mrhToolStripMenuItem
+            // 
+            this.mrhToolStripMenuItem.Name = "mrhToolStripMenuItem";
+            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.mrhToolStripMenuItem.Text = "Clean";
+            // 
+            // scrollToolStripMenuItem
+            // 
+            this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.scrollToolStripMenuItem.Text = "Scroll";
+            // 
+            // closeToolStripMenuItem
+            // 
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            // 
+            // channelToolStripMenuItem
+            // 
+            this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
+            this.channelToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.channelToolStripMenuItem.Text = "Channel";
             // 
             // refresh
             // 
             this.refresh.Enabled = true;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
+            // webBrowser1
+            // 
+            this.webBrowser1.ContextMenuStrip = this.contextMenuStrip1;
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.ScriptErrorsSuppressed = true;
+            this.webBrowser1.Size = new System.Drawing.Size(345, 262);
+            this.webBrowser1.TabIndex = 2;
+            // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.Data);
             this.Name = "Scrollback";
             this.Size = new System.Drawing.Size(345, 262);
             this.Load += new System.EventHandler(this.Scrollback_Load);
             this.Resize += new System.EventHandler(this.Recreate);
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -84,6 +141,12 @@ namespace Client
 
         private System.Windows.Forms.WebBrowser Data;
         private System.Windows.Forms.Timer refresh;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem mrhToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem scrollToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
+        private System.Windows.Forms.WebBrowser webBrowser1;
 
     }
 }

@@ -44,20 +44,31 @@ namespace Client
             textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
                                 + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
                                 + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
-                                + "\n\n" + Core.recovery_exception.Message + "\n\n"
+                                + Core.recovery_exception.Message + "\n\n"
                                 + Core.recovery_exception.Source + "\n\n").Split('\n');
         }
 
         private void bShutdown_Click(object sender, EventArgs e)
         {
             Core._KernelThread.Abort();
-            Core.Quit();
+            foreach (Protocol server in Core.Connections)
+            {
+                server.Exit();
+            }
+            Application.ExitThread();
         }
 
         private void bContinue_Click(object sender, EventArgs e)
         {
             Core.blocked = false;
             Close();
+        }
+
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            BringToFront();
+            Show();
+            timer.Enabled = false;
         }
     }
 }

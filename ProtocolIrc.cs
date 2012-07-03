@@ -132,6 +132,7 @@ namespace Client
                     }
                     catch(System.Threading.ThreadAbortException f)
                     {
+                        Core.handleException(f);
                         return;
                     }
                 }
@@ -189,7 +190,6 @@ namespace Client
                 return;
             }
             string text = "";
-            char delimiter = (char)001;
             try
             {
                 deliveryqueue = new System.Threading.Thread(_messages.Run);
@@ -209,12 +209,15 @@ namespace Client
                         if (data.Length > 1)
                         {
                             string[] _command = data[1].Split(' ');
-                            string command;
+                            string command = "";
                             string parameters = "";
                             string source;
                             string _value;
                             source = _command[0];
-                            command = _command[1];
+                            if (_command.Length > 1)
+                            {
+                                command = _command[1];
+                            }
                             if (_command.Length > 2)
                             {
                                 int curr = 2;
@@ -311,7 +314,7 @@ namespace Client
                                         }
                                         break;
                                     case "005":
-                                        // PREFIX=(qaohv)~&@%+ CHANMODES=beI,kfL,lj,psmntirRcOAQKVCuzNSMTG 
+                                        // PREFIX=(qaohv)~&@%+ CHANMODES=beI,k
                                         if (parameters.Contains("PREFIX=("))
                                         {
                                             string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
@@ -460,10 +463,13 @@ namespace Client
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
                                 string message = text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length);
-                                if (message.StartsWith(delimiter.ToString()))
+                                if (!chan.Contains(_server.channel_prefix) )
                                 {
                                     string uc;
-                                    uc = message.Substring(1, message.IndexOf(delimiter.ToString()) - 1);
+                                    if (message.StartsWith(delimiter.ToString()))
+                                    {
+                                    uc = message.Substring(1);
+                                    uc = uc.Substring(0, uc.IndexOf(delimiter.ToString()));
                                     uc = uc.ToUpper();
                                         switch (uc)
                                         {
@@ -476,30 +482,86 @@ namespace Client
                                             case "PING":
                                                 break;
                                         }
-                                        
+                                        if (Configuration.DisplayCtcp)
+                                        {
+                                            _server.windows["!system"].scrollback.InsertText("CTCP from (" + chan + ") " + message, Scrollback.MessageStyle.Message);
+                                            continue;
+                                        }
                                         continue;
+                                    }
+                                        
                                 }
                                 User user = new User(_nick, _host, _server, _ident);
                                 Channel channel = null;
                                 if (chan.StartsWith(_server.channel_prefix))
                                 {
                                     channel = _server.getChannel(chan);
-                                }
-                                if (channel != null)
-                                {
-                                    Window window;
-                                    window = channel.retrieveWindow();
-                                    if (Core.windowReady(window))
+                                    if (channel != null)
                                     {
-                                        channel.retrieveWindow().scrollback.InsertText(PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Message);
+                                        Window window;
+                                        window = channel.retrieveWindow();
+                                        if (Core.windowReady(window))
+                                        {
+                                            if (message.StartsWith(delimiter.ToString() + "ACTION"))
+                                            {
+                                                message = message.Substring("xACTION".Length);
+                                                channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action);
+                                                continue;
+                                            }
+                                            channel.retrieveWindow().scrollback.InsertText(PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Message);
+                                        }
                                         continue;
                                     }
+                                    continue;
+                                }
+                                if (!_server.windows.ContainsKey(chan))
+                                {
+                                    _server.Private(chan);
+                                }
+                                _server.windows[chan].scrollback.InsertText(PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Channel);
+                                continue;
+                            }
 
+                            if (command == "MODE")
+                            {
+                                if (parameters.Contains(" "))
+                                {
+                                    string chan = parameters.Substring(0, parameters.IndexOf(" "));
+                                    chan = chan.Replace(" ", "");
+                                    string user = source.Substring(0, source.IndexOf("!"));
+                                    if (chan.StartsWith(_server.channel_prefix))
+                                    {
+                                        Channel channel = _server.getChannel(chan);
+                                        if (channel != null)
+                                        {
+                                            Window window;
+                                            window = channel.retrieveWindow();
+                                            string change = parameters.Substring(parameters.IndexOf(" "));
+                                            if (Core.windowReady(window))
+                                            {
+                                                channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }), Scrollback.MessageStyle.Channel);
+                                            }
+
+                                            channel._mode.mode(change);
+
+                                            if (channel.containUser(user))
+                                            {
+                                                lock (channel.UserList)
+                                                {
+
+                                                }
+
+                                                channel.redrawUsers();
+                                            }
+                                            continue;
+                                        }
+                                    }
                                 }
                             }
+
                             if (command == "PART")
                             {
-                                string chan = _value;
+                                string chan = parameters;
                                 chan = chan.Replace(" ", "");
                                 string user = source.Substring(0, source.IndexOf("!"));
                                 Channel channel = _server.getChannel(chan);
@@ -510,7 +572,7 @@ namespace Client
                                     User delete = null;
                                     if (Core.windowReady(window))
                                     {
-                                        channel.retrieveWindow().scrollback.InsertText(messages.get("part", Core.SelectedLanguage, new List<string> { source }), Scrollback.MessageStyle.Channel);
+                                        channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Channel);
 
                                         if (channel.containUser(user))
                                         {
@@ -537,9 +599,43 @@ namespace Client
                                     }
                                 }
                             }
+
+                            if (command == "QUIT")
+                            {
+                                string nick = source.Substring(0, source.IndexOf("!"));
+                                string _new = _value;
+                                foreach (Channel item in _server.Channels)
+                                {
+                                    if (item.ok)
+                                    {
+                                        User target = null;
+                                        foreach (User curr in item.UserList)
+                                        {
+                                            if (curr.Nick == nick)
+                                            {
+                                                target = curr;
+                                                break;
+                                            }
+                                        }
+
+                                        if (target != null)
+                                        {
+                                            Window x = item.retrieveWindow();
+                                            if (x != null)
+                                            {
+                                                x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage, new List<string> { nick, _value }), Scrollback.MessageStyle.Channel);
+                                            }
+                                            item.UserList.Remove(target);
+                                            item.redrawUsers();
+                                        }
+                                    }
+                                }
+                                continue;
+                            }
+
                             if (command == "JOIN")
                             {
-                                string chan = _value;
+                                string chan = parameters;
                                 chan = chan.Replace(" ", "");
                                 string user = source.Substring(0, source.IndexOf("!"));
                                 string _ident;
@@ -581,7 +677,16 @@ namespace Client
         {
             try
             {
-                _writer.WriteLine(cm);
+                if (cm.StartsWith(" ") != true && cm.Contains(" "))
+                {
+                    // uppercase
+                    string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
+                    string rest = cm.Substring(first_word.Length);
+                    _writer.WriteLine(first_word + rest);
+                    _writer.Flush();
+                    return true;
+                }
+                _writer.WriteLine(cm.ToUpper());
                 _writer.Flush();
             }
             catch (Exception ex)
@@ -603,6 +708,19 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// /me style
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="_priority"></param>
+        /// <returns></returns>
+        public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
+            return 0;
+        }
+
         public override void Join(string name, Network network = null)
         {
             Transfer("JOIN " + name);
@@ -616,20 +734,21 @@ namespace Client
 
         public override void Exit()
         {
-            if (_server.Connected)
+            if (!_server.Connected)
             {
-                _writer.WriteLine("QUIT " + _server.quit);
-                _writer.Flush();
+                return;
             }
+            _writer.WriteLine("QUIT :" + _server.quit);
+            _writer.Flush();
             _server.Connected = false;
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
             keep.Abort();
-            System.Threading.Thread.Sleep(1000);
             if (main.ThreadState == System.Threading.ThreadState.Running)
             {
                 main.Abort();
             }
+            return;
         }
 
         public override bool Open()

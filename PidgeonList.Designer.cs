@@ -86,7 +86,7 @@ namespace Client
             this.disconnectToolStripMenuItem,
             this.versionToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(134, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
             // 
             // joinToolStripMenuItem
             // 
@@ -97,8 +97,9 @@ namespace Client
             // partToolStripMenuItem
             // 
             this.partToolStripMenuItem.Name = "partToolStripMenuItem";
-            this.partToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.partToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.partToolStripMenuItem.Text = "Part";
+            this.partToolStripMenuItem.Click += new System.EventHandler(this.partToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
@@ -110,8 +111,9 @@ namespace Client
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
+            this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
             // versionToolStripMenuItem
             // 

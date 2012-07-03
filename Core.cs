@@ -118,6 +118,7 @@ namespace Client
                                 {
                                     if (network.Connected)
                                     {
+                                        network.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + command.Substring(command.IndexOf(channel) + 1 + channel.Length), Scrollback.MessageStyle.System);
                                         network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
                                         return false;
                                     }
@@ -135,8 +136,63 @@ namespace Client
                         {
                             string channel = command;
                             channel = command.Substring("query ".Length);
+                            if (channel.Contains(network.channel_prefix))
+                            {
+                                _Main.Chat.scrollback.InsertText("Invalid name", Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                            if (channel.Contains(" "))
+                            {
+                                channel = channel.Substring(0, channel.IndexOf(" "));
+                                if (network != null)
+                                {
+                                    if (network.Connected)
+                                    {
+                                        if (!network.windows.ContainsKey(channel))
+                                        {
+                                            network.Private(channel);
+                                        }
+                                        network.ShowChat(channel);
+                                        network.windows[channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                                        network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
+                                        return false;
+                                    }
+                                    _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                    return false;
+                                }
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                            return false;
                         }
                         break;
+                    case "me":
+                        if (command.Length > "me ".Length)
+                        {
+                            string message = command.Substring(3);
+                            if (network == null)
+                            {
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                            if (!network.Connected)
+                            {
+                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
+                                return false;
+                            }
+                            Channel curr = network.RenderedChannel;
+                            if (curr != null)
+                            {
+                                Window window = curr.retrieveWindow();
+                                if (window != null)
+                                {
+                                    window.scrollback.InsertText(">>>>>>" + network.nickname + " " + message, Scrollback.MessageStyle.Action);
+                                    network._protocol.Message2(message, curr.Name);
+                                }
+                            }
+                            return false;
+                        }
+                        return false;
                     case "join":
                         if (command.Length > "join ".Length)
                         {
@@ -268,14 +324,17 @@ namespace Client
             System.Xml.XmlNode curr = null;
             XmlAttribute confname = null;
             config.AppendChild(xmlnode);
-            makenode("ident", Configuration.ident, curr, confname, config, xmlnode);
+            makenode("network.ident", Configuration.ident, curr, confname, config, xmlnode);
             makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
-            makenode("nick", Configuration.nick, curr, confname, config, xmlnode);
-            makenode("showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-            makenode("maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
+            makenode("network.nick", Configuration.nick, curr, confname, config, xmlnode);
+            makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+            makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
+            makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
+            makenode("history.name", Configuration.LastHostName, curr, confname, config, xmlnode);
+            makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
             makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
-            makenode("x1", Configuration.x1.ToString() , curr, confname, config, xmlnode);
-            makenode("x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
+            makenode("location.x1", Configuration.x1.ToString() , curr, confname, config, xmlnode);
+            makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
             if (Backup(ConfigFile))
             {
                 config.Save(ConfigFile);
@@ -303,28 +362,37 @@ namespace Client
                         {
                             switch (curr.Attributes[0].Value)
                             {
-                                case "x1":
+                                case "location.x1":
                                     Configuration.x1 = int.Parse(curr.InnerText);
                                     break;
                                 case "window.size":
                                     Configuration.window_size = int.Parse(curr.InnerText);
                                     break;
-                                case "x4":
+                                case "location.x4":
                                     Configuration.x4 = int.Parse(curr.InnerText);
                                     break;
-                                case "nick":
+                                case "network.nick":
                                     Configuration.nick = curr.InnerText;
                                     break;
-                                case "maxi":
+                                case "location.maxi":
                                     Configuration.Window_Maximized = bool.Parse(curr.InnerText);
                                     break;
-                                case "ident":
+                                case "network.ident":
                                     Configuration.ident = curr.InnerText;
                                     break;
-                                case "showctcp":
+                                case "scrollback.showctcp":
                                     Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
                                     break;
-                                
+                                case "formats.user":
+                                    Configuration.format_nick = curr.InnerText;
+                                    break;
+                                case "formats.date":
+                                    Configuration.format_date = curr.InnerText;
+                                    break;
+                                case "history.name":
+                                    Configuration.LastHostName = curr.InnerText;
+                                    break;
+
 
                             }
                         }

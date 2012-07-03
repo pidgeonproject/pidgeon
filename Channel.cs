@@ -28,6 +28,7 @@ namespace Client
         public Network _Network;
         public List<User> UserList = new List<User>();
         public string Topic;
+        public bool dispose = false;
         public string TopicUser;
         public int TopicDate;
         private Window Chat;
@@ -62,108 +63,146 @@ namespace Client
 
         public void redrawUsers()
         {
-            if (Core._KernelThread == System.Threading.Thread.CurrentThread)
+            try
             {
-                retrieveWindow();
-                List<string> owners = new List<string>();
-                List<string> admins = new List<string>();
-                List<string> oper = new List<string>();
-                List<string> halfop = new List<string>();
-                List<string> vs = new List<string>();
-                List<string> users = new List<string>();
-                bool Inserted;
-                Core._Main.UpdateStatus();
-                if (Chat != null)
+                if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
-                    Chat.listView.Items.Clear();
-                    lock (UserList)
+                    Redraw = false;
+                    System.Windows.Forms.ListView listView = null;
+                    retrieveWindow();
+                    List<string> owners = new List<string>();
+                    List<string> admins = new List<string>();
+                    List<string> oper = new List<string>();
+                    List<string> halfop = new List<string>();
+                    List<string> vs = new List<string>();
+                    List<string> users = new List<string>();
+                    bool Inserted;
+                    Core._Main.UpdateStatus();
+                    if (Chat != null)
                     {
-                        foreach (var nick in UserList)
+                        if (Chat.listView.Visible)
                         {
-                            Inserted = false;
-                            foreach (char mode in _Network._protocol.CUModes)
+                            listView = Chat.listViewd;
+                        }
+                        if (Chat.listViewd.Visible)
+                        {
+                            listView = Chat.listView;
+                        }
+                        if (listView == null)
+                        {
+                            return;
+                        }
+                        lock (UserList)
+                        {
+                            foreach (var nick in UserList)
                             {
-                                int _m;
-                                if (nick.ChannelMode._Mode.Contains(mode.ToString()))
+                                Inserted = false;
+                                lock (_Network._protocol.CUModes)
                                 {
-                                    _m = _Network._protocol.CUModes.IndexOf(mode);
-                                    if (_Network._protocol.UChars.Count >= _m)
+                                    foreach (char mode in _Network._protocol.CUModes)
                                     {
-                                        switch (mode)
+                                        int _m;
+                                        if (nick.ChannelMode._Mode.Contains(mode.ToString()))
                                         {
-                                            case 'q':
-                                                owners.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                                Inserted = true;
-                                                break;
-                                            case 'a':
-                                                admins.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                                Inserted = true;
-                                                break;
-                                            case 'o':
-                                                Inserted = true;
-                                                oper.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                                break;
-                                            case 'h':
-                                                Inserted = true;
-                                                halfop.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                                break;
-                                            case 'v':
-                                                vs.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                                Inserted = true;
-                                                break;
-                                        }
-                                        if (!Inserted)
-                                        {
-                                            users.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
-                                            Inserted = true;
+                                            _m = _Network._protocol.CUModes.IndexOf(mode);
+                                            if (_Network._protocol.UChars.Count >= _m)
+                                            {
+                                                switch (mode)
+                                                {
+                                                    case 'q':
+                                                        owners.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                        Inserted = true;
+                                                        break;
+                                                    case 'a':
+                                                        admins.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                        Inserted = true;
+                                                        break;
+                                                    case 'o':
+                                                        Inserted = true;
+                                                        oper.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                        break;
+                                                    case 'h':
+                                                        Inserted = true;
+                                                        halfop.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                        break;
+                                                    case 'v':
+                                                        vs.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                        Inserted = true;
+                                                        break;
+                                                }
+                                                if (!Inserted)
+                                                {
+                                                    users.Add(_Network._protocol.UChars[_m].ToString() + nick.Nick);
+                                                    Inserted = true;
+                                                }
+                                            }
+                                            break;
                                         }
                                     }
-                                    break;
                                 }
+                                if (Inserted == true)
+                                {
+                                    continue;
+                                }
+                                users.Add(nick.Nick);
                             }
-                            if (Inserted == true)
-                            {
-                                continue;
-                            }
-                            users.Add(nick.Nick);
+                        }
+                        
+                        listView.Items.Clear();
+
+                        owners.Sort();
+                        admins.Sort();
+                        halfop.Sort();
+                        oper.Sort();
+                        vs.Sort();
+                        users.Sort();
+
+                        foreach (string user in owners)
+                        {
+                            listView.Items.Add(user);
+                        }
+                        foreach (string user in admins)
+                        {
+                            listView.Items.Add(user);
+                        }
+                        foreach (string user in oper)
+                        {
+                            listView.Items.Add(user);
+                        }
+                        foreach (string user in halfop)
+                        {
+                            listView.Items.Add(user);
+                        }
+                        foreach (string user in vs)
+                        {
+                            listView.Items.Add(user);
+                        }
+
+                        foreach (string user in users)
+                        {
+                            listView.Items.Add(user);
+                        }
+                        if (Chat.listViewd.Visible == true)
+                        {
+                            Chat.listViewd.Visible = false;
+                            Chat.listView.Visible = true;
+                        }
+                        else
+                        {
+                            Chat.listView.Visible = false;
+                            Chat.listViewd.Visible = true;
                         }
                     }
-                    owners.Sort();
-                    admins.Sort();
-                    halfop.Sort();
-                    oper.Sort();
-                    vs.Sort();
-                    users.Sort();
-                    foreach (string user in owners)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
-                    foreach (string user in admins)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
-                    foreach (string user in oper)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
-                    foreach (string user in halfop)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
-                    foreach (string user in vs)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
-
-                    foreach (string user in users)
-                    {
-                        Chat.listView.Items.Add(user);
-                    }
+                    return;
                 }
+
+                Redraw = true;
                 return;
             }
-            Redraw = true;
-            return;
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
         }
 
         public Window retrieveWindow()

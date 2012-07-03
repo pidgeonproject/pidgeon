@@ -24,6 +24,7 @@ namespace Client
 {
     public class Protocol
     {
+        public char delimiter = (char)001;
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
         public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
@@ -90,12 +91,17 @@ namespace Client
 
         public string PRIVMSG(string user, string text)
         {
-            return "<" + user + "> " + text + "";
+            return Configuration.format_nick.Replace("$1", user) + text;
         }
 
         public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             
+        }
+
+        public virtual int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            return 0;
         }
 
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
@@ -127,7 +133,6 @@ namespace Client
         {
         
         }
-
 
         public virtual void Exit() { }  
 
