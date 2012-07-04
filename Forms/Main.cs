@@ -169,7 +169,32 @@ namespace Client
                 toolStripStatusNetwork.Text = Core.network.server;
                 if (Core.network.RenderedChannel != null)
                 {
-                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: ";
+                    string info = "";
+                    if (Core.network.RenderedChannel.Bl != null)
+                    {
+                        info += Core.network.RenderedChannel.Bl.Count.ToString();
+                    } else
+                    {
+                        info += "??";
+                    }
+                    info = info + " / ";
+
+                    if (Core.network.RenderedChannel.Invites != null)
+                    {
+                        info += Core.network.RenderedChannel.Invites.Count.ToString();
+                    } else
+                    {
+                        info += "??";
+                    }
+                    info = info + " / ";
+                    if (Core.network.RenderedChannel.Exceptions != null)
+                    {
+                        info += Core.network.RenderedChannel.Exceptions.Count.ToString();
+                    } else
+                    {
+                        info += "??";
+                    }
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: " + info;
                 }
             }
         }

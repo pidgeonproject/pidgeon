@@ -31,6 +31,9 @@ namespace Client
         public bool dispose = false;
         public string TopicUser;
         public int TopicDate;
+        public List<string> Invites;
+        public List<string> Bl;
+        public List<string> Exceptions;
         private Window Chat;
         public Protocol.Mode _mode = new Protocol.Mode();
         public bool Redraw;
@@ -51,11 +54,14 @@ namespace Client
 
         public bool containUser(string user)
         {
-            foreach (var name in UserList)
+            lock (UserList)
             {
-                if (name.Nick == user)
+                foreach (var name in UserList)
                 {
-                    return true;
+                    if (name.Nick == user)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;

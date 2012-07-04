@@ -40,12 +40,46 @@ namespace Client
         /// <param name="e"></param>
         private void Preferences_Load(object sender, EventArgs e)
         {
+            bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
+            bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
+            lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
+            lident.Text = messages.get("preferences-ident", Core.SelectedLanguage);
+            lname.Text = messages.get("preferences-name", Core.SelectedLanguage);
+            lquit.Text = messages.get("preferences-quit", Core.SelectedLanguage);
+            textBox1.Text = Configuration.nick;
+            textBox2.Text = Configuration.quit;
+            textBox3.Text = Configuration.ident;
+            textBox4.Text = Configuration.user;
 
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void lquit_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void bSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Configuration.nick = textBox1.Text;
+                Core.ConfigSave();
+            }
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
+            Close();
+        }
+
+        private void bCancel_Click(object sender, EventArgs e)
+        {
+            Close();
         }
 
        

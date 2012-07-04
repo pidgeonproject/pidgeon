@@ -130,9 +130,8 @@ namespace Client
                         newmessages.Clear();
                         System.Threading.Thread.Sleep(200);
                     }
-                    catch(System.Threading.ThreadAbortException f)
+                    catch(System.Threading.ThreadAbortException)
                     {
-                        Core.handleException(f);
                         return;
                     }
                 }
@@ -305,7 +304,10 @@ namespace Client
                                                 {
                                                     if (!channel.containUser(user) && user != "")
                                                     {
-                                                        channel.UserList.Add(new User(user, "", _server, ""));
+                                                        lock (channel.UserList)
+                                                        {
+                                                            channel.UserList.Add(new User(user, "", _server, ""));
+                                                        }
                                                     }
                                                 }
                                                 channel.redrawUsers();
@@ -326,7 +328,7 @@ namespace Client
                                             }
                                             cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
                                             cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, CUModes.Count);
-                                            
+
                                             UChars.Clear();
                                             UChars.AddRange(cmodes.ToArray<char>());
 
@@ -347,7 +349,7 @@ namespace Client
                                                 SModes.AddRange(_mode[2].ToArray<char>());
                                                 CModes.AddRange(_mode[3].ToArray<char>());
                                             }
-                                            
+
                                         }
                                         break;
                                     case "366":
@@ -362,7 +364,7 @@ namespace Client
 
                             if (command == "NOTICE")
                             {
-                                _server.windows["!system"].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.User);
+                                _server.windows["!system"].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message);
                                 continue;
                             }
                             if (source.StartsWith(_server.nickname + "!"))
@@ -385,7 +387,7 @@ namespace Client
                                 {
                                     if (_data2[1].Contains("NICK"))
                                     {
-                                        _server.windows["!system"].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> {_value}), Scrollback.MessageStyle.User);
+                                        _server.windows["!system"].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User);
                                         _server.nickname = _value;
                                     }
                                     if (_data2[1].Contains("PART"))
@@ -433,16 +435,19 @@ namespace Client
                                 {
                                     if (item.ok)
                                     {
-                                        foreach (User curr in item.UserList)
+                                        lock (item.UserList)
                                         {
-                                            if (curr.Nick == nick)
+                                            foreach (User curr in item.UserList)
                                             {
-                                                curr.Nick = _new;
-                                                item.redrawUsers();
-                                                Window x = item.retrieveWindow();
-                                                if (x != null)
+                                                if (curr.Nick == nick)
                                                 {
-                                                    x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string>{ nick, _new }), Scrollback.MessageStyle.Channel);
+                                                    curr.Nick = _new;
+                                                    item.redrawUsers();
+                                                    Window x = item.retrieveWindow();
+                                                    if (x != null)
+                                                    {
+                                                        x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string> { nick, _new }), Scrollback.MessageStyle.Channel);
+                                                    }
                                                 }
                                             }
                                         }
@@ -463,14 +468,14 @@ namespace Client
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
                                 string message = text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length);
-                                if (!chan.Contains(_server.channel_prefix) )
+                                if (!chan.Contains(_server.channel_prefix))
                                 {
                                     string uc;
                                     if (message.StartsWith(delimiter.ToString()))
                                     {
-                                    uc = message.Substring(1);
-                                    uc = uc.Substring(0, uc.IndexOf(delimiter.ToString()));
-                                    uc = uc.ToUpper();
+                                        uc = message.Substring(1);
+                                        uc = uc.Substring(0, uc.IndexOf(delimiter.ToString()));
+                                        uc = uc.ToUpper();
                                         switch (uc)
                                         {
                                             case "VERSION":
@@ -489,7 +494,7 @@ namespace Client
                                         }
                                         continue;
                                     }
-                                        
+
                                 }
                                 User user = new User(_nick, _host, _server, _ident);
                                 Channel channel = null;
@@ -528,7 +533,7 @@ namespace Client
                                 {
                                     string chan = parameters.Substring(0, parameters.IndexOf(" "));
                                     chan = chan.Replace(" ", "");
-                                    string user = source.Substring(0, source.IndexOf("!"));
+                                    string user = source;
                                     if (chan.StartsWith(_server.channel_prefix))
                                     {
                                         Channel channel = _server.getChannel(chan);
@@ -539,7 +544,7 @@ namespace Client
                                             string change = parameters.Substring(parameters.IndexOf(" "));
                                             if (Core.windowReady(window))
                                             {
-                                                channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }), Scrollback.MessageStyle.Channel);
+                                                channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }), Scrollback.MessageStyle.Action);
                                             }
 
                                             channel._mode.mode(change);
@@ -572,7 +577,7 @@ namespace Client
                                     User delete = null;
                                     if (Core.windowReady(window))
                                     {
-                                        channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Channel);
+                                        channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Part);
 
                                         if (channel.containUser(user))
                                         {
@@ -609,23 +614,28 @@ namespace Client
                                     if (item.ok)
                                     {
                                         User target = null;
-                                        foreach (User curr in item.UserList)
+                                        lock (item.UserList)
                                         {
-                                            if (curr.Nick == nick)
+                                            foreach (User curr in item.UserList)
                                             {
-                                                target = curr;
-                                                break;
+                                                if (curr.Nick == nick)
+                                                {
+                                                    target = curr;
+                                                    break;
+                                                }
                                             }
                                         }
-
                                         if (target != null)
                                         {
                                             Window x = item.retrieveWindow();
                                             if (x != null)
                                             {
-                                                x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage, new List<string> { nick, _value }), Scrollback.MessageStyle.Channel);
+                                                x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage, new List<string> { nick, _value }), Scrollback.MessageStyle.Join);
                                             }
-                                            item.UserList.Remove(target);
+                                            lock (item.UserList)
+                                            {
+                                                item.UserList.Remove(target);
+                                            }
                                             item.redrawUsers();
                                         }
                                     }
@@ -650,12 +660,15 @@ namespace Client
                                     window = channel.retrieveWindow();
                                     if (Core.windowReady(window))
                                     {
-                                        channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage, new List<string> { source }), Scrollback.MessageStyle.Channel);
+                                        channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage, new List<string> { source }), Scrollback.MessageStyle.Join);
 
                                         if (!channel.containUser(user))
                                         {
-                                            channel.UserList.Add(new User(user, _host, _server, _ident));
-                                            channel.redrawUsers();
+                                            lock (channel.UserList)
+                                            {
+                                                channel.UserList.Add(new User(user, _host, _server, _ident));
+                                            }
+                                                channel.redrawUsers();
                                         }
                                         continue;
                                     }
@@ -666,6 +679,10 @@ namespace Client
                         _server.windows["!system"].scrollback.InsertText(text, Scrollback.MessageStyle.User);
                     }
                 }
+            }
+            catch (System.Threading.ThreadAbortException bleh)
+            {
+                return;
             }
             catch (Exception ex)
             {
