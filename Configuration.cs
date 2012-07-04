@@ -37,8 +37,11 @@ namespace Client
 
         public static string LastHostName = "";
 
-        public static string format_date = "{$1} ";
+        public static string format_date = "($1) ";
         public static string format_nick = "<$1> ";
+
+        public static bool chat_timestamp = true;
+        public static string timestamp_mask = "HH:mm:ss";
 
         public static Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         public static string Version = "Pidgeon v. 1.0.0";

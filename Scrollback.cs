@@ -101,7 +101,33 @@ namespace Client
             {
                 foreach (ContentLine _c in Line)
                 {
-                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + Configuration.CurrentSkin.fontcolor.Name + "\" face=" + Configuration.CurrentSkin.localfont + ">" + Configuration.format_date.Replace("$1", _c.time.ToShortTimeString())  +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
+                    string color = Configuration.CurrentSkin.fontcolor.Name;
+                    switch (_c.style)
+                    { 
+                        case MessageStyle.Action:
+                            color = Configuration.CurrentSkin.miscelancscolor.Name;
+                            break;
+                        case MessageStyle.Kick:
+                            color = Configuration.CurrentSkin.kickcolor.Name;
+                            break;
+                        case MessageStyle.System:
+                            color = Configuration.CurrentSkin.miscelancscolor.Name;
+                            break;
+                        case MessageStyle.Channel:
+                        case MessageStyle.User:
+                            color = Configuration.CurrentSkin.changenickcolor.Name;
+                            break;
+                        case MessageStyle.Join:
+                        case MessageStyle.Part:
+                            color = Configuration.CurrentSkin.joincolor.Name;
+                            break;
+                    }
+                    string stamp = "";
+                    if (Configuration.chat_timestamp)
+                    {
+                        stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
+                    }
+                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp  +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                 }
             }
             text += "</body>" + "</html>";

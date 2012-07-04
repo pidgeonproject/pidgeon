@@ -377,6 +377,9 @@ namespace Client
                                 case "location.maxi":
                                     Configuration.Window_Maximized = bool.Parse(curr.InnerText);
                                     break;
+                                case "timestamp.display":
+                                    Configuration.chat_timestamp = bool.Parse(curr.InnerText);
+                                    break;
                                 case "network.ident":
                                     Configuration.ident = curr.InnerText;
                                     break;
@@ -392,7 +395,9 @@ namespace Client
                                 case "history.name":
                                     Configuration.LastHostName = curr.InnerText;
                                     break;
-
+                                case "formats.datetime":
+                                    Configuration.timestamp_mask = curr.InnerText;
+                                    break;
 
                             }
                         }

@@ -27,6 +27,12 @@ namespace Client
         public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
         public string localfont;
         public int fontsize;
+        public System.Drawing.Color joincolor;
+        public System.Drawing.Color kickcolor;
+        public System.Drawing.Color miscelancscolor;
+        public System.Drawing.Color highlightcolor;
+        public System.Drawing.Color selfcolor;
+        public System.Drawing.Color changenickcolor;
         public System.Drawing.Color fontcolor;
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
@@ -36,6 +42,12 @@ namespace Client
         {
             // defaults
             fontcolor = System.Drawing.Color.White;
+            joincolor = System.Drawing.Color.LightBlue;
+            highlightcolor = System.Drawing.Color.LightPink;
+            miscelancscolor = System.Drawing.Color.LightGreen;
+            selfcolor = System.Drawing.Color.LightGray;
+            changenickcolor = System.Drawing.Color.LightSteelBlue;
+            kickcolor = System.Drawing.Color.White;
             fontsize = 2;
             localfont = "Helvetica";
             backgroundcolor = System.Drawing.Color.Black;

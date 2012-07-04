@@ -94,7 +94,7 @@ namespace Client
                     { x = richTextBox1.Text.Length - 2; }
                     while (x >= 0)
                     {
-                        if (richTextBox1.Text[x] == ' ')
+                        if (richTextBox1.Text[x] == '\n' || richTextBox1.Text[x] == ' ')
                         {
                             x++;
                             break;
@@ -133,7 +133,7 @@ namespace Client
                         }
                         if (Results.Count > 1)
                         {
-                            Core._Main.Chat.scrollback.InsertText("Multiple results found, refine your inp" + Resd, Scrollback.MessageStyle.User);
+                            Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd } ), Scrollback.MessageStyle.System);
                             string part = "";
                             int curr = 0;
                             bool match = true;
@@ -190,12 +190,15 @@ namespace Client
                     List<string> Results2 = new List<string>();
                     string Resd2 = "";
                     if (Core.network.RenderedChannel == null) { return; }
-                    foreach (var item in Core.network.RenderedChannel.UserList)
+                    lock (Core.network.RenderedChannel.UserList)
                     {
-                        if ((item.Nick).StartsWith(text))
+                        foreach (var item in Core.network.RenderedChannel.UserList)
                         {
-                            Resd2 += item.Nick + ", ";
-                            Results2.Add(item.Nick);
+                            if ((item.Nick.ToUpper()).StartsWith(text.ToUpper()))
+                            {
+                                Resd2 += item.Nick + ", ";
+                                Results2.Add(item.Nick);
+                            }
                         }
                     }
                     if (Results2.Count == 1)
@@ -213,7 +216,7 @@ namespace Client
 
                     if (Results2.Count > 1)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Multiple results found, refine your inp" + Resd2, Scrollback.MessageStyle.User);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
                         string part = "";
                         int curr = 0;
                         bool match = true;
