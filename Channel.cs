@@ -22,6 +22,36 @@ using System.Text;
 
 namespace Client
 {
+    public class ChannelParameterMode
+    {
+        public string _Target = "";
+        public string Time;
+        public string _User;
+    }
+    public class Invite : ChannelParameterMode
+    {
+        public Invite(string user,string target, string time)
+        {
+        
+        }
+    }
+    public class Except : ChannelParameterMode
+    {
+        public Except()
+        { 
+        
+        }
+    }
+    public class SimpleBan : ChannelParameterMode
+    {
+        public SimpleBan(string user, string target, string time)
+        {
+            _Target = target;
+            _User = user;
+            Time = time;
+        }
+    }
+
     public class Channel
     {
         public string Name;
@@ -31,9 +61,9 @@ namespace Client
         public bool dispose = false;
         public string TopicUser;
         public int TopicDate;
-        public List<string> Invites;
-        public List<string> Bl;
-        public List<string> Exceptions;
+        public List<Invite> Invites;
+        public List<SimpleBan> Bl;
+        public List<Except> Exceptions;
         private Window Chat;
         public Protocol.Mode _mode = new Protocol.Mode();
         public bool Redraw;
@@ -66,6 +96,22 @@ namespace Client
             }
             return false;
         }
+
+        public bool containsBan(string host)
+        {
+            lock (Bl)
+            {
+                foreach (var name in Bl)
+                {
+                    if (name._Target == host)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
 
         public void redrawUsers()
         {
@@ -209,6 +255,18 @@ namespace Client
             {
                 Core.handleException(f);
             }
+        }
+
+        public User userFromName(string name)
+        {
+                foreach (User item in UserList)
+                {
+                    if (name == item.Nick)
+                    {
+                        return item;
+                    }
+                }
+                return null;
         }
 
         public Window retrieveWindow()

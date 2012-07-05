@@ -219,18 +219,21 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
                         string part = "";
                         int curr = 0;
+                        char orig = ' ';
                         bool match = true;
                         while (match)
                         {
                             char diff = ' ';
                             foreach (var item in Results2)
                             {
+                                string value = item.ToLower();
                                 if (diff == ' ')
                                 {
-                                    diff = item[curr];
+                                    orig = item[curr];
+                                    diff = value[curr];
                                     continue;
                                 }
-                                if (item.Length <= curr || diff != item[curr])
+                                if (item.Length <= curr || diff != value[curr])
                                 {
                                     match = false;
                                     break;
@@ -239,7 +242,7 @@ namespace Client
                             if (match)
                             {
                                 curr = curr + 1;
-                                part += diff.ToString();
+                                part += orig.ToString();
                             }
                         }
                         string result = richTextBox1.Text;

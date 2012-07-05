@@ -67,6 +67,8 @@ namespace Client
             // 
             this.items.ContextMenuStrip = this.contextMenuStrip1;
             this.items.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.items.FullRowSelect = true;
+            this.items.HideSelection = false;
             this.items.ImageIndex = 0;
             this.items.ImageList = this.list;
             this.items.Location = new System.Drawing.Point(0, 0);
@@ -135,7 +137,6 @@ namespace Client
             this.Name = "PidgeonList";
             this.Size = new System.Drawing.Size(182, 321);
             this.Load += new System.EventHandler(this.ChannelList_Load);
-            this.Resize += new System.EventHandler(this._Display);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

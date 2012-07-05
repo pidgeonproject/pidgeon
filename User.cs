@@ -25,7 +25,7 @@ namespace Client
     public class User
     {
         public string Host;
-        public Network network;
+        public Network _Network;
         public string Ident;
         public Protocol.Mode ChannelMode = new Protocol.Mode();
         public string Nick;
@@ -33,7 +33,7 @@ namespace Client
         public User(string _Nick, string host, Network x, string ident)
         {
             ChannelList = new List<Channel>();
-            network = x;
+            _Network = x;
             char prefix = _Nick[0];
             if (x._protocol.UChars.Contains(prefix))
             {

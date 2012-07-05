@@ -48,7 +48,7 @@ namespace Client
             public List<Message> newmessages = new List<Message>();
             public ProtocolIrc protocol;
 
-            
+
 
             public void DeliverMessage(string Message, Configuration.Priority Pr = Configuration.Priority.Normal)
             {
@@ -130,7 +130,7 @@ namespace Client
                         newmessages.Clear();
                         System.Threading.Thread.Sleep(200);
                     }
-                    catch(System.Threading.ThreadAbortException)
+                    catch (System.Threading.ThreadAbortException)
                     {
                         return;
                     }
@@ -207,19 +207,26 @@ namespace Client
                         string[] data = text.Split(':');
                         if (data.Length > 1)
                         {
-                            string[] _command = data[1].Split(' ');
                             string command = "";
                             string parameters = "";
                             string source;
                             string _value;
-                            source = _command[0];
+                            source = text.Substring(1);
+                            source = source.Substring(0, source.IndexOf(" "));
+                            command = text.Substring(1);
+                            command = command.Substring(source.Length + 1);
+                            if (command.Contains(":"))
+                            {
+                                command = command.Substring(0, command.IndexOf(":"));
+                            }
+                            string[] _command = command.Split(' ');
+                            if (_command.Length > 0)
+                            {
+                                command = _command[0];
+                            }
                             if (_command.Length > 1)
                             {
-                                command = _command[1];
-                            }
-                            if (_command.Length > 2)
-                            {
-                                int curr = 2;
+                                int curr = 1;
                                 while (curr < _command.Length)
                                 {
                                     parameters += _command[curr] + " ";
@@ -230,7 +237,11 @@ namespace Client
                                     parameters = parameters.Substring(0, parameters.Length - 1);
                                 }
                             }
-                            _value = text.Substring(data[1].Length + 1);
+                            _value = "";
+                            if (text.Length > 2 + command.Length + source.Length)
+                            {
+                                _value = text.Substring(2 + command.Length + source.Length);
+                            }
                             if (_value.StartsWith(":"))
                             {
                                 _value = _value.Substring(1);
@@ -354,6 +365,46 @@ namespace Client
                                         break;
                                     case "366":
                                         continue;
+                                    case "324":
+                                        if (code.Length > 3)
+                                        {
+                                            string name = code[2];
+                                            string topic = _value;
+                                            Channel channel = _server.getChannel(code[3]);
+                                            if (channel != null)
+                                            {
+                                                Window curr = channel.retrieveWindow();
+                                                if (curr != null)
+                                                {
+                                                    channel._mode.mode(code[4]);
+                                                    curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel);
+                                                }
+                                                continue;
+                                            }
+                                        }
+                                        break;
+                                    //  367 petan # *!*@173.45.238.81
+                                    case "367":
+                                        if (code.Length > 6)
+                                        {
+                                            string chan = code[3];
+                                            Channel channel = _server.getChannel(code[3]);
+                                            if (channel != null)
+                                            {
+                                                if (channel.Bl == null)
+                                                {
+                                                    channel.Bl = new List<SimpleBan>();
+                                                }
+                                                if (!channel.containsBan(code[4]))
+                                                {
+                                                    channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
+                                                    Core._Main.UpdateStatus();
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    case "556":
+                                        break;
                                 }
                             }
                             if (command == "INFO")
@@ -380,6 +431,30 @@ namespace Client
                                             channel = data[2];
                                         }
                                         _server.Join(channel);
+                                        if (Configuration.aggressive_mode)
+                                        {
+                                            Transfer("MODE " + channel, Configuration.Priority.Low);
+                                        }
+
+                                        if (Configuration.aggressive_exception)
+                                        {
+                                            Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
+                                        }
+
+                                        if (Configuration.aggressive_bans)
+                                        {
+                                            Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
+                                        }
+
+                                        if (Configuration.aggressive_invites)
+                                        {
+                                            Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
+                                        }
+
+                                        if (Configuration.aggressive_channel)
+                                        {
+                                            Transfer("WHO " + channel, Configuration.Priority.Low);
+                                        }
                                         continue;
                                     }
                                 }
@@ -519,12 +594,31 @@ namespace Client
                                     }
                                     continue;
                                 }
+                                chan = source.Substring(source.IndexOf("!"));
                                 if (!_server.windows.ContainsKey(chan))
                                 {
                                     _server.Private(chan);
                                 }
-                                _server.windows[chan].scrollback.InsertText(PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Channel);
+                                _server.windows[chan].scrollback.InsertText(PRIVMSG(source, message), Scrollback.MessageStyle.Channel);
                                 continue;
+                            }
+
+                            if (command == "TOPIC")
+                            {
+                                string chan = parameters;
+                                chan = chan.Replace(" ", "");
+                                string user = source.Substring(0, source.IndexOf("!"));
+                                Channel channel = _server.getChannel(chan);
+                                if (channel != null)
+                                {
+                                    Window window;
+                                    window = channel.retrieveWindow();
+                                    if (Core.windowReady(window))
+                                    {
+                                        channel.retrieveWindow().scrollback.InsertText(messages.get("channel-topic", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Channel);
+                                        continue;
+                                    }
+                                }
                             }
 
                             if (command == "MODE")
@@ -547,16 +641,83 @@ namespace Client
                                                 channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }), Scrollback.MessageStyle.Action);
                                             }
 
+                                            while (change.StartsWith(" "))
+                                            {
+                                                change = change.Substring(1);
+                                            }
+
                                             channel._mode.mode(change);
 
-                                            if (channel.containUser(user))
+                                            while (change.EndsWith(" ") && change.Length > 1)
                                             {
-                                                lock (channel.UserList)
+                                                change = change.Substring(0, change.Length - 1);
+                                            }
+
+                                            if (change.Contains(" "))
+                                            {
+                                                string header = change.Substring(change.IndexOf(" "));
+                                                List<string> parameters2 = new List<string>();
+                                                parameters2.AddRange(change.Substring(change.IndexOf(" ")).Split(' '));
+                                                int curr = 0;
+
+                                                char type = ' ';
+
+                                                foreach (char m in header)
                                                 {
 
+                                                    if (m == '+')
+                                                    {
+                                                        type = '+';
+                                                    }
+                                                    if (m == '-')
+                                                    {
+                                                        type = '-';
+                                                    }
+                                                    if (type == ' ')
+                                                    {
+                                                        continue;
+                                                    }
+                                                    if (CUModes.Contains(m) && curr <= parameters2.Count)
+                                                    {
+                                                        User flagged_user = channel.userFromName(parameters2[curr]);
+                                                        if (flagged_user != null)
+                                                        {
+                                                            flagged_user.ChannelMode.mode(type.ToString() + m.ToString());
+                                                        }
+                                                        curr++;
+                                                        channel.redrawUsers();
+                                                    }
+                                                    if (parameters2.Count > curr)
+                                                    {
+                                                        switch (m.ToString())
+                                                        {
+                                                            case "b":
+                                                                lock (channel.Bl)
+                                                                {
+                                                                    if (type == '-')
+                                                                    {
+                                                                        SimpleBan br = null;
+                                                                        foreach (SimpleBan xx in channel.Bl)
+                                                                        {
+                                                                            if (xx._Target == parameters2[curr])
+                                                                            {
+                                                                                br = xx;
+                                                                                break;
+                                                                            }
+                                                                        }
+                                                                        if (br != null)
+                                                                        {
+                                                                            channel.Bl.Remove(br);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                    channel.Bl.Add(new SimpleBan(user, parameters2[curr], ""));
+                                                                }
+                                                                curr++;
+                                                                break;
+                                                        }
+                                                    }
                                                 }
-
-                                                channel.redrawUsers();
                                             }
                                             continue;
                                         }
@@ -630,7 +791,7 @@ namespace Client
                                             Window x = item.retrieveWindow();
                                             if (x != null)
                                             {
-                                                x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage, new List<string> { nick, _value }), Scrollback.MessageStyle.Join);
+                                                x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Join);
                                             }
                                             lock (item.UserList)
                                             {
@@ -668,7 +829,7 @@ namespace Client
                                             {
                                                 channel.UserList.Add(new User(user, _host, _server, _ident));
                                             }
-                                                channel.redrawUsers();
+                                            channel.redrawUsers();
                                         }
                                         continue;
                                     }
@@ -680,7 +841,7 @@ namespace Client
                     }
                 }
             }
-            catch (System.Threading.ThreadAbortException bleh)
+            catch (System.Threading.ThreadAbortException)
             {
                 return;
             }
@@ -765,6 +926,7 @@ namespace Client
             {
                 main.Abort();
             }
+            _server.windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
             return;
         }
 

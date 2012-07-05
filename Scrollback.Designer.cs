@@ -78,31 +78,36 @@ namespace Client
             this.closeToolStripMenuItem,
             this.channelToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 114);
             // 
             // mrhToolStripMenuItem
             // 
             this.mrhToolStripMenuItem.Name = "mrhToolStripMenuItem";
-            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.mrhToolStripMenuItem.Text = "Clean";
+            this.mrhToolStripMenuItem.Click += new System.EventHandler(this.mrhToolStripMenuItem_Click);
             // 
             // scrollToolStripMenuItem
             // 
             this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
-            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.scrollToolStripMenuItem.Text = "Scroll";
+            this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Visible = false;
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
             // 
             // channelToolStripMenuItem
             // 
             this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
-            this.channelToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.channelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.channelToolStripMenuItem.Text = "Channel";
+            this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
             // 
             // refresh
             // 
@@ -145,8 +150,8 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem mrhToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scrollToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
         private System.Windows.Forms.WebBrowser webBrowser1;
+        public System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
 
     }
 }

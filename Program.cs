@@ -34,9 +34,12 @@ namespace Client
             Application.SetCompatibleTextRenderingDefault(false);
             try
             {
-                Core._Main = new Main();
-                Core.network = null;
-                Application.Run(Core._Main);
+                if (Core.Load())
+                {
+                    Core._Main = new Main();
+                    Core.network = null;
+                    Application.Run(Core._Main);
+                }
             }
             catch (System.Threading.ThreadAbortException)
             {

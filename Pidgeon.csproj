@@ -112,11 +112,17 @@
     <Compile Include="Forms\Recovery.Designer.cs">
       <DependentUpon>Recovery.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Channel_Window.cs">
+    <Compile Include="Forms\Channel_Info.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Channel_Window.Designer.cs">
-      <DependentUpon>Channel_Window.cs</DependentUpon>
+    <Compile Include="Forms\Channel_Info.Designer.cs">
+      <DependentUpon>Channel_Info.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Updater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Updater.Designer.cs">
+      <DependentUpon>Updater.cs</DependentUpon>
     </Compile>
     <Compile Include="Window.cs">
       <SubType>UserControl</SubType>
@@ -161,8 +167,8 @@
     <EmbeddedResource Include="Forms\Channels.resx">
       <DependentUpon>Channels.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Channel_Window.resx">
-      <DependentUpon>Channel_Window.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Channel_Info.resx">
+      <DependentUpon>Channel_Info.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Connection.resx">
       <DependentUpon>Connection.cs</DependentUpon>
@@ -181,6 +187,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Style.resx">
       <DependentUpon>Style.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Updater.resx">
+      <DependentUpon>Updater.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PidgeonList.resx">
       <DependentUpon>PidgeonList.cs</DependentUpon>

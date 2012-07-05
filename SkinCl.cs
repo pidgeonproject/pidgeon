@@ -36,6 +36,7 @@ namespace Client
         public System.Drawing.Color fontcolor;
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
+        public System.Drawing.Color colortalk;
         public bool italic;
 
         public Skin()
@@ -47,6 +48,7 @@ namespace Client
             miscelancscolor = System.Drawing.Color.LightGreen;
             selfcolor = System.Drawing.Color.LightGray;
             changenickcolor = System.Drawing.Color.LightSteelBlue;
+            colortalk = System.Drawing.Color.LightYellow;
             kickcolor = System.Drawing.Color.White;
             fontsize = 2;
             localfont = "Helvetica";

@@ -64,12 +64,16 @@ namespace Client
 
         private void _insertUs(User _us)
         {
-            if (Servers.ContainsKey(_us.network))
+            if (Servers.ContainsKey(_us._Network))
             {
                 TreeNode text = new TreeNode();
                 text.Text = _us.Nick;
-                Servers[_us.network].Nodes.Add(text);
+                Servers[_us._Network].Nodes.Add(text);
                 UserList.Add(_us, text);
+                if (_us._Network.windows.ContainsKey(_us.Nick))
+                {
+                    _us._Network.windows[_us.Nick].scrollback.ln = text;
+                }
             }
         }
 
@@ -81,11 +85,16 @@ namespace Client
                 text.Text = chan.Name;
                 Servers[chan._Network].Nodes.Add(text);
                 Channels.Add(chan, text);
+                Window xx = chan.retrieveWindow();
+                if (xx != null)
+                {
+                    xx.scrollback.ln = text;
+                }
             }
         }
 
         /// <summary>
-        /// 
+        /// insert network to lv
         /// </summary>
         /// <param name="network"></param>
         public void insertNetwork(Network network)
@@ -93,12 +102,9 @@ namespace Client
             TreeNode text = new TreeNode();
             text.Text = network.server;
             Servers.Add(network, text);
+            text.Expand();
+            network.windows["!system"].scrollback.ln = text;
             this.items.Nodes.Add(text);
-        }
-
-        private void _Display(object sender, EventArgs e)
-        {
-
         }
 
         private void timer2_Tick(object sender, EventArgs e)
@@ -171,6 +177,7 @@ namespace Client
         private void items_AfterSelect(object sender, TreeViewEventArgs e)
         {
             RedrawMenu();
+            items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
             try
             {
                 if (Servers.ContainsValue(e.Node))
@@ -187,6 +194,20 @@ namespace Client
                         }
                     }
                 }
+                if (UserList.ContainsValue(e.Node))
+                {
+                    foreach (var cu in UserList)
+                    {
+                        if (cu.Value == e.Node)
+                        {
+                            Core.network = cu.Key._Network;
+                            cu.Key._Network.ShowChat(cu.Key.Nick);
+                            closeToolStripMenuItem.Visible = true;
+                            Core._Main.UpdateStatus();
+                            return;
+                        }
+                    }
+                }
                 if (Channels.ContainsValue(e.Node))
                 {
                     foreach (var cu in Channels)
@@ -196,6 +217,7 @@ namespace Client
                             Core.network = cu.Key._Network;
                             partToolStripMenuItem.Visible = true;
                             closeToolStripMenuItem.Visible = true;
+                            cu.Key._Network.RenderedChannel = cu.Key;
                             cu.Key._Network.ShowChat(cu.Key.Name);
                             Core._Main.UpdateStatus();
                             return;
@@ -285,7 +307,6 @@ namespace Client
         {
             if (Servers.ContainsValue(items.SelectedNode))
             {
-                Network dv = null;
                 foreach (var cu in Servers)
                 {
                     if (cu.Value == items.SelectedNode)
@@ -310,7 +331,7 @@ namespace Client
                             cu.Key.ok = false;
                             return;
                         }
-                        break;
+                        return;
                     }
                 }
             }

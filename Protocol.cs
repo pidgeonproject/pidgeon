@@ -42,6 +42,7 @@ namespace Client
                 while (curr < _Mode.Count)
                 {
                     _val += _Mode[curr];
+                    curr++;
                 }
                 return "+" + _val;
             }
@@ -53,7 +54,7 @@ namespace Client
                 {
                     if (_x == ' ')
                     {
-                        break;
+                        continue;
                     }
                     if (_x == '-')
                     {

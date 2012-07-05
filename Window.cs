@@ -32,7 +32,10 @@ namespace Client
         public bool Making = true;
         public string name;
         public bool writable;
-        public Network network = null;
+        public bool isChannel = false;
+        private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
+        public bool isPM = false;
+        public Network _Network = null;
 
         public Window()
         {
@@ -52,6 +55,8 @@ namespace Client
         public void create()
         {
             scrollback.create();
+            scrollback.owner = this;
+            scrollback.channelToolStripMenuItem.Visible = isChannel;
         }
 
         public bool Redraw()
@@ -91,7 +96,17 @@ namespace Client
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("KICK " + name + " " + user.Text + " " + Configuration.DefaultReason);
 
+                    }
+                }
+            }
         }
 
         private void textbox_Load(object sender, EventArgs e)
@@ -110,92 +125,254 @@ namespace Client
             oToolStripMenuItem1.Text = messages.get("give-o", Core.SelectedLanguage);
             aToolStripMenuItem1.Text = messages.get("give-a", Core.SelectedLanguage);
             qToolStripMenuItem1.Text = messages.get("give-q", Core.SelectedLanguage);
+            if (!isChannel)
+            {
+                banToolStripMenuItem.Visible = false;
+                whoisToolStripMenuItem.Visible = false;
+                toolStripMenuItem1.Visible = false;
+                toolStripMenuItem2.Visible = false;
+                toolStripMenuItem3.Visible = false;
+                kbToolStripMenuItem.Visible = false;
+                whoisToolStripMenuItem.Visible = false;
+                ctToolStripMenuItem.Visible = false;
+                refreshToolStripMenuItem.Visible = false;
+                kickBanToolStripMenuItem.Visible = false;
+                modeToolStripMenuItem.Visible = false;
+                kickToolStripMenuItem.Visible = false;
+                kickrToolStripMenuItem.Visible = false;
+            }
         }
 
         private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("WHOIS " + user.Text);
+                    }
+                }
+            }
+        }
 
+        string Decode(string user)
+        { 
+            foreach(char item in _Network._protocol.UChars)
+            {
+                if (user.Contains(item))
+                {
+                    user = user.Replace(item.ToString(), "");
+                }
+            }
+            return user;
+        }
+
+        double Mode(string mode)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("MODE " + name + " "  + mode + " " + Decode(user.Text));
+                    }
+                }
+            }
+            return 0;
         }
 
         private void qToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Mode("+q");
         }
 
         private void aToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Mode("+a");
         }
 
         private void qToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            Mode("-q");
         }
 
         private void aToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            Mode("-a");
         }
 
         private void oToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            Mode("-o");
         }
 
         private void kickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                    }
+                }
+            }
         }
 
         private void hToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            Mode("-h");
         }
 
         private void vToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            Mode("-v");
         }
 
         private void oToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Mode("+o");
         }
 
         private void hToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Mode("+h");
         }
 
         private void vToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Mode("+v");
         }
 
         private void banToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
 
+                }
+            }
         }
 
         private void krToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
 
+                }
+            }
         }
 
         private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                    }
+                }
+            }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (network == null)
-                return;
-
-            Channel item = network.getChannel(name);
-            if (item != null)
+            if (isChannel)
             {
-                item.redrawUsers();
+                if (_Network == null)
+                    return;
+
+                Channel item = _Network.getChannel(name);
+                if (item != null)
+                {
+                    item.redrawUsers();
+                }
+            }
+        }
+
+        private void vERSIONToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+
+                }
+            }
+        }
+
+        private void pINGToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+
+                }
+            }
+        }
+
+        private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+
+                }
+            }
+        }
+
+        private void tIMEToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+
+                }
+            }
+        }
+
+        private void listViewd_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedUser = listViewd.SelectedItems;
+        }
+
+        private void listView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SelectedUser = listView.SelectedItems;
+        }
+
+        private void modeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void messageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        if (!Core.network.windows.ContainsKey(user.Text))
+                        {
+                            _Network.Private(user.Name);
+                        }
+                        _Network.ShowChat(user.Name);
+                    }
+                }
             }
         }
     }

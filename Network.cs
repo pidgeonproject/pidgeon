@@ -53,7 +53,7 @@ namespace Client
             return null;
         }
 
-        public void CreateChat(string _name, bool _Focus, bool _writable = false)
+        public void CreateChat(string _name, bool _Focus, bool _writable = false, bool channelw = false)
         {
             Main._WindowRequest request = new Main._WindowRequest();
             request.owner = this;
@@ -64,6 +64,10 @@ namespace Client
             request.window.name = _name;
             request.window.writable = _writable;
             windows.Add(_name, request.window);
+            if (channelw == true)
+            {
+                request.window.isChannel = true;
+            }
             Core._Main.W.Add(request);
         }
 
@@ -88,7 +92,7 @@ namespace Client
         /// <param name="window"></param>
         public void _Chat(string _name, bool _writable, Main._WindowRequest window)
         {
-            
+
         }
 
         public int Join(string channel)
@@ -99,7 +103,7 @@ namespace Client
             _channel._Network = this;
             Channels.Add(_channel);
             Core._Main.ChannelList.insertChannel(_channel);
-            CreateChat(channel, true, true);
+            CreateChat(channel, true, true, true);
             return 0;
         }
 
@@ -109,14 +113,17 @@ namespace Client
             {
                 Current = windows[name];
                 Current.Visible = true;
-                if (Core._Main.Chat != null)
+                if (Current != Core._Main.Chat)
                 {
-                    Core._Main.Chat.Visible = false;
+                    if (Core._Main.Chat != null)
+                    {
+                        Core._Main.Chat.Visible = false;
+                    }
                 }
                 Core._Main.Reload();
                 Current.Redraw();
                 Core._Main.toolStripStatusChannel.Text = name;
-                
+
                 Current.textbox.Focus();
                 Core._Main.Chat = windows[name];
                 Current.Making = false;
@@ -130,8 +137,8 @@ namespace Client
             server = Server;
             quit = Configuration.quit;
             nickname = Configuration.nick;
-            Core._Main.ChannelList.insertNetwork(this);
             CreateChat("!system", true);
+            Core._Main.ChannelList.insertNetwork(this);
             username = Configuration.user;
             ident = Configuration.ident;
         }

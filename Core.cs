@@ -21,6 +21,7 @@ using System.Net;
 using System.Xml;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -40,9 +41,10 @@ namespace Client
 
         public static Thread _KernelThread;
         public static DateTime LoadTime;
-        public static string ConfigFile = "configuration.dat";
+        public static string ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar + "configuration.dat";
         public static string SelectedLanguage = "en";
         public static List<Protocol> Connections = new List<Protocol>();
+        public static Thread ThUp;
 
         public static Exception recovery_exception;
         public static Thread _RecoveryThread;
@@ -54,10 +56,27 @@ namespace Client
         public static bool Load()
         {
             _KernelThread = System.Threading.Thread.CurrentThread;
-            ConfigurationLoad();
             LoadTime = DateTime.Now;
+            if (System.Windows.Forms.Application.LocalUserAppDataPath.EndsWith(System.Windows.Forms.Application.ProductVersion))
+            {
+                ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath.Substring(0,
+                    System.Windows.Forms.Application.LocalUserAppDataPath.Length - System.Windows.Forms.Application.ProductVersion.Length) + "configuration.dat";
+            }
             messages.data.Add("en", new messages.container("en"));
-            return true;
+            messages.data.Add("cs", new messages.container("cs"));
+            if (!System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
+            {
+                ThUp = new Thread(Updater.Run);
+                ThUp.Start();
+                ConfigurationLoad();
+                return true;
+            }
+            Updater _finalisingupdater = new Updater();
+            _finalisingupdater.update.Visible = false;
+            _finalisingupdater.finalize = true;
+            _finalisingupdater.lStatus.Text = messages.get("update2");
+            System.Windows.Forms.Application.Run(_finalisingupdater);
+            return false;
         }
 
         public static void Recover()
@@ -118,8 +137,10 @@ namespace Client
                                 {
                                     if (network.Connected)
                                     {
-                                        network.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + command.Substring(command.IndexOf(channel) + 1 + channel.Length), Scrollback.MessageStyle.System);
-                                        network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
+                                        string ms = command.Substring(command.IndexOf(" "));
+                                        ms = ms.Substring(ms.IndexOf(" "));
+                                        network.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
+                                        network._protocol.Message(ms, channel);
                                         return false;
                                     }
                                     _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
@@ -243,7 +264,7 @@ namespace Client
                         }
                         connectIRC(name);
                         return true;
-                    case "pidgeon.config":
+                    case "pidgeon.rehash":
                         //Core._Main.ShowPr();
                         break;
                     case "raw":
@@ -331,10 +352,27 @@ namespace Client
             makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
             makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
             makenode("history.name", Configuration.LastHostName, curr, confname, config, xmlnode);
+            makenode("irc.auto.whois", Configuration.aggressive_whois.ToString() , curr, confname, config, xmlnode);
+            makenode("irc.auto.mode", Configuration.aggressive_mode.ToString(), curr, confname, config, xmlnode);
+            makenode("irc.auto.channels", Configuration.aggressive_channel.ToString(), curr, confname, config, xmlnode);
+            makenode("irc.auto.bans", Configuration.aggressive_bans.ToString(), curr, confname, config, xmlnode);
+            makenode("irc.auto.exception", Configuration.aggressive_exception.ToString(), curr, confname, config, xmlnode);
+            makenode("irc.auto.invites", Configuration.aggressive_invites.ToString(), curr, confname, config, xmlnode);
+            
             makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
             makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
             makenode("location.x1", Configuration.x1.ToString() , curr, confname, config, xmlnode);
             makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
+            makenode("logs.dir", Configuration.logs_dir, curr, confname, config, xmlnode);
+            makenode("logs.type", Configuration.logs_name, curr, confname, config, xmlnode);
+            makenode("shield.ctcp", Configuration.ctcp_prot.ToString(), curr, confname, config, xmlnode);
+            makenode("shield.flood", Configuration.flood_prot.ToString(), curr, confname, config, xmlnode);
+            makenode("shield.notice", Configuration.notice_prot.ToString(), curr, confname, config, xmlnode);
+            makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+            makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
+            makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
+            makenode("location.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+
             if (Backup(ConfigFile))
             {
                 config.Save(ConfigFile);
@@ -352,56 +390,113 @@ namespace Client
             // Check if config file is present
             if (File.Exists(ConfigFile))
             {
-                XmlDocument configuration = new XmlDocument();
-                configuration.Load(ConfigFile);
-                foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
+                try
                 {
-                    if (curr.Attributes.Count > 0)
+                    XmlDocument configuration = new XmlDocument();
+                    configuration.Load(ConfigFile);
+                    foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                     {
-                        if (curr.Attributes[0].Name == "confname")
+                        if (curr.Attributes.Count > 0)
                         {
-                            switch (curr.Attributes[0].Value)
+                            if (curr.Attributes[0].Name == "confname")
                             {
-                                case "location.x1":
-                                    Configuration.x1 = int.Parse(curr.InnerText);
-                                    break;
-                                case "window.size":
-                                    Configuration.window_size = int.Parse(curr.InnerText);
-                                    break;
-                                case "location.x4":
-                                    Configuration.x4 = int.Parse(curr.InnerText);
-                                    break;
-                                case "network.nick":
-                                    Configuration.nick = curr.InnerText;
-                                    break;
-                                case "location.maxi":
-                                    Configuration.Window_Maximized = bool.Parse(curr.InnerText);
-                                    break;
-                                case "timestamp.display":
-                                    Configuration.chat_timestamp = bool.Parse(curr.InnerText);
-                                    break;
-                                case "network.ident":
-                                    Configuration.ident = curr.InnerText;
-                                    break;
-                                case "scrollback.showctcp":
-                                    Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
-                                    break;
-                                case "formats.user":
-                                    Configuration.format_nick = curr.InnerText;
-                                    break;
-                                case "formats.date":
-                                    Configuration.format_date = curr.InnerText;
-                                    break;
-                                case "history.name":
-                                    Configuration.LastHostName = curr.InnerText;
-                                    break;
-                                case "formats.datetime":
-                                    Configuration.timestamp_mask = curr.InnerText;
-                                    break;
+                                switch (curr.Attributes[0].Value)
+                                {
+                                    case "location.x1":
+                                        Configuration.x1 = int.Parse(curr.InnerText);
+                                        break;
+                                    case "window.size":
+                                        Configuration.window_size = int.Parse(curr.InnerText);
+                                        break;
+                                    case "location.x4":
+                                        Configuration.x4 = int.Parse(curr.InnerText);
+                                        break;
+                                    case "network.nick":
+                                        Configuration.nick = curr.InnerText;
+                                        break;
+                                    case "location.maxi":
+                                        Configuration.Window_Maximized = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "timestamp.display":
+                                        Configuration.chat_timestamp = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "network.ident":
+                                        Configuration.ident = curr.InnerText;
+                                        break;
+                                    case "scrollback.showctcp":
+                                        Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "formats.user":
+                                        Configuration.format_nick = curr.InnerText;
+                                        break;
+                                    case "formats.date":
+                                        Configuration.format_date = curr.InnerText;
+                                        break;
+                                    case "history.name":
+                                        Configuration.LastHostName = curr.InnerText;
+                                        break;
+                                    case "formats.datetime":
+                                        Configuration.timestamp_mask = curr.InnerText;
+                                        break;
+                                    case "irc.auto.whois":
+                                        Configuration.aggressive_whois = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "irc.auto.bans":
+                                        Configuration.aggressive_bans = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "irc.auto.exception":
+                                        Configuration.aggressive_exception = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "irc.auto.channels":
+                                        Configuration.aggressive_channel = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "irc.auto.invites":
+                                        Configuration.aggressive_invites = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "irc.auto.mode":
+                                        Configuration.aggressive_mode = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "network.reason":
+                                        Configuration.DefaultReason = curr.InnerText;
+                                        break;
+                                    case "logs.type":
+                                        Configuration.logs_name = curr.InnerText;
+                                        break;
+                                    case "shield.ctcp":
+                                        Configuration.ctcp_prot = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "shield.flood":
+                                        Configuration.flood_prot = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "shield.notice":
+                                        Configuration.notice_prot = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "ignore.ctcp":
+                                        Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "logs.html":
+                                        Configuration.logs_html = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "logs.dir":
+                                        Configuration.logs_dir = curr.InnerText;
+                                        break;
+                                    case "logs.xml":
+                                        Configuration.logs_xml = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "logs.txt":
+                                        Configuration.logs_txt = bool.Parse(curr.InnerText);
+                                        break;
 
+
+                                }
                             }
                         }
                     }
+                }
+                catch (Exception f)
+                {
+                    handleException(f);
+                    return false;
                 }
             }
             return false;
@@ -454,14 +549,19 @@ namespace Client
 
         public static bool Quit()
         {
-            _Main.Visible = false;
-            ConfigSave();
-            foreach (Protocol server in Connections)
+            try
             {
-                server.Exit();
+                _Main.Visible = false;
+                ConfigSave();
+                foreach (Protocol server in Connections)
+                {
+                    server.Exit();
+                }
+                System.Threading.Thread.Sleep(200);
+                System.Windows.Forms.Application.Exit();
             }
-            System.Threading.Thread.Sleep(200);
-            System.Windows.Forms.Application.Exit();
+            catch (Exception)
+            { }
             return true;
         }
     }
