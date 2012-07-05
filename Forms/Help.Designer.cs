@@ -48,8 +48,11 @@ namespace Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Help));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.about = new System.Windows.Forms.Panel();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label1 = new System.Windows.Forms.Label();
             this.licensetext = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
             this.SuspendLayout();
@@ -66,24 +69,47 @@ namespace Client
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.22717F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.77283F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 427);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 299);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // about
             // 
+            this.about.Controls.Add(this.label2);
+            this.about.Controls.Add(this.linkLabel1);
+            this.about.Controls.Add(this.label1);
             this.about.Controls.Add(this.licensetext);
             this.about.Controls.Add(this.labelName);
             this.about.Dock = System.Windows.Forms.DockStyle.Fill;
             this.about.Location = new System.Drawing.Point(3, 3);
             this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(613, 375);
+            this.about.Size = new System.Drawing.Size(613, 260);
             this.about.TabIndex = 0;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(19, 83);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(147, 13);
+            this.linkLabel1.TabIndex = 3;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "http://pidgeonclient.org/wiki/";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(19, 60);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "Made by: Petr Bena";
             // 
             // licensetext
             // 
-            this.licensetext.Location = new System.Drawing.Point(19, 211);
+            this.licensetext.Location = new System.Drawing.Point(19, 127);
             this.licensetext.Name = "licensetext";
-            this.licensetext.Size = new System.Drawing.Size(585, 145);
+            this.licensetext.Size = new System.Drawing.Size(585, 133);
             this.licensetext.TabIndex = 1;
             this.licensetext.Text = resources.GetString("licensetext.Text");
             // 
@@ -97,17 +123,27 @@ namespace Client
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Pidgeon";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(19, 105);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(35, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "label2";
+            // 
             // Help
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 427);
+            this.ClientSize = new System.Drawing.Size(619, 299);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Help";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Help";
+            this.Load += new System.EventHandler(this.Help_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.about.ResumeLayout(false);
             this.about.PerformLayout();
@@ -121,6 +157,9 @@ namespace Client
         private System.Windows.Forms.Panel about;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Label licensetext;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label2;
 
     }
 }

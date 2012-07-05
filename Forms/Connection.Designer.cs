@@ -126,7 +126,7 @@ namespace Client
             // 
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(27, 23);
+            this.label1.Size = new System.Drawing.Size(53, 23);
             this.label1.TabIndex = 1;
             this.label1.Text = "nick";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

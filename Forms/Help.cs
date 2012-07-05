@@ -32,5 +32,15 @@ namespace Client
         {
             InitializeComponent();
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void Help_Load(object sender, EventArgs e)
+        {
+            label2.Text = Configuration.Version;
+        }
     }
 }

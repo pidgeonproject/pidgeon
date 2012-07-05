@@ -50,17 +50,24 @@ namespace Client
             textBox2.Text = Configuration.quit;
             textBox3.Text = Configuration.ident;
             textBox4.Text = Configuration.user;
-
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            checkBox3.Checked = Configuration.logs_xml;
+            checkBox5.Checked = Configuration.flood_prot;
+            checkBox1.Checked = Configuration.logs_txt;
+            checkBox2.Checked = Configuration.logs_html;
+            checkBox7.Checked = Configuration.notice_prot;
+            checkBox4.Checked = Configuration.DisplayCtcp;
+            checkBox6.Checked = Configuration.ctcp_prot;
+            textBox5.Text = Configuration.logs_dir;
+            textBox6.Text = Configuration.logs_name;
+            listView1.Items.Add(new ListViewItem("IRC"));
+            listView1.Items.Add(new ListViewItem("System"));
+            listView1.Items.Add(new ListViewItem("Logs"));
+            listView1.Items.Add(new ListViewItem("Protections"));
         }
 
         private void lquit_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
 
         private void bSave_Click(object sender, EventArgs e)
@@ -68,6 +75,18 @@ namespace Client
             try
             {
                 Configuration.nick = textBox1.Text;
+                Configuration.quit = textBox2.Text;
+                Configuration.ident = textBox3.Text;
+                Configuration.user = textBox4.Text;
+                Configuration.logs_xml = checkBox3.Checked;
+                Configuration.flood_prot = checkBox5.Checked;
+                Configuration.logs_txt = checkBox1.Checked;
+                Configuration.logs_html = checkBox2.Checked;
+                Configuration.notice_prot = checkBox7.Checked;
+                Configuration.DisplayCtcp = checkBox4.Checked;
+                Configuration.ctcp_prot = checkBox6.Checked;
+                Configuration.logs_dir = textBox5.Text;
+                Configuration.logs_name = textBox6.Text;
                 Core.ConfigSave();
             }
             catch (Exception f)
@@ -80,6 +99,26 @@ namespace Client
         private void bCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listView1.SelectedItems.Count != 1) return;
+            switch (listView1.SelectedItems[0].Index)
+            { 
+                case 0:
+                    gro1.BringToFront();
+                    break;
+                case 1:
+                    gro2.BringToFront();
+                    break;
+                case 2:
+                    gro3.BringToFront();
+                    break;
+                case 3:
+                    gro4.BringToFront();
+                    break;
+            }
         }
 
        

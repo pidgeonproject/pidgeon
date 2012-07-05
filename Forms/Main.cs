@@ -112,7 +112,6 @@ namespace Client
 
         public void _Load()
         {
-            Core.Load();
             fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
             shutDownToolStripMenuItem.Text = messages.get("window-menu-quit", Core.SelectedLanguage);
             if (Configuration.Window_Maximized)
@@ -194,9 +193,16 @@ namespace Client
                     {
                         info += "??";
                     }
+                    setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
                     toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: " + info;
                 }
             }
+        }
+
+        public int setText(string name)
+        {
+            Text = "Pidgeon Client v 1.0 " + name;
+            return 2;
         }
 
         private void shutDownToolStripMenuItem_Click(object sender, EventArgs e)
