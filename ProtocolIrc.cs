@@ -48,8 +48,6 @@ namespace Client
             public List<Message> newmessages = new List<Message>();
             public ProtocolIrc protocol;
 
-
-
             public void DeliverMessage(string Message, Configuration.Priority Pr = Configuration.Priority.Normal)
             {
                 Message text = new Message();
@@ -148,6 +146,16 @@ namespace Client
             _messages.DeliverMessage(text, Pr);
         }
 
+        public string convertUNIX(string time)
+        {
+            long baseTicks = 621355968000000000;
+            long tickResolution = 10000000;
+
+            long epoch = (DateTime.Now.ToUniversalTime().Ticks - baseTicks) / tickResolution;
+            long epochTicks = (epoch * tickResolution) + baseTicks;
+            return new DateTime(epochTicks, DateTimeKind.Utc).ToString();
+        }
+
         public void _Ping()
         {
             try
@@ -209,17 +217,18 @@ namespace Client
                         {
                             string command = "";
                             string parameters = "";
+                            string command2 = "";
                             string source;
                             string _value;
                             source = text.Substring(1);
                             source = source.Substring(0, source.IndexOf(" "));
-                            command = text.Substring(1);
-                            command = command.Substring(source.Length + 1);
-                            if (command.Contains(":"))
+                            command2 = text.Substring(1);
+                            command2 = command2.Substring(source.Length + 1);
+                            if (command2.Contains(" :"))
                             {
-                                command = command.Substring(0, command.IndexOf(":"));
+                                command2 = command2.Substring(0, command2.IndexOf(" :"));
                             }
-                            string[] _command = command.Split(' ');
+                            string[] _command = command2.Split(' ');
                             if (_command.Length > 0)
                             {
                                 command = _command[0];
@@ -238,9 +247,9 @@ namespace Client
                                 }
                             }
                             _value = "";
-                            if (text.Length > 2 + command.Length + source.Length)
+                            if (text.Length > 3 + command2.Length + source.Length)
                             {
-                                _value = text.Substring(2 + command.Length + source.Length);
+                                _value = text.Substring(3 + command2.Length + source.Length);
                             }
                             if (_value.StartsWith(":"))
                             {
@@ -277,6 +286,10 @@ namespace Client
                                                 Window curr = channel.retrieveWindow();
                                                 if (curr != null)
                                                 {
+                                                    while (curr.scrollback == null)
+                                                    {
+                                                        System.Threading.Thread.Sleep(100);
+                                                    }
                                                     curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel);
                                                 }
                                                 channel.Topic = topic;
@@ -298,6 +311,7 @@ namespace Client
                                                 Window curr = channel.retrieveWindow();
                                                 if (Core.windowReady(curr))
                                                 {
+                                                    curr.scrollback.InsertText("Topic by: " + user + " date " + convertUNIX(time), Scrollback.MessageStyle.Channel);
                                                     continue;
                                                 }
                                             }
@@ -430,7 +444,7 @@ namespace Client
                                         {
                                             channel = data[2];
                                         }
-                                        _server.Join(channel);
+                                        Channel curr = _server.Join(channel);
                                         if (Configuration.aggressive_mode)
                                         {
                                             Transfer("MODE " + channel, Configuration.Priority.Low);
@@ -438,11 +452,13 @@ namespace Client
 
                                         if (Configuration.aggressive_exception)
                                         {
+                                            curr.parsing_xe = true;
                                             Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                                         }
 
                                         if (Configuration.aggressive_bans)
                                         {
+                                            curr.parsing_xb = true;
                                             Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                                         }
 
@@ -453,6 +469,7 @@ namespace Client
 
                                         if (Configuration.aggressive_channel)
                                         {
+                                            curr.parsing_who = true;
                                             Transfer("WHO " + channel, Configuration.Priority.Low);
                                         }
                                         continue;
@@ -490,7 +507,6 @@ namespace Client
                                                 c.ok = false;
                                             }
                                         }
-                                        _server.Join(channel);
                                         continue;
                                     }
                                 }
@@ -612,6 +628,7 @@ namespace Client
                                 if (channel != null)
                                 {
                                     Window window;
+                                    channel.Topic = _value;
                                     window = channel.retrieveWindow();
                                     if (Core.windowReady(window))
                                     {
@@ -655,9 +672,9 @@ namespace Client
 
                                             if (change.Contains(" "))
                                             {
-                                                string header = change.Substring(change.IndexOf(" "));
+                                                string header = change.Substring(0, change.IndexOf(" "));
                                                 List<string> parameters2 = new List<string>();
-                                                parameters2.AddRange(change.Substring(change.IndexOf(" ")).Split(' '));
+                                                parameters2.AddRange(change.Substring(change.IndexOf(" ") + 1).Split(' '));
                                                 int curr = 0;
 
                                                 char type = ' ';
@@ -802,6 +819,14 @@ namespace Client
                                     }
                                 }
                                 continue;
+                            }
+
+                            if (command == "KICK")
+                            {
+                                string nick = _command[1];
+                                string _new = _value;
+                                
+                                //continue;
                             }
 
                             if (command == "JOIN")

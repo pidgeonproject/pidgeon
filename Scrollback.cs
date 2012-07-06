@@ -21,6 +21,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Text;
+using System.IO;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
@@ -33,6 +34,7 @@ namespace Client
     {
         private List<ContentLine> Line = new List<ContentLine>();
         public TextBox Last;
+        public static List<Scrollback> _control = new List<Scrollback>();
         public Window owner;
         public TreeNode ln;
         public class ContentLine
@@ -50,11 +52,23 @@ namespace Client
         private bool db = false;
         public bool Modified;
 
+        new public void Dispose()
+        {
+            lock (_control)
+            {
+                if (_control.Contains(this))
+                {
+                    _control.Remove(this);
+                }
+            }
+            this.components.Dispose();
+        }
+
         public void create()
         {
             InitializeComponent();
             Data.Visible = false;
-        }
+        } 
 
         public void Recreate(object sender, EventArgs e)
         {
@@ -64,7 +78,10 @@ namespace Client
 
         public Scrollback()
         {
-            
+            lock (_control)
+            {
+                _control.Add(this);
+            }
         }
 
         public enum MessageStyle
@@ -79,11 +96,11 @@ namespace Client
             Part,
         }
 
-        public bool InsertText(string text, MessageStyle _style, bool lg = true)
+        public bool InsertText(string text, MessageStyle input_style, bool lg = true)
         {
             if (owner != Core._Main.Chat && ln != null)
             {
-                switch (_style)
+                switch (input_style)
                 {
                     case MessageStyle.Kick:
                     case MessageStyle.System:
@@ -110,26 +127,68 @@ namespace Client
             }
             lock(Line)
             {
-                Line.Add(new ContentLine(_style, text));
+                Line.Add(new ContentLine(input_style, text));
             }
-            if (lg == true)
+            if (lg == true && owner != null && owner._Network != null)
             {
-                
+                if (!Directory.Exists(Configuration.logs_dir))
+                {
+                    Directory.CreateDirectory(Configuration.logs_dir);
+                }
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
+                {
+                    System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
+                }
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name))
+                {
+                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name);
+                }
+                if (Configuration.logs_txt)
+                {
+                    string stamp = "";
+                    if (Configuration.chat_timestamp)
+                    {
+                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                    }
+                    System.IO.File.AppendAllText(_getFileName() + ".txt", stamp + text + "\n");
+                }
+                if (Configuration.logs_html)
+                {
+                    string stamp = "";
+                    if (Configuration.chat_timestamp)
+                    {
+                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                    }
+                    System.IO.File.AppendAllText( _getFileName() + ".html", "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp  +  System.Web.HttpUtility.HtmlEncode(text) + "</font><br>\n" );
+                }
+                if (Configuration.logs_xml)
+                {
+                    System.IO.File.AppendAllText(_getFileName() + ".xml", "<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + input_style.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n");
+                }
             }
             Modified = true;
             return false;
+        }
+
+        public string _getFileName()
+        {
+            string name = Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.logs_name).Replace("$1", owner.name);
+            return name;
         }
 
         private void Scrollback_Load(object sender, EventArgs e)
         {
             Reload();
             Recreate(null, null);
+            db = false;
+            Data.Visible = true;
+            webBrowser1.Visible = false;
         }
 
         public void Reload()
         {
             Modified = false;
-            string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0,100000);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+            string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
             lock (Line)
             {
                 foreach (ContentLine _c in Line)
@@ -147,6 +206,8 @@ namespace Client
                             color = Configuration.CurrentSkin.miscelancscolor.Name;
                             break;
                         case MessageStyle.Channel:
+                            color = Configuration.CurrentSkin.colortalk.Name;
+                            break;
                         case MessageStyle.User:
                             color = Configuration.CurrentSkin.changenickcolor.Name;
                             break;
@@ -228,6 +289,11 @@ namespace Client
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
 
         }

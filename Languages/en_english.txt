@@ -70,5 +70,6 @@ global-cancel=Cancel;
 protocolnewnick=Your nick is now $1;
 update1=There is a new version of pidgeon: $1, click update to continue, or close this window to keep using the previous version.;
 update2=Pidgeon is finishing update, please wait...;
+channel-topic:$1 changed topic to: $2;
 update-update=Update;
 protocol-nick=$1 changed a nickname to $2;

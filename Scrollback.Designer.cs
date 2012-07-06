@@ -69,6 +69,7 @@ namespace Client
             this.Data.ScriptErrorsSuppressed = true;
             this.Data.Size = new System.Drawing.Size(345, 262);
             this.Data.TabIndex = 1;
+            this.Data.Visible = false;
             // 
             // contextMenuStrip1
             // 
@@ -112,6 +113,7 @@ namespace Client
             // refresh
             // 
             this.refresh.Enabled = true;
+            this.refresh.Interval = 800;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
             // webBrowser1
@@ -125,14 +127,15 @@ namespace Client
             this.webBrowser1.ScriptErrorsSuppressed = true;
             this.webBrowser1.Size = new System.Drawing.Size(345, 262);
             this.webBrowser1.TabIndex = 2;
+            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
             // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.Data);
+            this.Controls.Add(this.webBrowser1);
             this.Name = "Scrollback";
             this.Size = new System.Drawing.Size(345, 262);
             this.Load += new System.EventHandler(this.Scrollback_Load);

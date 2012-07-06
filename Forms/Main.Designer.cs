@@ -222,7 +222,6 @@ namespace Client
             this.Text = "Pidgeon Client v 1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.shutDownToolStripMenuItem_Click);
             this.Load += new System.EventHandler(this.Main_Load);
-            this.Resize += new System.EventHandler(this.ResizeMe);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);

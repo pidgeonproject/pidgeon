@@ -61,6 +61,7 @@ namespace Client
             request.writable = _writable;
             request.window = new Window();
             request._Focus = _Focus;
+            request.window._Network = this;
             request.window.name = _name;
             request.window.writable = _writable;
             windows.Add(_name, request.window);
@@ -95,7 +96,7 @@ namespace Client
 
         }
 
-        public int Join(string channel)
+        public Channel Join(string channel)
         {
             Channel _channel = new Channel();
             RenderedChannel = _channel;
@@ -104,7 +105,7 @@ namespace Client
             Channels.Add(_channel);
             Core._Main.ChannelList.insertChannel(_channel);
             CreateChat(channel, true, true, true);
-            return 0;
+            return _channel;
         }
 
         public bool ShowChat(string name)
@@ -120,7 +121,6 @@ namespace Client
                         Core._Main.Chat.Visible = false;
                     }
                 }
-                Core._Main.Reload();
                 Current.Redraw();
                 Core._Main.toolStripStatusChannel.Text = name;
 

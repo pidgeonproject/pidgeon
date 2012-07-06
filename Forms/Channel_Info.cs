@@ -117,9 +117,9 @@ namespace Client
                         if (!channel._mode._Mode.Contains(item[0].ToString()))
                         {
                             cset += item[0];
-                            change = true;
-                            continue;
+                            change = true;    
                         }
+                        continue;
 
                     }
                     if (channel._mode._Mode.Contains(item[0].ToString()))

@@ -25,22 +25,46 @@ namespace Client
     public class Configuration
     {
         public static bool Window_Maximized = true;
+        /// <summary>
+        /// Window left position
+        /// </summary>
         public static int Window_Left = 0;
 
         public static string CommandPrefix = "/";
 
+        /// <summary>
+        /// Ident
+        /// </summary>
         public static string ident = "pidgeon";
-        public static string quit = "Pidgeon client";
+        /// <summary>
+        /// Message that is delivered to server when client exit
+        /// </summary>
+        public static string quit = "Pidgeon client http://pidgeonclient.org/";
+        /// <summary>
+        /// Nick
+        /// </summary>
         public static string nick = "PidgeonUser";
 
+        /// <summary>
+        /// Real name
+        /// </summary>
         public static string user = "My name is hidden, dude";
 
         public static string LastHostName = "";
 
+        /// <summary>
+        /// Format of ttimestamp
+        /// </summary>
         public static string format_date = "($1) ";
+        /// <summary>
+        /// Format of nick
+        /// </summary>
         public static string format_nick = "<$1> ";
 
         public static bool chat_timestamp = true;
+        /// <summary>
+        /// Timestamp mask
+        /// </summary>
         public static string timestamp_mask = "HH:mm:ss";
 
         public static string DefaultReason = "Removed from the channel";
@@ -64,9 +88,17 @@ namespace Client
         public static bool flood_prot = false;
         public static bool ctcp_prot = false;
         public static bool notice_prot = false;
+
+        public static bool parse_hide = false;
+
+        public static int reload_time = 100;
+        public static int mq = 1200;
         
-        public static string logs_dir = "log";
-        public static string logs_name = "$1_YYYYmmdd";
+        public static string logs_dir = System.Windows.Forms.Application.StartupPath + "/log";
+        public static string logs_name = "$1_yyMMdd";
+
+        public static bool slapsdef = true;
+        public static bool pokesdef = true;
 
         public static bool logs_xml = true;
         public static bool logs_txt = true;

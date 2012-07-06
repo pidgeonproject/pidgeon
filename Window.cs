@@ -29,6 +29,7 @@ namespace Client
 {
     public partial class Window : UserControl
     {
+        public static List<Window> _control = new List<Window>();
         public bool Making = true;
         public string name;
         public bool writable;
@@ -39,7 +40,12 @@ namespace Client
 
         public Window()
         {
+            lock (_control)
+            {
+                _control.Add(this);
+            }
             InitializeComponent();
+            scrollback.owner = this;
             listView.View = View.Details;
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
@@ -55,7 +61,6 @@ namespace Client
         public void create()
         {
             scrollback.create();
-            scrollback.owner = this;
             scrollback.channelToolStripMenuItem.Visible = isChannel;
         }
 
@@ -341,6 +346,18 @@ namespace Client
 
                 }
             }
+        }
+
+        new public void Dispose()
+        {
+            lock (_control)
+            {
+                if (_control.Contains(this))
+                {
+                    _control.Remove(this);
+                }
+            }
+            this.components.Dispose();
         }
 
         private void listViewd_SelectedIndexChanged(object sender, EventArgs e)

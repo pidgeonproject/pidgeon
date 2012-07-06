@@ -24,6 +24,7 @@ namespace Client
 {
     public class User
     {
+        
         public string Host;
         public Network _Network;
         public string Ident;
@@ -34,14 +35,17 @@ namespace Client
         {
             ChannelList = new List<Channel>();
             _Network = x;
-            char prefix = _Nick[0];
-            if (x._protocol.UChars.Contains(prefix))
+            if (_Nick != "")
             {
-                int Mode = x._protocol.UChars.IndexOf(prefix);
-                if (x._protocol.CUModes.Count >= Mode + 1)
+                char prefix = _Nick[0];
+                if (x._protocol.UChars.Contains(prefix))
                 {
-                    ChannelMode.mode("+" + x._protocol.CUModes[Mode].ToString());
-                    _Nick = _Nick.Substring(1);
+                    int Mode = x._protocol.UChars.IndexOf(prefix);
+                    if (x._protocol.CUModes.Count >= Mode + 1)
+                    {
+                        ChannelMode.mode("+" + x._protocol.CUModes[Mode].ToString());
+                        _Nick = _Nick.Substring(1);
+                    }
                 }
             }
             Nick = _Nick;

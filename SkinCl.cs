@@ -48,7 +48,7 @@ namespace Client
             miscelancscolor = System.Drawing.Color.LightGreen;
             selfcolor = System.Drawing.Color.LightGray;
             changenickcolor = System.Drawing.Color.LightSteelBlue;
-            colortalk = System.Drawing.Color.LightYellow;
+            colortalk = System.Drawing.Color.Yellow;
             kickcolor = System.Drawing.Color.White;
             fontsize = 2;
             localfont = "Helvetica";

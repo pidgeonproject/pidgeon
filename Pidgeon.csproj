@@ -230,6 +230,7 @@
   <ItemGroup>
     <Content Include="Languages\cs_czech.txt" />
     <Content Include="Languages\en_english.txt" />
+    <None Include="Resources\Image1.jpg" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

@@ -54,6 +54,7 @@ namespace Client
 
     public class Channel
     {
+        public static List<Channel> _control = new List<Channel>();
         public string Name;
         public Network _Network;
         public List<User> UserList = new List<User>();
@@ -65,6 +66,10 @@ namespace Client
         public List<SimpleBan> Bl;
         public List<Except> Exceptions;
         private Window Chat;
+        public bool parsing_who = false;
+        public bool parsing_xb = false;
+        public bool parsing_xe = false;
+        public bool parsing_wh = false;
         public Protocol.Mode _mode = new Protocol.Mode();
         public bool Redraw;
         public bool ok;
@@ -72,9 +77,24 @@ namespace Client
         public Channel()
         {
             ok = true;
+            lock (_control)
+            {
+                _control.Add(this);
+            }
             Topic = "";
             TopicUser = "";
             Chat = null;
+        }
+
+        public void Dispose()
+        {
+            lock (_control)
+            {
+                if (_control.Contains(this))
+                {
+                    _control.Remove(this);
+                }
+            }
         }
 
         public class ChannelMode : Protocol.Mode

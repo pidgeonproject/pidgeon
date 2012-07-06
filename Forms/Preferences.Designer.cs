@@ -52,8 +52,8 @@ namespace Client
             this.bCancel = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gro3 = new System.Windows.Forms.GroupBox();
             this.gro2 = new System.Windows.Forms.GroupBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.gro1 = new System.Windows.Forms.GroupBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.lname = new System.Windows.Forms.Label();
@@ -64,25 +64,25 @@ namespace Client
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lnick = new System.Windows.Forms.Label();
             this.gro4 = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.checkBox7 = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.gro3 = new System.Windows.Forms.GroupBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.textBox6 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.fl.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.gro3.SuspendLayout();
             this.gro2.SuspendLayout();
             this.gro1.SuspendLayout();
             this.gro4.SuspendLayout();
+            this.gro3.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -147,32 +147,15 @@ namespace Client
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.gro2);
             this.panel1.Controls.Add(this.gro1);
             this.panel1.Controls.Add(this.gro4);
             this.panel1.Controls.Add(this.gro3);
+            this.panel1.Controls.Add(this.gro2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(203, 3);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(461, 380);
             this.panel1.TabIndex = 6;
-            // 
-            // gro3
-            // 
-            this.gro3.Controls.Add(this.checkBox3);
-            this.gro3.Controls.Add(this.checkBox2);
-            this.gro3.Controls.Add(this.checkBox1);
-            this.gro3.Controls.Add(this.textBox6);
-            this.gro3.Controls.Add(this.label2);
-            this.gro3.Controls.Add(this.textBox5);
-            this.gro3.Controls.Add(this.label1);
-            this.gro3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro3.Location = new System.Drawing.Point(0, 0);
-            this.gro3.Name = "gro3";
-            this.gro3.Size = new System.Drawing.Size(461, 380);
-            this.gro3.TabIndex = 2;
-            this.gro3.TabStop = false;
-            this.gro3.Text = "Logs";
             // 
             // gro2
             // 
@@ -184,6 +167,16 @@ namespace Client
             this.gro2.TabIndex = 1;
             this.gro2.TabStop = false;
             this.gro2.Text = "System";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(22, 33);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(91, 17);
+            this.checkBox4.TabIndex = 0;
+            this.checkBox4.Text = "Display CTCP";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // gro1
             // 
@@ -281,97 +274,14 @@ namespace Client
             this.gro4.TabStop = false;
             this.gro4.Text = "Protections";
             // 
-            // label1
+            // label3
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "File name";
-            // 
-            // textBox5
-            // 
-            this.textBox5.Location = new System.Drawing.Point(97, 32);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(354, 20);
-            this.textBox5.TabIndex = 1;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 67);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "Path";
-            // 
-            // textBox6
-            // 
-            this.textBox6.Location = new System.Drawing.Point(97, 67);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(354, 20);
-            this.textBox6.TabIndex = 3;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(21, 113);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(69, 17);
-            this.checkBox1.TabIndex = 4;
-            this.checkBox1.Text = "TXT logs";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(21, 149);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(78, 17);
-            this.checkBox2.TabIndex = 5;
-            this.checkBox2.Text = "HTML logs";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(21, 184);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(70, 17);
-            this.checkBox3.TabIndex = 6;
-            this.checkBox3.Text = "XML logs";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(22, 33);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(91, 17);
-            this.checkBox4.TabIndex = 0;
-            this.checkBox4.Text = "Display CTCP";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(17, 31);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(102, 17);
-            this.checkBox5.TabIndex = 0;
-            this.checkBox5.Text = "Flood protection";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(17, 63);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(107, 17);
-            this.checkBox6.TabIndex = 1;
-            this.checkBox6.Text = "Notice protection";
-            this.checkBox6.UseVisualStyleBackColor = true;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 147);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(44, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Number";
             // 
             // checkBox7
             // 
@@ -383,14 +293,104 @@ namespace Client
             this.checkBox7.Text = "CTCP protection";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // checkBox6
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 147);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Number";
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Location = new System.Drawing.Point(17, 63);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(107, 17);
+            this.checkBox6.TabIndex = 1;
+            this.checkBox6.Text = "Notice protection";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(17, 31);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(102, 17);
+            this.checkBox5.TabIndex = 0;
+            this.checkBox5.Text = "Flood protection";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            // 
+            // gro3
+            // 
+            this.gro3.Controls.Add(this.checkBox3);
+            this.gro3.Controls.Add(this.checkBox2);
+            this.gro3.Controls.Add(this.checkBox1);
+            this.gro3.Controls.Add(this.textBox6);
+            this.gro3.Controls.Add(this.label2);
+            this.gro3.Controls.Add(this.textBox5);
+            this.gro3.Controls.Add(this.label1);
+            this.gro3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro3.Location = new System.Drawing.Point(0, 0);
+            this.gro3.Name = "gro3";
+            this.gro3.Size = new System.Drawing.Size(461, 380);
+            this.gro3.TabIndex = 2;
+            this.gro3.TabStop = false;
+            this.gro3.Text = "Logs";
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(21, 184);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(70, 17);
+            this.checkBox3.TabIndex = 6;
+            this.checkBox3.Text = "XML logs";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(21, 149);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(78, 17);
+            this.checkBox2.TabIndex = 5;
+            this.checkBox2.Text = "HTML logs";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(21, 113);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(69, 17);
+            this.checkBox1.TabIndex = 4;
+            this.checkBox1.Text = "TXT logs";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
+            // textBox6
+            // 
+            this.textBox6.Location = new System.Drawing.Point(97, 67);
+            this.textBox6.Name = "textBox6";
+            this.textBox6.Size = new System.Drawing.Size(354, 20);
+            this.textBox6.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(18, 67);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Path";
+            // 
+            // textBox5
+            // 
+            this.textBox5.Location = new System.Drawing.Point(97, 32);
+            this.textBox5.Name = "textBox5";
+            this.textBox5.Size = new System.Drawing.Size(354, 20);
+            this.textBox5.TabIndex = 1;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(18, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "File name";
             // 
             // Preferences
             // 
@@ -406,14 +406,14 @@ namespace Client
             this.tableLayoutPanel1.ResumeLayout(false);
             this.fl.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.gro3.ResumeLayout(false);
-            this.gro3.PerformLayout();
             this.gro2.ResumeLayout(false);
             this.gro2.PerformLayout();
             this.gro1.ResumeLayout(false);
             this.gro1.PerformLayout();
             this.gro4.ResumeLayout(false);
             this.gro4.PerformLayout();
+            this.gro3.ResumeLayout(false);
+            this.gro3.PerformLayout();
             this.ResumeLayout(false);
 
         }

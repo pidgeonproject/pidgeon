@@ -53,33 +53,12 @@ namespace Client
             InitializeComponent();
         }
 
-
-        /// <summary>
-        /// Resize window
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ResizeMe(object sender, EventArgs e)
-        {
-            _Redraw();
-        }
-
-        public void _Redraw()
-        {
-
-        }
-
         public void Changed(object sender, EventArgs dt)
         {
             if (done)
             {
                 Configuration.window_size = sX.SplitterDistance;
             }
-        }
-
-        public void Reload()
-        {
-            _Redraw();
         }
 
 	    private void _Enter(object sender, KeyPressEventArgs pt){}
@@ -143,7 +122,6 @@ namespace Client
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
                 Chat = main;
                 main.Redraw();
-                Reload();
                 Chat.Making = false;
                 done = true;
             }
@@ -210,16 +188,6 @@ namespace Client
             Core.Quit();
         }
 
-        private void MessageLine_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void channelList1_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void Main_Load(object sender, EventArgs e)
         {
             _Load();
@@ -232,11 +200,6 @@ namespace Client
                 fPrefs = new Preferences();
             }
             fPrefs.Show();
-        }
-
-        private void newConnectionToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)

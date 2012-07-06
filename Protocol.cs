@@ -54,7 +54,7 @@ namespace Client
                 {
                     if (_x == ' ')
                     {
-                        continue;
+                        return true;
                     }
                     if (_x == '-')
                     {
