@@ -45,15 +45,18 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Help));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.about = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.label1 = new System.Windows.Forms.Label();
             this.licensetext = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.imageList1 = new System.Windows.Forms.ImageList(this.components);
+            this.Info = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -69,13 +72,15 @@ namespace Client
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 89.22717F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10.77283F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 299);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 95.09982F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 4.900181F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 500);
             this.tableLayoutPanel1.TabIndex = 0;
+            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
             // 
             // about
             // 
+            this.about.Controls.Add(this.Info);
             this.about.Controls.Add(this.pictureBox1);
             this.about.Controls.Add(this.label2);
             this.about.Controls.Add(this.linkLabel1);
@@ -85,8 +90,18 @@ namespace Client
             this.about.Dock = System.Windows.Forms.DockStyle.Fill;
             this.about.Location = new System.Drawing.Point(3, 3);
             this.about.Name = "about";
-            this.about.Size = new System.Drawing.Size(613, 260);
+            this.about.Size = new System.Drawing.Size(613, 469);
             this.about.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(483, 11);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(121, 116);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 5;
+            this.pictureBox1.TabStop = false;
             // 
             // label2
             // 
@@ -119,7 +134,7 @@ namespace Client
             // 
             // licensetext
             // 
-            this.licensetext.Location = new System.Drawing.Point(19, 127);
+            this.licensetext.Location = new System.Drawing.Point(19, 287);
             this.licensetext.Name = "licensetext";
             this.licensetext.Size = new System.Drawing.Size(585, 133);
             this.licensetext.TabIndex = 1;
@@ -135,21 +150,25 @@ namespace Client
             this.labelName.TabIndex = 0;
             this.labelName.Text = "Pidgeon";
             // 
-            // pictureBox1
+            // imageList1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(463, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(121, 115);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 5;
-            this.pictureBox1.TabStop = false;
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
+            // 
+            // Info
+            // 
+            this.Info.Location = new System.Drawing.Point(19, 130);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(556, 142);
+            this.Info.TabIndex = 6;
+            this.Info.Text = resources.GetString("Info.Text");
             // 
             // Help
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 299);
+            this.ClientSize = new System.Drawing.Size(619, 500);
             this.Controls.Add(this.tableLayoutPanel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -175,6 +194,8 @@ namespace Client
         public System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.ImageList imageList1;
+        private System.Windows.Forms.Label Info;
 
     }
 }

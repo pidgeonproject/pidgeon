@@ -107,8 +107,24 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("KICK " + name + " " + user.Text + " " + Configuration.DefaultReason);
-
+                        Channel _channel = _Network.getChannel(name);
+                        if (_channel != null)
+                        {
+                            User target = _channel.userFromName(user.Text);
+                            if (target != null)
+                            {
+                                switch (Configuration.DefaultBans)
+                                {
+                                    case Configuration.TypeOfBan.Host:
+                                        if (target.Host != "")
+                                        { 
+                                            Core.network._protocol.Transfer("MODE " + name + " +b *!*@" + target.Host, Configuration.Priority.High);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                        Core.network._protocol.Transfer("KICK " + name + " " + user.Text + " " + Configuration.DefaultReason, Configuration.Priority.High);
                     }
                 }
             }
@@ -156,7 +172,10 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("WHOIS " + user.Text);
+                        if (user.Text != "")
+                        {
+                            Core.network._protocol.Transfer("WHOIS " + user.Text);
+                        }
                     }
                 }
             }
@@ -182,7 +201,10 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("MODE " + name + " "  + mode + " " + Decode(user.Text));
+                        if (user.Text != "")
+                        {
+                            Core.network._protocol.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
+                        }
                     }
                 }
             }
@@ -222,7 +244,10 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                        if (user.Text != "")
+                        {
+                            Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason, Configuration.Priority.High);
+                        }
                     }
                 }
             }
@@ -259,7 +284,26 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Channel _channel = _Network.getChannel(name);
+                        if (_channel != null)
+                        {
+                            User target = _channel.userFromName(user.Text);
+                            if (target != null)
+                            {
+                                switch (Configuration.DefaultBans)
+                                {
+                                    case Configuration.TypeOfBan.Host:
+                                        if (target.Host != "")
+                                        {
+                                            Core.network._protocol.Transfer("MODE " + name + " +b *!*@" + target.Host, Configuration.Priority.High);
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -270,7 +314,10 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                    }
                 }
             }
         }
@@ -283,7 +330,8 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                        string reason = Configuration.DefaultReason;
+                        
                     }
                 }
             }
@@ -370,11 +418,6 @@ namespace Client
             SelectedUser = listView.SelectedItems;
         }
 
-        private void modeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void messageToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (isChannel)
@@ -383,11 +426,14 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        if (!Core.network.windows.ContainsKey(user.Text))
+                        if (user.Text != "")
                         {
-                            _Network.Private(user.Name);
+                            if (!Core.network.windows.ContainsKey(user.Text))
+                            {
+                                _Network.Private(user.Text);
+                            }
+                            _Network.ShowChat(user.Text);
                         }
-                        _Network.ShowChat(user.Name);
                     }
                 }
             }

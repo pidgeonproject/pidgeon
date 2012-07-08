@@ -67,7 +67,10 @@ namespace Client
         public void create()
         {
             InitializeComponent();
-            Data.Visible = false;
+			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+			{
+            	Data.Visible = false;
+			}
         } 
 
         public void Recreate(object sender, EventArgs e)

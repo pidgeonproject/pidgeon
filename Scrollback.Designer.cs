@@ -69,7 +69,10 @@ namespace Client
             this.Data.ScriptErrorsSuppressed = true;
             this.Data.Size = new System.Drawing.Size(345, 262);
             this.Data.TabIndex = 1;
-            this.Data.Visible = false;
+			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+			{
+            	this.Data.Visible = false;
+			}
             // 
             // contextMenuStrip1
             // 
@@ -144,7 +147,7 @@ namespace Client
             this.ResumeLayout(false);
 
         }
-
+		
         #endregion
 
         private System.Windows.Forms.WebBrowser Data;

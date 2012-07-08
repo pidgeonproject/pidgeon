@@ -117,6 +117,17 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <metadata name="about.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <data name="Info.Text" xml:space="preserve">
+    <value>About:
+
+The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
+
+That means:
+Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="pictureBox1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -247,14 +258,14 @@
 </value>
   </data>
   <data name="licensetext.Text" xml:space="preserve">
-    <value>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by  
-the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.                                           
+    <value>This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
                                                                          
-This program is distributed in the hope that it will be useful,       
-but WITHOUT ANY WARRANTY; without even the implied warranty of        
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-GNU General Public License for more details.                          
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.                          
 </value>
   </data>
+  <metadata name="imageList1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

@@ -67,7 +67,10 @@ namespace Client
             this.sX = new System.Windows.Forms.SplitContainer();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
+			if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+			{
+            	((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
+			}
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -226,7 +229,10 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
+			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+			{
+            	((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
+			}
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

@@ -297,6 +297,16 @@ namespace Client
                                             }
                                         }
                                         break;
+                                    case "315":
+                                        if (code.Length > 2)
+                                        {
+                                            Channel channel = _server.getChannel(code[3]);
+                                            if (channel != null)
+                                            {
+                                                channel.redrawUsers();
+                                            }
+                                        }
+                                        break;
                                     case "333":
                                         if (code.Length > 5)
                                         {
@@ -317,6 +327,36 @@ namespace Client
                                             }
                                         }
                                         break;
+                                    case "352":
+                                    // cameron.freenode.net 352 petan2 #debian thelineva nikita.tnnet.fi kornbluth.freenode.net t0h H :0 Tommi Helineva
+                                        if (code.Length > 6)
+                                        {
+                                            Channel channel = _server.getChannel(code[3]);
+                                            string ident = code[4];
+                                            string host = code[5];
+                                            string nick = code[7];
+                                            string server = code[6];
+                                            if (channel != null)
+                                            {
+                                                if (!channel.containUser(nick))
+                                                {
+                                                    channel.UserList.Add(new User(nick, host, _server, ident));
+                                                    channel.redrawUsers();
+                                                    break;
+                                                }
+                                                foreach (User u in channel.UserList)
+                                                {
+                                                    if (u.Nick == nick)
+                                                    {
+                                                        u.Ident = ident;
+                                                        u.Host = host;
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        break;
+
                                     case "353":
                                         if (code.Length > 3)
                                         {
@@ -558,7 +598,7 @@ namespace Client
                                 _ident = source.Substring(source.IndexOf("!") + 1);
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
-                                string message = text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length);
+                                string message = _value;
                                 if (!chan.Contains(_server.channel_prefix))
                                 {
                                     string uc;
@@ -709,6 +749,10 @@ namespace Client
                                                         switch (m.ToString())
                                                         {
                                                             case "b":
+                                                                if (channel.Bl == null)
+                                                                {
+                                                                    channel.Bl = new List<SimpleBan>();
+                                                                }
                                                                 lock (channel.Bl)
                                                                 {
                                                                     if (type == '-')

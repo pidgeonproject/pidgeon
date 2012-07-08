@@ -76,10 +76,11 @@ namespace Client
         public static bool aggressive_invites = false;
         public static bool aggressive_channel = true;
 
-        public static Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        public static Core.Platform CurrentPlatform = Core.Platform.Linuxx86;
         public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
 
         public static Skin CurrentSkin = new Skin();
+        public static TypeOfBan DefaultBans = TypeOfBan.Host;
 
         public static bool DisplayCtcp = true;
 
@@ -108,6 +109,14 @@ namespace Client
         public static int x4 = 0;
 
         public static int window_size = 0;
+
+        public enum TypeOfBan
+        { 
+            Nick,
+            Ident,
+            Host,
+            NickHost
+        }
 
         public enum Priority
         {
