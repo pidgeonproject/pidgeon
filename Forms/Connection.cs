@@ -36,6 +36,7 @@ namespace Client
         private void Connection_Load(object sender, EventArgs e)
         {
             label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
+            label6.Text = messages.get("nconnection-p", Core.SelectedLanguage);
             label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);
             label3.Text = messages.get("nconnection-start-port", Core.SelectedLanguage);
             label2.Text = messages.get("nconnection-ident", Core.SelectedLanguage);
@@ -47,6 +48,7 @@ namespace Client
             comboBox1.SelectedItem = "irc";
             comboBox2.Text = Configuration.LastHostName;
             comboBox1.Items.Add("quassel");
+            comboBox1.Items.Add("pidgeon service");
             Text  = messages.get("connection", Core.SelectedLanguage);
             bConnect.Text = messages.get("bconnect", Core.SelectedLanguage);
         }
@@ -71,8 +73,24 @@ namespace Client
             }
             Configuration.nick = _Nickname.Text;
             Configuration.ident = textBox1.Text;
-            Core.connectIRC(comboBox2.Text, port);
+            switch (comboBox1.SelectedIndex)
+            {
+                case 0:
+                    Core.connectIRC(comboBox2.Text, port);
+                    break;
+                case 1:
+                    Core.connectQl(comboBox2.Text, port);
+                    break;
+                case 2:
+                    Core.connectPS(comboBox2.Text, port, textBox3.Text);
+                    break;
+            }
             Close();
+        }
+
+        private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
         }
 
     }

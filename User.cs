@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Client
 {
-    public class User
+    public class User : IComparable
     {
         
         public string Host;
@@ -51,6 +51,20 @@ namespace Client
             Nick = _Nick;
             Ident = ident;
             Host = host;
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is User)
+            {
+                return this.Nick.CompareTo((obj as User).Nick);
+            }
+            return 0;
+        }
+
+        public string SummaryInfo()
+        {
+            return "";
         }
     }
 }

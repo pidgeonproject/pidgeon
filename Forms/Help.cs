@@ -42,5 +42,10 @@ namespace Client
         {
             label2.Text = Configuration.Version;
         }
+
+        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

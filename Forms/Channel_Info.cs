@@ -105,7 +105,7 @@ namespace Client
             {
                 if (channel.Topic != textBox1.Text)
                 {
-                    channel._Network._protocol.Transfer("TOPIC " + channel.Name + " " + textBox1.Text);
+                    channel._Network._protocol.Transfer("TOPIC " + channel.Name + " :" + textBox1.Text);
                 }
                 bool change = false;
                 string cset = "+";

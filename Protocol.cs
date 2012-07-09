@@ -25,6 +25,7 @@ namespace Client
     public class Protocol
     {
         public char delimiter = (char)001;
+        public Window Current;
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
         public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
@@ -32,6 +33,7 @@ namespace Client
         public List<char> SModes = new List<char> { 'k', 'L' };
         public List<char> XModes = new List<char> { 'l' };
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+        public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -89,6 +91,49 @@ namespace Client
         public string Server;
         public int Port;
         public bool SSL;
+
+        public void CreateChat(string _name, bool _Focus, Network network, bool _writable = false, bool channelw = false)
+        {
+            Main._WindowRequest request = new Main._WindowRequest();
+            request.owner = this;
+            request.name = _name;
+            request.writable = _writable;
+            request.window = new Window();
+            request._Focus = _Focus;
+            request.window._Network = network;
+            request.window.name = _name;
+            request.window.writable = _writable;
+            windows.Add(_name, request.window);
+            if (channelw == true)
+            {
+                request.window.isChannel = true;
+            }
+            Core._Main.W.Add(request);
+        }
+
+        public bool ShowChat(string name)
+        {
+            if (windows.ContainsKey(name))
+            {
+                Current = windows[name];
+                Current.Visible = true;
+                if (Current != Core._Main.Chat)
+                {
+                    if (Core._Main.Chat != null)
+                    {
+                        Core._Main.Chat.Visible = false;
+                    }
+                }
+                Current.Redraw();
+                Core._Main.toolStripStatusChannel.Text = name;
+
+                Current.textbox.Focus();
+                Core._Main.Chat = windows[name];
+                Current.Making = false;
+                Core._Main.UpdateStatus();
+            }
+            return true;
+        }
 
         public string PRIVMSG(string user, string text)
         {

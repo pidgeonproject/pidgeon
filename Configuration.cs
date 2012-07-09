@@ -76,13 +76,33 @@ namespace Client
         public static bool aggressive_invites = false;
         public static bool aggressive_channel = true;
 
+        /// <summary>
+        /// Platform
+        /// </summary>
         public static Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        /// <summary>
+        /// Version
+        /// </summary>
         public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
 
+        /// <summary>
+        /// Used skin
+        /// </summary>
         public static Skin CurrentSkin = new Skin();
 
+        /// <summary>
+        /// Default bans
+        /// </summary>
+        public static TypeOfBan DefaultBans = TypeOfBan.Host;
+
+        /// <summary>
+        /// If true, ctcp messages will be printed to window
+        /// </summary>
         public static bool DisplayCtcp = true;
 
+        /// <summary>
+        /// Updater
+        /// </summary>
         public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode( System.Windows.Forms.Application.ProductVersion) ;
 
         public static bool flood_prot = false;
@@ -94,7 +114,7 @@ namespace Client
         public static int reload_time = 100;
         public static int mq = 1200;
         
-        public static string logs_dir = System.Windows.Forms.Application.StartupPath + "/log";
+        public static string logs_dir = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "log";
         public static string logs_name = "$1_yyMMdd";
 
         public static bool slapsdef = true;
@@ -108,6 +128,14 @@ namespace Client
         public static int x4 = 0;
 
         public static int window_size = 0;
+
+        public enum TypeOfBan
+        { 
+            Nick,
+            Ident,
+            Host,
+            NickHost
+        }
 
         public enum Priority
         {

@@ -139,7 +139,7 @@ namespace Client
                                     {
                                         string ms = command.Substring(command.IndexOf(" "));
                                         ms = ms.Substring(ms.IndexOf(" "));
-                                        network.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
+                                        network._protocol.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
                                         network._protocol.Message(ms, channel);
                                         return false;
                                     }
@@ -169,12 +169,12 @@ namespace Client
                                 {
                                     if (network.Connected)
                                     {
-                                        if (!network.windows.ContainsKey(channel))
+                                        if (!network._protocol.windows.ContainsKey(channel))
                                         {
                                             network.Private(channel);
                                         }
-                                        network.ShowChat(channel);
-                                        network.windows[channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                                        network._protocol.ShowChat(channel);
+                                        network._protocol.windows[channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
                                         network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
                                         return false;
                                     }
@@ -235,7 +235,7 @@ namespace Client
                                 Window window = curr.retrieveWindow();
                                 if (window != null)
                                 {
-                                    network.ShowChat(window.name);
+                                    network._protocol.ShowChat(window.name);
                                 }
                             }
                             network._protocol.Join(channel);
@@ -515,6 +515,31 @@ namespace Client
             return false;
         }
 
+        public static bool connectQl(string server, int port)
+        {
+            ProtocolQuassel _quassel = new ProtocolQuassel();
+            return false;
+        }
+
+        /// <summary>
+        /// Connect to pidgeon server
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
+        public static bool connectPS(string server, int port = 8222, string password = "xx")
+        {
+            ProtocolSv protocol = new ProtocolSv();
+            protocol.Server = server;
+            protocol.nick = Configuration.nick;
+            protocol.Port = port;
+            protocol.password = password;
+            Connections.Add(protocol);
+            protocol.Open();
+            return true;
+        }
+
+
         /// <summary>
         /// Connect to IRC
         /// </summary>
@@ -526,7 +551,7 @@ namespace Client
             Connections.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
-            protocol._server = new Network(server);
+            protocol._server = new Network(server, protocol);
             network = protocol._server;
             protocol._server._protocol = protocol;
             protocol.Open();

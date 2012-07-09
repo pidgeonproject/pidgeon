@@ -281,8 +281,12 @@ namespace Client
                         return;
                     }
                     richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
-                    history.Add(richTextBox1.Text);
-                    Parser.parse(richTextBox1.Text);
+
+                    if (richTextBox1.Text != "")
+                    {
+                        Parser.parse(richTextBox1.Text);
+                        history.Add(richTextBox1.Text);
+                    }
                     original = "";
                     richTextBox1.Text = "";
                     position = history.Count;

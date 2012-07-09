@@ -39,7 +39,6 @@ namespace Client
         public string channel_prefix = "#";
 
         private Window Current;
-        public Dictionary<string, Window> windows = new Dictionary<string, Window>();
 
         public Channel getChannel(string name)
         {
@@ -53,25 +52,6 @@ namespace Client
             return null;
         }
 
-        public void CreateChat(string _name, bool _Focus, bool _writable = false, bool channelw = false)
-        {
-            Main._WindowRequest request = new Main._WindowRequest();
-            request.owner = this;
-            request.name = _name;
-            request.writable = _writable;
-            request.window = new Window();
-            request._Focus = _Focus;
-            request.window._Network = this;
-            request.window.name = _name;
-            request.window.writable = _writable;
-            windows.Add(_name, request.window);
-            if (channelw == true)
-            {
-                request.window.isChannel = true;
-            }
-            Core._Main.W.Add(request);
-        }
-
         /// <summary>
         /// Create pm
         /// </summary>
@@ -81,19 +61,8 @@ namespace Client
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);
-            CreateChat(user, true, true);
+            _protocol.CreateChat(user, true, this, true);
             return;
-        }
-
-        /// <summary>
-        /// Initialise window - deprecated
-        /// </summary>
-        /// <param name="_name"></param>
-        /// <param name="_writable"></param>
-        /// <param name="window"></param>
-        public void _Chat(string _name, bool _writable, Main._WindowRequest window)
-        {
-
         }
 
         public Channel Join(string channel)
@@ -104,40 +73,17 @@ namespace Client
             _channel._Network = this;
             Channels.Add(_channel);
             Core._Main.ChannelList.insertChannel(_channel);
-            CreateChat(channel, true, true, true);
+            _protocol.CreateChat(channel, true, this, true, true);
             return _channel;
         }
 
-        public bool ShowChat(string name)
+        public Network(string Server, Protocol protocol)
         {
-            if (windows.ContainsKey(name))
-            {
-                Current = windows[name];
-                Current.Visible = true;
-                if (Current != Core._Main.Chat)
-                {
-                    if (Core._Main.Chat != null)
-                    {
-                        Core._Main.Chat.Visible = false;
-                    }
-                }
-                Current.Redraw();
-                Core._Main.toolStripStatusChannel.Text = name;
-
-                Current.textbox.Focus();
-                Core._Main.Chat = windows[name];
-                Current.Making = false;
-                Core._Main.UpdateStatus();
-            }
-            return true;
-        }
-
-        public Network(string Server)
-        {
+            _protocol = protocol;
             server = Server;
             quit = Configuration.quit;
             nickname = Configuration.nick;
-            CreateChat("!system", true);
+            _protocol.CreateChat("!system", true, this);
             Core._Main.ChannelList.insertNetwork(this);
             username = Configuration.user;
             ident = Configuration.ident;

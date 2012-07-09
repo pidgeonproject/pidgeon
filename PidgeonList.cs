@@ -70,9 +70,9 @@ namespace Client
                 text.Text = _us.Nick;
                 Servers[_us._Network].Nodes.Add(text);
                 UserList.Add(_us, text);
-                if (_us._Network.windows.ContainsKey(_us.Nick))
+                if (_us._Network._protocol.windows.ContainsKey(_us.Nick))
                 {
-                    _us._Network.windows[_us.Nick].scrollback.ln = text;
+                    _us._Network._protocol.windows[_us.Nick].scrollback.ln = text;
                 }
             }
         }
@@ -103,7 +103,7 @@ namespace Client
             text.Text = network.server;
             Servers.Add(network, text);
             text.Expand();
-            network.windows["!system"].scrollback.ln = text;
+            network._protocol.windows["!system"].scrollback.ln = text;
             this.items.Nodes.Add(text);
         }
 
@@ -139,9 +139,9 @@ namespace Client
                 foreach (Main._WindowRequest item in Core._Main.W)
                 {
                     Core._Main.CreateChat(item.window);
-                    item.owner._Chat(item.name, item.writable, item);
-                    if (item._Focus)
+                    if (item.owner != null && item._Focus)
                     {
+                        item._Focus = false;
                         item.owner.ShowChat(item.name);
                     }
                 }
@@ -186,7 +186,7 @@ namespace Client
                     {
                         if (cu.Value == e.Node)
                         {
-                            cu.Key.ShowChat("!system");
+                            cu.Key._protocol.ShowChat("!system");
                             Core.network = cu.Key;
                             disconnectToolStripMenuItem.Visible = true;
                             Core._Main.UpdateStatus();
@@ -201,7 +201,7 @@ namespace Client
                         if (cu.Value == e.Node)
                         {
                             Core.network = cu.Key._Network;
-                            cu.Key._Network.ShowChat(cu.Key.Nick);
+                            cu.Key._Network._protocol.ShowChat(cu.Key.Nick);
                             closeToolStripMenuItem.Visible = true;
                             Core._Main.UpdateStatus();
                             return;
@@ -218,7 +218,7 @@ namespace Client
                             partToolStripMenuItem.Visible = true;
                             closeToolStripMenuItem.Visible = true;
                             cu.Key._Network.RenderedChannel = cu.Key;
-                            cu.Key._Network.ShowChat(cu.Key.Name);
+                            cu.Key._Network._protocol.ShowChat(cu.Key.Name);
                             Core._Main.UpdateStatus();
                             return;
                         }

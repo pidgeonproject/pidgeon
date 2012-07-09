@@ -183,11 +183,12 @@ namespace Client
                 _writer = new System.IO.StreamWriter(_network);
                 _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
 
-                _writer.WriteLine("USER " + _server.username + " 8 * :" + _server.ident);
+                _writer.WriteLine("USER " + _server.ident + " 8 * :" + _server.username);
                 _writer.WriteLine("NICK " + _server.nickname);
                 _writer.Flush();
 
                 keep = new System.Threading.Thread(_Ping);
+                keep.Name = "pinger thread";
                 keep.Start();
 
             }
@@ -297,6 +298,16 @@ namespace Client
                                             }
                                         }
                                         break;
+                                    case "315":
+                                        if (code.Length > 2)
+                                        {
+                                            Channel channel = _server.getChannel(code[3]);
+                                            if (channel != null)
+                                            {
+                                                channel.redrawUsers();
+                                            }
+                                        }
+                                        break;
                                     case "333":
                                         if (code.Length > 5)
                                         {
@@ -317,6 +328,36 @@ namespace Client
                                             }
                                         }
                                         break;
+                                    case "352":
+                                    // cameron.freenode.net 352 petan2 #debian thelineva nikita.tnnet.fi kornbluth.freenode.net t0h H :0 Tommi Helineva
+                                        if (code.Length > 6)
+                                        {
+                                            Channel channel = _server.getChannel(code[3]);
+                                            string ident = code[4];
+                                            string host = code[5];
+                                            string nick = code[7];
+                                            string server = code[6];
+                                            if (channel != null)
+                                            {
+                                                if (!channel.containUser(nick))
+                                                {
+                                                    channel.UserList.Add(new User(nick, host, _server, ident));
+                                                    channel.redrawUsers();
+                                                    break;
+                                                }
+                                                foreach (User u in channel.UserList)
+                                                {
+                                                    if (u.Nick == nick)
+                                                    {
+                                                        u.Ident = ident;
+                                                        u.Host = host;
+                                                        
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        break;
+
                                     case "353":
                                         if (code.Length > 3)
                                         {
@@ -423,13 +464,13 @@ namespace Client
                             }
                             if (command == "INFO")
                             {
-                                _server.windows["!system"].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User);
+                                windows["!system"].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User);
                                 continue;
                             }
 
                             if (command == "NOTICE")
                             {
-                                _server.windows["!system"].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message);
+                                windows["!system"].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message);
                                 continue;
                             }
                             if (source.StartsWith(_server.nickname + "!"))
@@ -479,7 +520,7 @@ namespace Client
                                 {
                                     if (_data2[1].Contains("NICK"))
                                     {
-                                        _server.windows["!system"].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User);
+                                        windows["!system"].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User);
                                         _server.nickname = _value;
                                     }
                                     if (_data2[1].Contains("PART"))
@@ -558,7 +599,7 @@ namespace Client
                                 _ident = source.Substring(source.IndexOf("!") + 1);
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 chan = parameters.Replace(" ", "");
-                                string message = text.Substring(text.IndexOf(data[1]) + 1 + data[1].Length);
+                                string message = _value;
                                 if (!chan.Contains(_server.channel_prefix))
                                 {
                                     string uc;
@@ -580,7 +621,7 @@ namespace Client
                                         }
                                         if (Configuration.DisplayCtcp)
                                         {
-                                            _server.windows["!system"].scrollback.InsertText("CTCP from (" + chan + ") " + message, Scrollback.MessageStyle.Message);
+                                            windows["!system"].scrollback.InsertText("CTCP from (" + chan + ") " + message, Scrollback.MessageStyle.Message);
                                             continue;
                                         }
                                         continue;
@@ -611,11 +652,11 @@ namespace Client
                                     continue;
                                 }
                                 chan = source.Substring(source.IndexOf("!"));
-                                if (!_server.windows.ContainsKey(chan))
+                                if (!windows.ContainsKey(chan))
                                 {
                                     _server.Private(chan);
                                 }
-                                _server.windows[chan].scrollback.InsertText(PRIVMSG(source, message), Scrollback.MessageStyle.Channel);
+                                windows[chan].scrollback.InsertText(PRIVMSG(source, message), Scrollback.MessageStyle.Channel);
                                 continue;
                             }
 
@@ -709,6 +750,10 @@ namespace Client
                                                         switch (m.ToString())
                                                         {
                                                             case "b":
+                                                                if (channel.Bl == null)
+                                                                {
+                                                                    channel.Bl = new List<SimpleBan>();
+                                                                }
                                                                 lock (channel.Bl)
                                                                 {
                                                                     if (type == '-')
@@ -862,7 +907,7 @@ namespace Client
                             }
                             //if (command == "")
                         }
-                        _server.windows["!system"].scrollback.InsertText(text, Scrollback.MessageStyle.User);
+                        windows["!system"].scrollback.InsertText(text, Scrollback.MessageStyle.User);
                     }
                 }
             }
@@ -901,8 +946,15 @@ namespace Client
 
         private void Send(string ms)
         {
-            _writer.WriteLine(ms);
-            _writer.Flush();
+            try
+            {
+                _writer.WriteLine(ms);
+                _writer.Flush();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
@@ -941,8 +993,12 @@ namespace Client
             {
                 return;
             }
-            _writer.WriteLine("QUIT :" + _server.quit);
-            _writer.Flush();
+            try
+            {
+                _writer.WriteLine("QUIT :" + _server.quit);
+                _writer.Flush();
+            }
+            catch (Exception) { }
             _server.Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
@@ -951,7 +1007,7 @@ namespace Client
             {
                 main.Abort();
             }
-            _server.windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
+            windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
             return;
         }
 

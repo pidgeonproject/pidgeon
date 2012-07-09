@@ -124,6 +124,7 @@
     <Compile Include="Forms\Updater.Designer.cs">
       <DependentUpon>Updater.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProtocolSv.cs" />
     <Compile Include="Window.cs">
       <SubType>UserControl</SubType>
     </Compile>

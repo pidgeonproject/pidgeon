@@ -43,7 +43,7 @@ namespace Client
             public string name;
             public bool _Focus;
             public bool writable;
-            public Network owner;
+            public Protocol owner;
         }
 
         public List<_WindowRequest> W = new List<_WindowRequest>();
