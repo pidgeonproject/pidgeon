@@ -63,10 +63,11 @@ namespace Client
 
 	    private void _Enter(object sender, KeyPressEventArgs pt){}
 
-        public void CreateChat(Window Chat)
+        public void CreateChat(Window Chat, Protocol WindowOwner)
         {
             Chat.create();
             Chat.Visible = true;
+            Chat._Protocol = WindowOwner;
             Chat.Dock = DockStyle.Fill;
             Chat.Location = new System.Drawing.Point(0, 0);
             Chat.TabIndex = 6;
@@ -117,7 +118,7 @@ namespace Client
                 ChannelList.CreateControl();
                 sX.Panel1.Controls.Add(ChannelList);
                 main = new Window();
-                CreateChat(main);
+                CreateChat(main, null);
                 preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
                 Chat = main;

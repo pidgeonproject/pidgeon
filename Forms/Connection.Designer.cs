@@ -47,6 +47,8 @@ namespace Client
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this._Nickname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -55,11 +57,9 @@ namespace Client
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.bConnect = new System.Windows.Forms.Button();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
+            this.bConnect = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -111,6 +111,25 @@ namespace Client
             this.tableLayoutPanel2.TabIndex = 0;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 300);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "label";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(83, 303);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(314, 21);
+            this.comboBox1.TabIndex = 18;
+            // 
             // _Nickname
             // 
             this._Nickname.Dock = System.Windows.Forms.DockStyle.Top;
@@ -135,7 +154,7 @@ namespace Client
             this.comboBox2.Location = new System.Drawing.Point(83, 183);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(314, 21);
-            this.comboBox2.TabIndex = 3;
+            this.comboBox2.TabIndex = 6;
             // 
             // textBox1
             // 
@@ -143,7 +162,7 @@ namespace Client
             this.textBox1.Location = new System.Drawing.Point(83, 63);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(314, 20);
-            this.textBox1.TabIndex = 4;
+            this.textBox1.TabIndex = 1;
             // 
             // textBox2
             // 
@@ -151,7 +170,7 @@ namespace Client
             this.textBox2.Location = new System.Drawing.Point(83, 123);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(314, 20);
-            this.textBox2.TabIndex = 5;
+            this.textBox2.TabIndex = 4;
             // 
             // label3
             // 
@@ -180,35 +199,6 @@ namespace Client
             this.label2.Text = "ident";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // bConnect
-            // 
-            this.bConnect.Location = new System.Drawing.Point(409, 347);
-            this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(176, 30);
-            this.bConnect.TabIndex = 1;
-            this.bConnect.Text = "button1";
-            this.bConnect.UseVisualStyleBackColor = true;
-            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(83, 303);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(314, 21);
-            this.comboBox1.TabIndex = 13;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 300);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "label";
-            // 
             // label6
             // 
             this.label6.AutoSize = true;
@@ -225,7 +215,17 @@ namespace Client
             this.textBox3.Name = "textBox3";
             this.textBox3.PasswordChar = '*';
             this.textBox3.Size = new System.Drawing.Size(314, 20);
-            this.textBox3.TabIndex = 16;
+            this.textBox3.TabIndex = 10;
+            // 
+            // bConnect
+            // 
+            this.bConnect.Location = new System.Drawing.Point(409, 347);
+            this.bConnect.Name = "bConnect";
+            this.bConnect.Size = new System.Drawing.Size(176, 30);
+            this.bConnect.TabIndex = 1;
+            this.bConnect.Text = "button1";
+            this.bConnect.UseVisualStyleBackColor = true;
+            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
             // 
             // Connection
             // 
