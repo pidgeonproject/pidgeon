@@ -194,12 +194,29 @@ namespace Client
             // 
             // modeToolStripMenuItem
             // 
+            this.modeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.qToolStripMenuItem,
+                this.aToolStripMenuItem,
+                this.oToolStripMenuItem,
+                this.hToolStripMenuItem,
+                this.vToolStripMenuItem,
+                this.toolStripMenuItem3,
+                this.qToolStripMenuItem1,
+                this.aToolStripMenuItem1,
+                this.oToolStripMenuItem1,
+                this.hToolStripMenuItem1,
+                this.vToolStripMenuItem1,
+            });
             this.modeToolStripMenuItem.Name = "modeToolStripMenuItem";
             this.modeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.modeToolStripMenuItem.Text = "Mode";
             // 
             // ctToolStripMenuItem
             // 
+            this.ctToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.vERSIONToolStripMenuItem,
+                this.tIMEToolStripMenuItem,
+            });
             this.ctToolStripMenuItem.Name = "ctToolStripMenuItem";
             this.ctToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.ctToolStripMenuItem.Text = "ctcp";

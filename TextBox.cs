@@ -117,14 +117,23 @@ namespace Client
 
                     // check if it's a command :)
 
-                    List<string> commands = new List<string> { "server", "nick", "pidgeon.rehash" };
+                    List<string> commands = new List<string> { "server", "nick", "pidgeon.rehash", "connect" };
 
                     if (Core.network != null && Core.network.Connected)
                     {
-                        commands = new List<string> { "join", "part", "connect", "server", "squit", "quit", "query", "me", "msg", "mode", "oper", "who",
-                                                        "whois", "whowas", "help", "wall", "list", "pidgeon.rehash", "kill", "kline", "zline", "away", "gline",
-                                                        "stats", "nickserv", "chanserv", };
+                        commands.AddRange( new List<string> { "join", "part", "squit", "quit", "query", "me", "msg", "mode", "oper", "who",
+                                                        "whois", "whowas", "help", "wall", "list", "kill", "kline", "zline", "away", "gline",
+                                                        "stats", "nickserv", "chanserv" });
                     }
+
+                    if (Core._Main.Chat._Protocol != null)
+                    {
+                        if (Core._Main.Chat._Protocol.type == 3)
+                        {
+                            commands.AddRange(new List<string> { "service.gnick", "service.gident", "service.quit" });
+                        }
+                    }
+
                     if (text.StartsWith(Configuration.CommandPrefix))
                     {
                         List<string> Results = new List<string>();

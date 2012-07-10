@@ -32,6 +32,8 @@ namespace pidgeon_sv
         public static int server_port = 22;
         public static string userfile = "db/users";
 
+        public static int maxbs = 10000;
+
         public static List<Account> _accounts = new List<Account>();
         public static List<Thread> threads = new List<Thread>();
 
@@ -43,6 +45,34 @@ namespace pidgeon_sv
                 curr.Abort();
             }
             SL("Exiting");
+        }
+
+        public static void SaveData()
+        {
+            lock (_accounts)
+            {
+                System.Xml.XmlDocument config = new System.Xml.XmlDocument();
+                foreach (Account user in _accounts)
+                {
+                    System.Xml.XmlNode xmlnode = config.CreateElement("user");
+                    XmlAttribute name = config.CreateAttribute("name");
+                    XmlAttribute pw = config.CreateAttribute("password");
+                    XmlAttribute nickname = config.CreateAttribute("nickname");
+                    XmlAttribute ident = config.CreateAttribute("ident");
+                    XmlAttribute realname = config.CreateAttribute("realname");
+                    name.Value = user.username;
+                    pw.Value = user.password;
+                    xmlnode.Attributes.Append(name);
+                    nickname.Value = user.nickname;
+                    ident.Value = user.ident;
+                    xmlnode.Attributes.Append(pw);
+                    xmlnode.Attributes.Append(nickname);
+                    xmlnode.Attributes.Append(ident);
+                    config.AppendChild(xmlnode);
+
+                }
+            config.Save(userfile);
+            }
         }
 
         public static void LoadUser()
@@ -78,28 +108,43 @@ namespace pidgeon_sv
                 string text = connection._r.ReadLine();
 
                 connection.Mode = ProtocolMain.Valid(text);
-
                 ProtocolMain protocol = new ProtocolMain(connection);
-
-                while (connection.Active)
+                try
                 {
-                    text = connection._r.ReadLine();
-                    if (connection.Mode == false)
+                    while (connection.Active)
                     {
-                        continue;
-                    }
+                        text = connection._r.ReadLine();
+                        if (connection.Mode == false)
+                        {
+                            continue;
+                        }
 
-                    if (ProtocolMain.Valid(text))
-                    {
-                        protocol.parseCommand(text);
-                        continue;
-                    }
+                        if (ProtocolMain.Valid(text))
+                        {
+                            protocol.parseCommand(text);
+                            continue;
+                        }
 
+                    }
+                }
+                catch (System.Net.Sockets.SocketException ex)
+                {
+                    SL("Connection closed");
+                    protocol.Exit();
+                }
+                catch (Exception fail)
+                {
+                    SL(fail.StackTrace + fail.Message);
+                    protocol.Exit();
                 }
             }
-            catch (Exception ex)
+            catch (System.Net.Sockets.SocketException ex)
             {
                 SL("Connection closed");
+            }
+            catch (Exception fail)
+            {
+                SL(fail.StackTrace + fail.Message);
             }
         }
 

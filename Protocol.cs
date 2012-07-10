@@ -34,6 +34,8 @@ namespace Client
         public List<char> XModes = new List<char> { 'l' };
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
+        public bool Connected = false;
+        public int type = 0;
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -108,9 +110,17 @@ namespace Client
             {
                 request.window.isChannel = true;
             }
-            Core._Main.W.Add(request);
+            lock (Core._Main.W)
+            {
+                Core._Main.W.Add(request);
+            }
         }
 
+        /// <summary>
+        /// Request window to be shown
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public bool ShowChat(string name)
         {
             if (windows.ContainsKey(name))
@@ -135,21 +145,46 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Format a message to given style selected by skin
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public string PRIVMSG(string user, string text)
         {
             return Configuration.format_nick.Replace("$1", user) + text;
         }
 
+        /// <summary>
+        /// Deliver raw data to server
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="_priority"></param>
         public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             
         }
 
+        /// <summary>
+        /// /me
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="_priority"></param>
+        /// <returns></returns>
         public virtual int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             return 0;
         }
 
+        /// <summary>
+        /// Send a message to server
+        /// </summary>
+        /// <param name="text">Message</param>
+        /// <param name="to">User or a channel (needs to be prefixed with #)</param>
+        /// <param name="_priority"></param>
+        /// <returns></returns>
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             return 0;
@@ -160,11 +195,22 @@ namespace Client
             return 2;
         }
 
+        /// <summary>
+        /// Parse a command
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <returns></returns>
         public virtual bool Command(string cm)
         {
             return false;
         }
 
+        /// <summary>
+        /// Write a mode
+        /// </summary>
+        /// <param name="_x"></param>
+        /// <param name="target"></param>
+        /// <param name="network"></param>
         public virtual void WriteMode(Mode _x, string target, Network network = null)
         {
             return;
@@ -173,6 +219,11 @@ namespace Client
         public virtual void Join(string name, Network network = null)
         {
             return;
+        }
+
+        public virtual bool ConnectTo(string server, int port)
+        {
+            return false;
         }
 
         public virtual void Part(string name, Network network = null)

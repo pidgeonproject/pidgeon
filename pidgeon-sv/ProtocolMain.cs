@@ -23,7 +23,7 @@ using System.Text;
 
 namespace pidgeon_sv
 {
-    class ProtocolMain
+    public class ProtocolMain
     {
         public class Datagram
         {
@@ -53,6 +53,14 @@ namespace pidgeon_sv
 
         public static bool Valid(string datagram)
         {
+            if (datagram == null)
+            {
+                return false;
+            }
+            if (datagram == "")
+            {
+                return false;
+            }
             if (datagram.StartsWith("<") && datagram.EndsWith(">"))
             {
                 return true;
@@ -73,6 +81,14 @@ namespace pidgeon_sv
             }
         }
 
+        public void Exit()
+        {
+            if (client.account != null)
+            {
+                client.account.Clients.Remove(this);
+            }
+        }
+
         public void parseXml(XmlNode node)
         {
             Datagram response;
@@ -82,8 +98,15 @@ namespace pidgeon_sv
                 {
                     case "CHANNELINFO":
                     case "RAW":
+                    case "GLOBALNICK":
+                    case "GLOBALIDENT":
                     case "MESSAGE":
                     case "CONNECT":
+                    case "NICK":
+                    case "JOIN":
+                    case "PART":
+                    case "KICK":
+                    case "NETWORKLIST":
                         response = new Datagram(node.Name.ToUpper(), "PERMISSIONDENY");
                         Deliver(response);
                         return;
@@ -97,15 +120,58 @@ namespace pidgeon_sv
                     response = new Datagram("STATUS", info);
                     Deliver(response);
                     break;
+                case "NETWORKINFO":
+                    Network network2 = client.account.retrieveServer(node.InnerText);
+                    if (network2 == null)
+                    {
+                        response = new Datagram("NETWORKINFO", "UNKNOWN");
+                        response.Parameters.Add("network", node.InnerText);
+                        Deliver(response);
+                        return;
+                    }
+                    if (network2.Connected == false)
+                    {
+                        response = new Datagram("NETWORKINFO", "OFFLINE");
+                        response.Parameters.Add("network", node.InnerText);
+                        Deliver(response);
+                        return;
+                    }
+                    response = new Datagram("NETWORKINFO", "ONLINE");
+                    response.Parameters.Add("network", node.InnerText);
+                    Deliver(response);
+                    return;
                 case "RAW":
-
+                    if (node.Attributes.Count > 0)
+                    {
+                        string server = node.Attributes[0].Value;
+                        string priority = "Normal";
+                        ProtocolIrc.Priority Priority = ProtocolIrc.Priority.Normal;
+                        if (node.Attributes.Count > 1)
+                        {
+                            priority = node.Attributes[1].Value;
+                            switch (priority)
+                            {
+                                case "High":
+                                    Priority = ProtocolIrc.Priority.High;
+                                    break;
+                                case "Low":
+                                    Priority = ProtocolIrc.Priority.Low;
+                                    break;
+                            }
+                        }
+                        if (client.account.containsNetwork(server))
+                        {
+                            Network network = client.account.retrieveServer(server);
+                            network._protocol.Transfer(node.InnerText, Priority);
+                        }
+                    }
                     break;
                 case "CHANNELINFO":
                     
                     return;
                 case "NETWORKLIST":
                     string networks = "";
-                    foreach (Network current_net in _in)
+                    foreach (Network current_net in client.account.ConnectedNetworks)
                     {
                         networks += current_net.server + "|";
                     }
@@ -130,8 +196,24 @@ namespace pidgeon_sv
                         port = int.Parse(node.Attributes[0].Value);
                     }
                     client.account.ConnectIRC(node.InnerText, port);
+                    Console.WriteLine("Connecting to " + node.InnerText);
                     response = new Datagram("CONNECT", "OK");
                     response.Parameters.Add("network", node.InnerText);
+                    Deliver(response);
+                    break;
+                case "GLOBALIDENT":
+                    client.account.ident = node.InnerText;
+                    Deliver(new Datagram("GLOBALIDENT", node.InnerText));
+                    break;
+                case "GLOBALNICK":
+                    if (node.InnerText == "")
+                    {
+                        Deliver(new Datagram("GLOBALNICK", client.account.nickname));
+                        break;
+                    }
+                    Deliver(new Datagram("GLOBALNICK", node.InnerText));
+                    client.account.nickname = node.InnerText;
+                    Core.SaveData();
                     break;
                 case "AUTH":
                     string username = node.Attributes[0].Value;
@@ -143,7 +225,9 @@ namespace pidgeon_sv
                             if (curr_user.password == pw)
                             {
                                 client.account = curr_user;
+                                client.account.Clients.Add(this);
                                 response = new Datagram("AUTH", "OK");
+                                client.status = Connection.Status.Connected;
                                 Deliver(response);
                                 return;
                             }
@@ -170,7 +254,7 @@ namespace pidgeon_sv
                 dl += " "   + curr.Key + "=\"" + System.Web.HttpUtility.HtmlEncode(curr.Value) + "\"";  
             }
 
-            text = "<S" + message._Datagram + dl + ">" + message._InnerText + "</S" + message._Datagram + ">";
+            text = "<S" + message._Datagram + dl + ">" + System.Web.HttpUtility.HtmlEncode(message._InnerText) + "</S" + message._Datagram + ">";
 
 
             Send(text);
@@ -178,8 +262,15 @@ namespace pidgeon_sv
 
         public bool Send(string text)
         {
-            client._w.WriteLine(text);
-            client._w.Flush();
+            try
+            {
+                client._w.WriteLine(text);
+                client._w.Flush();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.StackTrace + ex.Message);
+            }
             return true;
         }
     }

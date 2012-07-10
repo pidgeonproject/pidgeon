@@ -34,6 +34,7 @@ namespace Client
         public string name;
         public bool writable;
         public bool isChannel = false;
+        public Protocol _Protocol = null;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;

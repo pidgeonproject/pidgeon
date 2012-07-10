@@ -241,30 +241,32 @@ namespace Client
 
         private void refresh_Tick(object sender, EventArgs e)
         {
+            if (Modified)
+            {
+                Reload();
+            }
             if (db)
             {
                 if (webBrowser1.Visible)
                 {
-                    if (Data.ReadyState == WebBrowserReadyState.Complete)
+                    if (Data.ReadyState == WebBrowserReadyState.Complete && !Data.IsBusy)
                     {
                         db = false;
                         Data.Visible = true;
+                        Data.BringToFront();
                         webBrowser1.Visible = false;
                     }
                 }
                 else
                 {
-                    if (webBrowser1.ReadyState == WebBrowserReadyState.Complete)
+                    if (!webBrowser1.IsBusy && webBrowser1.ReadyState == WebBrowserReadyState.Complete)
                     {
                         db = false;
                         webBrowser1.Visible = true;
+                        webBrowser1.BringToFront();
                         Data.Visible = false;
                     }
                 }
-            }
-            if (Modified)
-            {
-                Reload();
             }
         }
 

@@ -40,7 +40,7 @@ namespace pidgeon_sv
         public string ident;
         public string quit;
         public Protocol _protocol;
-        public List<WO> windows;
+        public List<WO> windows = new List<WO>();
 
 
 
@@ -105,9 +105,10 @@ namespace pidgeon_sv
             return true;
         }
 
-        public Network(string Server)
+        public Network(string Server, Protocol sv)
         {
             server = Server;
+            _protocol = sv;
             quit = "Pidgeon service - http://pidgeonclient.org";
             CreateChat("!system", true);
         }

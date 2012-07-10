@@ -31,6 +31,8 @@ namespace pidgeon_sv
         public List<char> SModes = new List<char> { 'k', 'L' };
         public List<char> XModes = new List<char> { 'l' };
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+        public bool Connected = false;
+        public int type = 0;
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -85,9 +87,30 @@ namespace pidgeon_sv
             }
         }
 
-        public string Server;
-        public int Port;
+        public string Server = "";
+        public int Port = 6667;
         public bool SSL;
+
+
+        public string PRIVMSG(string user, string text)
+        {
+            return "";
+        }
+
+        public virtual void Transfer(string data, ProtocolIrc.Priority _priority = ProtocolIrc.Priority.Normal)
+        {
+
+        }
+
+        public virtual int Message2(string text, string to, ProtocolIrc.Priority _priority = ProtocolIrc.Priority.Normal)
+        {
+            return 0;
+        }
+
+        public virtual int Message(string text, string to, ProtocolIrc.Priority _priority = ProtocolIrc.Priority.Normal)
+        {
+            return 0;
+        }
 
         public virtual int requestNick(string _Nick)
         {
@@ -107,6 +130,11 @@ namespace pidgeon_sv
         public virtual void Join(string name, Network network = null)
         {
             return;
+        }
+
+        public virtual bool ConnectTo(string server, int port)
+        {
+            return false;
         }
 
         public virtual void Part(string name, Network network = null)

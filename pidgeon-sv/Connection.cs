@@ -4,7 +4,7 @@ using System.Text;
 
 namespace pidgeon_sv
 {
-    class Item
+    public class Item
     {
         public DateTime _date;
         string _text;
@@ -15,18 +15,18 @@ namespace pidgeon_sv
         }
     }
 
-    class OutgoingQueue
+    public class OutgoingQueue
     {
 
         List<Item> queue = new List<Item>();
     }
 
-    class IncomingQueue
+    public class IncomingQueue
     {
         List<Item> queue = new List<Item>();
     }
 
-    class Connection
+    public class Connection
     {
         public string name;
         public string host;

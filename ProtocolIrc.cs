@@ -146,7 +146,7 @@ namespace Client
             _messages.DeliverMessage(text, Pr);
         }
 
-        public string convertUNIX(string time)
+        public static string convertUNIX(string time)
         {
             long baseTicks = 621355968000000000;
             long tickResolution = 10000000;
@@ -183,6 +183,8 @@ namespace Client
                 _writer = new System.IO.StreamWriter(_network);
                 _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
 
+                Connected = true;
+
                 _writer.WriteLine("USER " + _server.ident + " 8 * :" + _server.username);
                 _writer.WriteLine("NICK " + _server.nickname);
                 _writer.Flush();
@@ -190,6 +192,7 @@ namespace Client
                 keep = new System.Threading.Thread(_Ping);
                 keep.Name = "pinger thread";
                 keep.Start();
+                Core.SystemThreads.Add(keep);
 
             }
             catch (Exception b)
@@ -930,12 +933,10 @@ namespace Client
                     // uppercase
                     string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
                     string rest = cm.Substring(first_word.Length);
-                    _writer.WriteLine(first_word + rest);
-                    _writer.Flush();
+                    Transfer(first_word + rest);
                     return true;
                 }
-                _writer.WriteLine(cm.ToUpper());
-                _writer.Flush();
+                Transfer(cm.ToUpper());
             }
             catch (Exception ex)
             {
@@ -1014,8 +1015,10 @@ namespace Client
         public override bool Open()
         {
             main = new System.Threading.Thread(Start);
+            type = 2;
             Core._Main.Status(messages.get("connecting", Core.SelectedLanguage));
             main.Start();
+            Core.SystemThreads.Add(main);
             return true;
         }
     }

@@ -48,6 +48,7 @@ namespace Client
 
         public static Exception recovery_exception;
         public static Thread _RecoveryThread;
+        public static List<Thread> SystemThreads = new List<Thread>();
 
         public static Network network;
         public static Main _Main;
@@ -83,6 +84,14 @@ namespace Client
         {
             Recovery x = new Recovery();
             System.Windows.Forms.Application.Run(x);
+        }
+
+        public static void killThread(Thread name)
+        {
+            if (SystemThreads.Contains(name))
+            {
+                SystemThreads.Remove(name);
+            }
         }
 
         public static bool ProcessCommand(string command)
@@ -267,6 +276,57 @@ namespace Client
                     case "pidgeon.rehash":
                         //Core._Main.ShowPr();
                         break;
+                    case "connect":
+                        if (command.Length < "connect ".Length)
+                        {
+                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
+                            return true;
+                        }
+                        string name2 = command.Substring("server ".Length);
+                        string b2 = command.Substring(command.IndexOf(name2) + name2.Length);
+                        int n3;
+                        if (name2 == "")
+                        {
+                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
+                            return false;
+                        }
+                        if (Core._Main.Chat._Protocol == null)
+                        {
+                            return false;
+                        }
+                        if (Core._Main.Chat._Protocol.type == 3)
+                        {
+                            if (int.TryParse(b2, out n3))
+                            {
+                                Core._Main.Chat._Protocol.ConnectTo( name2, n3 );
+                                return false;
+                            }
+                        
+                            Core._Main.Chat._Protocol.ConnectTo(name2, 6667);
+                            return false;
+                        }
+                        break;
+                    case "pidgeon.service":
+                        if ("pidgeon.service ".Length < command.Length)
+                        {
+                            List<string> parameters = new List<string>();
+                            parameters.AddRange(command.Split(' '));
+                            int port = int.Parse(parameters[2]);
+                            connectPS(parameters[0], port, parameters[1]);
+                            return false;
+                        }
+                        break;
+                    case "service.gnick":
+                        string nick = command.Substring("service.gnick ".Length);
+                        if (Core._Main.Chat._Protocol != null)
+                        {
+                            if (Core._Main.Chat._Protocol.type == 3)
+                            {
+                                Core._Main.Chat._Protocol.requestNick(nick);
+                                return false;
+                            }
+                        }
+                        break;
                     case "raw":
                         if (network != null)
                         {
@@ -285,11 +345,12 @@ namespace Client
                         _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                         return false;
                 }
-                if (network != null)
+                // if we are connected to something let's handle this command by server
+                if (Core._Main.Chat._Protocol != null)
                 {
-                    if (network.Connected)
+                    if (_Main.Chat._Protocol.Connected)
                     {
-                        network._protocol.Command(command);
+                        Core._Main.Chat._Protocol.Command(command);
                         return false;
                     }
                 }
@@ -583,6 +644,13 @@ namespace Client
                     server.Exit();
                 }
                 System.Threading.Thread.Sleep(200);
+                foreach (Thread th in SystemThreads)
+                {
+                    if (th.ThreadState == System.Threading.ThreadState.Running)
+                    {
+                        th.Abort();
+                    }
+                }
                 System.Windows.Forms.Application.Exit();
             }
             catch (Exception)

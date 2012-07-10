@@ -28,11 +28,14 @@ namespace Client
 {
     public partial class PidgeonList : UserControl
     {
+        public Dictionary<ProtocolSv, TreeNode> ServiceList = new Dictionary<ProtocolSv, TreeNode>();
+        
         public Dictionary<Network, TreeNode> Servers = new Dictionary<Network, TreeNode>();
         public LinkedList<User> _User = new LinkedList<User>();
         public Dictionary<Channel, TreeNode> Channels = new Dictionary<Channel, TreeNode>();
         public LinkedList<Channel> ChannelsQueue = new LinkedList<Channel>();
         public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
+        public List<Network> NetworkQueue = new List<Network>();
 
         public PidgeonList()
         {
@@ -54,6 +57,10 @@ namespace Client
 
         public void insertChannel(Channel chan)
         {
+            if (ChannelsQueue.Contains(chan))
+            { 
+                return;
+            }
             ChannelsQueue.AddLast(chan);
         }
 
@@ -77,6 +84,16 @@ namespace Client
             }
         }
 
+        public void insertSv(ProtocolSv service)
+        {
+            TreeNode text = new TreeNode();
+            text.Text = service.Server;
+            ServiceList.Add(service, text);
+            text.Expand();
+            service.windows["!root"].scrollback.ln = text;
+            this.items.Nodes.Add(text);
+        }
+
         private void insertChan(Channel chan)
         {
             if (Servers.ContainsKey(chan._Network))
@@ -93,22 +110,49 @@ namespace Client
             }
         }
 
+        public void _insertNetwork(Network network)
+        {
+            if (network.ParentSv == null)
+            {
+                TreeNode text = new TreeNode();
+                text.Text = network.server;
+                Servers.Add(network, text);
+                text.Expand();
+                network._protocol.windows["!system"].scrollback.ln = text;
+                this.items.Nodes.Add(text);
+                return;
+            }
+            if(this.ServiceList.ContainsKey(network.ParentSv))
+            {
+                TreeNode text = new TreeNode();
+                text.Text = network.server;
+                ServiceList[network.ParentSv].Nodes.Add(text);
+                Servers.Add(network, text);
+                text.Expand();
+            }
+        }
+
         /// <summary>
         /// insert network to lv
         /// </summary>
         /// <param name="network"></param>
-        public void insertNetwork(Network network)
+        public void insertNetwork(Network network, ProtocolSv ParentSv = null)
         {
-            TreeNode text = new TreeNode();
-            text.Text = network.server;
-            Servers.Add(network, text);
-            text.Expand();
-            network._protocol.windows["!system"].scrollback.ln = text;
-            this.items.Nodes.Add(text);
+            if (NetworkQueue.Contains(network)) return;
+            network.ParentSv = ParentSv;
+            NetworkQueue.Add(network);
         }
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            lock (NetworkQueue)
+            {
+                foreach (Network it in NetworkQueue)
+                {
+                    _insertNetwork(it);
+                }
+                NetworkQueue.Clear();
+            }
             lock (ChannelsQueue)
             {
                 foreach (Channel item in ChannelsQueue)
@@ -138,7 +182,7 @@ namespace Client
             {
                 foreach (Main._WindowRequest item in Core._Main.W)
                 {
-                    Core._Main.CreateChat(item.window);
+                    Core._Main.CreateChat(item.window, item.owner);
                     if (item.owner != null && item._Focus)
                     {
                         item._Focus = false;
@@ -180,13 +224,34 @@ namespace Client
             items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
             try
             {
+                if (this.ServiceList.ContainsValue(e.Node))
+                {
+                    foreach (var sv in ServiceList)
+                    {
+                        if (sv.Value == e.Node)
+                        {
+                            sv.Key.ShowChat("!root");
+                            Core.network = null;
+                            disconnectToolStripMenuItem.Visible = true;
+                            Core._Main.UpdateStatus();
+                            return;
+                        }
+                    }
+                }
                 if (Servers.ContainsValue(e.Node))
                 {
                     foreach (var cu in Servers)
                     {
                         if (cu.Value == e.Node)
                         {
-                            cu.Key._protocol.ShowChat("!system");
+                            if (cu.Key.ParentSv == null)
+                            {
+                                cu.Key._protocol.ShowChat("!system");
+                            }
+                            else
+                            {
+                                cu.Key.ParentSv.ShowChat("!" + cu.Key.server);
+                            }
                             Core.network = cu.Key;
                             disconnectToolStripMenuItem.Visible = true;
                             Core._Main.UpdateStatus();

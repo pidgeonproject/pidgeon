@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Client
 {
-    class ProtocolQuassel : Protocol
+    public class ProtocolQuassel : Protocol
     {
         public System.Threading.Thread _Thread;
     }

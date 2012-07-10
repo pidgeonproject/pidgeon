@@ -35,6 +35,7 @@ namespace Client
         public string ident;
         public string quit;
         public Protocol _protocol;
+        public ProtocolSv ParentSv = null;
 
         public string channel_prefix = "#";
 
@@ -79,14 +80,28 @@ namespace Client
 
         public Network(string Server, Protocol protocol)
         {
-            _protocol = protocol;
-            server = Server;
-            quit = Configuration.quit;
-            nickname = Configuration.nick;
-            _protocol.CreateChat("!system", true, this);
-            Core._Main.ChannelList.insertNetwork(this);
-            username = Configuration.user;
-            ident = Configuration.ident;
+            try
+            {
+                _protocol = protocol;
+                server = Server;
+                quit = Configuration.quit;
+                nickname = Configuration.nick;
+                _protocol.CreateChat("!system", true, this);
+                username = Configuration.user;
+                ident = Configuration.ident;
+                if (protocol.type == 3)
+                {
+                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
+                }
+                else
+                {
+                    Core._Main.ChannelList.insertNetwork(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                Core.handleException(ex);
+            }
         }
     }
 }

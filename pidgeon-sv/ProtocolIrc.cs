@@ -23,7 +23,7 @@ using System.Net;
 
 namespace pidgeon_sv
 {
-    class ProtocolIrc : Protocol
+    public class ProtocolIrc : Protocol
     {
         public enum Priority
         {
@@ -34,6 +34,8 @@ namespace pidgeon_sv
         public System.Threading.Thread main;
         public System.Threading.Thread deliveryqueue;
         public System.Threading.Thread keep;
+        public System.Threading.Thread th;
+        public Buffer buffer = new Buffer();
         public DateTime pong = DateTime.Now;
         public Account owner = null;
 
@@ -42,6 +44,142 @@ namespace pidgeon_sv
         public Network _server;
         private System.IO.StreamWriter _writer;
         Messages _messages = new Messages();
+
+        public class Buffer
+        {
+            public struct Message
+            {
+                public Priority _Priority;
+                public ProtocolMain.Datagram message;
+            }
+            public List<Message> messages = new List<Message>();
+            public List<Message> newmessages = new List<Message>();
+            public List<Message> oldmessages = new List<Message>();
+            public ProtocolIrc protocol;
+
+            public void DeliverMessage(ProtocolMain.Datagram Message, Priority Pr = Priority.Normal)
+            {
+                Message text = new Message();
+                text._Priority = Pr;
+                text.message = Message;
+                lock (messages)
+                {
+                    messages.Add(text);
+                    return;
+                }
+            }
+
+            public void Run()
+            {
+                while (true)
+                {
+                    try
+                    {
+                        if (protocol.owner == null)
+                        {
+                            System.Threading.Thread.Sleep(100);
+                            continue;
+                        }
+                        if (protocol.owner.Clients.Count == 0)
+                        {
+                            System.Threading.Thread.Sleep(2000);
+                            continue;
+                        }
+                        if (messages.Count > 0)
+                        {
+                            lock (messages)
+                            {
+                                newmessages.AddRange(messages);
+                                messages.Clear();
+                            }
+                        }
+                        if (newmessages.Count > 0)
+                        {
+                            List<Message> Processed = new List<Message>();
+                            Priority highest = Priority.Low;
+                            while (newmessages.Count > 0)
+                            {
+                                // we need to get all messages that have been scheduled to be send
+                                lock (messages)
+                                {
+                                    if (messages.Count > 0)
+                                    {
+                                        newmessages.AddRange(messages);
+                                        messages.Clear();
+                                    }
+                                }
+                                highest = Priority.Low;
+                                // we need to check the priority we need to handle first
+                                foreach (Message message in newmessages)
+                                {
+                                    if (message._Priority > highest)
+                                    {
+                                        highest = message._Priority;
+                                        if (message._Priority == Priority.High)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                // send highest priority first
+                                foreach (Message message in newmessages)
+                                {
+                                    if (message._Priority >= highest)
+                                    {
+                                        Processed.Add(message);
+
+                                        protocol.owner.Deliver(message.message);
+                                        if (highest != Priority.High)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+                                foreach (Message message in Processed)
+                                {
+                                    if (newmessages.Contains(message))
+                                    {
+                                        newmessages.Remove(message);
+                                        if (oldmessages.Count > Core.maxbs)
+                                        {
+                                            FlushOld();
+                                        }
+                                        lock (oldmessages)
+                                        {
+                                            oldmessages.Add(message);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        newmessages.Clear();
+                        System.Threading.Thread.Sleep(200);
+                    }
+                    catch (System.Threading.ThreadAbortException)
+                    {
+                        return;
+                    }
+                }
+            }
+            public void FlushOld()
+            {
+                lock (oldmessages)
+                {
+                    foreach (Message curr in oldmessages)
+                    { 
+                        string item = "";
+
+                            foreach (KeyValuePair<string, string> data in curr.message.Parameters)
+                            {
+                                item += " "   + data.Key + "=\"" + System.Web.HttpUtility.HtmlEncode(data.Value) + "\"";  
+                            }
+                            string line = "<LINE" + item + ">" + System.Web.HttpUtility.HtmlEncode(curr.message._InnerText) + "</LINE>\n";
+                            System.IO.File.AppendAllText("db/" + protocol.Server + ".db", line);
+                    }
+                    oldmessages.Clear();
+                }
+            }
+        }
 
         class Messages
         {
@@ -147,7 +285,7 @@ namespace pidgeon_sv
             Transfer("PART " + name);
         }
 
-        public void Transfer(string text, Priority Pr = Priority.Normal)
+        public override void Transfer(string text, Priority Pr = Priority.Normal)
         {
             _messages.DeliverMessage(text, Pr);
         }
@@ -182,11 +320,11 @@ namespace pidgeon_sv
             try
             {
                 _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
-
                 _server.Connected = true;
 
                 _writer = new System.IO.StreamWriter(_network);
                 _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
+
 
                 _writer.WriteLine("USER " + _server.ident + " 8 * :" + _server.username);
                 _writer.WriteLine("NICK " + _server.nickname);
@@ -199,6 +337,11 @@ namespace pidgeon_sv
             }
             catch (Exception b)
             {
+                ProtocolMain.Datagram dt = new ProtocolMain.Datagram("CONNECTION", "PROBLEM");
+                dt.Parameters.Add("network", Server);
+                dt.Parameters.Add("info", b.Message);
+                owner.Deliver(dt);
+                Console.WriteLine(b.Message);
                 return;
             }
             string text = "";
@@ -260,7 +403,6 @@ namespace pidgeon_sv
                             if (command == "PONG")
                             {
                                 pong = DateTime.Now;
-                                continue;
                             }
 
                             if (data[1].Contains(" "))
@@ -285,7 +427,7 @@ namespace pidgeon_sv
                                             if (channel != null)
                                             {
                                                 channel.Topic = topic;
-                                                continue;
+
                                             }
                                         }
                                         break;
@@ -310,7 +452,6 @@ namespace pidgeon_sv
                                                     }
                                                 }
                                                 channel.redrawUsers();
-                                                continue;
                                             }
                                         }
                                         break;
@@ -328,18 +469,14 @@ namespace pidgeon_sv
                                         }
                                         break;
                                     case "366":
-                                        continue;
+                                        break;;
                                     case "324":
                                         if (code.Length > 3)
                                         {
                                             string name = code[2];
                                             string topic = _value;
-                                            Channel channel = _server.getChannel(code[3]);
-                                            if (channel != null)
-                                            {
-
-                                                continue;
-                                            }
+                                            //Channel channel = _server.getChannel(code[3]);
+                                            
                                         }
                                         break;
                                     //  367 petan # *!*@173.45.238.81
@@ -367,12 +504,12 @@ namespace pidgeon_sv
                             }
                             if (command == "INFO")
                             {
-                                continue;
+
                             }
 
                             if (command == "NOTICE")
                             {
-                                continue;
+
                             }
                             if (source.StartsWith(_server.nickname + "!"))
                             {
@@ -387,7 +524,6 @@ namespace pidgeon_sv
                                             channel = data[2];
                                         }
                                         Channel curr = _server.Join(channel);
-                                        continue;
                                     }
                                 }
                                 if (_data2.Length > 2)
@@ -408,7 +544,6 @@ namespace pidgeon_sv
                                                 c.ok = false;
                                             }
                                         }
-                                        continue;
                                     }
                                 }
                             }
@@ -416,7 +551,6 @@ namespace pidgeon_sv
                             if (command == "PING")
                             {
                                 Transfer("PONG ", Priority.High);
-                                continue;
                             }
 
                             if (command == "NICK")
@@ -459,22 +593,15 @@ namespace pidgeon_sv
                                 if (!chan.Contains(_server.channel_prefix))
                                 {
                                         owner.Deliver(new ProtocolMain.Datagram("CTCP", message));
-                                        continue;
                                 }
                                 User user = new User(_nick, _host, _server, _ident);
                                 Channel channel = null;
                                 if (chan.StartsWith(_server.channel_prefix))
                                 {
                                     channel = _server.getChannel(chan);
-                                    if (channel != null)
-                                    {
-                                        continue;
-                                    }
-                                    continue;
                                 }
                                 chan = source.Substring(source.IndexOf("!"));
                                 
-                                continue;
                             }
 
                             if (command == "TOPIC")
@@ -539,7 +666,7 @@ namespace pidgeon_sv
                                                     }
                                                     if (type == ' ')
                                                     {
-                                                        continue;
+
                                                     }
                                                     if (CUModes.Contains(m) && curr <= parameters2.Count)
                                                     {
@@ -587,7 +714,6 @@ namespace pidgeon_sv
                                                     }
                                                 }
                                             }
-                                            continue;
                                         }
                                     }
                                 }
@@ -629,7 +755,6 @@ namespace pidgeon_sv
                                         }
                                     }
                                 }
-                                continue;
                             }
 
                             if (command == "KICK")
@@ -655,12 +780,11 @@ namespace pidgeon_sv
                                 {
                                        
                                 }
-                            }
-                            ProtocolMain.Datagram dt = new ProtocolMain.Datagram("DATA", text);
-                            dt.Parameters.Add("network", Server);
-                            owner.Deliver(dt);
-                            //if (command == "")
+                            }   
                         }
+                        ProtocolMain.Datagram dt = new ProtocolMain.Datagram("DATA", text);
+                        dt.Parameters.Add("network", Server);
+                        buffer.DeliverMessage(dt);
                     }
                 }
             }
@@ -673,11 +797,11 @@ namespace pidgeon_sv
             }
         }
 
-        public void CLientData(string content)
+        public void ClientData(string content)
         {
             ProtocolMain.Datagram dt = new ProtocolMain.Datagram("DATA", content);
             dt.Parameters.Add("network", Server);
-            owner.Deliver(dt);
+            buffer.DeliverMessage(dt);
         }
 
         public override bool Command(string cm)
@@ -773,6 +897,9 @@ namespace pidgeon_sv
         {
             main = new System.Threading.Thread(Start);
             main.Start();
+            buffer.protocol = this;
+            th = new System.Threading.Thread(buffer.Run);
+            th.Start();
             return true;
         }
     }
