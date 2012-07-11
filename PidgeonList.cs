@@ -57,16 +57,22 @@ namespace Client
 
         public void insertChannel(Channel chan)
         {
-            if (ChannelsQueue.Contains(chan))
-            { 
-                return;
+            lock (ChannelsQueue)
+            {
+                if (ChannelsQueue.Contains(chan))
+                {
+                    return;
+                }
+                ChannelsQueue.AddLast(chan);
             }
-            ChannelsQueue.AddLast(chan);
         }
 
         public void insertUser(User _us)
         {
-            _User.AddLast(_us);
+            lock (_User)
+            {
+                _User.AddLast(_us);
+            }
         }
 
         private void _insertUs(User _us)
@@ -139,8 +145,11 @@ namespace Client
         public void insertNetwork(Network network, ProtocolSv ParentSv = null)
         {
             if (NetworkQueue.Contains(network)) return;
-            network.ParentSv = ParentSv;
-            NetworkQueue.Add(network);
+            lock (NetworkQueue)
+            {
+                network.ParentSv = ParentSv;
+                NetworkQueue.Add(network);
+            }
         }
 
         private void timer2_Tick(object sender, EventArgs e)

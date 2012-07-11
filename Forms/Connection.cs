@@ -46,7 +46,18 @@ namespace Client
             _Nickname.Text = Configuration.nick;
             comboBox1.Items.Add("irc");
             comboBox1.SelectedItem = "irc";
-            comboBox2.Text = Configuration.LastHostName;
+            if (Configuration.LastPort != "")
+            {
+                textBox2.Text = Configuration.LastPort;
+            }
+            if (Configuration.LastNick != "")
+            {
+                _Nickname.Text = Configuration.LastNick;
+            }
+            if (Configuration.LastHost != "")
+            { 
+                comboBox2.Text = Configuration.LastHost;
+            }
             comboBox1.Items.Add("quassel");
             comboBox1.Items.Add("pidgeon service");
             Text  = messages.get("connection", Core.SelectedLanguage);
@@ -73,6 +84,9 @@ namespace Client
             }
             Configuration.nick = _Nickname.Text;
             Configuration.ident = textBox1.Text;
+            Configuration.LastHost = comboBox2.Text;
+            Configuration.LastPort = textBox2.Text;
+            Configuration.LastNick = _Nickname.Text;
             switch (comboBox1.SelectedIndex)
             {
                 case 0:

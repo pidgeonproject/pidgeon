@@ -86,15 +86,17 @@ namespace Client
                 server = Server;
                 quit = Configuration.quit;
                 nickname = Configuration.nick;
-                _protocol.CreateChat("!system", true, this);
+                
                 username = Configuration.user;
                 ident = Configuration.ident;
                 if (protocol.type == 3)
                 {
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
+                    _protocol.CreateChat("!" + server, true, this);
                 }
                 else
                 {
+                    _protocol.CreateChat("!system", true, this);
                     Core._Main.ChannelList.insertNetwork(this);
                 }
             }

@@ -75,6 +75,7 @@ namespace Client
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.richTextBox1);
+            this.DoubleBuffered = true;
             this.Name = "TextBox";
             this.Size = new System.Drawing.Size(150, 86);
             this.Load += new System.EventHandler(this.TextBox_Load);

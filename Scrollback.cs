@@ -39,10 +39,10 @@ namespace Client
         public TreeNode ln;
         public class ContentLine
         {
-            public ContentLine(MessageStyle _style, string Text)
+            public ContentLine(MessageStyle _style, string Text, DateTime when)
             {
                 style = _style;
-                time = DateTime.Now;
+                time = when;
                 text = Text;
             }
             public DateTime time;
@@ -99,7 +99,7 @@ namespace Client
             Part,
         }
 
-        public bool InsertText(string text, MessageStyle input_style, bool lg = true)
+        public bool InsertText(string text, MessageStyle input_style, bool lg = true, string dt = null)
         {
             if (owner != Core._Main.Chat && ln != null)
             {
@@ -128,10 +128,16 @@ namespace Client
                     
                 }
             }
+            DateTime time = DateTime.Now;
+            if (dt != null)
+            {
+                time = DateTime.Parse(dt);
+            }
             lock(Line)
             {
-                Line.Add(new ContentLine(input_style, text));
+                Line.Add(new ContentLine(input_style, text, time));
             }
+            Modified = true;
             if (lg == true && owner != null && owner._Network != null)
             {
                 if (!Directory.Exists(Configuration.logs_dir))
@@ -169,7 +175,6 @@ namespace Client
                     System.IO.File.AppendAllText(_getFileName() + ".xml", "<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + input_style.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n");
                 }
             }
-            Modified = true;
             return false;
         }
 

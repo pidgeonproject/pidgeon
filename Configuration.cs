@@ -50,8 +50,6 @@ namespace Client
         /// </summary>
         public static string user = "My name is hidden, dude";
 
-        public static string LastHostName = "";
-
         /// <summary>
         /// Format of ttimestamp
         /// </summary>
@@ -123,6 +121,10 @@ namespace Client
         public static bool logs_xml = true;
         public static bool logs_txt = true;
         public static bool logs_html = true;
+
+        public static string LastNick = "";
+        public static string LastHost = "";
+        public static string LastPort = "";
 
         public static int x1 = 0;
         public static int x4 = 0;

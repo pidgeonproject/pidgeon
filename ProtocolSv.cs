@@ -16,6 +16,7 @@
  ***************************************************************************/
 
 using System;
+using System.Xml;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -172,7 +173,7 @@ namespace Client
                 string network = "";
                 System.Xml.XmlDocument datagram = new System.Xml.XmlDocument();
                 datagram.LoadXml(dg);
-                foreach (System.Xml.XmlNode curr in datagram.ChildNodes)
+                foreach (XmlNode curr in datagram.ChildNodes)
                 {
                     switch (curr.Name.ToUpper())
                     {
@@ -206,7 +207,7 @@ namespace Client
                             {
                                 server = new Network(name, this);
                                 sl.Add(server);
-                                CreateChat("!" + name, false, server, false);
+                                server.nickname = nick;
                                 server.Connected = true;
                             }
                             processIRC(curr.InnerText, server);
@@ -232,8 +233,8 @@ namespace Client
                                 case "OK":
                                     Network _network = new Network(network, this);
                                     _network.Connected = true;
+                                    _network.nickname = nick;
                                     sl.Add(_network);
-                                    CreateChat("!" + network, true, _network, false);
                                     continue;
                             }
                             break;
@@ -241,6 +242,7 @@ namespace Client
                             windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
                             break;
                         case "SGLOBALNICK":
+                            nick = curr.InnerText;
                             windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
                             break;
                         case "SNETWORKINFO":
@@ -277,7 +279,69 @@ namespace Client
                                     if (i != "")
                                     {
                                         Deliver(new Datagram("NETWORKINFO", i));
-                                        sl.Add(new Network(i, this));
+                                        Network nw = new Network(i, this);
+                                        nw.nickname = nick;
+                                        sl.Add(nw);
+                                        Datagram response = new Datagram("CHANNELINFO");
+                                        response._InnerText = "LIST";
+                                        response.Parameters.Add("network", i);
+                                        Deliver(response);
+                                    }
+                                }
+                            }
+                            break;
+
+                        case "SCHANNELINFO":
+                            if (curr.InnerText == "")
+                            {
+                                if (curr.Attributes.Count > 1)
+                                {
+                                    if (curr.Attributes[1].Name == "channels")
+                                    {
+                                        string[] channellist = curr.Attributes[1].Value.Split('!');
+                                        Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                        if (nw != null)
+                                        {
+                                            foreach (string channel in channellist)
+                                            {
+                                                if (channel != "")
+                                                {
+                                                    nw.Join(channel);
+                                                    Datagram response2 = new Datagram("CHANNELINFO", "INFO");
+                                                    response2.Parameters.Add("network", curr.Attributes[0].Value);
+                                                    response2.Parameters.Add("channel", channel);
+                                                    Deliver(response2);
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (curr.Attributes[1].Name == "channel")
+                                    {
+                                        string[] userlist = curr.Attributes[2].Value.Split(':');
+                                        Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                        if (nw != null)
+                                        {
+                                            Channel channel = nw.getChannel(curr.Attributes[1].Value);
+
+                                            if (channel != null)
+                                            {
+                                                foreach (string user in userlist)
+                                                {
+                                                    if (user != "")
+                                                    {
+                                                        string us = user.Substring(0, user.IndexOf("!"));
+                                                        string ident = user.Substring(user.IndexOf("!") + 1);
+                                                        ident = ident.Substring(0, user.IndexOf("@"));
+                                                        string host = user.Substring(user.IndexOf("@") + 1);
+                                                        host = user.Substring(0, host.IndexOf("+"));
+                                                        User f2 = new User(us, host, nw, ident);
+                                                        f2.ChannelMode.mode(user.Substring(user.IndexOf("+") + 1));
+                                                        channel.UserList.Add(f2);
+                                                    }
+                                                }
+                                                channel.redrawUsers();
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -307,6 +371,8 @@ namespace Client
         public override void Exit()
         {
             Deliver(new Datagram("QUIT"));
+            _writer.Close();
+            _reader.Close();
         }
 
         public void processIRC(string text, Network network)
@@ -1011,18 +1077,17 @@ namespace Client
 
         public void Deliver(Datagram message)
         {
-            string text = "";
-            string dl = "";
-
+            XmlDocument datagram = new XmlDocument();
+            XmlNode b1 = datagram.CreateElement(message._Datagram.ToUpper());
             foreach (KeyValuePair<string, string> curr in message.Parameters)
             {
-                dl += " " + curr.Key + "=\"" + System.Web.HttpUtility.HtmlEncode(curr.Value) + "\"";
+                XmlAttribute b2 = datagram.CreateAttribute(curr.Key);
+                b2.Value = curr.Value;
+                b1.Attributes.Append(b2);
             }
-
-            text = "<" + message._Datagram + dl + ">" + message._InnerText + "</" + message._Datagram + ">";
-
-
-            Send(text);
+            b1.InnerText = message._InnerText;
+            datagram.AppendChild(b1);
+            Send(datagram.InnerXml);
         }
 
         public override bool Open()
@@ -1039,6 +1104,18 @@ namespace Client
         public override int requestNick(string _Nick)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
+            return 0;
+        }
+
+        public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
+            return 0;
+        }
+
+        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
 

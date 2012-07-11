@@ -51,6 +51,7 @@ namespace Client
         private void bShutdown_Click(object sender, EventArgs e)
         {
             Core._KernelThread.Abort();
+            Core.IgnoreErrors = true;
             foreach (Protocol server in Core.Connections)
             {
                 server.Exit();

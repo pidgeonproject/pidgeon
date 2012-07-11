@@ -67,10 +67,7 @@ namespace Client
             this.sX = new System.Windows.Forms.SplitContainer();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-			if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-			{
-            	((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
-			}
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -141,33 +138,33 @@ namespace Client
             // newConnectionToolStripMenuItem
             // 
             this.newConnectionToolStripMenuItem.Name = "newConnectionToolStripMenuItem";
-            this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.newConnectionToolStripMenuItem.Text = "New connection";
             this.newConnectionToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+            this.newConnectionToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.newConnectionToolStripMenuItem.Text = "New connection";
             this.newConnectionToolStripMenuItem.Click += new System.EventHandler(this.newConnectionToolStripMenuItem_Click_1);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(158, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(197, 6);
             // 
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
-            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
+            this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
+            this.preferencesToolStripMenuItem.Text = "Preferences";
             this.preferencesToolStripMenuItem.Click += new System.EventHandler(this.preferencesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(158, 6);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(197, 6);
             // 
             // shutDownToolStripMenuItem
             // 
             this.shutDownToolStripMenuItem.Name = "shutDownToolStripMenuItem";
-            this.shutDownToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.shutDownToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.shutDownToolStripMenuItem.Text = "Shut down";
             this.shutDownToolStripMenuItem.Click += new System.EventHandler(this.shutDownToolStripMenuItem_Click);
             // 
@@ -189,7 +186,7 @@ namespace Client
             this.contentsToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.F1)));
+            this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
@@ -223,6 +220,7 @@ namespace Client
             this.Controls.Add(this.sX);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.DoubleBuffered = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";
@@ -232,10 +230,7 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-			{
-            	((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
-			}
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

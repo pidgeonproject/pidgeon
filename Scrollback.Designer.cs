@@ -69,10 +69,6 @@ namespace Client
             this.Data.ScriptErrorsSuppressed = true;
             this.Data.Size = new System.Drawing.Size(345, 262);
             this.Data.TabIndex = 1;
-			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-			{
-            	this.Data.Visible = false;
-			}
             // 
             // contextMenuStrip1
             // 
@@ -139,6 +135,7 @@ namespace Client
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.Controls.Add(this.Data);
             this.Controls.Add(this.webBrowser1);
+            this.DoubleBuffered = true;
             this.Name = "Scrollback";
             this.Size = new System.Drawing.Size(345, 262);
             this.Load += new System.EventHandler(this.Scrollback_Load);

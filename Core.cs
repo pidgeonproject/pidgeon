@@ -52,7 +52,8 @@ namespace Client
 
         public static Network network;
         public static Main _Main;
-        public static bool blocked = false; 
+        public static bool blocked = false;
+        public static bool IgnoreErrors = false;
 
         public static bool Load()
         {
@@ -412,7 +413,6 @@ namespace Client
             makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
             makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
             makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
-            makenode("history.name", Configuration.LastHostName, curr, confname, config, xmlnode);
             makenode("irc.auto.whois", Configuration.aggressive_whois.ToString() , curr, confname, config, xmlnode);
             makenode("irc.auto.mode", Configuration.aggressive_mode.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.channels", Configuration.aggressive_channel.ToString(), curr, confname, config, xmlnode);
@@ -432,7 +432,11 @@ namespace Client
             makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
             makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
             makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
-            makenode("location.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+            makenode("logs.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+
+            makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
+            makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
+            makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
 
             if (Backup(ConfigFile))
             {
@@ -493,9 +497,6 @@ namespace Client
                                     case "formats.date":
                                         Configuration.format_date = curr.InnerText;
                                         break;
-                                    case "history.name":
-                                        Configuration.LastHostName = curr.InnerText;
-                                        break;
                                     case "formats.datetime":
                                         Configuration.timestamp_mask = curr.InnerText;
                                         break;
@@ -546,6 +547,15 @@ namespace Client
                                         break;
                                     case "logs.txt":
                                         Configuration.logs_txt = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "history.nick":
+                                        Configuration.LastNick = curr.InnerText;
+                                        break;
+                                    case "history.host":
+                                        Configuration.LastHost = curr.InnerText;
+                                        break;
+                                    case "history.port":
+                                        Configuration.LastPort = curr.InnerText;
                                         break;
 
 
@@ -621,6 +631,10 @@ namespace Client
 
         public static int handleException(Exception _exception)
         {
+            if (IgnoreErrors)
+            {
+                return -2;
+            }
             Console.WriteLine(_exception.InnerException);
             blocked = true;
             recovery_exception = _exception;
@@ -637,20 +651,31 @@ namespace Client
         {
             try
             {
+                IgnoreErrors = true;
                 _Main.Visible = false;
                 ConfigSave();
-                foreach (Protocol server in Connections)
+                try
                 {
-                    server.Exit();
-                }
-                System.Threading.Thread.Sleep(200);
-                foreach (Thread th in SystemThreads)
-                {
-                    if (th.ThreadState == System.Threading.ThreadState.Running)
+                    foreach (Protocol server in Connections)
                     {
-                        th.Abort();
+                        server.Exit();
                     }
                 }
+                catch (Exception)
+                { }
+                System.Threading.Thread.Sleep(200);
+                try
+                {
+                    foreach (Thread th in SystemThreads)
+                    {
+                        if (th.ThreadState == System.Threading.ThreadState.Running)
+                        {
+                            th.Abort();
+                        }
+                    }
+                }
+                catch (Exception)
+                { }
                 System.Windows.Forms.Application.Exit();
             }
             catch (Exception)
