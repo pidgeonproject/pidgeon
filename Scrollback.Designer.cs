@@ -148,7 +148,6 @@ namespace Client
             this.Name = "Scrollback";
             this.Size = new System.Drawing.Size(345, 262);
             this.Load += new System.EventHandler(this.Scrollback_Load);
-            this.Resize += new System.EventHandler(this.Recreate);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 

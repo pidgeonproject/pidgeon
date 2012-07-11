@@ -52,8 +52,6 @@ namespace Client
             this.bCancel = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gro2 = new System.Windows.Forms.GroupBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.gro1 = new System.Windows.Forms.GroupBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.lname = new System.Windows.Forms.Label();
@@ -76,13 +74,15 @@ namespace Client
             this.label2 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.gro2 = new System.Windows.Forms.GroupBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.fl.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.gro2.SuspendLayout();
             this.gro1.SuspendLayout();
             this.gro4.SuspendLayout();
             this.gro3.SuspendLayout();
+            this.gro2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -156,27 +156,6 @@ namespace Client
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(461, 380);
             this.panel1.TabIndex = 6;
-            // 
-            // gro2
-            // 
-            this.gro2.Controls.Add(this.checkBox4);
-            this.gro2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro2.Location = new System.Drawing.Point(0, 0);
-            this.gro2.Name = "gro2";
-            this.gro2.Size = new System.Drawing.Size(461, 380);
-            this.gro2.TabIndex = 1;
-            this.gro2.TabStop = false;
-            this.gro2.Text = "System";
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(22, 33);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(91, 17);
-            this.checkBox4.TabIndex = 0;
-            this.checkBox4.Text = "Display CTCP";
-            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // gro1
             // 
@@ -370,7 +349,7 @@ namespace Client
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 67);
+            this.label2.Location = new System.Drawing.Point(19, 34);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(29, 13);
             this.label2.TabIndex = 2;
@@ -386,11 +365,32 @@ namespace Client
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 33);
+            this.label1.Location = new System.Drawing.Point(19, 70);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "File name";
+            // 
+            // gro2
+            // 
+            this.gro2.Controls.Add(this.checkBox4);
+            this.gro2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro2.Location = new System.Drawing.Point(0, 0);
+            this.gro2.Name = "gro2";
+            this.gro2.Size = new System.Drawing.Size(461, 380);
+            this.gro2.TabIndex = 1;
+            this.gro2.TabStop = false;
+            this.gro2.Text = "System";
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(22, 33);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(91, 17);
+            this.checkBox4.TabIndex = 0;
+            this.checkBox4.Text = "Display CTCP";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // Preferences
             // 
@@ -406,14 +406,14 @@ namespace Client
             this.tableLayoutPanel1.ResumeLayout(false);
             this.fl.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.gro2.ResumeLayout(false);
-            this.gro2.PerformLayout();
             this.gro1.ResumeLayout(false);
             this.gro1.PerformLayout();
             this.gro4.ResumeLayout(false);
             this.gro4.PerformLayout();
             this.gro3.ResumeLayout(false);
             this.gro3.PerformLayout();
+            this.gro2.ResumeLayout(false);
+            this.gro2.PerformLayout();
             this.ResumeLayout(false);
 
         }

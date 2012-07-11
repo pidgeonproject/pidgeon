@@ -79,6 +79,7 @@ namespace Client
         {
             if (Servers.ContainsKey(_us._Network))
             {
+                this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 Servers[_us._Network].Nodes.Add(text);
                 text.Text = _us.Nick;
@@ -88,22 +89,26 @@ namespace Client
                 {
                     _us._Network._protocol.windows[_us.Nick].scrollback.ln = text;
                 }
+                this.ResumeLayout();
             }
         }
 
         public void insertSv(ProtocolSv service)
         {
+            this.SuspendLayout();
             TreeNode text = new TreeNode();
             text.Text = service.Server;
             ServiceList.Add(service, text);
             service.windows["!root"].scrollback.ln = text;
             this.items.Nodes.Add(text);
+            this.ResumeLayout();
         }
 
         private void insertChan(Channel chan)
         {
             if (Servers.ContainsKey(chan._Network))
             {
+                this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = chan.Name;
                 Servers[chan._Network].Expand();
@@ -114,6 +119,7 @@ namespace Client
                 {
                     xx.scrollback.ln = text;
                 }
+                this.ResumeLayout();
             }
         }
 
@@ -121,6 +127,7 @@ namespace Client
         {
             if (network.ParentSv == null)
             {
+                this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.server;
                 Servers.Add(network, text);
@@ -131,12 +138,15 @@ namespace Client
             }
             if(this.ServiceList.ContainsKey(network.ParentSv))
             {
+                this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.server;
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
+                
             }
+            this.ResumeLayout();
         }
 
         /// <summary>

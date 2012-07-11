@@ -24,19 +24,6 @@ namespace Client
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Component Designer generated code
 
         /// <summary> 
@@ -48,7 +35,6 @@ namespace Client
             this.components = new System.ComponentModel.Container();
             this.xContainer1 = new System.Windows.Forms.SplitContainer();
             this.xContainer4 = new System.Windows.Forms.SplitContainer();
-            this.scrollback = new Client.Scrollback();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.listViewd = new System.Windows.Forms.ListView();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);

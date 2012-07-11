@@ -166,7 +166,7 @@ namespace Client
             Datagram line = new Datagram("RAW", data);
             string Pr = "Normal";
             switch (priority)
-            { 
+            {
                 case Configuration.Priority.High:
                     Pr = "High";
                     break;
@@ -231,7 +231,7 @@ namespace Client
                             ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong);
                             break;
                         case "SNICK":
-                            Network sv = retrieveNetwork( curr.Attributes[0].Value );
+                            Network sv = retrieveNetwork(curr.Attributes[0].Value);
                             if (sv != null)
                             {
                                 sv.nickname = curr.InnerText;
@@ -304,7 +304,7 @@ namespace Client
                                         response._InnerText = "LIST";
                                         response.Parameters.Add("network", i);
                                         Deliver(response);
-                                        
+
                                     }
                                 }
                             }
@@ -339,50 +339,62 @@ namespace Client
                                 }
                                 break;
                             }
-                                if (curr.Attributes[1].Name == "channel")
+                            if (curr.Attributes[1].Name == "channel")
+                            {
+                                string[] userlist = curr.Attributes[2].Value.Split(':');
+                                Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                if (nw != null)
                                 {
-                                    string[] userlist = curr.Attributes[2].Value.Split(':');
-                                    Network nw = retrieveNetwork(curr.Attributes[0].Value);
-                                    if (nw != null)
-                                    {
-                                        Channel channel = nw.getChannel(curr.Attributes[1].Value);
+                                    Channel channel = nw.getChannel(curr.Attributes[1].Value);
 
-                                        if (channel != null)
+                                    if (channel != null)
+                                    {
+                                        foreach (string user in userlist)
                                         {
-                                            foreach (string user in userlist)
+
+                                            if (user.Contains("!") && user.Contains("@"))
                                             {
-                                                if (user != "")
+                                                string us = "";
+                                                string ident;
+                                                us = user.Substring(0, user.IndexOf("!"));
+                                                ident = user.Substring(user.IndexOf("!") + 1);
+                                                if (ident.StartsWith("@"))
                                                 {
-                                                    string us = user.Substring(0, user.IndexOf("!"));
-                                                    string ident = user.Substring(user.IndexOf("!") + 1);
-                                                    if (ident.StartsWith("@"))
-                                                    {
-                                                        ident = "";
-                                                    }
-                                                    else
-                                                    {
-                                                        if (ident.Contains("@"))
-                                                        {
-                                                            ident = ident.Substring(0, user.IndexOf("@"));
-                                                        }
-                                                    }
-                                                    string host = user.Substring(user.IndexOf("@") + 1);
-                                                    if (host.StartsWith("+"))
-                                                    {
-                                                        host = "";
-                                                    } else
-                                                    {
-                                                        host = user.Substring(0, host.IndexOf("+"));
-                                                    }
-                                                    User f2 = new User(us, host, nw, ident);
-                                                    f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
-                                                    channel.UserList.Add(f2);
+                                                    ident = "";
                                                 }
+                                                else
+                                                {
+                                                    if (ident.Contains("@"))
+                                                    {
+                                                        ident = ident.Substring(0, ident.IndexOf("@"));
+                                                    }
+                                                }
+                                                string host = user.Substring(user.IndexOf("@") + 1);
+                                                if (host.StartsWith("+"))
+                                                {
+                                                    host = "";
+                                                }
+                                                else
+                                                {
+                                                    if (host.Contains("+"))
+                                                    {
+                                                        host = host.Substring(0, host.IndexOf("+"));
+                                                    }
+                                                }
+                                                User f2 = new User(us, host, nw, ident);
+                                                if (user.Contains("+") && !user.StartsWith("+"))
+                                                {
+                                                    f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
+                                                }
+
+                                                channel.UserList.Add(f2);
                                             }
-                                            channel.redrawUsers();
+
                                         }
+                                        channel.redrawUsers();
                                     }
                                 }
+                            }
                             break;
                         case "SAUTH":
                             if (curr.InnerText == "INVALID")

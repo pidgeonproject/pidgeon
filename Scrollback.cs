@@ -67,16 +67,16 @@ namespace Client
         public void create()
         {
             InitializeComponent();
+            this.SetStyle(
+            ControlStyles.UserPaint |
+            ControlStyles.AllPaintingInWmPaint |
+            ControlStyles.OptimizedDoubleBuffer, true);
 			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
 			{
             	Data.Visible = false;
 			}
+            Scrollback_Load(null, null);
         } 
-
-        public void Recreate(object sender, EventArgs e)
-        {
-
-        }
 
 
         public Scrollback()
@@ -187,8 +187,7 @@ namespace Client
         private void Scrollback_Load(object sender, EventArgs e)
         {
             Reload();
-            Recreate(null, null);
-            db = false;
+            this.ResumeLayout();
             Data.Visible = true;
             webBrowser1.Visible = false;
         }
@@ -250,6 +249,7 @@ namespace Client
             {
                 Reload();
             }
+            
             if (db)
             {
                 if (webBrowser1.Visible)
