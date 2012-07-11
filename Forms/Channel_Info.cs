@@ -88,7 +88,7 @@ namespace Client
                                 de = " = opers chan";
                                 break;
                             case "t":
-                                de = " = ";
+                                de = " = topic changes can be done only by operators";
                                 break;
 
                         }
@@ -117,7 +117,7 @@ namespace Client
                         if (!channel._mode._Mode.Contains(item[0].ToString()))
                         {
                             cset += item[0];
-                            change = true;    
+                            change = true;
                         }
                         continue;
 
@@ -146,6 +146,14 @@ namespace Client
                 Core.handleException(f);
             }
             Close();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (textBox1.Lines.Count() > 1)
+            {
+                textBox1.Text = textBox1.Lines[0];
+            }
         } 
     }
 }

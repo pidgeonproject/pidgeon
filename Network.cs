@@ -39,8 +39,6 @@ namespace Client
 
         public string channel_prefix = "#";
 
-        private Window Current;
-
         public Channel getChannel(string name)
         {
             foreach (Channel cu in Channels)

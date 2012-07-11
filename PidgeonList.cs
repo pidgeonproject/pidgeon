@@ -80,9 +80,10 @@ namespace Client
             if (Servers.ContainsKey(_us._Network))
             {
                 TreeNode text = new TreeNode();
-                text.Text = _us.Nick;
                 Servers[_us._Network].Nodes.Add(text);
+                text.Text = _us.Nick;
                 UserList.Add(_us, text);
+                Servers[_us._Network].Expand();
                 if (_us._Network._protocol.windows.ContainsKey(_us.Nick))
                 {
                     _us._Network._protocol.windows[_us.Nick].scrollback.ln = text;
@@ -95,7 +96,6 @@ namespace Client
             TreeNode text = new TreeNode();
             text.Text = service.Server;
             ServiceList.Add(service, text);
-            text.Expand();
             service.windows["!root"].scrollback.ln = text;
             this.items.Nodes.Add(text);
         }
@@ -106,6 +106,7 @@ namespace Client
             {
                 TreeNode text = new TreeNode();
                 text.Text = chan.Name;
+                Servers[chan._Network].Expand();
                 Servers[chan._Network].Nodes.Add(text);
                 Channels.Add(chan, text);
                 Window xx = chan.retrieveWindow();
@@ -134,7 +135,7 @@ namespace Client
                 text.Text = network.server;
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
-                text.Expand();
+                ServiceList[network.ParentSv].Expand();
             }
         }
 

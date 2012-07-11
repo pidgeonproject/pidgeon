@@ -308,5 +308,10 @@ namespace Client
 
         }
 
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reload();
+        }
+
     }
 }
