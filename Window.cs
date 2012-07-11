@@ -71,8 +71,6 @@ namespace Client
                 this.xContainer4.SplitterDistance = Configuration.x4;
 
 
-
-
             listViewd.Columns[0].Width = listView.Width - 8;
             listView.Columns[0].Width = listView.Width - 8;
             return true;
@@ -93,11 +91,6 @@ namespace Client
             if (keyData == Keys.Tab)
                 return true;
             return base.IsInputKey(keyData);
-        }
-
-        private void splitContainer1_Panel1_Paint_1(object sender, PaintEventArgs e)
-        {
-
         }
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)

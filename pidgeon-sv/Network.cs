@@ -35,7 +35,6 @@ namespace pidgeon_sv
         public Protocol.UserMode usermode = new Protocol.UserMode();
         public string username;
         public List<Channel> Channels = new List<Channel>();
-        public Channel RenderedChannel = null;
         public string nickname;
         public string ident;
         public string quit;
@@ -78,21 +77,9 @@ namespace pidgeon_sv
             return;
         }
 
-        /// <summary>
-        /// Initialise window - deprecated
-        /// </summary>
-        /// <param name="_name"></param>
-        /// <param name="_writable"></param>
-        /// <param name="window"></param>
-        public void _Chat(string _name, bool _writable)
-        {
-
-        }
-
         public Channel Join(string channel)
         {
             Channel _channel = new Channel();
-            RenderedChannel = _channel;
             _channel.Name = channel;
             _channel._Network = this;
             Channels.Add(_channel);

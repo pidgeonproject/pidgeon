@@ -162,6 +162,8 @@ namespace Client
                         }
                         if (listView == null)
                         {
+                            Chat.listView.Visible = true;
+                            Redraw = true;
                             return;
                         }
                         lock (UserList)

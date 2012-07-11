@@ -121,7 +121,6 @@ namespace Client
             // xContainer4.Panel1
             // 
             this.xContainer4.Panel1.Controls.Add(this.scrollback);
-            this.xContainer4.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint_1);
             // 
             // xContainer4.Panel2
             // 

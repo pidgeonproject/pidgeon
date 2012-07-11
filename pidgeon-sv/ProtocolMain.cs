@@ -30,10 +30,6 @@ namespace pidgeon_sv
             public Datagram(string Name, string Text = "")
             {
                 _Datagram = Name;
-                if (Text != "")
-                {
-                    _InnerText = System.Web.HttpUtility.HtmlEncode(Text);
-                }
                 _InnerText = Text;
             }
             public string _InnerText;
@@ -45,11 +41,6 @@ namespace pidgeon_sv
         /// Pointer to client
         /// </summary>
         public Connection client;
-
-        /// <summary>
-        /// networks
-        /// </summary>
-        public List<Network> _in = new List<Network>();
 
         public static bool Valid(string datagram)
         {
@@ -68,8 +59,6 @@ namespace pidgeon_sv
             return false;
         }
 
-
-
         public void parseCommand(string data)
         {
             
@@ -83,9 +72,14 @@ namespace pidgeon_sv
 
         public void Exit()
         {
+            Console.WriteLine("Quiting " + client.name);
             if (client.account != null)
             {
-                client.account.Clients.Remove(this);
+                lock (client.account.Clients)
+                {
+                    client.account.Clients.Remove(this);
+                }
+                Console.WriteLine("Done " + client.name);
             }
         }
 
@@ -103,6 +97,7 @@ namespace pidgeon_sv
                     case "MESSAGE":
                     case "CONNECT":
                     case "NICK":
+                    case "NETWORKINFO":
                     case "JOIN":
                     case "PART":
                     case "KICK":
@@ -145,6 +140,11 @@ namespace pidgeon_sv
                     {
                         string server = node.Attributes[0].Value;
                         string priority = "Normal";
+                        int depth = 0;
+                        if (node.Attributes.Count > 2)
+                        {
+                            depth = int.Parse(node.Attributes[2].Value);
+                        }
                         ProtocolIrc.Priority Priority = ProtocolIrc.Priority.Normal;
                         if (node.Attributes.Count > 1)
                         {
@@ -162,12 +162,84 @@ namespace pidgeon_sv
                         if (client.account.containsNetwork(server))
                         {
                             Network network = client.account.retrieveServer(server);
+                            if (depth > 0)
+                            { 
+                                
+                            }
                             network._protocol.Transfer(node.InnerText, Priority);
                         }
                     }
                     break;
+                case "NICK":
+                    if (node.Attributes.Count > 0)
+                    {
+                        Network b008 = client.account.retrieveServer(node.Attributes[0].Value);
+                        if (b008 != null)
+                        {
+                            response = new Datagram("NICK", b008.nickname);
+                            response.Parameters.Add("network", b008.server);
+                            Deliver(response);
+                            break;
+                        }
+                        response = new Datagram("NICK", "UNKNOWN");
+                        response.Parameters.Add("network", b008.server);
+                        response.Parameters.Add("failure", "failure");
+                        Deliver(response);
+                    }
+                    break;
                 case "CHANNELINFO":
-                    
+                    Network b002 = client.account.retrieveServer(node.Attributes[0].Value);
+                    switch (node.InnerText)
+                    { 
+                        case "LIST":
+                            if (b002 == null)
+                            {
+                                Deliver(new Datagram("CHANNELINFO", "EMPTY"));
+                                return;
+                            }
+                            string list = "";
+                            foreach (Channel curr in b002.Channels)
+                            {
+                                list += curr.Name + "!";
+                            }
+                            response = new Datagram("CHANNELINFO", "");
+                            response.Parameters.Add("network", node.Attributes[0].Value);
+                            response.Parameters.Add("channels", list);
+                            Deliver(response);
+                            break;
+                        case "INFO":
+                            if (b002 == null)
+                            {
+                                Deliver(new Datagram("CHANNELINFO", "EMPTY"));
+                                return;
+                            }
+                            if (node.Attributes.Count > 1)
+                            {
+                                Channel channel = b002.getChannel(node.Attributes[1].Value);
+                                if (channel == null)
+                                {
+                                        Console.WriteLine(b002.Channels.Count.ToString());
+                                        response = new Datagram("CHANNELINFO", "EMPTY");
+                                        response.Parameters.Add("network", node.Attributes[0].Value);
+                                        response.Parameters.Add("channel", node.Attributes[1].Value);
+                                        Deliver(response);
+                                        return;
+
+                                }
+                                string userli = "";
+                                foreach (User l2 in channel.UserList)
+                                {
+                                    userli += l2.Nick + "!" + l2.Ident + "@" + l2.Host + l2.ChannelMode.ToString() + ":";
+                                }
+                                response = new Datagram("CHANNELINFO", "USERLIST");
+                                response.Parameters.Add("network", node.Attributes[0].Value);
+                                response.Parameters.Add("channel", node.Attributes[1].Value);
+                                response.Parameters.Add("ul", userli);
+                                Console.WriteLine("can't find " + node.Attributes[1].Value);
+                                Deliver(response);
+                            }
+                            break;
+                    }
                     return;
                 case "NETWORKLIST":
                     string networks = "";
@@ -216,6 +288,7 @@ namespace pidgeon_sv
                     Core.SaveData();
                     break;
                 case "AUTH":
+                    Console.WriteLine("Logging in " + client.name);
                     string username = node.Attributes[0].Value;
                     string pw = node.Attributes[1].Value;
                     foreach (Account curr_user in Core._accounts)
@@ -225,7 +298,11 @@ namespace pidgeon_sv
                             if (curr_user.password == pw)
                             {
                                 client.account = curr_user;
-                                client.account.Clients.Add(this);
+                                lock (client.account.Clients)
+                                {
+                                    client.account.Clients.Add(this);
+                                }
+                                Console.WriteLine("Logged in as " + client.account.username);
                                 response = new Datagram("AUTH", "OK");
                                 client.status = Connection.Status.Connected;
                                 Deliver(response);
@@ -246,18 +323,19 @@ namespace pidgeon_sv
 
         public void Deliver(Datagram message)
         {
-            string text = "";
-            string dl = "";
-
+            XmlDocument datagram = new XmlDocument();
+            XmlNode b1 = datagram.CreateElement("S" + message._Datagram.ToUpper());
             foreach (KeyValuePair<string, string> curr in message.Parameters)
             {
-                dl += " "   + curr.Key + "=\"" + System.Web.HttpUtility.HtmlEncode(curr.Value) + "\"";  
+                XmlAttribute b2 = datagram.CreateAttribute(curr.Key);
+                b2.Value = curr.Value;
+                b1.Attributes.Append(b2);
             }
+            b1.InnerText = message._InnerText;
+            datagram.AppendChild(b1);
 
-            text = "<S" + message._Datagram + dl + ">" + System.Web.HttpUtility.HtmlEncode(message._InnerText) + "</S" + message._Datagram + ">";
 
-
-            Send(text);
+            Send(datagram.InnerXml);
         }
 
         public bool Send(string text)

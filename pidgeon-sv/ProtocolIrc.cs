@@ -45,6 +45,7 @@ namespace pidgeon_sv
         private System.IO.StreamWriter _writer;
         Messages _messages = new Messages();
 
+
         public class Buffer
         {
             public struct Message
@@ -80,11 +81,13 @@ namespace pidgeon_sv
                             System.Threading.Thread.Sleep(100);
                             continue;
                         }
-                        if (protocol.owner.Clients.Count == 0)
+                        lock (protocol.owner.Clients)
                         {
-                            System.Threading.Thread.Sleep(2000);
-                            continue;
-                        }
+                            if (protocol.owner.Clients.Count == 0)
+                            {
+                                System.Threading.Thread.Sleep(2000);
+                                continue;
+                            }
                         if (messages.Count > 0)
                         {
                             lock (messages)
@@ -92,6 +95,7 @@ namespace pidgeon_sv
                                 newmessages.AddRange(messages);
                                 messages.Clear();
                             }
+                        }
                         }
                         if (newmessages.Count > 0)
                         {
@@ -524,6 +528,7 @@ namespace pidgeon_sv
                                             channel = data[2];
                                         }
                                         Channel curr = _server.Join(channel);
+                                        Console.WriteLine("joined");
                                     }
                                 }
                                 if (_data2.Length > 2)
@@ -567,9 +572,7 @@ namespace pidgeon_sv
                                             {
                                                 if (curr.Nick == nick)
                                                 {
-                                                    curr.Nick = _new;
-                                                    item.redrawUsers();
-                                                   
+                                                    curr.Nick = _new;                
                                                 }
                                             }
                                         }
@@ -727,9 +730,27 @@ namespace pidgeon_sv
                                 Channel channel = _server.getChannel(chan);
                                 if (channel != null)
                                 {
-                                    
                                     User delete = null;
-                                    
+                                        if (channel.containUser(user))
+                                        {
+                                            lock (channel.UserList)
+                                            {
+                                                foreach (User _user in channel.UserList)
+                                                {
+                                                    if (_user.Nick == user)
+                                                    {
+                                                        delete = _user;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (delete != null)
+                                            {
+                                                channel.UserList.Remove(delete);
+                                            }
+                                            continue;
+                                        }
                                 }
                             }
 
@@ -751,6 +772,13 @@ namespace pidgeon_sv
                                                     target = curr;
                                                     break;
                                                 }
+                                            }
+                                        }
+                                        if (target != null)
+                                        {
+                                            lock (item.UserList)
+                                            {
+                                                item.UserList.Remove(target);
                                             }
                                         }
                                     }
@@ -778,7 +806,13 @@ namespace pidgeon_sv
                                 Channel channel = _server.getChannel(chan);
                                 if (channel != null)
                                 {
-                                       
+                                    if (!channel.containUser(user))
+                                    {
+                                        lock (channel.UserList)
+                                        {
+                                            channel.UserList.Add(new User(user, _host, _server, _ident));
+                                        }
+                                    }
                                 }
                             }   
                         }
@@ -802,6 +836,11 @@ namespace pidgeon_sv
             ProtocolMain.Datagram dt = new ProtocolMain.Datagram("DATA", content);
             dt.Parameters.Add("network", Server);
             buffer.DeliverMessage(dt);
+        }
+
+        public void getDepth(int n)
+        {
+
         }
 
         public override bool Command(string cm)

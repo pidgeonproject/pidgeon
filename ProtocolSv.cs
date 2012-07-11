@@ -161,6 +161,24 @@ namespace Client
             return null;
         }
 
+        public void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
+        {
+            Datagram line = new Datagram("RAW", data);
+            string Pr = "Normal";
+            switch (priority)
+            { 
+                case Configuration.Priority.High:
+                    Pr = "High";
+                    break;
+                case Configuration.Priority.Low:
+                    Pr = "Low";
+                    break;
+            }
+            line.Parameters.Add("network", network);
+            line.Parameters.Add("priority", Pr);
+            Deliver(line);
+        }
+
         public override void Part(string name, Network network = null)
         {
             Transfer("PART " + name);
@@ -286,6 +304,7 @@ namespace Client
                                         response._InnerText = "LIST";
                                         response.Parameters.Add("network", i);
                                         Deliver(response);
+                                        
                                     }
                                 }
                             }
@@ -307,6 +326,8 @@ namespace Client
                                                 if (channel != "")
                                                 {
                                                     nw.Join(channel);
+                                                    SendData(nw.server, "TOPIC " + channel, Configuration.Priority.Normal);
+                                                    SendData(nw.server, "MODE " + channel, Configuration.Priority.Low);
                                                     Datagram response2 = new Datagram("CHANNELINFO", "INFO");
                                                     response2.Parameters.Add("network", curr.Attributes[0].Value);
                                                     response2.Parameters.Add("channel", channel);
@@ -315,36 +336,50 @@ namespace Client
                                             }
                                         }
                                     }
-                                    if (curr.Attributes[1].Name == "channel")
+                                }
+                                break;
+                            }
+                                if (curr.Attributes[1].Name == "channel")
+                                {
+                                    string[] userlist = curr.Attributes[2].Value.Split(':');
+                                    Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                    if (nw != null)
                                     {
-                                        string[] userlist = curr.Attributes[2].Value.Split(':');
-                                        Network nw = retrieveNetwork(curr.Attributes[0].Value);
-                                        if (nw != null)
-                                        {
-                                            Channel channel = nw.getChannel(curr.Attributes[1].Value);
+                                        Channel channel = nw.getChannel(curr.Attributes[1].Value);
 
-                                            if (channel != null)
+                                        if (channel != null)
+                                        {
+                                            foreach (string user in userlist)
                                             {
-                                                foreach (string user in userlist)
+                                                if (user != "")
                                                 {
-                                                    if (user != "")
+                                                    string us = user.Substring(0, user.IndexOf("!"));
+                                                    string ident = user.Substring(user.IndexOf("!") + 1);
+                                                    if (ident.StartsWith("@"))
                                                     {
-                                                        string us = user.Substring(0, user.IndexOf("!"));
-                                                        string ident = user.Substring(user.IndexOf("!") + 1);
-                                                        ident = ident.Substring(0, user.IndexOf("@"));
-                                                        string host = user.Substring(user.IndexOf("@") + 1);
-                                                        host = user.Substring(0, host.IndexOf("+"));
-                                                        User f2 = new User(us, host, nw, ident);
-                                                        f2.ChannelMode.mode(user.Substring(user.IndexOf("+") + 1));
-                                                        channel.UserList.Add(f2);
+                                                        ident = "";
                                                     }
+                                                    else
+                                                    {
+                                                        ident = ident.Substring(0, user.IndexOf("@"));
+                                                    }
+                                                    string host = user.Substring(user.IndexOf("@") + 1);
+                                                    if (host.StartsWith("+"))
+                                                    {
+                                                        host = "";
+                                                    } else
+                                                    {
+                                                        host = user.Substring(0, host.IndexOf("+"));
+                                                    }
+                                                    User f2 = new User(us, host, nw, ident);
+                                                    f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
+                                                    channel.UserList.Add(f2);
                                                 }
-                                                channel.redrawUsers();
                                             }
+                                            channel.redrawUsers();
                                         }
                                     }
                                 }
-                            }
                             break;
                         case "SAUTH":
                             if (curr.InnerText == "INVALID")

@@ -33,13 +33,20 @@ namespace pidgeon_sv
             return null;
         }
 
-        public void Deliver(ProtocolMain.Datagram text)
+        public bool Deliver(ProtocolMain.Datagram text)
         {
-
-            foreach (ProtocolMain ab in Clients)
+            lock (Clients)
             {
-                ab.Deliver(text);
+                if (Clients.Count == 0)
+                {
+                    return false;
+                }
+                foreach (ProtocolMain ab in Clients)
+                {
+                    ab.Deliver(text);
+                }
             }
+            return true;
         }
 
         public bool ConnectIRC(string network, int port = 6667)

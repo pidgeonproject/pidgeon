@@ -83,7 +83,13 @@ namespace pidgeon_sv
                 configuration.Load(userfile);
                 foreach (XmlNode curr in configuration.ChildNodes)
                 {
-                    _accounts.Add(new Account(curr.Attributes[0].Value, curr.Attributes[1].Value));
+                    Account line = new Account(curr.Attributes[0].Value, curr.Attributes[1].Value);
+                    if (curr.Attributes.Count > 2)
+                    {
+                        line.nickname = curr.Attributes[2].Value;
+                    }
+                    _accounts.Add(line);
+                    
                 }
             }
         }
@@ -127,7 +133,7 @@ namespace pidgeon_sv
 
                     }
                 }
-                catch (System.Net.Sockets.SocketException ex)
+                catch (System.IO.IOException ex)
                 {
                     SL("Connection closed");
                     protocol.Exit();
@@ -138,7 +144,7 @@ namespace pidgeon_sv
                     protocol.Exit();
                 }
             }
-            catch (System.Net.Sockets.SocketException ex)
+            catch (System.IO.IOException ex)
             {
                 SL("Connection closed");
             }
