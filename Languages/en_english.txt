@@ -73,6 +73,7 @@ update1=There is a new version of pidgeon: $1, click update to continue, or clos
 update2=Pidgeon is finishing update, please wait...;
 channel-topic=$1 changed topic to: $2;
 update-update=Update;
+userkick=User $1 kicked $2 from channel with reason: $3;
 pidgeon.globalnick=Your global nick is now $1;
 service_error="There is a problem while connecting to $1: $2 occured";
 protocol-nick=$1 changed a nickname to $2;

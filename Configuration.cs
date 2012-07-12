@@ -136,6 +136,8 @@ namespace Client
         public static int x1 = 0;
         public static int x4 = 0;
 
+        public static bool HidingParsed = true;
+
         public static int window_size = 0;
 
         public enum TypeOfBan

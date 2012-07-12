@@ -256,6 +256,15 @@ namespace Client
                                 if (backlog)
                                 {
                                     Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[sl.IndexOf(server)].size.ToString() + " datagrams");
+                                    if ((cache[sl.IndexOf(server)].size - 2) < int.Parse(id))
+                                    {
+                                        Core._Main.Status("");
+                                        foreach (Channel i in server.Channels)
+                                        {
+                                            i.temporary_hide = false;
+                                            i.parsing_who = false;
+                                        }
+                                    }
                                     string command = curr.InnerText;
                                     if (curr.InnerText.Contains(" :"))
                                     {
@@ -304,6 +313,11 @@ namespace Client
                                 if (server != null)
                                 {
                                     cache[sl.IndexOf(server)].size = int.Parse(curr.InnerText);
+                                    foreach (Channel i in server.Channels)
+                                    {
+                                        i.parsing_who = true;
+                                        i.temporary_hide = true;
+                                    }
                                 }
                                 break;
                             case "SGLOBALNICK":

@@ -157,15 +157,15 @@ namespace Client
                                 char diff = ' ';
                                 foreach (var item in Results)
                                 {
+                                    if (item.Length > curr && diff == ' ')
+                                    {
+                                        diff = item[curr];
+                                        continue;
+                                    }
                                     if (item.Length <= curr || diff != item[curr])
                                     {
                                         match = false;
                                         break;
-                                    }
-                                    if (diff == ' ')
-                                    {
-                                        diff = item[curr];
-                                        continue;
                                     }
                                 }
                                 if (match)

@@ -66,6 +66,7 @@ namespace Client
         public List<SimpleBan> Bl;
         public List<Except> Exceptions;
         private Window Chat;
+        public bool temporary_hide = false;
         public bool parsing_who = false;
         public bool parsing_xb = false;
         public bool parsing_xe = false;
