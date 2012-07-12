@@ -88,7 +88,7 @@ namespace Client
             this.disconnectToolStripMenuItem,
             this.versionToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(134, 114);
             // 
             // joinToolStripMenuItem
             // 
@@ -99,7 +99,7 @@ namespace Client
             // partToolStripMenuItem
             // 
             this.partToolStripMenuItem.Name = "partToolStripMenuItem";
-            this.partToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.partToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.partToolStripMenuItem.Text = "Part";
             this.partToolStripMenuItem.Click += new System.EventHandler(this.partToolStripMenuItem_Click);
             // 
@@ -113,7 +113,7 @@ namespace Client
             // disconnectToolStripMenuItem
             // 
             this.disconnectToolStripMenuItem.Name = "disconnectToolStripMenuItem";
-            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.disconnectToolStripMenuItem.Size = new System.Drawing.Size(133, 22);
             this.disconnectToolStripMenuItem.Text = "Disconnect";
             this.disconnectToolStripMenuItem.Click += new System.EventHandler(this.disconnectToolStripMenuItem_Click);
             // 
@@ -134,6 +134,7 @@ namespace Client
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.items);
+            this.DoubleBuffered = true;
             this.Name = "PidgeonList";
             this.Size = new System.Drawing.Size(182, 321);
             this.Load += new System.EventHandler(this.ChannelList_Load);

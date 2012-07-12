@@ -119,11 +119,14 @@ namespace Client
 
         public bool Redraw()
         {
+            if (xContainer1 != null)
+            {
                 this.xContainer1.SplitterDistance = Configuration.x1;
                 this.xContainer4.SplitterDistance = Configuration.x4;
                 listViewd.Columns[0].Width = listView.Width - 8;
                 listView.Columns[0].Width = listView.Width - 8;
-            this.Refresh();
+                this.Refresh();
+            }
             return true;
         }
 

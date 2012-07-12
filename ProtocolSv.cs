@@ -35,9 +35,15 @@ namespace Client
         public List<Network> sl = new List<Network>();
         private System.IO.StreamWriter _writer;
         public string password = "";
+        public List<Cache> cache = new List<Cache>();
         private Status ConnectionStatus = Status.WaitingPW;
         public string nick = "";
         public bool auth = false;
+        public class Cache
+        {
+            public int size = 0;
+            public int current = 0;
+        }
 
         public class Datagram
         {
@@ -193,224 +199,276 @@ namespace Client
                 datagram.LoadXml(dg);
                 foreach (XmlNode curr in datagram.ChildNodes)
                 {
-                    switch (curr.Name.ToUpper())
-                    {
-                        case "SLOAD":
-                            windows["!root"].scrollback.InsertText(curr.InnerText, Scrollback.MessageStyle.System, false);
-                            break;
-                        case "SRAW":
-                            if (curr.InnerText == "PERMISSIONDENY")
-                            {
-                                windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in", Scrollback.MessageStyle.System, false);
+                        switch (curr.Name.ToUpper())
+                        {
+                            case "SLOAD":
+                                windows["!root"].scrollback.InsertText(curr.InnerText, Scrollback.MessageStyle.System, false);
                                 break;
-                            }
-                            windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText, Scrollback.MessageStyle.User, false);
-                            break;
-                        case "SSTATUS":
-                            switch (curr.InnerText)
-                            {
-                                case "Connected":
+                            case "SRAW":
+                                if (curr.InnerText == "PERMISSIONDENY")
+                                {
+                                    windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in", Scrollback.MessageStyle.System, false);
+                                    break;
+                                }
+                                windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText, Scrollback.MessageStyle.User, false);
+                                break;
+                            case "SSTATUS":
+                                switch (curr.InnerText)
+                                {
+                                    case "Connected":
+                                        ConnectionStatus = Status.Connected;
+                                        break;
+                                    case "WaitingPW":
+                                        ConnectionStatus = Status.WaitingPW;
+                                        break;
+                                }
+                                break;
+                            case "SDATA":
+                                string date = null;
+                                bool backlog = false;
+                                string id = "";
+                                foreach (XmlAttribute time in curr.Attributes)
+                                {
+                                    if (time.Name == "time")
+                                    {
+                                        date = DateTime.FromBinary(long.Parse(time.Value)).ToString();
+                                    }
+                                }
+                                foreach (XmlAttribute i in curr.Attributes)
+                                {
+                                    if (i.Name == "buffer")
+                                    {
+                                        id = i.Value;
+                                        backlog = true;
+                                    }
+                                }
+                                string name = curr.Attributes[0].Value;
+                                Network server = null;
+                                server = retrieveNetwork(name);
+                                if (server == null)
+                                {
+                                    server = new Network(name, this);
+                                    sl.Add(server);
+                                    cache.Add(new Cache());
+                                    server.nickname = nick;
+                                    server.Connected = true;
+                                }
+                                if (backlog)
+                                {
+                                    Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[sl.IndexOf(server)].size.ToString() + " datagrams");
+                                    string command = curr.InnerText;
+                                    if (curr.InnerText.Contains(" :"))
+                                    {
+                                        command = curr.InnerText.Substring(0, curr.InnerText.IndexOf(" :"));
+                                    }
+                                    if (command.Contains("JOIN") || command.Contains("PART"))
+                                    {
+                                        break;
+                                    }
+                                }
+                                ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date);
+                                break;
+                            case "SNICK":
+                                Network sv = retrieveNetwork(curr.Attributes[0].Value);
+                                if (sv != null)
+                                {
+                                    sv.nickname = curr.InnerText;
+                                    windows["!" + sv.server].scrollback.InsertText("Your nick was changed to " + curr.InnerText, Scrollback.MessageStyle.User, true);
+                                }
+                                break;
+                            case "SCONNECT":
+                                network = curr.Attributes[0].Value;
+                                switch (curr.InnerText)
+                                {
+                                    case "CONNECTED":
+                                        windows["!root"].scrollback.InsertText("You are already connected to " + network, Scrollback.MessageStyle.System);
+                                        continue;
+                                    case "PROBLEM":
+                                        windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Scrollback.MessageStyle.System, false);
+                                        continue;
+                                    case "OK":
+                                        Network _network = new Network(network, this);
+                                        _network.Connected = true;
+                                        _network.nickname = nick;
+                                        cache.Add(new Cache());
+                                        sl.Add(_network);
+                                        continue;
+                                }
+                                break;
+                            case "SGLOBALIDENT":
+                                windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                                break;
+                            case "SBACKLOG":
+                                network = curr.Attributes[0].Value;
+                                server = retrieveNetwork(network);
+                                if (server != null)
+                                {
+                                    cache[sl.IndexOf(server)].size = int.Parse(curr.InnerText);
+                                }
+                                break;
+                            case "SGLOBALNICK":
+                                nick = curr.InnerText;
+                                windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                                break;
+                            case "SNETWORKINFO":
+                                bool connected = false;
+                                switch (curr.InnerText)
+                                {
+                                    case "ONLINE":
+                                        connected = true;
+                                        break;
+                                    case "UNKNOWN":
+                                        continue;
+
+                                    case "OFFLINE":
+                                        connected = false;
+                                        break;
+
+                                }
+                                foreach (Network s2 in sl)
+                                {
+                                    if (curr.Attributes[0].Value == s2.server)
+                                    {
+                                        s2.Connected = connected;
+                                        break;
+                                    }
+                                }
+                                break;
+
+                            case "SNETWORKLIST":
+                                if (curr.InnerText != "")
+                                {
+                                    string[] _networks = curr.InnerText.Split('|');
+                                    foreach (string i in _networks)
+                                    {
+                                        if (i != "")
+                                        {
+                                            Deliver(new Datagram("NETWORKINFO", i));
+                                            Network nw = new Network(i, this);
+                                            nw.nickname = nick;
+                                            cache.Add(new Cache());
+                                            sl.Add(nw);
+                                            Datagram response = new Datagram("CHANNELINFO");
+                                            response._InnerText = "LIST";
+                                            response.Parameters.Add("network", i);
+                                            Deliver(response);
+                                            Datagram request = new Datagram("BACKLOGSV");
+                                            request.Parameters.Add("network", i);
+                                            request.Parameters.Add("size", Configuration.Depth.ToString());
+                                            Deliver(request);
+                                        }
+                                    }
+                                }
+                                break;
+
+                            case "SCHANNELINFO":
+                                if (curr.InnerText == "")
+                                {
+                                    if (curr.Attributes.Count > 1)
+                                    {
+                                        if (curr.Attributes[1].Name == "channels")
+                                        {
+                                            string[] channellist = curr.Attributes[1].Value.Split('!');
+                                            Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                            if (nw != null)
+                                            {
+                                                foreach (string channel in channellist)
+                                                {
+                                                    if (channel != "")
+                                                    {
+                                                        nw.Join(channel);
+                                                        if (!Configuration.Retrieve_Sv)
+                                                        {
+                                                            SendData(nw.server, "TOPIC " + channel, Configuration.Priority.Normal);
+                                                            SendData(nw.server, "MODE " + channel, Configuration.Priority.Low);
+                                                        }
+                                                        Datagram response2 = new Datagram("CHANNELINFO", "INFO");
+                                                        response2.Parameters.Add("network", curr.Attributes[0].Value);
+                                                        response2.Parameters.Add("channel", channel);
+                                                        Deliver(response2);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                                if (curr.Attributes[1].Name == "channel")
+                                {
+                                    string[] userlist = curr.Attributes[2].Value.Split(':');
+                                    Network nw = retrieveNetwork(curr.Attributes[0].Value);
+                                    if (nw != null)
+                                    {
+                                        Channel channel = nw.getChannel(curr.Attributes[1].Value);
+
+                                        if (channel != null)
+                                        {
+                                            foreach (string user in userlist)
+                                            {
+
+                                                if (user.Contains("!") && user.Contains("@"))
+                                                {
+                                                    string us = "";
+                                                    string ident;
+                                                    us = user.Substring(0, user.IndexOf("!"));
+                                                    if (channel.containUser(us))
+                                                    {
+                                                        continue;
+                                                    }
+                                                    ident = user.Substring(user.IndexOf("!") + 1);
+                                                    if (ident.StartsWith("@"))
+                                                    {
+                                                        ident = "";
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ident.Contains("@"))
+                                                        {
+                                                            ident = ident.Substring(0, ident.IndexOf("@"));
+                                                        }
+                                                    }
+                                                    string host = user.Substring(user.IndexOf("@") + 1);
+                                                    if (host.StartsWith("+"))
+                                                    {
+                                                        host = "";
+                                                    }
+                                                    else
+                                                    {
+                                                        if (host.Contains("+"))
+                                                        {
+                                                            host = host.Substring(0, host.IndexOf("+"));
+                                                        }
+                                                    }
+                                                    User f2 = new User(us, host, nw, ident);
+                                                    if (user.Contains("+") && !user.StartsWith("+"))
+                                                    {
+                                                        f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
+                                                    }
+                                                    channel.UserList.Add(f2);
+                                                }
+
+                                            }
+                                            channel.redrawUsers();
+                                        }
+                                    }
+                                }
+                                break;
+                            case "SAUTH":
+                                if (curr.InnerText == "INVALID")
+                                {
+                                    windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed", Scrollback.MessageStyle.System, false);
+                                    Exit();
+                                }
+                                if (curr.InnerText == "OK")
+                                {
                                     ConnectionStatus = Status.Connected;
-                                    break;
-                                case "WaitingPW":
-                                    ConnectionStatus = Status.WaitingPW;
-                                    break;
-                            }
-                            break;
-                        case "SDATA":
-                            string name = curr.Attributes[0].Value;
-                            Network server = null;
-                            server = retrieveNetwork(name);
-                            if (server == null)
-                            {
-                                server = new Network(name, this);
-                                sl.Add(server);
-                                server.nickname = nick;
-                                server.Connected = true;
-                            }
-                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong);
-                            break;
-                        case "SNICK":
-                            Network sv = retrieveNetwork(curr.Attributes[0].Value);
-                            if (sv != null)
-                            {
-                                sv.nickname = curr.InnerText;
-                                windows["!" + sv.server].scrollback.InsertText("Your nick was changed to " + curr.InnerText, Scrollback.MessageStyle.User, true);
-                            }
-                            break;
-                        case "SCONNECT":
-                            network = curr.Attributes[0].Value;
-                            switch (curr.InnerText)
-                            {
-                                case "CONNECTED":
-                                    windows["!root"].scrollback.InsertText("You are already connected to " + network, Scrollback.MessageStyle.System);
-                                    continue;
-                                case "PROBLEM":
-                                    windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Scrollback.MessageStyle.System, false);
-                                    continue;
-                                case "OK":
-                                    Network _network = new Network(network, this);
-                                    _network.Connected = true;
-                                    _network.nickname = nick;
-                                    sl.Add(_network);
-                                    continue;
-                            }
-                            break;
-                        case "SGLOBALIDENT":
-                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
-                            break;
-                        case "SGLOBALNICK":
-                            nick = curr.InnerText;
-                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
-                            break;
-                        case "SNETWORKINFO":
-                            bool connected = false;
-                            switch (curr.InnerText)
-                            {
-                                case "ONLINE":
-                                    connected = true;
-                                    break;
-                                case "UNKNOWN":
-                                    continue;
-
-                                case "OFFLINE":
-                                    connected = false;
-                                    break;
-
-                            }
-                            foreach (Network s2 in sl)
-                            {
-                                if (curr.Attributes[0].Value == s2.server)
-                                {
-                                    s2.Connected = connected;
-                                    break;
-                                }
-                            }
-                            break;
-
-                        case "SNETWORKLIST":
-                            if (curr.InnerText != "")
-                            {
-                                string[] _networks = curr.InnerText.Split('|');
-                                foreach (string i in _networks)
-                                {
-                                    if (i != "")
-                                    {
-                                        Deliver(new Datagram("NETWORKINFO", i));
-                                        Network nw = new Network(i, this);
-                                        nw.nickname = nick;
-                                        sl.Add(nw);
-                                        Datagram response = new Datagram("CHANNELINFO");
-                                        response._InnerText = "LIST";
-                                        response.Parameters.Add("network", i);
-                                        Deliver(response);
-
-                                    }
-                                }
-                            }
-                            break;
-
-                        case "SCHANNELINFO":
-                            if (curr.InnerText == "")
-                            {
-                                if (curr.Attributes.Count > 1)
-                                {
-                                    if (curr.Attributes[1].Name == "channels")
-                                    {
-                                        string[] channellist = curr.Attributes[1].Value.Split('!');
-                                        Network nw = retrieveNetwork(curr.Attributes[0].Value);
-                                        if (nw != null)
-                                        {
-                                            foreach (string channel in channellist)
-                                            {
-                                                if (channel != "")
-                                                {
-                                                    nw.Join(channel);
-                                                    SendData(nw.server, "TOPIC " + channel, Configuration.Priority.Normal);
-                                                    SendData(nw.server, "MODE " + channel, Configuration.Priority.Low);
-                                                    Datagram response2 = new Datagram("CHANNELINFO", "INFO");
-                                                    response2.Parameters.Add("network", curr.Attributes[0].Value);
-                                                    response2.Parameters.Add("channel", channel);
-                                                    Deliver(response2);
-                                                }
-                                            }
-                                        }
-                                    }
+                                    windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Scrollback.MessageStyle.System, false);
                                 }
                                 break;
-                            }
-                            if (curr.Attributes[1].Name == "channel")
-                            {
-                                string[] userlist = curr.Attributes[2].Value.Split(':');
-                                Network nw = retrieveNetwork(curr.Attributes[0].Value);
-                                if (nw != null)
-                                {
-                                    Channel channel = nw.getChannel(curr.Attributes[1].Value);
-
-                                    if (channel != null)
-                                    {
-                                        foreach (string user in userlist)
-                                        {
-
-                                            if (user.Contains("!") && user.Contains("@"))
-                                            {
-                                                string us = "";
-                                                string ident;
-                                                us = user.Substring(0, user.IndexOf("!"));
-                                                ident = user.Substring(user.IndexOf("!") + 1);
-                                                if (ident.StartsWith("@"))
-                                                {
-                                                    ident = "";
-                                                }
-                                                else
-                                                {
-                                                    if (ident.Contains("@"))
-                                                    {
-                                                        ident = ident.Substring(0, ident.IndexOf("@"));
-                                                    }
-                                                }
-                                                string host = user.Substring(user.IndexOf("@") + 1);
-                                                if (host.StartsWith("+"))
-                                                {
-                                                    host = "";
-                                                }
-                                                else
-                                                {
-                                                    if (host.Contains("+"))
-                                                    {
-                                                        host = host.Substring(0, host.IndexOf("+"));
-                                                    }
-                                                }
-                                                User f2 = new User(us, host, nw, ident);
-                                                if (user.Contains("+") && !user.StartsWith("+"))
-                                                {
-                                                    f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
-                                                }
-
-                                                channel.UserList.Add(f2);
-                                            }
-
-                                        }
-                                        channel.redrawUsers();
-                                    }
-                                }
-                            }
-                            break;
-                        case "SAUTH":
-                            if (curr.InnerText == "INVALID")
-                            {
-                                windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed", Scrollback.MessageStyle.System, false);
-                                Exit();
-                            }
-                            if (curr.InnerText == "OK")
-                            {
-                                ConnectionStatus = Status.Connected;
-                                windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Scrollback.MessageStyle.System, false);
-                            }
-                            break;
+                        }
                     }
                 }
-            }
+            catch (System.Xml.XmlException) {}
             catch (Exception f)
             {
                 Core.handleException(f);

@@ -32,7 +32,9 @@ namespace pidgeon_sv
         public static int server_port = 22;
         public static string userfile = "db/users";
 
-        public static int maxbs = 10000;
+        public static int maxbs = 200000;
+        public static int minbs = 20000;
+
 
         public static List<Account> _accounts = new List<Account>();
         public static List<Thread> threads = new List<Thread>();
@@ -122,6 +124,7 @@ namespace pidgeon_sv
                         text = connection._r.ReadLine();
                         if (connection.Mode == false)
                         {
+                            System.Threading.Thread.Sleep(2000);
                             continue;
                         }
 
@@ -130,10 +133,14 @@ namespace pidgeon_sv
                             protocol.parseCommand(text);
                             continue;
                         }
+                        else
+                        {
+                            System.Threading.Thread.Sleep(800);
+                        }
 
                     }
                 }
-                catch (System.IO.IOException ex)
+                catch (System.IO.IOException)
                 {
                     SL("Connection closed");
                     protocol.Exit();
@@ -144,7 +151,7 @@ namespace pidgeon_sv
                     protocol.Exit();
                 }
             }
-            catch (System.IO.IOException ex)
+            catch (System.IO.IOException)
             {
                 SL("Connection closed");
             }
@@ -177,6 +184,7 @@ namespace pidgeon_sv
                 SL("Incoming connection");
                 threads.Add(_client);
                 _client.Start(connection);
+                System.Threading.Thread.Sleep(200);
             }
         }
     }

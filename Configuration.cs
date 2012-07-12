@@ -118,6 +118,8 @@ namespace Client
         public static bool slapsdef = true;
         public static bool pokesdef = true;
 
+        public static bool Retrieve_Sv = true;
+
         public static bool logs_xml = true;
         public static bool logs_txt = true;
         public static bool logs_html = true;
@@ -125,6 +127,11 @@ namespace Client
         public static string LastNick = "";
         public static string LastHost = "";
         public static string LastPort = "";
+
+        /// <summary>
+        /// backlog size
+        /// </summary>
+        public static int Depth = 20000;
 
         public static int x1 = 0;
         public static int x4 = 0;

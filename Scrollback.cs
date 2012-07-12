@@ -32,18 +32,35 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
+        private bool initializationComplete;
+        private bool isDisposing;
+        private BufferedGraphicsContext backbufferContext;
+        private BufferedGraphics backbufferGraphics;
+        private Graphics drawingGraphics;
         private List<ContentLine> Line = new List<ContentLine>();
         public TextBox Last;
         public static List<Scrollback> _control = new List<Scrollback>();
         public Window owner;
         public TreeNode ln;
-        public class ContentLine
+        public bool show = true;
+        public bool px1 = true;
+        public bool px2 = false;
+
+        public class ContentLine : IComparable
         {
             public ContentLine(MessageStyle _style, string Text, DateTime when)
             {
                 style = _style;
                 time = when;
                 text = Text;
+            }
+            public int CompareTo(object obj)
+            {
+                if (obj is ContentLine)
+                {
+                    return this.time.CompareTo((obj as ContentLine).time);
+                }
+                return 0;
             }
             public DateTime time;
             public string text;
@@ -52,8 +69,10 @@ namespace Client
         private bool db = false;
         public bool Modified;
 
-        new public void Dispose()
+
+        protected override void Dispose(bool disposing)
         {
+            isDisposing = true;
             lock (_control)
             {
                 if (_control.Contains(this))
@@ -61,23 +80,99 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-            this.components.Dispose();
+            if (disposing)
+            {
+                if (components != null)
+                    components.Dispose();
+
+                // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
+                if (backbufferGraphics != null)
+                    backbufferGraphics.Dispose();
+                if (backbufferContext != null)
+                    backbufferContext.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        private void RecreateBuffers()
+        {
+            // Check initialization has completed so we know backbufferContext has been assigned.
+            // Check that we aren't disposing or this could be invalid.
+            if (!initializationComplete || isDisposing)
+                return;
+
+            // We recreate the buffer with a width and height of the control. The "+ 1" 
+            // guarantees we never have a buffer with a width or height of 0. 
+            backbufferContext.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
+
+            // Dispose of old backbufferGraphics (if one has been created already)
+            if (backbufferGraphics != null)
+                backbufferGraphics.Dispose();
+
+            // Create new backbufferGrpahics that matches the current size of buffer.
+            backbufferGraphics = backbufferContext.Allocate(this.CreateGraphics(),
+                new Rectangle(0, 0, Math.Max(this.Width, 1), Math.Max(this.Height, 1)));
+
+            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
+            drawingGraphics = backbufferGraphics.Graphics;
+
+            // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
+
+            // Invalidate the control so a repaint gets called somewhere down the line.
+            this.Invalidate();
+        }
+
+        private void Redraw()
+        {
+            // In this Redraw method, we simply make the control fade from black to white on a timer.
+            // But, you can put whatever you want here and detach the timer. The trick is just making
+            // sure redraw gets called when appropriate and only when appropriate. Examples would include
+            // when you resize, when underlying data is changed, when any of the draqwing properties are changed
+            // (like BackColor, Font, ForeColor, etc.)
+            if (drawingGraphics == null)
+                return;
+
+
+            // Force the control to both invalidate and update. 
+            this.Refresh();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            // If we've initialized the backbuffer properly, render it on the control. 
+            // Otherwise, do just the standard control paint.
+            if (!isDisposing && backbufferGraphics != null)
+                backbufferGraphics.Render(e.Graphics);
         }
 
         public void create()
         {
             InitializeComponent();
-            this.SetStyle(
-            ControlStyles.UserPaint |
-            ControlStyles.AllPaintingInWmPaint |
-            ControlStyles.OptimizedDoubleBuffer, true);
-			if (Configuration.CurrentPlatform ==  Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-			{
-            	Data.Visible = false;
-			}
-            Scrollback_Load(null, null);
-        } 
+            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            this.SetStyle(ControlStyles.SupportsTransparentBackColor, false);
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 
+            // Assign our buffer context.
+            backbufferContext = BufferedGraphicsManager.Current;
+            initializationComplete = true;
+
+            RecreateBuffers();
+
+            Redraw();
+            Scrollback_Load(null, null);
+        }
+
+        public void ResizeWebs(object sender, EventArgs e)
+        {
+            Data.Top = 0;
+            Data.Left = 0;
+            Data.Width = pwx1.Width - 2;
+            Data.Height = pwx1.Height;
+            webBrowser1.Top = 0;
+            webBrowser1.Left = 0;
+            webBrowser1.Height = pwx2.Height;
+            webBrowser1.Width = pwx2.Width - 2;
+        }
 
         public Scrollback()
         {
@@ -85,6 +180,7 @@ namespace Client
             {
                 _control.Add(this);
             }
+            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
         }
 
         public enum MessageStyle
@@ -136,6 +232,10 @@ namespace Client
             lock(Line)
             {
                 Line.Add(new ContentLine(input_style, text, time));
+                if (dt != null)
+                {
+                    Line.Sort();
+                }
             }
             Modified = true;
             if (lg == true && owner != null && owner._Network != null)
@@ -186,13 +286,16 @@ namespace Client
 
         private void Scrollback_Load(object sender, EventArgs e)
         {
-            Reload();
+            //Reload(true);
+            Data.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+            webBrowser1.DocumentText  = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+            pwx2.Dock = DockStyle.Fill;
+            pwx1.BringToFront();
+            pwx1.Dock = DockStyle.Fill;
             this.ResumeLayout();
-            Data.Visible = true;
-            webBrowser1.Visible = false;
         }
 
-        public void Reload()
+        public void Reload(bool fast = false)
         {
             Modified = false;
             string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
@@ -232,15 +335,19 @@ namespace Client
                 }
             }
             text += "</body>" + "</html>";
-            if (webBrowser1.Visible)
-            {
-                Data.DocumentText = text;
-            }
-            else
-            {
-                webBrowser1.DocumentText = text;
-            }
+                if (px2)
+                {
+                    Data.DocumentText = text;
+                }
+                else
+                {
+                    webBrowser1.DocumentText = text;
+                }
             db = true;
+            if (fast)
+            {
+                Recreate(true);
+            }
         }
 
         private void refresh_Tick(object sender, EventArgs e)
@@ -249,31 +356,37 @@ namespace Client
             {
                 Reload();
             }
+            Recreate();
             
+        }
+
+        private void Recreate(bool enforce = false)
+        {
             if (db)
             {
-                if (webBrowser1.Visible)
+                if (px1)
                 {
-                    if (Data.ReadyState == WebBrowserReadyState.Complete && !Data.IsBusy)
+                    if (enforce || (!webBrowser1.IsBusy && webBrowser1.ReadyState == WebBrowserReadyState.Complete))
                     {
                         db = false;
-                        Data.Visible = true;
-                        Data.BringToFront();
-                        webBrowser1.Visible = false;
+                        pwx2.BringToFront();
+                        px1 = false;
+                        px2 = true;
                     }
                 }
                 else
                 {
-                    if (!webBrowser1.IsBusy && webBrowser1.ReadyState == WebBrowserReadyState.Complete)
+                    if (enforce || (Data.ReadyState == WebBrowserReadyState.Complete && !Data.IsBusy))
                     {
                         db = false;
-                        webBrowser1.Visible = true;
-                        webBrowser1.BringToFront();
-                        Data.Visible = false;
+                        pwx1.BringToFront();
+                        px2 = false;
+                        px1 = true;
                     }
                 }
             }
         }
+
 
         private void channelToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -310,7 +423,7 @@ namespace Client
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Reload();
+            Reload(true);
         }
 
     }

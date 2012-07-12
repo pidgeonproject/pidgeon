@@ -117,8 +117,8 @@ namespace Client
             // 
             // fl
             // 
-            this.fl.Controls.Add(this.bCancel);
             this.fl.Controls.Add(this.bSave);
+            this.fl.Controls.Add(this.bCancel);
             this.fl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.fl.Location = new System.Drawing.Point(203, 389);
             this.fl.Name = "fl";
@@ -127,7 +127,7 @@ namespace Client
             // 
             // bCancel
             // 
-            this.bCancel.Location = new System.Drawing.Point(3, 3);
+            this.bCancel.Location = new System.Drawing.Point(146, 3);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(114, 29);
             this.bCancel.TabIndex = 0;
@@ -137,7 +137,7 @@ namespace Client
             // 
             // bSave
             // 
-            this.bSave.Location = new System.Drawing.Point(123, 3);
+            this.bSave.Location = new System.Drawing.Point(3, 3);
             this.bSave.Name = "bSave";
             this.bSave.Size = new System.Drawing.Size(137, 29);
             this.bSave.TabIndex = 4;

@@ -25,19 +25,6 @@ namespace Client
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         #region Component Designer generated code
 
         /// <summary> 
@@ -47,29 +34,21 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.Data = new System.Windows.Forms.WebBrowser();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.mrhToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refresh = new System.Windows.Forms.Timer(this.components);
-            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refresh = new System.Windows.Forms.Timer(this.components);
+            this.pwx1 = new System.Windows.Forms.Panel();
+            this.pwx2 = new System.Windows.Forms.Panel();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.Data = new System.Windows.Forms.WebBrowser();
             this.contextMenuStrip1.SuspendLayout();
+            this.pwx1.SuspendLayout();
+            this.pwx2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // Data
-            // 
-            this.Data.ContextMenuStrip = this.contextMenuStrip1;
-            this.Data.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.Data.IsWebBrowserContextMenuEnabled = false;
-            this.Data.Location = new System.Drawing.Point(0, 0);
-            this.Data.MinimumSize = new System.Drawing.Size(20, 20);
-            this.Data.Name = "Data";
-            this.Data.ScriptErrorsSuppressed = true;
-            this.Data.Size = new System.Drawing.Size(345, 262);
-            this.Data.TabIndex = 1;
             // 
             // contextMenuStrip1
             // 
@@ -111,25 +90,6 @@ namespace Client
             this.channelToolStripMenuItem.Text = "Channel";
             this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
             // 
-            // refresh
-            // 
-            this.refresh.Enabled = true;
-            this.refresh.Interval = 800;
-            this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
-            // 
-            // webBrowser1
-            // 
-            this.webBrowser1.ContextMenuStrip = this.contextMenuStrip1;
-            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
-            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
-            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webBrowser1.Name = "webBrowser1";
-            this.webBrowser1.ScriptErrorsSuppressed = true;
-            this.webBrowser1.Size = new System.Drawing.Size(345, 262);
-            this.webBrowser1.TabIndex = 2;
-            this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
-            // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
@@ -137,33 +97,83 @@ namespace Client
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // refresh
+            // 
+            this.refresh.Enabled = true;
+            this.refresh.Interval = 200;
+            this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
+            // 
+            // pwx1
+            // 
+            this.pwx1.Controls.Add(this.Data);
+            this.pwx1.Location = new System.Drawing.Point(3, 21);
+            this.pwx1.Resize += new System.EventHandler(ResizeWebs);
+            this.pwx1.Name = "pwx1";
+            this.pwx1.Size = new System.Drawing.Size(223, 209);
+            this.pwx1.TabIndex = 3;
+            // 
+            // pwx2
+            // 
+            this.pwx2.Controls.Add(this.webBrowser1);
+            this.pwx2.Location = new System.Drawing.Point(244, 21);
+            this.pwx2.Name = "pwx2";
+            this.Resize += new System.EventHandler(ResizeWebs);
+            this.pwx2.Size = new System.Drawing.Size(217, 209);
+            this.pwx2.TabIndex = 4;
+            // 
+            // webBrowser1
+            // 
+            this.webBrowser1.ContextMenuStrip = this.contextMenuStrip1;
+            this.webBrowser1.IsWebBrowserContextMenuEnabled = false;
+            this.webBrowser1.Location = new System.Drawing.Point(-41, -69);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.ScriptErrorsSuppressed = true;
+            this.webBrowser1.Size = new System.Drawing.Size(345, 262);
+            this.webBrowser1.TabIndex = 3;
+            // 
+            // Data
+            // 
+            this.Data.ContextMenuStrip = this.contextMenuStrip1;
+            this.Data.IsWebBrowserContextMenuEnabled = false;
+            this.Data.Location = new System.Drawing.Point(3, 3);
+            this.Data.MinimumSize = new System.Drawing.Size(20, 20);
+            this.Data.Name = "Data";
+            this.Data.ScriptErrorsSuppressed = true;
+            this.Data.Size = new System.Drawing.Size(345, 262);
+            this.Data.TabIndex = 2;
+            // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.Controls.Add(this.Data);
-            this.Controls.Add(this.webBrowser1);
+            this.Controls.Add(this.pwx2);
+            this.Controls.Add(this.pwx1);
             this.DoubleBuffered = true;
             this.Name = "Scrollback";
-            this.Size = new System.Drawing.Size(345, 262);
+            this.Size = new System.Drawing.Size(566, 320);
             this.Load += new System.EventHandler(this.Scrollback_Load);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.pwx1.ResumeLayout(false);
+            this.pwx2.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 		
         #endregion
 
-        private System.Windows.Forms.WebBrowser Data;
         private System.Windows.Forms.Timer refresh;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mrhToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scrollToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         public System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.Panel pwx1;
+        private System.Windows.Forms.WebBrowser Data;
+        private System.Windows.Forms.Panel pwx2;
+        private System.Windows.Forms.WebBrowser webBrowser1;
 
     }
 }

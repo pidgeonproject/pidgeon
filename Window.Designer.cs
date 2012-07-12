@@ -179,6 +179,7 @@ namespace Client
             this.oToolStripMenuItem,
             this.hToolStripMenuItem,
             this.vToolStripMenuItem,
+            this.toolStripMenuItem1,
             this.qToolStripMenuItem1,
             this.aToolStripMenuItem1,
             this.oToolStripMenuItem1,

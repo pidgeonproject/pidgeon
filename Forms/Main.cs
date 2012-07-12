@@ -29,12 +29,13 @@ namespace Client
 {
     public partial class Main : Form
     {
-        private string StatusBox;
+        private string StatusBox = "";
         public Window main;
         public PidgeonList ChannelList;
         public Window Chat;
         private Connection fConnection;
         private Preferences fPrefs;
+        private bool UpdatedStatus = true;
         bool done = false;
 
         public class _WindowRequest 
@@ -65,6 +66,7 @@ namespace Client
 
         public void CreateChat(Window Chat, Protocol WindowOwner)
         {
+            Chat.Init();
             Chat.create();
             Chat.Visible = true;
             Chat._Protocol = WindowOwner;
@@ -81,13 +83,16 @@ namespace Client
         }
 
         /// <summary>
-        /// Status line
+        /// Status line text (this method is thread safe)
         /// </summary>
         /// <param name="text"></param>
-        public void Status(string text)
+        public void Status(string text = null)
         {
-            StatusBox = text;
-            UpdateStatus();
+            if (text != null)
+            {
+                StatusBox = text;
+            }
+            UpdatedStatus = true;
         }
 
         public void _Load()
@@ -141,7 +146,7 @@ namespace Client
 
         public void UpdateStatus()
         {
-            statusStrip1.Text = StatusBox;
+            this.toolStripInfo.Text = StatusBox;
             if (Core.network != null)
             {
                 toolStripStatusNetwork.Text = Core.network.server;
@@ -221,6 +226,16 @@ namespace Client
 
 
             fConnection.Show();
+        }
+
+        private void updater_Tick(object sender, EventArgs e)
+        {
+            // Someone updated status, maybe from outer thread, let's change it
+            if (UpdatedStatus)
+            {
+                UpdatedStatus = false;
+                UpdateStatus();
+            }
         }
 
 

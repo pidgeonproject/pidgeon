@@ -100,6 +100,7 @@ namespace pidgeon_sv
                     case "NETWORKINFO":
                     case "JOIN":
                     case "PART":
+                    case "BACKLOGSV":
                     case "KICK":
                     case "NETWORKLIST":
                         response = new Datagram(node.Name.ToUpper(), "PERMISSIONDENY");
@@ -254,6 +255,17 @@ namespace pidgeon_sv
                     response = new Datagram("LOAD", "Pidgeon service version 1.0.0.0 supported mode=ns");
                     Deliver(response);
                     return;
+                case "BACKLOGSV":
+                    if (node.Attributes.Count > 1)
+                    { 
+                        Network network = client.account.retrieveServer(node.Attributes[0].Value);
+                        if (network != null)
+                        {
+                            ProtocolIrc protocol = (ProtocolIrc)network._protocol;
+                            protocol.getDepth(int.Parse(node.Attributes[1].Value), this);
+                        }
+                    }
+                    return;
                 case "CONNECT":
                     if (client.account.containsNetwork(node.InnerText))
                     { 
@@ -276,6 +288,29 @@ namespace pidgeon_sv
                 case "GLOBALIDENT":
                     client.account.ident = node.InnerText;
                     Deliver(new Datagram("GLOBALIDENT", node.InnerText));
+                    break;
+                case "MESSAGE":
+                    if (node.Attributes.Count > 2)
+                    { 
+                        Network network4 = client.account.retrieveServer(node.Attributes[0].Value);
+                        if (network4 != null)
+                        {
+                            string target = node.Attributes[2].Value;
+                            string ff = node.Attributes[1].Value;
+                            ProtocolIrc.Priority Priority = ProtocolIrc.Priority.Normal;
+                            switch(ff)
+                            {
+                                case "Low":
+                                    Priority = ProtocolIrc.Priority.Low;
+                                    break;
+                                case "High":
+                                    Priority = ProtocolIrc.Priority.High;
+                                    break;
+                            }
+                            network4._protocol.Message(node.InnerText, target, Priority);
+                            ProtocolIrc prot = (ProtocolIrc) network4._protocol;
+                        }
+                    }
                     break;
                 case "GLOBALNICK":
                     if (node.InnerText == "")

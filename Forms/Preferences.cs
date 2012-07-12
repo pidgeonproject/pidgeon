@@ -63,6 +63,8 @@ namespace Client
             listView1.Items.Add(new ListViewItem("System"));
             listView1.Items.Add(new ListViewItem("Logs"));
             listView1.Items.Add(new ListViewItem("Protections"));
+            listView1.Items.Add(new ListViewItem("Network"));
+            listView1.Items.Add(new ListViewItem("Highlighting"));
         }
 
         private void lquit_Click(object sender, EventArgs e)

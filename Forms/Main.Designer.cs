@@ -46,6 +46,7 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripCurrent = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -65,6 +66,7 @@ namespace Client
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
+            this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
@@ -75,10 +77,10 @@ namespace Client
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripCurrent,
-            this.toolStripInfo,
             this.toolStripStatusNetwork,
             this.toolStripStatusChannel,
-            this.toolStripCo});
+            this.toolStripCo,
+            this.toolStripInfo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 388);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(874, 22);
@@ -214,6 +216,12 @@ namespace Client
             this.sX.TabIndex = 2;
             this.sX.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.Changed);
             // 
+            // updater
+            // 
+            this.updater.Enabled = true;
+            this.updater.Interval = 200;
+            this.updater.Tick += new System.EventHandler(this.updater_Tick);
+            // 
             // Main
             // 
             this.ClientSize = new System.Drawing.Size(874, 410);
@@ -258,5 +266,6 @@ namespace Client
         public System.Windows.Forms.ToolStripStatusLabel toolStripCurrent;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusChannel;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
+        private System.Windows.Forms.Timer updater;
     }
 }
