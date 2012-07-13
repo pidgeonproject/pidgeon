@@ -7,6 +7,7 @@ namespace pidgeon_sv
     public class Account
     {
         public List<ProtocolIrc> networks = new List<ProtocolIrc>();
+        public List<ProtocolMain> ClientsOK = new List<ProtocolMain>();
         public List<ProtocolMain> Clients = new List<ProtocolMain>();
         public string username = "";
         public string password = "";
@@ -37,13 +38,24 @@ namespace pidgeon_sv
         {
             lock (Clients)
             {
-                if (Clients.Count == 0)
+                try
                 {
-                    return false;
+                    if (Clients.Count == 0)
+                    {
+                        return false;
+                    }
+                    foreach (ProtocolMain ab in Clients)
+                    {
+                        ab.Deliver(text);
+                    }
+                    foreach (ProtocolMain i in ClientsOK)
+                    {
+                        Clients.Remove(i);
+                    }
                 }
-                foreach (ProtocolMain ab in Clients)
+                catch (Exception)
                 {
-                    ab.Deliver(text);
+                    Console.WriteLine("Error 10");
                 }
             }
             return true;

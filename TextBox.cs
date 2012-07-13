@@ -196,10 +196,84 @@ namespace Client
 
                     if (Core.network == null)
                         return;
+  
+                    ////
+
 
                     if (text.StartsWith(Core.network.channel_prefix))
                     {
+                        if (Core.network.Connected)
+                        {
+
+                            if (text.StartsWith(Core._Main.Chat._Network.channel_prefix))
+                            {
+                                List<string> Channels = new List<string>();
+                                foreach (Channel n in Core._Main.Chat._Network.Channels)
+                                {
+                                    Channels.Add(n.Name);
+                                }
+                                List<string> Results = new List<string>();
+                                string Resd = "";
+                                foreach (var item in Channels)
+                                {
+                                    if (item.StartsWith(text))
+                                    {
+                                        Resd += item + ", ";
+                                        Results.Add(item);
+                                    }
+                                }
+                                if (Results.Count > 1)
+                                {
+                                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                                    string part = "";
+                                    int curr = 0;
+                                    bool match = true;
+                                    while (match)
+                                    {
+                                        char diff = ' ';
+                                        foreach (var item in Results)
+                                        {
+                                            if (item.Length > curr && diff == ' ')
+                                            {
+                                                diff = item[curr];
+                                                continue;
+                                            }
+                                            if (item.Length <= curr || diff != item[curr])
+                                            {
+                                                match = false;
+                                                break;
+                                            }
+                                        }
+                                        if (match)
+                                        {
+                                            curr = curr + 1;
+                                            part += diff.ToString();
+                                        }
+                                    }
+                                    string result = richTextBox1.Text;
+                                    result = result.Substring(0, x);
+                                    result = result + part + richTextBox1.Text.Substring(x + text.Length);
+                                    richTextBox1.Text = result;
+                                    richTextBox1.SelectionStart = result.Length;
+                                    prevtext = result;
+                                    return;
+                                }
+                                if (Results.Count == 1)
+                                {
+                                    string result = richTextBox1.Text;
+                                    result = result.Substring(0, x);
+                                    result = result + Results[0] + " " + richTextBox1.Text.Substring(x + text.Length);
+                                    richTextBox1.Text = result;
+                                    richTextBox1.SelectionStart = result.Length;
+                                    prevtext = result;
+                                    return;
+                                }
+                            }
+                        }
+
                     }
+
+
                     // check if it's a nick
 
                     List<string> Results2 = new List<string>();

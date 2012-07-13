@@ -174,9 +174,9 @@ namespace Client
                                 Inserted = false;
                                 if (nick.ChannelMode._Mode.Count > 0)
                                 {
-                                    lock (_Network._protocol.CUModes)
+                                    lock (_Network.CUModes)
                                     {
-                                        foreach (char mode in _Network._protocol.CUModes)
+                                        foreach (char mode in _Network.CUModes)
                                         {
                                             if (nick.ChannelMode._Mode.Contains(mode.ToString()))
                                             {
@@ -298,17 +298,17 @@ namespace Client
             {
                 return "";
             }
-            lock (_Network._protocol.CUModes)
+            lock (_Network.CUModes)
             {
-                foreach (char mode in _Network._protocol.CUModes)
+                foreach (char mode in _Network.CUModes)
                 {
                     int _m;
                     if (nick.ChannelMode._Mode.Contains(mode.ToString()))
                     {
-                        _m = _Network._protocol.CUModes.IndexOf(mode);
-                        if (_Network._protocol.UChars.Count >= _m)
+                        _m = _Network.CUModes.IndexOf(mode);
+                        if (_Network.UChars.Count >= _m)
                         {
-                            return _Network._protocol.UChars[_m].ToString();
+                            return _Network.UChars[_m].ToString();
                         }
                         break;
                     }

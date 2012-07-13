@@ -46,6 +46,7 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tableLayout1 = new System.Windows.Forms.TableLayoutPanel();
@@ -61,6 +62,19 @@ namespace Client
             this.listView2 = new System.Windows.Forms.ListView();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.listView3 = new System.Windows.Forms.ListView();
+            this.contextMenuStripB = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStripI = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.contextMenuStripE = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cleanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.enforceAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayout1.SuspendLayout();
@@ -70,6 +84,9 @@ namespace Client
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.contextMenuStripB.SuspendLayout();
+            this.contextMenuStripI.SuspendLayout();
+            this.contextMenuStripE.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -192,6 +209,7 @@ namespace Client
             // 
             // listView1
             // 
+            this.listView1.ContextMenuStrip = this.contextMenuStripI;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.Name = "listView1";
@@ -211,6 +229,7 @@ namespace Client
             // 
             // listView2
             // 
+            this.listView2.ContextMenuStrip = this.contextMenuStripI;
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView2.Location = new System.Drawing.Point(0, 0);
             this.listView2.Name = "listView2";
@@ -230,12 +249,101 @@ namespace Client
             // 
             // listView3
             // 
+            this.listView3.ContextMenuStrip = this.contextMenuStripB;
             this.listView3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView3.Location = new System.Drawing.Point(0, 0);
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(1001, 378);
             this.listView3.TabIndex = 0;
             this.listView3.UseCompatibleStateImageBehavior = false;
+            // 
+            // contextMenuStripB
+            // 
+            this.contextMenuStripB.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reloadToolStripMenuItem1,
+            this.insertToolStripMenuItem1,
+            this.enforceAllToolStripMenuItem,
+            this.deleteToolStripMenuItem1});
+            this.contextMenuStripB.Name = "menuBan";
+            this.contextMenuStripB.Size = new System.Drawing.Size(130, 92);
+            // 
+            // contextMenuStripI
+            // 
+            this.contextMenuStripI.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.reloadToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.insertToolStripMenuItem,
+            this.cleanToolStripMenuItem});
+            this.contextMenuStripI.Name = "menuBan";
+            this.contextMenuStripI.Size = new System.Drawing.Size(111, 92);
+            // 
+            // contextMenuStripE
+            // 
+            this.contextMenuStripE.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.insertToolStripMenuItem2,
+            this.deleteToolStripMenuItem2});
+            this.contextMenuStripE.Name = "menuBan";
+            this.contextMenuStripE.Size = new System.Drawing.Size(108, 48);
+            // 
+            // reloadToolStripMenuItem
+            // 
+            this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.reloadToolStripMenuItem.Text = "Reload";
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            // 
+            // insertToolStripMenuItem
+            // 
+            this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
+            this.insertToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.insertToolStripMenuItem.Text = "Insert";
+            // 
+            // cleanToolStripMenuItem
+            // 
+            this.cleanToolStripMenuItem.Name = "cleanToolStripMenuItem";
+            this.cleanToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.cleanToolStripMenuItem.Text = "Clean";
+            // 
+            // reloadToolStripMenuItem1
+            // 
+            this.reloadToolStripMenuItem1.Name = "reloadToolStripMenuItem1";
+            this.reloadToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.reloadToolStripMenuItem1.Text = "Reload";
+            // 
+            // insertToolStripMenuItem1
+            // 
+            this.insertToolStripMenuItem1.Name = "insertToolStripMenuItem1";
+            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.insertToolStripMenuItem1.Text = "Insert";
+            // 
+            // enforceAllToolStripMenuItem
+            // 
+            this.enforceAllToolStripMenuItem.Name = "enforceAllToolStripMenuItem";
+            this.enforceAllToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.enforceAllToolStripMenuItem.Text = "Enforce all";
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.deleteToolStripMenuItem1.Text = "Delete";
+            // 
+            // insertToolStripMenuItem2
+            // 
+            this.insertToolStripMenuItem2.Name = "insertToolStripMenuItem2";
+            this.insertToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
+            this.insertToolStripMenuItem2.Text = "Insert";
+            // 
+            // deleteToolStripMenuItem2
+            // 
+            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem2.Text = "Delete";
             // 
             // Channel_Info
             // 
@@ -257,6 +365,9 @@ namespace Client
             this.tabPage2.ResumeLayout(false);
             this.tabPage3.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
+            this.contextMenuStripB.ResumeLayout(false);
+            this.contextMenuStripI.ResumeLayout(false);
+            this.contextMenuStripE.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -278,6 +389,19 @@ namespace Client
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ListView listView2;
         private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripB;
+        private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem enforceAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripI;
+        private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cleanToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStripE;
+        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
 
 
     }

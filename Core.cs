@@ -52,6 +52,7 @@ namespace Client
 
         public static Network network;
         public static Main _Main;
+        public static TrafficScanner trafficscanner;
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
 
@@ -66,6 +67,7 @@ namespace Client
             }
             messages.data.Add("en", new messages.container("en"));
             messages.data.Add("cs", new messages.container("cs"));
+            trafficscanner = new TrafficScanner();
             if (!System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
             {
                 ThUp = new Thread(Updater.Run);
@@ -89,9 +91,12 @@ namespace Client
 
         public static void killThread(Thread name)
         {
-            if (SystemThreads.Contains(name))
+            lock (SystemThreads)
             {
-                SystemThreads.Remove(name);
+                if (SystemThreads.Contains(name))
+                {
+                    SystemThreads.Remove(name);
+                }
             }
         }
 
@@ -149,7 +154,7 @@ namespace Client
                                     {
                                         string ms = command.Substring(command.IndexOf(" "));
                                         ms = ms.Substring(ms.IndexOf(" "));
-                                        network._protocol.windows["!system"].scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
+                                        network.system.scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
                                         network._protocol.Message(ms, channel);
                                         return false;
                                     }
@@ -433,6 +438,7 @@ namespace Client
             makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
             makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
             makenode("logs.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+            makenode("updater.check", Configuration.CheckUpdate.ToString(), curr, confname, config, xmlnode);
 
             makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
             makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
@@ -557,6 +563,9 @@ namespace Client
                                     case "history.port":
                                         Configuration.LastPort = curr.InnerText;
                                         break;
+                                    case "updater.check":
+                                        Configuration.CheckUpdate = bool.Parse(curr.InnerText);
+                                        break;
 
 
                                 }
@@ -651,32 +660,36 @@ namespace Client
         {
             try
             {
-                IgnoreErrors = true;
-                _Main.Visible = false;
-                ConfigSave();
-                try
+                if (!IgnoreErrors)
                 {
-                    foreach (Protocol server in Connections)
+                    IgnoreErrors = true;
+                    _Main.Visible = false;
+                    ConfigSave();
+                    try
                     {
-                        server.Exit();
-                    }
-                }
-                catch (Exception)
-                { }
-                System.Threading.Thread.Sleep(200);
-                try
-                {
-                    foreach (Thread th in SystemThreads)
-                    {
-                        if (th.ThreadState == System.Threading.ThreadState.Running)
+                        foreach (Protocol server in Connections)
                         {
-                            th.Abort();
+                            server.Exit();
                         }
                     }
+                    catch (Exception)
+                    { }
+                    System.Threading.Thread.Sleep(200);
+                    try
+                    {
+                        foreach (Thread th in SystemThreads)
+                        {
+                            if (th.ThreadState == System.Threading.ThreadState.Running)
+                            {
+                                th.Abort();
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    { }
+                    System.Windows.Forms.Application.Exit();
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                 }
-                catch (Exception)
-                { }
-                System.Windows.Forms.Application.Exit();
             }
             catch (Exception)
             { }

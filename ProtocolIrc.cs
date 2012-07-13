@@ -130,6 +130,7 @@ namespace Client
                     }
                     catch (System.Threading.ThreadAbortException)
                     {
+                        Core.killThread(System.Threading.Thread.CurrentThread);
                         return;
                     }
                 }
@@ -167,10 +168,12 @@ namespace Client
                 }
             }
             catch (Exception)
-            { }
+            {
+                Core.killThread(System.Threading.Thread.CurrentThread);
+            }
         }
 
-        public static void processIRC(Network _server, Protocol protocol, string text, string sn, string system, ref DateTime pong, string date = null)
+        public static void processIRC(Network _server, Protocol protocol, string text, string sn, string system, ref DateTime pong, long date = 0)
         {
             try
             {
@@ -355,16 +358,16 @@ namespace Client
                                     {
                                         string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
                                         cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
-                                        lock (protocol.CUModes)
+                                        lock (_server.CUModes)
                                         {
-                                            protocol.CUModes.Clear();
-                                            protocol.CUModes.AddRange(cmodes.ToArray<char>());
+                                            _server.CUModes.Clear();
+                                            _server.CUModes.AddRange(cmodes.ToArray<char>());
                                         }
                                         cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                                        cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, protocol.CUModes.Count);
+                                        cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _server.CUModes.Count);
 
-                                        protocol.UChars.Clear();
-                                        protocol.UChars.AddRange(cmodes.ToArray<char>());
+                                        _server.UChars.Clear();
+                                        _server.UChars.AddRange(cmodes.ToArray<char>());
 
                                     }
                                     if (parameters.Contains("CHANMODES="))
@@ -374,14 +377,14 @@ namespace Client
                                         string[] _mode = xmodes.Split(',');
                                         if (_mode.Length == 4)
                                         {
-                                            protocol.PModes.Clear();
-                                            protocol.CModes.Clear();
-                                            protocol.XModes.Clear();
-                                            protocol.SModes.Clear();
-                                            protocol.PModes.AddRange(_mode[0].ToArray<char>());
-                                            protocol.XModes.AddRange(_mode[1].ToArray<char>());
-                                            protocol.SModes.AddRange(_mode[2].ToArray<char>());
-                                            protocol.CModes.AddRange(_mode[3].ToArray<char>());
+                                            _server.PModes.Clear();
+                                            _server.CModes.Clear();
+                                            _server.XModes.Clear();
+                                            _server.SModes.Clear();
+                                            _server.PModes.AddRange(_mode[0].ToArray<char>());
+                                            _server.XModes.AddRange(_mode[1].ToArray<char>());
+                                            _server.SModes.AddRange(_mode[2].ToArray<char>());
+                                            _server.CModes.AddRange(_mode[3].ToArray<char>());
                                         }
 
                                     }
@@ -453,7 +456,11 @@ namespace Client
                                     {
                                         channel = data[2];
                                     }
-                                    Channel curr = _server.Join(channel);
+                                    Channel curr = _server.getChannel(channel);
+                                    if (curr == null)
+                                    {
+                                        curr = _server.Join(channel);
+                                    }
                                     if (Configuration.aggressive_mode)
                                     {
                                         protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
@@ -494,14 +501,14 @@ namespace Client
                                 if (_data2[1].Contains("PART"))
                                 {
                                     string channel = _data2[2];
-                                    if (_data2[2].Contains("#") == false)
+                                    if (_data2[2].Contains(_server.channel_prefix) == false)
                                     {
                                         channel = data[2];
                                         Channel c = _server.getChannel(channel);
                                         if (c != null)
                                         {
                                             Window Chat = c.retrieveWindow();
-                                            if (Core.windowReady(Chat))
+                                            if (c != null)
                                             {
                                                 if (c.ok)
                                                 {
@@ -705,7 +712,7 @@ namespace Client
                                                 {
                                                     continue;
                                                 }
-                                                if (protocol.CUModes.Contains(m) && curr <= parameters2.Count)
+                                                if (_server.CUModes.Contains(m) && curr <= parameters2.Count)
                                                 {
                                                     User flagged_user = channel.userFromName(parameters2[curr]);
                                                     if (flagged_user != null)
@@ -763,6 +770,7 @@ namespace Client
                             chan = chan.Replace(" ", "");
                             string user = source.Substring(0, source.IndexOf("!"));
                             Channel channel = _server.getChannel(chan);
+                            if (!Hooks.BeforePart(_server, channel)) { return; }
                             if (channel != null)
                             {
                                 Window window;
@@ -886,6 +894,10 @@ namespace Client
                         {
                             string chan = parameters;
                             chan = chan.Replace(" ", "");
+                            if (chan == "")
+                            {
+                                chan = _value;
+                            }
                             string user = source.Substring(0, source.IndexOf("!"));
                             string _ident;
                             string _host;
@@ -932,6 +944,7 @@ namespace Client
             {
                 _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
+                Hooks.BeforeIRCConnect(this);
                 _server.Connected = true;
 
                 _writer = new System.IO.StreamWriter(_network);
@@ -968,6 +981,7 @@ namespace Client
                         System.Threading.Thread.Sleep(100);
                     }
                     text = _reader.ReadLine();
+                    Core.trafficscanner.insert(Server, " >> " + text);
                     processIRC(_server, this, text, _server.server, "!system", ref pong);
                 }
             }
@@ -979,12 +993,13 @@ namespace Client
             {
                 windows["!system"].scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
                 Exit();
-                return;
             }
             catch (Exception ex)
             {
                 Core.handleException(ex);
             }
+            Core.killThread(System.Threading.Thread.CurrentThread);
+            return;
         }
 
         public override bool Command(string cm)
@@ -1013,6 +1028,7 @@ namespace Client
             try
             {
                 _writer.WriteLine(ms);
+                Core.trafficscanner.insert(Server, " << " + ms);
                 _writer.Flush();
             }
             catch (Exception fail)
@@ -1057,10 +1073,13 @@ namespace Client
             {
                 return;
             }
+            if (!Hooks.BeforeExit(_server))
+            {
+                return;
+            }
             try
             {
-                _writer.WriteLine("QUIT :" + _server.quit);
-                _writer.Flush();
+                Send("QUIT :" + _server.quit);
             }
             catch (Exception) { }
             _server.Connected = false;

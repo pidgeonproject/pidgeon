@@ -26,13 +26,6 @@ namespace Client
     {
         public char delimiter = (char)001;
         public Window Current;
-        public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
-        public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
-        public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
-        public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
-        public List<char> SModes = new List<char> { 'k', 'L' };
-        public List<char> XModes = new List<char> { 'l' };
-        public List<char> PModes = new List<char> { 'b', 'I', 'e' };
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         public bool Connected = false;
         public int type = 0;

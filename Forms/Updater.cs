@@ -66,27 +66,30 @@ namespace Client
         {
             try
             {
-                temporarydir = System.IO.Path.GetTempPath() + "pidgeon" + DateTime.Now.ToBinary().ToString();
-                if (System.IO.Directory.Exists(temporarydir))
+                if (Configuration.CheckUpdate)
                 {
-                    return;
-                }
-                System.IO.Directory.CreateDirectory(temporarydir);
-                if (Download(Configuration.UpdaterUrl + "&type=" + System.Web.HttpUtility.UrlEncode(Configuration.CurrentPlatform.ToString()), temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
-                {
-                    info = System.IO.File.ReadAllText(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
-                    if (info.Contains("[update-need]"))
+                    temporarydir = System.IO.Path.GetTempPath() + "pidgeon" + DateTime.Now.ToBinary().ToString();
+                    if (System.IO.Directory.Exists(temporarydir))
                     {
-                        string vr = info.Substring(info.IndexOf("version:") + "version:".Length);
-                        vr = vr.Substring(0, vr.IndexOf("^"));
-                        Updater updater = new Updater();
-                        updater.update.Text = messages.get("update-update");
-                        updater.lStatus.Text = messages.get("update1", Core.SelectedLanguage, new List<string> { vr });
-                        System.Windows.Forms.Application.Run(updater);
                         return;
                     }
+                    System.IO.Directory.CreateDirectory(temporarydir);
+                    if (Download(Configuration.UpdaterUrl + "&type=" + System.Web.HttpUtility.UrlEncode(Configuration.CurrentPlatform.ToString()), temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
+                    {
+                        info = System.IO.File.ReadAllText(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
+                        if (info.Contains("[update-need]"))
+                        {
+                            string vr = info.Substring(info.IndexOf("version:") + "version:".Length);
+                            vr = vr.Substring(0, vr.IndexOf("^"));
+                            Updater updater = new Updater();
+                            updater.update.Text = messages.get("update-update");
+                            updater.lStatus.Text = messages.get("update1", Core.SelectedLanguage, new List<string> { vr });
+                            System.Windows.Forms.Application.Run(updater);
+                            return;
+                        }
+                    }
+                    System.IO.Directory.Delete(temporarydir, true);
                 }
-                System.IO.Directory.Delete(temporarydir, true);
             }
             catch (Exception _t)
             {

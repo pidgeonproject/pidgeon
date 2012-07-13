@@ -210,7 +210,7 @@ namespace Client
 
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            System.Diagnostics.Process.Start("http://pidgeonclient.org/wiki/Help:Contents");
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -236,6 +236,11 @@ namespace Client
                 UpdatedStatus = false;
                 UpdateStatus();
             }
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            Core.trafficscanner.Show();
         }
 
 

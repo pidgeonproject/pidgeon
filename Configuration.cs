@@ -98,6 +98,8 @@ namespace Client
         /// </summary>
         public static bool DisplayCtcp = true;
 
+        public static bool NetworkSniff = true;
+
         /// <summary>
         /// Updater
         /// </summary>

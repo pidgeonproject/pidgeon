@@ -41,7 +41,6 @@ namespace Client
         public TextBox Last;
         public static List<Scrollback> _control = new List<Scrollback>();
         public Window owner;
-        public TreeNode ln;
         public bool show = true;
         public bool px1 = true;
         public bool px2 = false;
@@ -195,39 +194,39 @@ namespace Client
             Part,
         }
 
-        public bool InsertText(string text, MessageStyle input_style, bool lg = true, string dt = null)
+        public bool InsertText(string text, MessageStyle input_style, bool lg = true, long dt = 0)
         {
-            if (owner != Core._Main.Chat && ln != null)
+            if (owner != Core._Main.Chat && owner.ln != null)
             {
                 switch (input_style)
                 {
                     case MessageStyle.Kick:
                     case MessageStyle.System:
-                        ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                        owner.ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
                         break;
                     case MessageStyle.Action:
                     case MessageStyle.Message:
-                        if (ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            ln.ForeColor = Configuration.CurrentSkin.colortalk;
+                            owner.ln.ForeColor = Configuration.CurrentSkin.colortalk;
                         }
                         break;
                     case MessageStyle.Part:
                     case MessageStyle.Channel:
                     case MessageStyle.User:
                     case MessageStyle.Join:
-                        if (ln.ForeColor != Configuration.CurrentSkin.highlightcolor && ln.ForeColor != Configuration.CurrentSkin.colortalk)
+                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.ln.ForeColor != Configuration.CurrentSkin.colortalk)
                         {
-                            ln.ForeColor = Configuration.CurrentSkin.joincolor;
+                            owner.ln.ForeColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
                     
                 }
             }
             DateTime time = DateTime.Now;
-            if (dt != null)
+            if (dt != 0)
             {
-                time = DateTime.Parse(dt);
+                time = DateTime.FromBinary(dt);
             }
             lock(Line)
             {

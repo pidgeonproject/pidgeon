@@ -31,19 +31,31 @@ namespace pidgeon_sv
             Normal = 2,
             Low = 1
         }
+        private System.Net.Sockets.NetworkStream _network;
+        private System.IO.StreamReader _reader;
+        
+        
+        public Network _server;
+        private System.IO.StreamWriter _writer;
+        
+        
+        Messages _messages = new Messages();
+        
+        
+        public List<ProtocolMain.Datagram> info = new List<ProtocolMain.Datagram>();
+
+
         public System.Threading.Thread main;
-        public System.Threading.Thread deliveryqueue;
+        public System.Threading.Thread deliveryqueue; 
         public System.Threading.Thread keep;
         public System.Threading.Thread th;
+        
+        
         public Buffer buffer = new Buffer();
         public DateTime pong = DateTime.Now;
         public Account owner = null;
 
-        private System.Net.Sockets.NetworkStream _network;
-        private System.IO.StreamReader _reader;
-        public Network _server;
-        private System.IO.StreamWriter _writer;
-        Messages _messages = new Messages();
+
 
         public class Buffer
         {
@@ -86,12 +98,12 @@ namespace pidgeon_sv
                             System.Threading.Thread.Sleep(100);
                             continue;
                         }
+                        bool skip = false;
                         lock (protocol.owner.Clients)
                         {
                             if (protocol.owner.Clients.Count == 0)
                             {
-                                System.Threading.Thread.Sleep(2000);
-                                continue;
+                                skip = true;
                             }
                             if (messages.Count > 0)
                             {
@@ -104,6 +116,11 @@ namespace pidgeon_sv
                         }
                         if (newmessages.Count > 0)
                         {
+                            if (skip)
+                            {
+                                System.Threading.Thread.Sleep(100);
+                                continue;
+                            }
                             while (newmessages.Count > 0)
                             {
                                 // we need to get all messages that have been scheduled to be send
@@ -400,6 +417,15 @@ namespace pidgeon_sv
                                 string[] code = data[1].Split(' ');
                                 switch (command)
                                 {
+                                    case "1":
+                                    case "2":
+                                    case "3":
+                                    case "4":
+                                    case "5":
+                                        ProtocolMain.Datagram p = new ProtocolMain.Datagram("DATA", text);
+                                        //p.Parameters.Add("network", Server);
+                                        info.Add(p);
+                                        break;
                                     case "313":
                                     //whois
                                     case "318":
@@ -538,7 +564,6 @@ namespace pidgeon_sv
                                             channel = data[2];
                                         }
                                         Channel curr = _server.Join(channel);
-                                        Console.WriteLine("joined");
                                     }
                                 }
                                 if (_data2.Length > 2)
@@ -556,6 +581,7 @@ namespace pidgeon_sv
                                             Channel c = _server.getChannel(channel);
                                             if (c != null)
                                             {
+                                                _server.Channels.Remove(c);
                                                 c.ok = false;
                                             }
                                         }
@@ -588,7 +614,6 @@ namespace pidgeon_sv
                                         }
                                     }
                                 }
-                                continue;
                             }
 
                             if (command == "PRIVMSG")
@@ -758,9 +783,13 @@ namespace pidgeon_sv
                                         {
                                             channel.UserList.Remove(delete);
                                         }
-                                        continue;
                                     }
                                 }
+                            }
+
+                            if (command == "PONG")
+                            {
+                                continue;
                             }
 
                             if (command == "QUIT")
@@ -810,6 +839,10 @@ namespace pidgeon_sv
                                 string _ident;
                                 string _host;
                                 _host = source.Substring(source.IndexOf("@") + 1);
+                                if (chan == "")
+                                {
+                                    chan = _value;
+                                }
                                 _ident = source.Substring(source.IndexOf("!") + 1);
                                 _ident = _ident.Substring(0, _ident.IndexOf("@"));
                                 Channel channel = _server.getChannel(chan);

@@ -57,7 +57,7 @@ namespace Client
 
                 lock (channel._mode)
                 {
-                    foreach (char item in channel._Network._protocol.CModes)
+                    foreach (char item in channel._Network.CModes)
                     {
                         string de = " - unknown mode. Refer to ircd manual (/raw help)";
                         cm.Add(item);

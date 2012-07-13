@@ -49,10 +49,10 @@ namespace Client
             this.components = new System.ComponentModel.Container();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripCurrent = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusNetwork = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusChannel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripCo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,6 +61,7 @@ namespace Client
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.shutDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -92,11 +93,6 @@ namespace Client
             this.toolStripCurrent.Name = "toolStripCurrent";
             this.toolStripCurrent.Size = new System.Drawing.Size(0, 17);
             // 
-            // toolStripInfo
-            // 
-            this.toolStripInfo.Name = "toolStripInfo";
-            this.toolStripInfo.Size = new System.Drawing.Size(0, 17);
-            // 
             // toolStripStatusNetwork
             // 
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
@@ -111,6 +107,13 @@ namespace Client
             // 
             this.toolStripCo.Name = "toolStripCo";
             this.toolStripCo.Size = new System.Drawing.Size(0, 17);
+            // 
+            // toolStripInfo
+            // 
+            this.toolStripInfo.AutoSize = false;
+            this.toolStripInfo.Name = "toolStripInfo";
+            this.toolStripInfo.Size = new System.Drawing.Size(600, 17);
+            this.toolStripInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // menuStrip1
             // 
@@ -172,9 +175,18 @@ namespace Client
             // 
             // toolsToolStripMenuItem
             // 
+            this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem3});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(146, 22);
+            this.toolStripMenuItem3.Text = "Packet viewer";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
             // userToolStripMenuItem
             // 
@@ -195,14 +207,14 @@ namespace Client
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -267,5 +279,6 @@ namespace Client
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusChannel;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
         private System.Windows.Forms.Timer updater;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
     }
 }

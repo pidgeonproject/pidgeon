@@ -24,8 +24,17 @@ namespace Client
 {
     public class Network
     {
+        public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+        public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+        public string channel_prefix = "#";
+        public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+        public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+        public List<char> SModes = new List<char> { 'k', 'L' };
+        public List<char> XModes = new List<char> { 'l' };
+        public List<char> PModes = new List<char> { 'b', 'I', 'e' };
         public bool Connected;
         public List<User> PrivateChat = new List<User>();
+        public Window system;
         public string server;
         public Protocol.UserMode usermode = new Protocol.UserMode();
         public string username;
@@ -37,7 +46,6 @@ namespace Client
         public Protocol _protocol;
         public ProtocolSv ParentSv = null;
 
-        public string channel_prefix = "#";
 
         public Channel getChannel(string name)
         {
@@ -89,12 +97,14 @@ namespace Client
                 ident = Configuration.ident;
                 if (protocol.type == 3)
                 {
-                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                     _protocol.CreateChat("!" + server, true, this);
+                    system = _protocol.windows["!" + server];
+                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
                     _protocol.CreateChat("!system", true, this);
+                    system = _protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
             }

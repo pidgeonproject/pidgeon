@@ -87,7 +87,7 @@ namespace Client
                 Servers[_us._Network].Expand();
                 if (_us._Network._protocol.windows.ContainsKey(_us.Nick))
                 {
-                    _us._Network._protocol.windows[_us.Nick].scrollback.ln = text;
+                    _us._Network._protocol.windows[_us.Nick].ln = text;
                 }
                 this.ResumeLayout();
             }
@@ -99,7 +99,7 @@ namespace Client
             TreeNode text = new TreeNode();
             text.Text = service.Server;
             ServiceList.Add(service, text);
-            service.windows["!root"].scrollback.ln = text;
+            service.windows["!root"].ln = text;
             this.items.Nodes.Add(text);
             this.ResumeLayout();
         }
@@ -117,7 +117,7 @@ namespace Client
                 Window xx = chan.retrieveWindow();
                 if (xx != null)
                 {
-                    xx.scrollback.ln = text;
+                    xx.ln = text;
                 }
                 this.ResumeLayout();
             }
@@ -132,7 +132,7 @@ namespace Client
                 text.Text = network.server;
                 Servers.Add(network, text);
                 text.Expand();
-                network._protocol.windows["!system"].scrollback.ln = text;
+                network.system.ln = text;
                 this.items.Nodes.Add(text);
                 return;
             }
@@ -141,6 +141,7 @@ namespace Client
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.server;
+                network.system.ln = text;
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
@@ -244,7 +245,7 @@ namespace Client
             items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
             try
             {
-                if (this.ServiceList.ContainsValue(e.Node))
+                if (ServiceList.ContainsValue(e.Node))
                 {
                     foreach (var sv in ServiceList)
                     {
@@ -359,6 +360,14 @@ namespace Client
                                 cu.Key._Network._protocol.Part(cu.Key.Name);
                                 cu.Key.dispose = true;
                                 return;
+                            }
+                            lock (cu.Key._Network.Channels)
+                            {
+                                if (cu.Key._Network.Channels.Contains(cu.Key))
+                                {
+                                    cu.Key.Dispose();
+                                    cu.Key._Network.Channels.Remove(cu.Key);
+                                }
                             }
                             item = cu.Key;
                             break;

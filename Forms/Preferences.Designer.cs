@@ -49,8 +49,8 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.listView1 = new System.Windows.Forms.ListView();
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
-            this.bCancel = new System.Windows.Forms.Button();
             this.bSave = new System.Windows.Forms.Button();
+            this.bCancel = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gro1 = new System.Windows.Forms.GroupBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -90,9 +90,9 @@ namespace Client
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.listView1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.fl, 1, 1);
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
@@ -125,16 +125,6 @@ namespace Client
             this.fl.Size = new System.Drawing.Size(461, 50);
             this.fl.TabIndex = 5;
             // 
-            // bCancel
-            // 
-            this.bCancel.Location = new System.Drawing.Point(146, 3);
-            this.bCancel.Name = "bCancel";
-            this.bCancel.Size = new System.Drawing.Size(114, 29);
-            this.bCancel.TabIndex = 0;
-            this.bCancel.Text = "button1";
-            this.bCancel.UseVisualStyleBackColor = true;
-            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
-            // 
             // bSave
             // 
             this.bSave.Location = new System.Drawing.Point(3, 3);
@@ -144,6 +134,16 @@ namespace Client
             this.bSave.Text = "button1";
             this.bSave.UseVisualStyleBackColor = true;
             this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            // 
+            // bCancel
+            // 
+            this.bCancel.Location = new System.Drawing.Point(146, 3);
+            this.bCancel.Name = "bCancel";
+            this.bCancel.Size = new System.Drawing.Size(114, 29);
+            this.bCancel.TabIndex = 0;
+            this.bCancel.Text = "button1";
+            this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
             // panel1
             // 

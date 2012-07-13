@@ -72,14 +72,15 @@ namespace pidgeon_sv
 
         public void Exit()
         {
-            Console.WriteLine("Quiting " + client.name);
             if (client.account != null)
             {
                 lock (client.account.Clients)
                 {
-                    client.account.Clients.Remove(this);
+                    if (!client.account.ClientsOK.Contains(this))
+                    {
+                        client.account.ClientsOK.Add(this);
+                    }
                 }
-                Console.WriteLine("Done " + client.name);
             }
         }
 
@@ -252,7 +253,7 @@ namespace pidgeon_sv
                     Deliver(response);
                     return;
                 case "LOAD":
-                    response = new Datagram("LOAD", "Pidgeon service version 1.0.0.0 supported mode=ns");
+                    response = new Datagram("LOAD", "Pidgeon service version 1.0.0.0 supported mode=ns I have " + Core.ActiveUsers.Count.ToString() + " connections");
                     Deliver(response);
                     return;
                 case "BACKLOGSV":
@@ -339,6 +340,7 @@ namespace pidgeon_sv
                                 }
                                 Console.WriteLine("Logged in as " + client.account.username);
                                 response = new Datagram("AUTH", "OK");
+                                response.Parameters.Add("ls", "There is " + client.account.Clients.Count.ToString() + " connections logged in to this account");
                                 client.status = Connection.Status.Connected;
                                 Deliver(response);
                                 return;
@@ -379,6 +381,10 @@ namespace pidgeon_sv
             {
                 client._w.WriteLine(text);
                 client._w.Flush();
+            }
+            catch (IOException)
+            {
+                Exit();
             }
             catch (Exception ex)
             {

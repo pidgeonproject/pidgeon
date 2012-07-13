@@ -39,6 +39,7 @@ namespace Client
         public string name;
         public bool writable;
         public bool isChannel = false;
+        public TreeNode ln;
         public Protocol _Protocol = null;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
@@ -51,6 +52,7 @@ namespace Client
                 _control.Add(this);
             }
             this.scrollback = new Client.Scrollback();
+            this.scrollback.owner = this;
         }
 
         public void Init()
@@ -63,6 +65,8 @@ namespace Client
             backbufferContext = BufferedGraphicsManager.Current;
             initializationComplete = true;
             RecreateBuffers();
+            kbToolStripMenuItem.Enabled = false;
+            kickrToolStripMenuItem.Enabled = false;
             scrollback.owner = this;
             listView.View = View.Details;
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
@@ -71,6 +75,7 @@ namespace Client
             listViewd.View = View.Details;
             listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
+
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
@@ -158,7 +163,7 @@ namespace Client
                         Channel _channel = _Network.getChannel(name);
                         if (_channel != null)
                         {
-                            User target = _channel.userFromName(user.Text);
+                            User target = _channel.userFromName(Decode(user.Text));
                             if (target != null)
                             {
                                 switch (Configuration.DefaultBans)
@@ -172,7 +177,7 @@ namespace Client
                                 }
                             }
                         }
-                        Core.network._protocol.Transfer("KICK " + name + " " + user.Text + " " + Configuration.DefaultReason, Configuration.Priority.High);
+                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason, Configuration.Priority.High);
                     }
                 }
             }
@@ -222,7 +227,7 @@ namespace Client
                     {
                         if (user.Text != "")
                         {
-                            Core.network._protocol.Transfer("WHOIS " + user.Text);
+                            Core.network._protocol.Transfer("WHOIS " + Decode(user.Text));
                         }
                     }
                 }
@@ -231,7 +236,7 @@ namespace Client
 
         string Decode(string user)
         { 
-            foreach(char item in _Network._protocol.UChars)
+            foreach(char item in _Network.UChars)
             {
                 if (user.Contains(item))
                 {
@@ -337,7 +342,7 @@ namespace Client
                         Channel _channel = _Network.getChannel(name);
                         if (_channel != null)
                         {
-                            User target = _channel.userFromName(user.Text);
+                            User target = _channel.userFromName(Decode(user.Text));
                             if (target != null)
                             {
                                 switch (Configuration.DefaultBans)
@@ -486,13 +491,14 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        if (user.Text != "")
+                        string nickname = Decode(user.Text);
+                        if (nickname != "")
                         {
-                            if (!Core.network._protocol.windows.ContainsKey(user.Text))
+                            if (!Core.network._protocol.windows.ContainsKey(nickname))
                             {
-                                _Network.Private(user.Text);
+                                _Network.Private(nickname);
                             }
-                            _Network._protocol.ShowChat(user.Text);
+                            _Network._protocol.ShowChat(nickname);
                         }
                     }
                 }

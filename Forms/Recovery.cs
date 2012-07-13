@@ -57,6 +57,7 @@ namespace Client
                 server.Exit();
             }
             Application.ExitThread();
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
 
         private void bContinue_Click(object sender, EventArgs e)

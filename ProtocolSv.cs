@@ -26,7 +26,6 @@ namespace Client
     public class ProtocolSv : Protocol
     {
         public System.Threading.Thread main;
-        public System.Threading.Thread deliveryqueue;
         public System.Threading.Thread keep;
         public DateTime pong = DateTime.Now;
 
@@ -69,10 +68,17 @@ namespace Client
 
         public void _Ping()
         {
-            while (true)
+            try
             {
-                Deliver(new Datagram("PING"));
-                System.Threading.Thread.Sleep(480000);
+                while (true)
+                {
+                    Deliver(new Datagram("PING"));
+                    System.Threading.Thread.Sleep(480000);
+                }
+            }
+            catch (Exception)
+            {
+                Core.killThread(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -122,6 +128,7 @@ namespace Client
 
 
                 keep = new System.Threading.Thread(_Ping);
+                Core.SystemThreads.Add(keep);
                 keep.Name = "pinger thread";
                 keep.Start();
 
@@ -138,6 +145,7 @@ namespace Client
                 while (!_reader.EndOfStream)
                 {
                     text = _reader.ReadLine();
+                    Core.trafficscanner.insert(Server, " >> " + text);
                     while (Core.blocked)
                     {
                         System.Threading.Thread.Sleep(100);
@@ -149,6 +157,14 @@ namespace Client
                     }
                 }
             }
+            catch (System.IO.IOException fail)
+            {
+                if (Connected)
+                {
+                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
+                }
+            }
+            catch (System.Threading.ThreadAbortException) { }
             catch (Exception fail)
             {
                 Core.handleException(fail);
@@ -224,14 +240,14 @@ namespace Client
                                 }
                                 break;
                             case "SDATA":
-                                string date = null;
+                                long date = 0;
                                 bool backlog = false;
                                 string id = "";
                                 foreach (XmlAttribute time in curr.Attributes)
                                 {
                                     if (time.Name == "time")
                                     {
-                                        date = DateTime.FromBinary(long.Parse(time.Value)).ToString();
+                                        date = long.Parse(time.Value);
                                     }
                                 }
                                 foreach (XmlAttribute i in curr.Attributes)
@@ -333,7 +349,6 @@ namespace Client
                                         break;
                                     case "UNKNOWN":
                                         continue;
-
                                     case "OFFLINE":
                                         connected = false;
                                         break;
@@ -390,7 +405,10 @@ namespace Client
                                                 {
                                                     if (channel != "")
                                                     {
-                                                        nw.Join(channel);
+                                                        if (nw.getChannel(channel) == null)
+                                                        {
+                                                            nw.Join(channel);
+                                                        }
                                                         if (!Configuration.Retrieve_Sv)
                                                         {
                                                             SendData(nw.server, "TOPIC " + channel, Configuration.Priority.Normal);
@@ -402,6 +420,7 @@ namespace Client
                                                         Deliver(response2);
                                                     }
                                                 }
+                                                System.Threading.Thread.Sleep(800);
                                             }
                                         }
                                     }
@@ -471,12 +490,14 @@ namespace Client
                                 if (curr.InnerText == "INVALID")
                                 {
                                     windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed", Scrollback.MessageStyle.System, false);
+                                    Connected = false;
                                     Exit();
                                 }
                                 if (curr.InnerText == "OK")
                                 {
                                     ConnectionStatus = Status.Connected;
                                     windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Scrollback.MessageStyle.System, false);
+                                    windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Scrollback.MessageStyle.System);
                                 }
                                 break;
                         }
@@ -584,6 +605,7 @@ namespace Client
             try
             {
                 _writer.WriteLine(text);
+                Core.trafficscanner.insert(Server, " << " + text);
                 _writer.Flush();
             }
             catch (Exception f)

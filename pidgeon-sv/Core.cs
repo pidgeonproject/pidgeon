@@ -105,7 +105,10 @@ namespace pidgeon_sv
         {
             System.Net.Sockets.TcpClient client = (System.Net.Sockets.TcpClient)data;
             Connection connection = new Connection();
-            ActiveUsers.Add(connection);
+            lock (ActiveUsers)
+            {
+                ActiveUsers.Add(connection);
+            }
             try
             {
                 System.Net.Sockets.NetworkStream ns = client.GetStream();
@@ -158,6 +161,10 @@ namespace pidgeon_sv
             catch (Exception fail)
             {
                 SL(fail.StackTrace + fail.Message);
+            }
+            lock (ActiveUsers)
+            {
+                ActiveUsers.Remove(connection);
             }
         }
 
