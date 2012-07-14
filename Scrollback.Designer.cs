@@ -42,9 +42,9 @@ namespace Client
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
             this.pwx1 = new System.Windows.Forms.Panel();
+            this.Data = new System.Windows.Forms.WebBrowser();
             this.pwx2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.Data = new System.Windows.Forms.WebBrowser();
             this.contextMenuStrip1.SuspendLayout();
             this.pwx1.SuspendLayout();
             this.pwx2.SuspendLayout();
@@ -59,26 +59,26 @@ namespace Client
             this.channelToolStripMenuItem,
             this.refreshToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 136);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 114);
             // 
             // mrhToolStripMenuItem
             // 
             this.mrhToolStripMenuItem.Name = "mrhToolStripMenuItem";
-            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.mrhToolStripMenuItem.Text = "Clean";
             this.mrhToolStripMenuItem.Click += new System.EventHandler(this.mrhToolStripMenuItem_Click);
             // 
             // scrollToolStripMenuItem
             // 
             this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
-            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.scrollToolStripMenuItem.Text = "Scroll";
             this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Visible = false;
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
@@ -86,20 +86,19 @@ namespace Client
             // channelToolStripMenuItem
             // 
             this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
-            this.channelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.channelToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.channelToolStripMenuItem.Text = "Channel";
             this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
             // refresh
             // 
-            this.refresh.Enabled = true;
             this.refresh.Interval = 200;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
@@ -107,17 +106,27 @@ namespace Client
             // 
             this.pwx1.Controls.Add(this.Data);
             this.pwx1.Location = new System.Drawing.Point(3, 21);
-            this.pwx1.Resize += new System.EventHandler(ResizeWebs);
             this.pwx1.Name = "pwx1";
             this.pwx1.Size = new System.Drawing.Size(223, 209);
             this.pwx1.TabIndex = 3;
+            this.pwx1.Resize += new System.EventHandler(this.ResizeWebs);
+            // 
+            // Data
+            // 
+            this.Data.ContextMenuStrip = this.contextMenuStrip1;
+            this.Data.IsWebBrowserContextMenuEnabled = false;
+            this.Data.Location = new System.Drawing.Point(3, 3);
+            this.Data.MinimumSize = new System.Drawing.Size(20, 20);
+            this.Data.Name = "Data";
+            this.Data.ScriptErrorsSuppressed = true;
+            this.Data.Size = new System.Drawing.Size(345, 262);
+            this.Data.TabIndex = 2;
             // 
             // pwx2
             // 
             this.pwx2.Controls.Add(this.webBrowser1);
             this.pwx2.Location = new System.Drawing.Point(244, 21);
             this.pwx2.Name = "pwx2";
-            this.Resize += new System.EventHandler(ResizeWebs);
             this.pwx2.Size = new System.Drawing.Size(217, 209);
             this.pwx2.TabIndex = 4;
             // 
@@ -132,17 +141,6 @@ namespace Client
             this.webBrowser1.Size = new System.Drawing.Size(345, 262);
             this.webBrowser1.TabIndex = 3;
             // 
-            // Data
-            // 
-            this.Data.ContextMenuStrip = this.contextMenuStrip1;
-            this.Data.IsWebBrowserContextMenuEnabled = false;
-            this.Data.Location = new System.Drawing.Point(3, 3);
-            this.Data.MinimumSize = new System.Drawing.Size(20, 20);
-            this.Data.Name = "Data";
-            this.Data.ScriptErrorsSuppressed = true;
-            this.Data.Size = new System.Drawing.Size(345, 262);
-            this.Data.TabIndex = 2;
-            // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -154,6 +152,7 @@ namespace Client
             this.Name = "Scrollback";
             this.Size = new System.Drawing.Size(566, 320);
             this.Load += new System.EventHandler(this.Scrollback_Load);
+            this.Resize += new System.EventHandler(this.ResizeWebs);
             this.contextMenuStrip1.ResumeLayout(false);
             this.pwx1.ResumeLayout(false);
             this.pwx2.ResumeLayout(false);

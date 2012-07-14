@@ -64,18 +64,17 @@ namespace Client
 
 	    private void _Enter(object sender, KeyPressEventArgs pt){}
 
-        public void CreateChat(Window Chat, Protocol WindowOwner)
+        public void CreateChat(Window Chat, Protocol WindowOwner, bool Focus = true)
         {
             Chat.Init();
             Chat.create();
-            Chat.Visible = true;
+            Chat.Visible = Focus;
             Chat._Protocol = WindowOwner;
             Chat.Dock = DockStyle.Fill;
             Chat.Location = new System.Drawing.Point(0, 0);
-            Chat.TabIndex = 6;
             Chat.Redraw();
             Chat.CreateControl();
-            if (Core._Main.Chat != null)
+            if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }

@@ -32,6 +32,8 @@ namespace Client
         public class Mode
         {
             public List<string> _Mode = new List<string>();
+            public Network network;
+            public int ModeType = 0;
             public override string ToString()
             {
                 string _val = "";
@@ -44,11 +46,48 @@ namespace Client
                 return "+" + _val;
             }
 
+            public Mode(int MT, Network _Network)
+            {
+                if (MT != 0)
+                {
+                    ModeType = MT;
+                }
+                network = _Network;
+            }
+
+            public Mode(string DefaultMode)
+            {
+                mode(DefaultMode);
+            }
+
+            public Mode()
+            {
+                network = null;
+            }
+
             public bool mode(string text)
             {
                 char prefix = ' ';
                 foreach (char _x in text)
                 {
+                    if (ModeType != 0 && network != null)
+                    {
+                        switch (ModeType)
+                        {
+                            case 2:
+                                if (network.CModes.Contains(_x))
+                                {
+                                    continue;
+                                }
+                                break;
+                            case 1:
+                                if (network.UModes.Contains(_x))
+                                {
+                                    continue;
+                                }
+                                break;
+                        }
+                    }
                     if (_x == ' ')
                     {
                         return true;
@@ -118,6 +157,7 @@ namespace Client
         {
             if (windows.ContainsKey(name))
             {
+                
                 Current = windows[name];
                 Current.Visible = true;
                 if (Current != Core._Main.Chat)
@@ -129,9 +169,12 @@ namespace Client
                 }
                 Current.Redraw();
                 Core._Main.toolStripStatusChannel.Text = name;
-
-                Current.textbox.Focus();
+                if (Current.Making == false)
+                {
+                    Current.textbox.Focus();
+                }
                 Core._Main.Chat = windows[name];
+                Current.BringToFront();
                 Current.Making = false;
                 Core._Main.UpdateStatus();
             }

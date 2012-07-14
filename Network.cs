@@ -65,6 +65,7 @@ namespace Client
         /// <param name="user"></param>
         public void Private(string user)
         {
+            Core._Main.userToolStripMenuItem.Visible = true;
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);
@@ -72,7 +73,7 @@ namespace Client
             return;
         }
 
-        public Channel Join(string channel)
+        public Channel Join(string channel, bool nf = false)
         {
             Channel _channel = new Channel();
             RenderedChannel = _channel;
@@ -80,7 +81,7 @@ namespace Client
             _channel._Network = this;
             Channels.Add(_channel);
             Core._Main.ChannelList.insertChannel(_channel);
-            _protocol.CreateChat(channel, true, this, true, true);
+            _protocol.CreateChat(channel, !nf, this, true, true);
             return _channel;
         }
 

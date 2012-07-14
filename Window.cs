@@ -30,11 +30,6 @@ namespace Client
     public partial class Window : UserControl
     {
         public static List<Window> _control = new List<Window>();
-        bool initializationComplete;
-        bool isDisposing;
-        private BufferedGraphicsContext backbufferContext;
-        private BufferedGraphics backbufferGraphics;
-        private Graphics drawingGraphics;
         public bool Making = true;
         public string name;
         public bool writable;
@@ -57,14 +52,12 @@ namespace Client
 
         public void Init()
         {
-            InitializeComponent();
             this.SetStyle(
             ControlStyles.AllPaintingInWmPaint |
             ControlStyles.UserPaint |
             ControlStyles.OptimizedDoubleBuffer, true);
-            backbufferContext = BufferedGraphicsManager.Current;
-            initializationComplete = true;
-            RecreateBuffers();
+            InitializeComponent();
+            
             kbToolStripMenuItem.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
             scrollback.owner = this;
@@ -75,39 +68,9 @@ namespace Client
             listViewd.View = View.Details;
             listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
-
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
-            this.Refresh();
-        }
-
-        private void RecreateBuffers()
-        {
-            // Check initialization has completed so we know backbufferContext has been assigned.
-            // Check that we aren't disposing or this could be invalid.
-            if (!initializationComplete || isDisposing)
-                return;
-
-            // We recreate the buffer with a width and height of the control. The "+ 1"
-            // guarantees we never have a buffer with a width or height of 0.
-            backbufferContext.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
-
-            // Dispose of old backbufferGraphics (if one has been created already)
-            if (backbufferGraphics != null)
-                backbufferGraphics.Dispose();
-
-            // Create new backbufferGrpahics that matches the current size of buffer.
-            backbufferGraphics = backbufferContext.Allocate(this.CreateGraphics(),
-            new Rectangle(0, 0, Math.Max(this.Width, 1), Math.Max(this.Height, 1)));
-
-            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
-            drawingGraphics = backbufferGraphics.Graphics;
-
-            // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
-
-            // Invalidate the control so a repaint gets called somewhere down the line.
-            this.Invalidate();
         }
 
         public void create()
@@ -115,13 +78,7 @@ namespace Client
             scrollback.create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
         }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            if (!isDisposing && backbufferGraphics != null)
-                backbufferGraphics.Render(e.Graphics);
-        }
-
+      
         public bool Redraw()
         {
             if (xContainer1 != null)
@@ -130,7 +87,6 @@ namespace Client
                 this.xContainer4.SplitterDistance = Configuration.x4;
                 listViewd.Columns[0].Width = listView.Width - 8;
                 listView.Columns[0].Width = listView.Width - 8;
-                this.Refresh();
             }
             return true;
         }
@@ -451,7 +407,6 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            isDisposing = true;
             lock (_control)
             {
                 if (_control.Contains(this))
@@ -459,17 +414,17 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-            if (disposing)
-            {
-                if (components != null)
-                    components.Dispose();
-
-                // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
-                if (backbufferGraphics != null)
-                    backbufferGraphics.Dispose();
-                if (backbufferContext != null)
-                    backbufferContext.Dispose();
-            }
+            
+                if (_Protocol != null)
+                {
+                    lock (_Protocol.windows)
+                    {
+                        if (_Protocol.windows.ContainsKey(name))
+                        {
+                            _Protocol.windows.Remove(name);
+                        }
+                    }
+                }
             base.Dispose(disposing);
         }
 

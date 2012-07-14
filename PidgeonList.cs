@@ -203,10 +203,9 @@ namespace Client
             {
                 foreach (Main._WindowRequest item in Core._Main.W)
                 {
-                    Core._Main.CreateChat(item.window, item.owner);
+                    Core._Main.CreateChat(item.window, item.owner, item._Focus);
                     if (item.owner != null && item._Focus)
                     {
-                        item._Focus = false;
                         item.owner.ShowChat(item.name);
                     }
                 }
@@ -243,6 +242,7 @@ namespace Client
         {
             RedrawMenu();
             items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
+            Core._Main.userToolStripMenuItem.Visible = false;
             try
             {
                 if (ServiceList.ContainsValue(e.Node))
@@ -348,6 +348,41 @@ namespace Client
                         items.Nodes.Remove(items.SelectedNode);
                     }
                 }
+
+                if (UserList.ContainsValue(items.SelectedNode))
+                {
+                    User item = null;
+                    foreach (var cu in UserList)
+                    {
+                        if (cu.Value == items.SelectedNode)
+                        {
+                            lock (cu.Key._Network.PrivateChat)
+                            {
+                                if (cu.Key._Network.PrivateChat.Contains(cu.Key))
+                                {
+                                    cu.Key._Network.PrivateChat.Remove(cu.Key);
+                                }
+                            }
+                            item = cu.Key;
+                            break;
+                        }
+                    }
+                        if (item != null)
+                        {
+                            items.Nodes.Remove(items.SelectedNode);
+                            if (item._Network._protocol.windows.ContainsKey(item.Nick))
+                            {
+                            lock (item._Network._protocol.windows)
+                            {
+                                    item._Network._protocol.windows[item.Nick].Visible = false;
+                                    item._Network._protocol.windows[item.Nick].Dispose();
+                                }
+                            }
+                            UserList.Remove(item);
+                            return;
+                        }
+                }
+
                 if (Channels.ContainsValue(items.SelectedNode))
                 {
                     Channel item = null;

@@ -100,6 +100,8 @@ namespace Client
 
         public static bool NetworkSniff = true;
 
+        public static bool CheckUpdate = true;
+
         /// <summary>
         /// Updater
         /// </summary>

@@ -32,11 +32,7 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
-        private bool initializationComplete;
         private bool isDisposing;
-        private BufferedGraphicsContext backbufferContext;
-        private BufferedGraphics backbufferGraphics;
-        private Graphics drawingGraphics;
         private List<ContentLine> Line = new List<ContentLine>();
         public TextBox Last;
         public static List<Scrollback> _control = new List<Scrollback>();
@@ -79,86 +75,21 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-            if (disposing)
-            {
-                if (components != null)
-                    components.Dispose();
-
-                // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
-                if (backbufferGraphics != null)
-                    backbufferGraphics.Dispose();
-                if (backbufferContext != null)
-                    backbufferContext.Dispose();
-            }
             base.Dispose(disposing);
-        }
-
-        private void RecreateBuffers()
-        {
-            // Check initialization has completed so we know backbufferContext has been assigned.
-            // Check that we aren't disposing or this could be invalid.
-            if (!initializationComplete || isDisposing)
-                return;
-
-            // We recreate the buffer with a width and height of the control. The "+ 1" 
-            // guarantees we never have a buffer with a width or height of 0. 
-            backbufferContext.MaximumBuffer = new Size(this.Width + 1, this.Height + 1);
-
-            // Dispose of old backbufferGraphics (if one has been created already)
-            if (backbufferGraphics != null)
-                backbufferGraphics.Dispose();
-
-            // Create new backbufferGrpahics that matches the current size of buffer.
-            backbufferGraphics = backbufferContext.Allocate(this.CreateGraphics(),
-                new Rectangle(0, 0, Math.Max(this.Width, 1), Math.Max(this.Height, 1)));
-
-            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
-            drawingGraphics = backbufferGraphics.Graphics;
-
-            // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
-
-            // Invalidate the control so a repaint gets called somewhere down the line.
-            this.Invalidate();
-        }
-
-        private void Redraw()
-        {
-            // In this Redraw method, we simply make the control fade from black to white on a timer.
-            // But, you can put whatever you want here and detach the timer. The trick is just making
-            // sure redraw gets called when appropriate and only when appropriate. Examples would include
-            // when you resize, when underlying data is changed, when any of the draqwing properties are changed
-            // (like BackColor, Font, ForeColor, etc.)
-            if (drawingGraphics == null)
-                return;
-
-
-            // Force the control to both invalidate and update. 
-            this.Refresh();
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            // If we've initialized the backbuffer properly, render it on the control. 
-            // Otherwise, do just the standard control paint.
-            if (!isDisposing && backbufferGraphics != null)
-                backbufferGraphics.Render(e.Graphics);
         }
 
         public void create()
         {
+            //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
+            //this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
-            this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-            this.SetStyle(ControlStyles.SupportsTransparentBackColor, false);
-            this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
-
-            // Assign our buffer context.
-            backbufferContext = BufferedGraphicsManager.Current;
-            initializationComplete = true;
-
-            RecreateBuffers();
-
-            Redraw();
+            
+            refresh.Enabled = true;
             Scrollback_Load(null, null);
+            Data.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"></body></html>";
+            webBrowser1.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"></body></html>";
+            Recreate(true);
         }
 
         public void ResizeWebs(object sender, EventArgs e)
@@ -231,7 +162,7 @@ namespace Client
             lock(Line)
             {
                 Line.Add(new ContentLine(input_style, text, time));
-                if (dt != null)
+                if (dt != 0)
                 {
                     Line.Sort();
                 }
@@ -286,12 +217,9 @@ namespace Client
         private void Scrollback_Load(object sender, EventArgs e)
         {
             //Reload(true);
-            Data.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
-            webBrowser1.DocumentText  = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
             pwx2.Dock = DockStyle.Fill;
             pwx1.BringToFront();
             pwx1.Dock = DockStyle.Fill;
-            this.ResumeLayout();
         }
 
         public void Reload(bool fast = false)

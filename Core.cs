@@ -30,7 +30,7 @@ namespace Client
     public class Core
     {
         public enum Platform
-        { 
+        {
             Linuxx64,
             Linuxx86,
             Windowsx64,
@@ -152,8 +152,11 @@ namespace Client
                                 {
                                     if (network.Connected)
                                     {
-                                        string ms = command.Substring(command.IndexOf(" "));
-                                        ms = ms.Substring(ms.IndexOf(" "));
+                                        string ms = command.Substring(4 + channel.Length);
+                                        while (ms.StartsWith(" "))
+                                        {
+                                            ms = ms.Substring(1);
+                                        }
                                         network.system.scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
                                         network._protocol.Message(ms, channel);
                                         return false;
@@ -177,10 +180,14 @@ namespace Client
                                 _Main.Chat.scrollback.InsertText("Invalid name", Scrollback.MessageStyle.System);
                                 return false;
                             }
+                            while (channel.StartsWith(" "))
+                            {
+                                channel.Substring(1);
+                            }
                             if (channel.Contains(" "))
                             {
                                 channel = channel.Substring(0, channel.IndexOf(" "));
-                                if (network != null)
+                                if (network != null && network._protocol != null)
                                 {
                                     if (network.Connected)
                                     {
@@ -198,6 +205,17 @@ namespace Client
                                 }
                                 _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
                                 return false;
+                            }
+                            if (network != null && network._protocol != null)
+                            {
+                                if (network.Connected)
+                                {
+                                    if (!network._protocol.windows.ContainsKey(channel))
+                                    {
+                                        network.Private(channel);
+                                    }
+                                    network._protocol.ShowChat(channel);
+                                }
                             }
                             return false;
                         }
@@ -304,10 +322,10 @@ namespace Client
                         {
                             if (int.TryParse(b2, out n3))
                             {
-                                Core._Main.Chat._Protocol.ConnectTo( name2, n3 );
+                                Core._Main.Chat._Protocol.ConnectTo(name2, n3);
                                 return false;
                             }
-                        
+
                             Core._Main.Chat._Protocol.ConnectTo(name2, 6667);
                             return false;
                         }
@@ -383,7 +401,7 @@ namespace Client
         public static bool Backup(string file)
         {
             if (File.Exists(file + "~"))
-            { 
+            {
                 string backup = System.IO.Path.GetRandomFileName();
                 File.Copy(file + "~", backup);
             }
@@ -394,7 +412,7 @@ namespace Client
             return true;
         }
 
-        private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c , XmlNode conf)
+        private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf)
         {
             key = _c.CreateAttribute("confname");
             xmlnode = _c.CreateElement("data");
@@ -418,16 +436,16 @@ namespace Client
             makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
             makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
             makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
-            makenode("irc.auto.whois", Configuration.aggressive_whois.ToString() , curr, confname, config, xmlnode);
+            makenode("irc.auto.whois", Configuration.aggressive_whois.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.mode", Configuration.aggressive_mode.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.channels", Configuration.aggressive_channel.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.bans", Configuration.aggressive_bans.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.exception", Configuration.aggressive_exception.ToString(), curr, confname, config, xmlnode);
             makenode("irc.auto.invites", Configuration.aggressive_invites.ToString(), curr, confname, config, xmlnode);
-            
+
             makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
             makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
-            makenode("location.x1", Configuration.x1.ToString() , curr, confname, config, xmlnode);
+            makenode("location.x1", Configuration.x1.ToString(), curr, confname, config, xmlnode);
             makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
             makenode("logs.dir", Configuration.logs_dir, curr, confname, config, xmlnode);
             makenode("logs.type", Configuration.logs_name, curr, confname, config, xmlnode);
@@ -582,22 +600,10 @@ namespace Client
             return false;
         }
 
-        public static bool windowReady(Window chat)
-        {
-            if (chat != null)
-            {
-                while (chat.Making)
-                {
-                    System.Threading.Thread.Sleep(100);
-                }
-                return true;
-            }
-            return false;
-        }
-
         public static bool connectQl(string server, int port)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
+            _quassel.Open();
             return false;
         }
 
