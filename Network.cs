@@ -26,12 +26,13 @@ namespace Client
     {
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
-        public string channel_prefix = "#";
         public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
         public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
         public List<char> SModes = new List<char> { 'k', 'L' };
         public List<char> XModes = new List<char> { 'l' };
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+        public bool parsed_info = false;
+        public string channel_prefix = "#";
         public bool Connected;
         public List<User> PrivateChat = new List<User>();
         public Window system;

@@ -46,6 +46,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(PidgeonList));
             this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.items = new System.Windows.Forms.TreeView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -127,9 +128,11 @@ namespace Client
             // 
             // list
             // 
-            this.list.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.list.ImageSize = new System.Drawing.Size(16, 16);
+            this.list.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("list.ImageStream")));
             this.list.TransparentColor = System.Drawing.Color.Transparent;
+            this.list.Images.SetKeyName(0, "Image2.png");
+            this.list.Images.SetKeyName(1, "50px-IRC_icon.png");
+            this.list.Images.SetKeyName(2, "irc_channel.ico");
             // 
             // PidgeonList
             // 

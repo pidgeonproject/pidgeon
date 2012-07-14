@@ -224,44 +224,46 @@ namespace Client
 
         public void Reload(bool fast = false)
         {
-            Modified = false;
-            string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
-            lock (Line)
+            if (owner.Visible == true)
             {
-                foreach (ContentLine _c in Line)
+                Modified = false;
+                string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+                lock (Line)
                 {
-                    string color = Configuration.CurrentSkin.fontcolor.Name;
-                    switch (_c.style)
-                    { 
-                        case MessageStyle.Action:
-                            color = Configuration.CurrentSkin.miscelancscolor.Name;
-                            break;
-                        case MessageStyle.Kick:
-                            color = Configuration.CurrentSkin.kickcolor.Name;
-                            break;
-                        case MessageStyle.System:
-                            color = Configuration.CurrentSkin.miscelancscolor.Name;
-                            break;
-                        case MessageStyle.Channel:
-                            color = Configuration.CurrentSkin.colortalk.Name;
-                            break;
-                        case MessageStyle.User:
-                            color = Configuration.CurrentSkin.changenickcolor.Name;
-                            break;
-                        case MessageStyle.Join:
-                        case MessageStyle.Part:
-                            color = Configuration.CurrentSkin.joincolor.Name;
-                            break;
-                    }
-                    string stamp = "";
-                    if (Configuration.chat_timestamp)
+                    foreach (ContentLine _c in Line)
                     {
-                        stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
+                        string color = Configuration.CurrentSkin.fontcolor.Name;
+                        switch (_c.style)
+                        {
+                            case MessageStyle.Action:
+                                color = Configuration.CurrentSkin.miscelancscolor.Name;
+                                break;
+                            case MessageStyle.Kick:
+                                color = Configuration.CurrentSkin.kickcolor.Name;
+                                break;
+                            case MessageStyle.System:
+                                color = Configuration.CurrentSkin.miscelancscolor.Name;
+                                break;
+                            case MessageStyle.Channel:
+                                color = Configuration.CurrentSkin.colortalk.Name;
+                                break;
+                            case MessageStyle.User:
+                                color = Configuration.CurrentSkin.changenickcolor.Name;
+                                break;
+                            case MessageStyle.Join:
+                            case MessageStyle.Part:
+                                color = Configuration.CurrentSkin.joincolor.Name;
+                                break;
+                        }
+                        string stamp = "";
+                        if (Configuration.chat_timestamp)
+                        {
+                            stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
+                        }
+                        text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                     }
-                    text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp  +  System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
                 }
-            }
-            text += "</body>" + "</html>";
+                text += "</body>" + "</html>";
                 if (px2)
                 {
                     Data.DocumentText = text;
@@ -270,10 +272,11 @@ namespace Client
                 {
                     webBrowser1.DocumentText = text;
                 }
-            db = true;
-            if (fast)
-            {
-                Recreate(true);
+                db = true;
+                if (fast)
+                {
+                    Recreate(true);
+                }
             }
         }
 

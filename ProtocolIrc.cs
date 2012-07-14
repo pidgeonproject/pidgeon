@@ -177,6 +177,10 @@ namespace Client
         {
             try
             {
+                if (text == null || text == "")
+                {
+                    return;
+                }
                 if (text.StartsWith(":"))
                 {
                     string[] data = text.Split(':');
@@ -375,6 +379,7 @@ namespace Client
                                         string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
                                         xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
                                         string[] _mode = xmodes.Split(',');
+                                        _server.parsed_info = true;
                                         if (_mode.Length == 4)
                                         {
                                             _server.PModes.Clear();
@@ -501,9 +506,9 @@ namespace Client
                                 if (_data2[1].Contains("PART"))
                                 {
                                     string channel = _data2[2];
-                                    if (_data2[2].Contains(_server.channel_prefix) == false)
+                                    if (_data2[2].Contains(_server.channel_prefix))
                                     {
-                                        channel = data[2];
+                                        channel = _data2[2];
                                         Channel c = _server.getChannel(channel);
                                         if (c != null)
                                         {
