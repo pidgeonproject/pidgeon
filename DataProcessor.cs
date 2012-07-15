@@ -31,15 +31,19 @@ namespace Client
     {
         public static int parse(string input)
         {
+            if (input == "")
+            {
+                return 0;
+            }
             if (input.StartsWith(Configuration.CommandPrefix) && !input.StartsWith(Configuration.CommandPrefix + Configuration.CommandPrefix))
             {
                 Core.ProcessCommand(input);
-                return 0;
+                return 10;
             }
             if (Core.network == null)
             {
                 Core._Main.Chat.scrollback.InsertText("Not connected", Client.Scrollback.MessageStyle.User);
-                return 0;
+                return 2;
             }
             if (Core.network.Connected)
             {

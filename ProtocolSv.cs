@@ -159,7 +159,6 @@ namespace Client
             string text = "";
             try
             {
-
                 while (!_reader.EndOfStream)
                 {
                     text = _reader.ReadLine();
@@ -522,7 +521,7 @@ namespace Client
 
         public override void Exit()
         {
-            Deliver(new Datagram("QUIT"));
+            Connected = false;
             _writer.Close();
             _reader.Close();
         }
@@ -608,6 +607,11 @@ namespace Client
                     _writer.WriteLine(text);
                     Core.trafficscanner.insert(Server, " << " + text);
                     _writer.Flush();
+                }
+                catch (System.IO.IOException er)
+                {
+                    windows["!root"].scrollback.InsertText(er.Message, Scrollback.MessageStyle.User);
+                    Exit();
                 }
                 catch (Exception f)
                 {

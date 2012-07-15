@@ -59,6 +59,14 @@ namespace Client
             checkBox6.Checked = Configuration.ctcp_prot;
             textBox5.Text = Configuration.logs_dir;
             textBox6.Text = Configuration.logs_name;
+            foreach (Network.Highlighter highlight in Configuration.HighlighterList)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = highlight.text;
+                item.SubItems.Add(highlight.enabled.ToString().ToLower());
+                item.SubItems.Add(highlight.simple.ToString());
+                list.Items.Add(item);
+            }
             listView1.Items.Add(new ListViewItem("IRC"));
             listView1.Items.Add(new ListViewItem("System"));
             listView1.Items.Add(new ListViewItem("Logs"));
@@ -76,6 +84,18 @@ namespace Client
         {
             try
             {
+                lock (Configuration.HighlighterList)
+                {
+                    Configuration.HighlighterList = new List<Network.Highlighter>();
+                    foreach (ListViewItem curr in list.Items)
+                    {
+                        Network.Highlighter hl = new Network.Highlighter();
+                        hl.enabled = bool.Parse(curr.SubItems[1].Text);
+                        hl.text = curr.Text;
+                        hl.simple = bool.Parse(curr.SubItems[2].Text);
+                        Configuration.HighlighterList.Add(hl);
+                    }
+                }
                 Configuration.nick = textBox1.Text;
                 Configuration.quit = textBox2.Text;
                 Configuration.ident = textBox3.Text;
@@ -98,6 +118,11 @@ namespace Client
             Close();
         }
 
+        /// <summary>
+        /// User wants to discard changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void bCancel_Click(object sender, EventArgs e)
         {
             Close();
@@ -120,9 +145,65 @@ namespace Client
                 case 3:
                     gro4.BringToFront();
                     break;
+                case 4:
+                    gro5.BringToFront();
+                    break;
+                case 5:
+                    gro6.BringToFront();
+                    break;
             }
         }
 
-       
+        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (list.SelectedItems.Count > 0)
+            { 
+                foreach(ListViewItem curr in list.SelectedItems)
+                {
+                    list.Items.Remove(curr);
+                }
+            }
+        }
+
+        private void addToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListViewItem item = new ListViewItem();
+            item.Text = "$nick!$ident@$host.*$name";
+            item.SubItems.Add("true");
+            item.SubItems.Add("true");
+            list.Items.Add(item);
+        }
+
+        private void enableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in list.SelectedItems)
+            {
+                curr.SubItems[1].Text = "true";
+            }
+        }
+
+        private void simpleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in list.SelectedItems)
+            {
+                if (curr.SubItems[2].Text == "false")
+                {
+                    curr.SubItems[2].Text = "true";
+                }
+                else
+                {
+                    curr.SubItems[2].Text = "false";
+                }
+            }
+            
+        }
+
+        private void disableToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in list.SelectedItems)
+            {
+                curr.SubItems[1].Text = "false";
+            }
+        }
     }
 }

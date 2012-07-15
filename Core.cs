@@ -412,9 +412,9 @@ namespace Client
             return true;
         }
 
-        private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf)
+        private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf, string nn = "confname")
         {
-            key = _c.CreateAttribute("confname");
+            key = _c.CreateAttribute(nn);
             xmlnode = _c.CreateElement("data");
             key.Value = config_key;
             xmlnode.Attributes.Append(key);
@@ -429,7 +429,6 @@ namespace Client
             System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
             System.Xml.XmlNode curr = null;
             XmlAttribute confname = null;
-            config.AppendChild(xmlnode);
             makenode("network.ident", Configuration.ident, curr, confname, config, xmlnode);
             makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
             makenode("network.nick", Configuration.nick, curr, confname, config, xmlnode);
@@ -462,6 +461,26 @@ namespace Client
             makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
             makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
 
+            
+
+            lock (Configuration.HighlighterList)
+            {  
+                foreach(Network.Highlighter high in Configuration.HighlighterList)
+                {
+                    curr = config.CreateElement("list");
+                    XmlAttribute highlightenabled = config.CreateAttribute("enabled");
+                    XmlAttribute highlighttext = config.CreateAttribute("text");
+                    XmlAttribute highlightsimple = config.CreateAttribute("simple");
+                    highlightenabled.Value = "true";
+                    highlightsimple.Value = high.simple.ToString();
+                    highlighttext.Value = high.text;
+                    curr.Attributes.Append(highlightsimple);
+                    curr.Attributes.Append(highlighttext);
+                    curr.Attributes.Append(highlightenabled);
+                    xmlnode.AppendChild(curr);
+                }
+            }
+            config.AppendChild(xmlnode);
             if (Backup(ConfigFile))
             {
                 config.Save(ConfigFile);
@@ -584,7 +603,8 @@ namespace Client
                                     case "updater.check":
                                         Configuration.CheckUpdate = bool.Parse(curr.InnerText);
                                         break;
-
+                                    case "list":
+                                        break;
 
                                 }
                             }

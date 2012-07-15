@@ -97,8 +97,8 @@ namespace Client
                         text = Client.Properties.Resources.en_english;
                         break;
                     case "cs":
-                    //text = MockingJay.Properties.Resources.cs_czech;
-                    //break;
+                        text = Client.Properties.Resources.cs_czech;
+                        break;
                     case "zh":
                         //text = wmib.Properties.Resources.zh_chinese;
                         text = "";

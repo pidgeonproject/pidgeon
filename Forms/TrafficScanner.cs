@@ -11,6 +11,7 @@ namespace Client
 {
     public partial class TrafficScanner : Form
     {
+        bool modified = true;
         List<string> text = new List<string>();
         public TrafficScanner()
         {
@@ -25,6 +26,7 @@ namespace Client
 
         public bool insert(string server, string data)
         {
+            modified = true;
             if (!Configuration.NetworkSniff)
             {
                 return true;
@@ -35,8 +37,9 @@ namespace Client
 
         private void refresh_Tick(object sender, EventArgs e)
         {
-            if (Visible)
+            if (Visible && modified)
             {
+                modified = false;
                 textBox1.Lines = text.ToArray<string>();
                 textBox1.SelectionStart = textBox1.Text.Length;
                 textBox1.ScrollToCaret();

@@ -47,6 +47,19 @@ namespace Client
         public Protocol _protocol;
         public ProtocolSv ParentSv = null;
 
+        public class Highlighter
+        {
+            public bool simple;
+            public string text;
+            public bool enabled;
+            public System.Text.RegularExpressions.Regex regex;
+            public Highlighter()
+            {
+                simple = true;
+                enabled = false;
+                text = Configuration.user;
+            }
+        }
 
         public Channel getChannel(string name)
         {

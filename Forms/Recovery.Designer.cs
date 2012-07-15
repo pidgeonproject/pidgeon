@@ -111,6 +111,7 @@ namespace Client
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(766, 386);
+            this.ControlBox = false;
             this.Controls.Add(this.@__LP);
             this.Name = "Recovery";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;

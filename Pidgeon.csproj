@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Pidgeon</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -238,6 +238,12 @@
   <ItemGroup>
     <Content Include="Languages\cs_czech.txt" />
     <Content Include="Languages\en_english.txt" />
+    <None Include="Resources\Image2.png" />
+    <None Include="Resources\Image2.bmp" />
+    <None Include="Resources\50px-IRC_icon.png" />
+    <None Include="Resources\Image1.bmp" />
+    <None Include="Resources\irc_channel.ico" />
+    <None Include="Resources\regular.bmp" />
     <None Include="Resources\Image1.jpg" />
   </ItemGroup>
   <ItemGroup>
@@ -266,6 +272,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Service References\" />
     <Folder Include="Stage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

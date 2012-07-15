@@ -44,15 +44,12 @@ namespace Client
             InitializeComponent();
         }
 
-        public void resize(object sender, EventArgs e)
-        {
-            richTextBox1.Height = this.Height - 2;
-            richTextBox1.Width = this.Width - 2;
-        }
-
-
         private void _Enter(object sender, KeyEventArgs e)
         {
+            if (e.Shift)
+            {
+                return;
+            }
             if (!(e.KeyCode == Keys.Tab))
             { restore = false; }
             switch (e.KeyCode)
@@ -354,9 +351,10 @@ namespace Client
                         input.AddRange(richTextBox1.Text.Split('\n'));
                         foreach (var line in input)
                         {
+                            Parser.parse(line);
                             if (line != "")
                             {
-                                Parser.parse(line);
+                                history.Add(line);
                             }
                         }
                         original = "";

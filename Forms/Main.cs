@@ -241,8 +241,5 @@ namespace Client
         {
             Core.trafficscanner.Show();
         }
-
-
-
     }
 }

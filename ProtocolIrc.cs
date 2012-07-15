@@ -238,6 +238,9 @@ namespace Client
                             string[] code = data[1].Split(' ');
                             switch (command)
                             {
+                                case "002":
+                                case "003":
+                                case "004":
                                 case "313":
                                 //whois
                                 case "318":
@@ -310,19 +313,21 @@ namespace Client
                                         string server = code[6];
                                         if (channel != null)
                                         {
-                                            if (!channel.containUser(nick))
+                                            if (updated_text)
                                             {
-                                                channel.UserList.Add(new User(nick, host, _server, ident));
-                                                //channel.redrawUsers();
-                                                break;
-                                            }
-                                            foreach (User u in channel.UserList)
-                                            {
-                                                if (u.Nick == nick)
+                                                if (!channel.containUser(nick))
                                                 {
-                                                    u.Ident = ident;
-                                                    u.Host = host;
+                                                    channel.UserList.Add(new User(nick, host, _server, ident));
                                                     break;
+                                                }
+                                                foreach (User u in channel.UserList)
+                                                {
+                                                    if (u.Nick == nick)
+                                                    {
+                                                        u.Ident = ident;
+                                                        u.Host = host;
+                                                        break;
+                                                    }
                                                 }
                                             }
                                             if (Configuration.HidingParsed && channel.parsing_who)
@@ -589,7 +594,10 @@ namespace Client
                                 if (message.StartsWith(protocol.delimiter.ToString()))
                                 {
                                     uc = message.Substring(1);
-                                    uc = uc.Substring(0, uc.IndexOf(protocol.delimiter.ToString()));
+                                    if (uc.Contains(protocol.delimiter))
+                                    {
+                                        uc = uc.Substring(0, uc.IndexOf(protocol.delimiter.ToString()));
+                                    }
                                     uc = uc.ToUpper();
                                     switch (uc)
                                     {

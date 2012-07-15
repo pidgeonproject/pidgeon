@@ -71,6 +71,7 @@ namespace Client
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
+            Redraw();
         }
 
         public void create()

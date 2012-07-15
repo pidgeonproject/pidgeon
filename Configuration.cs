@@ -132,6 +132,8 @@ namespace Client
         public static string LastHost = "";
         public static string LastPort = "";
 
+        public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
+
         /// <summary>
         /// backlog size
         /// </summary>

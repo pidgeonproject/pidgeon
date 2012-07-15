@@ -94,13 +94,21 @@ namespace Client
             // 
             // toolStripStatusNetwork
             // 
+            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusNetwork.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
-            this.toolStripStatusNetwork.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusNetwork.Size = new System.Drawing.Size(4, 17);
             // 
             // toolStripStatusChannel
             // 
+            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusChannel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusChannel.Name = "toolStripStatusChannel";
-            this.toolStripStatusChannel.Size = new System.Drawing.Size(0, 17);
+            this.toolStripStatusChannel.Size = new System.Drawing.Size(4, 17);
             // 
             // toolStripCo
             // 
@@ -110,8 +118,13 @@ namespace Client
             // toolStripInfo
             // 
             this.toolStripInfo.AutoSize = false;
+            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripInfo.Name = "toolStripInfo";
-            this.toolStripInfo.Size = new System.Drawing.Size(600, 17);
+            this.toolStripInfo.Size = new System.Drawing.Size(820, 17);
+            this.toolStripInfo.Spring = true;
             this.toolStripInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // menuStrip1
@@ -258,7 +271,6 @@ namespace Client
 
         #endregion
 
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripInfo;
         private System.Windows.Forms.ToolStripStatusLabel toolStripCo;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -279,5 +291,6 @@ namespace Client
         private System.Windows.Forms.Timer updater;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         public System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
+        public System.Windows.Forms.StatusStrip statusStrip1;
     }
 }
