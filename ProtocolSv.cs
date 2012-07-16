@@ -298,8 +298,10 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
+                                ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date, false);
+                                break;
                             }
-                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date, false);
+                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date, true);
                             break;
                         case "SNICK":
                             Network sv = retrieveNetwork(curr.Attributes[0].Value);

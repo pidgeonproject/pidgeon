@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -119,7 +118,7 @@ namespace Client
                     if (Core.network != null && Core.network.Connected)
                     {
                         commands.AddRange( new List<string> { "join", "part", "squit", "quit", "query", "me", "msg", "mode", "oper", "who",
-                                                        "whois", "whowas", "help", "wall", "list", "kill", "kline", "zline", "away", "gline",
+                                                        "whois", "whowas", "help", "wall", "list", "topic", "kill", "kline", "zline", "away", "gline",
                                                         "stats", "nickserv", "chanserv" });
                     }
 

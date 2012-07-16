@@ -18,8 +18,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Linq;
 using System.Net;
 
 namespace Client
@@ -311,13 +311,15 @@ namespace Client
                                         string host = code[5];
                                         string nick = code[7];
                                         string server = code[6];
+                                        string mode = code[8].Substring(1);
                                         if (channel != null)
                                         {
                                             if (updated_text)
                                             {
                                                 if (!channel.containUser(nick))
                                                 {
-                                                    channel.UserList.Add(new User(nick, host, _server, ident));
+                                                    User _user = new User(mode + nick, host, _server, ident);
+                                                    channel.UserList.Add(_user);
                                                     break;
                                                 }
                                                 foreach (User u in channel.UserList)
@@ -342,6 +344,10 @@ namespace Client
                                     if (code.Length > 3)
                                     {
                                         string name = code[4];
+                                        if (!updated_text)
+                                        {
+                                            return;
+                                        }
                                         Channel channel = _server.getChannel(name);
                                         if (channel != null)
                                         {

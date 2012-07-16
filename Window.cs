@@ -21,8 +21,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Client
@@ -457,6 +457,19 @@ namespace Client
                             _Network._protocol.ShowChat(nickname);
                         }
                     }
+                }
+            }
+        }
+
+        private void synchroToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_Network.Connected)
+            { 
+                Channel channel = _Network.getChannel(name);
+                if (channel != null)
+                {
+                    channel.UserList.Clear();
+                    _Network._protocol.Transfer("WHO " + channel.Name);
                 }
             }
         }
