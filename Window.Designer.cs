@@ -40,7 +40,6 @@ namespace Client
             this.components = new System.ComponentModel.Container();
             this.xContainer1 = new System.Windows.Forms.SplitContainer();
             this.xContainer4 = new System.Windows.Forms.SplitContainer();
-            this.scrollback = new Client.Scrollback();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.listViewd = new System.Windows.Forms.ListView();
             this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);

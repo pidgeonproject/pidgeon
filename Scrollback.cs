@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Threading;
 using System.Text;
 using System.IO;
@@ -354,6 +353,14 @@ namespace Client
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Reload(true);
+        }
+
+        private void retrieveTopicToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner.isChannel)
+            {
+                owner._Protocol.Transfer("TOPIC " + owner.name);
+            }
         }
 
     }

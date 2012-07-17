@@ -46,13 +46,14 @@ namespace Client
 
         public class Datagram
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="Name">Name of a datagram</param>
+            /// <param name="Text">Value</param>
             public Datagram(string Name, string Text = "")
             {
                 _Datagram = Name;
-                if (Text != "")
-                {
-                    _InnerText = System.Web.HttpUtility.HtmlEncode(Text);
-                }
                 _InnerText = Text;
             }
 

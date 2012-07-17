@@ -277,8 +277,13 @@ namespace Client
                                         Channel channel = _server.getChannel(code[3]);
                                         if (channel != null)
                                         {
-                                            channel.parsing_who = false;
                                             channel.redrawUsers();
+                                            if (Configuration.HidingParsed && channel.parsing_who)
+                                            {
+                                                channel.parsing_who = false;
+                                                return;
+                                            }
+                                            channel.parsing_who = false;
                                         }
                                     }
                                     break;
@@ -608,17 +613,17 @@ namespace Client
                                     switch (uc)
                                     {
                                         case "VERSION":
-                                            protocol.Transfer("NOTICE " + chan + " :" + protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/", Configuration.Priority.Low);
+                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/", Configuration.Priority.Low);
                                             break;
                                         case "TIME":
-                                            protocol.Transfer("NOTICE " + chan + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(), Configuration.Priority.Low);
+                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(), Configuration.Priority.Low);
                                             break;
                                         case "PING":
                                             break;
                                     }
                                     if (Configuration.DisplayCtcp)
                                     {
-                                        protocol.windows[system].scrollback.InsertText("CTCP from (" + chan + ") " + message, Scrollback.MessageStyle.Message, true, date);
+                                        protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message, Scrollback.MessageStyle.Message, true, date);
                                         return;
                                     }
                                     return;

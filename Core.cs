@@ -22,7 +22,6 @@ using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 
 namespace Client
@@ -700,6 +699,7 @@ namespace Client
                     }
                     catch (Exception)
                     { }
+                    bool terminated = false;
                     System.Threading.Thread.Sleep(200);
                     try
                     {
@@ -710,10 +710,23 @@ namespace Client
                                 th.Abort();
                             }
                         }
+                        Thread.Sleep(800);
+                        terminated = true;
+                        foreach (Thread th in SystemThreads)
+                        {
+                            if (th.ThreadState == System.Threading.ThreadState.Running)
+                            {
+                                terminated = false;
+                            }
+                        }
                     }
                     catch (Exception)
                     { }
                     System.Windows.Forms.Application.Exit();
+                    if (terminated)
+                    {
+                        return true;
+                    }
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                 }
             }

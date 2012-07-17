@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Client
@@ -112,7 +111,7 @@ namespace Client
                 ident = Configuration.ident;
                 if (protocol.type == 3)
                 {
-                    _protocol.CreateChat("!" + server, true, this);
+                    _protocol.CreateChat("!" + server, false, this);
                     system = _protocol.windows["!" + server];
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }

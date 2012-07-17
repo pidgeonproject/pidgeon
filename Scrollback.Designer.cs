@@ -45,6 +45,7 @@ namespace Client
             this.Data = new System.Windows.Forms.WebBrowser();
             this.pwx2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.retrieveTopicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.pwx1.SuspendLayout();
             this.pwx2.SuspendLayout();
@@ -57,28 +58,29 @@ namespace Client
             this.scrollToolStripMenuItem,
             this.closeToolStripMenuItem,
             this.channelToolStripMenuItem,
-            this.refreshToolStripMenuItem});
+            this.refreshToolStripMenuItem,
+            this.retrieveTopicToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(119, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 158);
             // 
             // mrhToolStripMenuItem
             // 
             this.mrhToolStripMenuItem.Name = "mrhToolStripMenuItem";
-            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.mrhToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.mrhToolStripMenuItem.Text = "Clean";
             this.mrhToolStripMenuItem.Click += new System.EventHandler(this.mrhToolStripMenuItem_Click);
             // 
             // scrollToolStripMenuItem
             // 
             this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
-            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.scrollToolStripMenuItem.Text = "Scroll";
             this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.closeToolStripMenuItem.Text = "Close";
             this.closeToolStripMenuItem.Visible = false;
             this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
@@ -86,14 +88,14 @@ namespace Client
             // channelToolStripMenuItem
             // 
             this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
-            this.channelToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.channelToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.channelToolStripMenuItem.Text = "Channel";
             this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
             // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(118, 22);
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
@@ -141,6 +143,13 @@ namespace Client
             this.webBrowser1.Size = new System.Drawing.Size(345, 262);
             this.webBrowser1.TabIndex = 3;
             // 
+            // retrieveTopicToolStripMenuItem
+            // 
+            this.retrieveTopicToolStripMenuItem.Name = "retrieveTopicToolStripMenuItem";
+            this.retrieveTopicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.retrieveTopicToolStripMenuItem.Text = "Retrieve topic";
+            this.retrieveTopicToolStripMenuItem.Click += new System.EventHandler(this.retrieveTopicToolStripMenuItem_Click);
+            // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -173,6 +182,7 @@ namespace Client
         private System.Windows.Forms.WebBrowser Data;
         private System.Windows.Forms.Panel pwx2;
         private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.ToolStripMenuItem retrieveTopicToolStripMenuItem;
 
     }
 }
