@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Client
@@ -30,6 +29,9 @@ namespace Client
         /// </summary>
         public static int Window_Left = 0;
 
+        /// <summary>
+        /// Prefix for all commands
+        /// </summary>
         public static string CommandPrefix = "/";
 
         /// <summary>
@@ -59,12 +61,23 @@ namespace Client
         /// </summary>
         public static string format_nick = "<$1> ";
 
+        /// <summary>
+        /// If true a client will ask before executing generated kick bans
+        /// </summary>
+        public static bool ConfirmAll = true;
+
+        /// <summary>
+        /// If timestamp is displayed
+        /// </summary>
         public static bool chat_timestamp = true;
         /// <summary>
         /// Timestamp mask
         /// </summary>
         public static string timestamp_mask = "HH:mm:ss";
 
+        /// <summary>
+        /// Default kick
+        /// </summary>
         public static string DefaultReason = "Removed from the channel";
 
         public static bool aggressive_mode = true;
@@ -98,8 +111,14 @@ namespace Client
         /// </summary>
         public static bool DisplayCtcp = true;
 
+        /// <summary>
+        /// Network Scan
+        /// </summary>
         public static bool NetworkSniff = true;
 
+        /// <summary>
+        /// If updates are allowed
+        /// </summary>
         public static bool CheckUpdate = true;
 
         /// <summary>
@@ -107,16 +126,35 @@ namespace Client
         /// </summary>
         public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode( System.Windows.Forms.Application.ProductVersion) ;
 
+        /// <summary>
+        /// If flood protection is enabled
+        /// </summary>
         public static bool flood_prot = false;
+        /// <summary>
+        /// If ctcp protection is enabled
+        /// </summary>
         public static bool ctcp_prot = false;
+        /// <summary>
+        /// If notice protection is enabled
+        /// </summary>
         public static bool notice_prot = false;
 
-        public static bool parse_hide = false;
-
+        /// <summary>
+        /// Reload time for scrollback - this is deprecated
+        /// </summary>
         public static int reload_time = 100;
+        /// <summary>
+        /// Time of message queue
+        /// </summary>
         public static int mq = 1200;
         
+        /// <summary>
+        /// Directory path
+        /// </summary>
         public static string logs_dir = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "log";
+        /// <summary>
+        /// Name
+        /// </summary>
         public static string logs_name = "$1_yyMMdd";
 
         public static bool slapsdef = true;
@@ -124,14 +162,35 @@ namespace Client
 
         public static bool Retrieve_Sv = true;
 
+        /// <summary>
+        /// Enable XML logs
+        /// </summary>
         public static bool logs_xml = true;
+        /// <summary>
+        /// Enable TXT logs
+        /// </summary>
         public static bool logs_txt = true;
+        /// <summary>
+        /// Enable html logs
+        /// </summary>
         public static bool logs_html = true;
 
+        /// <summary>
+        /// Last used nick
+        /// </summary>
         public static string LastNick = "";
+        /// <summary>
+        /// Last used host
+        /// </summary>
         public static string LastHost = "";
+        /// <summary>
+        /// Last used port
+        /// </summary>
         public static string LastPort = "";
 
+        /// <summary>
+        /// Highlighter list
+        /// </summary>
         public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
 
         /// <summary>
@@ -139,11 +198,23 @@ namespace Client
         /// </summary>
         public static int Depth = 20000;
 
+        /// <summary>
+        /// Position of textbox scroll
+        /// </summary>
         public static int x1 = 0;
+        /// <summary>
+        /// Position of sidebar scroll
+        /// </summary>
         public static int x4 = 0;
 
+        /// <summary>
+        /// If values that are being parsed are hidden
+        /// </summary>
         public static bool HidingParsed = true;
 
+        /// <summary>
+        /// Position of window
+        /// </summary>
         public static int window_size = 0;
 
         public enum TypeOfBan

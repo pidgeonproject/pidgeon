@@ -62,6 +62,10 @@ namespace Client
             this.shutDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.taskbarBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.attachToMicroChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.detachFromMicroChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,6 +74,7 @@ namespace Client
             this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -94,18 +99,18 @@ namespace Client
             // 
             // toolStripStatusNetwork
             // 
-            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusNetwork.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
             this.toolStripStatusNetwork.Size = new System.Drawing.Size(4, 17);
             // 
             // toolStripStatusChannel
             // 
-            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusChannel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusChannel.Name = "toolStripStatusChannel";
             this.toolStripStatusChannel.Size = new System.Drawing.Size(4, 17);
@@ -118,12 +123,12 @@ namespace Client
             // toolStripInfo
             // 
             this.toolStripInfo.AutoSize = false;
-            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripInfo.Name = "toolStripInfo";
-            this.toolStripInfo.Size = new System.Drawing.Size(820, 17);
+            this.toolStripInfo.Size = new System.Drawing.Size(851, 17);
             this.toolStripInfo.Spring = true;
             this.toolStripInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -188,7 +193,11 @@ namespace Client
             // toolsToolStripMenuItem
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem3});
+            this.toolStripMenuItem3,
+            this.taskbarBoxToolStripMenuItem,
+            this.toolStripMenuItem4,
+            this.attachToMicroChatToolStripMenuItem,
+            this.detachFromMicroChatToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -196,9 +205,41 @@ namespace Client
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(146, 22);
+            this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.P)));
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem3.Text = "Packet viewer";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // taskbarBoxToolStripMenuItem
+            // 
+            this.taskbarBoxToolStripMenuItem.Name = "taskbarBoxToolStripMenuItem";
+            this.taskbarBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.M)));
+            this.taskbarBoxToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.taskbarBoxToolStripMenuItem.Text = "Small Chat";
+            this.taskbarBoxToolStripMenuItem.Click += new System.EventHandler(this.taskbarBoxToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(235, 6);
+            // 
+            // attachToMicroChatToolStripMenuItem
+            // 
+            this.attachToMicroChatToolStripMenuItem.Name = "attachToMicroChatToolStripMenuItem";
+            this.attachToMicroChatToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
+            this.attachToMicroChatToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.attachToMicroChatToolStripMenuItem.Text = "Attach to micro chat";
+            this.attachToMicroChatToolStripMenuItem.Click += new System.EventHandler(this.attachToMicroChatToolStripMenuItem_Click);
+            // 
+            // detachFromMicroChatToolStripMenuItem
+            // 
+            this.detachFromMicroChatToolStripMenuItem.Name = "detachFromMicroChatToolStripMenuItem";
+            this.detachFromMicroChatToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+            this.detachFromMicroChatToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.detachFromMicroChatToolStripMenuItem.Text = "Detach from micro chat";
+            this.detachFromMicroChatToolStripMenuItem.Click += new System.EventHandler(this.detachFromMicroChatToolStripMenuItem_Click);
             // 
             // userToolStripMenuItem
             // 
@@ -220,14 +261,15 @@ namespace Client
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.contentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -263,6 +305,7 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -292,5 +335,9 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
         public System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
         public System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripMenuItem taskbarBoxToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem attachToMicroChatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem detachFromMicroChatToolStripMenuItem;
     }
 }

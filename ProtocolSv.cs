@@ -553,12 +553,14 @@ namespace Client
 
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.nickname + " " + text, Scrollback.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
+            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text), Scrollback.MessageStyle.Message);     
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }

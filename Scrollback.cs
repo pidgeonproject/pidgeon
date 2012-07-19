@@ -83,7 +83,7 @@ namespace Client
             //this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
             //this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
-            
+
             refresh.Enabled = true;
             Scrollback_Load(null, null);
             Data.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"></body></html>";
@@ -126,7 +126,13 @@ namespace Client
 
         public bool InsertText(string text, MessageStyle input_style, bool lg = true, long dt = 0)
         {
-            if (owner != Core._Main.Chat && owner.ln != null)
+            if (owner != null && owner.MicroBox)
+            {
+                MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, input_style, false, dt);
+            }
+
+
+            if (owner != null && owner != Core._Main.Chat && owner.ln != null)
             {
                 switch (input_style)
                 {
@@ -150,7 +156,7 @@ namespace Client
                             owner.ln.ForeColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
-                    
+
                 }
             }
             DateTime time = DateTime.Now;
@@ -158,7 +164,7 @@ namespace Client
             {
                 time = DateTime.FromBinary(dt);
             }
-            lock(Line)
+            lock (Line)
             {
                 Line.Add(new ContentLine(input_style, text, time));
                 if (dt != 0)
@@ -197,7 +203,7 @@ namespace Client
                     {
                         stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
                     }
-                    System.IO.File.AppendAllText( _getFileName() + ".html", "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp  +  System.Web.HttpUtility.HtmlEncode(text) + "</font><br>\n" );
+                    System.IO.File.AppendAllText(_getFileName() + ".html", "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + System.Web.HttpUtility.HtmlEncode(text) + "</font><br>\n");
                 }
                 if (Configuration.logs_xml)
                 {
@@ -223,7 +229,7 @@ namespace Client
 
         public void Reload(bool fast = false)
         {
-            if (owner.Visible == true)
+            if (owner == null || (owner != null && owner.Visible == true))
             {
                 Modified = false;
                 string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
@@ -281,12 +287,14 @@ namespace Client
 
         private void refresh_Tick(object sender, EventArgs e)
         {
+            if (!scrollToolStripMenuItem.Checked)
+            { return; }
             if (Modified)
             {
                 Reload();
             }
             Recreate();
-            
+
         }
 
         private void Recreate(bool enforce = false)
@@ -332,12 +340,18 @@ namespace Client
 
         private void mrhToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (MessageBox.Show("Do you really want to clear this window", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                lock (Line)
+                {
+                    Line.Clear();
+                }
+            }
         }
 
         private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)

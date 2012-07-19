@@ -71,7 +71,10 @@ namespace Client
             {
                 ThUp = new Thread(Updater.Run);
                 ThUp.Start();
+                SystemThreads.Add(ThUp);
                 ConfigurationLoad();
+                MicroChat.mc = new MicroChat();
+                ScriptingCore.Load();
                 return true;
             }
             Updater _finalisingupdater = new Updater();
@@ -239,7 +242,6 @@ namespace Client
                                 Window window = curr.retrieveWindow();
                                 if (window != null)
                                 {
-                                    window.scrollback.InsertText(">>>>>>" + network.nickname + " " + message, Scrollback.MessageStyle.Action);
                                     network._protocol.Message2(message, curr.Name);
                                 }
                             }
@@ -393,6 +395,11 @@ namespace Client
             {
                 return false;
             }
+            string backup = System.IO.Path.GetRandomFileName();
+            if (File.Exists(file))
+            {
+                File.Copy(file, backup);
+            }
             File.Copy(file + "~", file, true);
             return true;
         }
@@ -425,6 +432,7 @@ namespace Client
         public static bool ConfigSave()
         {
             System.Xml.XmlDocument config = new System.Xml.XmlDocument();
+            XmlComment notice = config.CreateComment("This is a configuration file of pidgeon client, see http://pidgeonclient.org/wiki/Help:Configuration");
             System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
             System.Xml.XmlNode curr = null;
             XmlAttribute confname = null;
@@ -459,6 +467,7 @@ namespace Client
             makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
             makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
             makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
+            makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
 
             
 
@@ -495,6 +504,7 @@ namespace Client
         public static bool ConfigurationLoad()
         {
             // Check if config file is present
+            Restore(ConfigFile);
             if (File.Exists(ConfigFile))
             {
                 try
@@ -723,6 +733,7 @@ namespace Client
                     catch (Exception)
                     { }
                     System.Windows.Forms.Application.Exit();
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                     if (terminated)
                     {
                         return true;

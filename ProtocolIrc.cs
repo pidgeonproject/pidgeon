@@ -316,7 +316,15 @@ namespace Client
                                         string host = code[5];
                                         string nick = code[7];
                                         string server = code[6];
-                                        string mode = code[8].Substring(1);
+                                        string mode = "";
+                                        if (code[8].Length > 0)
+                                        {
+                                            mode = code[8][code[8].Length - 1].ToString();
+                                            if (mode == "H")
+                                            {
+                                                mode = "";
+                                            }
+                                        }
                                         if (channel != null)
                                         {
                                             if (updated_text)
@@ -865,7 +873,7 @@ namespace Client
                                     if (target != null)
                                     {
                                         Window x = item.retrieveWindow();
-                                        if (x != null)
+                                        if (x != null && x.scrollback != null)
                                         {
                                             x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                                 new List<string> { source, _value }), Scrollback.MessageStyle.Join,
@@ -917,13 +925,11 @@ namespace Client
                                                     channel.UserList.Remove(delete);
                                                 }
                                             }
-
                                      }
                                         channel.redrawUsers();
                                     }
                                     return;
                                 }
-                            //continue;
                         }
 
                         if (command == "JOIN")
@@ -994,6 +1000,8 @@ namespace Client
                 _writer.WriteLine("NICK " + _server.nickname);
                 _writer.Flush();
 
+                Core._Main.Status("");
+
                 keep = new System.Threading.Thread(_Ping);
                 keep.Name = "pinger thread";
                 keep.Start();
@@ -1030,6 +1038,7 @@ namespace Client
             catch (System.IO.IOException)
             {
                 windows["!system"].scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
+                Core._Main.Status("Disconnected from server " + Server);
                 Exit();
             }
             catch (Exception ex)
@@ -1077,6 +1086,7 @@ namespace Client
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
+            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message); 
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
@@ -1090,6 +1100,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _server.nickname + " " + text, Scrollback.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }

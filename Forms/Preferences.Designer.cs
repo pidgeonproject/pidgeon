@@ -49,12 +49,6 @@ namespace Client
             this.components = new System.ComponentModel.Container();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.gro2 = new System.Windows.Forms.GroupBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.gro7 = new System.Windows.Forms.GroupBox();
-            this.gro6 = new System.Windows.Forms.GroupBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.gro5 = new System.Windows.Forms.GroupBox();
             this.gro1 = new System.Windows.Forms.GroupBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.lname = new System.Windows.Forms.Label();
@@ -77,29 +71,36 @@ namespace Client
             this.label2 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.fl = new System.Windows.Forms.FlowLayoutPanel();
-            this.bSave = new System.Windows.Forms.Button();
-            this.bCancel = new System.Windows.Forms.Button();
+            this.gro2 = new System.Windows.Forms.GroupBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.gro7 = new System.Windows.Forms.GroupBox();
+            this.gro6 = new System.Windows.Forms.GroupBox();
             this.list = new System.Windows.Forms.ListView();
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simpleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.enableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disableToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label5 = new System.Windows.Forms.Label();
+            this.gro5 = new System.Windows.Forms.GroupBox();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.fl = new System.Windows.Forms.FlowLayoutPanel();
+            this.bSave = new System.Windows.Forms.Button();
+            this.bCancel = new System.Windows.Forms.Button();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.gro2.SuspendLayout();
-            this.gro6.SuspendLayout();
             this.gro1.SuspendLayout();
             this.gro4.SuspendLayout();
             this.gro3.SuspendLayout();
-            this.fl.SuspendLayout();
+            this.gro2.SuspendLayout();
+            this.gro6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.fl.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -134,69 +135,6 @@ namespace Client
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(461, 380);
             this.panel1.TabIndex = 6;
-            // 
-            // gro2
-            // 
-            this.gro2.Controls.Add(this.checkBox4);
-            this.gro2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro2.Location = new System.Drawing.Point(0, 0);
-            this.gro2.Name = "gro2";
-            this.gro2.Size = new System.Drawing.Size(461, 380);
-            this.gro2.TabIndex = 1;
-            this.gro2.TabStop = false;
-            this.gro2.Text = "System";
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(17, 30);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(91, 17);
-            this.checkBox4.TabIndex = 0;
-            this.checkBox4.Text = "Display CTCP";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // gro7
-            // 
-            this.gro7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro7.Location = new System.Drawing.Point(0, 0);
-            this.gro7.Name = "gro7";
-            this.gro7.Size = new System.Drawing.Size(461, 380);
-            this.gro7.TabIndex = 6;
-            this.gro7.TabStop = false;
-            this.gro7.Text = "Ignore";
-            // 
-            // gro6
-            // 
-            this.gro6.Controls.Add(this.list);
-            this.gro6.Controls.Add(this.label5);
-            this.gro6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro6.Location = new System.Drawing.Point(0, 0);
-            this.gro6.Name = "gro6";
-            this.gro6.Size = new System.Drawing.Size(461, 380);
-            this.gro6.TabIndex = 5;
-            this.gro6.TabStop = false;
-            this.gro6.Text = "Highlighting";
-            // 
-            // label5
-            // 
-            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label5.Location = new System.Drawing.Point(3, 16);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(455, 33);
-            this.label5.TabIndex = 2;
-            this.label5.Text = "Hint: $channel is a current channel, $nick is current nick, $name is real name, $" +
-    "ident is ident, $host is your host";
-            // 
-            // gro5
-            // 
-            this.gro5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro5.Location = new System.Drawing.Point(0, 0);
-            this.gro5.Name = "gro5";
-            this.gro5.Size = new System.Drawing.Size(461, 380);
-            this.gro5.TabIndex = 4;
-            this.gro5.TabStop = false;
-            this.gro5.Text = "Network  ";
             // 
             // gro1
             // 
@@ -412,47 +350,49 @@ namespace Client
             this.label1.TabIndex = 0;
             this.label1.Text = "File name";
             // 
-            // listView1
+            // gro2
             // 
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(3, 3);
-            this.listView1.MultiSelect = false;
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(194, 380);
-            this.listView1.TabIndex = 2;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.List;
-            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            this.gro2.Controls.Add(this.checkBox8);
+            this.gro2.Controls.Add(this.checkBox4);
+            this.gro2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro2.Location = new System.Drawing.Point(0, 0);
+            this.gro2.Name = "gro2";
+            this.gro2.Size = new System.Drawing.Size(461, 380);
+            this.gro2.TabIndex = 1;
+            this.gro2.TabStop = false;
+            this.gro2.Text = "System";
             // 
-            // fl
+            // checkBox4
             // 
-            this.fl.Controls.Add(this.bSave);
-            this.fl.Controls.Add(this.bCancel);
-            this.fl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fl.Location = new System.Drawing.Point(203, 389);
-            this.fl.Name = "fl";
-            this.fl.Size = new System.Drawing.Size(461, 50);
-            this.fl.TabIndex = 5;
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(17, 30);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(91, 17);
+            this.checkBox4.TabIndex = 0;
+            this.checkBox4.Text = "Display CTCP";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
-            // bSave
+            // gro7
             // 
-            this.bSave.Location = new System.Drawing.Point(3, 3);
-            this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(137, 29);
-            this.bSave.TabIndex = 4;
-            this.bSave.Text = "button1";
-            this.bSave.UseVisualStyleBackColor = true;
-            this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            this.gro7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro7.Location = new System.Drawing.Point(0, 0);
+            this.gro7.Name = "gro7";
+            this.gro7.Size = new System.Drawing.Size(461, 380);
+            this.gro7.TabIndex = 6;
+            this.gro7.TabStop = false;
+            this.gro7.Text = "Ignore";
             // 
-            // bCancel
+            // gro6
             // 
-            this.bCancel.Location = new System.Drawing.Point(146, 3);
-            this.bCancel.Name = "bCancel";
-            this.bCancel.Size = new System.Drawing.Size(114, 29);
-            this.bCancel.TabIndex = 0;
-            this.bCancel.Text = "button1";
-            this.bCancel.UseVisualStyleBackColor = true;
-            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
+            this.gro6.Controls.Add(this.list);
+            this.gro6.Controls.Add(this.label5);
+            this.gro6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro6.Location = new System.Drawing.Point(0, 0);
+            this.gro6.Name = "gro6";
+            this.gro6.Size = new System.Drawing.Size(461, 380);
+            this.gro6.TabIndex = 5;
+            this.gro6.TabStop = false;
+            this.gro6.Text = "Highlighting";
             // 
             // list
             // 
@@ -471,6 +411,11 @@ namespace Client
             this.list.UseCompatibleStateImageBehavior = false;
             this.list.View = System.Windows.Forms.View.Details;
             // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "text";
+            this.columnHeader3.Width = 326;
+            // 
             // columnHeader1
             // 
             this.columnHeader1.Text = "enabled";
@@ -480,11 +425,6 @@ namespace Client
             // 
             this.columnHeader2.Text = "simple";
             this.columnHeader2.Width = 55;
-            // 
-            // columnHeader3
-            // 
-            this.columnHeader3.Text = "text";
-            this.columnHeader3.Width = 326;
             // 
             // contextMenuStrip1
             // 
@@ -532,6 +472,78 @@ namespace Client
             this.disableToolStripMenuItem.Text = "Disable";
             this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
             // 
+            // label5
+            // 
+            this.label5.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label5.Location = new System.Drawing.Point(3, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(455, 33);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "Hint: $channel is a current channel, $nick is current nick, $name is real name, $" +
+                "ident is ident, $host is your host";
+            // 
+            // gro5
+            // 
+            this.gro5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro5.Location = new System.Drawing.Point(0, 0);
+            this.gro5.Name = "gro5";
+            this.gro5.Size = new System.Drawing.Size(461, 380);
+            this.gro5.TabIndex = 4;
+            this.gro5.TabStop = false;
+            this.gro5.Text = "Network  ";
+            // 
+            // listView1
+            // 
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.Location = new System.Drawing.Point(3, 3);
+            this.listView1.MultiSelect = false;
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(194, 380);
+            this.listView1.TabIndex = 2;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.List;
+            this.listView1.SelectedIndexChanged += new System.EventHandler(this.listView1_SelectedIndexChanged);
+            // 
+            // fl
+            // 
+            this.fl.Controls.Add(this.bSave);
+            this.fl.Controls.Add(this.bCancel);
+            this.fl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.fl.Location = new System.Drawing.Point(203, 389);
+            this.fl.Name = "fl";
+            this.fl.Size = new System.Drawing.Size(461, 50);
+            this.fl.TabIndex = 5;
+            // 
+            // bSave
+            // 
+            this.bSave.Location = new System.Drawing.Point(3, 3);
+            this.bSave.Name = "bSave";
+            this.bSave.Size = new System.Drawing.Size(137, 29);
+            this.bSave.TabIndex = 4;
+            this.bSave.Text = "button1";
+            this.bSave.UseVisualStyleBackColor = true;
+            this.bSave.Click += new System.EventHandler(this.bSave_Click);
+            // 
+            // bCancel
+            // 
+            this.bCancel.Location = new System.Drawing.Point(146, 3);
+            this.bCancel.Name = "bCancel";
+            this.bCancel.Size = new System.Drawing.Size(114, 29);
+            this.bCancel.TabIndex = 0;
+            this.bCancel.Text = "button1";
+            this.bCancel.UseVisualStyleBackColor = true;
+            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
+            // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(17, 57);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(306, 17);
+            this.checkBox8.TabIndex = 1;
+            this.checkBox8.Text = "Request a confirmation for every system generated kickban";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -545,17 +557,17 @@ namespace Client
             this.Load += new System.EventHandler(this.Preferences_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
-            this.gro2.ResumeLayout(false);
-            this.gro2.PerformLayout();
-            this.gro6.ResumeLayout(false);
             this.gro1.ResumeLayout(false);
             this.gro1.PerformLayout();
             this.gro4.ResumeLayout(false);
             this.gro4.PerformLayout();
             this.gro3.ResumeLayout(false);
             this.gro3.PerformLayout();
-            this.fl.ResumeLayout(false);
+            this.gro2.ResumeLayout(false);
+            this.gro2.PerformLayout();
+            this.gro6.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
+            this.fl.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -606,6 +618,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem simpleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
+        private System.Windows.Forms.CheckBox checkBox8;
 
     }
 }

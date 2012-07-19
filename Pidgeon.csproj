@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Pidgeon</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -25,9 +25,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -39,6 +40,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -48,18 +50,29 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>57C9C028C90A0CED594C5210571D0C38D39D49D4</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>Pidgeon_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffers.cs" />
@@ -96,11 +109,23 @@
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\MicroChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MicroChat.Designer.cs">
+      <DependentUpon>MicroChat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TrafficScanner.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\TrafficScanner.Designer.cs">
       <DependentUpon>TrafficScanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Warning.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Warning.Designer.cs">
+      <DependentUpon>Warning.cs</DependentUpon>
     </Compile>
     <Compile Include="Hooks.cs" />
     <Compile Include="PidgeonList.cs">
@@ -187,6 +212,9 @@
     <EmbeddedResource Include="Forms\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MicroChat.resx">
+      <DependentUpon>MicroChat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
     </EmbeddedResource>
@@ -198,6 +226,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Updater.resx">
       <DependentUpon>Updater.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Warning.resx">
+      <DependentUpon>Warning.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PidgeonList.resx">
       <DependentUpon>PidgeonList.cs</DependentUpon>
@@ -225,6 +256,7 @@
       <DependentUpon>TextBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="Pidgeon_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -238,6 +270,9 @@
   <ItemGroup>
     <Content Include="Languages\cs_czech.txt" />
     <Content Include="Languages\en_english.txt" />
+    <Content Include="tcl84.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Image2.png" />
     <None Include="Resources\Image2.bmp" />
     <None Include="Resources\50px-IRC_icon.png" />
@@ -272,7 +307,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Service References\" />
     <Folder Include="Stage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

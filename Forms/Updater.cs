@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
@@ -189,6 +188,8 @@ namespace Client
                 }
 
                 Process _pro = new Process();
+                _pro.StartInfo.Verb = "runas";
+                _pro.StartInfo.UseShellExecute = true;
                 _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
                 System.Windows.Forms.Application.Exit();
             }

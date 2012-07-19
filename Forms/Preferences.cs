@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -57,6 +56,7 @@ namespace Client
             checkBox7.Checked = Configuration.notice_prot;
             checkBox4.Checked = Configuration.DisplayCtcp;
             checkBox6.Checked = Configuration.ctcp_prot;
+            checkBox8.Checked = Configuration.ConfirmAll;
             textBox5.Text = Configuration.logs_dir;
             textBox6.Text = Configuration.logs_name;
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
@@ -96,6 +96,7 @@ namespace Client
                         Configuration.HighlighterList.Add(hl);
                     }
                 }
+                Configuration.ConfirmAll = checkBox8.Checked;
                 Configuration.nick = textBox1.Text;
                 Configuration.quit = textBox2.Text;
                 Configuration.ident = textBox3.Text;

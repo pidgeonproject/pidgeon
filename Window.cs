@@ -36,6 +36,7 @@ namespace Client
         public bool isChannel = false;
         public TreeNode ln;
         public Protocol _Protocol = null;
+        public bool MicroBox = false;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;
@@ -57,7 +58,7 @@ namespace Client
             ControlStyles.UserPaint |
             ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
-            
+
             kbToolStripMenuItem.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
             scrollback.owner = this;
@@ -79,7 +80,7 @@ namespace Client
             scrollback.create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
         }
-      
+
         public bool Redraw()
         {
             if (xContainer1 != null)
@@ -111,6 +112,8 @@ namespace Client
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string kick = "";
+            string ban = "";
             if (isChannel)
             {
                 if (SelectedUser != null)
@@ -127,14 +130,19 @@ namespace Client
                                 {
                                     case Configuration.TypeOfBan.Host:
                                         if (target.Host != "")
-                                        { 
-                                            Core.network._protocol.Transfer("MODE " + name + " +b *!*@" + target.Host, Configuration.Priority.High);
+                                        {
+                                            ban = "MODE " + name + " +b *!*@" + target.Host;
                                         }
                                         break;
                                 }
                             }
                         }
-                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason, Configuration.Priority.High);
+                        kick = "KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason;
+                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + ban + "\n" + kick }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            _channel._Network._protocol.Transfer(ban, Configuration.Priority.High);
+                            _channel._Network._protocol.Transfer(kick, Configuration.Priority.High);
+                        }
                     }
                 }
             }
@@ -192,8 +200,8 @@ namespace Client
         }
 
         string Decode(string user)
-        { 
-            foreach(char item in _Network.UChars)
+        {
+            foreach (char item in _Network.UChars)
             {
                 if (user.Contains(item))
                 {
@@ -248,6 +256,7 @@ namespace Client
 
         private void kickToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            string mode = "";
             if (isChannel)
             {
                 if (SelectedUser != null)
@@ -256,8 +265,12 @@ namespace Client
                     {
                         if (user.Text != "")
                         {
-                            Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason, Configuration.Priority.High);
+                            mode = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
                         }
+                    }
+                    if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        Core.network._protocol.Transfer(mode, Configuration.Priority.High);
                     }
                 }
             }
@@ -292,6 +305,7 @@ namespace Client
         {
             if (isChannel)
             {
+                string mode = "";
                 if (SelectedUser != null)
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
@@ -307,9 +321,13 @@ namespace Client
                                     case Configuration.TypeOfBan.Host:
                                         if (target.Host != "")
                                         {
-                                            Core.network._protocol.Transfer("MODE " + name + " +b *!*@" + target.Host, Configuration.Priority.High);
+                                            mode = "MODE " + name + " +b *!*@" + target.Host;
                                         }
                                         break;
+                                }
+                                if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                {
+                                    Core.network._protocol.Transfer(mode, Configuration.Priority.High);
                                 }
                             }
                         }
@@ -326,7 +344,7 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason);
+                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
                     }
                 }
             }
@@ -341,7 +359,7 @@ namespace Client
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
                         string reason = Configuration.DefaultReason;
-                        
+
                     }
                 }
             }
@@ -415,17 +433,17 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-            
-                if (_Protocol != null)
+
+            if (_Protocol != null)
+            {
+                lock (_Protocol.windows)
                 {
-                    lock (_Protocol.windows)
+                    if (_Protocol.windows.ContainsKey(name))
                     {
-                        if (_Protocol.windows.ContainsKey(name))
-                        {
-                            _Protocol.windows.Remove(name);
-                        }
+                        _Protocol.windows.Remove(name);
                     }
                 }
+            }
             base.Dispose(disposing);
         }
 
@@ -464,7 +482,7 @@ namespace Client
         private void synchroToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (_Network.Connected)
-            { 
+            {
                 Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
@@ -472,6 +490,11 @@ namespace Client
                     _Network._protocol.Transfer("WHO " + channel.Name);
                 }
             }
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -54,29 +54,84 @@ namespace Client
     public class Channel
     {
         public static List<Channel> _control = new List<Channel>();
+        /// <summary>
+        /// Name
+        /// </summary>
         public string Name;
+        /// <summary>
+        /// Network
+        /// </summary>
         public Network _Network;
+        /// <summary>
+        /// List of all users in current channel
+        /// </summary>
         public List<User> UserList = new List<User>();
+        /// <summary>
+        /// Topic
+        /// </summary>
         public string Topic;
+        /// <summary>
+        /// Whether channel is in proccess of dispose
+        /// </summary>
         public bool dispose = false;
+        /// <summary>
+        /// User who set a topic
+        /// </summary>
         public string TopicUser;
+        /// <summary>
+        /// Date when a topic was set
+        /// </summary>
         public int TopicDate;
+        /// <summary>
+        /// Invites
+        /// </summary>
         public List<Invite> Invites;
+        /// <summary>
+        /// List of bans set
+        /// </summary>
         public List<SimpleBan> Bl;
+        /// <summary>
+        ///
+        /// </summary>
         public List<Except> Exceptions;
         private Window Chat;
+        /// <summary>
+        /// If channel output is temporarily hidden
+        /// </summary>
         public bool temporary_hide = false;
+        /// <summary>
+        /// If true the channel is processing the /who data
+        /// </summary>
         public bool parsing_who = false;
+        /// <summary>
+        /// If true the channel is processing ban data
+        /// </summary>
         public bool parsing_xb = false;
+        /// <summary>
+        /// If true the channel is processing exception data
+        /// </summary>
         public bool parsing_xe = false;
+        /// <summary>
+        /// If true the channel is processing whois data
+        /// </summary>
         public bool parsing_wh = false;
-        public Protocol.Mode _mode = new Protocol.Mode();
+        /// <summary>
+        /// Channel mode
+        /// </summary>
+        public Protocol.Mode _mode;
+        /// <summary>
+        /// Whether window needs to be redraw
+        /// </summary>
         public bool Redraw;
+        /// <summary>
+        /// If true the window is considered usable
+        /// </summary>
         public bool ok;
 
         public Channel()
         {
             ok = true;
+            _mode = new Protocol.Mode(1, _Network);
             lock (_control)
             {
                 _control.Add(this);
@@ -95,11 +150,6 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-        }
-
-        public class ChannelMode : Protocol.Mode
-        { 
-            
         }
 
         public bool containUser(string user)

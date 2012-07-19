@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Client
@@ -29,6 +28,26 @@ namespace Client
 
     class Parser
     {
+        public static string link(string text)
+        {
+            string result = text;
+            string templink = text;
+            while (templink.Contains(" http://"))
+            {
+                string link = templink.Substring(templink.IndexOf(" http://") + 8);
+                if (link.Length > 0)
+                {
+                    if (link.Contains(" "))
+                    {
+                        link = link.Substring(link.IndexOf(" "));
+                        result.Replace(" http://" + link, "<a target=new href=\"http://" + link + "\">http://" + link + "</a>");
+                        templink.Replace(" http://" + link, "");
+                    }
+                }
+            }
+            return result;
+        }
+
         public static int parse(string input)
         {
             if (input == "")
@@ -49,7 +68,6 @@ namespace Client
             {
                 if (Core._Main.Chat.writable)
                 {
-                    Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, input), Scrollback.MessageStyle.Message);
                     Core.network._protocol.Message(input, Core._Main.Chat.name);
                 }
                 return 0;

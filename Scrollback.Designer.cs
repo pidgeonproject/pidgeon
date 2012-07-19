@@ -40,12 +40,12 @@ namespace Client
             this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.retrieveTopicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
             this.pwx1 = new System.Windows.Forms.Panel();
             this.Data = new System.Windows.Forms.WebBrowser();
             this.pwx2 = new System.Windows.Forms.Panel();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
-            this.retrieveTopicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.pwx1.SuspendLayout();
             this.pwx2.SuspendLayout();
@@ -61,7 +61,7 @@ namespace Client
             this.refreshToolStripMenuItem,
             this.retrieveTopicToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 158);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(147, 136);
             // 
             // mrhToolStripMenuItem
             // 
@@ -72,6 +72,8 @@ namespace Client
             // 
             // scrollToolStripMenuItem
             // 
+            this.scrollToolStripMenuItem.Checked = true;
+            this.scrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
             this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.scrollToolStripMenuItem.Text = "Scroll";
@@ -99,9 +101,16 @@ namespace Client
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
+            // retrieveTopicToolStripMenuItem
+            // 
+            this.retrieveTopicToolStripMenuItem.Name = "retrieveTopicToolStripMenuItem";
+            this.retrieveTopicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.retrieveTopicToolStripMenuItem.Text = "Retrieve topic";
+            this.retrieveTopicToolStripMenuItem.Click += new System.EventHandler(this.retrieveTopicToolStripMenuItem_Click);
+            // 
             // refresh
             // 
-            this.refresh.Interval = 200;
+            this.refresh.Interval = 60;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
             // pwx1
@@ -143,13 +152,6 @@ namespace Client
             this.webBrowser1.Size = new System.Drawing.Size(345, 262);
             this.webBrowser1.TabIndex = 3;
             // 
-            // retrieveTopicToolStripMenuItem
-            // 
-            this.retrieveTopicToolStripMenuItem.Name = "retrieveTopicToolStripMenuItem";
-            this.retrieveTopicToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.retrieveTopicToolStripMenuItem.Text = "Retrieve topic";
-            this.retrieveTopicToolStripMenuItem.Click += new System.EventHandler(this.retrieveTopicToolStripMenuItem_Click);
-            // 
             // Scrollback
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -172,17 +174,17 @@ namespace Client
         #endregion
 
         private System.Windows.Forms.Timer refresh;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mrhToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem scrollToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.Panel pwx1;
-        private System.Windows.Forms.WebBrowser Data;
         private System.Windows.Forms.Panel pwx2;
-        private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.ToolStripMenuItem retrieveTopicToolStripMenuItem;
+        public System.Windows.Forms.WebBrowser Data;
+        public System.Windows.Forms.WebBrowser webBrowser1;
+        public System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
 
     }
 }

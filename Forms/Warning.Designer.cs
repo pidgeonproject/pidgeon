@@ -15,52 +15,50 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-
 namespace Client
 {
-    public partial class TrafficScanner : Form
+    partial class Warning
     {
-        bool modified = true;
-        List<string> text = new List<string>();
-        public TrafficScanner()
-        {
-            InitializeComponent();
-        }
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-        public void Stop(object O, FormClosingEventArgs L)
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
         {
-            Visible = false;
-            L.Cancel = true;
-        }
-
-        public bool insert(string server, string data)
-        {
-            modified = true;
-            if (!Configuration.NetworkSniff)
+            if (disposing && (components != null))
             {
-                return true;
+                components.Dispose();
             }
-            text.Add(server + " " + data);
-            return true;
+            base.Dispose(disposing);
         }
 
-        private void refresh_Tick(object sender, EventArgs e)
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
         {
-            if (Visible && modified)
-            {
-                modified = false;
-                textBox1.Lines = text.ToArray<string>();
-                textBox1.SelectionStart = textBox1.Text.Length;
-                textBox1.ScrollToCaret();
-            }
+            this.SuspendLayout();
+            // 
+            // Warning
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(423, 269);
+            this.Name = "Warning";
+            this.Text = "Warning";
+            this.Load += new System.EventHandler(this.Warning_Load);
+            this.ResumeLayout(false);
+
         }
+
+        #endregion
     }
 }

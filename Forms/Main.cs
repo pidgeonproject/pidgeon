@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -240,6 +239,27 @@ namespace Client
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Core.trafficscanner.Show();
+        }
+
+        private void taskbarBoxToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MicroChat.mc.Show();
+        }
+
+        private void attachToMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Chat != null)
+            {
+                Chat.MicroBox = true;
+            }
+        }
+
+        private void detachFromMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Chat != null)
+            {
+                Chat.MicroBox = false;
+            }
         }
     }
 }

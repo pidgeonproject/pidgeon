@@ -15,21 +15,65 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class Style : Form
+    public partial class MicroChat : Form
     {
-        public Style()
+        public static MicroChat mc;
+        public MicroChat()
         {
             InitializeComponent();
+            this.TopMost = true;
+            scrollback_mc.owner = null;
+            scrollback_mc.create();
+            scrollback_mc.contextMenuStrip1.Items.Clear();
+            scrollback_mc.contextMenuStrip1.Items.Add(transparencyToolStripMenuItem);
+        }
+
+        public void Unload(object sender, FormClosingEventArgs e)
+        {
+            e.Cancel = true;
+            this.Visible = false;
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+        }
+
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 0.8;
+        }
+
+        private void toolStripMenuItem6_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 1;
+        }
+
+        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 0.6;
+        }
+
+        private void toolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 0.4;
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            this.Opacity = 0.2;
         }
     }
 }
