@@ -21,7 +21,6 @@ using System.Collections;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Reflection;
-using System;
 
 
 namespace Client
@@ -570,10 +569,10 @@ namespace Client
         public Hashtable objtable = new Hashtable();
 
         /// <summary>
-        /// All NET object that should be accesible in Tcl
+        /// All NET objects that should be accessible in Tcl
         /// must be registered in TclWrapper.
-        /// Each Object become name as string
-        /// You should unregister the object if you do not use
+        /// Each Object will be named as string
+        /// You should unregister the objects if you do not use
         /// them because of blocking garbage collector
         /// </summary>
         /// <param name="obj"></param>
@@ -584,8 +583,8 @@ namespace Client
         }
 
         /// <summary>
-        /// unregister all unused objects to let garbage collector
-        /// work
+        /// unregister all unused objects to let garbage collector work
+        /// 
         /// </summary>
         /// <param name="name"></param>
         public void unregisterObjectWithName(string name)
@@ -598,7 +597,7 @@ namespace Client
             {
                 return objtable[name];
             }
-            setResult("net object with name " + name + " ist not registered");
+            setResult("net object with name " + name + " is not registered");
             return null;
         }
         #endregion
@@ -634,6 +633,40 @@ namespace Client
             }
         }
 
+        public static void GenerateInterp(TclInterpreter interp)
+        {
+            interp.registerObject(Configuration.aggressive_bans, "configuration_aggressive_bans");
+            interp.registerObject(Configuration.aggressive_channel, "configuration_aggressive_channel");
+            interp.registerObject(Configuration.aggressive_exception, "configuration_aggressive_exception");
+            interp.registerObject(Configuration.aggressive_invites, "configuration_aggressive_invites");
+            interp.registerObject(Configuration.aggressive_mode, "configuration_aggressive_mode");
+            interp.registerObject(Configuration.chat_timestamp, "configuration_chat_timestamp");
+            interp.registerObject(Configuration.ConfirmAll, "configuration_confirm");
+            interp.registerObject(Configuration.ctcp_prot, "configuration_ctcp_prot");
+            interp.registerObject(Configuration.CurrentSkin, "configuration_skin_name");
+            interp.registerObject(Configuration.DefaultReason, "configuration_kickban_reason");
+            interp.registerObject(Configuration.Depth, "configuration_depth");
+            interp.registerObject(Configuration.DisplayCtcp, "configuration_display_ctcp");
+            interp.registerObject(Configuration.flood_prot, "configuration_flood");
+            interp.registerObject(Configuration.format_date, "configuration_dateformat");
+            interp.registerObject(Configuration.format_nick, "configuration_nickformat");
+            interp.registerObject(Configuration.HidingParsed, "configuration_hiding_parsed");
+            interp.registerObject(Configuration.ident, "configuration_ident");
+            interp.registerObject(Configuration.LastHost, "configuration_lasthost");
+            interp.registerObject(Configuration.LastNick, "configuration_lastnick");
+            interp.registerObject(Configuration.LastPort, "configuration_lastport");
+            interp.registerObject(Configuration.mq, "configuration_mq");
+            interp.registerObject(Configuration.nick, "configuration_nick");
+            interp.registerObject(Configuration.Notice, "configuration_notice");
+            interp.registerObject(Configuration.quit, "configuration_quit");
+            interp.registerObject(Configuration.timestamp_mask, "configuration_timemask");
+            interp.registerObject(Configuration.user, "configuration_user");
+            interp.registerObject(Configuration.Version, "configuration_version");
+
+
+            
+        }
+
         public static void Load()
         {
             working = true;
@@ -641,7 +674,8 @@ namespace Client
             thread.Name = "ScriptingCore";
             Core.SystemThreads.Add(thread);
             thread.Start();
-            //TclInterpreter interp = new TclInterpreter();
+
+            
             //string result;
             //if (interp.evalScript("set a 3; {exp $a + 2}"))
             //{

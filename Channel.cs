@@ -128,6 +128,9 @@ namespace Client
         /// </summary>
         public bool ok;
 
+        /// <summary>
+        /// Constructor (simple)
+        /// </summary>
         public Channel()
         {
             ok = true;
@@ -141,10 +144,34 @@ namespace Client
             Chat = null;
         }
 
+        /// <summary>
+        /// Constructor (normal)
+        /// </summary>
+        public Channel(Network network)
+        {
+            _Network = network;
+            ok = true;
+            _mode = new Protocol.Mode(1, _Network);
+            lock (_control)
+            {
+                _control.Add(this);
+            }
+            Topic = "";
+            TopicUser = "";
+            Chat = null;
+        }
+
+        /// <summary>
+        /// Remove the object, be sure to remove all references before, otherwise it may cause a crash
+        /// </summary>
         public void Dispose()
         {
             lock (_control)
             {
+                if (retrieveWindow() != null)
+                {
+                    retrieveWindow().Dispose();
+                }
                 if (_control.Contains(this))
                 {
                     _control.Remove(this);
@@ -152,6 +179,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Return true if channel contains the given user name
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool containUser(string user)
         {
             lock (UserList)
@@ -167,6 +199,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Return true if a channel is matching ban (exact, not a mask)
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
         public bool containsBan(string host)
         {
             lock (Bl)
@@ -182,7 +219,9 @@ namespace Client
             return false;
         }
 
-
+        /// <summary>
+        /// Thread safe, redraw all users in the user list in window, if exist
+        /// </summary>
         public void redrawUsers()
         {
             try
@@ -393,7 +432,7 @@ namespace Client
             {
                 foreach (var curr in _Network._protocol.windows)
                 {
-                    if (curr.Key == Name)
+                    if (curr.Key == _Network.window + Name)
                     {
                         this.Chat = curr.Value;
                         return curr.Value;

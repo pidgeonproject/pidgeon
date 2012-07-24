@@ -17,13 +17,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace Client
 {
     public class Skin
     {
+        public static List<Skin> LoadedSkins = new List<Skin>();
         public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
         public string localfont;
         public int fontsize;
@@ -37,6 +37,7 @@ namespace Client
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
         public System.Drawing.Color colortalk;
+        public System.Drawing.Color link;
         public bool italic;
 
         public Skin()
@@ -48,11 +49,21 @@ namespace Client
             miscelancscolor = System.Drawing.Color.LightGreen;
             selfcolor = System.Drawing.Color.LightGray;
             changenickcolor = System.Drawing.Color.LightSteelBlue;
+            link = System.Drawing.Color.LightBlue;
             colortalk = System.Drawing.Color.Yellow;
             kickcolor = System.Drawing.Color.White;
             fontsize = 2;
-            localfont = "Helvetica";
+            localfont = "font-family:sans-serif;";
             backgroundcolor = System.Drawing.Color.Black;
+        }
+
+        /// <summary>
+        /// LoadSkin
+        /// </summary>
+        /// <param name="name"></param>
+        public static void LoadSkin(string name)
+        {
+            
         }
     }
 }

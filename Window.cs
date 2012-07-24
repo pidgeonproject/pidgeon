@@ -199,7 +199,7 @@ namespace Client
             }
         }
 
-        string Decode(string user)
+        public string Decode(string user)
         {
             foreach (char item in _Network.UChars)
             {
@@ -438,6 +438,13 @@ namespace Client
             {
                 lock (_Protocol.windows)
                 {
+                    if (_Network != null)
+                    {
+                        if (_Protocol.windows.ContainsKey(_Network.window + name))
+                        {
+                            _Protocol.windows.Remove(_Network.window + name);
+                        }
+                    }
                     if (_Protocol.windows.ContainsKey(name))
                     {
                         _Protocol.windows.Remove(name);
@@ -468,11 +475,11 @@ namespace Client
                         string nickname = Decode(user.Text);
                         if (nickname != "")
                         {
-                            if (!Core.network._protocol.windows.ContainsKey(nickname))
+                            if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
                             {
                                 _Network.Private(nickname);
                             }
-                            _Network._protocol.ShowChat(nickname);
+                            _Network._protocol.ShowChat(_Network.window + nickname);
                         }
                     }
                 }

@@ -42,11 +42,12 @@ namespace Client
 
         public class ContentLine : IComparable
         {
-            public ContentLine(MessageStyle _style, string Text, DateTime when)
+            public ContentLine(MessageStyle _style, string Text, DateTime when, bool _notice)
             {
                 style = _style;
                 time = when;
                 text = Text;
+                notice = _notice;
             }
             public int CompareTo(object obj)
             {
@@ -58,6 +59,7 @@ namespace Client
             }
             public DateTime time;
             public string text;
+            public bool notice = false;
             public MessageStyle style;
         }
         private bool db = false;
@@ -124,13 +126,77 @@ namespace Client
             Part,
         }
 
-        public bool InsertText(string text, MessageStyle input_style, bool lg = true, long dt = 0)
+        public bool Match(string text)
+        {
+            string matchline = "";
+            foreach (Network.Highlighter item in Configuration.HighlighterList)
+            {
+                if (item.enabled)
+                {
+                    if (owner != null && owner._Network != null)
+                    {
+                        matchline = item.text.Replace("$nick", owner._Network.nickname).Replace("$ident", owner._Network.ident).Replace("$name", Configuration.user);
+                    }
+                    else
+                    {
+                        matchline = item.text.Replace("$nick", Configuration.nick).Replace("$ident", Configuration.ident).Replace("$name", Configuration.user);
+                    }
+                    if (item.simple)
+                    {
+                        if (text.Contains(matchline))
+                        {
+                            return true;
+                        }
+                        continue;
+                    }
+                    if (owner != null && owner._Network != null)
+                    {
+                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.nickname)).Replace("$ident",
+                            System.Text.RegularExpressions.Regex.Escape(owner._Network.ident)).Replace("$name",
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.user));
+                    }
+                    else
+                    {
+                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.nick)).Replace("$ident",
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.ident)).Replace("$name",
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.user));
+                    }
+                    System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(matchline);
+                    if (regex.IsMatch(text))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Insert a text to scrollback list
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="input_style">Style</param>
+        /// <param name="lg">Write to a log</param>
+        /// <param name="dt">Date</param>
+        /// <param name="nh">Suppress highlight</param>
+        /// <returns></returns>
+        public bool InsertText(string text, MessageStyle input_style, bool lg = true, long dt = 0, bool nh = false)
         {
             if (owner != null && owner.MicroBox)
             {
                 MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, input_style, false, dt);
             }
 
+            bool Matched = false;
+            if (!nh)
+            {
+                Matched = Match(text);
+            }
+
+            if (Matched && owner != null)
+            {
+                Core.DisplayNote(text, owner.name);
+            }
 
             if (owner != null && owner != Core._Main.Chat && owner.ln != null)
             {
@@ -158,6 +224,11 @@ namespace Client
                         break;
 
                 }
+
+                if (Matched)
+                {
+                    owner.ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                }
             }
             DateTime time = DateTime.Now;
             if (dt != 0)
@@ -166,7 +237,7 @@ namespace Client
             }
             lock (Line)
             {
-                Line.Add(new ContentLine(input_style, text, time));
+                Line.Add(new ContentLine(input_style, text, time, Matched));
                 if (dt != 0)
                 {
                     Line.Sort();
@@ -232,7 +303,7 @@ namespace Client
             if (owner == null || (owner != null && owner.Visible == true))
             {
                 Modified = false;
-                string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+                string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" alink=\"" + Configuration.CurrentSkin.link.Name + "\" link=\"" + Configuration.CurrentSkin.link.Name + "\" vlink=\"" + Configuration.CurrentSkin.link.Name + "\" STYLE=\" background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
                 lock (Line)
                 {
                     foreach (ContentLine _c in Line)
@@ -260,12 +331,16 @@ namespace Client
                                 color = Configuration.CurrentSkin.joincolor.Name;
                                 break;
                         }
+                        if (_c.notice)
+                        {
+                            color = Configuration.CurrentSkin.highlightcolor.Name;
+                        }
                         string stamp = "";
                         if (Configuration.chat_timestamp)
                         {
                             stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
                         }
-                        text += "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + System.Web.HttpUtility.HtmlEncode(_c.text) + "</font><br>";
+                        text += "<font style=\"" + Configuration.CurrentSkin.localfont + "\" size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\">" + stamp + Protocol.decrypt_text( Parser.link( System.Web.HttpUtility.HtmlEncode(_c.text) )) + "</font><br>";
                     }
                 }
                 text += "</body>" + "</html>";
@@ -295,6 +370,51 @@ namespace Client
             }
             Recreate();
 
+        }
+
+        private void Clicked(object sender, WebBrowserNavigatingEventArgs navigating)
+        {
+            if (navigating.Url.ToString().Contains("https://"))
+            {
+                System.Diagnostics.Process.Start(navigating.Url.ToString());
+                navigating.Cancel = true;
+            }
+            if (navigating.Url.ToString().Contains("http://"))
+            {
+                System.Diagnostics.Process.Start(navigating.Url.ToString());
+                navigating.Cancel = true;
+            }
+            if (navigating.Url.ToString().Contains("pidgeon://"))
+            {
+                navigating.Cancel = true;
+                string command = navigating.Url.ToString().Substring("pidgeon://".Length);
+                if (command.EndsWith("/"))
+                {
+                    command = command.Substring(0, command.Length - 1);
+                }
+                if (command.StartsWith("user/#"))
+                {
+                    string nick = command.Substring(6);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                          owner.textbox.richTextBox1.AppendText(nick + ": ");
+                          owner.textbox.Focus();
+                        }
+                    }
+                }
+                if (command.StartsWith("join/#"))
+                {
+                    Parser.parse("/join " + command.Substring(5));
+                    return;
+                }
+                if (command.StartsWith("join#"))
+                {
+                    Parser.parse("/join " + command.Substring(4));
+                    return;
+                }
+            }
         }
 
         private void Recreate(bool enforce = false)

@@ -176,6 +176,11 @@ namespace Client
         public static bool logs_html = true;
 
         /// <summary>
+        /// Enable the notice in tray
+        /// </summary>
+        public static bool Notice = true;
+
+        /// <summary>
         /// Last used nick
         /// </summary>
         public static string LastNick = "";

@@ -24,6 +24,9 @@ namespace Client
 {
     class Hooks
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public static void AfterCore()
         {
             

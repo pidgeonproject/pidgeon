@@ -185,7 +185,10 @@ namespace Client
             catch (System.Threading.ThreadAbortException) { }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                if (Connected)
+                {
+                    Core.handleException(fail);
+                }
             }
         }
 
@@ -296,20 +299,22 @@ namespace Client
                                     foreach (Channel i in server.Channels)
                                     {
                                         i.temporary_hide = false;
+                                        i.parsing_xe = false;
+                                        i.parsing_xb = false;
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date, false);
+                                ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
                                 break;
                             }
-                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, "!" + server.server, ref pong, date, true);
+                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, ref pong, date, true);
                             break;
                         case "SNICK":
                             Network sv = retrieveNetwork(curr.Attributes[0].Value);
                             if (sv != null)
                             {
                                 sv.nickname = curr.InnerText;
-                                windows["!" + sv.server].scrollback.InsertText("Your nick was changed to " + curr.InnerText, Scrollback.MessageStyle.User, true);
+                                windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText, Scrollback.MessageStyle.User, true);
                             }
                             break;
                         case "SCONNECT":
@@ -343,6 +348,7 @@ namespace Client
                                 foreach (Channel i in server.Channels)
                                 {
                                     i.parsing_who = true;
+                                    i.parsing_xb = true;
                                     i.temporary_hide = true;
                                 }
                             }
@@ -525,8 +531,15 @@ namespace Client
         public override void Exit()
         {
             Connected = false;
-            _writer.Close();
-            _reader.Close();
+            lock (sl)
+            {
+                foreach (Network network in sl)
+                {
+                    network.Connected = false;
+                }
+            }
+            if (_writer != null)  _writer.Close();
+            if (_reader != null)  _reader.Close();
         }
 
         public void Deliver(Datagram message)
@@ -560,7 +573,7 @@ namespace Client
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text), Scrollback.MessageStyle.Message);     
+            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);     
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
@@ -620,7 +633,10 @@ namespace Client
                 }
                 catch (Exception f)
                 {
-                    Core.handleException(f);
+                    if (Connected)
+                    {
+                        Core.handleException(f);
+                    }
                 }
 
             }

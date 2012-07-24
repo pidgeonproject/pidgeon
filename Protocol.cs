@@ -32,7 +32,7 @@ namespace Client
         {
             public List<string> _Mode = new List<string>();
             public Network network;
-            public int ModeType = 0;
+            public int ModeType = 0; //1 - channel 2 - user
             public override string ToString()
             {
                 string _val = "";
@@ -125,18 +125,39 @@ namespace Client
         public int Port;
         public bool SSL;
 
-        public void CreateChat(string _name, bool _Focus, Network network, bool _writable = false, bool channelw = false)
+        /// <summary>
+        /// Create window
+        /// </summary>
+        /// <param name="name">Identifier of window, should be unique on network level, otherwise you won't be able to locate it</param>
+        /// <param name="focus">Whether new window should be immediately focused</param>
+        /// <param name="network">Network the window belongs to</param>
+        /// <param name="writable">If true user will be able to send text in window</param>
+        /// <param name="channelw">If true a window will be flagged as channel</param>
+        public virtual void CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
         {
             Main._WindowRequest request = new Main._WindowRequest();
+            if (id == null)
+            {
+                id = name;
+            }
             request.owner = this;
-            request.name = _name;
-            request.writable = _writable;
+            request.name = name;
+            request.writable = writable;
             request.window = new Window();
-            request._Focus = _Focus;
+            request._Focus = focus;
             request.window._Network = network;
-            request.window.name = _name;
-            request.window.writable = _writable;
-            windows.Add(_name, request.window);
+            request.window.name = name;
+            request.window.writable = writable;
+
+            if (network != null && !name.Contains("!"))
+            { 
+                windows.Add(network.window + id, request.window);
+            }
+            else
+            {
+                windows.Add(id, request.window);
+            }
+            
             if (channelw == true)
             {
                 request.window.isChannel = true;
@@ -152,7 +173,7 @@ namespace Client
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool ShowChat(string name)
+        public virtual bool ShowChat(string name)
         {
             if (windows.ContainsKey(name))
             {
@@ -167,6 +188,13 @@ namespace Client
                     }
                 }
                 Current.Redraw();
+                if (Current.isChannel)
+                {
+                    if (Core.network != null)
+                    {
+                        Core.network.RenderedChannel = Core.network.getChannel(Current.name);
+                    }
+                }
                 Core._Main.toolStripStatusChannel.Text = name;
                 if (Current.Making == false)
                 {
@@ -181,6 +209,27 @@ namespace Client
         }
 
         /// <summary>
+        /// Return back the system chars to previous look
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string decrypt_text(string text)
+        {
+            return text.Replace("%%", "%");
+        }
+
+
+        /// <summary>
+        /// Escape system char
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string encode_text(string text)
+        {
+            return text.Replace("%", "%%");
+        }
+
+        /// <summary>
         /// Format a message to given style selected by skin
         /// </summary>
         /// <param name="user"></param>
@@ -188,7 +237,7 @@ namespace Client
         /// <returns></returns>
         public string PRIVMSG(string user, string text)
         {
-            return Configuration.format_nick.Replace("$1", user) + text;
+            return Configuration.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
         }
 
         /// <summary>
@@ -225,6 +274,11 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Change nick
+        /// </summary>
+        /// <param name="_Nick"></param>
+        /// <returns></returns>
         public virtual int requestNick(string _Nick)
         {
             return 2;
@@ -251,21 +305,40 @@ namespace Client
             return;
         }
 
+        /// <summary>
+        /// /join
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="network"></param>
         public virtual void Join(string name, Network network = null)
         {
             return;
         }
 
+        /// <summary>
+        /// /connect
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public virtual bool ConnectTo(string server, int port)
         {
             return false;
         }
 
+        /// <summary>
+        /// /part
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="network"></param>
         public virtual void Part(string name, Network network = null)
         {
         
         }
 
+        /// <summary>
+        /// Disconnect server
+        /// </summary>
         public virtual void Exit() { }  
 
         public class UserMode : Mode

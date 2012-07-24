@@ -38,6 +38,7 @@ namespace Client
         public string server;
         public Protocol.UserMode usermode = new Protocol.UserMode();
         public string username;
+        public string randomuqid;
         public List<Channel> Channels = new List<Channel>();
         public Channel RenderedChannel = null;
         public string nickname;
@@ -60,6 +61,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retrieve channel
+        /// </summary>
+        /// <param name="name">String</param>
+        /// <returns></returns>
         public Channel getChannel(string name)
         {
             foreach (Channel cu in Channels)
@@ -88,31 +94,46 @@ namespace Client
 
         public Channel Join(string channel, bool nf = false)
         {
-            Channel _channel = new Channel();
+            Channel _channel = new Channel(this);
             RenderedChannel = _channel;
             _channel.Name = channel;
-            _channel._Network = this;
             Channels.Add(_channel);
             Core._Main.ChannelList.insertChannel(_channel);
             _protocol.CreateChat(channel, !nf, this, true, true);
             return _channel;
         }
 
+        public string window
+        {
+            get 
+              {
+                  if (_protocol.type != 3)
+                  {
+                      return "system";
+                  }
+                  else
+                  {
+                      return randomuqid + server;
+                  }
+              }
+        }
+
         public Network(string Server, Protocol protocol)
         {
+            randomuqid = Core.retrieveRandom();
             try
             {
                 _protocol = protocol;
                 server = Server;
                 quit = Configuration.quit;
                 nickname = Configuration.nick;
-                
+
                 username = Configuration.user;
                 ident = Configuration.ident;
                 if (protocol.type == 3)
                 {
-                    _protocol.CreateChat("!" + server, false, this);
-                    system = _protocol.windows["!" + server];
+                    _protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
+                    system = _protocol.windows["!" + randomuqid + server];
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else

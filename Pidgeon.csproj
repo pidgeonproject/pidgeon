@@ -115,6 +115,12 @@
     <Compile Include="Forms\MicroChat.Designer.cs">
       <DependentUpon>MicroChat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Notification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Notification.Designer.cs">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\TrafficScanner.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,9 @@
     <EmbeddedResource Include="Forms\MicroChat.resx">
       <DependentUpon>MicroChat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Notification.resx">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
     </EmbeddedResource>
@@ -256,7 +265,6 @@
       <DependentUpon>TextBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Pidgeon_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

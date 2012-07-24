@@ -72,6 +72,7 @@ namespace Client
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.gro2 = new System.Windows.Forms.GroupBox();
+            this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.gro7 = new System.Windows.Forms.GroupBox();
             this.gro6 = new System.Windows.Forms.GroupBox();
@@ -91,7 +92,7 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.checkBox8 = new System.Windows.Forms.CheckBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -138,6 +139,7 @@ namespace Client
             // 
             // gro1
             // 
+            this.gro1.Controls.Add(this.checkBox9);
             this.gro1.Controls.Add(this.textBox4);
             this.gro1.Controls.Add(this.lname);
             this.gro1.Controls.Add(this.textBox3);
@@ -362,6 +364,16 @@ namespace Client
             this.gro2.TabStop = false;
             this.gro2.Text = "System";
             // 
+            // checkBox8
+            // 
+            this.checkBox8.AutoSize = true;
+            this.checkBox8.Location = new System.Drawing.Point(17, 57);
+            this.checkBox8.Name = "checkBox8";
+            this.checkBox8.Size = new System.Drawing.Size(306, 17);
+            this.checkBox8.TabIndex = 1;
+            this.checkBox8.Text = "Request a confirmation for every system generated kickban";
+            this.checkBox8.UseVisualStyleBackColor = true;
+            // 
             // checkBox4
             // 
             this.checkBox4.AutoSize = true;
@@ -534,15 +546,15 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // checkBox8
+            // checkBox9
             // 
-            this.checkBox8.AutoSize = true;
-            this.checkBox8.Location = new System.Drawing.Point(17, 57);
-            this.checkBox8.Name = "checkBox8";
-            this.checkBox8.Size = new System.Drawing.Size(306, 17);
-            this.checkBox8.TabIndex = 1;
-            this.checkBox8.Text = "Request a confirmation for every system generated kickban";
-            this.checkBox8.UseVisualStyleBackColor = true;
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(9, 172);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(150, 17);
+            this.checkBox9.TabIndex = 16;
+            this.checkBox9.Text = "Display notifications in tray";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // Preferences
             // 
@@ -619,6 +631,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBox8;
+        private System.Windows.Forms.CheckBox checkBox9;
 
     }
 }

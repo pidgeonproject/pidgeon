@@ -188,9 +188,21 @@ namespace Client
                 }
 
                 Process _pro = new Process();
-                _pro.StartInfo.Verb = "runas";
-                _pro.StartInfo.UseShellExecute = true;
-                _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                if (Configuration.CurrentPlatform == Core.Platform.Windowsx86 || Configuration.CurrentPlatform == Core.Platform.Windowsx64)
+                {
+                    _pro.StartInfo.Verb = "runas";
+                    _pro.StartInfo.UseShellExecute = true;
+                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                }
+                if (Configuration.CurrentPlatform == Core.Platform.MacOSx86)
+                {
+                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
+                }
+                if (Configuration.CurrentPlatform == Core.Platform.Linuxx86 || Configuration.CurrentPlatform == Core.Platform.Linuxx64)
+                {
+                    _pro.StartInfo.UseShellExecute = true;
+                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
+                }
                 System.Windows.Forms.Application.Exit();
             }
         }

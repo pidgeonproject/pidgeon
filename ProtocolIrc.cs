@@ -173,8 +173,9 @@ namespace Client
             }
         }
 
-        public static void processIRC(Network _server, Protocol protocol, string text, string sn, string system, ref DateTime pong, long date = 0, bool updated_text = true)
+        public static void processIRC(Network _server, Protocol protocol, string text, string sn, ref DateTime pong, long date = 0, bool updated_text = true)
         {
+            string system = "!" + _server.window;
             try
             {
                 if (text == null || text == "")
@@ -241,6 +242,62 @@ namespace Client
                                 case "002":
                                 case "003":
                                 case "004":
+                                case "005":
+                                    // PREFIX=(qaohv)~&@%+ CHANMODES=beI,k
+                                    if (parameters.Contains("PREFIX=("))
+                                    {
+                                        string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
+                                        cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
+                                        lock (_server.CUModes)
+                                        {
+                                            _server.CUModes.Clear();
+                                            _server.CUModes.AddRange(cmodes.ToArray<char>());
+                                        }
+                                        cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
+                                        cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _server.CUModes.Count);
+
+                                        _server.UChars.Clear();
+                                        _server.UChars.AddRange(cmodes.ToArray<char>());
+
+                                    }
+                                    if (parameters.Contains("CHANMODES="))
+                                    {
+                                        string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
+                                        xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
+                                        string[] _mode = xmodes.Split(',');
+                                        _server.parsed_info = true;
+                                        if (_mode.Length == 4)
+                                        {
+                                            _server.PModes.Clear();
+                                            _server.CModes.Clear();
+                                            _server.XModes.Clear();
+                                            _server.SModes.Clear();
+                                            _server.PModes.AddRange(_mode[0].ToArray<char>());
+                                            _server.XModes.AddRange(_mode[1].ToArray<char>());
+                                            _server.SModes.AddRange(_mode[2].ToArray<char>());
+                                            _server.CModes.AddRange(_mode[3].ToArray<char>());
+                                        }
+
+                                    }
+                                    break;
+                                case "324":
+                                    if (code.Length > 3)
+                                    {
+                                        string name = code[2];
+                                        string topic = _value;
+                                        Channel channel = _server.getChannel(code[3]);
+                                        if (channel != null)
+                                        {
+                                            Window curr = channel.retrieveWindow();
+                                            if (curr != null)
+                                            {
+                                                channel._mode.mode(code[4]);
+                                                curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date);
+                                            }
+                                            return;
+                                        }
+                                    }
+                                    break;
                                 case "313":
                                 //whois
                                 case "318":
@@ -352,7 +409,6 @@ namespace Client
                                         }
                                     }
                                     break;
-
                                 case "353":
                                     if (code.Length > 3)
                                     {
@@ -380,64 +436,8 @@ namespace Client
                                         }
                                     }
                                     break;
-                                case "005":
-                                    // PREFIX=(qaohv)~&@%+ CHANMODES=beI,k
-                                    if (parameters.Contains("PREFIX=("))
-                                    {
-                                        string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                                        cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
-                                        lock (_server.CUModes)
-                                        {
-                                            _server.CUModes.Clear();
-                                            _server.CUModes.AddRange(cmodes.ToArray<char>());
-                                        }
-                                        cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                                        cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _server.CUModes.Count);
-
-                                        _server.UChars.Clear();
-                                        _server.UChars.AddRange(cmodes.ToArray<char>());
-
-                                    }
-                                    if (parameters.Contains("CHANMODES="))
-                                    {
-                                        string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
-                                        xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
-                                        string[] _mode = xmodes.Split(',');
-                                        _server.parsed_info = true;
-                                        if (_mode.Length == 4)
-                                        {
-                                            _server.PModes.Clear();
-                                            _server.CModes.Clear();
-                                            _server.XModes.Clear();
-                                            _server.SModes.Clear();
-                                            _server.PModes.AddRange(_mode[0].ToArray<char>());
-                                            _server.XModes.AddRange(_mode[1].ToArray<char>());
-                                            _server.SModes.AddRange(_mode[2].ToArray<char>());
-                                            _server.CModes.AddRange(_mode[3].ToArray<char>());
-                                        }
-
-                                    }
-                                    break;
                                 case "366":
                                     return;
-                                case "324":
-                                    if (code.Length > 3)
-                                    {
-                                        string name = code[2];
-                                        string topic = _value;
-                                        Channel channel = _server.getChannel(code[3]);
-                                        if (channel != null)
-                                        {
-                                            Window curr = channel.retrieveWindow();
-                                            if (curr != null)
-                                            {
-                                                channel._mode.mode(code[4]);
-                                                curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date);
-                                            }
-                                            return;
-                                        }
-                                    }
-                                    break;
                                 //  367 petan # *!*@173.45.238.81
                                 case "367":
                                     if (code.Length > 6)
@@ -473,6 +473,7 @@ namespace Client
                             protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date);
                             return;
                         }
+
                         if (source.StartsWith(_server.nickname + "!"))
                         {
                             string[] _data2 = data[1].Split(' ');
@@ -664,11 +665,11 @@ namespace Client
                             if (chan.Contains("!"))
                             {
                                 chan = source.Substring(source.IndexOf("!"));
-                                if (!protocol.windows.ContainsKey(chan))
+                                if (!protocol.windows.ContainsKey(_server.window + chan))
                                 {
                                     _server.Private(chan);
                                 }
-                                protocol.windows[chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
                                 return;
                             }
                         }
@@ -972,7 +973,7 @@ namespace Client
                         }
                     }
                 }
-                protocol.windows[system].scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date);
+                protocol.windows[system].scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
             }
             catch (Exception fail)
             {
@@ -1028,7 +1029,7 @@ namespace Client
                     }
                     text = _reader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
-                    processIRC(_server, this, text, _server.server, "!system", ref pong);
+                    processIRC(_server, this, text, _server.server, ref pong);
                 }
             }
             catch (System.Threading.ThreadAbortException)
@@ -1086,7 +1087,7 @@ namespace Client
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message); 
+            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message, true, 0, true); 
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
@@ -1100,7 +1101,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _server.nickname + " " + text, Scrollback.MessageStyle.Action);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _server.nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }

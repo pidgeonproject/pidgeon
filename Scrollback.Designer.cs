@@ -129,6 +129,7 @@ namespace Client
             this.Data.Location = new System.Drawing.Point(3, 3);
             this.Data.MinimumSize = new System.Drawing.Size(20, 20);
             this.Data.Name = "Data";
+            this.Data.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(Clicked);
             this.Data.ScriptErrorsSuppressed = true;
             this.Data.Size = new System.Drawing.Size(345, 262);
             this.Data.TabIndex = 2;
@@ -148,6 +149,7 @@ namespace Client
             this.webBrowser1.Location = new System.Drawing.Point(-41, -69);
             this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
             this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(Clicked);
             this.webBrowser1.ScriptErrorsSuppressed = true;
             this.webBrowser1.Size = new System.Drawing.Size(345, 262);
             this.webBrowser1.TabIndex = 3;

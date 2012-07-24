@@ -32,18 +32,70 @@ namespace Client
         {
             string result = text;
             string templink = text;
-            while (templink.Contains(" http://"))
+            string tempdata = text;
+            while (tempdata.Contains(" http://"))
             {
-                string link = templink.Substring(templink.IndexOf(" http://") + 8);
+                    string link = templink.Substring(templink.IndexOf(" http://") + 8);
+                    if (link.Length > 0)
+                    {
+                        if (link.Contains(" "))
+                        {
+                            link = link.Substring(0, link.IndexOf(" "));
+                        }
+                            result = result.Replace(" http://" + link, " <a href=\"http://" + link + "\">http://" + link + "</a>");
+                            templink = templink.Replace(" http://" + link, "");
+                            tempdata = tempdata.Substring(tempdata.IndexOf(" http://") + 8);
+                            continue;
+                        
+                    }
+                    tempdata = tempdata.Substring(tempdata.IndexOf(" http://") + 8);
+            }
+            tempdata = result;
+            templink = result;
+            while (tempdata.Contains(" #"))
+            {
+                string link = templink.Substring(templink.IndexOf(" #") + 2);
                 if (link.Length > 0)
                 {
                     if (link.Contains(" "))
                     {
-                        link = link.Substring(link.IndexOf(" "));
-                        result.Replace(" http://" + link, "<a target=new href=\"http://" + link + "\">http://" + link + "</a>");
-                        templink.Replace(" http://" + link, "");
+                        link = link.Substring(0, link.IndexOf(" "));
                     }
+                    result = result.Replace(" #" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
+                    templink = templink.Replace(" #" + link, "");
+                    tempdata = tempdata.Substring(tempdata.IndexOf(" #") + 2);
+                    continue;
+
                 }
+                tempdata = tempdata.Substring(tempdata.IndexOf(" #") + 2);
+            }
+            if (result.Contains("%USER%") && result.Contains("%/USER%"))
+            {
+                string link = result.Substring(templink.IndexOf("%USER%") + 6);
+                if (link.Length > 0)
+                {
+                    link = link.Substring(0, link.IndexOf("%/USER%"));
+                    result = result.Replace("%USER%" + link + "%/USER%", "<a href=\"pidgeon://user/#" + link + "\">" + link + "</a>");
+                }
+            }
+            templink = result;
+            tempdata = result;
+            while (tempdata.Contains(" https://"))
+            {
+                string link = templink.Substring(templink.IndexOf(" https://") + 9);
+                if (link.Length > 0)
+                {
+                    if (link.Contains(" "))
+                    {
+                        link = link.Substring(0, link.IndexOf(" "));
+                    }
+                    result = result.Replace(" https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
+                    templink = templink.Replace(" https://" + link, "");
+                    tempdata = tempdata.Substring(tempdata.IndexOf(" https://") + 9);
+                    continue;
+
+                }
+                tempdata = tempdata.Substring(tempdata.IndexOf(" https://") + 9);
             }
             return result;
         }

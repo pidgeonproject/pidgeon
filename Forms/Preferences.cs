@@ -57,6 +57,7 @@ namespace Client
             checkBox4.Checked = Configuration.DisplayCtcp;
             checkBox6.Checked = Configuration.ctcp_prot;
             checkBox8.Checked = Configuration.ConfirmAll;
+            checkBox9.Checked = Configuration.Notice;
             textBox5.Text = Configuration.logs_dir;
             textBox6.Text = Configuration.logs_name;
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
@@ -108,6 +109,7 @@ namespace Client
                 Configuration.notice_prot = checkBox7.Checked;
                 Configuration.DisplayCtcp = checkBox4.Checked;
                 Configuration.ctcp_prot = checkBox6.Checked;
+                Configuration.Notice = checkBox9.Checked;
                 Configuration.logs_dir = textBox5.Text;
                 Configuration.logs_name = textBox6.Text;
                 Core.ConfigSave();

@@ -15,13 +15,52 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Client
 {
-    class Buffers
+    public partial class Notification : Form
     {
+        public Notification()
+        {
+            InitializeComponent();
+        }
+
+        private void Notification_Load(object sender, EventArgs e)
+        {
+            Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - Height;
+            Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - Width;
+            this.TopMost = true;
+            this.Opacity = 0.6;
+        }
+
+        private void Notification_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
+        private void text_Click(object sender, EventArgs e)
+        {
+            Hide();
+        }
+
     }
 }

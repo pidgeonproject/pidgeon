@@ -75,9 +75,11 @@ namespace Client
             this.pINGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAGEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            //((System.ComponentModel.ISupportInitialize)(this.xContainer1)).BeginInit();
             this.xContainer1.Panel1.SuspendLayout();
             this.xContainer1.Panel2.SuspendLayout();
             this.xContainer1.SuspendLayout();
+            //((System.ComponentModel.ISupportInitialize)(this.xContainer4)).BeginInit();
             this.xContainer4.Panel1.SuspendLayout();
             this.xContainer4.Panel2.SuspendLayout();
             this.xContainer4.SuspendLayout();
@@ -418,10 +420,11 @@ namespace Client
             this.Size = new System.Drawing.Size(749, 333);
             this.xContainer1.Panel1.ResumeLayout(false);
             this.xContainer1.Panel2.ResumeLayout(false);
+            //((System.ComponentModel.ISupportInitialize)(this.xContainer1)).EndInit();
             this.xContainer1.ResumeLayout(false);
             this.xContainer4.Panel1.ResumeLayout(false);
             this.xContainer4.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.xContainer4)).EndInit();
+            //((System.ComponentModel.ISupportInitialize)(this.xContainer4)).EndInit();
             this.xContainer4.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);

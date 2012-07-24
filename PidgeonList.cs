@@ -85,9 +85,9 @@ namespace Client
                 text.Text = _us.Nick;
                 UserList.Add(_us, text);
                 Servers[_us._Network].Expand();
-                if (_us._Network._protocol.windows.ContainsKey(_us.Nick))
+                if (_us._Network._protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
                 {
-                    _us._Network._protocol.windows[_us.Nick].ln = text;
+                    _us._Network._protocol.windows[_us._Network.window + _us.Nick].ln = text;
                 }
                 this.ResumeLayout();
             }
@@ -167,6 +167,10 @@ namespace Client
 
         private void timer2_Tick(object sender, EventArgs e)
         {
+            if (Core.notification_waiting)
+            {
+                Core.DisplayNote();
+            }
             lock (NetworkQueue)
             {
                 foreach (Network it in NetworkQueue)
@@ -272,7 +276,7 @@ namespace Client
                             }
                             else
                             {
-                                cu.Key.ParentSv.ShowChat("!" + cu.Key.server);
+                                cu.Key.ParentSv.ShowChat("!" + cu.Key.window);
                             }
                             Core.network = cu.Key;
                             disconnectToolStripMenuItem.Visible = true;
@@ -288,7 +292,7 @@ namespace Client
                         if (cu.Value == e.Node)
                         {
                             Core.network = cu.Key._Network;
-                            cu.Key._Network._protocol.ShowChat(cu.Key.Nick);
+                            cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
                             closeToolStripMenuItem.Visible = true;
                             Core._Main.UpdateStatus();
                             return;
@@ -305,7 +309,7 @@ namespace Client
                             partToolStripMenuItem.Visible = true;
                             closeToolStripMenuItem.Visible = true;
                             cu.Key._Network.RenderedChannel = cu.Key;
-                            cu.Key._Network._protocol.ShowChat(cu.Key.Name);
+                            cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
                             Core._Main.UpdateStatus();
                             return;
                         }
@@ -323,16 +327,37 @@ namespace Client
             if (items.SelectedNode == null)
             { return; }
 
+            RemoveItem(items.SelectedNode);
+        }
 
-
+        public void RemoveItem(TreeNode Item)
+        {
             try
             {
-                if (Servers.ContainsValue(items.SelectedNode))
+                if (ServiceList.ContainsValue(Item))
+                {
+                    ProtocolSv network = null;
+                    foreach (var curr in ServiceList)
+                    {
+                        if (curr.Value == Item)
+                        {
+                            network = curr.Key;
+                            network.Exit();
+                        }
+                        foreach (TreeNode node in Item.Nodes)
+                        {
+                            RemoveItem(node);
+                        }
+                        items.Nodes.Remove(items.SelectedNode);
+                    }
+                }
+
+                if (Servers.ContainsValue(Item))
                 {
                     Network network = null;
                     foreach (var cu in Servers)
                     {
-                        if (cu.Value == items.SelectedNode)
+                        if (cu.Value == Item)
                         {
                             network = cu.Key;
                             if (cu.Key.Connected)
@@ -346,16 +371,20 @@ namespace Client
                     {
                         Core.Connections.Remove(network._protocol);
                         Servers.Remove(network);
-                        items.Nodes.Remove(items.SelectedNode);
+                        foreach (TreeNode item in items.SelectedNode.Nodes)
+                        {
+                            RemoveItem(item);
+                        }
+                        items.Nodes.Remove(Item);
                     }
                 }
 
-                if (UserList.ContainsValue(items.SelectedNode))
+                if (UserList.ContainsValue(Item))
                 {
-                    User item = null;
+                    User curr = null;
                     foreach (var cu in UserList)
                     {
-                        if (cu.Value == items.SelectedNode)
+                        if (cu.Value == Item)
                         {
                             lock (cu.Key._Network.PrivateChat)
                             {
@@ -364,32 +393,32 @@ namespace Client
                                     cu.Key._Network.PrivateChat.Remove(cu.Key);
                                 }
                             }
-                            item = cu.Key;
+                            curr = cu.Key;
                             break;
                         }
                     }
-                        if (item != null)
+                    if (curr != null)
+                    {
+                        items.Nodes.Remove(Item);
+                        if (curr._Network._protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
                         {
-                            items.Nodes.Remove(items.SelectedNode);
-                            if (item._Network._protocol.windows.ContainsKey(item.Nick))
+                            lock (curr._Network._protocol.windows)
                             {
-                            lock (item._Network._protocol.windows)
-                            {
-                                    item._Network._protocol.windows[item.Nick].Visible = false;
-                                    item._Network._protocol.windows[item.Nick].Dispose();
-                                }
+                                curr._Network._protocol.windows[curr._Network.window + curr.Nick].Visible = false;
+                                curr._Network._protocol.windows[curr._Network.window + curr.Nick].Dispose();
                             }
-                            UserList.Remove(item);
-                            return;
                         }
+                        UserList.Remove(curr);
+                        return;
+                    }
                 }
 
-                if (Channels.ContainsValue(items.SelectedNode))
+                if (Channels.ContainsValue(Item))
                 {
                     Channel item = null;
                     foreach (var cu in Channels)
                     {
-                        if (cu.Value == items.SelectedNode)
+                        if (cu.Value == Item)
                         {
                             if (cu.Key.ok)
                             {
@@ -411,7 +440,7 @@ namespace Client
                     }
                     if (item != null)
                     {
-                        items.Nodes.Remove(items.SelectedNode);
+                        items.Nodes.Remove(Item);
                         lock (item.retrieveWindow())
                         {
                             if (item.retrieveWindow() != null)
@@ -430,7 +459,6 @@ namespace Client
             {
                 Core.handleException(f);
             }
-
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)

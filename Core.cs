@@ -47,10 +47,16 @@ namespace Client
 
         public static Exception recovery_exception;
         public static Thread _RecoveryThread;
+        public static Notification notification;
         public static List<Thread> SystemThreads = new List<Thread>();
 
         public static Network network;
         public static Main _Main;
+        public static bool notification_waiting = false;
+        private static string notification_data = "";
+        private static string notification_caption = "";
+        private static int randomuq = 0;
+        private static bool sequence_worklock = false;
         public static TrafficScanner trafficscanner;
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
@@ -74,7 +80,15 @@ namespace Client
                 SystemThreads.Add(ThUp);
                 ConfigurationLoad();
                 MicroChat.mc = new MicroChat();
+                notification = new Notification();
                 ScriptingCore.Load();
+                if (!File.Exists(ConfigFile))
+                {
+                    Network.Highlighter simple = new Network.Highlighter();
+                    simple.enabled = true;
+                    simple.text = "$nick";
+                    Configuration.HighlighterList.Add(simple);
+                }
                 return true;
             }
             Updater _finalisingupdater = new Updater();
@@ -193,12 +207,12 @@ namespace Client
                                 {
                                     if (network.Connected)
                                     {
-                                        if (!network._protocol.windows.ContainsKey(channel))
+                                        if (!network._protocol.windows.ContainsKey(network.window + channel))
                                         {
                                             network.Private(channel);
                                         }
-                                        network._protocol.ShowChat(channel);
-                                        network._protocol.windows[channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                                        network._protocol.ShowChat(network.window + channel);
+                                        network._protocol.windows[network.window + channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
                                         network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
                                         return false;
                                     }
@@ -212,11 +226,11 @@ namespace Client
                             {
                                 if (network.Connected)
                                 {
-                                    if (!network._protocol.windows.ContainsKey(channel))
+                                    if (!network._protocol.windows.ContainsKey(network.window + channel))
                                     {
                                         network.Private(channel);
                                     }
-                                    network._protocol.ShowChat(channel);
+                                    network._protocol.ShowChat(network.window + channel);
                                 }
                             }
                             return false;
@@ -269,7 +283,7 @@ namespace Client
                                 Window window = curr.retrieveWindow();
                                 if (window != null)
                                 {
-                                    network._protocol.ShowChat(window.name);
+                                    network._protocol.ShowChat(network.window + window.name);
                                 }
                             }
                             network._protocol.Join(channel);
@@ -404,6 +418,69 @@ namespace Client
             return true;
         }
 
+        public static void DisplayNote()
+        {
+            if (Configuration.Notice == false)
+            {
+                return;
+            }
+            if (_KernelThread == Thread.CurrentThread)
+            {
+                if (notification_waiting)
+                {
+                    bool Focus = false;
+                    notification.text.Text = notification_data;
+                    notification.label1.Text = notification_caption;
+                    notification_waiting = false;
+                    if (Core._Main.Chat != null)
+                    {
+                        if (Core._Main.Chat.textbox.richTextBox1.Focused)
+                        {
+                            Focus = true;
+                        }
+                    }
+                    if (!notification.Visible)
+                    {
+                        if (notification.Width < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && notification.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
+                        {
+                            notification.Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - notification.Height;
+                            notification.Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - notification.Width;
+                        }
+                        notification.Show();
+                        if (Focus)
+                        {
+                            Core._Main.Focus();
+                            if (Core._Main.Chat != null)
+                            {
+                                Core._Main.Chat.textbox.Focus();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void DisplayNote(string data, string caption)
+        {
+            if (Configuration.Notice == false)
+            {
+                return;
+            }
+            data = Protocol.decrypt_text(data.Replace("%/NICK%", "").Replace("%NICK%", "").Replace("%USER%", "").Replace("%/USER%", ""));
+            if (_KernelThread == Thread.CurrentThread)
+            {
+                notification_waiting = true;
+                notification_data = data;
+                notification_caption = caption;
+                DisplayNote();
+                return;
+            }
+            notification_waiting = true;
+            notification_data = data;
+            notification_caption = caption;
+            return;
+        }
+
         public static bool Backup(string file)
         {
             if (File.Exists(file + "~"))
@@ -416,6 +493,19 @@ namespace Client
                 File.Copy(file, file + "~", true);
             }
             return true;
+        }
+
+        public static string retrieveRandom()
+        {
+            while (sequence_worklock)
+            {
+                Thread.Sleep(100);
+            }
+            sequence_worklock = true;
+            randomuq++;
+            int random = randomuq;
+            sequence_worklock = false;
+            return ":" + random.ToString() + "*";
         }
 
         private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf, string nn = "confname")
@@ -468,12 +558,12 @@ namespace Client
             makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
             makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
             makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+            makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
 
-            
 
             lock (Configuration.HighlighterList)
-            {  
-                foreach(Network.Highlighter high in Configuration.HighlighterList)
+            {
+                foreach (Network.Highlighter high in Configuration.HighlighterList)
                 {
                     curr = config.CreateElement("list");
                     XmlAttribute highlightenabled = config.CreateAttribute("enabled");
@@ -515,6 +605,15 @@ namespace Client
                     {
                         if (curr.Attributes.Count > 0)
                         {
+                            if (curr.Name == "list")
+                            {
+                                Network.Highlighter list = new Network.Highlighter();
+                                list.simple = bool.Parse(curr.Attributes[0].Value);
+                                list.text = curr.Attributes[1].Value;
+                                list.enabled = bool.Parse(curr.Attributes[2].Value);
+                                Configuration.HighlighterList.Add(list);
+                                continue;
+                            }
                             if (curr.Attributes[0].Name == "confname")
                             {
                                 switch (curr.Attributes[0].Value)
@@ -613,6 +712,9 @@ namespace Client
                                         Configuration.CheckUpdate = bool.Parse(curr.InnerText);
                                         break;
                                     case "list":
+                                        break;
+                                    case "notification.tray":
+                                        Configuration.Notice = bool.Parse(curr.InnerText);
                                         break;
 
                                 }
