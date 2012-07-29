@@ -33,10 +33,9 @@ namespace Client
         private void InitializeComponent()
         {
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.ScrollBar = new System.Windows.Forms.HScrollBar();
             this.pt = new System.Windows.Forms.PictureBox();
-            this.buffer = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pt)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buffer)).BeginInit();
             this.SuspendLayout();
             // 
             // vScrollBar1
@@ -48,39 +47,40 @@ namespace Client
             this.vScrollBar1.TabIndex = 0;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
+            // ScrollBar
+            // 
+            this.ScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ScrollBar.LargeChange = 1;
+            this.ScrollBar.Location = new System.Drawing.Point(0, 315);
+            this.ScrollBar.Maximum = 0;
+            this.ScrollBar.Name = "ScrollBar";
+            this.ScrollBar.Size = new System.Drawing.Size(540, 24);
+            this.ScrollBar.TabIndex = 3;
+            this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
+            // 
             // pt
             // 
             this.pt.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pt.Location = new System.Drawing.Point(0, 0);
             this.pt.Name = "pt";
-            this.pt.Size = new System.Drawing.Size(540, 339);
+            this.pt.Size = new System.Drawing.Size(540, 315);
+            this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(ClickHandler);
             this.pt.TabIndex = 1;
             this.pt.TabStop = false;
             this.pt.Paint += new System.Windows.Forms.PaintEventHandler(this.RepaintWindow);
-            // 
-            // buffer
-            // 
-            this.buffer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.buffer.Location = new System.Drawing.Point(0, 0);
-            this.buffer.Name = "buffer";
-            this.buffer.Size = new System.Drawing.Size(540, 339);
-            this.buffer.TabIndex = 2;
-            this.buffer.TabStop = false;
-            this.buffer.Click += new System.EventHandler(this.buffer_Click);
             // 
             // SBABox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.buffer);
             this.Controls.Add(this.pt);
+            this.Controls.Add(this.ScrollBar);
             this.Controls.Add(this.vScrollBar1);
             this.DoubleBuffered = true;
             this.Name = "SBABox";
             this.Size = new System.Drawing.Size(563, 339);
             this.Load += new System.EventHandler(this.SBABox_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pt)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.buffer)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -88,7 +88,7 @@ namespace Client
         #endregion
 
         private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.HScrollBar ScrollBar;
         private System.Windows.Forms.PictureBox pt;
-        private System.Windows.Forms.PictureBox buffer;
     }
 }

@@ -1,4 +1,24 @@
-﻿using System;
+﻿/***************************************************************************
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -18,6 +38,7 @@ namespace Client
         private BufferedGraphicsContext backbufferContext;
         private BufferedGraphics backbufferGraphics;
         private int offset = 0;
+        private int currentX = 0;
         private Graphics drawingGraphics;
         public Scrollback scrollback;
 
@@ -27,6 +48,7 @@ namespace Client
             private SBABox owner;
             public Color textc;
             public Color backc;
+            public bool linked = false;
             public string link;
             public bool menu = false;
             public ContentText(string Text, SBABox SBAB, Color color)
@@ -41,47 +63,48 @@ namespace Client
 
         public class Link
         {
-            private int X;
-            private int Y;
-            private int Width;
-            private int Height;
+            public int X;
+            public int Y;
+            public int Width;
+            public int Height;
             private SBABox parent;
-            Label area;
-            public Link(int x, int y, int width, int height, SBABox SBAB, string http)
+            public string _name;
+            public string _text;
+            public ContentText linkedtext;
+            //public LinkLabel area;
+            public Link(int x, int y, System.Drawing.Color normal, int width, int height, SBABox SBAB, string http, string label, ContentText text)
             {
                 X = x;
                 Y = y;
                 Width = width;
-                area = new Label();
-                area.BackColor = Color.Thistle;
-                area.Top = X;
-                area.Left = Y;
-                area.Width = width;
-                area.Height = height;
-                area.Name = http;
+                _name = label;
+                _text = http;
+                //area = new LinkLabel();
+                //area.BackColor = Color.Transparent;
                 parent = SBAB;
-                parent.Controls.Add(area);
-                area.BringToFront();
-                area.CreateControl();
-                area.MouseDown += new MouseEventHandler(parent.ClickL);
-                area.ContextMenu = parent.ContextMenu;
-                lock (parent.Controls)
-                {
-                    parent.Controls.Add(area);
-                }
+                //area.Left = X;
+                //area.Top = Y;
+                linkedtext = text;
+                //area.AutoSize = false;
+                //area.LinkColor = Color.Transparent;
+                //area.Font = parent.Font;
+                //area.Text = label;
+                //area.ActiveLinkColor = Color.Transparent;
+                //area.VisitedLinkColor = Color.Transparent;
+                //area.Width = width;
+                //area.Height = height;
+                
+                //area.Name = http;
+                //area.CreateControl();
+                //area.ForeColor = normal;
+                //area.MouseClick += new MouseEventHandler(parent.ClickHandler);
+                //area.ContextMenu = parent.ContextMenu;
+
                 Height = height;
             }
             public void Dispose()
             {
-                lock (parent.Controls)
-                {
-                    if (parent.Controls.Contains(area))
-                    {
-                        parent.Controls.Remove(area);
-                        area.MouseDown -= new MouseEventHandler(parent.ClickL);
-                        area.Dispose();
-                    }
-                }
+                linkedtext = null;
             }
         }
 
@@ -96,7 +119,7 @@ namespace Client
                 {
                     return;
                 }
-                    text.Add(line);
+                text.Add(line);
             }
             public void insertData(string line)
             {
@@ -123,7 +146,7 @@ namespace Client
                 owner = SBAB;
             }
             public Line()
-            { 
+            {
                 text = new List<ContentText>();
             }
         }
@@ -151,11 +174,10 @@ namespace Client
             {
                 base.BackColor = value;
                 pt.BackColor = value;
-                buffer.BackColor = value;
                 RedrawText();
             }
         }
-        public string Text
+        public override string Text
         {
             get
             {
@@ -188,66 +210,95 @@ namespace Client
         public void RedrawText()
         {
             //
-                int X = 0;
-                int Y = 0 - offset;
-                
-                Graphics _t;
-                if (drawingGraphics == null)
-                {
-                    return;
-                }
-                _t = drawingGraphics;
-                ClearLink();
+            float X = 0 - currentX;
+            float Y = 0 - offset;
+
+            Graphics _t;
+            if (drawingGraphics == null)
+            {
+                return;
+            }
+            _t = drawingGraphics;
+            ClearLink();
 
 
-                _t.Clear(BackColor);
-                foreach (Line text in lines)
+            _t.Clear(BackColor);
+            foreach (Line text in lines)
+            {
+                X = 0 - currentX;
+                foreach (ContentText part in text.text)
                 {
-                    X = 0;
-                    foreach (ContentText part in text.text)
+                    if (part.text != "")
                     {
                         if ((Y + (int)Font.Size + 8) > 0 && (Y + (int)Font.Size + 8) < this.Height)
                         {
+                            Brush _b = new SolidBrush(part.textc);
                             SizeF stringSize = _t.MeasureString(part.text, this.Font);
+                            _t.DrawString(part.text, this.Font, _b, X, Y);
                             if (part.link != null)
                             {
-                                Pen pen = new Pen(part.textc);
-                                _t.DrawLine(pen, X, Y + (int)stringSize.Height,X + (int)stringSize.Width,  Y + (int)stringSize.Height);
-                                Link http = new Link(X,Y, (int) stringSize.Width, (int) stringSize.Height, this, part.link);
-                                lock (link)
+                                if (!part.linked)
                                 {
-                                    link.Add(http);
+                                    part.linked = true;
+                                    Pen pen = new Pen(part.textc);
+                                    _t.DrawLine(pen, X, Y + (int)stringSize.Height, X + (int)stringSize.Width, Y + (int)stringSize.Height);
+                                    Link http = new Link((int)X, (int)Y, part.textc, (int)stringSize.Width, (int)stringSize.Height, this, part.link, part.text, part);
+                                    lock (link)
+                                    {
+                                        link.Add(http);
+                                    }
                                 }
                             }
-                            Brush _b = new SolidBrush(part.textc);
-                            _t.DrawString(part.text, this.Font, _b, X, Y);
-                            X = X + (int)stringSize.Width + 2;
+                            
+                            X = X + stringSize.Width;
+                            if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
+                            {
+                                ScrollBar.Maximum = (int)(X + stringSize.Width);
+                            }
                         }
                     }
-                    Y = Y + (int)Font.Size + 6;
                 }
-                vScrollBar1.Maximum = lines.Count;
-                if (lines.Count > 0)
+                Y = Y + (int)Font.Size + 6;
+            }
+            vScrollBar1.Maximum = lines.Count;
+            if (lines.Count > 0)
+            {
+                vScrollBar1.Enabled = true;
+            }
+            pt.Invalidate();
+        }
+
+        public void ClickHandler(Object sender, MouseEventArgs e)
+        {
+            Link httparea = null;
+            foreach (Link l in link)
+            {
+                if ((e.X >= l.X && e.X <= l.X + l.Width) && (e.Y <= l.Y + l.Height && e.Y >= l.Y))
                 {
-                    vScrollBar1.Enabled = true;
+                    httparea = l;
+                    break;
                 }
-                pt.Invalidate();
-        }
+            }
+            if (httparea != null)
+            {
+                if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                {
+                    scrollback.Click_R(httparea._name, httparea._text);
+                }
 
-        public void ClickR(Object sender, MouseEventArgs e)
-        {
-            
-        }
-
-        public void ClickL(Object sender, EventArgs e)
-        {
-            
+                if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                {
+                    scrollback.Click_L(httparea._name);
+                }
+            }
         }
 
         public bool ClearLink()
         {
             foreach (Link il in link)
             {
+                il.linkedtext.linked = false;
+                il.linkedtext = null;
                 il.Dispose();
             }
             link.Clear();
@@ -345,7 +396,7 @@ namespace Client
 
         private void Scrolled(int x)
         {
-                offset = ((int)Font.Size + 6) * x;
+            offset = ((int)Font.Size + 6) * x;
         }
 
         public void insertLine(Line line)
@@ -358,7 +409,6 @@ namespace Client
 
         private void SBABox_Load(object sender, EventArgs e)
         {
-            buffer.Visible = false;
             backbufferContext = BufferedGraphicsManager.Current;
             initializationComplete = true;
             vScrollBar1.Minimum = 0;
@@ -368,7 +418,7 @@ namespace Client
 
             RecreateBuffers();
 
-            this.SetStyle(  
+            this.SetStyle(
             ControlStyles.UserPaint |
             ControlStyles.AllPaintingInWmPaint |
             ControlStyles.DoubleBuffer, true);
@@ -385,6 +435,12 @@ namespace Client
         private void buffer_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
+        {
+            currentX = ScrollBar.Value;
+            Redraw();
         }
     }
 }
