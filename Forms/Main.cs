@@ -61,8 +61,12 @@ namespace Client
             }
         }
 
-	    private void _Enter(object sender, KeyPressEventArgs pt){}
-
+        /// <summary>
+        /// Create a new chat
+        /// </summary>
+        /// <param name="Chat"></param>
+        /// <param name="WindowOwner"></param>
+        /// <param name="Focus"></param>
         public void CreateChat(Window Chat, Protocol WindowOwner, bool Focus = true)
         {
             Chat.Init();
@@ -77,7 +81,10 @@ namespace Client
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-            Core._Main.sX.Panel2.Controls.Add(Chat);
+            lock (Core._Main.sX.Panel2.Controls)
+            {
+                Core._Main.sX.Panel2.Controls.Add(Chat);
+            }
         }
 
         /// <summary>
@@ -128,6 +135,7 @@ namespace Client
                 main.Redraw();
                 Chat.Making = false;
                 done = true;
+                showToolStripMenuItem.Visible = false;
             }
             catch (Exception f)
             {
@@ -195,6 +203,7 @@ namespace Client
         private void Main_Load(object sender, EventArgs e)
         {
             _Load();
+            miscToolStripMenuItem.Visible = false;
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)

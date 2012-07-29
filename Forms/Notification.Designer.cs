@@ -53,6 +53,7 @@ namespace Client
             // 
             // pictureBox1
             // 
+            this.pictureBox1.Image = global::Client.Properties.Resources.icon;
             this.pictureBox1.InitialImage = null;
             this.pictureBox1.Location = new System.Drawing.Point(12, 44);
             this.pictureBox1.Name = "pictureBox1";

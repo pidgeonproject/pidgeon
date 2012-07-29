@@ -34,6 +34,8 @@ namespace Client
         public string name;
         public bool writable;
         public bool isChannel = false;
+        public bool locked = false;
+        public int locktime = 0;
         public TreeNode ln;
         public Protocol _Protocol = null;
         public bool MicroBox = false;
@@ -65,6 +67,7 @@ namespace Client
             listView.View = View.Details;
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            listView.Columns[0].Width = listView.Width;
             listView.ForeColor = Configuration.CurrentSkin.fontcolor;
             listViewd.View = View.Details;
             listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
@@ -72,6 +75,7 @@ namespace Client
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
+            listViewd.Columns[0].Width = listViewd.Width;
             Redraw();
         }
 
@@ -137,11 +141,33 @@ namespace Client
                                 }
                             }
                         }
-                        kick = "KICK " + name + " " + Decode(user.Text) + " " + Configuration.DefaultReason;
+                        kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
                         if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + ban + "\n" + kick }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
                             _channel._Network._protocol.Transfer(ban, Configuration.Priority.High);
                             _channel._Network._protocol.Transfer(kick, Configuration.Priority.High);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SendCtcp(string message)
+        {
+            if (isChannel)
+            {
+                if (SelectedUser != null)
+                {
+                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    {
+                        Channel _channel = _Network.getChannel(name);
+                        if (_channel != null)
+                        {
+                            if (Configuration.DisplayCtcp)
+                            {
+                                _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                            }
+                            _channel._Network._protocol.Transfer("PRIVMSG " +  Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
                     }
                 }
@@ -375,6 +401,7 @@ namespace Client
                 Channel item = _Network.getChannel(name);
                 if (item != null)
                 {
+                    locked = false;
                     item.redrawUsers();
                 }
             }
@@ -386,7 +413,7 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    SendCtcp("VERSION");
                 }
             }
         }
@@ -397,7 +424,7 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
                 }
             }
         }
@@ -408,7 +435,7 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    SendCtcp("PAGE");
                 }
             }
         }
@@ -419,7 +446,7 @@ namespace Client
             {
                 if (SelectedUser != null)
                 {
-
+                    SendCtcp("TIME");
                 }
             }
         }
@@ -433,7 +460,13 @@ namespace Client
                     _control.Remove(this);
                 }
             }
-
+            lock (Core._Main.sX.Panel2.Controls)
+            {
+                if (Core._Main.sX.Panel2.Controls.Contains(this))
+                {
+                    Core._Main.sX.Panel2.Controls.Remove(this);
+                }
+            }
             if (_Protocol != null)
             {
                 lock (_Protocol.windows)
@@ -457,6 +490,14 @@ namespace Client
         private void listViewd_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedUser = listViewd.SelectedItems;
+        }
+
+        private void listWork(object sender, EventArgs e)
+        {
+            locked = true;
+            lockwork.Stop();
+            lockwork.Enabled = true;
+            lockwork.Start();
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
@@ -499,9 +540,10 @@ namespace Client
             }
         }
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        private void lo_Tick(object sender, EventArgs e)
         {
-
+            locked = false;
+            lockwork.Enabled = false;
         }
     }
 }

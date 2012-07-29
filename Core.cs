@@ -43,6 +43,7 @@ namespace Client
         public static string ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar + "configuration.dat";
         public static string SelectedLanguage = "en";
         public static List<Protocol> Connections = new List<Protocol>();
+        public static Thread Thread_logs;
         public static Thread ThUp;
 
         public static Exception recovery_exception;
@@ -61,6 +62,61 @@ namespace Client
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
 
+        public class IO
+        { 
+            public class fl
+            {
+                public string filename;
+                public string line;
+                public fl(string File, string Line)
+                {
+                    line = Line;
+                    filename = File;
+                }
+            }
+            public static List<fl> processing = new List<fl>();
+            public static List<fl> data = new List<fl>();
+            
+            public static void Load()
+            {
+                while (true)
+                {
+                    try
+                    {
+                        lock (processing)
+                        {
+                            if (processing.Count > 0)
+                            {
+                                data.AddRange(processing);
+                                processing.Clear();
+                            }
+                        }
+                        if (data.Count > 0)
+                        {
+                            foreach (fl xx in data)
+                            {
+                                File.AppendAllText(xx.filename, xx.line);
+                            }
+                        }
+                        data.Clear();
+                    }
+                    catch (Exception)
+                    { 
+                        
+                    }
+                    Thread.Sleep(2000);
+                }
+            }
+
+            public static void InsertText(string line, string file)
+            {
+                lock (processing)
+                {
+                    processing.Add(new fl(file, line));
+                }
+            }
+        }
+
         public static bool Load()
         {
             _KernelThread = System.Threading.Thread.CurrentThread;
@@ -76,9 +132,14 @@ namespace Client
             if (!System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
             {
                 ThUp = new Thread(Updater.Run);
+                ThUp.Name = "pidgeon service";
                 ThUp.Start();
                 SystemThreads.Add(ThUp);
                 ConfigurationLoad();
+                Thread_logs = new Thread(IO.Load);
+                Thread_logs.Name = "Logs";
+                SystemThreads.Add(Thread_logs);
+                Thread_logs.Start();
                 MicroChat.mc = new MicroChat();
                 notification = new Notification();
                 ScriptingCore.Load();
@@ -114,6 +175,11 @@ namespace Client
                     SystemThreads.Remove(name);
                 }
             }
+        }
+
+        public static void Debuglog(string data)
+        {
+
         }
 
         public static bool ProcessCommand(string command)
@@ -466,7 +532,7 @@ namespace Client
             {
                 return;
             }
-            data = Protocol.decrypt_text(data.Replace("%/NICK%", "").Replace("%NICK%", "").Replace("%USER%", "").Replace("%/USER%", ""));
+            data = Protocol.decrypt_text(data.Replace("%/L%", "").Replace("%L%", "").Replace("%USER%", "").Replace("%/USER%", ""));
             if (_KernelThread == Thread.CurrentThread)
             {
                 notification_waiting = true;
@@ -555,10 +621,12 @@ namespace Client
             makenode("updater.check", Configuration.CheckUpdate.ToString(), curr, confname, config, xmlnode);
 
             makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
+            makenode("scrollback_plimit", Configuration.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
             makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
             makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
             makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
             makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
+            makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
 
 
             lock (Configuration.HighlighterList)
@@ -699,24 +767,27 @@ namespace Client
                                     case "logs.txt":
                                         Configuration.logs_txt = bool.Parse(curr.InnerText);
                                         break;
+                                    case "scrollback_plimit":
+                                        Configuration.scrollback_plimit = int.Parse(curr.InnerText);
+                                        break;
+                                    case "notification.tray":
+                                        Configuration.Notice = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "pidgeon.size":
+                                        Configuration.Depth = int.Parse(curr.InnerText);
+                                        break;
                                     case "history.nick":
                                         Configuration.LastNick = curr.InnerText;
                                         break;
                                     case "history.host":
                                         Configuration.LastHost = curr.InnerText;
                                         break;
-                                    case "history.port":
-                                        Configuration.LastPort = curr.InnerText;
-                                        break;
                                     case "updater.check":
                                         Configuration.CheckUpdate = bool.Parse(curr.InnerText);
                                         break;
-                                    case "list":
+                                    case "history.port":
+                                        Configuration.LastPort = curr.InnerText;
                                         break;
-                                    case "notification.tray":
-                                        Configuration.Notice = bool.Parse(curr.InnerText);
-                                        break;
-
                                 }
                             }
                         }
@@ -762,12 +833,13 @@ namespace Client
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        public static bool connectIRC(string server, int port = 6667)
+        public static bool connectIRC(string server, int port = 6667, string pw = "")
         {
             ProtocolIrc protocol = new ProtocolIrc();
             Connections.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
+            protocol.pswd = pw;
             protocol._server = new Network(server, protocol);
             network = protocol._server;
             protocol._server._protocol = protocol;

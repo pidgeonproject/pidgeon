@@ -278,6 +278,7 @@
   <ItemGroup>
     <Content Include="Languages\cs_czech.txt" />
     <Content Include="Languages\en_english.txt" />
+    <None Include="Resources\icon.png" />
     <Content Include="tcl84.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

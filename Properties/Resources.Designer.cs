@@ -62,6 +62,29 @@ namespace Client.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to window-menu-file=File;
+        ///window-menu-quit=Ukoncit;
+        ///window-menu-conf=Nastaveni;
+        ///window-menu-help=Help;
+        ///invalid-server=Toto neni platny nazev serveru;
+        ///invalid-command=Invalid command;
+        ///loading-server=Pripojuji se k $1;
+        ///nick-e1=Toto neni platny nick;
+        ///nick=Tvuj nick byl nastaven;
+        ///invalid-channel=Toto neni platny kanal;
+        ///error1=You need to be connected;
+        ///join=$1 just joined the channel;
+        ///left=The $1 just left the channel;
+        ///topic-data=Topic was set at $2 by $1 (provided by server);
+        ///window-p1=$1 left the ch [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string cs_czech {
+            get {
+                return ResourceManager.GetString("cs_czech", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to window-menu-file=File;
         ///window-menu-quit=Exit;
         ///window-menu-conf=Preferences;
         ///window-menu-help=Help;
@@ -71,11 +94,29 @@ namespace Client.Properties {
         ///nick-e1=This is not a valid nick;
         ///nick=Your nick has been set;
         ///invalid-channel=This is not a valid channel;
-        ///error1=You need to be connected;.
+        ///error1=You need to be connected;
+        ///join=$1 just joined the channel;
+        ///left=The $1 just left the channel;
+        ///topic-data=Topic was set at $2 by $1 (provided by server);
+        ///window-p1=$1 left [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string en_english {
             get {
                 return ResourceManager.GetString("en_english", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap icon {
+            get {
+                object obj = ResourceManager.GetObject("icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Image1 {
+            get {
+                object obj = ResourceManager.GetObject("Image1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
     }

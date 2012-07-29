@@ -28,6 +28,7 @@ namespace Client
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         public bool Connected = false;
         public int type = 0;
+        public string pswd;
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -80,7 +81,7 @@ namespace Client
                                 }
                                 break;
                             case 1:
-                                if (network.UModes.Contains(_x))
+                                if (network.CUModes.Contains(_x))
                                 {
                                     continue;
                                 }

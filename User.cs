@@ -30,19 +30,19 @@ namespace Client
         public Protocol.Mode ChannelMode = new Protocol.Mode();
         public string Nick;
         public List<Channel> ChannelList;
-        public User(string _Nick, string host, Network x, string ident)
+        public User(string _Nick, string host, Network network, string ident)
         {
             ChannelList = new List<Channel>();
-            _Network = x;
+            _Network = network;
             if (_Nick != "")
             {
                 char prefix = _Nick[0];
-                if (x.UChars.Contains(prefix))
+                if (network.UChars.Contains(prefix))
                 {
-                    int Mode = x.UChars.IndexOf(prefix);
-                    if (x.CUModes.Count >= Mode + 1)
+                    int Mode = network.UChars.IndexOf(prefix);
+                    if (network.CUModes.Count >= Mode + 1)
                     {
-                        ChannelMode.mode("+" + x.CUModes[Mode].ToString());
+                        ChannelMode.mode("+" + network.CUModes[Mode].ToString());
                         _Nick = _Nick.Substring(1);
                     }
                 }

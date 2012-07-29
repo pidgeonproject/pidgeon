@@ -241,6 +241,11 @@ namespace Client
                     Core._Main.UpdateStatus();
                     if (Chat != null)
                     {
+                        if (Chat.locked)
+                        {
+                            Redraw = true;
+                            return;
+                        }
                         if (Chat.listView.Visible)
                         {
                             listView = Chat.listViewd;

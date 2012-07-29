@@ -203,6 +203,8 @@ namespace Client
         /// </summary>
         public static int Depth = 20000;
 
+        public static bool SearchRegex = true;
+
         /// <summary>
         /// Position of textbox scroll
         /// </summary>
@@ -221,6 +223,8 @@ namespace Client
         /// Position of window
         /// </summary>
         public static int window_size = 0;
+
+        public static int scrollback_plimit = 800;
 
         public enum TypeOfBan
         { 

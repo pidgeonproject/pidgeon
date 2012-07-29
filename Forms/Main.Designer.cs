@@ -67,6 +67,9 @@ namespace Client
             this.attachToMicroChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detachFromMicroChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.miscToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,6 +77,7 @@ namespace Client
             this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -137,6 +141,8 @@ namespace Client
             this.fileToolStripMenuItem,
             this.toolsToolStripMenuItem,
             this.userToolStripMenuItem,
+            this.miscToolStripMenuItem,
+            this.showToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -247,6 +253,26 @@ namespace Client
             this.userToolStripMenuItem.Text = "User";
             this.userToolStripMenuItem.Visible = false;
             // 
+            // miscToolStripMenuItem
+            // 
+            this.miscToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchToolStripMenuItem});
+            this.miscToolStripMenuItem.Name = "miscToolStripMenuItem";
+            this.miscToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.miscToolStripMenuItem.Text = "Misc";
+            // 
+            // searchToolStripMenuItem
+            // 
+            this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.searchToolStripMenuItem.Text = "Search";
+            // 
+            // showToolStripMenuItem
+            // 
+            this.showToolStripMenuItem.Name = "showToolStripMenuItem";
+            this.showToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.showToolStripMenuItem.Text = "Show";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -261,14 +287,14 @@ namespace Client
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -304,6 +330,7 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -325,7 +352,6 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem contentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer sX;
         public System.Windows.Forms.ToolStripStatusLabel toolStripCurrent;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusChannel;
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
@@ -337,5 +363,9 @@ namespace Client
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem attachToMicroChatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem detachFromMicroChatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem miscToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem searchToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
+        public System.Windows.Forms.SplitContainer sX;
     }
 }

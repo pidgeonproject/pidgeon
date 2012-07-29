@@ -24,6 +24,7 @@ using System.IO;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Linq;
 
 
 
@@ -31,6 +32,9 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
+        private bool db = false;
+        public bool Modified;
+        private int scrollback_max = Configuration.scrollback_plimit;
         private bool isDisposing;
         private List<ContentLine> Line = new List<ContentLine>();
         public TextBox Last;
@@ -39,6 +43,10 @@ namespace Client
         public bool show = true;
         public bool px1 = true;
         public bool px2 = false;
+        private string Link = "";
+
+
+        public bool simple = false;
 
         public class ContentLine : IComparable
         {
@@ -62,8 +70,6 @@ namespace Client
             public bool notice = false;
             public MessageStyle style;
         }
-        private bool db = false;
-        public bool Modified;
 
 
         protected override void Dispose(bool disposing)
@@ -81,28 +87,35 @@ namespace Client
 
         public void create()
         {
-            //this.SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint, true);
-            //this.SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            //this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
 
             refresh.Enabled = true;
+            simpleview.Visible = false;
             Scrollback_Load(null, null);
-            Data.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"></body></html>";
-            webBrowser1.DocumentText = "<html><head> </head><body onLoad=\"scroll()\" STYLE=\"background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\"></body></html>";
+
             Recreate(true);
         }
 
-        public void ResizeWebs(object sender, EventArgs e)
+        public void Switch(bool advanced)
         {
-            Data.Top = 0;
-            Data.Left = 0;
-            Data.Width = pwx1.Width - 2;
-            Data.Height = pwx1.Height;
-            webBrowser1.Top = 0;
-            webBrowser1.Left = 0;
-            webBrowser1.Height = pwx2.Height;
-            webBrowser1.Width = pwx2.Width - 2;
+            Modified = true;
+            if (advanced)
+            {
+                if (simple)
+                {
+                    simple = false;
+                    RT.Visible = true;
+                    simpleview.Visible = false;
+                    //pwx2.Visible = true;
+                    Recreate(true);
+                    return;
+                }
+                return;
+            }
+            simple = true;
+            simpleview.Visible = true;
+            RT.Visible = false;
+            Recreate(true);
         }
 
         public Scrollback()
@@ -206,18 +219,23 @@ namespace Client
                     case MessageStyle.System:
                         owner.ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
                         break;
-                    case MessageStyle.Action:
                     case MessageStyle.Message:
                         if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
                         {
                             owner.ln.ForeColor = Configuration.CurrentSkin.colortalk;
                         }
                         break;
+                    case MessageStyle.Action:
+                        if (owner.ln.ForeColor != Configuration.CurrentSkin.colortalk && owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                        {
+                            owner.ln.ForeColor = Configuration.CurrentSkin.miscelancscolor;
+                        }
+                        break;
                     case MessageStyle.Part:
                     case MessageStyle.Channel:
                     case MessageStyle.User:
                     case MessageStyle.Join:
-                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.ln.ForeColor != Configuration.CurrentSkin.colortalk)
+                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.ln.ForeColor != Configuration.CurrentSkin.miscelancscolor && owner.ln.ForeColor != Configuration.CurrentSkin.colortalk)
                         {
                             owner.ln.ForeColor = Configuration.CurrentSkin.joincolor;
                         }
@@ -293,9 +311,11 @@ namespace Client
         private void Scrollback_Load(object sender, EventArgs e)
         {
             //Reload(true);
-            pwx2.Dock = DockStyle.Fill;
-            pwx1.BringToFront();
-            pwx1.Dock = DockStyle.Fill;
+            RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            RT.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize * 4);
+            simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
+            HideLn();
         }
 
         public void Reload(bool fast = false)
@@ -303,55 +323,82 @@ namespace Client
             if (owner == null || (owner != null && owner.Visible == true))
             {
                 Modified = false;
-                string text = "<html><head><script type=\"text/javascript\">function scroll() {window.scrollBy(0," + Line.Count.ToString() + "00);} </script> </head><body onLoad=\"scroll()\" alink=\"" + Configuration.CurrentSkin.link.Name + "\" link=\"" + Configuration.CurrentSkin.link.Name + "\" vlink=\"" + Configuration.CurrentSkin.link.Name + "\" STYLE=\" background-color: " + Configuration.CurrentSkin.backgroundcolor.Name + "\">";
+                if (simple)
+                {
+                    lock (Line)
+                    {
+                        List<string> values = new List<string>();
+                        foreach (ContentLine _line in Line)
+                        {
+                            values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + _line.text.Replace("%/L%", "").Replace("%/USER%", "").Replace("%L%", "").Replace("%USER%", ""));
+                        }
+                        simpleview.Lines = values.ToArray<string>();
+                        simpleview.SelectionStart = simpleview.Text.Length;
+                        simpleview.ScrollToCaret();
+                    }
+                    return;
+                }
+                int min = 0;
+                if (scrollback_max != 0 && scrollback_max < Line.Count)
+                {
+                    min = Line.Count - scrollback_max;
+                }
+                RT.Remove();
                 lock (Line)
                 {
-                    foreach (ContentLine _c in Line)
+                    int max = Line.Count;
+                    int current = min;
+                    while (current < max)
                     {
-                        string color = Configuration.CurrentSkin.fontcolor.Name;
+                        //foreach (ContentLine _c in Line)
+                        //{
+                        ContentLine _c = Line[current];
+                        Color color = Configuration.CurrentSkin.fontcolor;
                         switch (_c.style)
                         {
                             case MessageStyle.Action:
-                                color = Configuration.CurrentSkin.miscelancscolor.Name;
+                                color = Configuration.CurrentSkin.miscelancscolor;
                                 break;
                             case MessageStyle.Kick:
-                                color = Configuration.CurrentSkin.kickcolor.Name;
+                                color = Configuration.CurrentSkin.kickcolor;
                                 break;
                             case MessageStyle.System:
-                                color = Configuration.CurrentSkin.miscelancscolor.Name;
+                                color = Configuration.CurrentSkin.miscelancscolor;
                                 break;
                             case MessageStyle.Channel:
-                                color = Configuration.CurrentSkin.colortalk.Name;
+                                color = Configuration.CurrentSkin.colortalk;
                                 break;
                             case MessageStyle.User:
-                                color = Configuration.CurrentSkin.changenickcolor.Name;
+                                color = Configuration.CurrentSkin.changenickcolor;
                                 break;
                             case MessageStyle.Join:
                             case MessageStyle.Part:
-                                color = Configuration.CurrentSkin.joincolor.Name;
+                                color = Configuration.CurrentSkin.joincolor;
                                 break;
                         }
                         if (_c.notice)
                         {
-                            color = Configuration.CurrentSkin.highlightcolor.Name;
+                            color = Configuration.CurrentSkin.highlightcolor;
                         }
+                        current++;
                         string stamp = "";
                         if (Configuration.chat_timestamp)
                         {
                             stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
                         }
-                        text += "<font style=\"" + Configuration.CurrentSkin.localfont + "\" size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" color=\"" + color + "\">" + stamp + Protocol.decrypt_text( Parser.link( System.Web.HttpUtility.HtmlEncode(_c.text) )) + "</font><br>";
+                        SBABox.Line text = Parser.link(System.Web.HttpUtility.HtmlEncode(_c.text), RT, color);
+                        
+                        SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
+                        SBABox.Line line = new SBABox.Line("", RT);
+                        line.insertData(content);
+                        line.Merge(text);
+                        RT.insertLine(line);
                     }
                 }
-                text += "</body>" + "</html>";
-                if (px2)
-                {
-                    Data.DocumentText = text;
-                }
-                else
-                {
-                    webBrowser1.DocumentText = text;
-                }
+
+                RT.RedrawText();
+                RT.ScrollToBottom();
+
                 db = true;
                 if (fast)
                 {
@@ -370,6 +417,74 @@ namespace Client
             }
             Recreate();
 
+        }
+
+        public void HideLn()
+        {
+            mode1b2ToolStripMenuItem.Visible = false;
+            toolStripMenuItem1.Visible = false;
+            openLinkInBrowserToolStripMenuItem.Visible = false;
+            joinToolStripMenuItem.Visible = false;
+            mode1e2ToolStripMenuItem.Visible = false;
+            mode1I2ToolStripMenuItem.Visible = false;
+            mode1q2ToolStripMenuItem.Visible = false;
+        }
+
+        public void Scrollback_Clicked(object sender, HtmlElementEventArgs e)
+        {
+            HtmlElement html = (HtmlElement)sender;
+            if (e.MouseButtonsPressed == System.Windows.Forms.MouseButtons.Right)
+            {
+                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://text"))
+                {
+                    ViewLn(html.InnerText, false, true);
+                }
+                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://join"))
+                {
+                    ViewLn(html.InnerHtml, true, false);
+                }
+                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://user"))
+                {
+                    ViewLn(html.InnerText + "!*@*", false, false);
+                }
+            }
+        }
+
+        public void ViewLn(string content, bool channel, bool link = true)
+        {
+            if (owner != null && owner.isChannel)
+            {
+                toolStripMenuItem1.Visible = true;
+                Link = content;
+                if (channel)
+                {
+                    mode1b2ToolStripMenuItem.Visible = false;
+                    openLinkInBrowserToolStripMenuItem.Visible = false;
+                    mode1e2ToolStripMenuItem.Visible = false;
+                    mode1I2ToolStripMenuItem.Visible = false;
+                    mode1q2ToolStripMenuItem.Visible = false;
+                    joinToolStripMenuItem.Visible = true;
+                    return;
+                }
+                mode1b2ToolStripMenuItem.Visible = true;
+                joinToolStripMenuItem.Visible = false;
+                toolStripMenuItem1.Visible = true;
+                mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
+                mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
+                mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
+                mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
+                if (link)
+                {
+                    openLinkInBrowserToolStripMenuItem.Visible = true;
+                }
+                if (link == false)
+                {
+                    openLinkInBrowserToolStripMenuItem.Visible = false;
+                }
+                mode1e2ToolStripMenuItem.Visible = true;
+                mode1I2ToolStripMenuItem.Visible = true;
+                mode1q2ToolStripMenuItem.Visible = true;
+            }
         }
 
         private void Clicked(object sender, WebBrowserNavigatingEventArgs navigating)
@@ -399,14 +514,28 @@ namespace Client
                     {
                         if (owner.isChannel)
                         {
-                          owner.textbox.richTextBox1.AppendText(nick + ": ");
-                          owner.textbox.Focus();
+                            owner.textbox.richTextBox1.AppendText(nick + ": ");
+                            owner.textbox.Focus();
                         }
                     }
+                    return;
                 }
                 if (command.StartsWith("join/#"))
                 {
                     Parser.parse("/join " + command.Substring(5));
+                    return;
+                }
+                if (command.StartsWith("text/#"))
+                {
+                    string nick = command.Substring(6);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                            owner.textbox.richTextBox1.AppendText(nick);
+                            owner.textbox.Focus();
+                        }
+                    }
                     return;
                 }
                 if (command.StartsWith("join#"))
@@ -419,28 +548,10 @@ namespace Client
 
         private void Recreate(bool enforce = false)
         {
-            if (db)
+            if (db || enforce)
             {
-                if (px1)
-                {
-                    if (enforce || (!webBrowser1.IsBusy && webBrowser1.ReadyState == WebBrowserReadyState.Complete))
-                    {
-                        db = false;
-                        pwx2.BringToFront();
-                        px1 = false;
-                        px2 = true;
-                    }
-                }
-                else
-                {
-                    if (enforce || (Data.ReadyState == WebBrowserReadyState.Complete && !Data.IsBusy))
-                    {
-                        db = false;
-                        pwx1.BringToFront();
-                        px2 = false;
-                        px1 = true;
-                    }
-                }
+                RT.RedrawText();
+                db = false;
             }
         }
 
@@ -465,6 +576,8 @@ namespace Client
                 lock (Line)
                 {
                     Line.Clear();
+                    Reload();
+                    Recreate(true);
                 }
             }
         }
@@ -494,6 +607,64 @@ namespace Client
             if (owner.isChannel)
             {
                 owner._Protocol.Transfer("TOPIC " + owner.name);
+            }
+        }
+
+        private void toggleSimpleLayoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Switch(false);
+        }
+
+        private void toggleAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Switch(true);
+        }
+
+        private void mode1b2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
+            }
+        }
+
+        private void mode1q2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
+            }
+        }
+
+        private void mode1I2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
+            }
+        }
+
+        private void mode1e2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
+            }
+        }
+
+        private void openLinkInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Link.StartsWith("http"))
+            {
+                System.Diagnostics.Process.Start(Link);
+            }
+        }
+
+        private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Link.StartsWith("#"))
+            {
+                Parser.parse("/join " + Link);
             }
         }
 

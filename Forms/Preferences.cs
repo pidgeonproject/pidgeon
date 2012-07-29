@@ -60,6 +60,7 @@ namespace Client
             checkBox9.Checked = Configuration.Notice;
             textBox5.Text = Configuration.logs_dir;
             textBox6.Text = Configuration.logs_name;
+            checkBox10.Checked = Configuration.CheckUpdate;
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
                 ListViewItem item = new ListViewItem();
@@ -106,6 +107,7 @@ namespace Client
                 Configuration.flood_prot = checkBox5.Checked;
                 Configuration.logs_txt = checkBox1.Checked;
                 Configuration.logs_html = checkBox2.Checked;
+                Configuration.CheckUpdate = checkBox10.Checked;
                 Configuration.notice_prot = checkBox7.Checked;
                 Configuration.DisplayCtcp = checkBox4.Checked;
                 Configuration.ctcp_prot = checkBox6.Checked;

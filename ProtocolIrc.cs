@@ -377,7 +377,7 @@ namespace Client
                                         if (code[8].Length > 0)
                                         {
                                             mode = code[8][code[8].Length - 1].ToString();
-                                            if (mode == "H")
+                                            if (mode == "G" || mode == "H")
                                             {
                                                 mode = "";
                                             }
@@ -446,15 +446,18 @@ namespace Client
                                         Channel channel = _server.getChannel(code[3]);
                                         if (channel != null)
                                         {
-                                            if (channel.Bl == null)
-                                            {
-                                                channel.Bl = new List<SimpleBan>();
-                                            }
-                                            if (!channel.containsBan(code[4]))
-                                            {
-                                                channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
-                                                Core._Main.Status();
-                                            }
+                                                if (channel.Bl == null)
+                                                {
+                                                    channel.Bl = new List<SimpleBan>();
+                                                }
+                                                lock (channel.Bl)
+                                                {
+                                                    if (!channel.containsBan(code[4]))
+                                                    {
+                                                        channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
+                                                        Core._Main.Status();
+                                                    }
+                                                }   
                                         }
                                     }
                                     break;
@@ -628,6 +631,15 @@ namespace Client
                                             protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(), Configuration.Priority.Low);
                                             break;
                                         case "PING":
+                                            if (message.Length > 6)
+                                            {
+                                                string time = message.Substring(6);
+                                                if (time.Contains(_server._protocol.delimiter))
+                                                {
+                                                    time = message.Substring(0, message.IndexOf(_server._protocol.delimiter));
+                                                    protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "PING " + time, Configuration.Priority.Low);
+                                                }
+                                            }
                                             break;
                                     }
                                     if (Configuration.DisplayCtcp)
@@ -662,14 +674,14 @@ namespace Client
                                 }
                                 return;
                             }
-                            if (chan.Contains("!"))
+                            if (chan == _server.nickname)
                             {
-                                chan = source.Substring(source.IndexOf("!"));
+                                chan = source.Substring(0, source.IndexOf("!"));
                                 if (!protocol.windows.ContainsKey(_server.window + chan))
                                 {
                                     _server.Private(chan);
                                 }
-                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, updated_text, date);
                                 return;
                             }
                         }
@@ -808,6 +820,7 @@ namespace Client
                             string chan = parameters;
                             chan = chan.Replace(" ", "");
                             string user = source.Substring(0, source.IndexOf("!"));
+                            string host = source.Substring(source.IndexOf("!") + 1);
                             Channel channel = _server.getChannel(chan);
                             if (!Hooks.BeforePart(_server, channel)) { return; }
                             if (channel != null)
@@ -818,7 +831,7 @@ namespace Client
                                 if (window != null)
                                 {
                                     channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1",
-                                        Core.SelectedLanguage, new List<string> { source, _value }),
+                                        Core.SelectedLanguage, new List<string> { "%L%" + user +  "%/L%!%L%" + host + "%/L%", _value }),
                                         Scrollback.MessageStyle.Part,
                                         !channel.temporary_hide, date);
 
@@ -854,6 +867,7 @@ namespace Client
                         if (command == "QUIT")
                         {
                             string nick = source.Substring(0, source.IndexOf("!"));
+                            string host = source.Substring(source.IndexOf("!") + 1);
                             string _new = _value;
                             foreach (Channel item in _server.Channels)
                             {
@@ -877,7 +891,7 @@ namespace Client
                                         if (x != null && x.scrollback != null)
                                         {
                                             x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
-                                                new List<string> { source, _value }), Scrollback.MessageStyle.Join,
+                                                new List<string> { "%L%" + nick + "%/L%" + "!%L%" + host + "%/L%", _value }), Scrollback.MessageStyle.Join,
                                                 !item.temporary_hide, date);
                                         }
                                         if (updated_text)
@@ -954,7 +968,8 @@ namespace Client
                                 window = channel.retrieveWindow();
                                 if (window != null)
                                 {
-                                    channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage, new List<string> { source }),
+                                    channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
+                                        new List<string> { "%L%" + user + "%/L%!" + "" + _ident + "@%L%" + _host + "%/L%" }),
                                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
                                     if (updated_text)
                                     {
@@ -999,6 +1014,10 @@ namespace Client
 
                 _writer.WriteLine("USER " + _server.ident + " 8 * :" + _server.username);
                 _writer.WriteLine("NICK " + _server.nickname);
+                if (pswd != "")
+                {
+                    _writer.WriteLine("PASS :" + pswd);
+                }
                 _writer.Flush();
 
                 Core._Main.Status("");

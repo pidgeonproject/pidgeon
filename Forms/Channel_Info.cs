@@ -55,40 +55,55 @@ namespace Client
             {
                 Text = channel.Name;
 
+                if (channel.Bl != null)
+                {
+                    lock (channel.Bl)
+                    {
+                        foreach (SimpleBan sb in channel.Bl)
+                        { 
+                            ListViewItem li = new ListViewItem(sb._Target);
+                            li.SubItems.Add(sb.Time);
+                            li.SubItems.Add(sb._User);
+                            
+                            listView3.Items.Add(li);
+                        }
+                    }
+                }
+
                 lock (channel._mode)
                 {
                     foreach (char item in channel._Network.CModes)
                     {
-                        string de = " - unknown mode. Refer to ircd manual (/raw help)";
+                        string de = "  unknown mode. Refer to ircd manual (/raw help)";
                         cm.Add(item);
                         switch (item.ToString())
                         {
                             case "n":
-                                de = " = no /knock is allowed on channel";
+                                de = "  no /knock is allowed on channel";
                                 break;
                             case "r":
-                                de = " = registered channel";
+                                de = "  registered channel";
                                 break;
                             case "m":
-                                de = " = talking is restricted";
+                                de = "  talking is restricted";
                                 break;
                             case "i":
-                                de = " = users need to be invited to join";
+                                de = "  users need to be invited to join";
                                 break;
                             case "s":
-                                de = " = channel is secret (doesn't appear on list)";
+                                de = "  channel is secret (doesn't appear on list)";
                                 break;
                             case "p":
-                                de = " = channel is private";
+                                de = "  channel is private";
                                 break;
                             case "A":
-                                de = " = admins only";
+                                de = "  admins only";
                                 break;
                             case "O":
-                                de = " = opers chan";
+                                de = "  opers chan";
                                 break;
                             case "t":
-                                de = " = topic changes can be done only by operators";
+                                de = "  topic changes can be done only by operators";
                                 break;
 
                         }

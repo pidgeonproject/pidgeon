@@ -50,6 +50,7 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gro1 = new System.Windows.Forms.GroupBox();
+            this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.lname = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
@@ -92,7 +93,7 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.checkBox9 = new System.Windows.Forms.CheckBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -139,6 +140,7 @@ namespace Client
             // 
             // gro1
             // 
+            this.gro1.Controls.Add(this.checkBox10);
             this.gro1.Controls.Add(this.checkBox9);
             this.gro1.Controls.Add(this.textBox4);
             this.gro1.Controls.Add(this.lname);
@@ -155,6 +157,16 @@ namespace Client
             this.gro1.TabIndex = 0;
             this.gro1.TabStop = false;
             this.gro1.Text = "IRC";
+            // 
+            // checkBox9
+            // 
+            this.checkBox9.AutoSize = true;
+            this.checkBox9.Location = new System.Drawing.Point(9, 172);
+            this.checkBox9.Name = "checkBox9";
+            this.checkBox9.Size = new System.Drawing.Size(150, 17);
+            this.checkBox9.TabIndex = 16;
+            this.checkBox9.Text = "Display notifications in tray";
+            this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // textBox4
             // 
@@ -546,15 +558,15 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // checkBox9
+            // checkBox10
             // 
-            this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(9, 172);
-            this.checkBox9.Name = "checkBox9";
-            this.checkBox9.Size = new System.Drawing.Size(150, 17);
-            this.checkBox9.TabIndex = 16;
-            this.checkBox9.Text = "Display notifications in tray";
-            this.checkBox9.UseVisualStyleBackColor = true;
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Location = new System.Drawing.Point(9, 347);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(229, 17);
+            this.checkBox10.TabIndex = 17;
+            this.checkBox10.Text = "Notify when update for pidgeon is available";
+            this.checkBox10.UseVisualStyleBackColor = true;
             // 
             // Preferences
             // 
@@ -632,6 +644,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem;
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox9;
+        private System.Windows.Forms.CheckBox checkBox10;
 
     }
 }

@@ -50,6 +50,7 @@ namespace Client
             this.oToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.qToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.aToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.oToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -74,12 +75,10 @@ namespace Client
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.pINGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAGEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
-            //((System.ComponentModel.ISupportInitialize)(this.xContainer1)).BeginInit();
+            this.lockwork = new System.Windows.Forms.Timer(this.components);
             this.xContainer1.Panel1.SuspendLayout();
             this.xContainer1.Panel2.SuspendLayout();
             this.xContainer1.SuspendLayout();
-            //((System.ComponentModel.ISupportInitialize)(this.xContainer4)).BeginInit();
             this.xContainer4.Panel1.SuspendLayout();
             this.xContainer4.Panel2.SuspendLayout();
             this.xContainer4.SuspendLayout();
@@ -152,6 +151,8 @@ namespace Client
             this.listViewd.TabIndex = 2;
             this.listViewd.UseCompatibleStateImageBehavior = false;
             this.listViewd.SelectedIndexChanged += new System.EventHandler(this.listViewd_SelectedIndexChanged);
+            this.listViewd.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWork);
+            this.listViewd.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.listWork);
             // 
             // contextMenuStrip2
             // 
@@ -201,76 +202,83 @@ namespace Client
             // qToolStripMenuItem
             // 
             this.qToolStripMenuItem.Name = "qToolStripMenuItem";
-            this.qToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.qToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.qToolStripMenuItem.Text = "+q";
             this.qToolStripMenuItem.Click += new System.EventHandler(this.qToolStripMenuItem_Click);
             // 
             // aToolStripMenuItem
             // 
             this.aToolStripMenuItem.Name = "aToolStripMenuItem";
-            this.aToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.aToolStripMenuItem.Text = "+a";
             this.aToolStripMenuItem.Click += new System.EventHandler(this.aToolStripMenuItem_Click);
             // 
             // oToolStripMenuItem
             // 
             this.oToolStripMenuItem.Name = "oToolStripMenuItem";
-            this.oToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.oToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.oToolStripMenuItem.Text = "+o";
             this.oToolStripMenuItem.Click += new System.EventHandler(this.oToolStripMenuItem_Click);
             // 
             // hToolStripMenuItem
             // 
             this.hToolStripMenuItem.Name = "hToolStripMenuItem";
-            this.hToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.hToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.hToolStripMenuItem.Text = "+h";
             this.hToolStripMenuItem.Click += new System.EventHandler(this.hToolStripMenuItem_Click);
             // 
             // vToolStripMenuItem
             // 
             this.vToolStripMenuItem.Name = "vToolStripMenuItem";
-            this.vToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.vToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.vToolStripMenuItem.Text = "+v";
             this.vToolStripMenuItem.Click += new System.EventHandler(this.vToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(86, 6);
             // 
             // qToolStripMenuItem1
             // 
             this.qToolStripMenuItem1.Name = "qToolStripMenuItem1";
-            this.qToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.qToolStripMenuItem1.Size = new System.Drawing.Size(89, 22);
             this.qToolStripMenuItem1.Text = "-q";
             this.qToolStripMenuItem1.Click += new System.EventHandler(this.qToolStripMenuItem1_Click);
             // 
             // aToolStripMenuItem1
             // 
             this.aToolStripMenuItem1.Name = "aToolStripMenuItem1";
-            this.aToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.aToolStripMenuItem1.Size = new System.Drawing.Size(89, 22);
             this.aToolStripMenuItem1.Text = "-a";
             this.aToolStripMenuItem1.Click += new System.EventHandler(this.aToolStripMenuItem1_Click);
             // 
             // oToolStripMenuItem1
             // 
             this.oToolStripMenuItem1.Name = "oToolStripMenuItem1";
-            this.oToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.oToolStripMenuItem1.Size = new System.Drawing.Size(89, 22);
             this.oToolStripMenuItem1.Text = "-o";
             this.oToolStripMenuItem1.Click += new System.EventHandler(this.oToolStripMenuItem1_Click);
             // 
             // hToolStripMenuItem1
             // 
             this.hToolStripMenuItem1.Name = "hToolStripMenuItem1";
-            this.hToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.hToolStripMenuItem1.Size = new System.Drawing.Size(89, 22);
             this.hToolStripMenuItem1.Text = "-h";
             this.hToolStripMenuItem1.Click += new System.EventHandler(this.hToolStripMenuItem1_Click);
             // 
             // vToolStripMenuItem1
             // 
             this.vToolStripMenuItem1.Name = "vToolStripMenuItem1";
-            this.vToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.vToolStripMenuItem1.Size = new System.Drawing.Size(89, 22);
             this.vToolStripMenuItem1.Text = "-v";
             this.vToolStripMenuItem1.Click += new System.EventHandler(this.vToolStripMenuItem1_Click);
             // 
             // ctToolStripMenuItem
             // 
             this.ctToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pINGToolStripMenuItem,
+            this.pAGEToolStripMenuItem,
             this.vERSIONToolStripMenuItem,
             this.tIMEToolStripMenuItem});
             this.ctToolStripMenuItem.Name = "ctToolStripMenuItem";
@@ -375,6 +383,8 @@ namespace Client
             this.listView.TabIndex = 1;
             this.listView.UseCompatibleStateImageBehavior = false;
             this.listView.SelectedIndexChanged += new System.EventHandler(this.listView_SelectedIndexChanged);
+            this.listView.MouseDown += new System.Windows.Forms.MouseEventHandler(this.listWork);
+            this.listView.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.listWork);
             // 
             // textbox
             // 
@@ -405,11 +415,10 @@ namespace Client
             this.pAGEToolStripMenuItem.Text = "PAGE";
             this.pAGEToolStripMenuItem.Click += new System.EventHandler(this.pAGEToolStripMenuItem_Click);
             // 
-            // toolStripMenuItem4
+            // lockwork
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(149, 6);
-            this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            this.lockwork.Interval = 8000;
+            this.lockwork.Tick += new System.EventHandler(this.lo_Tick);
             // 
             // Window
             // 
@@ -420,11 +429,9 @@ namespace Client
             this.Size = new System.Drawing.Size(749, 333);
             this.xContainer1.Panel1.ResumeLayout(false);
             this.xContainer1.Panel2.ResumeLayout(false);
-            //((System.ComponentModel.ISupportInitialize)(this.xContainer1)).EndInit();
             this.xContainer1.ResumeLayout(false);
             this.xContainer4.Panel1.ResumeLayout(false);
             this.xContainer4.Panel2.ResumeLayout(false);
-            //((System.ComponentModel.ISupportInitialize)(this.xContainer4)).EndInit();
             this.xContainer4.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -471,6 +478,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem dCCToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem synchroToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.Timer lockwork;
         //public PidgeonList pidgeonList;
 
     }
