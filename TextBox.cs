@@ -32,6 +32,7 @@ namespace Client
         public int position = 0;
         public string prevtext = "";
         public string original = "";
+        public Window parent = null;
         public bool restore = false;
 
         public TextBox()
@@ -41,6 +42,14 @@ namespace Client
                 _control.Add(this);
             }
             InitializeComponent();
+        }
+
+        private void Wheeled(object sender, MouseEventArgs e)
+        {
+            if (parent.scrollback != null)
+            {
+                parent.scrollback.RT.Wheeled(sender, e);
+            }
         }
 
         private void _Enter(object sender, KeyEventArgs e)
@@ -71,6 +80,24 @@ namespace Client
                         position = history.Count - 1;
                     }
                     richTextBox1.Text = history[position];
+                    break;
+                case Keys.U:
+                    if (e.Control)
+                    { 
+                        
+                    }
+                    break;
+                case Keys.B:
+                    if (e.Control)
+                    {
+                        richTextBox1.AppendText(((char)002).ToString());
+                    }
+                    break;
+                case Keys.K:
+                    if (e.Control)
+                    {
+                        richTextBox1.AppendText(((char)003).ToString());
+                    }
                     break;
                 case Keys.Up:
                     if (position < 1)
@@ -396,7 +423,7 @@ namespace Client
         {
             try
             {
-                richTextBox1.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
+                richTextBox1.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
                 richTextBox1.ForeColor = Configuration.CurrentSkin.fontcolor;
                 richTextBox1.BackColor = Configuration.CurrentSkin.backgroundcolor;
                 resize();
@@ -426,7 +453,6 @@ namespace Client
                 return;
             }
             prevtext = richTextBox1.Text;
-            //richTextBox1.Text = richTextBox1.Text.Replace("\t", ""
         }
     }
 }

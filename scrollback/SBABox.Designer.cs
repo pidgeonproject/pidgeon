@@ -65,6 +65,7 @@ namespace Client
             this.pt.Name = "pt";
             this.pt.Size = new System.Drawing.Size(540, 315);
             this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(ClickHandler);
+            this.pt.MouseWheel += new System.Windows.Forms.MouseEventHandler(Wheeled);
             this.pt.TabIndex = 1;
             this.pt.TabStop = false;
             this.pt.Paint += new System.Windows.Forms.PaintEventHandler(this.RepaintWindow);
@@ -75,6 +76,7 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pt);
             this.Controls.Add(this.ScrollBar);
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(Wheeled);
             this.Controls.Add(this.vScrollBar1);
             this.DoubleBuffered = true;
             this.Name = "SBABox";

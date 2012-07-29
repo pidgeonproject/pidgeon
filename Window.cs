@@ -67,15 +67,14 @@ namespace Client
             listView.View = View.Details;
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            listView.Columns[0].Width = listView.Width;
             listView.ForeColor = Configuration.CurrentSkin.fontcolor;
             listViewd.View = View.Details;
             listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            textbox.parent = this;
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
-            listViewd.Columns[0].Width = listViewd.Width;
             Redraw();
         }
 
@@ -205,6 +204,10 @@ namespace Client
                 modeToolStripMenuItem.Visible = false;
                 kickToolStripMenuItem.Visible = false;
                 kickrToolStripMenuItem.Visible = false;
+            }
+            if (isChannel)
+            {
+                synchroToolStripMenuItem.Visible = true;
             }
         }
 

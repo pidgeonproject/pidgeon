@@ -40,6 +40,7 @@ namespace Client
         private int offset = 0;
         private int currentX = 0;
         public bool Wrap = true;
+        public int rendered = 0;
         private Graphics drawingGraphics;
         public Scrollback scrollback;
 
@@ -89,20 +90,6 @@ namespace Client
                 //area.Left = X;
                 //area.Top = Y;
                 linkedtext = text;
-                //area.AutoSize = false;
-                //area.LinkColor = Color.Transparent;
-                //area.Font = parent.Font;
-                //area.Text = label;
-                //area.ActiveLinkColor = Color.Transparent;
-                //area.VisitedLinkColor = Color.Transparent;
-                //area.Width = width;
-                //area.Height = height;
-                
-                //area.Name = http;
-                //area.CreateControl();
-                //area.ForeColor = normal;
-                //area.MouseClick += new MouseEventHandler(parent.ClickHandler);
-                //area.ContextMenu = parent.ContextMenu;
 
                 Height = height;
             }
@@ -208,13 +195,24 @@ namespace Client
 
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
-            if (!isDisposing && backbufferGraphics != null)
-                backbufferGraphics.Render(e.Graphics);
+            lock (backbufferGraphics)
+            {
+                if (!isDisposing && backbufferGraphics != null)
+                    backbufferGraphics.Render(e.Graphics);
+            }
         }
 
+        /// <summary>
+        /// Redraw
+        /// </summary>
+        /// <param name="_t"></param>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        /// <param name="line"></param>
         public void RedrawLine(ref Graphics _t, ref float X, ref float Y, Line line)
         {
             bool wrappingnow = false;
+            rendered++;
             Line extraline = null;
             foreach (ContentText part in line.text)
             {
@@ -230,7 +228,6 @@ namespace Client
                         Brush _b = new SolidBrush(part.textc);
                         string TextOfThispart = part.text;
                         StringFormat format = new StringFormat(StringFormat.GenericTypographic);
-                        format.Alignment = StringAlignment.Center;
                         format.Trimming = StringTrimming.None;
                         format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
                         Font font = new Font(this.Font, FontStyle.Regular);
@@ -247,9 +244,10 @@ namespace Client
 
                         //SizeF stringSize = TextRenderer.Me
                         SizeF stringSize = _t.MeasureString(part.text, font, new Point(0, 0), format);
+                        //stringSize.Width = Buffers.MeasureDisplayStringWidth(_t, part.text, font, format);
                         if (Wrap)
                         {
-                            if (X + stringSize.Width > pt.Width)
+                            if (X + stringSize.Width > this.Width - vScrollBar1.Width)
                             {
                                 bool ls = part.text.StartsWith(" ");
                                 bool es = part.text.EndsWith(" ");
@@ -257,7 +255,7 @@ namespace Client
                                 string trimmed = "";
                                 foreach (string xx in words)
                                 {
-                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X > pt.Width)
+                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X > this.Width - vScrollBar1.Width)
                                     {
                                         break;
                                     }
@@ -308,6 +306,7 @@ namespace Client
                             ScrollBar.Maximum = (int)(X + stringSize.Width);
                         }
                     }
+                    
                 }
             }
             if (wrappingnow)
@@ -321,6 +320,7 @@ namespace Client
         public void RedrawText()
         {
             //
+            rendered = 0;
             float X = 0 - currentX;
             float Y = 0 - offset;
 
@@ -340,12 +340,50 @@ namespace Client
                 RedrawLine(ref _t, ref X, ref Y, text);
                 Y = Y + Font.Size + 6;
             }
-            vScrollBar1.Maximum = lines.Count;
-            if (lines.Count > 0)
+            if (rendered < vScrollBar1.Value)
+            {
+                vScrollBar1.Value = rendered;
+            }
+            vScrollBar1.Maximum = rendered;
+            if (rendered > 0)
             {
                 vScrollBar1.Enabled = true;
             }
             pt.Invalidate();
+        }
+
+        public void Wheeled(Object sender, MouseEventArgs e)
+        {
+            if (e.Delta != 0)
+            {
+                int delta = (e.Delta / 16) * -1;
+                if (delta < 0)
+                {
+                    if ((vScrollBar1.Value + delta) > vScrollBar1.Minimum)
+                    {
+                        vScrollBar1.Value += delta;
+                    }
+                    else
+                    {
+                        vScrollBar1.Value = vScrollBar1.Minimum;
+                    }
+                }
+
+                if (delta > 0)
+                {
+                    if ((vScrollBar1.Value + delta) < vScrollBar1.Maximum)
+                    {
+                        vScrollBar1.Value += delta;
+                    }
+                    else
+                    {
+                        vScrollBar1.Value = vScrollBar1.Maximum;
+                    }
+                }
+                Scrolled(vScrollBar1.Value);
+                Redraw();
+                return;
+            }
         }
 
         public void ClickHandler(Object sender, MouseEventArgs e)
@@ -412,7 +450,12 @@ namespace Client
 
                 // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
                 if (backbufferGraphics != null)
-                    backbufferGraphics.Dispose();
+                {
+                    lock (backbufferGraphics)
+                    {
+                        backbufferGraphics.Dispose();
+                    }
+                }
                 if (backbufferContext != null)
                     backbufferContext.Dispose();
             }
@@ -431,15 +474,21 @@ namespace Client
             backbufferContext.MaximumBuffer = new Size(pt.Width + 1, pt.Height + 1);
 
             // Dispose of old backbufferGraphics (if one has been created already)
-            if (backbufferGraphics != null)
-                backbufferGraphics.Dispose();
+            
+                if (backbufferGraphics != null)
+                {
+                    lock (backbufferGraphics)
+                    {
+                        backbufferGraphics.Dispose();
+                    }
+                }
 
-            // Create new backbufferGrpahics that matches the current size of buffer.
-            backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
-            new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
+                // Create new backbufferGrpahics that matches the current size of buffer.
+                backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
+                new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
 
-            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
-            drawingGraphics = backbufferGraphics.Graphics;
+                // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
+                drawingGraphics = backbufferGraphics.Graphics;
 
             // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
 
@@ -464,9 +513,9 @@ namespace Client
 
         public void ScrollToBottom()
         {
-            if (((int)Font.Size + 6) * lines.Count > pt.Height)
+            if (((int)Font.Size + 6) * rendered > pt.Height)
             {
-                offset = ((int)Font.Size + 6) * lines.Count - pt.Height;
+                offset = (((int)Font.Size + 6) * (rendered + 1)) - pt.Height;
                 if (vScrollBar1.Maximum > 0)
                 {
                     vScrollBar1.Value = vScrollBar1.Maximum;

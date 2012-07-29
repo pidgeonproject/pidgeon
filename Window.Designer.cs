@@ -366,6 +366,7 @@ namespace Client
             // 
             // synchroToolStripMenuItem
             // 
+            this.synchroToolStripMenuItem.Visible = false;
             this.synchroToolStripMenuItem.Name = "synchroToolStripMenuItem";
             this.synchroToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.synchroToolStripMenuItem.Text = "Reload";

@@ -366,7 +366,7 @@ namespace Client
                                     break;
                                 case "352":
                                     // cameron.freenode.net 352 petan2 #debian thelineva nikita.tnnet.fi kornbluth.freenode.net t0h H :0 Tommi Helineva
-                                    if (code.Length > 6)
+                                    if (code.Length > 8)
                                     {
                                         Channel channel = _server.getChannel(code[3]);
                                         string ident = code[4];
@@ -446,18 +446,15 @@ namespace Client
                                         Channel channel = _server.getChannel(code[3]);
                                         if (channel != null)
                                         {
-                                                if (channel.Bl == null)
-                                                {
-                                                    channel.Bl = new List<SimpleBan>();
-                                                }
-                                                lock (channel.Bl)
-                                                {
-                                                    if (!channel.containsBan(code[4]))
-                                                    {
-                                                        channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
-                                                        Core._Main.Status();
-                                                    }
-                                                }   
+                                            if (channel.Bl == null)
+                                            {
+                                                channel.Bl = new List<SimpleBan>();
+                                            }
+                                            if (!channel.containsBan(code[4]))
+                                            {
+                                                channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
+                                                Core._Main.Status();
+                                            }
                                         }
                                     }
                                     break;
@@ -681,7 +678,7 @@ namespace Client
                                 {
                                     _server.Private(chan);
                                 }
-                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, updated_text, date);
+                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
                                 return;
                             }
                         }

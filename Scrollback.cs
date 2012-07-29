@@ -106,7 +106,6 @@ namespace Client
                     simple = false;
                     RT.Visible = true;
                     simpleview.Visible = false;
-                    //pwx2.Visible = true;
                     Recreate(true);
                     return;
                 }
@@ -283,7 +282,7 @@ namespace Client
                     {
                         stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
                     }
-                    System.IO.File.AppendAllText(_getFileName() + ".txt", stamp + text + "\n");
+                    Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
                 }
                 if (Configuration.logs_html)
                 {
@@ -292,11 +291,11 @@ namespace Client
                     {
                         stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
                     }
-                    System.IO.File.AppendAllText(_getFileName() + ".html", "<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + System.Web.HttpUtility.HtmlEncode(text) + "</font><br>\n");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + ProtocolIrc.decrypt_text( Parser.link2(System.Web.HttpUtility.HtmlEncode(text)) ) + "</font><br>\n", _getFileName() + ".html");
                 }
                 if (Configuration.logs_xml)
                 {
-                    System.IO.File.AppendAllText(_getFileName() + ".xml", "<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + input_style.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n");
+                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + input_style.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
                 }
             }
             return false;
@@ -312,9 +311,10 @@ namespace Client
         {
             //Reload(true);
             RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            RT.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize * 4);
+            RT.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
             simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
             simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
+            RT.scrollback = this;
             HideLn();
         }
 
@@ -386,7 +386,7 @@ namespace Client
                         {
                             stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
                         }
-                        SBABox.Line text = Parser.link(System.Web.HttpUtility.HtmlEncode(_c.text), RT, color);
+                        SBABox.Line text = Parser.link(_c.text, RT, color);
                         
                         SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
                         SBABox.Line line = new SBABox.Line("", RT);
@@ -430,24 +430,20 @@ namespace Client
             mode1q2ToolStripMenuItem.Visible = false;
         }
 
-        public void Scrollback_Clicked(object sender, HtmlElementEventArgs e)
+        public void Click_R(string adds, string data)
         {
-            HtmlElement html = (HtmlElement)sender;
-            if (e.MouseButtonsPressed == System.Windows.Forms.MouseButtons.Right)
-            {
-                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://text"))
+                if (data.StartsWith("pidgeon://text"))
                 {
-                    ViewLn(html.InnerText, false, true);
+                    ViewLn(adds, false, true);
                 }
-                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://join"))
+                if (data.StartsWith("pidgeon://join"))
                 {
-                    ViewLn(html.InnerHtml, true, false);
+                    ViewLn(adds, true, false);
                 }
-                if (html.OuterHtml.StartsWith("<A href=\"pidgeon://user"))
+                if (data.StartsWith("pidgeon://user"))
                 {
-                    ViewLn(html.InnerText + "!*@*", false, false);
+                    ViewLn(adds + "!*@*", false, false);
                 }
-            }
         }
 
         public void ViewLn(string content, bool channel, bool link = true)
@@ -487,61 +483,60 @@ namespace Client
             }
         }
 
-        private void Clicked(object sender, WebBrowserNavigatingEventArgs navigating)
+        public void Click_L(string http)
         {
-            if (navigating.Url.ToString().Contains("https://"))
             {
-                System.Diagnostics.Process.Start(navigating.Url.ToString());
-                navigating.Cancel = true;
-            }
-            if (navigating.Url.ToString().Contains("http://"))
-            {
-                System.Diagnostics.Process.Start(navigating.Url.ToString());
-                navigating.Cancel = true;
-            }
-            if (navigating.Url.ToString().Contains("pidgeon://"))
-            {
-                navigating.Cancel = true;
-                string command = navigating.Url.ToString().Substring("pidgeon://".Length);
-                if (command.EndsWith("/"))
+                if (http.StartsWith("https://"))
                 {
-                    command = command.Substring(0, command.Length - 1);
+                    System.Diagnostics.Process.Start(http);
                 }
-                if (command.StartsWith("user/#"))
+                if (http.StartsWith("http://"))
                 {
-                    string nick = command.Substring(6);
-                    if (owner != null && owner._Network != null)
+                    System.Diagnostics.Process.Start(http);
+                }
+                if (http.StartsWith("pidgeon://"))
+                {
+                    string command = http.Substring("pidgeon://".Length);
+                    if (command.EndsWith("/"))
                     {
-                        if (owner.isChannel)
-                        {
-                            owner.textbox.richTextBox1.AppendText(nick + ": ");
-                            owner.textbox.Focus();
-                        }
+                        command = command.Substring(0, command.Length - 1);
                     }
-                    return;
-                }
-                if (command.StartsWith("join/#"))
-                {
-                    Parser.parse("/join " + command.Substring(5));
-                    return;
-                }
-                if (command.StartsWith("text/#"))
-                {
-                    string nick = command.Substring(6);
-                    if (owner != null && owner._Network != null)
+                    if (command.StartsWith("user/#"))
                     {
-                        if (owner.isChannel)
+                        string nick = command.Substring(6);
+                        if (owner != null && owner._Network != null)
                         {
-                            owner.textbox.richTextBox1.AppendText(nick);
-                            owner.textbox.Focus();
+                            if (owner.isChannel)
+                            {
+                                owner.textbox.richTextBox1.AppendText(nick + ": ");
+                                owner.textbox.Focus();
+                            }
                         }
+                        return;
                     }
-                    return;
-                }
-                if (command.StartsWith("join#"))
-                {
-                    Parser.parse("/join " + command.Substring(4));
-                    return;
+                    if (command.StartsWith("join/#"))
+                    {
+                        Parser.parse("/join " + command.Substring(5));
+                        return;
+                    }
+                    if (command.StartsWith("text/#"))
+                    {
+                        string nick = command.Substring(6);
+                        if (owner != null && owner._Network != null)
+                        {
+                            if (owner.isChannel)
+                            {
+                                owner.textbox.richTextBox1.AppendText(nick);
+                                owner.textbox.Focus();
+                            }
+                        }
+                        return;
+                    }
+                    if (command.StartsWith("join#"))
+                    {
+                        Parser.parse("/join " + command.Substring(4));
+                        return;
+                    }
                 }
             }
         }

@@ -51,7 +51,8 @@ namespace Client
             RedrawMenu();
             items.BackColor = Configuration.CurrentSkin.backgroundcolor;
             items.ForeColor = Configuration.CurrentSkin.fontcolor;
-            items.Font = new Font(Configuration.CurrentSkin.localfont, float.Parse(Configuration.CurrentSkin.fontsize.ToString()) * 4);
+            items.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
+            items.ItemHeight = (int)(Configuration.CurrentSkin.fontsize * 2);
         }
 
         public void insertChannel(Channel chan)

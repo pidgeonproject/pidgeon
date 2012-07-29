@@ -127,6 +127,7 @@ namespace Client
         /// If true the window is considered usable
         /// </summary>
         public bool ok;
+        
 
         /// <summary>
         /// Constructor (simple)

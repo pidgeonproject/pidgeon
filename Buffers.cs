@@ -17,11 +17,27 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using System.Drawing;
 using System.Text;
 
 namespace Client
 {
     class Buffers
     {
+        static public int MeasureDisplayStringWidth(Graphics graphics, string text, Font font, StringFormat format)
+        {
+            System.Drawing.RectangleF rect = new System.Drawing.RectangleF(0, 0, 10000, 10000);
+            CharacterRange[] ranges = { new System.Drawing.CharacterRange(0, text.Length) };
+            System.Drawing.Region[] regions = new System.Drawing.Region[1];
+
+            format.SetMeasurableCharacterRanges(ranges);
+
+            regions = graphics.MeasureCharacterRanges(text, font, rect, format);
+            rect = regions[0].GetBounds(graphics);
+
+            return (int)(rect.Right + 1.0f);
+        }
+
     }
 }

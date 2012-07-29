@@ -26,7 +26,7 @@ namespace Client
         public static List<Skin> LoadedSkins = new List<Skin>();
         public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
         public string localfont;
-        public int fontsize;
+        public float fontsize;
         public System.Drawing.Color joincolor;
         public System.Drawing.Color kickcolor;
         public System.Drawing.Color miscelancscolor;
@@ -43,24 +43,21 @@ namespace Client
 
         public Skin()
         {
-            // default skin
-
-            mrcl.Add(System.Drawing.Color.White);
-            mrcl.Add(System.Drawing.Color.Gray);
-            mrcl.Add(System.Drawing.Color.Blue);
-            mrcl.Add(System.Drawing.Color.Green);
-            mrcl.Add(System.Drawing.Color.Red);
-            mrcl.Add(System.Drawing.Color.SandyBrown);
-            mrcl.Add(System.Drawing.Color.Purple);
-            mrcl.Add(System.Drawing.Color.Orange);
-            mrcl.Add(System.Drawing.Color.Yellow);
-            mrcl.Add(System.Drawing.Color.LightGreen);
-            mrcl.Add(System.Drawing.Color.Cornsilk);
-            mrcl.Add(System.Drawing.Color.Cyan);
-            mrcl.Add(System.Drawing.Color.LightCoral);
-            mrcl.Add(System.Drawing.Color.LightPink);
-            mrcl.Add(System.Drawing.Color.Gray);
-            mrcl.Add(System.Drawing.Color.LightGoldenrodYellow);
+            // defaults
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.LightSteelBlue);
             fontcolor = System.Drawing.Color.White;
             joincolor = System.Drawing.Color.LightBlue;
             highlightcolor = System.Drawing.Color.LightPink;
@@ -70,8 +67,8 @@ namespace Client
             link = System.Drawing.Color.LightBlue;
             colortalk = System.Drawing.Color.Yellow;
             kickcolor = System.Drawing.Color.White;
-            fontsize = 2;
-            localfont = "font-family:sans-serif;";
+            fontsize = 11;
+            localfont = "Arial";
             backgroundcolor = System.Drawing.Color.Black;
         }
 

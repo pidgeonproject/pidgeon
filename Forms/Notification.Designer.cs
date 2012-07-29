@@ -89,6 +89,7 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(350, 153);
             this.Controls.Add(this.text);
             this.Controls.Add(this.label1);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Disappear);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Notification";

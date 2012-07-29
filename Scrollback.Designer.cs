@@ -248,7 +248,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem mode1I2ToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
-        private SBABox RT;
+        public SBABox RT;
 
     }
 }

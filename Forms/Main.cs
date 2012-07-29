@@ -130,12 +130,13 @@ namespace Client
                 main = new Window();
                 CreateChat(main, null);
                 preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
+                toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
+                Chat.scrollback.InsertText("Welcome to pidgeon client", Scrollback.MessageStyle.System, false, 0, true);
                 done = true;
-                showToolStripMenuItem.Visible = false;
             }
             catch (Exception f)
             {
@@ -155,7 +156,7 @@ namespace Client
             this.toolStripInfo.Text = StatusBox;
             if (Core.network != null)
             {
-                toolStripStatusNetwork.Text = Core.network.server;
+                toolStripStatusNetwork.Text = Core.network.server + "    w/c/p " + Core.network._protocol.windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
                 if (Core.network.RenderedChannel != null)
                 {
                     string info = "";
@@ -269,6 +270,28 @@ namespace Client
             {
                 Chat.MicroBox = false;
             }
+        }
+
+        private void rootToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Core.network != null)
+            {
+                Core.network.RenderedChannel = null;
+                main.Visible = true;
+                Core.network._protocol.Current.Visible = false;
+                Core.network._protocol.Current = main;
+                return;
+            }
+            main.Visible = true;
+            main.BringToFront();
+        }
+
+        protected void Wheeled(object sender, MouseEventArgs md)
+        {
+            if (Chat != null)
+            {
+                Chat.scrollback.RT.Wheeled(sender, md);
+            }  
         }
     }
 }

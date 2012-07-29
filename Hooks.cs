@@ -109,5 +109,10 @@ namespace Client
         { 
             
         }
+
+        public static void BeforeOptions(ref Preferences preferences)
+        { 
+            
+        }
     }
 }

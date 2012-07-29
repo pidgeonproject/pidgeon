@@ -42,6 +42,12 @@ namespace Client
             this.Opacity = 0.6;
         }
 
+        public void Disappear(object sender, FormClosingEventArgs e)
+        {
+            Hide();
+            e.Cancel = true;
+        }
+
         private void Notification_Click(object sender, EventArgs e)
         {
             Hide();
