@@ -39,6 +39,7 @@ namespace Client
         private BufferedGraphics backbufferGraphics;
         private int offset = 0;
         private int currentX = 0;
+        public bool Wrap = true;
         private Graphics drawingGraphics;
         public Scrollback scrollback;
 
@@ -49,6 +50,9 @@ namespace Client
             public Color textc;
             public Color backc;
             public bool linked = false;
+            public bool Bold = false;
+            public bool Italic = false;
+            public bool Underline = false;
             public string link;
             public bool menu = false;
             public ContentText(string Text, SBABox SBAB, Color color)
@@ -148,6 +152,7 @@ namespace Client
             public Line()
             {
                 text = new List<ContentText>();
+                owner = null;
             }
         }
 
@@ -207,6 +212,112 @@ namespace Client
                 backbufferGraphics.Render(e.Graphics);
         }
 
+        public void RedrawLine(ref Graphics _t, ref float X, ref float Y, Line line)
+        {
+            bool wrappingnow = false;
+            Line extraline = null;
+            foreach (ContentText part in line.text)
+            {
+                if (part.text != "")
+                {
+                    if (wrappingnow)
+                    {
+                        extraline.insertData(part);
+                        continue;
+                    }
+                    if ((Y + (int)Font.Size + 8) > 0 && (Y + (int)Font.Size + 8) < this.Height)
+                    {
+                        Brush _b = new SolidBrush(part.textc);
+                        string TextOfThispart = part.text;
+                        StringFormat format = new StringFormat(StringFormat.GenericTypographic);
+                        format.Alignment = StringAlignment.Center;
+                        format.Trimming = StringTrimming.None;
+                        format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
+                        Font font = new Font(this.Font, FontStyle.Regular);
+
+                        if (part.Bold)
+                        {
+                            font = new Font(font, FontStyle.Bold);
+                        }
+
+                        if (part.Underline)
+                        {
+                            font = new Font(font, FontStyle.Underline);
+                        }
+
+                        //SizeF stringSize = TextRenderer.Me
+                        SizeF stringSize = _t.MeasureString(part.text, font, new Point(0, 0), format);
+                        if (Wrap)
+                        {
+                            if (X + stringSize.Width > pt.Width)
+                            {
+                                bool ls = part.text.StartsWith(" ");
+                                bool es = part.text.EndsWith(" ");
+                                string[] words = part.text.Split(' ');
+                                string trimmed = "";
+                                foreach (string xx in words)
+                                {
+                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X > pt.Width)
+                                    {
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        trimmed += xx + " ";
+                                    }
+                                }
+                                if (!ls && trimmed.EndsWith(" ") && trimmed.Length > 0)
+                                {
+                                    trimmed = trimmed.Substring(0, trimmed.Length - 1);
+                                }
+                                // we trimmed the value, now update the text temporarily
+                                TextOfThispart = trimmed;
+                                string remaining_data = part.text.Substring(trimmed.Length);
+                                extraline = new Line("", this);
+                                ContentText _text = new ContentText(remaining_data, this, part.textc);
+                                _text.Underline = part.Underline;
+                                _text.Bold = part.Bold;
+                                _text.link = part.link;
+                                wrappingnow = true;
+                                extraline.insertData(_text);
+                            }
+                        }
+
+                        if (part.link != null)
+                        {
+                            if (!part.linked)
+                            {
+                                part.linked = true;
+                                Pen pen = new Pen(part.textc);
+                                Link http = new Link((int)X, (int)Y, part.textc, (int)stringSize.Width, (int)stringSize.Height, this, part.link, part.text, part);
+                                lock (link)
+                                {
+                                    link.Add(http);
+                                }
+                            }
+                        }
+                        _t.DrawString(TextOfThispart, font, _b, X, Y);
+
+                        X = X + stringSize.Width;
+                        if (Wrap)
+                        {
+                            ScrollBar.Visible = false;
+                        } else
+                        if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
+                        {
+                            ScrollBar.Maximum = (int)(X + stringSize.Width);
+                        }
+                    }
+                }
+            }
+            if (wrappingnow)
+            {
+                Y = Y + Font.Size + 6;
+                X = 0 - currentX;
+                RedrawLine(ref _t, ref X,ref Y, extraline);
+            }
+        }
+
         public void RedrawText()
         {
             //
@@ -226,39 +337,8 @@ namespace Client
             foreach (Line text in lines)
             {
                 X = 0 - currentX;
-                foreach (ContentText part in text.text)
-                {
-                    if (part.text != "")
-                    {
-                        if ((Y + (int)Font.Size + 8) > 0 && (Y + (int)Font.Size + 8) < this.Height)
-                        {
-                            Brush _b = new SolidBrush(part.textc);
-                            SizeF stringSize = _t.MeasureString(part.text, this.Font);
-                            _t.DrawString(part.text, this.Font, _b, X, Y);
-                            if (part.link != null)
-                            {
-                                if (!part.linked)
-                                {
-                                    part.linked = true;
-                                    Pen pen = new Pen(part.textc);
-                                    _t.DrawLine(pen, X, Y + (int)stringSize.Height, X + (int)stringSize.Width, Y + (int)stringSize.Height);
-                                    Link http = new Link((int)X, (int)Y, part.textc, (int)stringSize.Width, (int)stringSize.Height, this, part.link, part.text, part);
-                                    lock (link)
-                                    {
-                                        link.Add(http);
-                                    }
-                                }
-                            }
-                            
-                            X = X + stringSize.Width;
-                            if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
-                            {
-                                ScrollBar.Maximum = (int)(X + stringSize.Width);
-                            }
-                        }
-                    }
-                }
-                Y = Y + (int)Font.Size + 6;
+                RedrawLine(ref _t, ref X, ref Y, text);
+                Y = Y + Font.Size + 6;
             }
             vScrollBar1.Maximum = lines.Count;
             if (lines.Count > 0)
@@ -288,7 +368,7 @@ namespace Client
 
                 if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 {
-                    scrollback.Click_L(httparea._name);
+                    scrollback.Click_L(httparea._text);
                 }
             }
         }
@@ -415,6 +495,10 @@ namespace Client
             vScrollBar1.Value = 0;
             vScrollBar1.Maximum = 0;
             vScrollBar1.Enabled = false;
+            if (Wrap)
+            {
+                ScrollBar.Visible = false;
+            }
 
             RecreateBuffers();
 
