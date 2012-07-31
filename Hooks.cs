@@ -114,5 +114,25 @@ namespace Client
         { 
             
         }
+
+        public static string BeforeParser(string Text)
+        {
+            return Text;
+        }
+
+        public static string BeforeInsertLine(string Text, string Line)
+        {
+            return Text;
+        }
+
+        public static string AfterParser(string Text)
+        {
+            return Text;
+        }
+
+        public static string BeforeLinePartLoad(string Text)
+        {
+            return Text;
+        }
     }
 }

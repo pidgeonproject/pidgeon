@@ -61,6 +61,7 @@ namespace Client
         public static TrafficScanner trafficscanner;
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
+        public static string[] startup = null;
 
         public class IO
         { 
@@ -114,6 +115,23 @@ namespace Client
                 {
                     processing.Add(new fl(file, line));
                 }
+            }
+        }
+
+        public class Shortcut
+        {
+            public bool control = false;
+            public bool alt = false;
+            public bool shift = false;
+            public System.Windows.Forms.Keys keys;
+            public string data;
+            public Shortcut(System.Windows.Forms.Keys Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
+            {
+                control = Control;
+                shift = Shift;
+                alt = Alt;
+                data = Data;
+                keys = Value;
             }
         }
 
@@ -240,7 +258,7 @@ namespace Client
                                             ms = ms.Substring(1);
                                         }
                                         network.system.scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
-                                        network._protocol.Message(ms, channel);
+                                        network._protocol.Message(ms, channel, Configuration.Priority.Normal, true);
                                         return false;
                                     }
                                     _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
@@ -628,7 +646,6 @@ namespace Client
             makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
             makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
 
-
             lock (Configuration.HighlighterList)
             {
                 foreach (Network.Highlighter high in Configuration.HighlighterList)
@@ -647,12 +664,98 @@ namespace Client
                 }
             }
             config.AppendChild(xmlnode);
+
+            lock (Configuration.ShortcutKeylist)
+            {
+                foreach (Shortcut RR in Configuration.ShortcutKeylist)
+                {
+                    curr = config.CreateElement("shortcut");
+                    XmlAttribute name = config.CreateAttribute("name");
+                    XmlAttribute ctrl = config.CreateAttribute("ctrl");
+                    XmlAttribute alt = config.CreateAttribute("alt");
+                    XmlAttribute shift = config.CreateAttribute("shift");
+                    curr.InnerText = RR.data;
+                    name.Value = RR.keys.ToString();
+                    shift.Value = RR.shift.ToString();
+                    ctrl.Value = RR.control.ToString();
+                    alt.Value = RR.alt.ToString();
+                    curr.Attributes.Append(name);
+                    curr.Attributes.Append(ctrl);
+                    curr.Attributes.Append(alt);
+                    curr.Attributes.Append(shift);
+                    xmlnode.AppendChild(curr);
+                }
+            }
+            config.AppendChild(xmlnode);
+
             if (Backup(ConfigFile))
             {
                 config.Save(ConfigFile);
             }
             File.Delete(ConfigFile + "~");
             return false;
+        }
+
+        public static System.Windows.Forms.Keys parseKey(string Key)
+        {
+            switch (Key.ToLower())
+            { 
+                case "a":
+                    return System.Windows.Forms.Keys.A;
+                case "b":
+                    return System.Windows.Forms.Keys.B;
+                case "c":
+                    return System.Windows.Forms.Keys.C;
+                case "d":
+                    return System.Windows.Forms.Keys.D;
+                case "e":
+                    return System.Windows.Forms.Keys.E;
+                case "f":
+                    return System.Windows.Forms.Keys.F;
+                case "g":
+                    return System.Windows.Forms.Keys.G;
+                case "h":
+                    return System.Windows.Forms.Keys.H;
+                case "i":
+                    return System.Windows.Forms.Keys.I;
+                case "j":
+                    return System.Windows.Forms.Keys.J;
+                case "k":
+                    return System.Windows.Forms.Keys.K;
+                case "l":
+                    return System.Windows.Forms.Keys.L;
+                case "m":
+                    return System.Windows.Forms.Keys.M;
+                case "n":
+                    return System.Windows.Forms.Keys.N;
+                case "o":
+                    return System.Windows.Forms.Keys.O;
+                case "p":
+                    return System.Windows.Forms.Keys.P;
+                case "q":
+                    return System.Windows.Forms.Keys.Q;
+                case "r":
+                    return System.Windows.Forms.Keys.R;
+                case "s":
+                    return System.Windows.Forms.Keys.S;
+                case "t":
+                    return System.Windows.Forms.Keys.T;
+                case "u":
+                    return System.Windows.Forms.Keys.U;
+                case "v":
+                    return System.Windows.Forms.Keys.V;
+                case "w":
+                    return System.Windows.Forms.Keys.W;
+                case "y":
+                    return System.Windows.Forms.Keys.Y;
+                case "z":
+                    return System.Windows.Forms.Keys.Z;
+                case "f1":
+                    return System.Windows.Forms.Keys.F1;
+                case "f2":
+                    return System.Windows.Forms.Keys.F2;
+            }
+            return System.Windows.Forms.Keys.A;
         }
 
         /// <summary>
@@ -680,6 +783,13 @@ namespace Client
                                 list.text = curr.Attributes[1].Value;
                                 list.enabled = bool.Parse(curr.Attributes[2].Value);
                                 Configuration.HighlighterList.Add(list);
+                                continue;
+                            }
+                            if (curr.Name == "shortcut")
+                            {
+                                Shortcut list = new Shortcut(parseKey(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), bool.Parse(curr.Attributes[2].Value), bool.Parse(curr.Attributes[3].Value));
+                                list.data = curr.InnerText;
+                                Configuration.ShortcutKeylist.Add(list);
                                 continue;
                             }
                             if (curr.Attributes[0].Name == "confname")

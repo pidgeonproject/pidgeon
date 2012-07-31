@@ -127,6 +127,10 @@ namespace Client
         /// If true the window is considered usable
         /// </summary>
         public bool ok;
+        /// <summary>
+        /// Tree node
+        /// </summary>
+        public System.Windows.Forms.TreeNode tn = null;
         
 
         /// <summary>
@@ -160,6 +164,21 @@ namespace Client
             Topic = "";
             TopicUser = "";
             Chat = null;
+        }
+
+        public void UpdateInfo()
+        {
+            if (tn != null)
+            {
+                string text ="";
+                if (!ok)
+                {
+                    text = "[PARTED CHAN] ";
+                    
+                }
+                text += Name + " " + UserList.Count + " users, mode: " + _mode.ToString() + "\n" + "Topic: " + Topic + "\nLast activity: " + DateTime.Now.ToString();
+                tn.ToolTipText = text;
+            }
         }
 
         /// <summary>

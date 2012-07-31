@@ -115,6 +115,7 @@ namespace Client
                 Servers[chan._Network].Expand();
                 Servers[chan._Network].Nodes.Add(text);
                 Channels.Add(chan, text);
+                chan.tn = text;
                 text.ImageIndex = 2;
                 Window xx = chan.retrieveWindow();
                 if (xx != null)
@@ -350,6 +351,7 @@ namespace Client
                             RemoveItem(node);
                         }
                         items.Nodes.Remove(items.SelectedNode);
+                        return;
                     }
                 }
 
@@ -377,6 +379,7 @@ namespace Client
                             RemoveItem(item);
                         }
                         items.Nodes.Remove(Item);
+                        return;
                     }
                 }
 
@@ -455,6 +458,7 @@ namespace Client
                         return;
                     }
                 }
+                items.Nodes.Remove(Item);
             }
             catch (Exception f)
             {

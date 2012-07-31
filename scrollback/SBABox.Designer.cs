@@ -41,6 +41,7 @@ namespace Client
             // vScrollBar1
             // 
             this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.vScrollBar1.LargeChange = 1;
             this.vScrollBar1.Location = new System.Drawing.Point(540, 0);
             this.vScrollBar1.Name = "vScrollBar1";
             this.vScrollBar1.Size = new System.Drawing.Size(23, 339);
@@ -64,11 +65,11 @@ namespace Client
             this.pt.Location = new System.Drawing.Point(0, 0);
             this.pt.Name = "pt";
             this.pt.Size = new System.Drawing.Size(540, 315);
-            this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(ClickHandler);
-            this.pt.MouseWheel += new System.Windows.Forms.MouseEventHandler(Wheeled);
             this.pt.TabIndex = 1;
             this.pt.TabStop = false;
             this.pt.Paint += new System.Windows.Forms.PaintEventHandler(this.RepaintWindow);
+            this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ClickHandler);
+            this.pt.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Wheeled);
             // 
             // SBABox
             // 
@@ -76,12 +77,12 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pt);
             this.Controls.Add(this.ScrollBar);
-            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(Wheeled);
             this.Controls.Add(this.vScrollBar1);
             this.DoubleBuffered = true;
             this.Name = "SBABox";
             this.Size = new System.Drawing.Size(563, 339);
             this.Load += new System.EventHandler(this.SBABox_Load);
+            this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Wheeled);
             ((System.ComponentModel.ISupportInitialize)(this.pt)).EndInit();
             this.ResumeLayout(false);
 

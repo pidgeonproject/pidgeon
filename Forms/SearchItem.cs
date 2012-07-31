@@ -15,36 +15,43 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Client
 {
-    static class Program
+    public partial class SearchItem : Form
     {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        private static void Main(string[] parameters)
+        public SearchItem()
         {
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            try
-            {
-                Core.startup = parameters;
-                if (Core.Load())
-                {
-                    Core._Main = new Main();
-                    Core.network = null;
-                    Application.Run(Core._Main);
-                }
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
-                Application.Exit();
-            }
+            InitializeComponent();
+        }
+
+        private void SearchItem_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

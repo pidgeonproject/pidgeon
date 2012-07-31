@@ -122,7 +122,8 @@ namespace Client
 
         public void Start()
         {
-            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }), Scrollback.MessageStyle.System);
+            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                Scrollback.MessageStyle.System);
             try
             {
                 _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -244,10 +245,12 @@ namespace Client
                         case "SRAW":
                             if (curr.InnerText == "PERMISSIONDENY")
                             {
-                                windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in", Scrollback.MessageStyle.System, false);
+                                windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in",
+                                    Scrollback.MessageStyle.System, false);
                                 break;
                             }
-                            windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText, Scrollback.MessageStyle.User, false);
+                            windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
+                                Scrollback.MessageStyle.User, false);
                             break;
                         case "SSTATUS":
                             switch (curr.InnerText)
@@ -314,7 +317,8 @@ namespace Client
                             if (sv != null)
                             {
                                 sv.nickname = curr.InnerText;
-                                windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText, Scrollback.MessageStyle.User, true);
+                                windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText, 
+                                    Scrollback.MessageStyle.User, true);
                             }
                             break;
                         case "SCONNECT":
@@ -337,7 +341,8 @@ namespace Client
                             }
                             break;
                         case "SGLOBALIDENT":
-                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
+                                new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
                             break;
                         case "SBACKLOG":
                             network = curr.Attributes[0].Value;
@@ -355,7 +360,8 @@ namespace Client
                             break;
                         case "SGLOBALNICK":
                             nick = curr.InnerText;
-                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage, new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                            windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
+                                new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
                             break;
                         case "SNETWORKINFO":
                             bool connected = false;
@@ -506,7 +512,8 @@ namespace Client
                         case "SAUTH":
                             if (curr.InnerText == "INVALID")
                             {
-                                windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed", Scrollback.MessageStyle.System, false);
+                                windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed",
+                                    Scrollback.MessageStyle.System, false);
                                 Connected = false;
                                 Exit();
                             }
@@ -536,10 +543,20 @@ namespace Client
                 foreach (Network network in sl)
                 {
                     network.Connected = false;
+                    if (Core.network == network)
+                    {
+                        Core.network = null;
+                    }
                 }
+                sl.Clear();
+            }
+            if (keep != null)
+            {
+                keep.Abort();
             }
             if (_writer != null)  _writer.Close();
             if (_reader != null)  _reader.Close();
+            base.Exit();
         }
 
         public void Deliver(Datagram message)
@@ -571,9 +588,13 @@ namespace Client
             return 0;
         }
 
-        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);     
+            if (!pmsg)
+            {
+                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text),
+                    Scrollback.MessageStyle.Message, true, 0, true);
+            }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }

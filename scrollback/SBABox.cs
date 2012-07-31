@@ -39,6 +39,7 @@ namespace Client
         private BufferedGraphics backbufferGraphics;
         private int offset = 0;
         private int currentX = 0;
+        private int scrolldown = 0;
         public bool Wrap = true;
         public int rendered = 0;
         private Graphics drawingGraphics;
@@ -176,8 +177,10 @@ namespace Client
                 lock (text)
                 {
                     text = "";
+                    text = Hooks.BeforeParser(text);
                     foreach (Line _l in lines)
                     {
+                        text = Hooks.BeforeInsertLine(text, _l.ToString() + "\n");
                         text += _l.ToString() + "\n";
                     }
                 }
@@ -189,17 +192,34 @@ namespace Client
 
         private void Redraw()
         {
-            RedrawText();
-            pt.Refresh();
+            if (!isDisposing)
+            {
+                RedrawText();
+                pt.Refresh();
+            }
+        }
+
+        public bool SearchDown(System.Text.RegularExpressions.Regex find)
+        {
+            if (!find.IsMatch(Text))
+            {
+                return false;
+            }
+            int line = 0;
+            
+            return false;
         }
 
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
-            lock (backbufferGraphics)
+            if (isDisposing)
             {
-                if (!isDisposing && backbufferGraphics != null)
-                    backbufferGraphics.Render(e.Graphics);
+                return;
             }
+                if (backbufferGraphics != null)
+                { 
+                    backbufferGraphics.Render(e.Graphics);
+                }
         }
 
         /// <summary>
@@ -227,6 +247,7 @@ namespace Client
                     {
                         Brush _b = new SolidBrush(part.textc);
                         string TextOfThispart = part.text;
+                        TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
                         StringFormat format = new StringFormat(StringFormat.GenericTypographic);
                         format.Trimming = StringTrimming.None;
                         format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
@@ -257,12 +278,12 @@ namespace Client
                                 {
                                     if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X > this.Width - vScrollBar1.Width)
                                     {
-                                        break;
+                                        if (trimmed != "" || _t.MeasureString(xx, font, new Point(0, 0), format).Width < pt.Width)
+                                        {
+                                            break;
+                                        }
                                     }
-                                    else
-                                    {
-                                        trimmed += xx + " ";
-                                    }
+                                    trimmed += xx + " ";
                                 }
                                 if (!ls && trimmed.EndsWith(" ") && trimmed.Length > 0)
                                 {
@@ -334,19 +355,26 @@ namespace Client
 
 
             _t.Clear(BackColor);
+
             foreach (Line text in lines)
             {
                 X = 0 - currentX;
                 RedrawLine(ref _t, ref X, ref Y, text);
                 Y = Y + Font.Size + 6;
             }
-            if (rendered < vScrollBar1.Value)
+            scrolldown = rendered - ((int)((float)pt.Height / (Font.Size + 6)));
+            if (scrolldown < 0)
             {
-                vScrollBar1.Value = rendered;
+                vScrollBar1.Enabled = false;
             }
-            vScrollBar1.Maximum = rendered;
-            if (rendered > 0)
+
+            if (scrolldown > 0)
             {
+                if (scrolldown < vScrollBar1.Value)
+                {
+                    vScrollBar1.Value = scrolldown;
+                }
+                vScrollBar1.Maximum = scrolldown + 1;
                 vScrollBar1.Enabled = true;
             }
             pt.Invalidate();
@@ -402,12 +430,18 @@ namespace Client
                 if (e.Button == System.Windows.Forms.MouseButtons.Right)
                 {
                     scrollback.Click_R(httparea._name, httparea._text);
+                    return;
                 }
 
                 if (e.Button == System.Windows.Forms.MouseButtons.Left)
                 {
                     scrollback.Click_L(httparea._text);
+                    return;
                 }
+            }
+            if (scrollback.owner != null)
+            {
+                scrollback.owner.textbox.richTextBox1.Focus();
             }
         }
 
@@ -451,13 +485,19 @@ namespace Client
                 // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
                 if (backbufferGraphics != null)
                 {
-                    lock (backbufferGraphics)
-                    {
                         backbufferGraphics.Dispose();
-                    }
                 }
                 if (backbufferContext != null)
-                    backbufferContext.Dispose();
+                {
+                    try
+                    {
+                        backbufferContext.Dispose();
+                    }
+                    catch (Exception)
+                    {
+                        backbufferContext = null;
+                    }
+                }
             }
             base.Dispose(disposing);
         }
@@ -513,13 +553,10 @@ namespace Client
 
         public void ScrollToBottom()
         {
-            if (((int)Font.Size + 6) * rendered > pt.Height)
+            if (vScrollBar1.Maximum > 1)
             {
-                offset = (((int)Font.Size + 6) * (rendered + 1)) - pt.Height;
-                if (vScrollBar1.Maximum > 0)
-                {
-                    vScrollBar1.Value = vScrollBar1.Maximum;
-                }
+                vScrollBar1.Value = vScrollBar1.Maximum;
+                Scrolled(vScrollBar1.Maximum);
             }
         }
 

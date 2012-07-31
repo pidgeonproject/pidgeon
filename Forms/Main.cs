@@ -35,6 +35,7 @@ namespace Client
         private Connection fConnection;
         private Preferences fPrefs;
         private bool UpdatedStatus = true;
+        SearchItem searchbox = new SearchItem();
         bool done = false;
 
         public class _WindowRequest 
@@ -151,6 +152,17 @@ namespace Client
             return base.IsInputKey(keyData);
         }
 
+        public static void ShortcutHandle(Object sender, KeyEventArgs e)
+        {
+            foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
+            {
+                if (shortcut.control == e.Control && shortcut.keys == e.KeyCode && shortcut.alt == e.Alt)
+                {
+                    Parser.parse(shortcut.data);
+                }
+            }
+        }
+
         public void UpdateStatus()
         {
             this.toolStripInfo.Text = StatusBox;
@@ -204,7 +216,7 @@ namespace Client
         private void Main_Load(object sender, EventArgs e)
         {
             _Load();
-            miscToolStripMenuItem.Visible = false;
+            //miscToolStripMenuItem.Visible = false;
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -292,6 +304,49 @@ namespace Client
             {
                 Chat.scrollback.RT.Wheeled(sender, md);
             }  
+        }
+
+        private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Protocol network in Core.Connections)
+            {
+                if (network.type == 2)
+                {
+                    ProtocolSv sv = (ProtocolSv)network;
+                    foreach (Network server in sv.sl)
+                    {
+                        if (server.server == "irc.tm-irc.org")
+                        {
+                            server._protocol.Join("#pidgeon", server);
+                            return;
+                        }
+                    }
+                }
+                if (network.Server == "irc.tm-irc.org")
+                {
+                    network.Join("#pidgeon");
+                    return;
+                }
+            }
+            Core.connectIRC("irc.tm-irc.org");
+            foreach (Protocol network in Core.Connections)
+            {
+                if (network.Server == "irc.tm-irc.org")
+                {
+                    network.Join("#pidgeon");
+                    return;
+                }
+            }
+        }
+
+        private void searchToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (searchbox.Visible)
+            {
+                searchbox.Hide();
+                return;
+            }
+            searchbox.Show();
         }
     }
 }

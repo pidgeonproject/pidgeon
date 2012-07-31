@@ -61,6 +61,16 @@ namespace Client
             }
         }
 
+        public static DateTime convertUNIX(string time)
+        {
+            double unixtimestmp = 0;
+            if (!double.TryParse(time, out unixtimestmp))
+            {
+                unixtimestmp = 0;
+            }
+            return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
+        }
+
         /// <summary>
         /// Retrieve channel
         /// </summary>

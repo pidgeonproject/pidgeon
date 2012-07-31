@@ -54,6 +54,7 @@ namespace Client
 
         private void _Enter(object sender, KeyEventArgs e)
         {
+            Main.ShortcutHandle(sender, e);
             if (e.Shift)
             {
                 return;

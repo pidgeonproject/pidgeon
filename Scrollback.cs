@@ -488,11 +488,23 @@ namespace Client
             {
                 if (http.StartsWith("https://"))
                 {
-                    System.Diagnostics.Process.Start(http);
+                    try
+                    {
+                        System.Diagnostics.Process.Start(http);
+                    }
+                    catch (Exception) {
+                        MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    }
                 }
                 if (http.StartsWith("http://"))
                 {
-                    System.Diagnostics.Process.Start(http);
+                    try
+                    {
+                        System.Diagnostics.Process.Start(http);
+                    }
+                    catch (Exception) {
+                        MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    }
                 }
                 if (http.StartsWith("pidgeon://"))
                 {

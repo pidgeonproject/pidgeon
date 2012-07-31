@@ -147,16 +147,6 @@ namespace Client
             _messages.DeliverMessage(text, Pr);
         }
 
-        public static string convertUNIX(string time)
-        {
-            long baseTicks = 621355968000000000;
-            long tickResolution = 10000000;
-
-            long epoch = (DateTime.Now.ToUniversalTime().Ticks - baseTicks) / tickResolution;
-            long epochTicks = (epoch * tickResolution) + baseTicks;
-            return new DateTime(epochTicks, DateTimeKind.Utc).ToString();
-        }
-
         public void _Ping()
         {
             try
@@ -292,6 +282,7 @@ namespace Client
                                             if (curr != null)
                                             {
                                                 channel._mode.mode(code[4]);
+                                                channel.UpdateInfo();
                                                 curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date);
                                             }
                                             return;
@@ -324,6 +315,7 @@ namespace Client
                                                 curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel, true, date);
                                             }
                                             channel.Topic = topic;
+                                            channel.UpdateInfo();
                                             return;
                                         }
                                     }
@@ -341,6 +333,7 @@ namespace Client
                                                 return;
                                             }
                                             channel.parsing_who = false;
+                                            channel.UpdateInfo();
                                         }
                                     }
                                     break;
@@ -358,9 +351,11 @@ namespace Client
                                             Window curr = channel.retrieveWindow();
                                             if (curr != null)
                                             {
-                                                curr.scrollback.InsertText("Topic by: " + user + " date " + convertUNIX(time), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                                                curr.scrollback.InsertText("Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
+                                                    Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
                                                 return;
                                             }
+                                            channel.UpdateInfo();
                                         }
                                     }
                                     break;
@@ -432,6 +427,7 @@ namespace Client
                                                 }
                                             }
                                             channel.redrawUsers();
+                                            channel.UpdateInfo();
                                             return;
                                         }
                                     }
@@ -456,6 +452,7 @@ namespace Client
                                                 Core._Main.Status();
                                             }
                                         }
+                                        channel.UpdateInfo();
                                     }
                                     break;
                                 case "556":
@@ -543,14 +540,17 @@ namespace Client
                                                 if (c.ok)
                                                 {
                                                     c.ok = false;
-                                                    Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage), Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                                    Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
+                                                        Scrollback.MessageStyle.Message, !c.temporary_hide, date);
                                                 }
                                                 else
                                                 {
-                                                    Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage), Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                                    Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
+                                                        Scrollback.MessageStyle.Message, !c.temporary_hide, date);
                                                 }
                                             }
                                             c.ok = false;
+                                            c.UpdateInfo();
                                         }
                                     }
                                     return;
@@ -586,7 +586,9 @@ namespace Client
                                                 Window x = item.retrieveWindow();
                                                 if (x != null)
                                                 {
-                                                    x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string> { nick, _new }), Scrollback.MessageStyle.Channel, !item.temporary_hide, date);
+                                                    x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage,
+                                                        new List<string> { nick, _new }), Scrollback.MessageStyle.Channel,
+                                                        !item.temporary_hide, date);
                                                 }
                                             }
                                         }
@@ -622,10 +624,12 @@ namespace Client
                                     switch (uc)
                                     {
                                         case "VERSION":
-                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/", Configuration.Priority.Low);
+                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
+                                                Configuration.Priority.Low);
                                             break;
                                         case "TIME":
-                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(), Configuration.Priority.Low);
+                                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
+                                                Configuration.Priority.Low);
                                             break;
                                         case "PING":
                                             if (message.Length > 6)
@@ -634,14 +638,16 @@ namespace Client
                                                 if (time.Contains(_server._protocol.delimiter))
                                                 {
                                                     time = message.Substring(0, message.IndexOf(_server._protocol.delimiter));
-                                                    protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "PING " + time, Configuration.Priority.Low);
+                                                    protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "PING " + time,
+                                                        Configuration.Priority.Low);
                                                 }
                                             }
                                             break;
                                     }
                                     if (Configuration.DisplayCtcp)
                                     {
-                                        protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message, Scrollback.MessageStyle.Message, true, date);
+                                        protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                                            Scrollback.MessageStyle.Message, true, date);
                                         return;
                                     }
                                     return;
@@ -665,8 +671,10 @@ namespace Client
                                             channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action, !channel.temporary_hide, date);
                                             return;
                                         }
-                                        channel.retrieveWindow().scrollback.InsertText(protocol.PRIVMSG(user.Nick, message), Scrollback.MessageStyle.Message, !channel.temporary_hide, date);
+                                        channel.retrieveWindow().scrollback.InsertText(protocol.PRIVMSG(user.Nick, message),
+                                            Scrollback.MessageStyle.Message, !channel.temporary_hide, date);
                                     }
+                                    channel.UpdateInfo();
                                     return;
                                 }
                                 return;
@@ -678,7 +686,8 @@ namespace Client
                                 {
                                     _server.Private(chan);
                                 }
-                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message),
+                                    Scrollback.MessageStyle.Channel, updated_text, date);
                                 return;
                             }
                         }
@@ -696,9 +705,12 @@ namespace Client
                                 window = channel.retrieveWindow();
                                 if (window != null)
                                 {
-                                    channel.retrieveWindow().scrollback.InsertText(messages.get("channel-topic", Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                                    channel.retrieveWindow().scrollback.InsertText(messages.get("channel-topic",
+                                        Core.SelectedLanguage, new List<string> { source, _value }), Scrollback.MessageStyle.Channel,
+                                        !channel.temporary_hide, date);
                                     return;
                                 }
+                                channel.UpdateInfo();
                             }
                         }
 
@@ -806,6 +818,7 @@ namespace Client
                                                 }
                                             }
                                         }
+                                        channel.UpdateInfo();
                                         return;
                                     }
                                 }
@@ -828,7 +841,7 @@ namespace Client
                                 if (window != null)
                                 {
                                     channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1",
-                                        Core.SelectedLanguage, new List<string> { "%L%" + user +  "%/L%!%L%" + host + "%/L%", _value }),
+                                        Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%L%" + host + "%/L%", _value }),
                                         Scrollback.MessageStyle.Part,
                                         !channel.temporary_hide, date);
 
@@ -888,7 +901,8 @@ namespace Client
                                         if (x != null && x.scrollback != null)
                                         {
                                             x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
-                                                new List<string> { "%L%" + nick + "%/L%" + "!%L%" + host + "%/L%", _value }), Scrollback.MessageStyle.Join,
+                                                new List<string> { "%L%" + nick + "%/L%" + "!%L%" + host + "%/L%", _value }),
+                                                Scrollback.MessageStyle.Join,
                                                 !item.temporary_hide, date);
                                         }
                                         if (updated_text)
@@ -916,32 +930,34 @@ namespace Client
                                 window = channel.retrieveWindow();
                                 if (window != null)
                                 {
-                                    channel.retrieveWindow().scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage, new List<string> { source, user, _value }),
+                                    channel.retrieveWindow().scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
+                                        new List<string> { source, user, _value }),
                                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
-                                   
+
                                     if (updated_text && channel.containUser(user))
                                     {
-                                            User delete = null;
-                                            lock (channel.UserList)
+                                        User delete = null;
+                                        lock (channel.UserList)
+                                        {
+                                            foreach (User _user in channel.UserList)
                                             {
-                                                foreach (User _user in channel.UserList)
+                                                if (_user.Nick == user)
                                                 {
-                                                    if (_user.Nick == user)
-                                                    {
-                                                        delete = _user;
-                                                        break;
-                                                    }
-                                                }
-                                                if (delete != null)
-                                                {
-                                                    channel.UserList.Remove(delete);
+                                                    delete = _user;
+                                                    break;
                                                 }
                                             }
-                                     }
-                                        channel.redrawUsers();
+                                            if (delete != null)
+                                            {
+                                                channel.UserList.Remove(delete);
+                                            }
+                                        }
                                     }
-                                    return;
+                                    channel.redrawUsers();
+                                    channel.UpdateInfo();
                                 }
+                                return;
+                            }
                         }
 
                         if (command == "JOIN")
@@ -979,6 +995,7 @@ namespace Client
                                             channel.redrawUsers();
                                         }
                                     }
+                                    channel.UpdateInfo();
                                     return;
                                 }
                             }
@@ -996,7 +1013,8 @@ namespace Client
         public void Start()
         {
             _messages.protocol = this;
-            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }), Scrollback.MessageStyle.System);
+            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                Scrollback.MessageStyle.System);
             try
             {
                 _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -1101,9 +1119,12 @@ namespace Client
             }
         }
 
-        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message, true, 0, true); 
+            if (!pmsg)
+            {
+                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+            }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
         }
@@ -1157,6 +1178,11 @@ namespace Client
                 main.Abort();
             }
             windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
+            if (Core.network == _server)
+            {
+                Core.network = null;
+            }
+            base.Exit();
             return;
         }
 

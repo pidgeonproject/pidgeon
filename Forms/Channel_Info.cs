@@ -36,6 +36,12 @@ namespace Client
             InitializeComponent();
         }
 
+        public static DateTime convertUNIX(string time)
+        {
+            double unixtimestmp = double.Parse(time);
+            return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
+        }
+
         /// <summary>
         /// Prepare the control
         /// </summary>
@@ -62,7 +68,7 @@ namespace Client
                         foreach (SimpleBan sb in channel.Bl)
                         { 
                             ListViewItem li = new ListViewItem(sb._Target);
-                            li.SubItems.Add(sb.Time);
+                            li.SubItems.Add(convertUNIX(sb.Time)  + " (" + sb.Time + ")");
                             li.SubItems.Add(sb._User);
                             
                             listView3.Items.Add(li);
@@ -169,6 +175,46 @@ namespace Client
             {
                 textBox1.Text = textBox1.Lines[0];
             }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void enforceAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cleanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         } 
     }
 }

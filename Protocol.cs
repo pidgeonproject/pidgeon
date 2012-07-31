@@ -178,7 +178,6 @@ namespace Client
         {
             if (windows.ContainsKey(name))
             {
-                
                 Current = windows[name];
                 Current.Visible = true;
                 if (Current != Core._Main.Chat)
@@ -270,7 +269,7 @@ namespace Client
         /// <param name="to">User or a channel (needs to be prefixed with #)</param>
         /// <param name="_priority"></param>
         /// <returns></returns>
-        public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             return 0;
         }
@@ -340,7 +339,20 @@ namespace Client
         /// <summary>
         /// Disconnect server
         /// </summary>
-        public virtual void Exit() { }  
+        public virtual void Exit() 
+        {
+            if (windows.ContainsValue(Core._Main.Chat))
+            {
+                Core._Main.main.Visible = true;
+                Core._Main.Chat.Visible = false;
+                Core._Main.Chat.Dispose();
+                Core._Main.Chat = Core._Main.main;
+            }
+            if (Core.Connections.Contains(this))
+            {
+                Core.Connections.Remove(this);
+            }
+        }  
 
         public class UserMode : Mode
         {

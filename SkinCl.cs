@@ -44,20 +44,22 @@ namespace Client
         public Skin()
         {
             // defaults
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
-            mrcl.Add(System.Drawing.Color.LightSteelBlue);
+            mrcl.Add(System.Drawing.Color.White);
+            mrcl.Add(System.Drawing.Color.Gray);
+            mrcl.Add(System.Drawing.Color.Blue);
+            mrcl.Add(System.Drawing.Color.Green);
+            mrcl.Add(System.Drawing.Color.Red);
+            mrcl.Add(System.Drawing.Color.SandyBrown);
+            mrcl.Add(System.Drawing.Color.Purple);
+            mrcl.Add(System.Drawing.Color.Orange);
+            mrcl.Add(System.Drawing.Color.Yellow);
+            mrcl.Add(System.Drawing.Color.LightGreen);
+            mrcl.Add(System.Drawing.Color.Cornsilk);
+            mrcl.Add(System.Drawing.Color.Cyan);
+            mrcl.Add(System.Drawing.Color.LightCoral);
+            mrcl.Add(System.Drawing.Color.LightPink);
+            mrcl.Add(System.Drawing.Color.Gray);
+            mrcl.Add(System.Drawing.Color.LightGoldenrodYellow);
             fontcolor = System.Drawing.Color.White;
             joincolor = System.Drawing.Color.LightBlue;
             highlightcolor = System.Drawing.Color.LightPink;

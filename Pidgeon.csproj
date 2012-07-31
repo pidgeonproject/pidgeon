@@ -51,6 +51,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>57C9C028C90A0CED594C5210571D0C38D39D49D4</ManifestCertificateThumbprint>
@@ -120,6 +121,24 @@
     </Compile>
     <Compile Include="Forms\Notification.Designer.cs">
       <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SearchItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SearchItem.Designer.cs">
+      <DependentUpon>SearchItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ShortcutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ShortcutBox.Designer.cs">
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="scrollback\SBABox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="scrollback\SBABox.Designer.cs">
+      <DependentUpon>SBABox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TrafficScanner.cs">
       <SubType>Form</SubType>
@@ -226,6 +245,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Preferences.resx">
       <DependentUpon>Preferences.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SearchItem.resx">
+      <DependentUpon>SearchItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ShortcutBox.resx">
+      <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="scrollback\SBABox.resx">
+      <DependentUpon>SBABox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Style.resx">
       <DependentUpon>Style.cs</DependentUpon>

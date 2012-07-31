@@ -162,6 +162,8 @@ namespace Client
 
         public static bool Retrieve_Sv = true;
 
+        public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
+
         /// <summary>
         /// Enable XML logs
         /// </summary>

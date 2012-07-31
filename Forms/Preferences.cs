@@ -45,6 +45,7 @@ namespace Client
             lident.Text = messages.get("preferences-ident", Core.SelectedLanguage);
             lname.Text = messages.get("preferences-name", Core.SelectedLanguage);
             lquit.Text = messages.get("preferences-quit", Core.SelectedLanguage);
+            label4.Text = messages.get("preferences-al", Core.SelectedLanguage);
             textBox1.Text = Configuration.nick;
             textBox2.Text = Configuration.quit;
             textBox3.Text = Configuration.ident;
@@ -75,6 +76,35 @@ namespace Client
             listView1.Items.Add(new ListViewItem("Protections"));
             listView1.Items.Add(new ListViewItem("Network"));
             listView1.Items.Add(new ListViewItem("Highlighting"));
+            listView1.Items.Add(new ListViewItem("Ignore list"));
+            listView1.Items.Add(new ListViewItem("Keyboard"));
+            redrawS();
+        }
+
+        public void redrawS()
+        {
+            listView2.Items.Clear();
+            foreach (Core.Shortcut s in Configuration.ShortcutKeylist)
+            {
+                ListViewItem item = new ListViewItem();
+                string keys = "";
+                if (s.control)
+                {
+                    keys += "ctrl + ";
+                }
+                if (s.alt)
+                {
+                    keys += "alt + ";
+                }
+                if (s.shift)
+                {
+                    keys += "shift + ";
+                }
+                keys += s.keys.ToString();
+                item.Text = keys;
+                item.SubItems.Add(s.data);
+                listView2.Items.Add(item);
+            }
         }
 
         private void lquit_Click(object sender, EventArgs e)
@@ -156,6 +186,12 @@ namespace Client
                 case 5:
                     gro6.BringToFront();
                     break;
+                case 6:
+                    gro7.BringToFront();
+                    break;
+                case 7:
+                    gro8.BringToFront();
+                    break;
             }
         }
 
@@ -208,6 +244,43 @@ namespace Client
             foreach (ListViewItem curr in list.SelectedItems)
             {
                 curr.SubItems[1].Text = "false";
+            }
+        }
+
+        private void addToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            ShortcutBox sb = new ShortcutBox();
+            sb.Show();
+            sb.Left = this.Left + (this.Width / 2);
+            sb.config = this;
+            sb.Top = this.Top + (this.Height / 2);
+            
+        }
+
+        private void modifyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count > 0)
+            {
+                ShortcutBox sb = new ShortcutBox();
+                sb.Show();
+                sb.Left = this.Left + (this.Width / 2);
+                sb.config = this;
+                sb.Top = this.Top + (this.Height / 2);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView2.SelectedItems.Count > 0)
+            {
+                foreach (ListViewItem curr in listView2.SelectedItems)
+                {
+                    if (Configuration.ShortcutKeylist.Count > curr.Index)
+                    {
+                        Configuration.ShortcutKeylist.RemoveAt(curr.Index);
+                    }
+                    redrawS();
+                }
             }
         }
     }

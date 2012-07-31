@@ -50,6 +50,7 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gro1 = new System.Windows.Forms.GroupBox();
+            this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
             this.lname = new System.Windows.Forms.Label();
@@ -76,6 +77,14 @@ namespace Client
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.gro7 = new System.Windows.Forms.GroupBox();
+            this.gro8 = new System.Windows.Forms.GroupBox();
+            this.listView2 = new System.Windows.Forms.ListView();
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip2 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.addToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.modifyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gro6 = new System.Windows.Forms.GroupBox();
             this.list = new System.Windows.Forms.ListView();
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -93,13 +102,16 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.checkBox10 = new System.Windows.Forms.CheckBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
             this.gro4.SuspendLayout();
             this.gro3.SuspendLayout();
             this.gro2.SuspendLayout();
+            this.gro8.SuspendLayout();
+            this.contextMenuStrip2.SuspendLayout();
             this.gro6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.fl.SuspendLayout();
@@ -130,6 +142,7 @@ namespace Client
             this.panel1.Controls.Add(this.gro3);
             this.panel1.Controls.Add(this.gro2);
             this.panel1.Controls.Add(this.gro7);
+            this.panel1.Controls.Add(this.gro8);
             this.panel1.Controls.Add(this.gro6);
             this.panel1.Controls.Add(this.gro5);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -140,6 +153,8 @@ namespace Client
             // 
             // gro1
             // 
+            this.gro1.Controls.Add(this.textBox7);
+            this.gro1.Controls.Add(this.label4);
             this.gro1.Controls.Add(this.checkBox10);
             this.gro1.Controls.Add(this.checkBox9);
             this.gro1.Controls.Add(this.textBox4);
@@ -158,10 +173,20 @@ namespace Client
             this.gro1.TabStop = false;
             this.gro1.Text = "IRC";
             // 
+            // checkBox10
+            // 
+            this.checkBox10.AutoSize = true;
+            this.checkBox10.Location = new System.Drawing.Point(9, 347);
+            this.checkBox10.Name = "checkBox10";
+            this.checkBox10.Size = new System.Drawing.Size(229, 17);
+            this.checkBox10.TabIndex = 17;
+            this.checkBox10.Text = "Notify when update for pidgeon is available";
+            this.checkBox10.UseVisualStyleBackColor = true;
+            // 
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(9, 172);
+            this.checkBox9.Location = new System.Drawing.Point(9, 222);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(150, 17);
             this.checkBox9.TabIndex = 16;
@@ -170,15 +195,15 @@ namespace Client
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(93, 133);
+            this.textBox4.Location = new System.Drawing.Point(93, 90);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(323, 20);
+            this.textBox4.Size = new System.Drawing.Size(357, 20);
             this.textBox4.TabIndex = 15;
             // 
             // lname
             // 
             this.lname.AutoSize = true;
-            this.lname.Location = new System.Drawing.Point(6, 133);
+            this.lname.Location = new System.Drawing.Point(6, 90);
             this.lname.Name = "lname";
             this.lname.Size = new System.Drawing.Size(35, 13);
             this.lname.TabIndex = 14;
@@ -186,15 +211,15 @@ namespace Client
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(93, 93);
+            this.textBox3.Location = new System.Drawing.Point(93, 64);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(323, 20);
+            this.textBox3.Size = new System.Drawing.Size(357, 20);
             this.textBox3.TabIndex = 13;
             // 
             // lident
             // 
             this.lident.AutoSize = true;
-            this.lident.Location = new System.Drawing.Point(6, 93);
+            this.lident.Location = new System.Drawing.Point(6, 64);
             this.lident.Name = "lident";
             this.lident.Size = new System.Drawing.Size(35, 13);
             this.lident.TabIndex = 12;
@@ -202,15 +227,15 @@ namespace Client
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(93, 54);
+            this.textBox2.Location = new System.Drawing.Point(93, 39);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(323, 20);
+            this.textBox2.Size = new System.Drawing.Size(357, 20);
             this.textBox2.TabIndex = 11;
             // 
             // lquit
             // 
             this.lquit.AutoSize = true;
-            this.lquit.Location = new System.Drawing.Point(6, 54);
+            this.lquit.Location = new System.Drawing.Point(6, 39);
             this.lquit.Name = "lquit";
             this.lquit.Size = new System.Drawing.Size(35, 13);
             this.lquit.TabIndex = 10;
@@ -220,7 +245,7 @@ namespace Client
             // 
             this.textBox1.Location = new System.Drawing.Point(93, 14);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(323, 20);
+            this.textBox1.Size = new System.Drawing.Size(357, 20);
             this.textBox1.TabIndex = 9;
             // 
             // lnick
@@ -406,6 +431,74 @@ namespace Client
             this.gro7.TabStop = false;
             this.gro7.Text = "Ignore";
             // 
+            // gro8
+            // 
+            this.gro8.Controls.Add(this.listView2);
+            this.gro8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro8.Location = new System.Drawing.Point(0, 0);
+            this.gro8.Name = "gro8";
+            this.gro8.Size = new System.Drawing.Size(461, 380);
+            this.gro8.TabIndex = 7;
+            this.gro8.TabStop = false;
+            this.gro8.Text = "Shortcuts";
+            // 
+            // listView2
+            // 
+            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5});
+            this.listView2.ContextMenuStrip = this.contextMenuStrip2;
+            this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView2.FullRowSelect = true;
+            this.listView2.HideSelection = false;
+            this.listView2.LabelEdit = true;
+            this.listView2.Location = new System.Drawing.Point(3, 16);
+            this.listView2.Name = "listView2";
+            this.listView2.Size = new System.Drawing.Size(455, 361);
+            this.listView2.TabIndex = 4;
+            this.listView2.UseCompatibleStateImageBehavior = false;
+            this.listView2.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "shortcut";
+            this.columnHeader4.Width = 201;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "line";
+            this.columnHeader5.Width = 252;
+            // 
+            // contextMenuStrip2
+            // 
+            this.contextMenuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem1,
+            this.modifyToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+            this.contextMenuStrip2.Name = "contextMenuStrip2";
+            this.contextMenuStrip2.Size = new System.Drawing.Size(113, 70);
+            // 
+            // addToolStripMenuItem1
+            // 
+            this.addToolStripMenuItem1.Name = "addToolStripMenuItem1";
+            this.addToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.addToolStripMenuItem1.Text = "Add";
+            this.addToolStripMenuItem1.Click += new System.EventHandler(this.addToolStripMenuItem1_Click);
+            // 
+            // modifyToolStripMenuItem
+            // 
+            this.modifyToolStripMenuItem.Name = "modifyToolStripMenuItem";
+            this.modifyToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.modifyToolStripMenuItem.Text = "Modify";
+            this.modifyToolStripMenuItem.Click += new System.EventHandler(this.modifyToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
             // gro6
             // 
             this.gro6.Controls.Add(this.list);
@@ -478,21 +571,21 @@ namespace Client
             // simpleToolStripMenuItem
             // 
             this.simpleToolStripMenuItem.Name = "simpleToolStripMenuItem";
-            this.simpleToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.simpleToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.simpleToolStripMenuItem.Text = "Simple";
             this.simpleToolStripMenuItem.Click += new System.EventHandler(this.simpleToolStripMenuItem_Click);
             // 
             // enableToolStripMenuItem
             // 
             this.enableToolStripMenuItem.Name = "enableToolStripMenuItem";
-            this.enableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.enableToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.enableToolStripMenuItem.Text = "Enable";
             this.enableToolStripMenuItem.Click += new System.EventHandler(this.enableToolStripMenuItem_Click);
             // 
             // disableToolStripMenuItem
             // 
             this.disableToolStripMenuItem.Name = "disableToolStripMenuItem";
-            this.disableToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.disableToolStripMenuItem.Size = new System.Drawing.Size(117, 22);
             this.disableToolStripMenuItem.Text = "Disable";
             this.disableToolStripMenuItem.Click += new System.EventHandler(this.disableToolStripMenuItem_Click);
             // 
@@ -558,15 +651,21 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // checkBox10
+            // textBox7
             // 
-            this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(9, 347);
-            this.checkBox10.Name = "checkBox10";
-            this.checkBox10.Size = new System.Drawing.Size(229, 17);
-            this.checkBox10.TabIndex = 17;
-            this.checkBox10.Text = "Notify when update for pidgeon is available";
-            this.checkBox10.UseVisualStyleBackColor = true;
+            this.textBox7.Location = new System.Drawing.Point(93, 116);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(357, 20);
+            this.textBox7.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 116);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Second nick";
             // 
             // Preferences
             // 
@@ -589,6 +688,8 @@ namespace Client
             this.gro3.PerformLayout();
             this.gro2.ResumeLayout(false);
             this.gro2.PerformLayout();
+            this.gro8.ResumeLayout(false);
+            this.contextMenuStrip2.ResumeLayout(false);
             this.gro6.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.fl.ResumeLayout(false);
@@ -645,6 +746,16 @@ namespace Client
         private System.Windows.Forms.CheckBox checkBox8;
         private System.Windows.Forms.CheckBox checkBox9;
         private System.Windows.Forms.CheckBox checkBox10;
+        private System.Windows.Forms.GroupBox gro8;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip2;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem modifyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Label label4;
 
     }
 }
