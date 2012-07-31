@@ -222,6 +222,11 @@ namespace Client
         public static bool HidingParsed = true;
 
         /// <summary>
+        /// Require confirmation from user before exiting
+        /// </summary>
+        public static bool ShutdownCheck = true;
+
+        /// <summary>
         /// Position of window
         /// </summary>
         public static int window_size = 0;

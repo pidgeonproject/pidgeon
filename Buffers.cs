@@ -38,6 +38,5 @@ namespace Client
 
             return (int)(rect.Right + 1.0f);
         }
-
     }
 }

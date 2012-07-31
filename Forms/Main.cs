@@ -233,6 +233,14 @@ namespace Client
             System.Diagnostics.Process.Start("http://pidgeonclient.org/wiki/Help:Contents");
         }
 
+        public void Unshow(object main, FormClosingEventArgs closing)
+        {
+            if (MessageBox.Show("Do you really want to exit", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+            {
+                closing.Cancel = true;
+            }
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Help _Help = new Help();

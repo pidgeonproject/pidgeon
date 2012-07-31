@@ -345,7 +345,7 @@ namespace Client
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.shutDownToolStripMenuItem_Click);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Unshow);
             this.Load += new System.EventHandler(this.Main_Load);
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Wheeled);
             this.statusStrip1.ResumeLayout(false);
