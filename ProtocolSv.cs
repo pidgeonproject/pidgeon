@@ -505,6 +505,7 @@ namespace Client
 
                                         }
                                         channel.redrawUsers();
+                                        channel.UpdateInfo();
                                     }
                                 }
                             }

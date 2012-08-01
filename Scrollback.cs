@@ -301,6 +301,22 @@ namespace Client
             return false;
         }
 
+        public bool Find(string text)
+        {
+            if (simple)
+            {
+                if (!simpleview.Text.Contains(text))
+                {
+                    return false;
+                }
+                simpleview.SelectionStart = simpleview.Text.IndexOf(text);
+                simpleview.SelectionLength = text.Length;
+                simpleview.ScrollToCaret();
+                return true;
+            }
+            return false;
+        }
+
         public string _getFileName()
         {
             string name = Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.logs_name).Replace("$1", owner.name);

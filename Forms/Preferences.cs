@@ -39,6 +39,12 @@ namespace Client
         /// <param name="e"></param>
         private void Preferences_Load(object sender, EventArgs e)
         {
+            checkBox10.Checked = Configuration.CheckUpdate;
+            if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
+            {
+                checkBox10.Checked = false;
+                checkBox10.Enabled = false;
+            }
             bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
             bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
             lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
@@ -61,7 +67,6 @@ namespace Client
             checkBox9.Checked = Configuration.Notice;
             textBox5.Text = Configuration.logs_dir;
             textBox6.Text = Configuration.logs_name;
-            checkBox10.Checked = Configuration.CheckUpdate;
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
                 ListViewItem item = new ListViewItem();

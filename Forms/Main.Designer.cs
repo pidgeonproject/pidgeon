@@ -77,8 +77,11 @@ namespace Client
             this.pidgeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
             this.updater = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
+            this.switchToAdvancedLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +95,6 @@ namespace Client
             this.toolStripInfo});
             this.statusStrip1.Location = new System.Drawing.Point(0, 388);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.ShowItemToolTips = true;
             this.statusStrip1.Size = new System.Drawing.Size(874, 22);
             this.statusStrip1.TabIndex = 0;
             this.statusStrip1.Text = "statusStrip1";
@@ -104,18 +106,18 @@ namespace Client
             // 
             // toolStripStatusNetwork
             // 
-            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusNetwork.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
             this.toolStripStatusNetwork.Size = new System.Drawing.Size(4, 17);
             // 
             // toolStripStatusChannel
             // 
-            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusChannel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusChannel.Name = "toolStripStatusChannel";
             this.toolStripStatusChannel.Size = new System.Drawing.Size(4, 17);
@@ -128,9 +130,9 @@ namespace Client
             // toolStripInfo
             // 
             this.toolStripInfo.AutoSize = false;
-            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripInfo.Name = "toolStripInfo";
             this.toolStripInfo.Size = new System.Drawing.Size(851, 17);
@@ -212,8 +214,8 @@ namespace Client
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.P)));
+            this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.P)));
             this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem3.Text = "Packet viewer";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
@@ -221,8 +223,8 @@ namespace Client
             // taskbarBoxToolStripMenuItem
             // 
             this.taskbarBoxToolStripMenuItem.Name = "taskbarBoxToolStripMenuItem";
-            this.taskbarBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.M)));
+            this.taskbarBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.M)));
             this.taskbarBoxToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.taskbarBoxToolStripMenuItem.Text = "Small Chat";
             this.taskbarBoxToolStripMenuItem.Click += new System.EventHandler(this.taskbarBoxToolStripMenuItem_Click);
@@ -258,7 +260,9 @@ namespace Client
             // miscToolStripMenuItem
             // 
             this.miscToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.searchToolStripMenuItem});
+            this.searchToolStripMenuItem,
+            this.toolStripMenuItem5,
+            this.switchToAdvancedLayoutToolStripMenuItem});
             this.miscToolStripMenuItem.Name = "miscToolStripMenuItem";
             this.miscToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.miscToolStripMenuItem.Text = "Misc";
@@ -267,7 +271,7 @@ namespace Client
             // 
             this.searchToolStripMenuItem.Name = "searchToolStripMenuItem";
             this.searchToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.searchToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.searchToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
             this.searchToolStripMenuItem.Text = "Search";
             this.searchToolStripMenuItem.Click += new System.EventHandler(this.searchToolStripMenuItem_Click);
             // 
@@ -335,6 +339,18 @@ namespace Client
             this.updater.Interval = 200;
             this.updater.Tick += new System.EventHandler(this.updater_Tick);
             // 
+            // toolStripMenuItem5
+            // 
+            this.toolStripMenuItem5.Name = "toolStripMenuItem5";
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(210, 6);
+            // 
+            // switchToAdvancedLayoutToolStripMenuItem
+            // 
+            this.switchToAdvancedLayoutToolStripMenuItem.Name = "switchToAdvancedLayoutToolStripMenuItem";
+            this.switchToAdvancedLayoutToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.switchToAdvancedLayoutToolStripMenuItem.Text = "Switch to advanced layout";
+            this.switchToAdvancedLayoutToolStripMenuItem.Click += new System.EventHandler(this.switchToAdvancedLayoutToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.ClientSize = new System.Drawing.Size(874, 410);
@@ -352,6 +368,7 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -390,5 +407,7 @@ namespace Client
         public System.Windows.Forms.SplitContainer sX;
         private System.Windows.Forms.ToolStripMenuItem rootToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pidgeonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
+        private System.Windows.Forms.ToolStripMenuItem switchToAdvancedLayoutToolStripMenuItem;
     }
 }

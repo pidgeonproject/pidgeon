@@ -89,19 +89,24 @@ namespace Client
             switch (comboBox1.SelectedIndex)
             {
                 case 0:
-                    Core.connectIRC(comboBox2.Text, port);
+                    Core.connectIRC(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
                     break;
                 case 1:
-                    Core.connectQl(comboBox2.Text, port);
+                    Core.connectQl(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
                     break;
                 case 2:
-                    Core.connectPS(comboBox2.Text, port, textBox3.Text);
+                    Core.connectPS(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
                     break;
             }
             Close();
         }
 
         private void tableLayoutPanel2_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
         {
 
         }

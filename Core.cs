@@ -912,7 +912,7 @@ namespace Client
             return false;
         }
 
-        public static bool connectQl(string server, int port)
+        public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
             _quassel.Open();
@@ -925,7 +925,7 @@ namespace Client
         /// <param name="server"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public static bool connectPS(string server, int port = 8222, string password = "xx")
+        public static bool connectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
             ProtocolSv protocol = new ProtocolSv();
             protocol.Server = server;
@@ -943,7 +943,7 @@ namespace Client
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        public static bool connectIRC(string server, int port = 6667, string pw = "")
+        public static bool connectIRC(string server, int port = 6667, string pw = "", bool secured = false)
         {
             ProtocolIrc protocol = new ProtocolIrc();
             Connections.Add(protocol);

@@ -686,8 +686,8 @@ namespace Client
                                 {
                                     _server.Private(chan);
                                 }
-                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(source, message),
-                                    Scrollback.MessageStyle.Channel, updated_text, date);
+                                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(chan, message),
+                                    Scrollback.MessageStyle.Message, updated_text, date);
                                 return;
                             }
                         }
@@ -865,8 +865,8 @@ namespace Client
                                             {
                                                 channel.UserList.Remove(delete);
                                             }
-
                                             channel.redrawUsers();
+                                            channel.UpdateInfo();
                                         }
                                         return;
                                     }
@@ -911,6 +911,7 @@ namespace Client
                                             {
                                                 item.UserList.Remove(target);
                                             }
+                                            item.UpdateInfo();
                                             item.redrawUsers();
                                         }
                                     }

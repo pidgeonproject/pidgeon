@@ -235,10 +235,15 @@ namespace Client
 
         public void Unshow(object main, FormClosingEventArgs closing)
         {
-            if (MessageBox.Show("Do you really want to exit", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+            if (Core.IgnoreErrors)
             {
-                closing.Cancel = true;
+                Core.Debuglog("Closing main");
+                return;
             }
+                if (MessageBox.Show(messages.get("pidgeon-shut", Core.SelectedLanguage), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                {
+                    closing.Cancel = true;
+                }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -355,6 +360,14 @@ namespace Client
                 return;
             }
             searchbox.Show();
+        }
+
+        private void switchToAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Chat != null)
+            {
+                Chat.scrollback.Switch(true);
+            }
         }
     }
 }

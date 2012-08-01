@@ -62,5 +62,20 @@ namespace Client
                 textBox1.ScrollToCaret();
             }
         }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lock (text)
+            {
+                text.Clear();
+            }
+            modified = true;
+        }
+
+        private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
+            refresh.Enabled = scrollToolStripMenuItem.Checked;
+        }
     }
 }
