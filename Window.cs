@@ -75,6 +75,8 @@ namespace Client
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
+            listViewd.Columns[0].Width = listViewd.Width;
+            listView.Columns[0].Width = listViewd.Width;
             Redraw();
         }
 

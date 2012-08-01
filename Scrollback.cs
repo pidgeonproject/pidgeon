@@ -291,7 +291,7 @@ namespace Client
                     {
                         stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + stamp + ProtocolIrc.decrypt_text( Parser.link2(System.Web.HttpUtility.HtmlEncode(text)) ) + "</font><br>\n", _getFileName() + ".html");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decrypt_text( Parser.link2(text) )) + "</font><br>\n", _getFileName() + ".html");
                 }
                 if (Configuration.logs_xml)
                 {
