@@ -271,9 +271,9 @@ namespace Client
                 {
                     System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
                 }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name))
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath( owner.name)))
                 {
-                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name);
+                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath( owner.name));
                 }
                 if (Configuration.logs_txt)
                 {
@@ -301,6 +301,11 @@ namespace Client
             return false;
         }
 
+        public string validpath(string text)
+        {
+            return text.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_");
+        }
+
         public bool Find(string text)
         {
             if (simple)
@@ -319,7 +324,7 @@ namespace Client
 
         public string _getFileName()
         {
-            string name = Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.logs_name).Replace("$1", owner.name);
+            string name = Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.logs_name).Replace("$1", validpath( owner.name ));
             return name;
         }
 
@@ -346,7 +351,7 @@ namespace Client
                         List<string> values = new List<string>();
                         foreach (ContentLine _line in Line)
                         {
-                            values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + _line.text.Replace("%/L%", "").Replace("%/USER%", "").Replace("%L%", "").Replace("%USER%", ""));
+                            values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text));
                         }
                         simpleview.Lines = values.ToArray<string>();
                         simpleview.SelectionStart = simpleview.Text.Length;
@@ -456,18 +461,30 @@ namespace Client
                 {
                     ViewLn(adds, true, false);
                 }
+                if (data.StartsWith("pidgeon://ident"))
+                {
+                    ViewLn("*!" + adds + "@*", false, false);
+                }
                 if (data.StartsWith("pidgeon://user"))
                 {
-                    ViewLn(adds + "!*@*", false, false);
+                    ViewLn(adds + "!*@*", false, false, true, adds);
+                }
+                if (data.StartsWith("pidgeon://hostname"))
+                {
+                    ViewLn("*@" + adds, false, false);
                 }
         }
 
-        public void ViewLn(string content, bool channel, bool link = true)
+        public void ViewLn(string content, bool channel, bool link = true, bool menu = false, string name = "")
         {
             if (owner != null && owner.isChannel)
             {
                 toolStripMenuItem1.Visible = true;
                 Link = content;
+                kickToolStripMenuItem.Visible = false;
+                whoisToolStripMenuItem.Visible = false;
+                whowasToolStripMenuItem.Visible = false;
+                toolStripMenuItem2.Visible = false;
                 if (channel)
                 {
                     mode1b2ToolStripMenuItem.Visible = false;
@@ -478,6 +495,13 @@ namespace Client
                     joinToolStripMenuItem.Visible = true;
                     return;
                 }
+                if (menu)
+                {
+                    toolStripMenuItem2.Visible = true;
+                    kickToolStripMenuItem.Visible = true;
+                    whoisToolStripMenuItem.Visible = true;
+                    whowasToolStripMenuItem.Visible = true;
+                }
                 mode1b2ToolStripMenuItem.Visible = true;
                 joinToolStripMenuItem.Visible = false;
                 toolStripMenuItem1.Visible = true;
@@ -485,6 +509,9 @@ namespace Client
                 mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
                 mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
                 mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
+                kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name +  " :" + Configuration.DefaultReason;
+                whoisToolStripMenuItem.Text = "/whois " + name;
+                whowasToolStripMenuItem.Text = "/whowas " + name;
                 if (link)
                 {
                     openLinkInBrowserToolStripMenuItem.Visible = true;
@@ -545,6 +572,32 @@ namespace Client
                     if (command.StartsWith("join/#"))
                     {
                         Parser.parse("/join " + command.Substring(5));
+                        return;
+                    }
+                    if (command.StartsWith("ident/#"))
+                    {
+                        string nick = command.Substring(7);
+                        if (owner != null && owner._Network != null)
+                        {
+                            if (owner.isChannel)
+                            {
+                                owner.textbox.richTextBox1.AppendText(nick);
+                                owner.textbox.Focus();
+                            }
+                        }
+                        return;
+                    }
+                    if (command.StartsWith("hostname/#"))
+                    {
+                        string nick = command.Substring(10);
+                        if (owner != null && owner._Network != null)
+                        {
+                            if (owner.isChannel)
+                            {
+                                owner.textbox.richTextBox1.AppendText(nick);
+                                owner.textbox.Focus();
+                            }
+                        }
                         return;
                     }
                     if (command.StartsWith("text/#"))
@@ -691,5 +744,35 @@ namespace Client
             }
         }
 
+        private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                Parser.parse(whoisToolStripMenuItem.Text);
+            }
+        }
+
+        private void whowasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                Parser.parse(whowasToolStripMenuItem.Text);
+            }
+        }
+
+        private void kickToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                if (Configuration.ConfirmAll)
+                {
+                    if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                Parser.parse(kickToolStripMenuItem.Text);
+            }
+        }
     }
 }

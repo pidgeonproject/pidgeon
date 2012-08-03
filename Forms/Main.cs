@@ -152,15 +152,18 @@ namespace Client
             return base.IsInputKey(keyData);
         }
 
-        public static void ShortcutHandle(Object sender, KeyEventArgs e)
+        public static bool ShortcutHandle(Object sender, KeyEventArgs e)
         {
+            bool rt = false;
             foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
             {
                 if (shortcut.control == e.Control && shortcut.keys == e.KeyCode && shortcut.alt == e.Alt)
                 {
                     Parser.parse(shortcut.data);
+                    rt = true;
                 }
             }
+            return rt;
         }
 
         public void UpdateStatus()
@@ -238,6 +241,7 @@ namespace Client
             if (Core.IgnoreErrors)
             {
                 Core.Debuglog("Closing main");
+                closing.Cancel = false;
                 return;
             }
                 if (MessageBox.Show(messages.get("pidgeon-shut", Core.SelectedLanguage), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)

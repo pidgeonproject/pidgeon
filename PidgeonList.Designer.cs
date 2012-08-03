@@ -71,6 +71,7 @@ namespace Client
             this.items.FullRowSelect = true;
             this.items.HideSelection = false;
             this.items.ImageIndex = 0;
+            this.items.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(list_NodeMouseClick);
             this.items.ImageList = this.list;
             this.items.Indent = 6;
             this.items.ItemHeight = 16;

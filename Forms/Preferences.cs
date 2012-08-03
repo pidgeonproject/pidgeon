@@ -39,51 +39,63 @@ namespace Client
         /// <param name="e"></param>
         private void Preferences_Load(object sender, EventArgs e)
         {
-            checkBox10.Checked = Configuration.CheckUpdate;
-            if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
+            try
             {
-                checkBox10.Checked = false;
-                checkBox10.Enabled = false;
+                checkBox10.Checked = Configuration.CheckUpdate;
+                if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
+                {
+                    checkBox10.Checked = false;
+                    checkBox10.Enabled = false;
+                }
+                bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
+                bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
+                lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
+                lident.Text = messages.get("preferences-ident", Core.SelectedLanguage);
+                lname.Text = messages.get("preferences-name", Core.SelectedLanguage);
+                lquit.Text = messages.get("preferences-quit", Core.SelectedLanguage);
+                label4.Text = messages.get("preferences-al", Core.SelectedLanguage);
+                textBox1.Text = Configuration.nick;
+                textBox2.Text = Configuration.quit;
+                textBox3.Text = Configuration.ident;
+                textBox4.Text = Configuration.user;
+                checkBox3.Checked = Configuration.logs_xml;
+                checkBox5.Checked = Configuration.flood_prot;
+                checkBox1.Checked = Configuration.logs_txt;
+                checkBox2.Checked = Configuration.logs_html;
+                checkBox7.Checked = Configuration.notice_prot;
+                checkBox4.Checked = Configuration.DisplayCtcp;
+                checkBox6.Checked = Configuration.ctcp_prot;
+                checkBox8.Checked = Configuration.ConfirmAll;
+                checkBox9.Checked = Configuration.Notice;
+                textBox5.Text = Configuration.logs_dir;
+                textBox6.Text = Configuration.logs_name;
+                foreach (Skin skin in Configuration.SL)
+                {
+                    comboBox1.Items.Add(skin.name);
+                }
+                comboBox1.SelectedIndex = 0;
+                foreach (Network.Highlighter highlight in Configuration.HighlighterList)
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.Text = highlight.text;
+                    item.SubItems.Add(highlight.enabled.ToString().ToLower());
+                    item.SubItems.Add(highlight.simple.ToString());
+                    list.Items.Add(item);
+                }
+                listView1.Items.Add(new ListViewItem("IRC"));
+                listView1.Items.Add(new ListViewItem("System"));
+                listView1.Items.Add(new ListViewItem("Logs"));
+                listView1.Items.Add(new ListViewItem("Protections"));
+                listView1.Items.Add(new ListViewItem("Network"));
+                listView1.Items.Add(new ListViewItem("Highlighting"));
+                listView1.Items.Add(new ListViewItem("Ignore list"));
+                listView1.Items.Add(new ListViewItem("Keyboard"));
+                redrawS();
             }
-            bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
-            bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
-            lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
-            lident.Text = messages.get("preferences-ident", Core.SelectedLanguage);
-            lname.Text = messages.get("preferences-name", Core.SelectedLanguage);
-            lquit.Text = messages.get("preferences-quit", Core.SelectedLanguage);
-            label4.Text = messages.get("preferences-al", Core.SelectedLanguage);
-            textBox1.Text = Configuration.nick;
-            textBox2.Text = Configuration.quit;
-            textBox3.Text = Configuration.ident;
-            textBox4.Text = Configuration.user;
-            checkBox3.Checked = Configuration.logs_xml;
-            checkBox5.Checked = Configuration.flood_prot;
-            checkBox1.Checked = Configuration.logs_txt;
-            checkBox2.Checked = Configuration.logs_html;
-            checkBox7.Checked = Configuration.notice_prot;
-            checkBox4.Checked = Configuration.DisplayCtcp;
-            checkBox6.Checked = Configuration.ctcp_prot;
-            checkBox8.Checked = Configuration.ConfirmAll;
-            checkBox9.Checked = Configuration.Notice;
-            textBox5.Text = Configuration.logs_dir;
-            textBox6.Text = Configuration.logs_name;
-            foreach (Network.Highlighter highlight in Configuration.HighlighterList)
+            catch (Exception fail)
             {
-                ListViewItem item = new ListViewItem();
-                item.Text = highlight.text;
-                item.SubItems.Add(highlight.enabled.ToString().ToLower());
-                item.SubItems.Add(highlight.simple.ToString());
-                list.Items.Add(item);
+                Core.handleException(fail);
             }
-            listView1.Items.Add(new ListViewItem("IRC"));
-            listView1.Items.Add(new ListViewItem("System"));
-            listView1.Items.Add(new ListViewItem("Logs"));
-            listView1.Items.Add(new ListViewItem("Protections"));
-            listView1.Items.Add(new ListViewItem("Network"));
-            listView1.Items.Add(new ListViewItem("Highlighting"));
-            listView1.Items.Add(new ListViewItem("Ignore list"));
-            listView1.Items.Add(new ListViewItem("Keyboard"));
-            redrawS();
         }
 
         public void redrawS()
@@ -149,6 +161,10 @@ namespace Client
                 Configuration.Notice = checkBox9.Checked;
                 Configuration.logs_dir = textBox5.Text;
                 Configuration.logs_name = textBox6.Text;
+                if (Configuration.SL.Count >= comboBox1.SelectedIndex)
+                {
+                    Configuration.CurrentSkin = Configuration.SL[comboBox1.SelectedIndex];
+                }
                 Core.ConfigSave();
             }
             catch (Exception f)

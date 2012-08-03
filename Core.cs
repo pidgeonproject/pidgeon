@@ -22,6 +22,7 @@ using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.AddIn;
 using System.Text;
 
 namespace Client
@@ -58,6 +59,7 @@ namespace Client
         private static string notification_caption = "";
         private static int randomuq = 0;
         private static bool sequence_worklock = false;
+        public static string SkinPath = "Skin";
         public static TrafficScanner trafficscanner;
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
@@ -135,6 +137,26 @@ namespace Client
             }
         }
 
+        public class Module
+        {
+            public string path;
+            public bool running;
+            public Thread thread;
+
+            public void main()
+            { 
+                
+            }
+
+            public Module()
+            {
+                path = "";
+                running = false;
+                thread = new Thread(main);
+                thread.Name = "plugin";
+            }
+        }
+
         public static bool Load()
         {
             _KernelThread = System.Threading.Thread.CurrentThread;
@@ -186,6 +208,10 @@ namespace Client
 
         public static void killThread(Thread name)
         {
+            if (name.ThreadState == System.Threading.ThreadState.Running)
+            {
+                name.Abort();
+            }
             lock (SystemThreads)
             {
                 if (SystemThreads.Contains(name))
@@ -195,9 +221,21 @@ namespace Client
             }
         }
 
+        public static string RemoveSpecial(string text)
+        {
+            return text.Replace("%/USER%", "")
+                .Replace("%USER%", "")
+                .Replace("%H%", "")
+                .Replace("%/H%", "")
+                .Replace("%D%", "")
+                .Replace("%L%", "")
+                .Replace("%/L%", "")
+                .Replace("%/D%", "");
+        }
+
         public static void Debuglog(string data)
         {
-
+            System.Diagnostics.Debug.Print(data);
         }
 
         public static bool ProcessCommand(string command)
@@ -344,6 +382,30 @@ namespace Client
                                 }
                             }
                             return false;
+                        }
+                        return false;
+                    case "pidgeon.batch":
+                        if (command.Length > "pidgeon.batch ".Length)
+                        {
+                            string path = command.Substring(14);
+                            if (File.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "scripts"
+                                + Path.DirectorySeparatorChar + path))
+                            {
+                                foreach (string Line in File.ReadAllLines(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar
+                                    + "scripts" + Path.DirectorySeparatorChar + path))
+                                {
+                                    Parser.parse(Line);
+                                }
+                                return true;
+                            }
+                            if (File.Exists(path))
+                            {
+                                foreach (string Line in File.ReadAllLines(path))
+                                {
+                                    Parser.parse(Line);
+                                }
+                                return true;
+                            }
                         }
                         return false;
                     case "join":
@@ -550,7 +612,7 @@ namespace Client
             {
                 return;
             }
-            data = Protocol.decrypt_text(data.Replace("%/L%", "").Replace("%L%", "").Replace("%USER%", "").Replace("%/USER%", ""));
+            data = Protocol.decrypt_text(Core.RemoveSpecial(data));
             if (_KernelThread == Thread.CurrentThread)
             {
                 notification_waiting = true;
@@ -645,6 +707,8 @@ namespace Client
             makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
             makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
             makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
+            makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
+            makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
 
             lock (Configuration.HighlighterList)
             {
@@ -756,6 +820,32 @@ namespace Client
                     return System.Windows.Forms.Keys.F2;
             }
             return System.Windows.Forms.Keys.A;
+        }
+
+        public static bool LoadSkin()
+        {
+            Configuration.SL.Clear();
+            Configuration.SL.Add(new Skin());
+            if (Directory.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath))
+            {
+                string[] skin = Directory.GetFiles(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath);
+                {
+                    foreach (string file in skin)
+                    {
+                        if (file.EndsWith(".ps"))
+                        {
+                            Skin curr = new Skin(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath
+                                + Path.DirectorySeparatorChar + file);
+                            if (curr == null)
+                            {
+                                continue;
+                            }
+                            Configuration.SL.Add(curr);
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -902,6 +992,7 @@ namespace Client
                             }
                         }
                     }
+                    LoadSkin();
                 }
                 catch (Exception f)
                 {
@@ -909,7 +1000,7 @@ namespace Client
                     return false;
                 }
             }
-            return false;
+            return true;
         }
 
         public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
@@ -1017,7 +1108,6 @@ namespace Client
                     catch (Exception)
                     { }
                     System.Windows.Forms.Application.Exit();
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                     if (terminated)
                     {
                         return true;
@@ -1026,7 +1116,9 @@ namespace Client
                 }
             }
             catch (Exception)
-            { }
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
             return true;
         }
     }

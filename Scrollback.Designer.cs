@@ -52,6 +52,10 @@ namespace Client
             this.toggleAdvancedLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
             this.simpleview = new System.Windows.Forms.TextBox();
+            this.whoisToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.whowasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.RT = new Client.SBABox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -59,6 +63,10 @@ namespace Client
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.whoisToolStripMenuItem,
+            this.whowasToolStripMenuItem,
+            this.kickToolStripMenuItem,
+            this.toolStripMenuItem2,
             this.openLinkInBrowserToolStripMenuItem,
             this.mode1b2ToolStripMenuItem,
             this.mode1q2ToolStripMenuItem,
@@ -75,7 +83,7 @@ namespace Client
             this.toggleSimpleLayoutToolStripMenuItem,
             this.toggleAdvancedLayoutToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(202, 318);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(202, 390);
             // 
             // openLinkInBrowserToolStripMenuItem
             // 
@@ -202,6 +210,36 @@ namespace Client
             this.simpleview.Size = new System.Drawing.Size(566, 320);
             this.simpleview.TabIndex = 6;
             // 
+            // whoisToolStripMenuItem
+            // 
+            this.whoisToolStripMenuItem.Name = "whoisToolStripMenuItem";
+            this.whoisToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.whoisToolStripMenuItem.Text = "Whois";
+            this.whoisToolStripMenuItem.Visible = false;
+            this.whoisToolStripMenuItem.Click += new System.EventHandler(this.whoisToolStripMenuItem_Click);
+            // 
+            // kickToolStripMenuItem
+            // 
+            this.kickToolStripMenuItem.Name = "kickToolStripMenuItem";
+            this.kickToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.kickToolStripMenuItem.Text = "Kick";
+            this.kickToolStripMenuItem.Visible = false;
+            this.kickToolStripMenuItem.Click += new System.EventHandler(this.kickToolStripMenuItem_Click);
+            // 
+            // whowasToolStripMenuItem
+            // 
+            this.whowasToolStripMenuItem.Name = "whowasToolStripMenuItem";
+            this.whowasToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.whowasToolStripMenuItem.Text = "Whowas";
+            this.whowasToolStripMenuItem.Visible = false;
+            this.whowasToolStripMenuItem.Click += new System.EventHandler(this.whowasToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(198, 6);
+            this.toolStripMenuItem2.Visible = false;
+            // 
             // RT
             // 
             this.RT.ContextMenuStrip = this.contextMenuStrip1;
@@ -249,6 +287,10 @@ namespace Client
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
         public SBABox RT;
+        private System.Windows.Forms.ToolStripMenuItem whoisToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem whowasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem kickToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem2;
 
     }
 }

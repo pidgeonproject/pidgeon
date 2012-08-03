@@ -75,8 +75,6 @@ namespace Client
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
-            listViewd.Columns[0].Width = listViewd.Width;
-            listView.Columns[0].Width = listViewd.Width;
             Redraw();
         }
 
@@ -92,8 +90,8 @@ namespace Client
             {
                 this.xContainer1.SplitterDistance = Configuration.x1;
                 this.xContainer4.SplitterDistance = Configuration.x4;
-                listViewd.Columns[0].Width = listView.Width - 8;
-                listView.Columns[0].Width = listView.Width - 8;
+                listViewd.Columns[0].Width = listView.Width;
+                listView.Columns[0].Width = listView.Width;
             }
             return true;
         }

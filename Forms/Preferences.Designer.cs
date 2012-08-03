@@ -50,6 +50,8 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gro1 = new System.Windows.Forms.GroupBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
             this.checkBox9 = new System.Windows.Forms.CheckBox();
             this.textBox4 = new System.Windows.Forms.TextBox();
@@ -102,8 +104,8 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -153,6 +155,8 @@ namespace Client
             // 
             // gro1
             // 
+            this.gro1.Controls.Add(this.comboBox1);
+            this.gro1.Controls.Add(this.label6);
             this.gro1.Controls.Add(this.textBox7);
             this.gro1.Controls.Add(this.label4);
             this.gro1.Controls.Add(this.checkBox10);
@@ -172,6 +176,22 @@ namespace Client
             this.gro1.TabIndex = 0;
             this.gro1.TabStop = false;
             this.gro1.Text = "IRC";
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(93, 140);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(357, 20);
+            this.textBox7.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 140);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(67, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Second nick";
             // 
             // checkBox10
             // 
@@ -195,7 +215,7 @@ namespace Client
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(93, 90);
+            this.textBox4.Location = new System.Drawing.Point(93, 110);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(357, 20);
             this.textBox4.TabIndex = 15;
@@ -203,7 +223,7 @@ namespace Client
             // lname
             // 
             this.lname.AutoSize = true;
-            this.lname.Location = new System.Drawing.Point(6, 90);
+            this.lname.Location = new System.Drawing.Point(6, 110);
             this.lname.Name = "lname";
             this.lname.Size = new System.Drawing.Size(35, 13);
             this.lname.TabIndex = 14;
@@ -211,7 +231,7 @@ namespace Client
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(93, 64);
+            this.textBox3.Location = new System.Drawing.Point(93, 80);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(357, 20);
             this.textBox3.TabIndex = 13;
@@ -219,7 +239,7 @@ namespace Client
             // lident
             // 
             this.lident.AutoSize = true;
-            this.lident.Location = new System.Drawing.Point(6, 64);
+            this.lident.Location = new System.Drawing.Point(6, 80);
             this.lident.Name = "lident";
             this.lident.Size = new System.Drawing.Size(35, 13);
             this.lident.TabIndex = 12;
@@ -227,7 +247,7 @@ namespace Client
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(93, 39);
+            this.textBox2.Location = new System.Drawing.Point(93, 50);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(357, 20);
             this.textBox2.TabIndex = 11;
@@ -235,7 +255,7 @@ namespace Client
             // lquit
             // 
             this.lquit.AutoSize = true;
-            this.lquit.Location = new System.Drawing.Point(6, 39);
+            this.lquit.Location = new System.Drawing.Point(6, 50);
             this.lquit.Name = "lquit";
             this.lquit.Size = new System.Drawing.Size(35, 13);
             this.lquit.TabIndex = 10;
@@ -243,7 +263,7 @@ namespace Client
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(93, 14);
+            this.textBox1.Location = new System.Drawing.Point(93, 20);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(357, 20);
             this.textBox1.TabIndex = 9;
@@ -251,7 +271,7 @@ namespace Client
             // lnick
             // 
             this.lnick.AutoSize = true;
-            this.lnick.Location = new System.Drawing.Point(6, 17);
+            this.lnick.Location = new System.Drawing.Point(6, 20);
             this.lnick.Name = "lnick";
             this.lnick.Size = new System.Drawing.Size(35, 13);
             this.lnick.TabIndex = 8;
@@ -651,21 +671,23 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // textBox7
+            // label6
             // 
-            this.textBox7.Location = new System.Drawing.Point(93, 116);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(357, 20);
-            this.textBox7.TabIndex = 19;
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 172);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(28, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Skin";
             // 
-            // label4
+            // comboBox1
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 116);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(67, 13);
-            this.label4.TabIndex = 18;
-            this.label4.Text = "Second nick";
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(94, 169);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(356, 21);
+            this.comboBox1.TabIndex = 21;
             // 
             // Preferences
             // 
@@ -756,6 +778,8 @@ namespace Client
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.TextBox textBox7;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.Label label6;
 
     }
 }

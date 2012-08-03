@@ -182,6 +182,8 @@ namespace Client
         /// </summary>
         public static bool Notice = true;
 
+        public static string Nick2 = "";
+
         /// <summary>
         /// Last used nick
         /// </summary>
@@ -194,6 +196,11 @@ namespace Client
         /// Last used port
         /// </summary>
         public static string LastPort = "";
+
+        /// <summary>
+        /// List of loaded skins
+        /// </summary>
+        public static List<Skin> SL = new List<Skin>();
 
         /// <summary>
         /// Highlighter list

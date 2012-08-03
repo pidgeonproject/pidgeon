@@ -41,6 +41,16 @@ namespace Client
             InitializeComponent();
         }
 
+        private void list_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                items.SelectedNode = e.Node;
+                contextMenuStrip1.Show(items, e.Location);
+            }
+        }
+
+
         /// <summary>
         /// Prepare the control
         /// </summary>
@@ -82,7 +92,7 @@ namespace Client
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.ImageIndex = 1;
-                Servers[_us._Network].Nodes.Add(text);
+                Servers[_us._Network].Nodes.Insert(Servers[_us._Network].Nodes.Count, text);
                 text.Text = _us.Nick;
 
                 UserList.Add(_us, text);
@@ -114,7 +124,7 @@ namespace Client
                 TreeNode text = new TreeNode();
                 text.Text = chan.Name;
                 Servers[chan._Network].Expand();
-                Servers[chan._Network].Nodes.Add(text);
+                Servers[chan._Network].Nodes.Insert(0, text);
                 Channels.Add(chan, text);
                 chan.tn = text;
                 text.ImageIndex = 2;

@@ -54,7 +54,12 @@ namespace Client
 
         private void _Enter(object sender, KeyEventArgs e)
         {
-            Main.ShortcutHandle(sender, e);
+            if (Main.ShortcutHandle(sender, e))
+            {
+                e.SuppressKeyPress = true;
+                return;
+            }
+            
             if (e.Shift)
             {
                 return;
@@ -92,12 +97,20 @@ namespace Client
                     if (e.Control)
                     {
                         richTextBox1.AppendText(((char)002).ToString());
+                        e.SuppressKeyPress = true;
+                        if (richTextBox1.SelectionFont.Bold)
+                        {
+                            richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Regular);
+                            return;
+                        }
+                        richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Bold);
                     }
-                    break;
+                    return;
                 case Keys.K:
                     if (e.Control)
                     {
                         richTextBox1.AppendText(((char)003).ToString());
+                        e.SuppressKeyPress = true;
                     }
                     break;
                 case Keys.Up:
@@ -386,6 +399,8 @@ namespace Client
                         }
                         original = "";
                         richTextBox1.Text = "";
+                        e.SuppressKeyPress = true;
+                        position = history.Count;
                         return;
                     }
                     richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
@@ -398,6 +413,7 @@ namespace Client
                     original = "";
                     richTextBox1.Text = "";
                     position = history.Count;
+                    e.SuppressKeyPress = true;
                     return;
             }
         }

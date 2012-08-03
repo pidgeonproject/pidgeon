@@ -36,10 +36,17 @@ namespace Client
             InitializeComponent();
         }
 
-        public static DateTime convertUNIX(string time)
+        public static string convertUNIX(string time)
         {
-            double unixtimestmp = double.Parse(time);
-            return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
+            try
+            {
+                double unixtimestmp = double.Parse(time);
+                return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
+            }
+            catch (Exception)
+            {
+                return "Unable to read: " + time;
+            }
         }
 
         /// <summary>

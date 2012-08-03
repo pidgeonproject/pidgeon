@@ -370,12 +370,15 @@ namespace Client
 
             if (scrolldown > 0)
             {
-                if (scrolldown < vScrollBar1.Value)
+                lock (vScrollBar1)
                 {
-                    vScrollBar1.Value = scrolldown;
+                    vScrollBar1.Maximum = scrolldown;
+                    if ( scrolldown < vScrollBar1.Value)
+                    {
+                        vScrollBar1.Value = scrolldown;
+                    }
+                    vScrollBar1.Enabled = true;
                 }
-                vScrollBar1.Maximum = scrolldown + 1;
-                vScrollBar1.Enabled = true;
             }
             pt.Invalidate();
         }
@@ -555,8 +558,14 @@ namespace Client
         {
             if (vScrollBar1.Maximum > 1)
             {
-                vScrollBar1.Value = vScrollBar1.Maximum;
-                Scrolled(vScrollBar1.Maximum);
+                int previous = 0;
+                while (previous < vScrollBar1.Maximum)
+                {
+                    previous = vScrollBar1.Maximum;
+                    vScrollBar1.Value = vScrollBar1.Maximum;
+                    Scrolled(vScrollBar1.Maximum);
+                    Redraw();
+                }
             }
         }
 

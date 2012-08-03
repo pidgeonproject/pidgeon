@@ -95,7 +95,7 @@ namespace Client
             }
             catch (Exception)
             {
-                Core.killThread(System.Threading.Thread.CurrentThread);
+                
             }
         }
 
@@ -183,13 +183,16 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
                 }
             }
-            catch (System.Threading.ThreadAbortException) { }
+            catch (System.Threading.ThreadAbortException) { 
+                
+            }
             catch (Exception fail)
             {
                 if (Connected)
                 {
                     Core.handleException(fail);
                 }
+                Core.killThread(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -307,10 +310,12 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
+                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
+                                processor.Result();
                                 break;
                             }
-                            ProtocolIrc.processIRC(server, this, curr.InnerText, server.server, ref pong, date, true);
+                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
+                            processor2.Result();
                             break;
                         case "SNICK":
                             Network sv = retrieveNetwork(curr.Attributes[0].Value);
@@ -554,6 +559,7 @@ namespace Client
             if (keep != null)
             {
                 keep.Abort();
+                Core.killThread(keep);
             }
             if (_writer != null)  _writer.Close();
             if (_reader != null)  _reader.Close();

@@ -86,8 +86,6 @@ namespace Client
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 5);
-            this.tableLayoutPanel2.Controls.Add(this.comboBox1, 0, 5);
             this.tableLayoutPanel2.Controls.Add(this._Nickname, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.comboBox2, 1, 3);
@@ -99,6 +97,8 @@ namespace Client
             this.tableLayoutPanel2.Controls.Add(this.textBox3, 1, 4);
             this.tableLayoutPanel2.Controls.Add(this.label6, 0, 4);
             this.tableLayoutPanel2.Controls.Add(this.checkBox1, 1, 6);
+            this.tableLayoutPanel2.Controls.Add(this.comboBox1, 1, 5);
+            this.tableLayoutPanel2.Controls.Add(this.label5, 0, 5);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
@@ -117,7 +117,7 @@ namespace Client
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(83, 165);
+            this.label5.Location = new System.Drawing.Point(3, 165);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(29, 13);
             this.label5.TabIndex = 14;
@@ -128,9 +128,9 @@ namespace Client
             this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(3, 168);
+            this.comboBox1.Location = new System.Drawing.Point(83, 168);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(74, 21);
+            this.comboBox1.Size = new System.Drawing.Size(314, 21);
             this.comboBox1.TabIndex = 18;
             // 
             // _Nickname
