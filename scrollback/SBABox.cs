@@ -77,7 +77,6 @@ namespace Client
             public string _name;
             public string _text;
             public ContentText linkedtext;
-            //public LinkLabel area;
             public Link(int x, int y, System.Drawing.Color normal, int width, int height, SBABox SBAB, string http, string label, ContentText text)
             {
                 X = x;
@@ -85,15 +84,11 @@ namespace Client
                 Width = width;
                 _name = label;
                 _text = http;
-                //area = new LinkLabel();
-                //area.BackColor = Color.Transparent;
                 parent = SBAB;
-                //area.Left = X;
-                //area.Top = Y;
                 linkedtext = text;
-
                 Height = height;
             }
+
             public void Dispose()
             {
                 linkedtext = null;
@@ -206,7 +201,7 @@ namespace Client
                 return false;
             }
             int line = 0;
-            
+
             return false;
         }
 
@@ -216,10 +211,10 @@ namespace Client
             {
                 return;
             }
-                if (backbufferGraphics != null)
-                { 
-                    backbufferGraphics.Render(e.Graphics);
-                }
+            if (backbufferGraphics != null)
+            {
+                backbufferGraphics.Render(e.Graphics);
+            }
         }
 
         /// <summary>
@@ -276,7 +271,7 @@ namespace Client
                                 string trimmed = "";
                                 foreach (string xx in words)
                                 {
-                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X > this.Width - vScrollBar1.Width)
+                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X >( this.Width - 20 ) - vScrollBar1.Width)
                                     {
                                         if (trimmed != "" || _t.MeasureString(xx, font, new Point(0, 0), format).Width < pt.Width)
                                         {
@@ -321,20 +316,21 @@ namespace Client
                         if (Wrap)
                         {
                             ScrollBar.Visible = false;
-                        } else
-                        if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
-                        {
-                            ScrollBar.Maximum = (int)(X + stringSize.Width);
                         }
+                        else
+                            if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
+                            {
+                                ScrollBar.Maximum = (int)(X + stringSize.Width);
+                            }
                     }
-                    
+
                 }
             }
             if (wrappingnow)
             {
                 Y = Y + Font.Size + 6;
                 X = 0 - currentX;
-                RedrawLine(ref _t, ref X,ref Y, extraline);
+                RedrawLine(ref _t, ref X, ref Y, extraline);
             }
         }
 
@@ -373,7 +369,7 @@ namespace Client
                 lock (vScrollBar1)
                 {
                     vScrollBar1.Maximum = scrolldown;
-                    if ( scrolldown < vScrollBar1.Value)
+                    if (scrolldown < vScrollBar1.Value)
                     {
                         vScrollBar1.Value = scrolldown;
                     }
@@ -488,7 +484,7 @@ namespace Client
                 // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
                 if (backbufferGraphics != null)
                 {
-                        backbufferGraphics.Dispose();
+                    backbufferGraphics.Dispose();
                 }
                 if (backbufferContext != null)
                 {
@@ -517,21 +513,21 @@ namespace Client
             backbufferContext.MaximumBuffer = new Size(pt.Width + 1, pt.Height + 1);
 
             // Dispose of old backbufferGraphics (if one has been created already)
-            
-                if (backbufferGraphics != null)
+
+            if (backbufferGraphics != null)
+            {
+                lock (backbufferGraphics)
                 {
-                    lock (backbufferGraphics)
-                    {
-                        backbufferGraphics.Dispose();
-                    }
+                    backbufferGraphics.Dispose();
                 }
+            }
 
-                // Create new backbufferGrpahics that matches the current size of buffer.
-                backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
-                new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
+            // Create new backbufferGrpahics that matches the current size of buffer.
+            backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
+            new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
 
-                // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
-                drawingGraphics = backbufferGraphics.Graphics;
+            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
+            drawingGraphics = backbufferGraphics.Graphics;
 
             // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
 

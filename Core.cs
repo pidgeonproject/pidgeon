@@ -39,27 +39,87 @@ namespace Client
             MacOSx86,
         }
 
+        /// <summary>
+        /// Thread of core
+        /// </summary>
         public static Thread _KernelThread;
+        /// <summary>
+        /// Exact time of system load
+        /// </summary>
         public static DateTime LoadTime;
+        /// <summary>
+        /// Configuration path
+        /// </summary>
         public static string ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar + "configuration.dat";
+        /// <summary>
+        /// Language used in system
+        /// </summary>
         public static string SelectedLanguage = "en";
+        /// <summary>
+        /// List of active networks in system
+        /// </summary>
         public static List<Protocol> Connections = new List<Protocol>();
+        /// <summary>
+        /// Thread for IO logs
+        /// </summary>
         public static Thread Thread_logs;
+        /// <summary>
+        /// Thread for update system
+        /// </summary>
         public static Thread ThUp;
 
+        /// <summary>
+        /// Pointer to exception class during recovery
+        /// </summary>
         public static Exception recovery_exception;
+        /// <summary>
+        /// Recovery thread
+        /// </summary>
         public static Thread _RecoveryThread;
-        public static Notification notification;
+        /// <summary>
+        /// Notification box
+        /// </summary>
+        private static Notification notification;
+        /// <summary>
+        /// Threads currently allocated in kernel
+        /// </summary>
         public static List<Thread> SystemThreads = new List<Thread>();
 
+        /// <summary>
+        /// Selected network
+        /// </summary>
         public static Network network;
+        /// <summary>
+        /// Main
+        /// </summary>
         public static Main _Main;
+        /// <summary>
+        /// Wheter notification is waiting
+        /// </summary>
         public static bool notification_waiting = false;
+        /// <summary>
+        /// Data of notification (text)
+        /// </summary>
         private static string notification_data = "";
+        /// <summary>
+        /// Caption
+        /// </summary>
         private static string notification_caption = "";
+        /// <summary>
+        /// This is index of last random number, you should never write or read this value, except for its own function
+        /// </summary>
         private static int randomuq = 0;
+        /// <summary>
+        /// Defines wheter some thread is working with random
+        /// </summary>
         private static bool sequence_worklock = false;
+        /// <summary>
+        /// Path to skin
+        /// </summary>
         public static string SkinPath = "Skin";
+        /// <summary>
+        /// Packet scan
+        /// </summary>
         public static TrafficScanner trafficscanner;
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
@@ -82,32 +142,39 @@ namespace Client
             
             public static void Load()
             {
-                while (true)
+                try
                 {
-                    try
+                    while (true)
                     {
-                        lock (processing)
+                        try
                         {
-                            if (processing.Count > 0)
+                            lock (processing)
                             {
-                                data.AddRange(processing);
-                                processing.Clear();
+                                if (processing.Count > 0)
+                                {
+                                    data.AddRange(processing);
+                                    processing.Clear();
+                                }
                             }
+                            if (data.Count > 0)
+                            {
+                                foreach (fl xx in data)
+                                {
+                                    File.AppendAllText(xx.filename, xx.line);
+                                }
+                            }
+                            data.Clear();
                         }
-                        if (data.Count > 0)
+                        catch (Exception)
                         {
-                            foreach (fl xx in data)
-                            {
-                                File.AppendAllText(xx.filename, xx.line);
-                            }
+
                         }
-                        data.Clear();
+                        Thread.Sleep(2000);
                     }
-                    catch (Exception)
-                    { 
-                        
-                    }
-                    Thread.Sleep(2000);
+                }
+                catch (ThreadAbortException)
+                {
+                    return;
                 }
             }
 
@@ -157,6 +224,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Load
+        /// </summary>
+        /// <returns></returns>
         public static bool Load()
         {
             _KernelThread = System.Threading.Thread.CurrentThread;
@@ -180,6 +251,7 @@ namespace Client
                 Thread_logs.Name = "Logs";
                 SystemThreads.Add(Thread_logs);
                 Thread_logs.Start();
+                Commands.Initialise();
                 MicroChat.mc = new MicroChat();
                 notification = new Notification();
                 ScriptingCore.Load();
@@ -200,6 +272,9 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Recover from crash
+        /// </summary>
         public static void Recover()
         {
             Recovery x = new Recovery();
@@ -212,6 +287,12 @@ namespace Client
             {
                 name.Abort();
             }
+
+            if (Core.IgnoreErrors)
+            {
+                return;
+            }
+
             lock (SystemThreads)
             {
                 if (SystemThreads.Contains(name))
@@ -221,6 +302,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Remove special symbols
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string RemoveSpecial(string text)
         {
             return text.Replace("%/USER%", "")
@@ -233,11 +319,20 @@ namespace Client
                 .Replace("%/D%", "");
         }
 
+        /// <summary>
+        /// Insert text in to debug log
+        /// </summary>
+        /// <param name="data"></param>
         public static void Debuglog(string data)
         {
             System.Diagnostics.Debug.Print(data);
         }
 
+        /// <summary>
+        /// Parse a command from input box
+        /// </summary>
+        /// <param name="command">Command, example /connect</param>
+        /// <returns></returns>
         public static bool ProcessCommand(string command)
         {
             try
@@ -246,291 +341,14 @@ namespace Client
                 {
                     command = command.Substring(1);
                 }
-                string[] values = command.Split(' ');
-                switch (values[0].ToLower())
-                {
-                    case "quit":
-                        Core.Quit();
-                        return true;
-                    case "nick":
-                        string Nick = "";
-                        if (command.Length > "nick ".Length)
-                        {
-                            Nick = command.Substring("nick ".Length);
-                        }
-                        if (network == null)
-                        {
-                            if (Nick != "")
-                            {
-                                Configuration.nick = Nick;
-                                _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
-                            }
-                            return true;
-                        }
-                        if (!network.Connected)
-                        {
-                            if (Nick != "")
-                            {
-                                Configuration.nick = Nick;
-                                _Main.Chat.scrollback.InsertText(messages.get("nick", SelectedLanguage), Scrollback.MessageStyle.User);
-                            }
-                            return false;
-                        }
-                        network._protocol.requestNick(Nick);
-                        return true;
-                    case "msg":
-                        if (command.Length > "msg ".Length)
-                        {
-                            string channel = command;
-                            channel = command.Substring("msg ".Length);
-                            if (channel.Contains(" "))
-                            {
-                                channel = channel.Substring(0, channel.IndexOf(" "));
-                                if (network != null)
-                                {
-                                    if (network.Connected)
-                                    {
-                                        string ms = command.Substring(4 + channel.Length);
-                                        while (ms.StartsWith(" "))
-                                        {
-                                            ms = ms.Substring(1);
-                                        }
-                                        network.system.scrollback.InsertText("[>> " + channel + "] <" + network.nickname + "> " + ms, Scrollback.MessageStyle.System);
-                                        network._protocol.Message(ms, channel, Configuration.Priority.Normal, true);
-                                        return false;
-                                    }
-                                    _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                    return false;
-                                }
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            return false;
-                        }
-                        return false;
-                    case "query":
-                        if (command.Length > "query ".Length)
-                        {
-                            string channel = command;
-                            channel = command.Substring("query ".Length);
-                            if (channel.Contains(network.channel_prefix))
-                            {
-                                _Main.Chat.scrollback.InsertText("Invalid name", Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            while (channel.StartsWith(" "))
-                            {
-                                channel.Substring(1);
-                            }
-                            if (channel.Contains(" "))
-                            {
-                                channel = channel.Substring(0, channel.IndexOf(" "));
-                                if (network != null && network._protocol != null)
-                                {
-                                    if (network.Connected)
-                                    {
-                                        if (!network._protocol.windows.ContainsKey(network.window + channel))
-                                        {
-                                            network.Private(channel);
-                                        }
-                                        network._protocol.ShowChat(network.window + channel);
-                                        network._protocol.windows[network.window + channel].scrollback.InsertText(network._protocol.PRIVMSG(network.nickname, command.Substring(command.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
-                                        network._protocol.Message(command.Substring(command.IndexOf(channel) + 1 + channel.Length), channel);
-                                        return false;
-                                    }
-                                    _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                    return false;
-                                }
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            if (network != null && network._protocol != null)
-                            {
-                                if (network.Connected)
-                                {
-                                    if (!network._protocol.windows.ContainsKey(network.window + channel))
-                                    {
-                                        network.Private(channel);
-                                    }
-                                    network._protocol.ShowChat(network.window + channel);
-                                }
-                            }
-                            return false;
-                        }
-                        break;
-                    case "me":
-                        if (command.Length > "me ".Length)
-                        {
-                            string message = command.Substring(3);
-                            if (network == null)
-                            {
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            if (!network.Connected)
-                            {
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            Channel curr = network.RenderedChannel;
-                            if (curr != null)
-                            {
-                                Window window = curr.retrieveWindow();
-                                if (window != null)
-                                {
-                                    network._protocol.Message2(message, curr.Name);
-                                }
-                            }
-                            return false;
-                        }
-                        return false;
-                    case "pidgeon.batch":
-                        if (command.Length > "pidgeon.batch ".Length)
-                        {
-                            string path = command.Substring(14);
-                            if (File.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + "scripts"
-                                + Path.DirectorySeparatorChar + path))
-                            {
-                                foreach (string Line in File.ReadAllLines(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar
-                                    + "scripts" + Path.DirectorySeparatorChar + path))
-                                {
-                                    Parser.parse(Line);
-                                }
-                                return true;
-                            }
-                            if (File.Exists(path))
-                            {
-                                foreach (string Line in File.ReadAllLines(path))
-                                {
-                                    Parser.parse(Line);
-                                }
-                                return true;
-                            }
-                        }
-                        return false;
-                    case "join":
-                        if (command.Length > "join ".Length)
-                        {
-                            string channel = command;
-                            channel = command.Substring("join ".Length);
-                            if (network == null)
-                            {
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            if (!network.Connected)
-                            {
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                            Channel curr = network.getChannel(channel);
-                            if (curr != null)
-                            {
-                                Window window = curr.retrieveWindow();
-                                if (window != null)
-                                {
-                                    network._protocol.ShowChat(network.window + window.name);
-                                }
-                            }
-                            network._protocol.Join(channel);
-                            return false;
-                        }
-                        _Main.Chat.scrollback.InsertText(messages.get("invalid-channel", SelectedLanguage), Scrollback.MessageStyle.System);
-                        return false;
-                    case "server":
-                        if (command.Length < "server ".Length)
-                        {
-                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return true;
-                        }
-                        string name = command.Substring("server ".Length);
-                        string b = command.Substring(command.IndexOf(name) + name.Length);
-                        int n2;
-                        if (name == "")
-                        {
-                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return true;
-                        }
-                        if (int.TryParse(b, out n2))
-                        {
-                            connectIRC(name, n2);
-                            return true;
-                        }
-                        connectIRC(name);
-                        return true;
-                    case "pidgeon.rehash":
-                        //Core._Main.ShowPr();
-                        break;
-                    case "connect":
-                        if (command.Length < "connect ".Length)
-                        {
-                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return true;
-                        }
-                        string name2 = command.Substring("server ".Length);
-                        string b2 = command.Substring(command.IndexOf(name2) + name2.Length);
-                        int n3;
-                        if (name2 == "")
-                        {
-                            _Main.Chat.scrollback.InsertText(messages.get("invalid-server", SelectedLanguage), Scrollback.MessageStyle.System);
-                            return false;
-                        }
-                        if (Core._Main.Chat._Protocol == null)
-                        {
-                            return false;
-                        }
-                        if (Core._Main.Chat._Protocol.type == 3)
-                        {
-                            if (int.TryParse(b2, out n3))
-                            {
-                                Core._Main.Chat._Protocol.ConnectTo(name2, n3);
-                                return false;
-                            }
 
-                            Core._Main.Chat._Protocol.ConnectTo(name2, 6667);
-                            return false;
-                        }
-                        break;
-                    case "pidgeon.service":
-                        if ("pidgeon.service ".Length < command.Length)
-                        {
-                            List<string> parameters = new List<string>();
-                            parameters.AddRange(command.Split(' '));
-                            int port = int.Parse(parameters[2]);
-                            connectPS(parameters[0], port, parameters[1]);
-                            return false;
-                        }
-                        break;
-                    case "service.gnick":
-                        string nick = command.Substring("service.gnick ".Length);
-                        if (Core._Main.Chat._Protocol != null)
-                        {
-                            if (Core._Main.Chat._Protocol.type == 3)
-                            {
-                                Core._Main.Chat._Protocol.requestNick(nick);
-                                return false;
-                            }
-                        }
-                        break;
-                    case "raw":
-                        if (network != null)
-                        {
-                            if (command.Length > 4)
-                            {
-                                string text = command.Substring("raw ".Length);
-                                if (network.Connected)
-                                {
-                                    network._protocol.Command(text);
-                                    return false;
-                                }
-                                _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                                return false;
-                            }
-                        }
-                        _Main.Chat.scrollback.InsertText(messages.get("error1", SelectedLanguage), Scrollback.MessageStyle.System);
-                        return false;
+                if (Commands.Proccess(command))
+                {
+                    return true;
                 }
-                // if we are connected to something let's handle this command by server
+
+                string[] values = command.Split(' ');
+
                 if (Core._Main.Chat._Protocol != null)
                 {
                     if (_Main.Chat._Protocol.Connected)
@@ -549,6 +367,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Restore a file
+        /// </summary>
+        /// <param name="file">File path</param>
+        /// <returns></returns>
         public static bool Restore(string file)
         {
             if (!File.Exists(file + "~"))
@@ -564,6 +387,9 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Finalize displaying of notice box or show the last displayed box
+        /// </summary>
         public static void DisplayNote()
         {
             if (Configuration.Notice == false)
@@ -606,6 +432,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Show a notice box, if started from non kernel thread, then it's finalized in that
+        /// </summary>
+        /// <param name="data">Information</param>
+        /// <param name="caption">Text</param>
         public static void DisplayNote(string data, string caption)
         {
             if (Configuration.Notice == false)
@@ -627,6 +458,11 @@ namespace Client
             return;
         }
 
+        /// <summary>
+        /// Backup a file
+        /// </summary>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public static bool Backup(string file)
         {
             if (File.Exists(file + "~"))
@@ -641,6 +477,10 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Get a random unique string (it's not possible to get 2 same strings from this function)
+        /// </summary>
+        /// <returns></returns>
         public static string retrieveRandom()
         {
             while (sequence_worklock)
@@ -654,6 +494,17 @@ namespace Client
             return ":" + random.ToString() + "*";
         }
 
+        /// <summary>
+        /// Create a node
+        /// </summary>
+        /// <param name="config_key">Key</param>
+        /// <param name="text">Text</param>
+        /// <param name="xmlnode">Node</param>
+        /// <param name="key">Key</param>
+        /// <param name="_c">Config</param>
+        /// <param name="conf">Node</param>
+        /// <param name="nn">Config name</param>
+        /// <returns></returns>
         private static bool makenode(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf, string nn = "confname")
         {
             key = _c.CreateAttribute(nn);
@@ -706,9 +557,16 @@ namespace Client
             makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
             makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
             makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
+            makenode("sniffer", Configuration.NetworkSniff.ToString(), curr, confname, config, xmlnode);
             makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
             makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
             makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
+            string separators = "";
+            foreach (char separator in Configuration.Separators)
+            {
+                separators = separators + separator.ToString();
+            }
+            makenode("delimiters", separators, curr, confname, config, xmlnode);
 
             lock (Configuration.HighlighterList)
             {
@@ -760,6 +618,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Convert string to key
+        /// </summary>
+        /// <param name="Key">Key</param>
+        /// <returns></returns>
         public static System.Windows.Forms.Keys parseKey(string Key)
         {
             switch (Key.ToLower())
@@ -808,6 +671,8 @@ namespace Client
                     return System.Windows.Forms.Keys.U;
                 case "v":
                     return System.Windows.Forms.Keys.V;
+                case "x":
+                    return System.Windows.Forms.Keys.X;
                 case "w":
                     return System.Windows.Forms.Keys.W;
                 case "y":
@@ -818,6 +683,10 @@ namespace Client
                     return System.Windows.Forms.Keys.F1;
                 case "f2":
                     return System.Windows.Forms.Keys.F2;
+                case "f3":
+                    return System.Windows.Forms.Keys.F3;
+                case "delete":
+                    return System.Windows.Forms.Keys.Delete;
             }
             return System.Windows.Forms.Keys.A;
         }
@@ -861,25 +730,43 @@ namespace Client
                 try
                 {
                     XmlDocument configuration = new XmlDocument();
+                    lock (Configuration.ShortcutKeylist)
+                    {
+                        Configuration.ShortcutKeylist = new List<Shortcut>();
+                    }
+                    lock (Configuration.HighlighterList)
+                    {
+                        Configuration.HighlighterList = new List<Network.Highlighter>();
+                    }
                     configuration.Load(ConfigFile);
+
                     foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                     {
                         if (curr.Attributes.Count > 0)
                         {
                             if (curr.Name == "list")
                             {
-                                Network.Highlighter list = new Network.Highlighter();
-                                list.simple = bool.Parse(curr.Attributes[0].Value);
-                                list.text = curr.Attributes[1].Value;
-                                list.enabled = bool.Parse(curr.Attributes[2].Value);
-                                Configuration.HighlighterList.Add(list);
+                                if (curr.Attributes.Count > 2)
+                                {
+                                    Network.Highlighter list = new Network.Highlighter();
+                                    list.simple = bool.Parse(curr.Attributes[0].Value);
+                                    list.text = curr.Attributes[1].Value;
+                                    list.enabled = bool.Parse(curr.Attributes[2].Value);
+                                    lock (Configuration.HighlighterList)
+                                    {
+                                        Configuration.HighlighterList.Add(list);
+                                    }
+                                }
                                 continue;
                             }
                             if (curr.Name == "shortcut")
                             {
-                                Shortcut list = new Shortcut(parseKey(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), bool.Parse(curr.Attributes[2].Value), bool.Parse(curr.Attributes[3].Value));
-                                list.data = curr.InnerText;
-                                Configuration.ShortcutKeylist.Add(list);
+                                if (curr.Attributes.Count > 2)
+                                {
+                                    Shortcut list = new Shortcut(parseKey(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), bool.Parse(curr.Attributes[2].Value), bool.Parse(curr.Attributes[3].Value));
+                                    list.data = curr.InnerText;
+                                    Configuration.ShortcutKeylist.Add(list);
+                                }
                                 continue;
                             }
                             if (curr.Attributes[0].Name == "confname")
@@ -895,14 +782,17 @@ namespace Client
                                     case "location.x4":
                                         Configuration.x4 = int.Parse(curr.InnerText);
                                         break;
-                                    case "network.nick":
-                                        Configuration.nick = curr.InnerText;
-                                        break;
                                     case "location.maxi":
                                         Configuration.Window_Maximized = bool.Parse(curr.InnerText);
                                         break;
                                     case "timestamp.display":
                                         Configuration.chat_timestamp = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "network.nick":
+                                        Configuration.nick = curr.InnerText;
+                                        break;
+                                    case "network.n2":
+                                        Configuration.Nick2 = curr.InnerText;
                                         break;
                                     case "network.ident":
                                         Configuration.ident = curr.InnerText;
@@ -979,6 +869,9 @@ namespace Client
                                     case "history.nick":
                                         Configuration.LastNick = curr.InnerText;
                                         break;
+                                    case "sniffer":
+                                        Configuration.NetworkSniff = bool.Parse(curr.InnerText);
+                                        break;
                                     case "history.host":
                                         Configuration.LastHost = curr.InnerText;
                                         break;
@@ -987,6 +880,14 @@ namespace Client
                                         break;
                                     case "history.port":
                                         Configuration.LastPort = curr.InnerText;
+                                        break;
+                                    case "delimiters":
+                                        List<char> temp = new List<char>();
+                                        foreach (char part in curr.InnerText)
+                                        {
+                                            temp.Add(part);
+                                        }
+                                        Configuration.Separators = temp;
                                         break;
                                 }
                             }
@@ -1003,10 +904,18 @@ namespace Client
             return true;
         }
 
+        public static bool connectXmpp(string server, int port, string password, bool secured = false)
+        {
+            ProtocolXmpp IM = new ProtocolXmpp();
+            IM.Open();
+            return false;
+        }
+
         public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
             _quassel.Open();
+            Connections.Add(_quassel);
             return false;
         }
 
@@ -1090,10 +999,11 @@ namespace Client
                     {
                         foreach (Thread th in SystemThreads)
                         {
-                            if (th.ThreadState == System.Threading.ThreadState.Running)
+                            if (th.ThreadState == System.Threading.ThreadState.Aborted || th.ThreadState == System.Threading.ThreadState.Stopped || th.ThreadState == System.Threading.ThreadState.Unstarted)
                             {
-                                th.Abort();
+                                continue;
                             }
+                            th.Abort();
                         }
                         Thread.Sleep(800);
                         terminated = true;
@@ -1104,12 +1014,17 @@ namespace Client
                                 terminated = false;
                             }
                         }
+                        // remove this
+                        System.Diagnostics.Process.GetCurrentProcess().Kill();
                     }
                     catch (Exception)
-                    { }
+                    {
+                        terminated = false;
+                    }
                     System.Windows.Forms.Application.Exit();
                     if (terminated)
                     {
+                        System.Windows.Forms.Application.Exit();
                         return true;
                     }
                     System.Diagnostics.Process.GetCurrentProcess().Kill();

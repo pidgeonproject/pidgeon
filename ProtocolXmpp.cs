@@ -17,23 +17,52 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Client
 {
-    public class ProtocolQuassel : Protocol
+    class ProtocolXmpp : Protocol
     {
-        public System.Threading.Thread _Thread;
-        public System.Threading.Thread keep;
-        public DateTime pong = DateTime.Now;
-        private System.Net.Sockets.NetworkStream _network;
-        private System.IO.StreamReader _reader;
-        public List<Network> sl = new List<Network>();
-        private System.IO.StreamWriter _writer;
-        public string password = "";
-        public string name = "";
-        public bool auth = false;
+        public string username;
+        public string password;
 
-        
+        public class Datagram
+        {
+            public Datagram(string Name, string Text = "")
+            {
+                _Datagram = Name;
+                _InnerText = Text;
+            }
+
+            public string ToDocumentXmlText()
+            {
+                System.Xml.XmlDocument datagram = new System.Xml.XmlDocument();
+                System.Xml.XmlNode b1 = datagram.CreateElement(_Datagram.ToUpper());
+                foreach (KeyValuePair<string, string> curr in Parameters)
+                {
+                    System.Xml.XmlAttribute b2 = datagram.CreateAttribute(curr.Key);
+                    b2.Value = curr.Value;
+                    b1.Attributes.Append(b2);
+                }
+                b1.InnerText = this._InnerText;
+                datagram.AppendChild(b1);
+                return datagram.InnerXml;
+            }
+
+            public string _InnerText;
+            public string _Datagram;
+            public Dictionary<string, string> Parameters = new Dictionary<string, string>();
+        }
+
+        public void Load()
+        { 
+            
+        }
+
+        public override void Exit()
+        {
+            base.Exit();
+        }
     }
 }

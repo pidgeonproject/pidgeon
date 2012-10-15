@@ -23,9 +23,9 @@ namespace Client
 {
     public class ChannelParameterMode
     {
-        public string _Target = "";
+        public string Target = "";
         public string Time;
-        public string _User;
+        public string User;
     }
     public class Invite : ChannelParameterMode
     {
@@ -45,8 +45,8 @@ namespace Client
     {
         public SimpleBan(string user, string target, string time)
         {
-            _Target = target;
-            _User = user;
+            Target = target;
+            User = user;
             Time = time;
         }
     }
@@ -171,12 +171,22 @@ namespace Client
             if (tn != null)
             {
                 string text ="";
+                string trimmed = Topic;
+                if (trimmed.Length > 160)
+                {
+                    if (trimmed.Contains(" "))
+                    {
+                        int space = 0;
+                        space = 160 + trimmed.Substring(160).IndexOf(" ");
+                        trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
+                    }
+                }
                 if (!ok)
                 {
                     text = "[PARTED CHAN] ";
                     
                 }
-                text += Name + " " + UserList.Count + " users, mode: " + _mode.ToString() + "\n" + "Topic: " + Topic + "\nLast activity: " + DateTime.Now.ToString();
+                text += Name + " " + UserList.Count + " users, mode: " + _mode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
                 tn.ToolTipText = text;
             }
         }
@@ -230,7 +240,7 @@ namespace Client
             {
                 foreach (var name in Bl)
                 {
-                    if (name._Target == host)
+                    if (name.Target == host)
                     {
                         return true;
                     }

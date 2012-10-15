@@ -154,20 +154,35 @@ namespace Client
 
                     // check if it's a command :)
 
-                    List<string> commands = new List<string> { "server", "nick", "pidgeon.rehash", "connect" };
+                    List<string> commands = new List<string>();
+
+                    foreach (KeyValuePair<string,Commands.Command> cm in Commands.commands)
+                    {
+                        if (cm.Value._Type == Commands.Type.System)
+                        {
+                            commands.Add(cm.Key);
+                        }
+                    }
 
                     if (Core.network != null && Core.network.Connected)
                     {
-                        commands.AddRange( new List<string> { "join", "part", "squit", "quit", "query", "me", "msg", "mode", "oper", "who",
-                                                        "whois", "whowas", "help", "wall", "list", "topic", "kill", "kline", "zline", "away", "gline",
-                                                        "stats", "nickserv", "chanserv" });
+                        foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
+                        {
+                            if (cm.Value._Type == Commands.Type.SystemSv || cm.Value._Type == Commands.Type.Network)
+                            {
+                                commands.Add(cm.Key);
+                            }
+                        }
                     }
 
                     if (Core._Main.Chat._Protocol != null)
                     {
-                        if (Core._Main.Chat._Protocol.type == 3)
+                        foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                         {
-                            commands.AddRange(new List<string> { "service.gnick", "service.gident", "service.quit" });
+                            if (cm.Value._Type == Commands.Type.Services)
+                            {
+                                commands.Add(cm.Key);
+                            }
                         }
                     }
 

@@ -631,7 +631,7 @@ namespace Client
                                                         SimpleBan br = null;
                                                         foreach (SimpleBan xx in channel.Bl)
                                                         {
-                                                            if (xx._Target == parameters2[curr])
+                                                            if (xx.Target == parameters2[curr])
                                                             {
                                                                 br = xx;
                                                                 break;
@@ -873,7 +873,6 @@ namespace Client
 
             public bool Result()
             {
-                string system = "!" + _server.window;
                 try
                 {
                     if (text == null || text == "")
@@ -1147,12 +1146,13 @@ namespace Client
                 return true;
             }
 
-            public ProcessorIRC(Network server, Protocol _protocol, string _text, string _sn, ref DateTime _pong, long d = 0, bool updated = true)
+            public ProcessorIRC(Network server, Protocol _protocol, string _text, string _sn, string ws, ref DateTime _pong, long d = 0, bool updated = true)
             {
                 _server = server;
                 protocol = _protocol;
                 text = _text;
                 sn = _sn;
+                system = ws;
                 pong = _pong;
                 date = d;
                 updated_text = updated;
@@ -1212,7 +1212,7 @@ namespace Client
                     }
                     text = _reader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
-                    ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(_server, this, text, _server.server, ref pong);
+                    ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(_server, this, text, _server.server, _server.sw, ref pong);
                     processor.Result();
                     pong = processor.pong;
                 }

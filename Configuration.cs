@@ -111,6 +111,8 @@ namespace Client
         /// </summary>
         public static bool DisplayCtcp = true;
 
+        public static List<char> Separators = new List<char> { '<', ' ', '>', ',', '!', '[', ']', '{', '}', (char)1, (char)2};
+
         /// <summary>
         /// Network Scan
         /// </summary>

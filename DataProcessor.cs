@@ -139,24 +139,38 @@ namespace Client
         {
             string result = text;
             string tempdata = text;
-            if (tempdata.Contains(" https://"))
+            foreach (char sepa in Configuration.Separators)
             {
-                string link = result.Substring(result.IndexOf(" https://") + 9);
-                if (link.Length > 0)
+                if (tempdata.StartsWith(sepa.ToString()))
                 {
-                    if (link.Contains(" "))
+                    if (tempdata.Substring(1).StartsWith("https://"))
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        tempdata = tempdata.Substring(1);
+                        string link = result.Substring(result.IndexOf("https://") + 8);
+                        if (link.Length > 0)
+                        {
+                            char separator = ' ';
+                            foreach (char xx in Configuration.Separators)
+                            {
+                                if (link.Contains(xx.ToString()))
+                                {
+                                    separator = xx;
+                                    break;
+                                }
+                            }
+                            if (link.Contains(separator.ToString()))
+                            {
+                                link = link.Substring(0, link.IndexOf(separator.ToString()));
+                            }
+                        }
+                        SBABox.ContentText Link = new SBABox.ContentText("https://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Link.link = "https://" + ProtocolIrc.decrypt_text(link);
+                        Link.Underline = under;
+                        Link.Bold = bold;
+                        Link.Underline = true;
+                        return Link;
                     }
-                    SBABox.ContentText Link = new SBABox.ContentText("https://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "https://" + ProtocolIrc.decrypt_text(link);
-                    Link.Underline = under;
-                    Link.Bold = bold;
-                    Link.Underline = true;
-                    return Link;
-
                 }
-                tempdata = tempdata.Substring(tempdata.IndexOf(" https://") + 9);
             }
             return null;
         }
@@ -168,9 +182,18 @@ namespace Client
                 string link = text.Substring(text.IndexOf("#"));
                 if (link.Length > 0)
                 {
-                    if (link.Contains(" "))
+                    char separator = ' ';
+                    foreach (char xx in Configuration.Separators)
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        if (link.Contains(xx.ToString()))
+                        {
+                            separator = xx;
+                            break;
+                        }
+                    }
+                    if (link.Contains(separator.ToString()))
+                    {
+                        link = link.Substring(0, link.IndexOf(separator.ToString()));
                     }
 
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
@@ -202,27 +225,62 @@ namespace Client
             return null;
         }
 
-        public static SBABox.ContentText parse_http(string text, SBABox SBAB, bool under, bool bold)
+        public static SBABox.ContentText parse_http(string text, SBABox SBAB, bool under, bool bold, string prefix = null)
         {
             string result = text;
             string tempdata = text;
-            if (tempdata.Contains(" http://"))
+            if (prefix != null)
             {
-                string link = result.Substring(result.IndexOf(" http://") + 8);
-                if (link.Length > 0)
+                if (tempdata.Contains(prefix + "http://"))
                 {
-                    if (link.Contains(" "))
+                    string link = result.Substring(result.IndexOf("http://") + 7);
+                    tempdata = tempdata.Substring(1);
+                    if (link.Length > 0)
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        if (link.Contains(prefix))
+                        {
+                            link = link.Substring(0, link.IndexOf(prefix));
+                        }
                     }
-                    SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.Underline = true;
-                    Link.Bold = bold;
-                    Link.link = "http://" + link;
-                    return Link;
-
+                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Link.Underline = true;
+                        Link.Bold = bold;
+                      Link.link = "http://" + link;
+                        return Link;
                 }
-                tempdata = tempdata.Substring(tempdata.IndexOf(" http://") + 8);
+                return null;
+            }
+            foreach (char curr in Configuration.Separators)
+            {
+                if (tempdata.StartsWith(curr.ToString()))
+                {
+                    if (tempdata.Substring(1).Contains("http://"))
+                    {
+                        string link = result.Substring(result.IndexOf("http://") + 7);
+                        tempdata = tempdata.Substring(1);
+                        if (link.Length > 0)
+                        {
+                            char separator = ' ';
+                            foreach (char xx in Configuration.Separators)
+                            {
+                                if (link.Contains(xx.ToString()))
+                                {
+                                    separator = xx;
+                                    break;
+                                }
+                            }
+                            if (link.Contains(separator.ToString()))
+                            {
+                                link = link.Substring(0, link.IndexOf(separator.ToString()));
+                            }
+                        }
+                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Link.Underline = true;
+                        Link.Bold = bold;
+                        Link.link = "http://" + link;
+                        return Link;
+                    }
+                }
             }
             return null;
         }
@@ -248,34 +306,36 @@ namespace Client
                 while (carret < text.Length)
                 {
                     Jump = 1;
-                    if (tempdata.StartsWith(" http://"))
+                    if (matchesSWPrefix(tempdata, "http://"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + " ", SBAB, color);
+                        string prefix = Prefix(tempdata, "http://").ToString();
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + prefix, SBAB, color);
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
                         line.insertData(lprttext);
                         templine = "";
-                        line.insertData(parse_http(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Substring(1).Contains(" "))
+                        line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, prefix));
+                        if (matchesAPrefix(tempdata.Substring(1)))
                         {
-                            Jump = tempdata.Substring(1).IndexOf(" ") + 1;
+                            Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
                         }
                         else
                         {
                             Jump = tempdata.Length;
                         }
                     }
-                    else if (tempdata.StartsWith(" https://"))
+                    else if (matchesSWPrefix(tempdata, "https://"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + " ", SBAB, color);
+                        string prefix = Prefix(tempdata, "https://").ToString();
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + prefix, SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
                         templine = "";
                         line.insertData(parse_https(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Substring(1).Contains(" "))
+                        if (matchesAPrefix(tempdata.Substring(1)))
                         {
-                            Jump = tempdata.Substring(1).IndexOf(" ") + 1;
+                            Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
                         }
                         else
                         {
@@ -463,46 +523,105 @@ namespace Client
             return null;
         }
 
+        public static bool matchesPrefix(string data, string x)
+        {
+            foreach (char curr in Configuration.Separators)
+            {
+                if (data.Contains(curr.ToString() + x))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool matchesAPrefix(string data)
+        {
+            foreach (char curr in Configuration.Separators)
+            {
+                if (data.Contains(curr.ToString()))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool matchesSWPrefix(string data, string x)
+        {
+            foreach (char curr in Configuration.Separators)
+            {
+                if (data.StartsWith(curr.ToString() + x))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static char Prefix(string data, string x = null)
+        {
+            foreach (char curr in Configuration.Separators)
+            {
+                if (x != null)
+                {
+                    if (data.Contains(curr.ToString() + x))
+                    {
+                        return curr;
+                    }
+                } else
+                {
+                    if (data.Contains(curr.ToString()))
+                    {
+                        return curr;
+                    }
+                }
+            }
+            return ' ';
+        }
+
         public static string link2(string text)
         {
             string result = text;
             string templink = text;
             string tempdata = text;
-            while (tempdata.Contains(" http://"))
+            while (matchesPrefix(tempdata, "http://"))
             {
-                string link = templink.Substring(templink.IndexOf(" http://") + 8);
+                string separator = Prefix(tempdata, "http://").ToString();
+                string link = templink.Substring(templink.IndexOf(separator + "http://") + 8);
                 if (link.Length > 0)
                 {
-                    if (link.Contains(" "))
+                    if (link.Contains(separator))
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        link = link.Substring(0, link.IndexOf(separator));
                     }
                     result = result.Replace(" http://" + link, " <a href=\"http://" + link + "\">http://" + link + "</a>");
-                    templink = templink.Replace(" http://" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(" http://") + 8);
+                    templink = templink.Replace(separator + "http://" + link, "");
+                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
                     continue;
 
                 }
-                tempdata = tempdata.Substring(tempdata.IndexOf(" http://") + 8);
+                tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
             }
             tempdata = result;
             templink = result;
-            while (tempdata.Contains(" #"))
+            while (matchesPrefix(tempdata, "#"))
             {
-                string link = templink.Substring(templink.IndexOf(" #") + 2);
+                string separator = Prefix(tempdata, "#").ToString();
+                string link = templink.Substring(templink.IndexOf(separator + "#") + 2);
                 if (link.Length > 0)
                 {
-                    if (link.Contains(" "))
+                    if (link.Contains(separator))
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        link = link.Substring(0, link.IndexOf(separator));
                     }
-                    result = result.Replace(" #" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
-                    templink = templink.Replace(" #" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(" #") + 2);
+                    result = result.Replace(separator + "#" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
+                    templink = templink.Replace(separator + "#" + link, "");
+                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
                     continue;
 
                 }
-                tempdata = tempdata.Substring(tempdata.IndexOf(" #") + 2);
+                tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
             }
             if (result.Contains("%USER%") && result.Contains("%/USER%"))
             {
@@ -526,22 +645,23 @@ namespace Client
             }
             templink = result;
             tempdata = result;
-            while (tempdata.Contains(" https://"))
+            while (matchesPrefix(tempdata, "https://"))
             {
-                string link = templink.Substring(templink.IndexOf(" https://") + 9);
+                string pr = Prefix(tempdata, "https://").ToString();
+                string link = templink.Substring(templink.IndexOf(pr + "https://") + 9);
                 if (link.Length > 0)
                 {
-                    if (link.Contains(" "))
+                    if (link.Contains(pr))
                     {
-                        link = link.Substring(0, link.IndexOf(" "));
+                        link = link.Substring(0, link.IndexOf(pr));
                     }
-                    result = result.Replace(" https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
-                    templink = templink.Replace(" https://" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(" https://") + 9);
+                    result = result.Replace(pr + "https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
+                    templink = templink.Replace(pr + "https://" + link, "");
+                    tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
                     continue;
 
                 }
-                tempdata = tempdata.Substring(tempdata.IndexOf(" https://") + 9);
+                tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
             }
             char colorchar = (char)3;
             int color = 0;
@@ -614,6 +734,11 @@ namespace Client
             {
                 if (Core._Main.Chat.writable)
                 {
+                    if (input.StartsWith(Configuration.CommandPrefix))
+                    {
+                        Core.network._protocol.Message(input.Substring(1), Core._Main.Chat.name);
+                        return 2;
+                    }
                     Core.network._protocol.Message(input, Core._Main.Chat.name);
                 }
                 return 0;

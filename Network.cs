@@ -23,16 +23,43 @@ namespace Client
 {
     public class Network
     {
+        /// <summary>
+        /// User modes
+        /// </summary>
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+        /// <summary>
+        /// Channel user
+        /// </summary>
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+        /// <summary>
+        /// Channel user modes
+        /// </summary>
         public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+        /// <summary>
+        /// Channel modes
+        /// </summary>
         public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+        /// <summary>
+        /// Special channel modes with parameter as a string
+        /// </summary>
         public List<char> SModes = new List<char> { 'k', 'L' };
+        /// <summary>
+        /// Special channel modes with parameter as a number
+        /// </summary>
         public List<char> XModes = new List<char> { 'l' };
+        /// <summary>
+        /// Special channel user modes with parameters as a string
+        /// </summary>
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
         public bool parsed_info = false;
         public string channel_prefix = "#";
+        /// <summary>
+        /// Specifies if you are connected to network
+        /// </summary>
         public bool Connected;
+        /// <summary>
+        /// List of private message windows
+        /// </summary>
         public List<User> PrivateChat = new List<User>();
         public Window system;
         public string server;
@@ -43,8 +70,18 @@ namespace Client
         public Channel RenderedChannel = null;
         public string nickname;
         public string ident;
+        /// <summary>
+        /// Name of system window
+        /// </summary>
+        public string sw;
         public string quit;
+        /// <summary>
+        /// Protocol
+        /// </summary>
         public Protocol _protocol;
+        /// <summary>
+        /// Parent service
+        /// </summary>
         public ProtocolSv ParentSv = null;
 
         public class Highlighter
@@ -144,11 +181,13 @@ namespace Client
                 {
                     _protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
                     system = _protocol.windows["!" + randomuqid + server];
+                    sw = "!" + randomuqid + server;
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
                     _protocol.CreateChat("!system", true, this);
+                    sw = "!system";
                     system = _protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }

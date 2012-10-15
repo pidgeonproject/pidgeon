@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Reflection;
 
 
@@ -625,6 +626,13 @@ namespace Client
                 while (true)
                 {
                     System.Threading.Thread.Sleep(100);
+                }
+            }
+            catch (ThreadAbortException)
+            {
+                if (Core.IgnoreErrors)
+                {
+                    return;
                 }
             }
             catch (Exception er)

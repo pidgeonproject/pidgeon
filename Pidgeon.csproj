@@ -67,6 +67,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.AddIn" />
     <Reference Include="System.Web" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -78,6 +79,7 @@
   <ItemGroup>
     <Compile Include="Buffers.cs" />
     <Compile Include="Channel.cs" />
+    <Compile Include="Commands.cs" />
     <Compile Include="Forms\Channels.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -128,12 +130,19 @@
     <Compile Include="Forms\SearchItem.Designer.cs">
       <DependentUpon>SearchItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SettingsEd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsEd.Designer.cs">
+      <DependentUpon>SettingsEd.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ShortcutBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\ShortcutBox.Designer.cs">
       <DependentUpon>ShortcutBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="scrollback\SBABox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -248,6 +257,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SearchItem.resx">
       <DependentUpon>SearchItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsEd.resx">
+      <DependentUpon>SettingsEd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ShortcutBox.resx">
       <DependentUpon>ShortcutBox.cs</DependentUpon>

@@ -75,6 +75,8 @@ namespace Client
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
             textbox.history = new List<string>();
+            listViewd.Columns[0].Width = listViewd.Width;
+            listView.Columns[0].Width = listView.Width;
             Redraw();
         }
 
@@ -90,7 +92,7 @@ namespace Client
             {
                 this.xContainer1.SplitterDistance = Configuration.x1;
                 this.xContainer4.SplitterDistance = Configuration.x4;
-                listViewd.Columns[0].Width = listView.Width;
+                listViewd.Columns[0].Width = listViewd.Width;
                 listView.Columns[0].Width = listView.Width;
             }
             return true;
@@ -104,6 +106,8 @@ namespace Client
                 Configuration.x1 = xContainer1.SplitterDistance;
                 Configuration.x4 = xContainer4.SplitterDistance;
             }
+            listViewd.Columns[0].Width = listViewd.Width;
+            listView.Columns[0].Width = listView.Width;
         }
 
         protected override bool IsInputKey(Keys keyData)

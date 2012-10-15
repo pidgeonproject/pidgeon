@@ -74,9 +74,9 @@ namespace Client
                     {
                         foreach (SimpleBan sb in channel.Bl)
                         { 
-                            ListViewItem li = new ListViewItem(sb._Target);
+                            ListViewItem li = new ListViewItem(sb.Target);
                             li.SubItems.Add(convertUNIX(sb.Time)  + " (" + sb.Time + ")");
-                            li.SubItems.Add(sb._User);
+                            li.SubItems.Add(sb.User);
                             
                             listView3.Items.Add(li);
                         }

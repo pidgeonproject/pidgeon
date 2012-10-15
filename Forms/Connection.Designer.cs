@@ -47,8 +47,6 @@ namespace Client
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this._Nickname = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
@@ -57,10 +55,12 @@ namespace Client
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.bConnect = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.bConnect = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.SuspendLayout();
@@ -68,8 +68,8 @@ namespace Client
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 68.15835F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 31.84165F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 71.08239F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 28.91761F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.bConnect, 1, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -78,7 +78,7 @@ namespace Client
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 87.53181F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.46819F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(597, 393);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 393);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -110,35 +110,16 @@ namespace Client
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(400, 338);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(433, 338);
             this.tableLayoutPanel2.TabIndex = 0;
             this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 165);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(29, 13);
-            this.label5.TabIndex = 14;
-            this.label5.Text = "label";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(83, 168);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(314, 21);
-            this.comboBox1.TabIndex = 18;
             // 
             // _Nickname
             // 
             this._Nickname.Dock = System.Windows.Forms.DockStyle.Top;
             this._Nickname.Location = new System.Drawing.Point(83, 3);
             this._Nickname.Name = "_Nickname";
-            this._Nickname.Size = new System.Drawing.Size(314, 20);
+            this._Nickname.Size = new System.Drawing.Size(347, 20);
             this._Nickname.TabIndex = 0;
             // 
             // label1
@@ -156,7 +137,7 @@ namespace Client
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(83, 102);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(314, 21);
+            this.comboBox2.Size = new System.Drawing.Size(347, 21);
             this.comboBox2.TabIndex = 6;
             // 
             // textBox1
@@ -164,7 +145,7 @@ namespace Client
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox1.Location = new System.Drawing.Point(83, 36);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(314, 20);
+            this.textBox1.Size = new System.Drawing.Size(347, 20);
             this.textBox1.TabIndex = 1;
             // 
             // textBox2
@@ -172,7 +153,7 @@ namespace Client
             this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox2.Location = new System.Drawing.Point(83, 69);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(314, 20);
+            this.textBox2.Size = new System.Drawing.Size(347, 20);
             this.textBox2.TabIndex = 4;
             // 
             // label3
@@ -203,6 +184,16 @@ namespace Client
             this.label2.Text = "ident";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // textBox3
+            // 
+            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox3.Location = new System.Drawing.Point(83, 135);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.PasswordChar = '*';
+            this.textBox3.Size = new System.Drawing.Size(347, 20);
+            this.textBox3.TabIndex = 10;
+            this.textBox3.UseSystemPasswordChar = true;
+            // 
             // label6
             // 
             this.label6.Location = new System.Drawing.Point(3, 132);
@@ -210,26 +201,7 @@ namespace Client
             this.label6.Size = new System.Drawing.Size(53, 23);
             this.label6.TabIndex = 15;
             this.label6.Text = "Password";
-            // 
-            // textBox3
-            // 
-            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox3.Location = new System.Drawing.Point(83, 135);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.PasswordChar = '*';
-            this.textBox3.Size = new System.Drawing.Size(314, 20);
-            this.textBox3.TabIndex = 10;
-            this.textBox3.UseSystemPasswordChar = true;
-            // 
-            // bConnect
-            // 
-            this.bConnect.Location = new System.Drawing.Point(409, 347);
-            this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(176, 30);
-            this.bConnect.TabIndex = 1;
-            this.bConnect.Text = "button1";
-            this.bConnect.UseVisualStyleBackColor = true;
-            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
+            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // checkBox1
             // 
@@ -241,11 +213,40 @@ namespace Client
             this.checkBox1.Text = "Use encrypted connection";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
+            // comboBox1
+            // 
+            this.comboBox1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(83, 168);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(347, 21);
+            this.comboBox1.TabIndex = 18;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(3, 165);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "label";
+            // 
+            // bConnect
+            // 
+            this.bConnect.Location = new System.Drawing.Point(442, 347);
+            this.bConnect.Name = "bConnect";
+            this.bConnect.Size = new System.Drawing.Size(174, 30);
+            this.bConnect.TabIndex = 1;
+            this.bConnect.Text = "button1";
+            this.bConnect.UseVisualStyleBackColor = true;
+            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
+            // 
             // Connection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(597, 393);
+            this.ClientSize = new System.Drawing.Size(619, 393);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Connection";
             this.ShowIcon = false;

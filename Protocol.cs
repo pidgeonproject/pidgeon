@@ -81,7 +81,7 @@ namespace Client
                                 }
                                 break;
                             case 1:
-                                if (network.CUModes.Contains(_x))
+                                if (network.CUModes.Contains(_x) || network.PModes.Contains(_x))
                                 {
                                     continue;
                                 }
@@ -333,7 +333,7 @@ namespace Client
         /// <param name="network"></param>
         public virtual void Part(string name, Network network = null)
         {
-        
+            return;
         }
 
         /// <summary>

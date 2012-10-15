@@ -155,13 +155,20 @@ namespace Client
         public static bool ShortcutHandle(Object sender, KeyEventArgs e)
         {
             bool rt = false;
-            foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
+            try
             {
-                if (shortcut.control == e.Control && shortcut.keys == e.KeyCode && shortcut.alt == e.Alt)
+                foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
                 {
-                    Parser.parse(shortcut.data);
-                    rt = true;
+                    if (shortcut.control == e.Control && shortcut.keys == e.KeyCode && shortcut.alt == e.Alt)
+                    {
+                        Parser.parse(shortcut.data);
+                        rt = true;
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
             return rt;
         }
@@ -247,7 +254,9 @@ namespace Client
                 if (MessageBox.Show(messages.get("pidgeon-shut", Core.SelectedLanguage), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
                 {
                     closing.Cancel = true;
+                    return;
                 }
+                Core.Quit();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -372,6 +381,12 @@ namespace Client
             {
                 Chat.scrollback.Switch(true);
             }
+        }
+
+        private void configurationFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SettingsEd ed = new SettingsEd();
+            ed.Show(this);
         }
     }
 }

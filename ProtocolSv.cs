@@ -141,7 +141,6 @@ namespace Client
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);
                 Deliver(login);
-                //Deliver(new Datagram("NICK", nick))
                 Deliver(new Datagram("GLOBALNICK"));
                 Deliver(new Datagram("NETWORKLIST"));
                 Deliver(new Datagram("STATUS"));
@@ -183,8 +182,11 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
                 }
             }
-            catch (System.Threading.ThreadAbortException) { 
-                
+            catch (System.Threading.ThreadAbortException) {
+                if (Core.IgnoreErrors)
+                {
+                    return;
+                }
             }
             catch (Exception fail)
             {
@@ -310,11 +312,11 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
+                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, date, false);
                                 processor.Result();
                                 break;
                             }
-                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, ref pong, date, false);
+                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, date);
                             processor2.Result();
                             break;
                         case "SNICK":

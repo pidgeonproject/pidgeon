@@ -371,8 +371,6 @@ namespace Client
                     int current = min;
                     while (current < max)
                     {
-                        //foreach (ContentLine _c in Line)
-                        //{
                         ContentLine _c = Line[current];
                         Color color = Configuration.CurrentSkin.fontcolor;
                         switch (_c.style)
@@ -408,7 +406,6 @@ namespace Client
                             stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
                         }
                         SBABox.Line text = Parser.link(_c.text, RT, color);
-                        
                         SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
                         SBABox.Line line = new SBABox.Line("", RT);
                         line.insertData(content);
@@ -664,11 +661,6 @@ namespace Client
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
 
         }

@@ -81,3 +81,4 @@ retrievingdata=Retrieving backlog from $1, got $2 packets from total of $3 datag
 service_error="There is a problem while connecting to $1: $2 occured";
 protocol-nick=$1 changed a nickname to $2;
 window-confirm=Do you really want to execute this:$1;
+command-wrong=This command requires $1 parameters;
