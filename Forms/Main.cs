@@ -136,7 +136,14 @@ namespace Client
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
-                Chat.scrollback.InsertText("Welcome to pidgeon client", Scrollback.MessageStyle.System, false, 0, true);
+                Chat.scrollback.InsertText("Welcome to pidgeon client " + Application.ProductVersion, Scrollback.MessageStyle.System, false, 0, true);
+                if (Core.Extensions.Count > 0)
+                {
+                    foreach (Extension nn in Core.Extensions)
+                    {
+                        Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Scrollback.MessageStyle.System, false, 0, true);
+                    }
+                }
                 done = true;
             }
             catch (Exception f)

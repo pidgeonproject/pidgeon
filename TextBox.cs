@@ -158,7 +158,7 @@ namespace Client
 
                     foreach (KeyValuePair<string,Commands.Command> cm in Commands.commands)
                     {
-                        if (cm.Value._Type == Commands.Type.System)
+                        if (cm.Value._Type == Commands.Type.System || cm.Value._Type == Commands.Type.Plugin)
                         {
                             commands.Add(cm.Key);
                         }

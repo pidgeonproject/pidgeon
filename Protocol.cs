@@ -29,6 +29,8 @@ namespace Client
         public bool Connected = false;
         public int type = 0;
         public string pswd;
+
+
         public class Mode
         {
             public List<string> _Mode = new List<string>();
@@ -122,8 +124,17 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Server
+        /// </summary>
         public string Server;
+        /// <summary>
+        /// Port
+        /// </summary>
         public int Port;
+        /// <summary>
+        /// Ssl
+        /// </summary>
         public bool SSL;
 
         /// <summary>
@@ -297,9 +308,9 @@ namespace Client
         /// <summary>
         /// Write a mode
         /// </summary>
-        /// <param name="_x"></param>
-        /// <param name="target"></param>
-        /// <param name="network"></param>
+        /// <param name="_x">Mode</param>
+        /// <param name="target">Channel or user</param>
+        /// <param name="network">Network</param>
         public virtual void WriteMode(Mode _x, string target, Network network = null)
         {
             return;
@@ -308,8 +319,8 @@ namespace Client
         /// <summary>
         /// /join
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="network"></param>
+        /// <param name="name">Channel</param>
+        /// <param name="network">Network</param>
         public virtual void Join(string name, Network network = null)
         {
             return;
@@ -318,8 +329,8 @@ namespace Client
         /// <summary>
         /// /connect
         /// </summary>
-        /// <param name="server"></param>
-        /// <param name="port"></param>
+        /// <param name="server">Server</param>
+        /// <param name="port">Port</param>
         /// <returns></returns>
         public virtual bool ConnectTo(string server, int port)
         {
@@ -329,8 +340,8 @@ namespace Client
         /// <summary>
         /// /part
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="network"></param>
+        /// <param name="name">Channel</param>
+        /// <param name="network">Network</param>
         public virtual void Part(string name, Network network = null)
         {
             return;
@@ -348,7 +359,7 @@ namespace Client
                 Core._Main.Chat.Dispose();
                 Core._Main.Chat = Core._Main.main;
             }
-            if (Core.Connections.Contains(this))
+            if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
             {
                 Core.Connections.Remove(this);
             }

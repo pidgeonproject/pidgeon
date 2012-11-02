@@ -53,13 +53,16 @@ namespace Client
 
     public class Channel
     {
+        /// <summary>
+        /// Internal list of classes of this kind, just for debugging and recovery
+        /// </summary>
         public static List<Channel> _control = new List<Channel>();
         /// <summary>
-        /// Name
+        /// Name of a channel including the special prefix
         /// </summary>
         public string Name;
         /// <summary>
-        /// Network
+        /// Network the channel belongs to
         /// </summary>
         public Network _Network;
         /// <summary>
@@ -77,7 +80,7 @@ namespace Client
         /// <summary>
         /// User who set a topic
         /// </summary>
-        public string TopicUser;
+        public string TopicUser = null;
         /// <summary>
         /// Date when a topic was set
         /// </summary>
@@ -85,16 +88,19 @@ namespace Client
         /// <summary>
         /// Invites
         /// </summary>
-        public List<Invite> Invites;
+        public List<Invite> Invites = null;
         /// <summary>
         /// List of bans set
         /// </summary>
-        public List<SimpleBan> Bl;
+        public List<SimpleBan> Bl = null;
         /// <summary>
-        ///
+        /// Exception list 
         /// </summary>
-        public List<Except> Exceptions;
-        private Window Chat;
+        public List<Except> Exceptions = null;
+        /// <summary>
+        /// Window this channel is rendered to, if any
+        /// </summary>
+        private Window Chat = null;
         /// <summary>
         /// If channel output is temporarily hidden
         /// </summary>
@@ -202,6 +208,7 @@ namespace Client
                 {
                     retrieveWindow().Dispose();
                 }
+
                 if (_control.Contains(this))
                 {
                     _control.Remove(this);
@@ -214,7 +221,7 @@ namespace Client
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool containUser(string user)
+        public bool containsUser(string user)
         {
             lock (UserList)
             {

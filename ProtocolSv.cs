@@ -474,7 +474,7 @@ namespace Client
                                                 string us = "";
                                                 string ident;
                                                 us = user.Substring(0, user.IndexOf("!"));
-                                                if (channel.containUser(us))
+                                                if (channel.containsUser(us))
                                                 {
                                                     continue;
                                                 }

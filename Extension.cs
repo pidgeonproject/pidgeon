@@ -15,71 +15,69 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class MicroChat : Form
+    public class Extension
     {
-        public static MicroChat mc;
-        public MicroChat()
+        public string Name = "Unknown extension";
+        public string Version = "1.0";
+        public Status _status;
+        public bool RequiresReboot = false;
+
+        public static void Init()
         {
-            InitializeComponent();
-            this.TopMost = true;
-            scrollback_mc.owner = null;
-            scrollback_mc.create();
-            scrollback_mc.contextMenuStrip1.Items.Clear();
-            scrollback_mc.contextMenuStrip1.Items.Add(scrollback_mc.scrollToolStripMenuItem);
-            scrollback_mc.contextMenuStrip1.Items.Add(transparencyToolStripMenuItem);
+            Core.RegisterPlugin(new Stage.extension_freenode());
         }
 
-        public void Unload(object sender, FormClosingEventArgs e)
+        public Extension()
         {
-            e.Cancel = true;
-            this.Visible = false;
+            _status = Status.Loading;
+            Initialise();
         }
 
-        protected override void OnShown(EventArgs e)
+        public virtual bool Hook_OnLoad()
         {
-            base.OnShown(e);
+            return true;
         }
 
-        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        public virtual bool Hook_OnRegister()
         {
-            this.Opacity = 0.8;
+            return true;
         }
 
-        private void toolStripMenuItem6_Click(object sender, EventArgs e)
-        {
-            this.Opacity = 1;
+        public virtual void Initialise()
+        { 
+            
         }
 
-        private void toolStripMenuItem4_Click(object sender, EventArgs e)
+        public void Load()
         {
-            this.Opacity = 0.6;
+            try
+            {
+                if (!Hook_OnLoad())
+                {
+                    _status = Status.Stopped;
+                    return;
+                }
+            }
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
         }
 
-        private void toolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            this.Opacity = 0.4;
-        }
-
-        private void toolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            this.Opacity = 0.2;
-        }
-
-        private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
+        public enum Status
+        { 
+            Active,
+            Loading,
+            Terminating,
+            Terminated,
+            Stopped
         }
     }
 }

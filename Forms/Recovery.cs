@@ -49,13 +49,23 @@ namespace Client
 
         private void bShutdown_Click(object sender, EventArgs e)
         {
-            Core.IgnoreErrors = true;
-            Core._KernelThread.Abort();
-            foreach (Protocol server in Core.Connections)
+            try
             {
-                server.Exit();
+                Core.IgnoreErrors = true;
+                Core._KernelThread.Abort();
+                lock (Core.Connections)
+                {
+                    foreach (Protocol server in Core.Connections)
+                    {
+                        server.Exit();
+                    }
+                }
+                Application.ExitThread();
             }
-            Application.ExitThread();
+            catch (Exception)
+            {
+                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
 

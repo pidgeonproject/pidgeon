@@ -1,4 +1,21 @@
-﻿using System;
+﻿/***************************************************************************
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -91,6 +108,7 @@ namespace Client
             commands.Add("away", new Command(Type.Network));
             commands.Add("stats", new Command(Type.Network));
             commands.Add("nickserv", new Command(Type.Network));
+            commands.Add("raw", new Command(Type.System, Generic.raw));
             commands.Add("chanserv", new Command(Type.Network));
             commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
             commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
@@ -199,11 +217,14 @@ namespace Client
                 if (parameter != "")
                 {
                     string path = parameter;
-                    if (System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "scripts"
-                        + System.IO.Path.DirectorySeparatorChar + path))
+                    if (!System.IO.Path.IsPathRooted(path))
                     {
-                        foreach (string Line in System.IO.File.ReadAllLines(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar
-                            + "scripts" + System.IO.Path.DirectorySeparatorChar + path))
+                        path = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "scripts" +
+                        System.IO.Path.DirectorySeparatorChar + path;
+                    }
+                    if (System.IO.File.Exists(path))
+                    {
+                        foreach (string Line in System.IO.File.ReadAllLines(path))
                         {
                             Parser.parse(Line);
                         }
@@ -217,7 +238,7 @@ namespace Client
                         }
                         return;
                     }
-                    Core._Main.Chat.scrollback.InsertText("Warning: file not found", Scrollback.MessageStyle.System, false);
+                    Core._Main.Chat.scrollback.InsertText("Warning: file not found: " + path, Scrollback.MessageStyle.System, false);
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);

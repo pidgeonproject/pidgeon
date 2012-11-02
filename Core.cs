@@ -124,6 +124,7 @@ namespace Client
         public static bool blocked = false;
         public static bool IgnoreErrors = false;
         public static string[] startup = null;
+        public static List<Extension> Extensions = new List<Extension>();
 
         public class IO
         { 
@@ -255,6 +256,7 @@ namespace Client
                 MicroChat.mc = new MicroChat();
                 notification = new Notification();
                 ScriptingCore.Load();
+                Extension.Init();
                 if (!File.Exists(ConfigFile))
                 {
                     Network.Highlighter simple = new Network.Highlighter();
@@ -560,6 +562,7 @@ namespace Client
             makenode("sniffer", Configuration.NetworkSniff.ToString(), curr, confname, config, xmlnode);
             makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
             makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
+            makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
             makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
             string separators = "";
             foreach (char separator in Configuration.Separators)
@@ -679,12 +682,38 @@ namespace Client
                     return System.Windows.Forms.Keys.Y;
                 case "z":
                     return System.Windows.Forms.Keys.Z;
+                case "1":
+                    return System.Windows.Forms.Keys.D1;
+                case "2":
+                    return System.Windows.Forms.Keys.D2;
+                case "3":
+                    return System.Windows.Forms.Keys.D3;
+                case "4":
+                    return System.Windows.Forms.Keys.D4;
+                case "5":
+                    return System.Windows.Forms.Keys.D5;
+                case "6":
+                    return System.Windows.Forms.Keys.D6;
+                case "7":
+                    return System.Windows.Forms.Keys.D7;
+                case "8":
+                    return System.Windows.Forms.Keys.D8;
+                case "9":
+                    return System.Windows.Forms.Keys.D9;
+                case "0":
+                    return System.Windows.Forms.Keys.D0;
                 case "f1":
                     return System.Windows.Forms.Keys.F1;
                 case "f2":
                     return System.Windows.Forms.Keys.F2;
                 case "f3":
                     return System.Windows.Forms.Keys.F3;
+                case "home":
+                    return System.Windows.Forms.Keys.Home;
+                case "end":
+                    return System.Windows.Forms.Keys.End;
+                case "pageup":
+                    return System.Windows.Forms.Keys.PageUp;
                 case "delete":
                     return System.Windows.Forms.Keys.Delete;
             }
@@ -911,9 +940,43 @@ namespace Client
             return false;
         }
 
+        public static bool RegisterPlugin(TclInterpreter plugin)
+        {
+            return false;
+        }
+
+        public static bool RegisterPlugin(Extension plugin)
+        {
+            if (plugin._status == Extension.Status.Loading)
+            {
+                lock (Extensions)
+                {
+                    if (Extensions.Contains(plugin))
+                    {
+                        return false;
+                    }
+                    Extensions.Add(plugin);
+                }
+                if (plugin.Hook_OnRegister())
+                {
+                    plugin.Load();
+                    if (Core._Main != null)
+                    {
+                        Core._Main.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Scrollback.MessageStyle.System, false);
+                    }
+                    return true;
+                }
+                return false;
+            }
+            return true;
+        }
+
         public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
+            _quassel.Port = port;
+            _quassel.password = password;
+            _quassel.Server = server;
             _quassel.Open();
             Connections.Add(_quassel);
             return false;

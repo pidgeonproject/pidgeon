@@ -339,7 +339,7 @@ namespace Client
                     {
                         if (updated_text)
                         {
-                            if (!channel.containUser(nick))
+                            if (!channel.containsUser(nick))
                             {
                                 User _user = new User(mode + nick, host, _server, ident);
                                 channel.UserList.Add(_user);
@@ -379,7 +379,7 @@ namespace Client
                         string[] _chan = data[2].Split(' ');
                         foreach (var user in _chan)
                         {
-                            if (!channel.containUser(user) && user != "")
+                            if (!channel.containsUser(user) && user != "")
                             {
                                 lock (channel.UserList)
                                 {
@@ -683,7 +683,7 @@ namespace Client
                             Scrollback.MessageStyle.Part,
                             !channel.temporary_hide, date);
 
-                        if (channel.containUser(user))
+                        if (channel.containsUser(user))
                         {
                             lock (channel.UserList)
                             {
@@ -802,7 +802,7 @@ namespace Client
                             new List<string> { source, user, value }),
                             Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
 
-                        if (updated_text && channel.containUser(user))
+                        if (updated_text && channel.containsUser(user))
                         {
                             User delete = null;
                             lock (channel.UserList)
@@ -855,7 +855,7 @@ namespace Client
                             Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
                         if (updated_text)
                         {
-                            if (!channel.containUser(user))
+                            if (!channel.containsUser(user))
                             {
                                 lock (channel.UserList)
                                 {
@@ -945,6 +945,20 @@ namespace Client
                                     protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date);
                                     return true;
                                 case "NOTICE":
+                                    if (parameters.Contains(_server.channel_prefix))
+                                    {
+                                        Channel channel = _server.getChannel(parameters);
+                                        if (channel != null)
+                                        {
+                                            Window window;
+                                            window = channel.retrieveWindow();
+                                            if (window != null)
+                                            {
+                                                window.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date);
+                                                return true;
+                                            }
+                                        }
+                                    }
                                     protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date);
                                     return true;
                                 case "PING":
@@ -1176,13 +1190,12 @@ namespace Client
 
                 Connected = true;
 
-                _writer.WriteLine("USER " + _server.ident + " 8 * :" + _server.username);
-                _writer.WriteLine("NICK " + _server.nickname);
+                Send("USER " + _server.ident + " 8 * :" + _server.username);
+                Send("NICK " + _server.nickname);
                 if (pswd != "")
                 {
-                    _writer.WriteLine("PASS " + pswd);
+                    Send("PASS " + pswd);
                 }
-                _writer.Flush();
 
                 Core._Main.Status("");
 
