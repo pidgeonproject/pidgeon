@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Client
 {
-    class Commands
+    public class Commands
     {
         public class Command
         {
@@ -78,6 +78,11 @@ namespace Client
 
         public static Dictionary<string, Command> commands = new Dictionary<string, Command>();
 
+        public static void RegisterCommand(Command command, string Name)
+        {
+            commands.Add(Name, command);
+        }
+
         public static void Initialise()
         {
             commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
@@ -114,6 +119,7 @@ namespace Client
             commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
             commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
             commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
+            commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
         }
 
         public static bool Proccess(string command)
@@ -167,6 +173,20 @@ namespace Client
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+            }
+
+            public static void module(string parameter)
+            {
+                if (parameter != "")
+                {
+                    if (!Core.RegisterPlugin(parameter))
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Unable to load the specified plugin", Scrollback.MessageStyle.System, false);
+                        return;
+                    }
+                    return;
+                }
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
             }
 
             public static void raw(string parameter)

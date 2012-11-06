@@ -31,7 +31,7 @@ namespace Client
 
         public static void Init()
         {
-            Core.RegisterPlugin(new Stage.extension_freenode());
+            //Core.RegisterPlugin(new Stage.extension_freenode());
         }
 
         public Extension()

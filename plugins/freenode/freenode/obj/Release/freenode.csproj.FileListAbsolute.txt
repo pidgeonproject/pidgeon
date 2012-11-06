@@ -1,0 +1,7 @@
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\obj\Release\ResolveAssemblyReference.cache
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\bin\Release\freenode.dll
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\bin\Release\freenode.pdb
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\bin\Release\Pidgeon.exe
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\bin\Release\Pidgeon.pdb
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\obj\Release\freenode.dll
+C:\Users\petr.bena\Documents\Visual Studio 2010\Projects\freenode\freenode\obj\Release\freenode.pdb

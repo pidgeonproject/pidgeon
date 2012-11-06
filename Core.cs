@@ -257,6 +257,13 @@ namespace Client
                 notification = new Notification();
                 ScriptingCore.Load();
                 Extension.Init();
+                if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
+                {
+                    foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
+                    {
+                        RegisterPlugin(dll);
+                    }
+                }
                 if (!File.Exists(ConfigFile))
                 {
                     Network.Highlighter simple = new Network.Highlighter();
@@ -942,6 +949,62 @@ namespace Client
 
         public static bool RegisterPlugin(TclInterpreter plugin)
         {
+            return false;
+        }
+
+        public static bool RegisterPlugin(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    System.Reflection.Assembly library = System.Reflection.Assembly.LoadFrom(path);
+                    if (library == null)
+                    {
+                        Core.Debuglog("Unable to load " + path + " because the file can't be read");
+                        return false;
+                    }
+                    Type[] types = library.GetTypes();
+                    Type type = library.GetType("Client.RestrictedModule");
+                    Type pluginInfo = null;
+                    foreach (Type curr in types)
+                    {
+                        if (curr.IsAssignableFrom(type))
+                        {
+                            pluginInfo = curr;
+                            break;
+                        }
+                    }
+                    if (pluginInfo == null)
+                    {
+                        Core.Debuglog("Unable to load " + path + " because the library contains no module");
+                        return false;
+                    }
+                    Extension _plugin = (Extension)Activator.CreateInstance(pluginInfo);
+                    lock (Extensions)
+                    {
+                        if (Extensions.Contains(_plugin))
+                        {
+                            return false;
+                        }
+                        Extensions.Add(_plugin);
+                    }
+                    if (_plugin.Hook_OnRegister())
+                    {
+                        _plugin.Load();
+                        if (Core._Main != null)
+                        {
+                            Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Scrollback.MessageStyle.System, false);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
             return false;
         }
 
