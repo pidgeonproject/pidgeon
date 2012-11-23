@@ -67,7 +67,7 @@ namespace Client
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(298, 32);
+            this.label1.Size = new System.Drawing.Size(326, 32);
             this.label1.TabIndex = 1;
             this.label1.Text = "#channel";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -89,13 +89,13 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(350, 153);
             this.Controls.Add(this.text);
             this.Controls.Add(this.label1);
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Disappear);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Notification";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Notification";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Disappear);
             this.Load += new System.EventHandler(this.Notification_Load);
             this.Click += new System.EventHandler(this.Notification_Click);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

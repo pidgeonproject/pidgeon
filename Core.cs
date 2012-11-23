@@ -67,7 +67,10 @@ namespace Client
         /// Thread for update system
         /// </summary>
         public static Thread ThUp;
-
+        /// <summary>
+        /// Module layers
+        /// </summary>
+        public static List<Domain> domains = new List<Domain>();
         /// <summary>
         /// Pointer to exception class during recovery
         /// </summary>
@@ -125,6 +128,18 @@ namespace Client
         public static bool IgnoreErrors = false;
         public static string[] startup = null;
         public static List<Extension> Extensions = new List<Extension>();
+
+        public class Domain
+        {
+            AppDomain domain;
+            string name;
+            Module module;
+            public Domain(AppDomain _appDomain, string _name)
+            {
+                domain = _appDomain;
+                name = _name;
+            }
+        }
 
         public class IO
         { 
@@ -199,7 +214,7 @@ namespace Client
             {
                 control = Control;
                 shift = Shift;
-                alt = Alt;
+                alt = Alt; 
                 data = Data;
                 keys = Value;
             }

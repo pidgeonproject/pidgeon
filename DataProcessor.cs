@@ -163,8 +163,8 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString()));
                             }
                         }
-                        SBABox.ContentText Link = new SBABox.ContentText("https://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                        Link.link = "https://" + ProtocolIrc.decrypt_text(link);
+                        SBABox.ContentText Link = new SBABox.ContentText("https://" + link, SBAB, Configuration.CurrentSkin.link);
+                        Link.link = "https://" + link;
                         Link.Underline = under;
                         Link.Bold = bold;
                         Link.Underline = true;

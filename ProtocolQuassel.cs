@@ -74,8 +74,6 @@ namespace Client
                 _writer = new System.IO.StreamWriter(_network);
                 _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
 
-                //Send("HI");
-
                 Connected = true;
                 while (!_reader.EndOfStream)
                 {

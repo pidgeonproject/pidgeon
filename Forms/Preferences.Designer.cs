@@ -50,6 +50,8 @@ namespace Client
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.gro1 = new System.Windows.Forms.GroupBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.checkBox10 = new System.Windows.Forms.CheckBox();
@@ -75,6 +77,15 @@ namespace Client
             this.label2 = new System.Windows.Forms.Label();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.gro9 = new System.Windows.Forms.GroupBox();
+            this.listView3 = new System.Windows.Forms.ListView();
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.loadModuleFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.label7 = new System.Windows.Forms.Label();
             this.gro2 = new System.Windows.Forms.GroupBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
@@ -104,13 +115,14 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.unloadModuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
             this.gro4.SuspendLayout();
             this.gro3.SuspendLayout();
+            this.gro9.SuspendLayout();
+            this.contextMenuStrip3.SuspendLayout();
             this.gro2.SuspendLayout();
             this.gro8.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
@@ -142,6 +154,7 @@ namespace Client
             this.panel1.Controls.Add(this.gro1);
             this.panel1.Controls.Add(this.gro4);
             this.panel1.Controls.Add(this.gro3);
+            this.panel1.Controls.Add(this.gro9);
             this.panel1.Controls.Add(this.gro2);
             this.panel1.Controls.Add(this.gro7);
             this.panel1.Controls.Add(this.gro8);
@@ -176,6 +189,24 @@ namespace Client
             this.gro1.TabIndex = 0;
             this.gro1.TabStop = false;
             this.gro1.Text = "IRC";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(94, 169);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(356, 21);
+            this.comboBox1.TabIndex = 21;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 172);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(28, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Skin";
             // 
             // textBox7
             // 
@@ -408,6 +439,79 @@ namespace Client
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "File name";
+            // 
+            // gro9
+            // 
+            this.gro9.Controls.Add(this.listView3);
+            this.gro9.Controls.Add(this.label7);
+            this.gro9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gro9.Location = new System.Drawing.Point(0, 0);
+            this.gro9.Name = "gro9";
+            this.gro9.Size = new System.Drawing.Size(461, 380);
+            this.gro9.TabIndex = 6;
+            this.gro9.TabStop = false;
+            this.gro9.Text = "Plugins";
+            // 
+            // listView3
+            // 
+            this.listView3.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9});
+            this.listView3.ContextMenuStrip = this.contextMenuStrip3;
+            this.listView3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listView3.FullRowSelect = true;
+            this.listView3.HideSelection = false;
+            this.listView3.Location = new System.Drawing.Point(3, 38);
+            this.listView3.Name = "listView3";
+            this.listView3.Size = new System.Drawing.Size(455, 339);
+            this.listView3.TabIndex = 3;
+            this.listView3.UseCompatibleStateImageBehavior = false;
+            this.listView3.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Name";
+            this.columnHeader6.Width = 94;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Version";
+            this.columnHeader7.Width = 51;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Description";
+            this.columnHeader8.Width = 246;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "Type";
+            // 
+            // contextMenuStrip3
+            // 
+            this.contextMenuStrip3.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.loadModuleFromFileToolStripMenuItem,
+            this.unloadModuleToolStripMenuItem});
+            this.contextMenuStrip3.Name = "contextMenuStrip3";
+            this.contextMenuStrip3.Size = new System.Drawing.Size(193, 70);
+            // 
+            // loadModuleFromFileToolStripMenuItem
+            // 
+            this.loadModuleFromFileToolStripMenuItem.Name = "loadModuleFromFileToolStripMenuItem";
+            this.loadModuleFromFileToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.loadModuleFromFileToolStripMenuItem.Text = "Load module from file";
+            this.loadModuleFromFileToolStripMenuItem.Click += new System.EventHandler(this.loadModuleFromFileToolStripMenuItem_Click);
+            // 
+            // label7
+            // 
+            this.label7.Dock = System.Windows.Forms.DockStyle.Top;
+            this.label7.Location = new System.Drawing.Point(3, 16);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(455, 18);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "List of plugins loaded in core";
             // 
             // gro2
             // 
@@ -671,23 +775,12 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // label6
+            // unloadModuleToolStripMenuItem
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 172);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(28, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Skin";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(94, 169);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(356, 21);
-            this.comboBox1.TabIndex = 21;
+            this.unloadModuleToolStripMenuItem.Name = "unloadModuleToolStripMenuItem";
+            this.unloadModuleToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.unloadModuleToolStripMenuItem.Text = "Unload module";
+            this.unloadModuleToolStripMenuItem.Click += new System.EventHandler(this.unloadModuleToolStripMenuItem_Click);
             // 
             // Preferences
             // 
@@ -708,6 +801,8 @@ namespace Client
             this.gro4.PerformLayout();
             this.gro3.ResumeLayout(false);
             this.gro3.PerformLayout();
+            this.gro9.ResumeLayout(false);
+            this.contextMenuStrip3.ResumeLayout(false);
             this.gro2.ResumeLayout(false);
             this.gro2.PerformLayout();
             this.gro8.ResumeLayout(false);
@@ -780,6 +875,16 @@ namespace Client
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.GroupBox gro9;
+        private System.Windows.Forms.ListView listView3;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
+        private System.Windows.Forms.ToolStripMenuItem loadModuleFromFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem unloadModuleToolStripMenuItem;
 
     }
 }

@@ -90,6 +90,16 @@ namespace Client
                 listView1.Items.Add(new ListViewItem("Highlighting"));
                 listView1.Items.Add(new ListViewItem("Ignore list"));
                 listView1.Items.Add(new ListViewItem("Keyboard"));
+                listView1.Items.Add(new ListViewItem("Extensions"));
+                foreach (Extension ex in Core.Extensions)
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.Text = ex.Name;
+                    item.SubItems.Add(ex.Version);
+                    item.SubItems.Add(ex.Description);
+                    item.SubItems.Add("Extension");
+                    listView3.Items.Add(item);
+                }
                 redrawS();
             }
             catch (Exception fail)
@@ -213,6 +223,9 @@ namespace Client
                 case 7:
                     gro8.BringToFront();
                     break;
+                case 8:
+                    gro9.BringToFront();
+                    break;
             }
         }
 
@@ -302,6 +315,20 @@ namespace Client
                     }
                     redrawS();
                 }
+            }
+        }
+
+        private void loadModuleFromFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void unloadModuleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (listView3.SelectedItems != null && listView3.SelectedItems[0] != null)
+            {
+                string name = listView3.SelectedItems[0].Text;
+                
             }
         }
     }

@@ -50,6 +50,15 @@ namespace Client
             
         }
 
+        public static bool BeforeNote(ref string caption, ref string text)
+        {
+            foreach (Extension extension in Core.Extensions)
+            {
+                extension.Hook_BeforeNote(ref caption, ref text);
+            }
+            return true;
+        }
+
         /// <summary>
         /// Events to happen before user is kicked from channel
         /// </summary>

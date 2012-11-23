@@ -54,7 +54,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Validate())
+            if (ValidateXml())
             {
                 File.WriteAllText(Core.ConfigFile, richTextBox1.Text);
                 Core.ConfigurationLoad();
@@ -62,7 +62,7 @@ namespace Client
             }
         }
 
-        public bool Validate()
+        public bool ValidateXml()
         {
             try
             {
@@ -79,7 +79,7 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Validate();
+            ValidateXml();
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
