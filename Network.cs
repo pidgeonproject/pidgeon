@@ -51,6 +51,9 @@ namespace Client
         /// Special channel user modes with parameters as a string
         /// </summary>
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+
+        public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+
         public bool parsed_info = false;
         public string channel_prefix = "#";
         /// <summary>
@@ -165,11 +168,46 @@ namespace Client
               }
         }
 
+        public bool UnregisterInfo(char key)
+        {
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(key))
+                {
+                    Descriptions.Remove(key);
+                    return true;
+                }
+            }
+                return false;
+        }
+
+        public bool RegisterInfo(char key, string text)
+        { 
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(key))
+                {
+                    return false;
+                }
+                Descriptions.Add(key, text);
+                return true;
+            }
+        }
+
         public Network(string Server, Protocol protocol)
         {
             randomuqid = Core.retrieveRandom();
             try
             {
+                Descriptions.Add('n', "no /knock is allowed on channel");
+                Descriptions.Add('r', "registered channel");
+                Descriptions.Add('m', "talking is restricted");
+                Descriptions.Add('i', "users need to be invited to join");
+                Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                Descriptions.Add('p', "channel is private");
+                Descriptions.Add('A', "admins only");
+                Descriptions.Add('O', "opers chan");
+                Descriptions.Add('t', "topic changes can be done only by operators");
                 _protocol = protocol;
                 server = Server;
                 quit = Configuration.quit;
@@ -191,6 +229,7 @@ namespace Client
                     system = _protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
+                Hooks.CreatingNetwork(this);
             }
             catch (Exception ex)
             {

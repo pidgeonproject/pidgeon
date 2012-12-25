@@ -54,6 +54,11 @@ namespace Client
             return true;
         }
 
+        public virtual void Hook_Network(Network network)
+        { 
+            
+        }
+
         /// <summary>
         /// This hook is called before the Note is displayed
         /// </summary>
@@ -91,6 +96,7 @@ namespace Client
             {
                 if (!Hook_OnLoad())
                 {
+                    Core.DebugLog("Unable to load " + Name + " the OnLoad hook returned invalid value");
                     _status = Status.Stopped;
                     return;
                 }
@@ -109,5 +115,11 @@ namespace Client
             Terminated,
             Stopped
         }
+    }
+
+    [Serializable()]
+    class TrustedExtension : Extension
+    { 
+        
     }
 }

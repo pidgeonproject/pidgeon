@@ -32,7 +32,7 @@ namespace Client
         /// <summary>
         /// Prefix for all commands
         /// </summary>
-        public static string CommandPrefix = "/";
+        public static readonly string CommandPrefix = "/";
 
         /// <summary>
         /// Ident
@@ -90,7 +90,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         /// <summary>
         /// Version
         /// </summary>
@@ -215,6 +215,8 @@ namespace Client
         public static int Depth = 20000;
 
         public static bool SearchRegex = true;
+
+        public static bool Debugging = false;
 
         /// <summary>
         /// Position of textbox scroll

@@ -63,7 +63,7 @@
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -142,6 +142,12 @@
     </Compile>
     <Compile Include="Forms\ShortcutBox.Designer.cs">
       <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SkinEd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SkinEd.Designer.cs">
+      <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
     <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="Qt.cs" />
@@ -265,6 +271,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ShortcutBox.resx">
       <DependentUpon>ShortcutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SkinEd.resx">
+      <DependentUpon>SkinEd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="scrollback\SBABox.resx">
       <DependentUpon>SBABox.cs</DependentUpon>

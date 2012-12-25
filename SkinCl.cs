@@ -64,6 +64,7 @@ namespace Client
 
         public Skin(string path)
         {
+            Core.DebugLog("Loading skin " + path);
             Defaults();
             name = path;
             if (File.Exists(path))

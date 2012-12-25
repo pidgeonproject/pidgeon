@@ -80,14 +80,12 @@ namespace Client
 
         public static void RegisterCommand(Command command, string Name)
         {
+            Core.DebugLog("Registering a new command by extension: " + Name);
             commands.Add(Name, command);
         }
 
         public static void Initialise()
         {
-            commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
-            commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
-            commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
             commands.Add("server", new Command(Type.System, Generic.server));
             commands.Add("nick", new Command(Type.System, Generic.nick));
             commands.Add("connect", new Command(Type.Services, Generic.connect));
@@ -116,9 +114,13 @@ namespace Client
             commands.Add("raw", new Command(Type.System, Generic.raw));
             commands.Add("chanserv", new Command(Type.Network));
             commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
-            commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
             commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
             commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
+            commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
+            commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
+            commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
+            commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
+            commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
             commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
         }
 
@@ -421,6 +423,12 @@ namespace Client
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Scrollback.MessageStyle.Message);
+            }
+
+            public static void clearring(string parameter)
+            {
+                Core.ClearRingBufferLog();
+                Core._Main.Chat.scrollback.InsertText("Ring buffer was cleaned", Scrollback.MessageStyle.System, false);
             }
 
             public static void query(string parameter)

@@ -130,12 +130,21 @@ namespace Client
                 sX.Panel1.Controls.Add(ChannelList);
                 main = new Window();
                 CreateChat(main, null);
+                main.name = "Pidgeon";
                 preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
                 toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
+                if (Configuration.Debugging)
+                {
+                    List<string> logs = Core.RingBuffer;
+                    foreach (string line in logs)
+                    {
+                        Chat.scrollback.InsertText(line, Scrollback.MessageStyle.System, false);
+                    }
+                }
                 Chat.scrollback.InsertText("Welcome to pidgeon client " + Application.ProductVersion, Scrollback.MessageStyle.System, false, 0, true);
                 if (Core.Extensions.Count > 0)
                 {
@@ -254,7 +263,7 @@ namespace Client
         {
             if (Core.IgnoreErrors)
             {
-                Core.Debuglog("Closing main");
+                Core.DebugLog("Closing main");
                 closing.Cancel = false;
                 return;
             }
@@ -394,6 +403,19 @@ namespace Client
         {
             SettingsEd ed = new SettingsEd();
             ed.Show(this);
+        }
+
+        private void skinEdToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                SkinEd skined = new SkinEd();
+                skined.Show();
+            }
+            catch (Exception x)
+            {
+                Core.handleException(x);
+            }
         }
     }
 }

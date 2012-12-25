@@ -83,6 +83,15 @@ namespace Client
             return true;
         }
 
+        public static void CreatingNetwork(Network network)
+        {
+            foreach (Extension extension in Core.Extensions)
+            {
+                extension.Hook_Network(network);
+            }
+            return;
+        }
+
         /// <summary>
         /// Events to happen before leaving a channel, if return false, the quiting is cancelled
         /// </summary>

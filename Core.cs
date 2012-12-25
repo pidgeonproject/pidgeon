@@ -87,7 +87,10 @@ namespace Client
         /// Threads currently allocated in kernel
         /// </summary>
         public static List<Thread> SystemThreads = new List<Thread>();
-
+        /// <summary>
+        /// Ring log
+        /// </summary>
+        private static List<string> Ring = new List<string>();
         /// <summary>
         /// Selected network
         /// </summary>
@@ -124,10 +127,29 @@ namespace Client
         /// Packet scan
         /// </summary>
         public static TrafficScanner trafficscanner;
+        /// <summary>
+        /// System is blocked - if this is set to true, all subsystems and kernel are supposed to freeze
+        /// </summary>
         public static bool blocked = false;
+        /// <summary>
+        /// Ignore errors - all exceptions and debug logs are ignored and pidgeon is flagged as unstable
+        /// </summary>
         public static bool IgnoreErrors = false;
         public static string[] startup = null;
         public static List<Extension> Extensions = new List<Extension>();
+
+        public static List<string> RingBuffer
+        {
+            get
+            {
+                List<string> rb = new List<string>();
+                lock (Ring)
+                {
+                    rb.AddRange(Ring);
+                }
+                return rb;
+            }
+        }
 
         public class Domain
         {
@@ -142,7 +164,7 @@ namespace Client
         }
 
         public class IO
-        { 
+        {
             public class fl
             {
                 public string filename;
@@ -155,7 +177,7 @@ namespace Client
             }
             public static List<fl> processing = new List<fl>();
             public static List<fl> data = new List<fl>();
-            
+
             public static void Load()
             {
                 try
@@ -214,7 +236,7 @@ namespace Client
             {
                 control = Control;
                 shift = Shift;
-                alt = Alt; 
+                alt = Alt;
                 data = Data;
                 keys = Value;
             }
@@ -227,8 +249,8 @@ namespace Client
             public Thread thread;
 
             public void main()
-            { 
-                
+            {
+
             }
 
             public Module()
@@ -253,29 +275,37 @@ namespace Client
                 ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath.Substring(0,
                     System.Windows.Forms.Application.LocalUserAppDataPath.Length - System.Windows.Forms.Application.ProductVersion.Length) + "configuration.dat";
             }
+            DebugLog("Loading messages");
             messages.data.Add("en", new messages.container("en"));
             messages.data.Add("cs", new messages.container("cs"));
             trafficscanner = new TrafficScanner();
             if (!System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
             {
+                //Debuglog("Initialising updater");
                 ThUp = new Thread(Updater.Run);
                 ThUp.Name = "pidgeon service";
                 ThUp.Start();
                 SystemThreads.Add(ThUp);
+                DebugLog("Loading configuration file");
                 ConfigurationLoad();
+                DebugLog("Loading log writer thread");
                 Thread_logs = new Thread(IO.Load);
                 Thread_logs.Name = "Logs";
                 SystemThreads.Add(Thread_logs);
                 Thread_logs.Start();
+                DebugLog("Loading commands");
                 Commands.Initialise();
                 MicroChat.mc = new MicroChat();
                 notification = new Notification();
+                DebugLog("Loading scripting core");
                 ScriptingCore.Load();
+                DebugLog("Loading extensions");
                 Extension.Init();
                 if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                 {
                     foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
                     {
+                        DebugLog("Registering plugin " + dll);
                         RegisterPlugin(dll);
                     }
                 }
@@ -314,6 +344,7 @@ namespace Client
 
             if (Core.IgnoreErrors)
             {
+                DebugLog("Ignoring kill request for thread " + name.Name + " because system is in unstable mode");
                 return;
             }
 
@@ -343,13 +374,50 @@ namespace Client
                 .Replace("%/D%", "");
         }
 
+        public static void ClearRingBufferLog()
+        {
+            lock (Ring)
+            {
+                Ring.Clear();
+            }
+        }
+
+        public static void Ringlog(string data)
+        {
+            lock (Ring)
+            {
+                Ring.Add(DateTime.Now.ToString() + " " + data);
+            }
+        }
+
         /// <summary>
         /// Insert text in to debug log
         /// </summary>
         /// <param name="data"></param>
-        public static void Debuglog(string data)
+        public static void DebugLog(string data)
         {
-            System.Diagnostics.Debug.Print(data);
+            try
+            {
+                System.Diagnostics.Debug.Print(data);
+                if (Configuration.Debugging)
+                {
+                    if (Core._Main != null && !Core.blocked)
+                    {
+                        if (Core._Main.main != null)
+                        {
+                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Scrollback.MessageStyle.System, false);
+                        }
+                    }
+                }
+                lock (Ring)
+                {
+                    Ring.Add(DateTime.Now.ToString() + " DEBUG: " + data);
+                }
+            }
+            catch (Exception er)
+            {
+                Core.handleException(er);
+            }
         }
 
         /// <summary>
@@ -403,9 +471,11 @@ namespace Client
                 return false;
             }
             string backup = System.IO.Path.GetRandomFileName();
+            DebugLog("Restoring file " + file + " from a backup");
             if (File.Exists(file))
             {
                 File.Copy(file, backup);
+                DebugLog("Stored previous version: " + backup);
             }
             File.Copy(file + "~", file, true);
             return true;
@@ -542,104 +612,112 @@ namespace Client
 
         public static bool ConfigSave()
         {
-            System.Xml.XmlDocument config = new System.Xml.XmlDocument();
-            XmlComment notice = config.CreateComment("This is a configuration file of pidgeon client, see http://pidgeonclient.org/wiki/Help:Configuration");
-            System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
-            System.Xml.XmlNode curr = null;
-            XmlAttribute confname = null;
-            makenode("network.ident", Configuration.ident, curr, confname, config, xmlnode);
-            makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
-            makenode("network.nick", Configuration.nick, curr, confname, config, xmlnode);
-            makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-            makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
-            makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
-            makenode("irc.auto.whois", Configuration.aggressive_whois.ToString(), curr, confname, config, xmlnode);
-            makenode("irc.auto.mode", Configuration.aggressive_mode.ToString(), curr, confname, config, xmlnode);
-            makenode("irc.auto.channels", Configuration.aggressive_channel.ToString(), curr, confname, config, xmlnode);
-            makenode("irc.auto.bans", Configuration.aggressive_bans.ToString(), curr, confname, config, xmlnode);
-            makenode("irc.auto.exception", Configuration.aggressive_exception.ToString(), curr, confname, config, xmlnode);
-            makenode("irc.auto.invites", Configuration.aggressive_invites.ToString(), curr, confname, config, xmlnode);
-
-            makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
-            makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
-            makenode("location.x1", Configuration.x1.ToString(), curr, confname, config, xmlnode);
-            makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
-            makenode("logs.dir", Configuration.logs_dir, curr, confname, config, xmlnode);
-            makenode("logs.type", Configuration.logs_name, curr, confname, config, xmlnode);
-            makenode("shield.ctcp", Configuration.ctcp_prot.ToString(), curr, confname, config, xmlnode);
-            makenode("shield.flood", Configuration.flood_prot.ToString(), curr, confname, config, xmlnode);
-            makenode("shield.notice", Configuration.notice_prot.ToString(), curr, confname, config, xmlnode);
-            makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-            makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
-            makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
-            makenode("logs.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
-            makenode("updater.check", Configuration.CheckUpdate.ToString(), curr, confname, config, xmlnode);
-
-            makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
-            makenode("scrollback_plimit", Configuration.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
-            makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
-            makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
-            makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
-            makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
-            makenode("sniffer", Configuration.NetworkSniff.ToString(), curr, confname, config, xmlnode);
-            makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
-            makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
-            makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
-            makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
-            string separators = "";
-            foreach (char separator in Configuration.Separators)
+            try
             {
-                separators = separators + separator.ToString();
-            }
-            makenode("delimiters", separators, curr, confname, config, xmlnode);
+                System.Xml.XmlDocument config = new System.Xml.XmlDocument();
+                XmlComment notice = config.CreateComment("This is a configuration file of pidgeon client, see http://pidgeonclient.org/wiki/Help:Configuration");
+                System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
+                System.Xml.XmlNode curr = null;
+                XmlAttribute confname = null;
+                makenode("network.ident", Configuration.ident, curr, confname, config, xmlnode);
+                makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
+                makenode("network.nick", Configuration.nick, curr, confname, config, xmlnode);
+                makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
+                makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
+                makenode("irc.auto.whois", Configuration.aggressive_whois.ToString(), curr, confname, config, xmlnode);
+                makenode("irc.auto.mode", Configuration.aggressive_mode.ToString(), curr, confname, config, xmlnode);
+                makenode("irc.auto.channels", Configuration.aggressive_channel.ToString(), curr, confname, config, xmlnode);
+                makenode("irc.auto.bans", Configuration.aggressive_bans.ToString(), curr, confname, config, xmlnode);
+                makenode("irc.auto.exception", Configuration.aggressive_exception.ToString(), curr, confname, config, xmlnode);
+                makenode("irc.auto.invites", Configuration.aggressive_invites.ToString(), curr, confname, config, xmlnode);
 
-            lock (Configuration.HighlighterList)
-            {
-                foreach (Network.Highlighter high in Configuration.HighlighterList)
+                makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
+                makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
+                makenode("location.x1", Configuration.x1.ToString(), curr, confname, config, xmlnode);
+                makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.dir", Configuration.logs_dir, curr, confname, config, xmlnode);
+                makenode("logs.type", Configuration.logs_name, curr, confname, config, xmlnode);
+                makenode("shield.ctcp", Configuration.ctcp_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("shield.flood", Configuration.flood_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("shield.notice", Configuration.notice_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+                makenode("updater.check", Configuration.CheckUpdate.ToString(), curr, confname, config, xmlnode);
+                makenode("debugger", Configuration.Debugging.ToString(), curr, confname, config, xmlnode);
+
+                makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
+                makenode("scrollback_plimit", Configuration.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
+                makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
+                makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+                makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
+                makenode("sniffer", Configuration.NetworkSniff.ToString(), curr, confname, config, xmlnode);
+                makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
+                makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
+                makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
+                makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
+                string separators = "";
+                foreach (char separator in Configuration.Separators)
                 {
-                    curr = config.CreateElement("list");
-                    XmlAttribute highlightenabled = config.CreateAttribute("enabled");
-                    XmlAttribute highlighttext = config.CreateAttribute("text");
-                    XmlAttribute highlightsimple = config.CreateAttribute("simple");
-                    highlightenabled.Value = "true";
-                    highlightsimple.Value = high.simple.ToString();
-                    highlighttext.Value = high.text;
-                    curr.Attributes.Append(highlightsimple);
-                    curr.Attributes.Append(highlighttext);
-                    curr.Attributes.Append(highlightenabled);
-                    xmlnode.AppendChild(curr);
+                    separators = separators + separator.ToString();
                 }
-            }
-            config.AppendChild(xmlnode);
+                makenode("delimiters", separators, curr, confname, config, xmlnode);
 
-            lock (Configuration.ShortcutKeylist)
-            {
-                foreach (Shortcut RR in Configuration.ShortcutKeylist)
+                lock (Configuration.HighlighterList)
                 {
-                    curr = config.CreateElement("shortcut");
-                    XmlAttribute name = config.CreateAttribute("name");
-                    XmlAttribute ctrl = config.CreateAttribute("ctrl");
-                    XmlAttribute alt = config.CreateAttribute("alt");
-                    XmlAttribute shift = config.CreateAttribute("shift");
-                    curr.InnerText = RR.data;
-                    name.Value = RR.keys.ToString();
-                    shift.Value = RR.shift.ToString();
-                    ctrl.Value = RR.control.ToString();
-                    alt.Value = RR.alt.ToString();
-                    curr.Attributes.Append(name);
-                    curr.Attributes.Append(ctrl);
-                    curr.Attributes.Append(alt);
-                    curr.Attributes.Append(shift);
-                    xmlnode.AppendChild(curr);
+                    foreach (Network.Highlighter high in Configuration.HighlighterList)
+                    {
+                        curr = config.CreateElement("list");
+                        XmlAttribute highlightenabled = config.CreateAttribute("enabled");
+                        XmlAttribute highlighttext = config.CreateAttribute("text");
+                        XmlAttribute highlightsimple = config.CreateAttribute("simple");
+                        highlightenabled.Value = "true";
+                        highlightsimple.Value = high.simple.ToString();
+                        highlighttext.Value = high.text;
+                        curr.Attributes.Append(highlightsimple);
+                        curr.Attributes.Append(highlighttext);
+                        curr.Attributes.Append(highlightenabled);
+                        xmlnode.AppendChild(curr);
+                    }
                 }
-            }
-            config.AppendChild(xmlnode);
+                config.AppendChild(xmlnode);
 
-            if (Backup(ConfigFile))
-            {
-                config.Save(ConfigFile);
+                lock (Configuration.ShortcutKeylist)
+                {
+                    foreach (Shortcut RR in Configuration.ShortcutKeylist)
+                    {
+                        curr = config.CreateElement("shortcut");
+                        XmlAttribute name = config.CreateAttribute("name");
+                        XmlAttribute ctrl = config.CreateAttribute("ctrl");
+                        XmlAttribute alt = config.CreateAttribute("alt");
+                        XmlAttribute shift = config.CreateAttribute("shift");
+                        curr.InnerText = RR.data;
+                        name.Value = RR.keys.ToString();
+                        shift.Value = RR.shift.ToString();
+                        ctrl.Value = RR.control.ToString();
+                        alt.Value = RR.alt.ToString();
+                        curr.Attributes.Append(name);
+                        curr.Attributes.Append(ctrl);
+                        curr.Attributes.Append(alt);
+                        curr.Attributes.Append(shift);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                if (Backup(ConfigFile))
+                {
+                    config.Save(ConfigFile);
+                }
+                File.Delete(ConfigFile + "~");
             }
-            File.Delete(ConfigFile + "~");
+            catch (Exception t)
+            {
+                Core.handleException(t);
+            }
             return false;
         }
 
@@ -651,7 +729,7 @@ namespace Client
         public static System.Windows.Forms.Keys parseKey(string Key)
         {
             switch (Key.ToLower())
-            { 
+            {
                 case "a":
                     return System.Windows.Forms.Keys.A;
                 case "b":
@@ -746,6 +824,7 @@ namespace Client
         {
             Configuration.SL.Clear();
             Configuration.SL.Add(new Skin());
+            DebugLog("Loading skins");
             if (Directory.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath))
             {
                 string[] skin = Directory.GetFiles(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath);
@@ -940,6 +1019,9 @@ namespace Client
                                         }
                                         Configuration.Separators = temp;
                                         break;
+                                    case "debugger":
+                                        Configuration.Debugging = bool.Parse(curr.InnerText);
+                                        break;
                                 }
                             }
                         }
@@ -976,7 +1058,7 @@ namespace Client
                     System.Reflection.Assembly library = System.Reflection.Assembly.LoadFrom(path);
                     if (library == null)
                     {
-                        Core.Debuglog("Unable to load " + path + " because the file can't be read");
+                        Core.DebugLog("Unable to load " + path + " because the file can't be read");
                         return false;
                     }
                     Type[] types = library.GetTypes();
@@ -992,7 +1074,7 @@ namespace Client
                     }
                     if (pluginInfo == null)
                     {
-                        Core.Debuglog("Unable to load " + path + " because the library contains no module");
+                        Core.DebugLog("Unable to load " + path + " because the library contains no module");
                         return false;
                     }
                     Extension _plugin = (Extension)Activator.CreateInstance(pluginInfo);
@@ -1104,11 +1186,15 @@ namespace Client
             {
                 return -2;
             }
-            Console.WriteLine(_exception.InnerException);
+            DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             blocked = true;
             recovery_exception = _exception;
             _RecoveryThread = new Thread(Recover);
             _RecoveryThread.Start();
+            if (Thread.CurrentThread != _KernelThread)
+            {
+                DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
+            }
             while (blocked)
             {
                 Thread.Sleep(100);

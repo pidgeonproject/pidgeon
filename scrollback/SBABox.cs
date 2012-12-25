@@ -108,10 +108,12 @@ namespace Client
                 }
                 text.Add(line);
             }
+
             public void insertData(string line)
             {
                 text.Add(new ContentText(line, owner, owner.ForeColor));
             }
+
             public override string ToString()
             {
                 string part = "";
@@ -132,6 +134,7 @@ namespace Client
                 text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
                 owner = SBAB;
             }
+
             public Line()
             {
                 text = new List<ContentText>();
@@ -205,6 +208,18 @@ namespace Client
             return false;
         }
 
+        public string maketext(int length)
+        {
+            int curr = 0;
+            string text = "";
+            while (curr < length)
+            {
+                curr++;
+                text += "F";
+            }
+            return text;
+        }
+
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
             if (isDisposing)
@@ -271,14 +286,32 @@ namespace Client
                                 string trimmed = "";
                                 foreach (string xx in words)
                                 {
-                                    if (_t.MeasureString(trimmed + xx, font, new Point(0, 0), format).Width + X >( this.Width - 20 ) - vScrollBar1.Width)
+                                    string value = xx;
+                                    if (_t.MeasureString(value, font, new Point(0, 0), format).Width > (this.Width - 40) - vScrollBar1.Width)
                                     {
-                                        if (trimmed != "" || _t.MeasureString(xx, font, new Point(0, 0), format).Width < pt.Width)
+                                        int size = xx.Length - 1;
+                                        while (_t.MeasureString(maketext(size), font, new Point(0, 0), format).Width > (this.Width - 40) - vScrollBar1.Width)
+                                        {
+                                            if (size == 0)
+                                            {
+                                                Core.DebugLog("Invalid size on SBABox, error #1");
+                                                return;
+                                            }
+                                            size--;
+                                        }
+                                        string part1 = xx.Substring(0, size);
+                                        string part2 = value.Substring(size);
+                                        trimmed += part1;
+                                        value = part2;
+                                    }
+                                    if (_t.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > (this.Width - 40) - vScrollBar1.Width)
+                                    {
+                                        if (trimmed != "" || _t.MeasureString(value, font, new Point(0, 0), format).Width < pt.Width)
                                         {
                                             break;
                                         }
                                     }
-                                    trimmed += xx + " ";
+                                    trimmed += value + " ";
                                 }
                                 if (!ls && trimmed.EndsWith(" ") && trimmed.Length > 0)
                                 {

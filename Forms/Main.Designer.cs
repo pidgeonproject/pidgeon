@@ -71,6 +71,7 @@ namespace Client
             this.searchToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripSeparator();
             this.switchToAdvancedLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configurationFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rootToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -79,7 +80,7 @@ namespace Client
             this.pidgeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
             this.updater = new System.Windows.Forms.Timer(this.components);
-            this.configurationFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.skinEdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
@@ -204,6 +205,7 @@ namespace Client
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem3,
+            this.skinEdToolStripMenuItem,
             this.taskbarBoxToolStripMenuItem,
             this.toolStripMenuItem4,
             this.attachToMicroChatToolStripMenuItem,
@@ -289,6 +291,13 @@ namespace Client
             this.switchToAdvancedLayoutToolStripMenuItem.Text = "Switch to advanced layout";
             this.switchToAdvancedLayoutToolStripMenuItem.Click += new System.EventHandler(this.switchToAdvancedLayoutToolStripMenuItem_Click);
             // 
+            // configurationFileToolStripMenuItem
+            // 
+            this.configurationFileToolStripMenuItem.Name = "configurationFileToolStripMenuItem";
+            this.configurationFileToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
+            this.configurationFileToolStripMenuItem.Text = "Configuration file";
+            this.configurationFileToolStripMenuItem.Click += new System.EventHandler(this.configurationFileToolStripMenuItem_Click);
+            // 
             // showToolStripMenuItem
             // 
             this.showToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -300,7 +309,7 @@ namespace Client
             // rootToolStripMenuItem
             // 
             this.rootToolStripMenuItem.Name = "rootToolStripMenuItem";
-            this.rootToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.rootToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
             this.rootToolStripMenuItem.Text = "Root";
             this.rootToolStripMenuItem.Click += new System.EventHandler(this.rootToolStripMenuItem_Click);
             // 
@@ -353,12 +362,12 @@ namespace Client
             this.updater.Interval = 200;
             this.updater.Tick += new System.EventHandler(this.updater_Tick);
             // 
-            // configurationFileToolStripMenuItem
+            // skinEdToolStripMenuItem
             // 
-            this.configurationFileToolStripMenuItem.Name = "configurationFileToolStripMenuItem";
-            this.configurationFileToolStripMenuItem.Size = new System.Drawing.Size(213, 22);
-            this.configurationFileToolStripMenuItem.Text = "Configuration file";
-            this.configurationFileToolStripMenuItem.Click += new System.EventHandler(this.configurationFileToolStripMenuItem_Click);
+            this.skinEdToolStripMenuItem.Name = "skinEdToolStripMenuItem";
+            this.skinEdToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.skinEdToolStripMenuItem.Text = "Skin ed";
+            this.skinEdToolStripMenuItem.Click += new System.EventHandler(this.skinEdToolStripMenuItem_Click);
             // 
             // Main
             // 
@@ -419,5 +428,6 @@ namespace Client
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem switchToAdvancedLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationFileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem skinEdToolStripMenuItem;
     }
 }

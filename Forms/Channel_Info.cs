@@ -89,36 +89,9 @@ namespace Client
                     {
                         string de = "  unknown mode. Refer to ircd manual (/raw help)";
                         cm.Add(item);
-                        switch (item.ToString())
+                        if (channel._Network.Descriptions.ContainsKey(item))
                         {
-                            case "n":
-                                de = "  no /knock is allowed on channel";
-                                break;
-                            case "r":
-                                de = "  registered channel";
-                                break;
-                            case "m":
-                                de = "  talking is restricted";
-                                break;
-                            case "i":
-                                de = "  users need to be invited to join";
-                                break;
-                            case "s":
-                                de = "  channel is secret (doesn't appear on list)";
-                                break;
-                            case "p":
-                                de = "  channel is private";
-                                break;
-                            case "A":
-                                de = "  admins only";
-                                break;
-                            case "O":
-                                de = "  opers chan";
-                                break;
-                            case "t":
-                                de = "  topic changes can be done only by operators";
-                                break;
-
+                            de = "    " + channel._Network.Descriptions[item];
                         }
                         checkedList.Items.Add(item.ToString() + de, channel._mode._Mode.Contains(item.ToString()));
                         textBox1.Text = channel.Topic;

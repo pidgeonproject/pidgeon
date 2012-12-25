@@ -226,7 +226,7 @@ namespace Client
         /// <returns></returns>
         public static string decrypt_text(string text)
         {
-            return text.Replace("%#", "%");
+            return text.Replace("%##", "%");
         }
 
 
@@ -237,7 +237,7 @@ namespace Client
         /// <returns></returns>
         public static string encode_text(string text)
         {
-            return text.Replace("%", "%#");
+            return text.Replace("%", "%##");
         }
 
         /// <summary>
