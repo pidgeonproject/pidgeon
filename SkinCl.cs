@@ -37,6 +37,12 @@ namespace Client
         public System.Drawing.Color selfcolor;
         public System.Drawing.Color changenickcolor;
         public System.Drawing.Color fontcolor;
+        public System.Drawing.Color colorh;
+        public System.Drawing.Color colordefault;
+        public System.Drawing.Color colorv;
+        public System.Drawing.Color colorq;
+        public System.Drawing.Color colora;
+        public System.Drawing.Color coloro;
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
         public System.Drawing.Color colortalk;
@@ -141,6 +147,12 @@ namespace Client
             link = System.Drawing.Color.LightBlue;
             colortalk = System.Drawing.Color.Yellow;
             kickcolor = System.Drawing.Color.White;
+            colorq = System.Drawing.Color.AliceBlue;
+            colora = System.Drawing.Color.Azure;
+            coloro = System.Drawing.Color.Yellow;
+            colorh = System.Drawing.Color.Cyan;
+            colorv = System.Drawing.Color.LightGreen;
+            colordefault = System.Drawing.Color.White;
             fontsize = 11;
             localfont = "Arial";
             backgroundcolor = System.Drawing.Color.Black;

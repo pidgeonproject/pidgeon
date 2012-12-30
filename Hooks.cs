@@ -128,6 +128,11 @@ namespace Client
             
         }
 
+        public static void TextTab(ref bool restore, ref string Text, ref int CarretPosition)
+        { 
+            
+        }
+
         public static void BeforeOptions(ref Preferences preferences)
         { 
             

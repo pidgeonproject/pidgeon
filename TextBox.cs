@@ -127,6 +127,10 @@ namespace Client
                     return;
                 case Keys.Tab:
                     int caret = richTextBox1.SelectionStart;
+                    string data = richTextBox1.Text;
+                    Hooks.TextTab(ref restore, ref data, ref caret);
+                    richTextBox1.Text = data;
+                    richTextBox1.SelectionStart = caret;
                     restore = true;
                     richTextBox1.Text = prevtext;
                     richTextBox1.SelectionStart = caret;
