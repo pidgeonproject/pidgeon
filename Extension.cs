@@ -33,7 +33,7 @@ namespace Client
 
         public static void Init()
         {
-
+            return;
         }
 
         /// <summary>
@@ -55,8 +55,13 @@ namespace Client
         }
 
         public virtual void Hook_Network(Network network)
-        { 
-            
+        {
+            return;
+        }
+
+        public virtual void Hook_InputOnTab(ref string prev, ref string text, ref int caret, ref bool restore)
+        {
+            return;
         }
 
         /// <summary>
@@ -83,8 +88,8 @@ namespace Client
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
         public virtual void Initialise()
-        { 
-            
+        {
+            return;
         }
 
         /// <summary>

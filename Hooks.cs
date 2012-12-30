@@ -128,9 +128,12 @@ namespace Client
             
         }
 
-        public static void TextTab(ref bool restore, ref string Text, ref int CarretPosition)
-        { 
-            
+        public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
+        {
+            foreach (Extension extension in Core.Extensions)
+            {
+                extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+            }
         }
 
         public static void BeforeOptions(ref Preferences preferences)
