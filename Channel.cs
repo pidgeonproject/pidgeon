@@ -366,30 +366,35 @@ namespace Client
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
                             i++;
                         }
                         foreach (User user in admins)
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                             i++;
                         }
                         foreach (User user in oper)
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
                             i++;
                         }
                         foreach (User user in halfop)
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
                             i++;
                         }
                         foreach (User user in vs)
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
                             i++;
                         }
 
@@ -397,6 +402,7 @@ namespace Client
                         {
                             listView.Items.Add(uchr(user) + user.Nick);
                             listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
                             i++;
                         }
                         if (Chat.listViewd.Visible == true)
