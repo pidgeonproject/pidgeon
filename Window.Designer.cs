@@ -147,6 +147,7 @@ namespace Client
             this.listViewd.Location = new System.Drawing.Point(0, 0);
             this.listViewd.Name = "listViewd";
             this.listViewd.ShowItemToolTips = true;
+            this.listViewd.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.listViewd_ColumnsChanged);
             this.listViewd.Size = new System.Drawing.Size(496, 166);
             this.listViewd.TabIndex = 2;
             this.listViewd.UseCompatibleStateImageBehavior = false;
@@ -380,6 +381,7 @@ namespace Client
             this.listView.Location = new System.Drawing.Point(0, 0);
             this.listView.Name = "listView";
             this.listView.ShowItemToolTips = true;
+            this.listView.ColumnWidthChanged += new System.Windows.Forms.ColumnWidthChangedEventHandler(this.listView_ColumnsChanged);
             this.listView.Size = new System.Drawing.Size(496, 166);
             this.listView.TabIndex = 1;
             this.listView.UseCompatibleStateImageBehavior = false;

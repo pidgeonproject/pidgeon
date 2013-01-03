@@ -54,7 +54,15 @@ namespace Client
         {
             foreach (Extension extension in Core.Extensions)
             {
-                extension.Hook_BeforeNote(ref caption, ref text);
+                try
+                {
+                    extension.Hook_BeforeNote(ref caption, ref text);
+                }
+                catch (Exception mf)
+                {
+                    Core.DebugLog("Error in hook BeforeNote(string, string) module " + extension.Name);
+                    Core.handleException(mf);
+                }
             }
             return true;
         }
@@ -87,7 +95,15 @@ namespace Client
         {
             foreach (Extension extension in Core.Extensions)
             {
-                extension.Hook_Network(network);
+                try
+                {
+                    extension.Hook_Network(network);
+                }
+                catch (Exception mf)
+                {
+                    Core.DebugLog("Error in hook CreatingNetwork(network) module " + extension.Name);
+                    Core.handleException(mf);
+                }
             }
             return;
         }
@@ -132,7 +148,15 @@ namespace Client
         {
             foreach (Extension extension in Core.Extensions)
             {
-                extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                try
+                {
+                    extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                }
+                catch (Exception mf)
+                {
+                    Core.DebugLog("Error in hook TextTab(bool, string, string, int) module " + extension.Name);
+                    Core.handleException(mf);
+                }
             }
         }
 

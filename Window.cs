@@ -499,6 +499,16 @@ namespace Client
             SelectedUser = listViewd.SelectedItems;
         }
 
+        private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+            listViewd.Columns[0].Width = listView.Columns[0].Width;
+        }
+
+        private void listViewd_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
+        {
+            listView.Columns[0].Width = listViewd.Columns[0].Width;
+        }
+
         private void listWork(object sender, EventArgs e)
         {
             locked = true;

@@ -34,7 +34,7 @@ namespace Client
         public class Mode
         {
             public List<string> _Mode = new List<string>();
-            public Network network;
+            public Network network = null;
             public int ModeType = 0; //1 - channel 2 - user
             public override string ToString()
             {

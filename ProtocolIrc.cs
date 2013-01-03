@@ -165,8 +165,8 @@ namespace Client
 
         public class ProcessorIRC
         {
-            public Network _server;
-            public Protocol protocol;
+            public Network _server = null;
+            public Protocol protocol = null;
             public string text;
             public string sn;
             public DateTime pong;
