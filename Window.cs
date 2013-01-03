@@ -42,6 +42,7 @@ namespace Client
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;
+        public bool Resizing = false;
 
         public Window()
         {
@@ -501,12 +502,28 @@ namespace Client
 
         private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            listViewd.Columns[0].Width = listView.Columns[0].Width;
+            if (!Resizing)
+            {
+                Resizing = true;
+                listViewd.Columns[0].Width = listView.Columns[0].Width;
+            }
+            else
+            {
+                Resizing = false;
+            }
         }
 
         private void listViewd_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            listView.Columns[0].Width = listViewd.Columns[0].Width;
+            if (!Resizing)
+            {
+                Resizing = true;
+                listView.Columns[0].Width = listViewd.Columns[0].Width;
+            }
+            else
+            {
+                Resizing = false;
+            }
         }
 
         private void listWork(object sender, EventArgs e)
