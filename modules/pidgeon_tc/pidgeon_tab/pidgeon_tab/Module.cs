@@ -11,7 +11,7 @@ namespace Client
         {
             Name = "Input tab completion for the pidgeon";
             Description = "This plugin enable you to use tab completion like in terminal";
-            Version = "1.0.6";
+            Version = "1.0.20";
             base.Initialise();
         }
 
@@ -73,13 +73,13 @@ namespace Client
                 }
             }
 
-            if (text.StartsWith(Configuration.CommandPrefix))
+            if (text2.StartsWith(Configuration.CommandPrefix))
             {
                 List<string> Results = new List<string>();
                 string Resd = "";
                 foreach (var item in commands)
                 {
-                    if (item.StartsWith(text.Substring(1).ToLower()))
+                    if (item.StartsWith(text2.Substring(1).ToLower()))
                     {
                         Resd += item + ", ";
                         Results.Add(item);
@@ -115,7 +115,7 @@ namespace Client
                     }
                     string result = text;
                     result = result.Substring(0, x + 1);
-                    result = result + part + text.Substring(x + text.Length);
+                    result = result + part + text.Substring(x + text2.Length);
                     text = result;
                     caret = result.Length;
                     prev = result;
@@ -125,7 +125,7 @@ namespace Client
                 {
                     string result = text;
                     result = result.Substring(0, x + 1);
-                    result = result + Results[0] + " " + text.Substring(x + text.Length);
+                    result = result + Results[0] + " " + text.Substring(x + text2.Length);
                     text = result;
                     caret = result.Length;
                     prev = result;
@@ -139,12 +139,12 @@ namespace Client
             ////
 
 
-            if (text.StartsWith(Core.network.channel_prefix))
+            if (text2.StartsWith(Core.network.channel_prefix))
             {
                 if (Core.network.Connected)
                 {
 
-                    if (text.StartsWith(Core._Main.Chat._Network.channel_prefix))
+                    if (text2.StartsWith(Core._Main.Chat._Network.channel_prefix))
                     {
                         List<string> Channels = new List<string>();
                         foreach (Channel n in Core._Main.Chat._Network.Channels)
@@ -155,7 +155,7 @@ namespace Client
                         string Resd = "";
                         foreach (var item in Channels)
                         {
-                            if (item.StartsWith(text))
+                            if (item.StartsWith(text2))
                             {
                                 Resd += item + ", ";
                                 Results.Add(item);
@@ -191,7 +191,7 @@ namespace Client
                             }
                             string result = text;
                             result = result.Substring(0, x);
-                            result = result + part + text.Substring(x + text.Length);
+                            result = result + part + text.Substring(x + text2.Length);
                             text = result;
                             caret = result.Length;
                             prev = result;
@@ -201,7 +201,7 @@ namespace Client
                         {
                             string result = text;
                             result = result.Substring(0, x);
-                            result = result + Results[0] + " " + text.Substring(x + text.Length);
+                            result = result + Results[0] + " " + text.Substring(x + text2.Length);
                             text = result;
                             caret = result.Length;
                             prev = result;
@@ -222,7 +222,7 @@ namespace Client
             {
                 foreach (var item in Core.network.RenderedChannel.UserList)
                 {
-                    if ((item.Nick.ToUpper()).StartsWith(text.ToUpper()))
+                    if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                     {
                         Resd2 += item.Nick + ", ";
                         Results2.Add(item.Nick);
@@ -233,7 +233,7 @@ namespace Client
             {
                 string result = text;
                 result = result.Substring(0, x);
-                result = result + Results2[0] + text.Substring(x + text.Length);
+                result = result + Results2[0] + text.Substring(x + text2.Length);
                 text = result;
 
                 caret = result.Length;
@@ -275,7 +275,7 @@ namespace Client
                 }
                 string result = text;
                 result = result.Substring(0, x);
-                result = result + part + text.Substring(x + text.Length);
+                result = result + part + text.Substring(x + text2.Length);
                 text = result;
                 caret = result.Length;
                 prev = result;
