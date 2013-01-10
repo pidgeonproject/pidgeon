@@ -61,6 +61,8 @@ namespace Client
         /// </summary>
         public static string format_nick = "<$1> ";
 
+        public static bool FriendlyWho = true;
+
         /// <summary>
         /// If true a client will ask before executing generated kick bans
         /// </summary>

@@ -30,7 +30,6 @@ namespace Client
         public int type = 0;
         public string pswd;
 
-
         public class Mode
         {
             public List<string> _Mode = new List<string>();

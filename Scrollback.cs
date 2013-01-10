@@ -45,6 +45,12 @@ namespace Client
         public bool px2 = false;
         private string Link = "";
 
+        public int Lines
+        {
+            get {
+                return Line.Count;
+            }
+        }
 
         public bool simple = false;
 
@@ -70,7 +76,6 @@ namespace Client
             public bool notice = false;
             public MessageStyle style;
         }
-
 
         protected override void Dispose(bool disposing)
         {

@@ -69,8 +69,8 @@ namespace Client
             this.toolStripMenuItem2,
             this.openLinkInBrowserToolStripMenuItem,
             this.mode1b2ToolStripMenuItem,
-            this.mode1q2ToolStripMenuItem,
             this.mode1e2ToolStripMenuItem,
+            this.mode1q2ToolStripMenuItem,
             this.joinToolStripMenuItem,
             this.mode1I2ToolStripMenuItem,
             this.toolStripMenuItem1,
@@ -83,7 +83,7 @@ namespace Client
             this.toggleSimpleLayoutToolStripMenuItem,
             this.toggleAdvancedLayoutToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(202, 412);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(202, 390);
             // 
             // whoisToolStripMenuItem
             // 

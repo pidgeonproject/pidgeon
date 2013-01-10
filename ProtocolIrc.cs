@@ -871,6 +871,36 @@ namespace Client
                 return false;
             }
 
+            private bool IdleTime(string source, string parameters, string value)
+            {
+                if (parameters.Contains(" "))
+                {
+
+                    Core.DebugLog(parameters + "xx" + value);
+                    string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                    if (name.Contains(" ") != true)
+                    {
+                        return false;
+                    }
+                    string idle = name.Substring(name.IndexOf(" ") + 1);
+                    if (idle.Contains(" ") != true)
+                    {
+                        return false;
+                    }
+                    string uptime = idle.Substring(idle.IndexOf(" ") + 1);
+                    name = name.Substring(0, name.IndexOf(" "));
+                    idle = idle.Substring(0, idle.IndexOf(" "));
+                    DateTime logintime = Network.convertUNIX(uptime);
+                    if (logintime == null)
+                    {
+                        return false;
+                    }
+                    protocol.windows[system].scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                    return true;
+                }
+                return false;
+            }
+
             public bool Result()
             {
                 try
@@ -935,7 +965,16 @@ namespace Client
                                 case "005":
                                     if (Info(command, parameters, _value))
                                     {
-                                        return true;
+                                        //return true;
+                                    }
+                                    break;
+                                case "317":
+                                    if (Configuration.FriendlyWho)
+                                    {
+                                        if (IdleTime(command, parameters, _value))
+                                        {
+                                            return true;
+                                        }
                                     }
                                     break;
                                 case "PONG":
