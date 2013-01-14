@@ -88,16 +88,23 @@ namespace pidgeon_sv
                 {
                     XmlDocument configuration = new XmlDocument();
                     configuration.Load(Config.userfile);
-                    foreach (XmlNode curr in configuration.ChildNodes)
+                    foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                     {
-                        Account line = new Account(curr.Attributes[0].Value, curr.Attributes[1].Value);
-                        if (curr.Attributes.Count > 2)
+                        if (curr.Attributes.Count > 1)
                         {
-                            line.nickname = curr.Attributes[2].Value;
+                            Account line = new Account(curr.Attributes[0].Value, curr.Attributes[1].Value);
+                            if (curr.Attributes.Count > 2)
+                            {
+                                line.nickname = curr.Attributes[2].Value;
+                            }
+                            _accounts.Add(line);
                         }
-                        _accounts.Add(line);
-
+                        else
+                        {
+                            SL("Skipping record:" + curr.OuterXml);
+                        }
                     }
+                    SL("Accounts: " + _accounts.Count.ToString());
                 }
             }
             catch (Exception fail)
