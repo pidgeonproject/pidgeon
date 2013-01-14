@@ -31,6 +31,13 @@ namespace pidgeon_sv
             Normal = 2,
             Low = 1
         }
+
+        public class MessageOrigin
+        {
+            public string text = null;
+            public DateTime time;
+        }
+
         private System.Net.Sockets.NetworkStream _network;
         private System.IO.StreamReader _reader;
         
@@ -43,6 +50,7 @@ namespace pidgeon_sv
         
         
         public List<ProtocolMain.Datagram> info = new List<ProtocolMain.Datagram>();
+        public List<MessageOrigin> MessageBuffer = new List<MessageOrigin>();
 
 
         public System.Threading.Thread main;
@@ -956,6 +964,15 @@ namespace pidgeon_sv
                         user.Deliver(text);
                         i = i + 1;
                         
+                    }
+                    foreach (MessageOrigin d in MessageBuffer)
+                    {
+                        ProtocolMain.Datagram text = new ProtocolMain.Datagram("SELFDG");
+                        text._InnerText = d.text;
+                        text.Parameters.Add("network", Server);
+                        text.Parameters.Add("buffer", i.ToString());
+                        text.Parameters.Add("time", d.time.ToBinary().ToString());
+                        user.Deliver(text);
                     }
                 }
             }

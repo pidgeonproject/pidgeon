@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 
 namespace pidgeon_sv
@@ -50,11 +51,14 @@ namespace pidgeon_sv
         public string user = null;
         public Account account = null;
         public Status status = Status.WaitingPW;
-        public System.Threading.Thread queue = null;
+        public Thread queue = null;
+        public System.Net.Sockets.TcpClient client = null;
         public System.IO.StreamReader _r = null;
         public System.IO.StreamWriter _w = null;
         public OutgoingQueue _outgoing = new OutgoingQueue();
         public IncomingQueue _incoming = new IncomingQueue();
+        public Thread main = null;
+        public string IP = "";
 
         public bool Active = true;
 

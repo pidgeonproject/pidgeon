@@ -127,8 +127,52 @@ namespace pidgeon_sv
                     if (ActiveUsers.Contains(connection))
                     {
                         ActiveUsers.Remove(connection);
+                        connection.client.Client.Close();
+                        connection.client.Close();
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public static void ConnectionKiller(object data)
+        {
+            try
+            {
+                Connection conn = (Connection)data;
+                if (conn.main != null)
+                {
+                    Thread.Sleep(60000);
+                    if (conn.status == Connection.Status.WaitingPW)
+                    {
+                        SL("WD - killing connection " + conn.IP);
+                        conn.main.Abort();
+                        lock (ActiveUsers)
+                        {
+                            if (ActiveUsers.Contains(conn))
+                            {
+                                SL("Connection was not properly terminated! " + conn.IP);
+                            }
+                        }
+                        ConnectionClean(conn);
+                        return;
+                    }
+                    else
+                    {
+                        SL("DEBUG: " + conn.status.ToString() + conn.IP);
+                    }
+                }
+                else
+                {
+                    SL("DEBUG: NULL " + conn.IP);
+                }
+            }
+            catch (ThreadAbortException)
+            {
+                return;
             }
             catch (Exception fail)
             {
@@ -140,9 +184,15 @@ namespace pidgeon_sv
         {
             System.Net.Sockets.TcpClient client = (System.Net.Sockets.TcpClient)data;
             Connection connection = new Connection();
+            connection.main = Thread.CurrentThread;
             SL("Resolving " + client.Client.RemoteEndPoint.ToString());
             try
             {
+                connection.client = client;
+                connection.IP = client.Client.RemoteEndPoint.ToString();
+                Thread checker = new Thread(ConnectionKiller);
+                checker.Name = "watcher";
+                checker.Start(connection);
                 lock (ActiveUsers)
                 {
                     ActiveUsers.Add(connection);

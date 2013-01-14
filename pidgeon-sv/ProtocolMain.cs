@@ -169,6 +169,13 @@ namespace pidgeon_sv
                                 
                             }
                             network._protocol.Transfer(node.InnerText, Priority);
+                            if (node.InnerText.StartsWith("PRIVMSG"))
+                            {
+                                ProtocolIrc.MessageOrigin xx = new ProtocolIrc.MessageOrigin();
+                                xx.text = node.InnerText;
+                                xx.time = DateTime.Now;
+                            }
+
                         }
                     }
                     break;
