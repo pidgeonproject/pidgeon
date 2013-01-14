@@ -1,4 +1,21 @@
-﻿using System;
+﻿/***************************************************************************
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -28,14 +45,14 @@ namespace pidgeon_sv
 
     public class Connection
     {
-        public string name;
-        public string host;
-        public string user;
+        public string name = null;
+        public string host = null;
+        public string user = null;
         public Account account = null;
         public Status status = Status.WaitingPW;
-        public System.Threading.Thread queue;
-        public System.IO.StreamReader _r;
-        public System.IO.StreamWriter _w;
+        public System.Threading.Thread queue = null;
+        public System.IO.StreamReader _r = null;
+        public System.IO.StreamWriter _w = null;
         public OutgoingQueue _outgoing = new OutgoingQueue();
         public IncomingQueue _incoming = new IncomingQueue();
 
@@ -49,6 +66,9 @@ namespace pidgeon_sv
 
         public bool Mode = false;
 
-
+        public Connection()
+        { 
+            
+        }
     }
 }

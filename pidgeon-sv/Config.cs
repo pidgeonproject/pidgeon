@@ -21,11 +21,12 @@ using System.Text;
 
 namespace pidgeon_sv
 {
-    class Program
+    class Config
     {
-        static void Main(string[] args)
-        {
-            Core.Listen();
-        }
+        public static int server_port = 22;
+        public static string userfile = "db/users";
+
+        public static int maxbs = 200000;
+        public static int minbs = 20000;
     }
 }

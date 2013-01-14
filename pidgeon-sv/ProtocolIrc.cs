@@ -138,7 +138,7 @@ namespace pidgeon_sv
                                     protocol.owner.Deliver(message.message);
                                 }
 
-                                if (oldmessages.Count > Core.maxbs)
+                                if (oldmessages.Count > Config.maxbs)
                                 {
                                     FlushOld();
                                 }
@@ -168,7 +168,7 @@ namespace pidgeon_sv
                 {
                     int current = 0;
 
-                    while( current < (Core.maxbs - Core.minbs))
+                    while( current < (Config.maxbs - Config.minbs))
                     {
                         string item = "";
 

@@ -29,12 +29,6 @@ namespace pidgeon_sv
     {
         public static List<Connection> ActiveUsers = new List<Connection>();
         public static bool running = true;
-        public static int server_port = 22;
-        public static string userfile = "db/users";
-
-        public static int maxbs = 200000;
-        public static int minbs = 20000;
-
 
         public static List<Account> _accounts = new List<Account>();
         public static List<Thread> threads = new List<Thread>();
@@ -47,6 +41,11 @@ namespace pidgeon_sv
                 curr.Abort();
             }
             SL("Exiting");
+        }
+
+        public static void handleException(Exception reason)
+        {
+            SL("Exception: " + reason.Message + " " + reason.StackTrace + " in: " + reason.Source);
         }
 
         public static void SaveData()
@@ -73,26 +72,37 @@ namespace pidgeon_sv
                     config.AppendChild(xmlnode);
 
                 }
-            config.Save(userfile);
+                config.Save(Config.userfile);
             }
         }
 
+
+        /// <summary>
+        /// Load all user data and info
+        /// </summary>
         public static void LoadUser()
         {
-            if (File.Exists(userfile))
+            try
             {
-                XmlDocument configuration = new XmlDocument();
-                configuration.Load(userfile);
-                foreach (XmlNode curr in configuration.ChildNodes)
+                if (File.Exists(Config.userfile))
                 {
-                    Account line = new Account(curr.Attributes[0].Value, curr.Attributes[1].Value);
-                    if (curr.Attributes.Count > 2)
+                    XmlDocument configuration = new XmlDocument();
+                    configuration.Load(Config.userfile);
+                    foreach (XmlNode curr in configuration.ChildNodes)
                     {
-                        line.nickname = curr.Attributes[2].Value;
+                        Account line = new Account(curr.Attributes[0].Value, curr.Attributes[1].Value);
+                        if (curr.Attributes.Count > 2)
+                        {
+                            line.nickname = curr.Attributes[2].Value;
+                        }
+                        _accounts.Add(line);
+
                     }
-                    _accounts.Add(line);
-                    
                 }
+            }
+            catch (Exception fail)
+            {
+                handleException(fail);
             }
         }
 
@@ -101,16 +111,35 @@ namespace pidgeon_sv
             Console.WriteLine(DateTime.Now.ToString() + ": " + text);
         }
 
+        public static void ConnectionClean(Connection connection)
+        {
+            try
+            {
+                lock (ActiveUsers)
+                {
+                    if (ActiveUsers.Contains(connection))
+                    {
+                        ActiveUsers.Remove(connection);
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         public static void InitialiseClient(object data)
         {
             System.Net.Sockets.TcpClient client = (System.Net.Sockets.TcpClient)data;
             Connection connection = new Connection();
-            lock (ActiveUsers)
-            {
-                ActiveUsers.Add(connection);
-            }
+            SL("Resolving " + client.Client.RemoteEndPoint.ToString());
             try
             {
+                lock (ActiveUsers)
+                {
+                    ActiveUsers.Add(connection);
+                }
                 System.Net.Sockets.NetworkStream ns = client.GetStream();
 
                 connection._w = new StreamWriter(ns);
@@ -124,74 +153,96 @@ namespace pidgeon_sv
                 {
                     while (connection.Active)
                     {
-                        text = connection._r.ReadLine();
-                        if (connection.Mode == false)
+                        try
                         {
-                            System.Threading.Thread.Sleep(2000);
-                            continue;
-                        }
+                            text = connection._r.ReadLine();
+                            if (connection.Mode == false)
+                            {
+                                System.Threading.Thread.Sleep(2000);
+                                continue;
+                            }
 
-                        if (ProtocolMain.Valid(text))
-                        {
-                            protocol.parseCommand(text);
-                            continue;
+                            if (ProtocolMain.Valid(text))
+                            {
+                                protocol.parseCommand(text);
+                                continue;
+                            }
+                            else
+                            {
+                                SL("Debug: invalid text from " + client.Client.RemoteEndPoint.ToString());
+                                System.Threading.Thread.Sleep(800);
+                            }
                         }
-                        else
+                        catch (IOException)
                         {
-                            System.Threading.Thread.Sleep(800);
+                            SL("Connection closed");
+                            protocol.Exit();
+                            
                         }
-
+                        catch (Exception fail)
+                        {
+                            handleException(fail);
+                        }
                     }
                 }
                 catch (System.IO.IOException)
                 {
                     SL("Connection closed");
                     protocol.Exit();
+                    ConnectionClean(connection);
                 }
                 catch (Exception fail)
                 {
                     SL(fail.StackTrace + fail.Message);
                     protocol.Exit();
+                    ConnectionClean(connection);
                 }
             }
             catch (System.IO.IOException)
             {
                 SL("Connection closed");
+                ConnectionClean(connection);
             }
             catch (Exception fail)
             {
                 SL(fail.StackTrace + fail.Message);
-            }
-            lock (ActiveUsers)
-            {
-                ActiveUsers.Remove(connection);
+                ConnectionClean(connection);
             }
         }
 
         public static void Listen()
         {
-            SL("Pidgeon services loading");
-
-            if (!Directory.Exists("db"))
+            try
             {
-                Directory.CreateDirectory("db");
+                SL("Pidgeon services loading");
+
+                if (!Directory.Exists("db"))
+                {
+                    Directory.CreateDirectory("db");
+                }
+
+                LoadUser();
+
+                SL("Waiting for clients");
+
+                System.Net.Sockets.TcpListener server = new System.Net.Sockets.TcpListener(IPAddress.Any, Config.server_port);
+                server.Start();
+
+                while (running)
+                {
+                    System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
+                    Thread _client = new Thread(InitialiseClient);
+                    SL("Incoming connection");
+                    threads.Add(_client);
+                    _client.Start(connection);
+                    System.Threading.Thread.Sleep(200);
+                }
             }
-
-            LoadUser();
-
-            SL("Waiting for clients");
-            
-            System.Net.Sockets.TcpListener server = new System.Net.Sockets.TcpListener(IPAddress.Any, server_port);
-            server.Start();
-
-            while (running)
+            catch (Exception fail)
             {
-                System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
-                Thread _client = new Thread(InitialiseClient);
-                SL("Incoming connection");
-                threads.Add(_client);
-                _client.Start(connection);
-                System.Threading.Thread.Sleep(200);
+                handleException(fail);
+                SL("Terminating");
+                return;
             }
         }
     }
