@@ -27,7 +27,6 @@ namespace pidgeon_sv
 {
     class Core
     {
-        public static List<Connection> ActiveUsers = new List<Connection>();
         public static bool running = true;
 
         public static List<Account> _accounts = new List<Account>();
@@ -43,8 +42,12 @@ namespace pidgeon_sv
             SL("Exiting");
         }
 
-        public static void handleException(Exception reason)
+        public static void handleException(Exception reason, bool ThreadOK = false)
         {
+            if (reason.GetType() == typeof(ThreadAbortException) && ThreadOK)
+            {
+                return;
+            }
             SL("Exception: " + reason.Message + " " + reason.StackTrace + " in: " + reason.Source);
         }
 
@@ -118,154 +121,6 @@ namespace pidgeon_sv
             Console.WriteLine(DateTime.Now.ToString() + ": " + text);
         }
 
-        public static void ConnectionClean(Connection connection)
-        {
-            try
-            {
-                lock (ActiveUsers)
-                {
-                    if (ActiveUsers.Contains(connection))
-                    {
-                        ActiveUsers.Remove(connection);
-                        connection.client.Client.Close();
-                        connection.client.Close();
-                    }
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        public static void ConnectionKiller(object data)
-        {
-            try
-            {
-                Connection conn = (Connection)data;
-                if (conn.main != null)
-                {
-                    Thread.Sleep(60000);
-                    if (conn.status == Connection.Status.WaitingPW)
-                    {
-                        SL("WD - killing connection " + conn.IP);
-                        conn.main.Abort();
-                        lock (ActiveUsers)
-                        {
-                            if (ActiveUsers.Contains(conn))
-                            {
-                                SL("Connection was not properly terminated! " + conn.IP);
-                            }
-                        }
-                        ConnectionClean(conn);
-                        return;
-                    }
-                    else
-                    {
-                        SL("DEBUG: " + conn.status.ToString() + conn.IP);
-                    }
-                }
-                else
-                {
-                    SL("DEBUG: NULL " + conn.IP);
-                }
-            }
-            catch (ThreadAbortException)
-            {
-                return;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        public static void InitialiseClient(object data)
-        {
-            System.Net.Sockets.TcpClient client = (System.Net.Sockets.TcpClient)data;
-            Connection connection = new Connection();
-            connection.main = Thread.CurrentThread;
-            SL("Resolving " + client.Client.RemoteEndPoint.ToString());
-            try
-            {
-                connection.client = client;
-                connection.IP = client.Client.RemoteEndPoint.ToString();
-                Thread checker = new Thread(ConnectionKiller);
-                checker.Name = "watcher";
-                checker.Start(connection);
-                lock (ActiveUsers)
-                {
-                    ActiveUsers.Add(connection);
-                }
-                System.Net.Sockets.NetworkStream ns = client.GetStream();
-
-                connection._w = new StreamWriter(ns);
-                connection._r = new StreamReader(ns, Encoding.UTF8);
-
-                string text = connection._r.ReadLine();
-
-                connection.Mode = ProtocolMain.Valid(text);
-                ProtocolMain protocol = new ProtocolMain(connection);
-                try
-                {
-                    while (connection.Active)
-                    {
-                        try
-                        {
-                            text = connection._r.ReadLine();
-                            if (connection.Mode == false)
-                            {
-                                System.Threading.Thread.Sleep(2000);
-                                continue;
-                            }
-
-                            if (ProtocolMain.Valid(text))
-                            {
-                                protocol.parseCommand(text);
-                                continue;
-                            }
-                            else
-                            {
-                                SL("Debug: invalid text from " + client.Client.RemoteEndPoint.ToString());
-                                System.Threading.Thread.Sleep(800);
-                            }
-                        }
-                        catch (IOException)
-                        {
-                            SL("Connection closed");
-                            protocol.Exit();
-                            
-                        }
-                        catch (Exception fail)
-                        {
-                            handleException(fail);
-                        }
-                    }
-                }
-                catch (System.IO.IOException)
-                {
-                    SL("Connection closed");
-                    protocol.Exit();
-                    ConnectionClean(connection);
-                }
-                catch (Exception fail)
-                {
-                    SL(fail.StackTrace + fail.Message);
-                    protocol.Exit();
-                    ConnectionClean(connection);
-                }
-            }
-            catch (System.IO.IOException)
-            {
-                SL("Connection closed");
-                ConnectionClean(connection);
-            }
-            catch (Exception fail)
-            {
-                SL(fail.StackTrace + fail.Message);
-                ConnectionClean(connection);
-            }
-        }
 
         public static void Listen()
         {
@@ -287,12 +142,18 @@ namespace pidgeon_sv
 
                 while (running)
                 {
-                    System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
-                    Thread _client = new Thread(InitialiseClient);
-                    SL("Incoming connection");
-                    threads.Add(_client);
-                    _client.Start(connection);
-                    System.Threading.Thread.Sleep(200);
+                    try
+                    {
+                        System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
+                        Thread _client = new Thread(Connection.InitialiseClient);
+                        threads.Add(_client);
+                        _client.Start(connection);
+                        System.Threading.Thread.Sleep(200);
+                    }
+                    catch (Exception fail)
+                    {
+                        Core.handleException(fail);
+                    }
                 }
             }
             catch (Exception fail)

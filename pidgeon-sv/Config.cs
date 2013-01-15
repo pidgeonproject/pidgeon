@@ -28,5 +28,7 @@ namespace pidgeon_sv
 
         public static int maxbs = 200000;
         public static int minbs = 20000;
+
+        public static readonly string version = "1.0.2.0";
     }
 }

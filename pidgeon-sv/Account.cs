@@ -41,11 +41,14 @@ namespace pidgeon_sv
 
         public Network retrieveServer(string name)
         {
-            foreach (Network servername in ConnectedNetworks)
+            lock (ConnectedNetworks)
             {
-                if (servername.server == name)
+                foreach (Network servername in ConnectedNetworks)
                 {
-                    return servername;
+                    if (servername.server == name)
+                    {
+                        return servername;
+                    }
                 }
             }
             return null;
@@ -88,12 +91,18 @@ namespace pidgeon_sv
                 networkid.ident = ident;
                 networkid.username = realname;
                 networkid.quit = "http://pidgeonclient.org";
-                ConnectedNetworks.Add(networkid);
+                lock (ConnectedNetworks)
+                {
+                    ConnectedNetworks.Add(networkid);
+                }
                 server.Server = network;
                 server.Port = port;
                 server._server = networkid;
                 server.owner = this;
-                networks.Add(server);
+                lock (networks)
+                {
+                    networks.Add(server);
+                }
                 server.Open();
             }
             catch (Exception fail)

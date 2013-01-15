@@ -23,7 +23,7 @@ namespace pidgeon_sv
 {
     public class ChannelParameterMode
     {
-        public string _Target = "";
+        public string Target = "";
         public string Time;
         public string _User;
     }
@@ -45,7 +45,7 @@ namespace pidgeon_sv
     {
         public SimpleBan(string user, string target, string time)
         {
-            _Target = target;
+            Target = target;
             _User = user;
             Time = time;
         }
@@ -99,7 +99,7 @@ namespace pidgeon_sv
 
         }
 
-        public bool containUser(string user)
+        public bool containsUser(string user)
         {
             lock (UserList)
             {
@@ -120,7 +120,7 @@ namespace pidgeon_sv
             {
                 foreach (var name in Bl)
                 {
-                    if (name._Target == host)
+                    if (name.Target == host)
                     {
                         return true;
                     }

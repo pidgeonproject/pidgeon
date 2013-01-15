@@ -40,6 +40,13 @@ namespace pidgeon_sv
         public string quit;
         public Protocol _protocol;
         public List<WO> windows = new List<WO>();
+        public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+        public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+        public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+        public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+        public List<char> SModes = new List<char> { 'k', 'L' };
+        public List<char> XModes = new List<char> { 'l' };
+        public List<char> PModes = new List<char> { 'b', 'I', 'e' };
 
 
 
@@ -47,11 +54,14 @@ namespace pidgeon_sv
 
         public Channel getChannel(string name)
         {
-            foreach (Channel cu in Channels)
+            lock (Channels)
             {
-                if (cu.Name == name)
+                foreach (Channel cu in Channels)
                 {
-                    return cu;
+                    if (cu.Name == name)
+                    {
+                        return cu;
+                    }
                 }
             }
             return null;
@@ -62,7 +72,10 @@ namespace pidgeon_sv
             WO w = new WO();
             w.name = _name;
             w.writable = _writable;
-            windows.Add(w);
+            lock (windows)
+            {
+                windows.Add(w);
+            }
         }
 
         /// <summary>
@@ -82,7 +95,10 @@ namespace pidgeon_sv
             Channel _channel = new Channel();
             _channel.Name = channel;
             _channel._Network = this;
-            Channels.Add(_channel);
+            lock (Channels)
+            {
+                Channels.Add(_channel);
+            }
             CreateChat(channel, true, true, true);
             return _channel;
         }
