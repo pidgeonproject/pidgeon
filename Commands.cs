@@ -86,44 +86,71 @@ namespace Client
 
         public static void Initialise()
         {
-            commands.Add("server", new Command(Type.System, Generic.server));
-            commands.Add("nick", new Command(Type.System, Generic.nick));
-            commands.Add("connect", new Command(Type.Services, Generic.connect));
-            commands.Add("join", new Command(Type.SystemSv, Generic.join));
-            commands.Add("part", new Command(Type.Network));
-            commands.Add("quit", new Command(Type.System, Generic.quit));
-            commands.Add("squit", new Command(Type.Network));
-            commands.Add("query", new Command(Type.SystemSv, Generic.query));
-            commands.Add("me", new Command(Type.SystemSv, Generic.msg2));
-            commands.Add("msg", new Command(Type.SystemSv, Generic.msg1));
-            commands.Add("mode", new Command(Type.Network));
-            commands.Add("oper", new Command(Type.Network));
-            commands.Add("who", new Command(Type.Network));
-            commands.Add("whois", new Command(Type.Network));
-            commands.Add("whowas", new Command(Type.Network));
-            commands.Add("help", new Command(Type.Network));
-            commands.Add("list", new Command(Type.Network));
-            commands.Add("topic", new Command(Type.Network));
-            commands.Add("kill", new Command(Type.Network));
-            commands.Add("gline", new Command(Type.Network));
-            commands.Add("kline", new Command(Type.Network));
-            commands.Add("zline", new Command(Type.Network));
-            commands.Add("away", new Command(Type.Network));
-            commands.Add("stats", new Command(Type.Network));
-            commands.Add("nickserv", new Command(Type.Network));
-            commands.Add("raw", new Command(Type.System, Generic.raw));
-            commands.Add("chanserv", new Command(Type.Network));
-            commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
-            commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
-            commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
-            commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
-            commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
-            commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
-            commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
-            commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
-            commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
-            commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
-            commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
+            try
+            {
+                commands.Add("server", new Command(Type.System, Generic.server));
+                commands.Add("nick", new Command(Type.System, Generic.nick));
+                commands.Add("connect", new Command(Type.Services, Generic.connect));
+                commands.Add("join", new Command(Type.SystemSv, Generic.join));
+                commands.Add("part", new Command(Type.Network));
+                commands.Add("quit", new Command(Type.System, Generic.quit));
+                commands.Add("query", new Command(Type.SystemSv, Generic.query));
+                commands.Add("me", new Command(Type.SystemSv, Generic.msg2));
+                commands.Add("msg", new Command(Type.SystemSv, Generic.msg1));
+                commands.Add("away", new Command(Type.Network));
+                commands.Add("mode", new Command(Type.Network));
+                commands.Add("help", new Command(Type.Network));
+                commands.Add("info", new Command(Type.Network));
+                commands.Add("invite", new Command(Type.Network));
+                commands.Add("ison", new Command(Type.Network));
+                commands.Add("kline", new Command(Type.Network));
+                commands.Add("knock", new Command(Type.Network));
+                commands.Add("kill", new Command(Type.Network));
+                commands.Add("links", new Command(Type.Network));
+                commands.Add("list", new Command(Type.Network));
+                commands.Add("names", new Command(Type.Network));
+                commands.Add("namesx", new Command(Type.Network));
+                commands.Add("ping", new Command(Type.Network));
+                commands.Add("rehash", new Command(Type.Network));
+                commands.Add("restart", new Command(Type.Network));
+                commands.Add("service", new Command(Type.Network));
+                commands.Add("servlist", new Command(Type.Network));
+                commands.Add("squit", new Command(Type.Network));
+                commands.Add("setname", new Command(Type.Network));
+                commands.Add("silence", new Command(Type.Network));
+                commands.Add("stats", new Command(Type.Network));
+                commands.Add("summon", new Command(Type.Network));
+                commands.Add("topic", new Command(Type.Network));
+                commands.Add("trace", new Command(Type.Network));
+                commands.Add("user", new Command(Type.Network));
+                commands.Add("userip", new Command(Type.Network));
+                commands.Add("version", new Command(Type.Network));
+                commands.Add("wallops", new Command(Type.Network));
+                commands.Add("oper", new Command(Type.Network));
+                commands.Add("who", new Command(Type.Network));
+                commands.Add("whois", new Command(Type.Network));
+                commands.Add("whowas", new Command(Type.Network));
+                commands.Add("gline", new Command(Type.Network));
+                commands.Add("zline", new Command(Type.Network));
+                commands.Add("nickserv", new Command(Type.Network));
+                commands.Add("raw", new Command(Type.System, Generic.raw));
+                commands.Add("chanserv", new Command(Type.Network));
+                commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
+                commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
+                commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
+                commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
+                commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
+                commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
+                commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
+                commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
+                commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
+                commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
+                commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public static bool Proccess(string command)

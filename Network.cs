@@ -168,6 +168,12 @@ namespace Client
             return;
         }
 
+        /// <summary>
+        /// Join
+        /// </summary>
+        /// <param name="channel">Channel name which is supposed to be joined</param>
+        /// <param name="nf">Whether newly created window should be displayed over existing windows</param>
+        /// <returns></returns>
         public Channel Join(string channel, bool nf = false)
         {
             Channel _channel = new Channel(this);
@@ -179,6 +185,9 @@ namespace Client
             return _channel;
         }
 
+        /// <summary>
+        /// Window ID of this network system window
+        /// </summary>
         public string window
         {
             get 
@@ -194,6 +203,11 @@ namespace Client
               }
         }
 
+        /// <summary>
+        /// Unregister info for user and channel modes
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public bool UnregisterInfo(char key)
         {
             lock (Descriptions)
@@ -207,6 +221,12 @@ namespace Client
                 return false;
         }
 
+        /// <summary>
+        /// Register info for channel info
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public bool RegisterInfo(char key, string text)
         { 
             lock (Descriptions)
@@ -220,6 +240,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Create a new network, requires name and protocol type
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="protocol"></param>
         public Network(string Server, Protocol protocol)
         {
             randomuqid = Core.retrieveRandom();

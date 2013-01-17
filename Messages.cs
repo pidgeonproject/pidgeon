@@ -23,6 +23,9 @@ namespace Client
 {
     public class messages
     {
+        /// <summary>
+        /// Default language
+        /// </summary>
         public static string Language = "en";
         public class container
         {
@@ -74,6 +77,13 @@ namespace Client
             return Text;
         }
 
+        /// <summary>
+        /// Return a string for the current language, in case it doesn't exist it fallback to default language, otherwise return key name
+        /// </summary>
+        /// <param name="item">Key</param>
+        /// <param name="language">Language, if no language is specified, the currently selected default language is used</param>
+        /// <param name="va">Parameters</param>
+        /// <returns></returns>
         public static string get(string item, string language = null, List<string> va = null)
         {
             try

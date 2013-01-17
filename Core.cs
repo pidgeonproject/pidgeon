@@ -382,6 +382,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Insert a text to log
+        /// </summary>
+        /// <param name="data"></param>
         public static void Ringlog(string data)
         {
             lock (Ring)
@@ -393,7 +397,7 @@ namespace Client
         /// <summary>
         /// Insert text in to debug log
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">Text to insert</param>
         public static void DebugLog(string data)
         {
             try
@@ -409,10 +413,7 @@ namespace Client
                         }
                     }
                 }
-                lock (Ring)
-                {
-                    Ring.Add(DateTime.Now.ToString() + " DEBUG: " + data);
-                }
+                Ringlog(DateTime.Now.ToString() + " DEBUG: " + data);
             }
             catch (Exception er)
             {
@@ -1173,9 +1174,9 @@ namespace Client
             protocol.Server = server;
             protocol.Port = port;
             protocol.pswd = pw;
-            protocol._server = new Network(server, protocol);
-            network = protocol._server;
-            protocol._server._protocol = protocol;
+            protocol._IRCNetwork = new Network(server, protocol);
+            network = protocol._IRCNetwork;
+            protocol._IRCNetwork._protocol = protocol;
             protocol.Open();
             return true;
         }

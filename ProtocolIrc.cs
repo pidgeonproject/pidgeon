@@ -26,18 +26,30 @@ namespace Client
 {
     class ProtocolIrc : Protocol
     {
+        /// <summary>
+        /// Thread in which the connection to server is handled
+        /// </summary>
         public System.Threading.Thread main;
+        /// <summary>
+        /// Thread which is handling the delivery of data
+        /// </summary>
         public System.Threading.Thread deliveryqueue;
+        /// <summary>
+        /// Thread which is keeping the connection online
+        /// </summary>
         public System.Threading.Thread keep;
         public DateTime pong = DateTime.Now;
 
-        private System.Net.Sockets.NetworkStream _network;
-        private System.IO.StreamReader _reader;
-        public Network _server;
-        private System.IO.StreamWriter _writer;
-        Messages _messages = new Messages();
+        /// <summary>
+        /// Network stream
+        /// </summary>
+        private System.Net.Sockets.NetworkStream _networkStream;
+        private System.IO.StreamReader _StreamReader;
+        public Network _IRCNetwork;
+        private System.IO.StreamWriter _StreamWriter;
+        MessagesClass Messages = new MessagesClass();
 
-        class Messages
+        class MessagesClass
         {
             public struct Message
             {
@@ -144,16 +156,16 @@ namespace Client
 
         public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
         {
-            _messages.DeliverMessage(text, Pr);
+            Messages.DeliverMessage(text, Pr);
         }
 
         public void _Ping()
         {
             try
             {
-                while (_server.Connected)
+                while (_IRCNetwork.Connected)
                 {
-                    Transfer("PING :" + _server._protocol.Server, Configuration.Priority.High);
+                    Transfer("PING :" + _IRCNetwork._protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
                 }
             }
@@ -165,23 +177,23 @@ namespace Client
 
         public void Start()
         {
-            _messages.protocol = this;
+            Messages.protocol = this;
             Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                 Scrollback.MessageStyle.System);
             try
             {
-                _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
                 Hooks.BeforeIRCConnect(this);
-                _server.Connected = true;
+                _IRCNetwork.Connected = true;
 
-                _writer = new System.IO.StreamWriter(_network);
-                _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
+                _StreamWriter = new System.IO.StreamWriter(_networkStream);
+                _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
 
                 Connected = true;
 
-                Send("USER " + _server.ident + " 8 * :" + _server.username);
-                Send("NICK " + _server.nickname);
+                Send("USER " + _IRCNetwork.ident + " 8 * :" + _IRCNetwork.username);
+                Send("NICK " + _IRCNetwork.nickname);
                 if (pswd != "")
                 {
                     Send("PASS " + pswd);
@@ -203,19 +215,19 @@ namespace Client
             string text = "";
             try
             {
-                deliveryqueue = new System.Threading.Thread(_messages.Run);
+                deliveryqueue = new System.Threading.Thread(Messages.Run);
                 deliveryqueue.Start();
 
 
-                while (_server.Connected && !_reader.EndOfStream)
+                while (_IRCNetwork.Connected && !_StreamReader.EndOfStream)
                 {
                     while (Core.blocked)
                     {
                         System.Threading.Thread.Sleep(100);
                     }
-                    text = _reader.ReadLine();
+                    text = _StreamReader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
-                    ProcessorIRC processor = new ProcessorIRC(_server, this, text, _server.server, _server.sw, ref pong);
+                    ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, this, text, _IRCNetwork.server, _IRCNetwork.sw, ref pong);
                     processor.Result();
                     pong = processor.pong;
                 }
@@ -263,9 +275,9 @@ namespace Client
         {
             try
             {
-                _writer.WriteLine(ms);
+                _StreamWriter.WriteLine(ms);
                 Core.trafficscanner.insert(Server, " << " + ms);
-                _writer.Flush();
+                _StreamWriter.Flush();
             }
             catch (Exception fail)
             {
@@ -277,7 +289,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_server.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_IRCNetwork.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
@@ -292,7 +304,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _server.nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -310,20 +322,20 @@ namespace Client
 
         public override void Exit()
         {
-            if (!_server.Connected)
+            if (!_IRCNetwork.Connected)
             {
                 return;
             }
-            if (!Hooks.BeforeExit(_server))
+            if (!Hooks.BeforeExit(_IRCNetwork))
             {
                 return;
             }
             try
             {
-                Send("QUIT :" + _server.quit);
+                Send("QUIT :" + _IRCNetwork.quit);
             }
             catch (Exception) { }
-            _server.Connected = false;
+            _IRCNetwork.Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
             keep.Abort();
@@ -332,7 +344,7 @@ namespace Client
                 main.Abort();
             }
             windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
-            if (Core.network == _server)
+            if (Core.network == _IRCNetwork)
             {
                 Core.network = null;
             }
