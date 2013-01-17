@@ -64,12 +64,33 @@ namespace Client
         /// List of private message windows
         /// </summary>
         public List<User> PrivateChat = new List<User>();
+        /// <summary>
+        /// System window
+        /// </summary>
         public Window system;
+        /// <summary>
+        /// Host name of server
+        /// </summary>
         public string server;
+        /// <summary>
+        /// User mode of current user
+        /// </summary>
         public Protocol.UserMode usermode = new Protocol.UserMode();
+        /// <summary>
+        /// User name (real name)
+        /// </summary>
         public string username;
+        /// <summary>
+        /// Randomly generated ID for this network to make it unique in case some other network would share the name
+        /// </summary>
         public string randomuqid;
+        /// <summary>
+        /// List of all channels on network
+        /// </summary>
         public List<Channel> Channels = new List<Channel>();
+        /// <summary>
+        /// Currently rendered channel on main window
+        /// </summary>
         public Channel RenderedChannel = null;
         public string nickname;
         public string ident;
@@ -101,6 +122,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// UNIX time to DateTime
+        /// </summary>
+        /// <param name="time">timestamp</param>
+        /// <returns></returns>
         public static DateTime convertUNIX(string time)
         {
             double unixtimestmp = 0;
@@ -129,9 +155,9 @@ namespace Client
         }
 
         /// <summary>
-        /// Create pm
+        /// Create private message to user
         /// </summary>
-        /// <param name="user"></param>
+        /// <param name="user">User name</param>
         public void Private(string user)
         {
             Core._Main.userToolStripMenuItem.Visible = true;
