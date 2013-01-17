@@ -215,10 +215,10 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%"));
 
-                    SBABox.ContentText Link = new SBABox.ContentText(link, SBAB, Configuration.CurrentSkin.link);
+                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                     Link.Bold = bold;
                     Link.Underline = under;
-                    Link.link = "pidgeon://user/#" + link;
+                    Link.link = "pidgeon://user/#" + ProtocolIrc.decode_text(link);
                     return Link;
                 }
             }
@@ -245,7 +245,7 @@ namespace Client
                         SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
-                      Link.link = "http://" + link;
+                      Link.link = "http://" + ProtocolIrc.decode_text(link);
                         return Link;
                 }
                 return null;
@@ -277,7 +277,7 @@ namespace Client
                         SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
-                        Link.link = "http://" + link;
+                        Link.link = "http://" + ProtocolIrc.decode_text(link);
                         return Link;
                     }
                 }

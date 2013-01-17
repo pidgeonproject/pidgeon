@@ -406,11 +406,11 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date, false);
+                                ProcessorIRC processor = new ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date, false);
                                 processor.Result();
                                 break;
                             }
-                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date);
+                            ProcessorIRC processor2 = new ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date);
                             processor2.Result();
                             break;
                         case "SNICK":

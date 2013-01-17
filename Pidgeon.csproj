@@ -149,6 +149,7 @@
     <Compile Include="Forms\SkinEd.Designer.cs">
       <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
+    <Compile Include="IRC.cs" />
     <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="Qt.cs" />
     <Compile Include="scrollback\SBABox.cs">
