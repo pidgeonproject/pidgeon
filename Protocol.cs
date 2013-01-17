@@ -223,7 +223,7 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string decrypt_text(string text)
+        public static string decode_text(string text)
         {
             return text.Replace("%####%", "%");
         }

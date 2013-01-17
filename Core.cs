@@ -537,7 +537,7 @@ namespace Client
             {
                 return;
             }
-            data = Protocol.decrypt_text(Core.RemoveSpecial(data));
+            data = Protocol.decode_text(Core.RemoveSpecial(data));
             if (_KernelThread == Thread.CurrentThread)
             {
                 notification_waiting = true;

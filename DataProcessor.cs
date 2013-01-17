@@ -46,7 +46,7 @@ namespace Client
                         if (closed)
                         {
                             text = text.Substring(position, text.Length - position);
-                            SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(text), SBAB, Configuration.CurrentSkin.mrcl[color]);
+                            SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(text), SBAB, Configuration.CurrentSkin.mrcl[color]);
                             return Link;
                         }
 
@@ -89,8 +89,8 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%"));
-                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://ident/#" + ProtocolIrc.decrypt_text(link);
+                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Link.link = "pidgeon://ident/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -107,8 +107,8 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%"));
-                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://text/#" + ProtocolIrc.decrypt_text(link);
+                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Link.link = "pidgeon://text/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -125,8 +125,8 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%"));
-                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://hostname/#" + ProtocolIrc.decrypt_text(link);
+                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Link.link = "pidgeon://hostname/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -163,8 +163,8 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString()));
                             }
                         }
-                        SBABox.ContentText Link = new SBABox.ContentText("https://" + link, SBAB, Configuration.CurrentSkin.link);
-                        Link.link = "https://" + link;
+                        SBABox.ContentText Link = new SBABox.ContentText("https://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Link.link = "https://" + ProtocolIrc.decode_text(link);
                         Link.Underline = under;
                         Link.Bold = bold;
                         Link.Underline = true;
@@ -196,8 +196,8 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(separator.ToString()));
                     }
 
-                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://join/" + ProtocolIrc.decrypt_text(link);
+                    SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Link.link = "pidgeon://join/" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -242,7 +242,7 @@ namespace Client
                             link = link.Substring(0, link.IndexOf(prefix));
                         }
                     }
-                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
+                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
                       Link.link = "http://" + link;
@@ -274,7 +274,7 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString()));
                             }
                         }
-                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decrypt_text(link), SBAB, Configuration.CurrentSkin.link);
+                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
                         Link.link = "http://" + link;
@@ -309,7 +309,7 @@ namespace Client
                     if (matchesSWPrefix(tempdata, "http://"))
                     {
                         string prefix = Prefix(tempdata, "http://").ToString();
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + prefix, SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
                         line.insertData(lprttext);
@@ -327,7 +327,7 @@ namespace Client
                     else if (matchesSWPrefix(tempdata, "https://"))
                     {
                         string prefix = Prefix(tempdata, "https://").ToString();
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine) + prefix, SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -344,7 +344,7 @@ namespace Client
                     }
                     else if (tempdata.StartsWith("%USER%"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -368,7 +368,7 @@ namespace Client
                             tempdata = tempdata.Substring(1);
                         }
 
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
                         line.insertData(lprttext);
@@ -388,7 +388,7 @@ namespace Client
                     {
                         tempdata = tempdata.Substring(1);
                         Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -424,7 +424,7 @@ namespace Client
                             }
                         }
                         Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -443,7 +443,7 @@ namespace Client
                     {
                         tempdata = tempdata.Substring(1);
                         Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -453,7 +453,7 @@ namespace Client
                     }
                     else if (tempdata.StartsWith("%H%"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -470,7 +470,7 @@ namespace Client
                     }
                     else if (tempdata.StartsWith("%L%"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -487,7 +487,7 @@ namespace Client
                     }
                     else if (tempdata.StartsWith("%D%"))
                     {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                         lprttext.Bold = Bold;
                         lprttext.Underline = Underlined;
                         line.insertData(lprttext);
@@ -509,7 +509,7 @@ namespace Client
                     tempdata = tempdata.Substring(Jump);
                     carret = carret + Jump;
                 }
-                lprttext = new SBABox.ContentText(ProtocolIrc.decrypt_text(templine), SBAB, color);
+                lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
                 lprttext.Underline = Underlined;
                 lprttext.Bold = Bold;
                 line.insertData(lprttext);
