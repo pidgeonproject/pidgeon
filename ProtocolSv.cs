@@ -29,9 +29,9 @@ namespace Client
         public System.Threading.Thread keep;
         public DateTime pong = DateTime.Now;
 
-        private System.Net.Sockets.NetworkStream _network;
+        private System.Net.Sockets.NetworkStream _networkStream;
         private System.IO.StreamReader _reader;
-        public List<Network> sl = new List<Network>();
+        public List<Network> NetworkList = new List<Network>();
         private System.IO.StreamWriter _writer;
         public string password = "";
         public List<Cache> cache = new List<Cache>();
@@ -95,7 +95,7 @@ namespace Client
             }
             catch (Exception)
             {
-                
+                Core.DebugLog("ProtocolSv: Exception in Ping()");
             }
         }
 
@@ -126,10 +126,10 @@ namespace Client
                 Scrollback.MessageStyle.System);
             try
             {
-                _network = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
-                _writer = new System.IO.StreamWriter(_network);
-                _reader = new System.IO.StreamReader(_network, Encoding.UTF8);
+                _writer = new System.IO.StreamWriter(_networkStream);
+                _reader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
 
                 Connected = true;
 
@@ -200,7 +200,7 @@ namespace Client
 
         private Network retrieveNetwork(string server)
         {
-            foreach (Network i in sl)
+            foreach (Network i in NetworkList)
             {
                 if (i.server == server)
                 {
@@ -240,15 +240,15 @@ namespace Client
                 if (server == null)
                 {
                     server = new Network(name2, this);
-                    sl.Add(server);
+                    NetworkList.Add(server);
                     cache.Add(new Cache());
                     server.nickname = nick;
                     server.Connected = true;
                 }
                 if (backlog)
                 {
-                    Core._Main.Status("Retrieving backlog from " + name2 + ", got " + number + " packets from total of " + cache[sl.IndexOf(server)].size.ToString() + " datagrams");
-                    if ((cache[sl.IndexOf(server)].size - 2) < int.Parse(number))
+                    Core._Main.Status("Retrieving backlog from " + name2 + ", got " + number + " packets from total of " + cache[NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    if ((cache[NetworkList.IndexOf(server)].size - 2) < int.Parse(number))
                     {
                         Core._Main.Status("");
                         foreach (Channel i in server.Channels)
@@ -387,15 +387,15 @@ namespace Client
                             if (server4 == null)
                             {
                                 server4 = new Network(name, this);
-                                sl.Add(server4);
+                                NetworkList.Add(server4);
                                 cache.Add(new Cache());
                                 server4.nickname = nick;
                                 server4.Connected = true;
                             }
                             if (backlog)
                             {
-                                Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[sl.IndexOf(server4)].size.ToString() + " datagrams");
-                                if ((cache[sl.IndexOf(server4)].size - 2) < int.Parse(id))
+                                Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[NetworkList.IndexOf(server4)].size.ToString() + " datagrams");
+                                if ((cache[NetworkList.IndexOf(server4)].size - 2) < int.Parse(id))
                                 {
                                     Core._Main.Status("");
                                     foreach (Channel i in server4.Channels)
@@ -437,7 +437,7 @@ namespace Client
                                     _network.Connected = true;
                                     _network.nickname = nick;
                                     cache.Add(new Cache());
-                                    sl.Add(_network);
+                                    NetworkList.Add(_network);
                                     continue;
                             }
                             break;
@@ -450,7 +450,7 @@ namespace Client
                             server = retrieveNetwork(network);
                             if (server != null)
                             {
-                                cache[sl.IndexOf(server)].size = int.Parse(curr.InnerText);
+                                cache[NetworkList.IndexOf(server)].size = int.Parse(curr.InnerText);
                                 foreach (Channel i in server.Channels)
                                 {
                                     i.parsing_who = true;
@@ -478,7 +478,7 @@ namespace Client
                                     break;
 
                             }
-                            foreach (Network s2 in sl)
+                            foreach (Network s2 in NetworkList)
                             {
                                 if (curr.Attributes[0].Value == s2.server)
                                 {
@@ -500,7 +500,7 @@ namespace Client
                                         Network nw = new Network(i, this);
                                         nw.nickname = nick;
                                         cache.Add(new Cache());
-                                        sl.Add(nw);
+                                        NetworkList.Add(nw);
                                         Datagram response = new Datagram("CHANNELINFO");
                                         response._InnerText = "LIST";
                                         response.Parameters.Add("network", i);
@@ -640,9 +640,9 @@ namespace Client
         public override void Exit()
         {
             Connected = false;
-            lock (sl)
+            lock (NetworkList)
             {
-                foreach (Network network in sl)
+                foreach (Network network in NetworkList)
                 {
                     network.Connected = false;
                     if (Core.network == network)
@@ -650,7 +650,7 @@ namespace Client
                         Core.network = null;
                     }
                 }
-                sl.Clear();
+                NetworkList.Clear();
             }
             if (keep != null)
             {
@@ -773,7 +773,7 @@ namespace Client
 
         public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
         {
-            if (Core.network != null && sl.Contains(Core.network))
+            if (Core.network != null && NetworkList.Contains(Core.network))
             {
                 Datagram blah = new Datagram("RAW", text);
                 blah.Parameters.Add("network", Core.network.server);

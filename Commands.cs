@@ -145,6 +145,7 @@ namespace Client
                 commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
                 commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
+                commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
             }
             catch (Exception fail)
@@ -470,6 +471,16 @@ namespace Client
             {
                 System.GC.Collect();
                 Core._Main.Chat.scrollback.InsertText("Memory was cleaned up", Scrollback.MessageStyle.System, false);
+            }
+
+            public static void ring_writetologs(string parameter)
+            {
+                Core.PrintRing(Core._Main.Chat, true);
+            }
+
+            public static void ring_show(string parameter)
+            {
+                Core.PrintRing(Core._Main.Chat, false);
             }
 
             public static void query(string parameter)

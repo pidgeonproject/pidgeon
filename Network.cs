@@ -52,6 +52,9 @@ namespace Client
         /// </summary>
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
 
+        /// <summary>
+        /// Descriptions for channel and user modes
+        /// </summary>
         public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
 
         public bool parsed_info = false;

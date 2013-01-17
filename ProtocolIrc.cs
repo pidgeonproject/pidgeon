@@ -60,6 +60,11 @@ namespace Client
             public List<Message> newmessages = new List<Message>();
             public ProtocolIrc protocol;
 
+            /// <summary>
+            /// Send a message to server
+            /// </summary>
+            /// <param name="Message"></param>
+            /// <param name="Pr"></param>
             public void DeliverMessage(string Message, Configuration.Priority Pr = Configuration.Priority.Normal)
             {
                 Message text = new Message();
@@ -194,9 +199,9 @@ namespace Client
 
                 Send("USER " + _IRCNetwork.ident + " 8 * :" + _IRCNetwork.username);
                 Send("NICK " + _IRCNetwork.nickname);
-                if (pswd != "")
+                if (Password != "")
                 {
-                    Send("PASS " + pswd);
+                    Send("PASS " + Password);
                 }
 
                 Core._Main.Status("");

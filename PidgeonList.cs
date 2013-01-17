@@ -217,17 +217,17 @@ namespace Client
             {
                 Channels.Remove(chan);
             }
-            lock (Core._Main.W)
+            lock (Core._Main.WindowRequests)
             {
-                foreach (Main._WindowRequest item in Core._Main.W)
+                foreach (Main._WindowRequest item in Core._Main.WindowRequests)
                 {
-                    Core._Main.CreateChat(item.window, item.owner, item._Focus);
-                    if (item.owner != null && item._Focus)
+                    Core._Main.CreateChat(item.window, item.owner, item.focus);
+                    if (item.owner != null && item.focus)
                     {
                         item.owner.ShowChat(item.name);
                     }
                 }
-                Core._Main.W.Clear();
+                Core._Main.WindowRequests.Clear();
             }
             lock (UserList)
             {

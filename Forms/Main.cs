@@ -42,12 +42,12 @@ namespace Client
         {
             public Window window;
             public string name;
-            public bool _Focus;
+            public bool focus;
             public bool writable;
             public Protocol owner;
         }
 
-        public List<_WindowRequest> W = new List<_WindowRequest>();
+        public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
 
         public Main()
         {
@@ -139,11 +139,7 @@ namespace Client
                 Chat.Making = false;
                 if (Configuration.Debugging)
                 {
-                    List<string> logs = Core.RingBuffer;
-                    foreach (string line in logs)
-                    {
-                        Chat.scrollback.InsertText(line, Scrollback.MessageStyle.System, false);
-                    }
+                    Core.PrintRing(Chat, false);
                 }
                 Chat.scrollback.InsertText("Welcome to pidgeon client " + Application.ProductVersion, Scrollback.MessageStyle.System, false, 0, true);
                 if (Core.Extensions.Count > 0)
@@ -355,7 +351,7 @@ namespace Client
                 if (network.type == 2)
                 {
                     ProtocolSv sv = (ProtocolSv)network;
-                    foreach (Network server in sv.sl)
+                    foreach (Network server in sv.NetworkList)
                     {
                         if (server.server == "irc.tm-irc.org")
                         {

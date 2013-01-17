@@ -28,7 +28,10 @@ namespace Client
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         public bool Connected = false;
         public int type = 0;
-        public string pswd;
+        /// <summary>
+        /// Password for server
+        /// </summary>
+        public string Password;
 
         public class Mode
         {
@@ -155,7 +158,7 @@ namespace Client
             request.name = name;
             request.writable = writable;
             request.window = new Window();
-            request._Focus = focus;
+            request.focus = focus;
             request.window._Network = network;
             request.window.name = name;
             request.window.writable = writable;
@@ -173,9 +176,10 @@ namespace Client
             {
                 request.window.isChannel = true;
             }
-            lock (Core._Main.W)
+            lock (Core._Main.WindowRequests)
             {
-                Core._Main.W.Add(request);
+                // Create a request to create this window
+                Core._Main.WindowRequests.Add(request);
             }
         }
 

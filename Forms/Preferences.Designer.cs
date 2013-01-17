@@ -85,6 +85,7 @@ namespace Client
             this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStrip3 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.loadModuleFromFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.unloadModuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label7 = new System.Windows.Forms.Label();
             this.gro2 = new System.Windows.Forms.GroupBox();
             this.checkBox8 = new System.Windows.Forms.CheckBox();
@@ -115,7 +116,7 @@ namespace Client
             this.fl = new System.Windows.Forms.FlowLayoutPanel();
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
-            this.unloadModuleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -495,7 +496,7 @@ namespace Client
             this.loadModuleFromFileToolStripMenuItem,
             this.unloadModuleToolStripMenuItem});
             this.contextMenuStrip3.Name = "contextMenuStrip3";
-            this.contextMenuStrip3.Size = new System.Drawing.Size(193, 70);
+            this.contextMenuStrip3.Size = new System.Drawing.Size(193, 48);
             // 
             // loadModuleFromFileToolStripMenuItem
             // 
@@ -503,6 +504,13 @@ namespace Client
             this.loadModuleFromFileToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
             this.loadModuleFromFileToolStripMenuItem.Text = "Load module from file";
             this.loadModuleFromFileToolStripMenuItem.Click += new System.EventHandler(this.loadModuleFromFileToolStripMenuItem_Click);
+            // 
+            // unloadModuleToolStripMenuItem
+            // 
+            this.unloadModuleToolStripMenuItem.Name = "unloadModuleToolStripMenuItem";
+            this.unloadModuleToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
+            this.unloadModuleToolStripMenuItem.Text = "Unload module";
+            this.unloadModuleToolStripMenuItem.Click += new System.EventHandler(this.unloadModuleToolStripMenuItem_Click);
             // 
             // label7
             // 
@@ -775,12 +783,10 @@ namespace Client
             this.bCancel.UseVisualStyleBackColor = true;
             this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
-            // unloadModuleToolStripMenuItem
+            // openFileDialog1
             // 
-            this.unloadModuleToolStripMenuItem.Name = "unloadModuleToolStripMenuItem";
-            this.unloadModuleToolStripMenuItem.Size = new System.Drawing.Size(192, 22);
-            this.unloadModuleToolStripMenuItem.Text = "Unload module";
-            this.unloadModuleToolStripMenuItem.Click += new System.EventHandler(this.unloadModuleToolStripMenuItem_Click);
+            this.openFileDialog1.Filter = "Pidgeon modules|*.pmod|All files|*.*";
+            this.openFileDialog1.Title = "Open a pidgeon module";
             // 
             // Preferences
             // 
@@ -885,6 +891,7 @@ namespace Client
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip3;
         private System.Windows.Forms.ToolStripMenuItem loadModuleFromFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unloadModuleToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
 
     }
 }

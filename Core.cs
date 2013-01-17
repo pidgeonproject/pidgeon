@@ -18,6 +18,7 @@
 using System.IO;
 using System.Threading;
 using System.Net;
+using System.Windows.Forms;
 using System.Xml;
 using System;
 using System.Collections.Generic;
@@ -178,6 +179,26 @@ namespace Client
             public static List<fl> processing = new List<fl>();
             public static List<fl> data = new List<fl>();
 
+            public static void Save()
+            {
+                lock (processing)
+                {
+                    if (processing.Count > 0)
+                    {
+                        data.AddRange(processing);
+                        processing.Clear();
+                    }
+                }
+                if (data.Count > 0)
+                {
+                    foreach (fl xx in data)
+                    {
+                        File.AppendAllText(xx.filename, xx.line);
+                    }
+                }
+                data.Clear();
+            }
+
             public static void Load()
             {
                 try
@@ -186,26 +207,16 @@ namespace Client
                     {
                         try
                         {
-                            lock (processing)
-                            {
-                                if (processing.Count > 0)
-                                {
-                                    data.AddRange(processing);
-                                    processing.Clear();
-                                }
-                            }
-                            if (data.Count > 0)
-                            {
-                                foreach (fl xx in data)
-                                {
-                                    File.AppendAllText(xx.filename, xx.line);
-                                }
-                            }
-                            data.Clear();
+                            Save();
                         }
-                        catch (Exception)
+                        catch (ThreadAbortException)
                         {
-
+                            Save();
+                            return;
+                        }
+                        catch (Exception e1)
+                        {
+                            Core.handleException(e1);
                         }
                         Thread.Sleep(2000);
                     }
@@ -268,61 +279,68 @@ namespace Client
         /// <returns></returns>
         public static bool Load()
         {
-            _KernelThread = System.Threading.Thread.CurrentThread;
-            LoadTime = DateTime.Now;
-            if (System.Windows.Forms.Application.LocalUserAppDataPath.EndsWith(System.Windows.Forms.Application.ProductVersion))
+            try
             {
-                ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath.Substring(0,
-                    System.Windows.Forms.Application.LocalUserAppDataPath.Length - System.Windows.Forms.Application.ProductVersion.Length) + "configuration.dat";
-            }
-            DebugLog("Loading messages");
-            messages.data.Add("en", new messages.container("en"));
-            messages.data.Add("cs", new messages.container("cs"));
-            trafficscanner = new TrafficScanner();
-            if (!System.IO.File.Exists(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
-            {
-                //Debuglog("Initialising updater");
-                ThUp = new Thread(Updater.Run);
-                ThUp.Name = "pidgeon service";
-                ThUp.Start();
-                SystemThreads.Add(ThUp);
-                DebugLog("Loading configuration file");
-                ConfigurationLoad();
-                DebugLog("Loading log writer thread");
-                Thread_logs = new Thread(IO.Load);
-                Thread_logs.Name = "Logs";
-                SystemThreads.Add(Thread_logs);
-                Thread_logs.Start();
-                DebugLog("Loading commands");
-                Commands.Initialise();
-                MicroChat.mc = new MicroChat();
-                notification = new Notification();
-                DebugLog("Loading scripting core");
-                ScriptingCore.Load();
-                DebugLog("Loading extensions");
-                Extension.Init();
-                if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
+                _KernelThread = System.Threading.Thread.CurrentThread;
+                LoadTime = DateTime.Now;
+                Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
+                if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
                 {
-                    foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
+                    ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
+                }
+                DebugLog("Loading messages");
+                messages.data.Add("en", new messages.container("en"));
+                messages.data.Add("cs", new messages.container("cs"));
+                trafficscanner = new TrafficScanner();
+                if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
+                {
+                    DebugLog("Loading configuration file");
+                    ConfigurationLoad();
+                    DebugLog("Running updater");
+                    ThUp = new Thread(Updater.Run);
+                    ThUp.Name = "pidgeon service";
+                    ThUp.Start();
+                    SystemThreads.Add(ThUp);
+                    DebugLog("Loading log writer thread");
+                    Thread_logs = new Thread(IO.Load);
+                    Thread_logs.Name = "Logs";
+                    SystemThreads.Add(Thread_logs);
+                    Thread_logs.Start();
+                    DebugLog("Loading commands");
+                    Commands.Initialise();
+                    MicroChat.mc = new MicroChat();
+                    notification = new Notification();
+                    DebugLog("Loading scripting core");
+                    ScriptingCore.Load();
+                    DebugLog("Loading extensions");
+                    Extension.Init();
+                    if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                     {
-                        DebugLog("Registering plugin " + dll);
-                        RegisterPlugin(dll);
+                        foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
+                        {
+                            DebugLog("Registering plugin " + dll);
+                            RegisterPlugin(dll);
+                        }
                     }
+                    if (!File.Exists(ConfigFile))
+                    {
+                        Network.Highlighter simple = new Network.Highlighter();
+                        simple.enabled = true;
+                        simple.text = "$nick";
+                        Configuration.HighlighterList.Add(simple);
+                    }
+                    return true;
                 }
-                if (!File.Exists(ConfigFile))
-                {
-                    Network.Highlighter simple = new Network.Highlighter();
-                    simple.enabled = true;
-                    simple.text = "$nick";
-                    Configuration.HighlighterList.Add(simple);
-                }
-                return true;
+                Updater _finalisingupdater = new Updater();
+                _finalisingupdater.update.Visible = false;
+                _finalisingupdater.finalize = true;
+                _finalisingupdater.lStatus.Text = messages.get("update2");
+                System.Windows.Forms.Application.Run(_finalisingupdater);
             }
-            Updater _finalisingupdater = new Updater();
-            _finalisingupdater.update.Visible = false;
-            _finalisingupdater.finalize = true;
-            _finalisingupdater.lStatus.Text = messages.get("update2");
-            System.Windows.Forms.Application.Run(_finalisingupdater);
+            catch (Exception panic)
+            {
+                Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
+            }
             return false;
         }
 
@@ -388,10 +406,12 @@ namespace Client
         /// <param name="data"></param>
         public static void Ringlog(string data)
         {
+            string text = "[" + DateTime.Now.ToString() + "] " + data;
             lock (Ring)
             {
-                Ring.Add(DateTime.Now.ToString() + " " + data);
+                Ring.Add(text);
             }
+            Console.WriteLine(text);
         }
 
         /// <summary>
@@ -413,11 +433,22 @@ namespace Client
                         }
                     }
                 }
-                Ringlog(DateTime.Now.ToString() + " DEBUG: " + data);
+                Ringlog("DEBUG: " + data);
             }
             catch (Exception er)
             {
                 Core.handleException(er);
+            }
+        }
+
+        public static void PrintRing(Window window, bool write = true)
+        {
+            lock (Ring)
+            {
+                foreach (string item in Ring)
+                {
+                    window.scrollback.InsertText(item, Scrollback.MessageStyle.System, write, 0, true);
+                }
             }
         }
 
@@ -1083,18 +1114,44 @@ namespace Client
                     {
                         if (Extensions.Contains(_plugin))
                         {
+                            Core.DebugLog("Unable to load extension because the handle is already known to core");
                             return false;
                         }
+                        bool problem = false;
+                        foreach (Extension x in Core.Extensions)
+                        {
+                            if (x.Name == _plugin.Name)
+                            {
+                                Core.Ringlog("CORE: unable to load the extension, because the extension with same name is already loaded");
+                                _plugin._status = Extension.Status.Terminated;
+                                problem = true;
+                                break;
+                            }
+                        }
+                        if (problem)
+                        {
+                            if (Core.Extensions.Contains(_plugin))
+                            {
+                                Core.Extensions.Remove(_plugin);
+                            }
+                        }
+                        Core.Ringlog("CORE: everything is fine, registering " + _plugin.Name);
                         Extensions.Add(_plugin);
                     }
                     if (_plugin.Hook_OnRegister())
                     {
                         _plugin.Load();
+                        _plugin._status = Extension.Status.Active;
+                        Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
                         if (Core._Main != null)
                         {
                             Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Scrollback.MessageStyle.System, false);
                         }
                         return true;
+                    }
+                    else
+                    {
+                        Core.Ringlog("CORE: failed to run OnRegister for " + _plugin.Name);
                     }
                     return false;
                 }
@@ -1173,7 +1230,7 @@ namespace Client
             Connections.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
-            protocol.pswd = pw;
+            protocol.Password = pw;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
             protocol._IRCNetwork._protocol = protocol;

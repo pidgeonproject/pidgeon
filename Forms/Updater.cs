@@ -69,6 +69,7 @@ namespace Client
                 {
                     if (Configuration.CheckUpdate)
                     {
+                        Core.Ringlog("UPTH: Checking for updates...");
                         temporarydir = System.IO.Path.GetTempPath() + "pidgeon" + DateTime.Now.ToBinary().ToString();
                         if (System.IO.Directory.Exists(temporarydir))
                         {
@@ -80,6 +81,7 @@ namespace Client
                             info = System.IO.File.ReadAllText(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
                             if (info.Contains("[update-need]"))
                             {
+                                Core.Ringlog("UPTH: update is needed");
                                 string vr = info.Substring(info.IndexOf("version:") + "version:".Length);
                                 vr = vr.Substring(0, vr.IndexOf("^"));
                                 Updater updater = new Updater();
@@ -88,8 +90,13 @@ namespace Client
                                 System.Windows.Forms.Application.Run(updater);
                                 return;
                             }
+                            Core.Ringlog("UPTH: No update is needed");
                         }
                         System.IO.Directory.Delete(temporarydir, true);
+                    }
+                    else
+                    {
+                        Core.Ringlog("UPTH: Updater is not enabled, shutting down");
                     }
                 }
             }

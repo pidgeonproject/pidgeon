@@ -56,7 +56,10 @@ namespace Client
             {
                 try
                 {
-                    extension.Hook_BeforeNote(ref caption, ref text);
+                    if (extension._status == Extension.Status.Active)
+                    {
+                        extension.Hook_BeforeNote(ref caption, ref text);
+                    }
                 }
                 catch (Exception mf)
                 {
@@ -97,7 +100,10 @@ namespace Client
             {
                 try
                 {
-                    extension.Hook_Network(network);
+                    if (extension._status == Extension.Status.Active)
+                    {
+                        extension.Hook_Network(network);
+                    }
                 }
                 catch (Exception mf)
                 {
@@ -150,7 +156,10 @@ namespace Client
             {
                 try
                 {
-                    extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                    if (extension._status == Extension.Status.Active)
+                    {
+                        extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                    }
                 }
                 catch (Exception mf)
                 {

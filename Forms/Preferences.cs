@@ -47,6 +47,7 @@ namespace Client
                     checkBox10.Checked = false;
                     checkBox10.Enabled = false;
                 }
+                unloadModuleToolStripMenuItem.Enabled = false;
                 bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
                 bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
                 lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
@@ -91,20 +92,26 @@ namespace Client
                 listView1.Items.Add(new ListViewItem("Ignore list"));
                 listView1.Items.Add(new ListViewItem("Keyboard"));
                 listView1.Items.Add(new ListViewItem("Extensions"));
-                foreach (Extension ex in Core.Extensions)
-                {
-                    ListViewItem item = new ListViewItem();
-                    item.Text = ex.Name;
-                    item.SubItems.Add(ex.Version);
-                    item.SubItems.Add(ex.Description);
-                    item.SubItems.Add("Extension");
-                    listView3.Items.Add(item);
-                }
+                RefreshModules();
                 redrawS();
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
+            }
+        }
+
+        public void RefreshModules()
+        {
+            listView3.Items.Clear();
+            foreach (Extension ex in Core.Extensions)
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = ex.Name;
+                item.SubItems.Add(ex.Version);
+                item.SubItems.Add(ex.Description);
+                item.SubItems.Add("Extension");
+                listView3.Items.Add(item);
             }
         }
 
@@ -320,7 +327,25 @@ namespace Client
 
         private void loadModuleFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            try
+            {
+                if (openFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
+                {
+                    if (openFileDialog1.FileName != "")
+                    {
+                        Core.RegisterPlugin(openFileDialog1.FileName);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Preferences: provided invalid file name");
+                    }
+                }
+                RefreshModules();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void unloadModuleToolStripMenuItem_Click(object sender, EventArgs e)

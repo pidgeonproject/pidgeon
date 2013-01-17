@@ -41,8 +41,40 @@ namespace Client
         /// </summary>
         public Extension()
         {
-            _status = Status.Loading;
-            Initialise();
+            try
+            {
+                _status = Status.Loading;
+                Initialise();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+                Core.DebugLog("CORE: Terminating the extension " + Name);
+                _status = Status.Terminated;
+            }
+        }
+
+        public void Exit()
+        {
+            try
+            {
+                Core.DebugLog("CORE: Unloading " + Name);
+                _status = Status.Terminating;
+                lock (Core.Extensions)
+                {
+                    if (Core.Extensions.Contains(this))
+                    {
+                        Core.Extensions.Remove(this);
+                        Core.DebugLog("CORE: Unloaded " + Name);
+                    }
+                }
+                _status = Status.Terminated;
+                Core.DebugLog("CORE: Terminated " + Name);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
