@@ -189,7 +189,7 @@ namespace Client
             {
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
-                Hooks.BeforeIRCConnect(this);
+                Hooks.BeforeConnect(this);
                 _IRCNetwork.Connected = true;
 
                 _StreamWriter = new System.IO.StreamWriter(_networkStream);

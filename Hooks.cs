@@ -36,16 +36,31 @@ namespace Client
         /// This hook allow you to call functions before you open connection
         /// </summary>
         /// <param name="server"></param>
-        public static void BeforeIRCConnect(Protocol server)
+        public static void BeforeConnect(Protocol protocol)
         {
-        
+            foreach (Extension extension in Core.Extensions)
+            {
+                try
+                {
+                    if (extension._status == Extension.Status.Active)
+                    {
+                        extension.Hook_BeforeConnect(protocol);
+                    }
+                }
+                catch (Exception mf)
+                {
+                    Core.DebugLog("Error in hook BeforeConnect(string, string) module " + extension.Name);
+                    Core.handleException(mf);
+                }
+            }
+            return;
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="network"></param>
-        public static void AfterIRCConnect(Network network)
+        public static void AfterConnectToNetwork(Network network)
         {
             
         }
@@ -71,16 +86,16 @@ namespace Client
         }
 
         /// <summary>
-        /// Events to happen before user is kicked from channel
+        /// Events to happen before user is kicked from channel, in case you return false, the kick is cancelled
         /// </summary>
         /// <param name="network">Network</param>
         /// <param name="Source">Performer</param>
         /// <param name="Target">User who get kick msg</param>
         /// <param name="Reason">Reason</param>
         /// <param name="Ch">Channel</param>
-        public static void BeforeKick(Network network, string Source, string Target, string Reason, string Ch)
+        public static bool BeforeKick(Network network, string Source, string Target, string Reason, string Ch)
         {
-        
+            return true;
         }
 
         /// <summary>

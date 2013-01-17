@@ -94,7 +94,7 @@ namespace Client
                     {
                         channel._mode.mode(code[4]);
                         channel.UpdateInfo();
-                        curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date);
+                        curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
                     return true;
                 }
@@ -122,7 +122,7 @@ namespace Client
                         {
                             System.Threading.Thread.Sleep(100);
                         }
-                        curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel, true, date);
+                        curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
@@ -168,7 +168,7 @@ namespace Client
                     if (curr != null)
                     {
                         curr.scrollback.InsertText("Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
-                            Scrollback.MessageStyle.Channel, !channel.temporary_hide, date);
+                            Scrollback.MessageStyle.Channel, !channel.temporary_hide, date, !updated_text);
                         return true;
                     }
                     channel.UpdateInfo();
@@ -304,7 +304,7 @@ namespace Client
                     if (Configuration.DisplayCtcp)
                     {
                         protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message,
-                            Scrollback.MessageStyle.Message, true, date);
+                            Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
                     return true;
@@ -325,11 +325,12 @@ namespace Client
                         if (message.StartsWith(protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
-                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action, !channel.temporary_hide, date);
+                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action,
+                                !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
                         channel.retrieveWindow().scrollback.InsertText(protocol.PRIVMSG(user.Nick, message),
-                            Scrollback.MessageStyle.Message, !channel.temporary_hide, date);
+                            Scrollback.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
                     }
                     channel.UpdateInfo();
                     return true;
@@ -344,7 +345,7 @@ namespace Client
                     _server.Private(chan);
                 }
                 protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(chan, message),
-                    Scrollback.MessageStyle.Message, updated_text, date);
+                    Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
                 return true;
             }
             return false;
@@ -397,7 +398,7 @@ namespace Client
                                 {
                                     x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage,
                                         new List<string> { nick, _new }), Scrollback.MessageStyle.Channel,
-                                        !item.temporary_hide, date);
+                                        !item.temporary_hide, date, !updated_text);
                                 }
                             }
                         }
@@ -426,7 +427,7 @@ namespace Client
                         {
                             channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage,
                                 new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }),
-                                Scrollback.MessageStyle.Action, !channel.temporary_hide, date);
+                                Scrollback.MessageStyle.Action, !channel.temporary_hide, date, !updated_text);
                         }
 
                         while (change.StartsWith(" "))
@@ -541,7 +542,7 @@ namespace Client
                     channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1",
                         Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                         Scrollback.MessageStyle.Part,
-                        !channel.temporary_hide, date);
+                        !channel.temporary_hide, date, !updated_text);
 
                     if (channel.containsUser(user))
                     {
@@ -589,7 +590,7 @@ namespace Client
                 {
                     channel.retrieveWindow().scrollback.InsertText(messages.get("channel-topic",
                         Core.SelectedLanguage, new List<string> { source, value }), Scrollback.MessageStyle.Channel,
-                        !channel.temporary_hide, date);
+                        !channel.temporary_hide, date, !updated_text);
                     return true;
                 }
                 channel.UpdateInfo();
@@ -630,7 +631,7 @@ namespace Client
                             x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                 new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                                 Scrollback.MessageStyle.Join,
-                                !item.temporary_hide, date);
+                                !item.temporary_hide, date, !updated_text);
                         }
                         if (updated_text)
                         {
@@ -660,7 +661,7 @@ namespace Client
                 {
                     channel.retrieveWindow().scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
-                        Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
+                        Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
 
                     if (updated_text && channel.containsUser(user))
                     {
@@ -712,7 +713,7 @@ namespace Client
                 {
                     channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
                         new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
-                        Scrollback.MessageStyle.Join, !channel.temporary_hide, date);
+                        Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
                     if (updated_text)
                     {
                         if (!channel.containsUser(user))
@@ -841,7 +842,7 @@ namespace Client
                                 Ping();
                                 return true;
                             case "INFO":
-                                protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date);
+                                protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
                                 if (parameters.Contains(_server.channel_prefix))
@@ -853,12 +854,12 @@ namespace Client
                                         window = channel.retrieveWindow();
                                         if (window != null)
                                         {
-                                            window.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date);
+                                            window.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                             return true;
                                         }
                                     }
                                 }
-                                protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date);
+                                protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
                                 protocol.Transfer("PONG ", Configuration.Priority.High);
@@ -1059,15 +1060,26 @@ namespace Client
             return true;
         }
 
-        public ProcessorIRC(Network server, Protocol _protocol, string _text, string _sn, string ws, ref DateTime _pong, long d = 0, bool updated = true)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="_network">Network</param>
+        /// <param name="_protocol">Protocol</param>
+        /// <param name="_text">Text</param>
+        /// <param name="_sn"></param>
+        /// <param name="ws"></param>
+        /// <param name="_pong"></param>
+        /// <param name="_date">Date of this message, if you specify 0 the current time will be used</param>
+        /// <param name="updated">If true this text will be considered as newly obtained information</param>
+        public ProcessorIRC(Network _network, Protocol _protocol, string _text, string _sn, string ws, ref DateTime _pong, long _date = 0, bool updated = true)
         {
-            _server = server;
+            _server = _network;
             protocol = _protocol;
             text = _text;
             sn = _sn;
             system = ws;
             pong = _pong;
-            date = d;
+            date = _date;
             updated_text = updated;
         }
     }

@@ -288,6 +288,12 @@ namespace Client
                 {
                     ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
                 }
+                string is64 = " which is a 32 bit system";
+                if (Environment.Is64BitOperatingSystem)
+                {
+                    is64 = " which is a 64 bit system";
+                }
+                Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
                 messages.data.Add("en", new messages.container("en"));
                 messages.data.Add("cs", new messages.container("cs"));
@@ -329,6 +335,7 @@ namespace Client
                         simple.text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
+                    Hooks.AfterCore();
                     return true;
                 }
                 Updater _finalisingupdater = new Updater();
