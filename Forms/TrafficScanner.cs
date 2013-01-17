@@ -41,6 +41,13 @@ namespace Client
             L.Cancel = true;
         }
 
+        public void Clean()
+        {
+            text.Clear();
+            textBox1.Clear();
+            modified = true;
+        }
+
         public bool insert(string server, string data)
         {
             modified = true;

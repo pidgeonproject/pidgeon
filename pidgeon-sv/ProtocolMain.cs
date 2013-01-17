@@ -27,11 +27,32 @@ namespace pidgeon_sv
     {
         public class Datagram
         {
+            /// <summary>
+            /// Constructor
+            /// </summary>
+            /// <param name="Name">Name of a datagram</param>
+            /// <param name="Text">Value</param>
             public Datagram(string Name, string Text = "")
             {
                 _Datagram = Name;
                 _InnerText = Text;
             }
+
+            public string ToDocumentXmlText()
+            {
+                XmlDocument datagram = new XmlDocument();
+                XmlNode b1 = datagram.CreateElement(_Datagram.ToUpper());
+                foreach (KeyValuePair<string, string> curr in Parameters)
+                {
+                    XmlAttribute b2 = datagram.CreateAttribute(curr.Key);
+                    b2.Value = curr.Value;
+                    b1.Attributes.Append(b2);
+                }
+                b1.InnerText = this._InnerText;
+                datagram.AppendChild(b1);
+                return datagram.InnerXml;
+            }
+
             public string _InnerText;
             public string _Datagram;
             public Dictionary<string, string> Parameters = new Dictionary<string, string>();

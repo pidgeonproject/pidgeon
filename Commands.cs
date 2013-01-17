@@ -121,6 +121,8 @@ namespace Client
             commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
             commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
             commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
+            commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
+            commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
             commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
         }
 
@@ -429,6 +431,18 @@ namespace Client
             {
                 Core.ClearRingBufferLog();
                 Core._Main.Chat.scrollback.InsertText("Ring buffer was cleaned", Scrollback.MessageStyle.System, false);
+            }
+
+            public static void sniffer(string parameter)
+            {
+                Core.trafficscanner.Clean();
+                Core._Main.Chat.scrollback.InsertText("Sniffer log was truncated", Scrollback.MessageStyle.System, false);
+            }
+
+            public static void free(string parameter)
+            {
+                System.GC.Collect();
+                Core._Main.Chat.scrollback.InsertText("Memory was cleaned up", Scrollback.MessageStyle.System, false);
             }
 
             public static void query(string parameter)

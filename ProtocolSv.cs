@@ -233,6 +233,76 @@ namespace Client
             Transfer("PART " + name);
         }
 
+        public void ProccessDG(string text, long time, bool backlog, Network server, string name2, string number)
+        {
+            try
+            {
+                if (server == null)
+                {
+                    server = new Network(name2, this);
+                    sl.Add(server);
+                    cache.Add(new Cache());
+                    server.nickname = nick;
+                    server.Connected = true;
+                }
+                if (backlog)
+                {
+                    Core._Main.Status("Retrieving backlog from " + name2 + ", got " + number + " packets from total of " + cache[sl.IndexOf(server)].size.ToString() + " datagrams");
+                    if ((cache[sl.IndexOf(server)].size - 2) < int.Parse(number))
+                    {
+                        Core._Main.Status("");
+                        foreach (Channel i in server.Channels)
+                        {
+                            i.temporary_hide = false;
+                            i.parsing_xe = false;
+                            i.parsing_xb = false;
+                            i.parsing_who = false;
+                        }
+                    }
+                    if (text.StartsWith("PRIVMSG "))
+                    {
+                        string channel = text.Substring(8);
+                        
+                        if (channel == "" || !channel.Contains(" :"))
+                        {
+                            Core.DebugLog("Invalid channel provided by services");
+                            return;
+                        }
+                        string message = channel.Substring(channel.IndexOf(" :") + 2);
+                        channel = channel.Substring(0, channel.IndexOf(" :"));
+                        Channel item = server.getChannel(channel);
+                        if (item == null)
+                        {
+                            Core.DebugLog("Invalid channel provided by services");
+                            return;
+                        }
+
+                        Window x = item.retrieveWindow();
+
+                        if (x == null)
+                        {
+                            Core.DebugLog("Invalid window for a channel");
+                            return;
+                        }
+
+                        Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, message), Scrollback.MessageStyle.Message, false, time, true);
+
+                        return;
+                    }
+                    Core.DebugLog("Unknown message: " + text);
+                    //ProtocolIrc.ProcessorIRC processor4 = new ProtocolIrc.ProcessorIRC(server, this, text, server.server, server.sw, ref pong, time, false);
+                    //processor4.Result();
+                    return;
+                }
+                //ProtocolIrc.ProcessorIRC processor3 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, time);
+                //processor3.Result();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         public bool Process(string dg)
         {
             try
@@ -268,6 +338,30 @@ namespace Client
                                     break;
                             }
                             break;
+                        case "SSELFDG":
+                            long date2 = 0;
+                            bool backlog2 = false;
+                            string id2 = "";
+                            foreach (XmlAttribute time in curr.Attributes)
+                            {
+                                if (time.Name == "time")
+                                {
+                                    date2 = long.Parse(time.Value);
+                                }
+                            }
+                            foreach (XmlAttribute i in curr.Attributes)
+                            {
+                                if (i.Name == "buffer")
+                                {
+                                    id2 = i.Value;
+                                    backlog2 = true;
+                                }
+                            }
+                            string name2 = curr.Attributes[0].Value;
+                            Network server = null;
+                            server = retrieveNetwork(name2);
+                            ProccessDG(curr.InnerText, date2, backlog2, server, name2, id2);
+                            break;
                         case "SDATA":
                             long date = 0;
                             bool backlog = false;
@@ -288,23 +382,23 @@ namespace Client
                                 }
                             }
                             string name = curr.Attributes[0].Value;
-                            Network server = null;
-                            server = retrieveNetwork(name);
-                            if (server == null)
+                            Network server4 = null;
+                            server4 = retrieveNetwork(name);
+                            if (server4 == null)
                             {
-                                server = new Network(name, this);
-                                sl.Add(server);
+                                server4 = new Network(name, this);
+                                sl.Add(server4);
                                 cache.Add(new Cache());
-                                server.nickname = nick;
-                                server.Connected = true;
+                                server4.nickname = nick;
+                                server4.Connected = true;
                             }
                             if (backlog)
                             {
-                                Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[sl.IndexOf(server)].size.ToString() + " datagrams");
-                                if ((cache[sl.IndexOf(server)].size - 2) < int.Parse(id))
+                                Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[sl.IndexOf(server4)].size.ToString() + " datagrams");
+                                if ((cache[sl.IndexOf(server4)].size - 2) < int.Parse(id))
                                 {
                                     Core._Main.Status("");
-                                    foreach (Channel i in server.Channels)
+                                    foreach (Channel i in server4.Channels)
                                     {
                                         i.temporary_hide = false;
                                         i.parsing_xe = false;
@@ -312,11 +406,11 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, date, false);
+                                ProtocolIrc.ProcessorIRC processor = new ProtocolIrc.ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date, false);
                                 processor.Result();
                                 break;
                             }
-                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, date);
+                            ProtocolIrc.ProcessorIRC processor2 = new ProtocolIrc.ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date);
                             processor2.Result();
                             break;
                         case "SNICK":
