@@ -47,10 +47,10 @@ namespace Client
         {
             this.components = new System.ComponentModel.Container();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.refresh = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refresh = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,11 +69,6 @@ namespace Client
             this.textBox1.Size = new System.Drawing.Size(696, 402);
             this.textBox1.TabIndex = 0;
             // 
-            // refresh
-            // 
-            this.refresh.Enabled = true;
-            this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -82,6 +77,15 @@ namespace Client
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
             // 
+            // scrollToolStripMenuItem
+            // 
+            this.scrollToolStripMenuItem.Checked = true;
+            this.scrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.scrollToolStripMenuItem.Text = "Scroll";
+            this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
+            // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
@@ -89,12 +93,10 @@ namespace Client
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
-            // scrollToolStripMenuItem
+            // refresh
             // 
-            this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
-            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.scrollToolStripMenuItem.Text = "Scroll";
-            this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
+            this.refresh.Enabled = true;
+            this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
             // TrafficScanner
             // 
