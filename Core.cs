@@ -81,6 +81,10 @@ namespace Client
         /// </summary>
         public static Thread _RecoveryThread;
         /// <summary>
+        /// Timers
+        /// </summary>
+        public static List<Timer> TimerDB = new List<Timer>();
+        /// <summary>
         /// Notification box
         /// </summary>
         private static Notification notification;

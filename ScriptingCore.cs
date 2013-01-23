@@ -670,8 +670,6 @@ namespace Client
             interp.registerObject(Configuration.timestamp_mask, "configuration_timemask");
             interp.registerObject(Configuration.user, "configuration_user");
             interp.registerObject(Configuration.Version, "configuration_version");
-
-
             
         }
 
@@ -682,13 +680,6 @@ namespace Client
             thread.Name = "ScriptingCore";
             Core.SystemThreads.Add(thread);
             thread.Start();
-
-            
-            //string result;
-            //if (interp.evalScript("set a 3; {exp $a + 2}"))
-            //{
-            //    result = interp.Result;
-            //}
         }
     }
 }

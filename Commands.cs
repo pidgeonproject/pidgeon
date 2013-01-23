@@ -136,6 +136,7 @@ namespace Client
                 commands.Add("raw", new Command(Type.System, Generic.raw));
                 commands.Add("chanserv", new Command(Type.Network));
                 commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
+                commands.Add("pidgeon.uptime", new Command(Type.System, Generic.up));
                 commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
                 commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
                 commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
@@ -219,6 +220,12 @@ namespace Client
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+            }
+
+            public static void up(string parameter)
+            {
+                TimeSpan uptime = DateTime.Now - Core.LoadTime;
+                Core._Main.Chat.scrollback.InsertText(uptime.ToString(), Scrollback.MessageStyle.System, false, 0, true);
             }
 
             public static void raw(string parameter)
@@ -459,6 +466,42 @@ namespace Client
             {
                 Core.ClearRingBufferLog();
                 Core._Main.Chat.scrollback.InsertText("Ring buffer was cleaned", Scrollback.MessageStyle.System, false);
+            }
+
+            public static void timer(string parameter)
+            {
+                try
+                {
+                    if (!parameter.Contains(" "))
+                    {
+                        Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Scrollback.MessageStyle.Message);
+                    }
+                    int time = 0;
+                    string tm = parameter.Substring(0, parameter.IndexOf(" "));
+                    string command = parameter.Substring(parameter.IndexOf(" ") + 1);
+                    if (int.TryParse(tm, out time))
+                    {
+                        Timer timer = new Timer(time, command);
+                        lock (Core.TimerDB)
+                        {
+                            Core.TimerDB.Add(timer);
+                        }
+                        timer.Execute();
+                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
+            }
+
+            public static void sleep(string parameter)
+            {
+                int time = 0;
+                if (int.TryParse(parameter, out time))
+                {
+                    System.Threading.Thread.Sleep(time);
+                }
             }
 
             public static void sniffer(string parameter)

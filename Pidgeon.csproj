@@ -242,6 +242,7 @@
     </Compile>
     <Compile Include="ProtocolSv.cs" />
     <Compile Include="ScriptingCore.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Window.cs">
       <SubType>UserControl</SubType>
     </Compile>
