@@ -348,14 +348,14 @@ namespace Client
                         X = X + stringSize.Width;
                         if (Wrap)
                         {
-                            ScrollBar.Visible = false;
+                            hsBar.Visible = false;
                         }
                         else
-                            if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
+                            if ((int)(X + stringSize.Width) > hsBar.Maximum)
                             {
-                                lock (ScrollBar)
+                                lock (hsBar)
                                 {
-                                    ScrollBar.Maximum = (int)(X + stringSize.Width);
+                                    hsBar.Maximum = (int)(X + stringSize.Width);
                                 }
                             }
                     }
@@ -511,7 +511,13 @@ namespace Client
                 {
                     lines.RemoveAt(index);
                 }
-                vScrollBar1.Maximum -= 1;
+                lock (vScrollBar1)
+                {
+                    if (vScrollBar1.Maximum > 1)
+                    {
+                        vScrollBar1.Maximum -= 1;
+                    }
+                }
             }
         }
 
@@ -630,7 +636,7 @@ namespace Client
             vScrollBar1.Enabled = false;
             if (Wrap)
             {
-                ScrollBar.Visible = false;
+                hsBar.Visible = false;
             }
 
             RecreateBuffers();
@@ -645,15 +651,18 @@ namespace Client
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            Scrolled(e.NewValue);
-            Redraw();
+            lock (vScrollBar1)
+            {
+                Scrolled(e.NewValue);
+                Redraw();
+            }
         }
 
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            lock (ScrollBar)
+            lock (hsBar)
             {
-                currentX = ScrollBar.Value;
+                currentX = hsBar.Value;
                 Redraw();
             }
         }

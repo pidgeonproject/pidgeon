@@ -33,7 +33,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.ScrollBar = new System.Windows.Forms.HScrollBar();
+            this.hsBar = new System.Windows.Forms.HScrollBar();
             this.pt = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pt)).BeginInit();
             this.SuspendLayout();
@@ -48,16 +48,16 @@ namespace Client
             this.vScrollBar1.TabIndex = 0;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
-            // ScrollBar
+            // hsBar
             // 
-            this.ScrollBar.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ScrollBar.LargeChange = 1;
-            this.ScrollBar.Location = new System.Drawing.Point(0, 315);
-            this.ScrollBar.Maximum = 0;
-            this.ScrollBar.Name = "ScrollBar";
-            this.ScrollBar.Size = new System.Drawing.Size(540, 24);
-            this.ScrollBar.TabIndex = 3;
-            this.ScrollBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
+            this.hsBar.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.hsBar.LargeChange = 1;
+            this.hsBar.Location = new System.Drawing.Point(0, 315);
+            this.hsBar.Maximum = 0;
+            this.hsBar.Name = "hsBar";
+            this.hsBar.Size = new System.Drawing.Size(540, 24);
+            this.hsBar.TabIndex = 3;
+            this.hsBar.Scroll += new System.Windows.Forms.ScrollEventHandler(this.ScrollBar_Scroll);
             // 
             // pt
             // 
@@ -76,7 +76,7 @@ namespace Client
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.pt);
-            this.Controls.Add(this.ScrollBar);
+            this.Controls.Add(this.hsBar);
             this.Controls.Add(this.vScrollBar1);
             this.DoubleBuffered = true;
             this.Name = "SBABox";
@@ -91,7 +91,7 @@ namespace Client
         #endregion
 
         private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.HScrollBar ScrollBar;
+        private System.Windows.Forms.HScrollBar hsBar;
         private System.Windows.Forms.PictureBox pt;
     }
 }
