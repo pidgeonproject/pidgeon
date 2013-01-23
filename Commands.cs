@@ -419,6 +419,11 @@ namespace Client
             {
                 lock (Core.TimerDB)
                 {
+                    if (Core.TimerDB.Count == 0)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("No timers to display.", Scrollback.MessageStyle.System, false);
+                        return;
+                    }
                     foreach (Timer item in Core.TimerDB)
                     { 
                         string status = "running";
