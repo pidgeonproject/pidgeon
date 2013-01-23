@@ -141,7 +141,10 @@ namespace Client
                 commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
                 commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
                 commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
+                commands.Add("pidgeon.sleep", new Command(Type.System, Generic.sleep));
+                commands.Add("pidgeon.timer", new Command(Type.System, Generic.timer));
                 commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
+                commands.Add("pidgeon.displaytimers", new Command(Type.System, Generic.displaytmdb));
                 commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
                 commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
@@ -410,6 +413,22 @@ namespace Client
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
 
+            }
+
+            public static void displaytmdb(string paramater)
+            {
+                lock (Core.TimerDB)
+                {
+                    foreach (Timer item in Core.TimerDB)
+                    { 
+                        string status = "running";
+                        if (!item.Running)
+                        {
+                            status = "waiting";
+                        }
+                        Core._Main.Chat.scrollback.InsertText("Timer ID: " + item.ID.ToString() + " status: " + status + " command: " + item.Command + " time to run " + item.Time.ToString(), Scrollback.MessageStyle.System, false);
+                    }
+                }
             }
 
             public static void msg1(string parameter)
