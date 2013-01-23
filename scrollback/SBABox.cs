@@ -353,7 +353,10 @@ namespace Client
                         else
                             if ((int)(X + stringSize.Width) > ScrollBar.Maximum)
                             {
-                                ScrollBar.Maximum = (int)(X + stringSize.Width);
+                                lock (ScrollBar)
+                                {
+                                    ScrollBar.Maximum = (int)(X + stringSize.Width);
+                                }
                             }
                     }
 
@@ -401,7 +404,13 @@ namespace Client
             {
                 lock (vScrollBar1)
                 {
-                    vScrollBar1.Maximum = scrolldown;
+                    lock (vScrollBar1)
+                    {
+                        lock (vScrollBar1)
+                        {
+                            vScrollBar1.Maximum = scrolldown;
+                        }
+                    }
                     if (scrolldown < vScrollBar1.Value)
                     {
                         vScrollBar1.Value = scrolldown;
@@ -640,15 +649,13 @@ namespace Client
             Redraw();
         }
 
-        private void buffer_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            currentX = ScrollBar.Value;
-            Redraw();
+            lock (ScrollBar)
+            {
+                currentX = ScrollBar.Value;
+                Redraw();
+            }
         }
     }
 }

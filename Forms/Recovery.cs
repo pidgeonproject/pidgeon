@@ -21,6 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -40,11 +41,24 @@ namespace Client
 
         private void Recovery_Load(object sender, EventArgs e)
         {
-            textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
-                                + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
-                                + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
-                                + Core.recovery_exception.Message + "\n\n"
-                                + Core.recovery_exception.Source + "\n\n").Split('\n');
+            try
+            {
+                string ring = "";
+                foreach (string line in Core.RingBuffer)
+                {
+                    ring += line + "\n";
+                }
+                textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
+                                    + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
+                                    + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
+                                    + Core.recovery_exception.Message + "\n\n"
+                                    //+ ring
+                                    + Core.recovery_exception.Source + "\n\n").Split('\n');
+            }
+            catch (Exception)
+            {
+                Process.GetCurrentProcess().Kill();
+            }
         }
 
         private void bShutdown_Click(object sender, EventArgs e)
