@@ -90,7 +90,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/D%"));
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://ident/#" + ProtocolIrc.decode_text(link);
+                    Link.Link = "pidgeon://ident/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -108,7 +108,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/L%"));
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://text/#" + ProtocolIrc.decode_text(link);
+                    Link.Link = "pidgeon://text/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -126,7 +126,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/H%"));
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://hostname/#" + ProtocolIrc.decode_text(link);
+                    Link.Link = "pidgeon://hostname/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -164,7 +164,7 @@ namespace Client
                             }
                         }
                         SBABox.ContentText Link = new SBABox.ContentText("https://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                        Link.link = "https://" + ProtocolIrc.decode_text(link);
+                        Link.Link = "https://" + ProtocolIrc.decode_text(link);
                         Link.Underline = under;
                         Link.Bold = bold;
                         Link.Underline = true;
@@ -197,7 +197,7 @@ namespace Client
                     }
 
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                    Link.link = "pidgeon://join/" + ProtocolIrc.decode_text(link);
+                    Link.Link = "pidgeon://join/" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -218,7 +218,7 @@ namespace Client
                     SBABox.ContentText Link = new SBABox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                     Link.Bold = bold;
                     Link.Underline = under;
-                    Link.link = "pidgeon://user/#" + ProtocolIrc.decode_text(link);
+                    Link.Link = "pidgeon://user/#" + ProtocolIrc.decode_text(link);
                     return Link;
                 }
             }
@@ -245,7 +245,7 @@ namespace Client
                         SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
-                      Link.link = "http://" + ProtocolIrc.decode_text(link);
+                      Link.Link = "http://" + ProtocolIrc.decode_text(link);
                         return Link;
                 }
                 return null;
@@ -277,7 +277,7 @@ namespace Client
                         SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
-                        Link.link = "http://" + ProtocolIrc.decode_text(link);
+                        Link.Link = "http://" + ProtocolIrc.decode_text(link);
                         return Link;
                     }
                 }

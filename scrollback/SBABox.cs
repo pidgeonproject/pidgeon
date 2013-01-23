@@ -47,21 +47,21 @@ namespace Client
 
         public class ContentText
         {
-            public string text;
-            private SBABox owner;
-            public Color textc;
-            public Color backc;
-            public bool linked = false;
+            public string Text;
+            private SBABox Owner;
+            public Color TextColor;
+            public Color Backcolor;
+            public bool Linked = false;
             public bool Bold = false;
             public bool Italic = false;
             public bool Underline = false;
-            public string link;
+            public string Link = null;
             public bool menu = false;
-            public ContentText(string Text, SBABox SBAB, Color color)
+            public ContentText(string text, SBABox SBAB, Color color)
             {
-                text = Text;
-                owner = SBAB;
-                textc = color;
+                Text = text;
+                Owner = SBAB;
+                TextColor = color;
             }
         }
 
@@ -73,7 +73,7 @@ namespace Client
             public int Y;
             public int Width;
             public int Height;
-            private SBABox parent;
+            private SBABox Parent;
             public string _name;
             public string _text;
             public ContentText linkedtext;
@@ -84,7 +84,7 @@ namespace Client
                 Width = width;
                 _name = label;
                 _text = http;
-                parent = SBAB;
+                Parent = SBAB;
                 linkedtext = text;
                 Height = height;
             }
@@ -246,7 +246,7 @@ namespace Client
             Line extraline = null;
             foreach (ContentText part in line.text)
             {
-                if (part.text != "")
+                if (part.Text != "")
                 {
                     if (wrappingnow)
                     {
@@ -255,8 +255,8 @@ namespace Client
                     }
                     if ((Y + (int)Font.Size + 8) > 0 && (Y + (int)Font.Size + 8) < this.Height)
                     {
-                        Brush _b = new SolidBrush(part.textc);
-                        string TextOfThispart = part.text;
+                        Brush _b = new SolidBrush(part.TextColor);
+                        string TextOfThispart = part.Text;
                         TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
                         StringFormat format = new StringFormat(StringFormat.GenericTypographic);
                         format.Trimming = StringTrimming.None;
@@ -274,15 +274,15 @@ namespace Client
                         }
 
                         //SizeF stringSize = TextRenderer.Me
-                        SizeF stringSize = _t.MeasureString(part.text, font, new Point(0, 0), format);
+                        SizeF stringSize = _t.MeasureString(part.Text, font, new Point(0, 0), format);
                         //stringSize.Width = Buffers.MeasureDisplayStringWidth(_t, part.text, font, format);
                         if (Wrap)
                         {
                             if (X + stringSize.Width > this.Width - vScrollBar1.Width)
                             {
-                                bool ls = part.text.StartsWith(" ");
-                                bool es = part.text.EndsWith(" ");
-                                string[] words = part.text.Split(' ');
+                                bool ls = part.Text.StartsWith(" ");
+                                bool es = part.Text.EndsWith(" ");
+                                string[] words = part.Text.Split(' ');
                                 string trimmed = "";
                                 foreach (string xx in words)
                                 {
@@ -319,24 +319,24 @@ namespace Client
                                 }
                                 // we trimmed the value, now update the text temporarily
                                 TextOfThispart = trimmed;
-                                string remaining_data = part.text.Substring(trimmed.Length);
+                                string remaining_data = part.Text.Substring(trimmed.Length);
                                 extraline = new Line("", this);
-                                ContentText _text = new ContentText(remaining_data, this, part.textc);
+                                ContentText _text = new ContentText(remaining_data, this, part.TextColor);
                                 _text.Underline = part.Underline;
                                 _text.Bold = part.Bold;
-                                _text.link = part.link;
+                                _text.Link = part.Link;
                                 wrappingnow = true;
                                 extraline.insertData(_text);
                             }
                         }
 
-                        if (part.link != null)
+                        if (part.Link != null)
                         {
-                            if (!part.linked)
+                            if (!part.Linked)
                             {
-                                part.linked = true;
-                                Pen pen = new Pen(part.textc);
-                                Link http = new Link((int)X, (int)Y, part.textc, (int)stringSize.Width, (int)stringSize.Height, this, part.link, part.text, part);
+                                part.Linked = true;
+                                Pen pen = new Pen(part.TextColor);
+                                Link http = new Link((int)X, (int)Y, part.TextColor, (int)stringSize.Width, (int)stringSize.Height, this, part.Link, part.Text, part);
                                 lock (link)
                                 {
                                     link.Add(http);
@@ -490,7 +490,7 @@ namespace Client
         {
             foreach (Link il in link)
             {
-                il.linkedtext.linked = false;
+                il.linkedtext.Linked = false;
                 il.linkedtext = null;
                 il.Dispose();
             }
