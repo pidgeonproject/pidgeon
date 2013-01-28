@@ -370,7 +370,10 @@ namespace Client
                             {
                                 if (time.Name == "time")
                                 {
-                                    date = long.Parse(time.Value);
+                                    if (!long.TryParse(time.Value, out date))
+                                    {
+                                        Core.DebugLog("Warning: " + time.Value + " is not a correct time");
+                                    }
                                 }
                             }
                             foreach (XmlAttribute i in curr.Attributes)

@@ -44,8 +44,17 @@ namespace Client
         /// Network stream
         /// </summary>
         private System.Net.Sockets.NetworkStream _networkStream;
+        /// <summary>
+        /// Stream reader for server
+        /// </summary>
         private System.IO.StreamReader _StreamReader;
+        /// <summary>
+        /// Network associated with this connection (we have only 1 network in direct connection)
+        /// </summary>
         public Network _IRCNetwork;
+        /// <summary>
+        /// Stream writer for server
+        /// </summary>
         private System.IO.StreamWriter _StreamWriter;
         MessagesClass Messages = new MessagesClass();
 

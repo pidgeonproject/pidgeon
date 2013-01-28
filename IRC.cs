@@ -736,8 +736,7 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-
-                Core.DebugLog(parameters + "xx" + value);
+                //Core.DebugLog(parameters + "xx" + value);
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 if (name.Contains(" ") != true)
                 {

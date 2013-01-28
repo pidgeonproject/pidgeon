@@ -431,7 +431,14 @@ namespace Client
                         templine = "";
                         if (!_color)
                         {
-                            color = Configuration.CurrentSkin.mrcl[colorcode];
+                            if (colorcode < 16)
+                            {
+                                color = Configuration.CurrentSkin.mrcl[colorcode];
+                            }
+                            else
+                            {
+                                Core.DebugLog("Invalid color for link: " + colorcode.ToString());
+                            }
                         }
                         if (_color)
                         {
