@@ -123,6 +123,7 @@ namespace Client
                 }
                 sX.SplitterDistance = Configuration.window_size;
                 ChannelList = new PidgeonList();
+                toolStripProgressBar1.Visible = false;
                 ChannelList.Visible = true;
                 ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
                 ChannelList.Dock = DockStyle.Fill;

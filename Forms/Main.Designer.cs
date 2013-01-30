@@ -53,6 +53,7 @@ namespace Client
             this.toolStripStatusChannel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripCo = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newConnectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +63,7 @@ namespace Client
             this.shutDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.skinEdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.taskbarBoxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.attachToMicroChatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,7 +82,6 @@ namespace Client
             this.pidgeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
             this.updater = new System.Windows.Forms.Timer(this.components);
-            this.skinEdToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
@@ -94,7 +95,8 @@ namespace Client
             this.toolStripStatusNetwork,
             this.toolStripStatusChannel,
             this.toolStripCo,
-            this.toolStripInfo});
+            this.toolStripInfo,
+            this.toolStripProgressBar1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 388);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(874, 22);
@@ -140,6 +142,11 @@ namespace Client
             this.toolStripInfo.Size = new System.Drawing.Size(851, 17);
             this.toolStripInfo.Spring = true;
             this.toolStripInfo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // toolStripProgressBar1
+            // 
+            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+            this.toolStripProgressBar1.Size = new System.Drawing.Size(200, 15);
             // 
             // menuStrip1
             // 
@@ -222,6 +229,13 @@ namespace Client
             this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem3.Text = "Packet viewer";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // skinEdToolStripMenuItem
+            // 
+            this.skinEdToolStripMenuItem.Name = "skinEdToolStripMenuItem";
+            this.skinEdToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
+            this.skinEdToolStripMenuItem.Text = "Skin ed";
+            this.skinEdToolStripMenuItem.Click += new System.EventHandler(this.skinEdToolStripMenuItem_Click);
             // 
             // taskbarBoxToolStripMenuItem
             // 
@@ -362,13 +376,6 @@ namespace Client
             this.updater.Interval = 200;
             this.updater.Tick += new System.EventHandler(this.updater_Tick);
             // 
-            // skinEdToolStripMenuItem
-            // 
-            this.skinEdToolStripMenuItem.Name = "skinEdToolStripMenuItem";
-            this.skinEdToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
-            this.skinEdToolStripMenuItem.Text = "Skin ed";
-            this.skinEdToolStripMenuItem.Click += new System.EventHandler(this.skinEdToolStripMenuItem_Click);
-            // 
             // Main
             // 
             this.ClientSize = new System.Drawing.Size(874, 410);
@@ -429,5 +436,6 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem switchToAdvancedLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skinEdToolStripMenuItem;
+        public System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
     }
 }

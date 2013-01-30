@@ -455,6 +455,8 @@ namespace Client
 
         public void Click_R(string adds, string data)
         {
+            try
+            {
                 if (data.StartsWith("pidgeon://text"))
                 {
                     ViewLn(adds, false, true);
@@ -469,12 +471,33 @@ namespace Client
                 }
                 if (data.StartsWith("pidgeon://user"))
                 {
+                    if (this.owner.isChannel)
+                    {
+                        Channel channel = owner._Network.getChannel(owner.name);
+                        if (channel != null)
+                        {
+                            User user = channel.userFromName(adds);
+                            if (user != null)
+                            {
+                                if (user.Host != "")
+                                {
+                                    ViewLn("*@" + user.Host, false, false, true, adds);
+                                    return;
+                                }
+                            }
+                        }
+                    }
                     ViewLn(adds + "!*@*", false, false, true, adds);
                 }
                 if (data.StartsWith("pidgeon://hostname"))
                 {
                     ViewLn("*@" + adds, false, false);
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void ViewLn(string content, bool channel, bool link = true, bool menu = false, string name = "")

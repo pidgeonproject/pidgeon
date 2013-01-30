@@ -31,6 +31,9 @@ namespace Client
 
         private System.Net.Sockets.NetworkStream _networkStream;
         private System.IO.StreamReader _reader;
+        /// <summary>
+        /// List of networks loaded on server
+        /// </summary>
         public List<Network> NetworkList = new List<Network>();
         private System.IO.StreamWriter _writer;
         public string password = "";
@@ -112,6 +115,7 @@ namespace Client
                     return true;
                 }
                 Transfer(cm.ToUpper());
+                return true;
             }
             catch (Exception ex)
             {
@@ -397,10 +401,19 @@ namespace Client
                             }
                             if (backlog)
                             {
+                                if (Core._Main.toolStripProgressBar1.Visible == false)
+                                {
+                                    Core._Main.toolStripProgressBar1.Value = int.Parse(id);
+                                    Core._Main.toolStripProgressBar1.Visible = true;
+                                    Core._Main.toolStripProgressBar1.Maximum = cache[NetworkList.IndexOf(server4)].size;
+                                }
+                                Core._Main.toolStripProgressBar1.Value = int.Parse(id);
                                 Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[NetworkList.IndexOf(server4)].size.ToString() + " datagrams");
                                 if ((cache[NetworkList.IndexOf(server4)].size - 2) < int.Parse(id))
                                 {
                                     Core._Main.Status("");
+                                    Core._Main.toolStripProgressBar1.Visible = false;
+                                    Core._Main.toolStripProgressBar1.Value = 0;
                                     foreach (Channel i in server4.Channels)
                                     {
                                         i.temporary_hide = false;
