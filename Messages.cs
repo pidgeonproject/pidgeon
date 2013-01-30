@@ -54,9 +54,12 @@ namespace Client
 
         public static bool exist(string lang)
         {
-            if (!data.ContainsKey(lang))
+            lock (data)
             {
-                return false;
+                if (!data.ContainsKey(lang))
+                {
+                    return false;
+                }
             }
             return true;
         }

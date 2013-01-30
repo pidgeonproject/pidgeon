@@ -440,7 +440,7 @@ namespace Client
             {
                 if (parameter.Contains(" "))
                 {
-                    string channel = parameter.Substring(parameter.IndexOf(" "));
+                    string channel = parameter.Substring(0, parameter.IndexOf(" "));
                     if (Core.network != null)
                     {
                         if (Core.network.Connected)

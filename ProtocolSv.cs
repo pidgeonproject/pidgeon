@@ -31,6 +31,9 @@ namespace Client
 
         private System.Net.Sockets.NetworkStream _networkStream;
         private System.IO.StreamReader _reader;
+        /// <summary>
+        /// List of networks loaded on server
+        /// </summary>
         public List<Network> NetworkList = new List<Network>();
         private System.IO.StreamWriter _writer;
         public string password = "";
@@ -112,6 +115,7 @@ namespace Client
                     return true;
                 }
                 Transfer(cm.ToUpper());
+                return true;
             }
             catch (Exception ex)
             {

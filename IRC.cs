@@ -257,14 +257,26 @@ namespace Client
 
         private bool ProcessPM(string source, string parameters, string value)
         {
-            string _nick;
-            string _ident;
-            string _host;
-            string chan;
-            _nick = source.Substring(0, source.IndexOf("!"));
-            _host = source.Substring(source.IndexOf("@") + 1);
-            _ident = source.Substring(source.IndexOf("!") + 1);
-            _ident = _ident.Substring(0, _ident.IndexOf("@"));
+            string _nick = "{unknown nick}";
+            string _ident = "{unknown ident}";
+            string _host = "{unknown host}";
+            string chan = null;
+            if (source.Contains("!"))
+            {
+                _nick = source.Substring(0, source.IndexOf("!"));
+                _ident = source.Substring(source.IndexOf("!") + 1);
+                _ident = _ident.Substring(0, _ident.IndexOf("@"));
+            }
+            else
+            {
+                Core.DebugLog("Parser error: " + source);
+            }
+
+            if (source.Contains("@"))
+            {
+                _host = source.Substring(source.IndexOf("@") + 1);
+            }
+            
             chan = parameters.Replace(" ", "");
             string message = value;
             if (!chan.Contains(_server.channel_prefix))
