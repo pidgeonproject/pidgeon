@@ -30,7 +30,11 @@ namespace Client
         public DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
+<<<<<<< HEAD
         private System.IO.StreamReader _reader = null;
+=======
+        private System.IO.StreamReader _reader;
+>>>>>>> e3e4f1e1d1585d97fba7fecaaac692a08fce7dd3
         /// <summary>
         /// List of networks loaded on server
         /// </summary>
