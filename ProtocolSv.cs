@@ -25,20 +25,23 @@ namespace Client
 {
     public class ProtocolSv : Protocol
     {
-        public System.Threading.Thread main;
-        public System.Threading.Thread keep;
+        public System.Threading.Thread main = null;
+        public System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
-        private System.IO.StreamReader _reader;
+        private System.IO.StreamReader _reader = null;
         /// <summary>
         /// List of networks loaded on server
         /// </summary>
         public List<Network> NetworkList = new List<Network>();
-        private System.IO.StreamWriter _writer;
+        private System.IO.StreamWriter _writer = null;
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         private Status ConnectionStatus = Status.WaitingPW;
+
+
+
         public string nick = "";
         public bool auth = false;
         public class Cache
@@ -318,6 +321,37 @@ namespace Client
                 {
                     switch (curr.Name.ToUpper())
                     {
+                        case "SMESSAGE":
+                            string message_nick = curr.Attributes[0].Value;
+                            string message_text = curr.InnerText;
+                            string message_target = curr.Attributes[4].Value;
+                            Window message_window = null;
+                            Network mn = retrieveNetwork(curr.Attributes[2].Value);
+                            long message_time = long.Parse(curr.Attributes[3].Value);
+                            if (mn != null)
+                            {
+                                Channel target = mn.getChannel(message_target);
+                                if (target != null)
+                                {
+                                    message_window = target.retrieveWindow();
+                                }
+                                else
+                                {
+                                    Core.DebugLog("There is no channel " + message_target);
+                                }
+                            }
+
+
+                            if (message_window != null)
+                            {
+                                message_window.scrollback.InsertText(Core.network._protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, false, message_time, true);
+                            }
+                            else
+                            {
+                                Core.DebugLog("There is no window for " + message_target);
+                            }
+
+                            break;
                         case "SLOAD":
                             windows["!root"].scrollback.InsertText(curr.InnerText, Scrollback.MessageStyle.System, false);
                             break;
@@ -711,10 +745,22 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text),
-                    Scrollback.MessageStyle.Message, true, 0, true);
+                //Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text),
+                //    Scrollback.MessageStyle.Message, true, 0, true);
             }
-            Transfer("PRIVMSG " + to + " :" + text, _priority);
+            //Transfer("PRIVMSG " + to + " :" + text, _priority);
+            Datagram message = new Datagram("MESSAGE", text);
+            if (Core.network != null && NetworkList.Contains(Core.network))
+            {
+                message.Parameters.Add("network", Core.network.server);
+                message.Parameters.Add("priority", _priority.ToString());
+                message.Parameters.Add("to", to);
+                Deliver(message);
+            }
+            else
+            {
+                Core.DebugLog("Invalid network");
+            }
             return 0;
         }
 
