@@ -30,11 +30,7 @@ namespace Client
         public DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
-<<<<<<< HEAD
         private System.IO.StreamReader _reader = null;
-=======
-        private System.IO.StreamReader _reader;
->>>>>>> e3e4f1e1d1585d97fba7fecaaac692a08fce7dd3
         /// <summary>
         /// List of networks loaded on server
         /// </summary>
@@ -328,10 +324,10 @@ namespace Client
                         case "SMESSAGE":
                             string message_nick = curr.Attributes[0].Value;
                             string message_text = curr.InnerText;
-                            string message_target = curr.Attributes[4].Value;
+                            string message_target = curr.Attributes[3].Value;
                             Window message_window = null;
-                            Network mn = retrieveNetwork(curr.Attributes[2].Value);
-                            long message_time = long.Parse(curr.Attributes[3].Value);
+                            Network mn = retrieveNetwork(curr.Attributes[1].Value);
+                            long message_time = long.Parse(curr.Attributes[2].Value);
                             if (mn != null)
                             {
                                 Channel target = mn.getChannel(message_target);
@@ -348,7 +344,7 @@ namespace Client
 
                             if (message_window != null)
                             {
-                                message_window.scrollback.InsertText(Core.network._protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, false, message_time, true);
+                                message_window.scrollback.InsertText(mn._protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, false, message_time, true);
                             }
                             else
                             {
