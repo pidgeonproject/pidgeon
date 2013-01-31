@@ -14,6 +14,7 @@ namespace Client
             Client.Commands.commands.Add("kick", new Client.Commands.Command(Client.Commands.Type.Plugin, Kick));
             Client.Commands.commands.Add("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
             Client.Commands.commands.Add("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
+            Client.Commands.commands.Add("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
             return true;
         }
 
@@ -47,6 +48,16 @@ namespace Client
             Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
             Core.network._protocol.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
+        }
+
+        public void Op(string text)
+        {
+            if (!Core._Main.Chat.isChannel)
+            {
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                return;
+            }
+            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
         }
 
         public void Quiet(string text)

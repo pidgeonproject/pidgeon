@@ -301,10 +301,10 @@ namespace Client
                         {
                             mode = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
                         }
-                    }
-                    if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        Core.network._protocol.Transfer(mode, Configuration.Priority.High);
+                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            Core.network._protocol.Transfer(mode, Configuration.Priority.High);
+                        }
                     }
                 }
             }

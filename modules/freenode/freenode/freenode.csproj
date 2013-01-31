@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Pidgeon">
-      <HintPath>..\..\main\bin\Release\Pidgeon.exe</HintPath>
+      <HintPath>..\..\..\bin\Release\Pidgeon.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
