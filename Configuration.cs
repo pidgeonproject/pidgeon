@@ -120,6 +120,8 @@ namespace Client
         /// </summary>
         public static bool NetworkSniff = true;
 
+        public static bool DisplaySizeOfBuffer = true;
+
         /// <summary>
         /// If updates are allowed
         /// </summary>

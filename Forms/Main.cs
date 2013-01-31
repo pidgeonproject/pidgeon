@@ -198,7 +198,8 @@ namespace Client
                     if (Core.network.RenderedChannel.Bl != null)
                     {
                         info += Core.network.RenderedChannel.Bl.Count.ToString();
-                    } else
+                    }
+                    else
                     {
                         info += "??";
                     }
@@ -207,7 +208,8 @@ namespace Client
                     if (Core.network.RenderedChannel.Invites != null)
                     {
                         info += Core.network.RenderedChannel.Invites.Count.ToString();
-                    } else
+                    }
+                    else
                     {
                         info += "??";
                     }
@@ -215,12 +217,20 @@ namespace Client
                     if (Core.network.RenderedChannel.Exceptions != null)
                     {
                         info += Core.network.RenderedChannel.Exceptions.Count.ToString();
-                    } else
+                    }
+                    else
                     {
                         info += "??";
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
                     toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: " + info;
+                    if (Configuration.DisplaySizeOfBuffer)
+                    {
+                        if (Chat != null)
+                        {
+                            toolStripStatusChannel.Text += " messages: " + Chat.scrollback.Lines.ToString();
+                        }
+                    }
                 }
             }
         }
@@ -345,7 +355,7 @@ namespace Client
             }  
         }
 
-        private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
+        /*private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
         {
             foreach (Protocol network in Core.Connections)
             {
@@ -376,7 +386,7 @@ namespace Client
                     return;
                 }
             }
-        }
+        } */
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {

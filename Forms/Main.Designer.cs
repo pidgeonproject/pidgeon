@@ -79,7 +79,6 @@ namespace Client
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.pidgeonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
             this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
@@ -331,8 +330,7 @@ namespace Client
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contentsToolStripMenuItem,
-            this.aboutToolStripMenuItem,
-            this.pidgeonToolStripMenuItem});
+            this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -342,23 +340,16 @@ namespace Client
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
             this.contentsToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.contentsToolStripMenuItem.Text = "Contents";
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-            // 
-            // pidgeonToolStripMenuItem
-            // 
-            this.pidgeonToolStripMenuItem.Name = "pidgeonToolStripMenuItem";
-            this.pidgeonToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.pidgeonToolStripMenuItem.Text = "#pidgeon";
-            this.pidgeonToolStripMenuItem.Click += new System.EventHandler(this.pidgeonToolStripMenuItem_Click);
             // 
             // sX
             // 
@@ -431,7 +422,6 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         public System.Windows.Forms.SplitContainer sX;
         private System.Windows.Forms.ToolStripMenuItem rootToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pidgeonToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem switchToAdvancedLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configurationFileToolStripMenuItem;
