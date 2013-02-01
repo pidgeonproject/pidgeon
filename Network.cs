@@ -195,7 +195,7 @@ namespace Client
         {
             get 
               {
-                  if (_protocol.type != 3)
+                  if (_protocol.ProtocolType != 3)
                   {
                       return "system";
                   }
@@ -279,7 +279,7 @@ namespace Client
 
                 username = Configuration.user;
                 ident = Configuration.ident;
-                if (protocol.type == 3)
+                if (protocol.ProtocolType == 3)
                 {
                     _protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
                     system = _protocol.windows["!" + randomuqid + server];

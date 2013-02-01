@@ -24,14 +24,15 @@ namespace Client
     public class Protocol
     {
         public char delimiter = (char)001;
-        public Window Current;
+        public Window Current = null;
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         public bool Connected = false;
-        public int type = 0;
+        public int ProtocolType = 0;
+        public bool SuppressChanges = false;
         /// <summary>
         /// Password for server
         /// </summary>
-        public string Password;
+        public string Password = null;
 
         public class Mode
         {

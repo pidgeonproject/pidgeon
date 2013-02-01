@@ -435,6 +435,7 @@ namespace Client
                                 {
                                     Core._Main.toolStripProgressBar1.Value = int.Parse(id);
                                     Core._Main.toolStripProgressBar1.Visible = true;
+                                    this.SuppressChanges = true;
                                     Core._Main.toolStripProgressBar1.Maximum = cache[NetworkList.IndexOf(server4)].size;
                                 }
                                 Core._Main.toolStripProgressBar1.Value = int.Parse(id);
@@ -444,6 +445,7 @@ namespace Client
                                     Core._Main.Status("");
                                     Core._Main.toolStripProgressBar1.Visible = false;
                                     Core._Main.toolStripProgressBar1.Value = 0;
+                                    this.SuppressChanges = false;
                                     foreach (Channel i in server4.Channels)
                                     {
                                         i.temporary_hide = false;
@@ -715,7 +717,7 @@ namespace Client
 
         public override bool Open()
         {
-            type = 3;
+            ProtocolType = 3;
             CreateChat("!root", true, null);
             main = new System.Threading.Thread(Start);
             Core._Main.ChannelList.insertSv(this);

@@ -25,8 +25,8 @@ namespace Client
 {
     public class ProcessorIRC
     {
-        public Network _server = null;
-        public Protocol protocol = null;
+        public Network _Network = null;
+        public Protocol _Protocol = null;
         public string text;
         public string sn;
         public DateTime pong;
@@ -40,22 +40,29 @@ namespace Client
             return;
         }
 
+        /// <summary>
+        /// Retrieve information about the server
+        /// </summary>
+        /// <param name="command">Command</param>
+        /// <param name="parameters">Parameters</param>
+        /// <param name="value">Text</param>
+        /// <returns></returns>
         private bool Info(string command, string parameters, string value)
         {
             if (parameters.Contains("PREFIX=("))
             {
                 string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
                 cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
-                lock (_server.CUModes)
+                lock (_Network.CUModes)
                 {
-                    _server.CUModes.Clear();
-                    _server.CUModes.AddRange(cmodes.ToArray<char>());
+                    _Network.CUModes.Clear();
+                    _Network.CUModes.AddRange(cmodes.ToArray<char>());
                 }
                 cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _server.CUModes.Count);
+                cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _Network.CUModes.Count);
 
-                _server.UChars.Clear();
-                _server.UChars.AddRange(cmodes.ToArray<char>());
+                _Network.UChars.Clear();
+                _Network.UChars.AddRange(cmodes.ToArray<char>());
 
             }
             if (parameters.Contains("CHANMODES="))
@@ -63,17 +70,17 @@ namespace Client
                 string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
                 xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
                 string[] _mode = xmodes.Split(',');
-                _server.parsed_info = true;
+                _Network.parsed_info = true;
                 if (_mode.Length == 4)
                 {
-                    _server.PModes.Clear();
-                    _server.CModes.Clear();
-                    _server.XModes.Clear();
-                    _server.SModes.Clear();
-                    _server.PModes.AddRange(_mode[0].ToArray<char>());
-                    _server.XModes.AddRange(_mode[1].ToArray<char>());
-                    _server.SModes.AddRange(_mode[2].ToArray<char>());
-                    _server.CModes.AddRange(_mode[3].ToArray<char>());
+                    _Network.PModes.Clear();
+                    _Network.CModes.Clear();
+                    _Network.XModes.Clear();
+                    _Network.SModes.Clear();
+                    _Network.PModes.AddRange(_mode[0].ToArray<char>());
+                    _Network.XModes.AddRange(_mode[1].ToArray<char>());
+                    _Network.SModes.AddRange(_mode[2].ToArray<char>());
+                    _Network.CModes.AddRange(_mode[3].ToArray<char>());
                 }
 
             }
@@ -86,7 +93,7 @@ namespace Client
             {
                 string name = code[2];
                 string topic = _value;
-                Channel channel = _server.getChannel(code[3]);
+                Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
                     Window curr = channel.retrieveWindow();
@@ -112,7 +119,7 @@ namespace Client
                     name = parameters.Substring(parameters.IndexOf("#")).Replace(" ", "");
                 }
                 string topic = value;
-                Channel channel = _server.getChannel(name);
+                Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
                     Window curr = channel.retrieveWindow();
@@ -136,7 +143,7 @@ namespace Client
         {
             if (code.Length > 2)
             {
-                Channel channel = _server.getChannel(code[3]);
+                Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
                     channel.redrawUsers();
@@ -159,7 +166,7 @@ namespace Client
                 string name = code[3];
                 string user = code[4];
                 string time = code[5];
-                Channel channel = _server.getChannel(name);
+                Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
                     channel.TopicDate = int.Parse(time);
@@ -181,7 +188,7 @@ namespace Client
         {
             if (code.Length > 8)
             {
-                Channel channel = _server.getChannel(code[3]);
+                Channel channel = _Network.getChannel(code[3]);
                 string ident = code[4];
                 string host = code[5];
                 string nick = code[7];
@@ -201,7 +208,7 @@ namespace Client
                     {
                         if (!channel.containsUser(nick))
                         {
-                            User _user = new User(mode + nick, host, _server, ident);
+                            User _user = new User(mode + nick, host, _Network, ident);
                             channel.UserList.Add(_user);
                             return true;
                         }
@@ -233,7 +240,7 @@ namespace Client
                 {
                     return true;
                 }
-                Channel channel = _server.getChannel(name);
+                Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
                     string[] _chan = data[2].Split(' ');
@@ -243,7 +250,7 @@ namespace Client
                         {
                             lock (channel.UserList)
                             {
-                                channel.UserList.Add(new User(user, "", _server, ""));
+                                channel.UserList.Add(new User(user, "", _Network, ""));
                             }
                         }
                     }
@@ -279,35 +286,35 @@ namespace Client
             
             chan = parameters.Replace(" ", "");
             string message = value;
-            if (!chan.Contains(_server.channel_prefix))
+            if (!chan.Contains(_Network.channel_prefix))
             {
                 string uc;
-                if (message.StartsWith(protocol.delimiter.ToString()))
+                if (message.StartsWith(_Protocol.delimiter.ToString()))
                 {
                     uc = message.Substring(1);
-                    if (uc.Contains(protocol.delimiter))
+                    if (uc.Contains(_Protocol.delimiter))
                     {
-                        uc = uc.Substring(0, uc.IndexOf(protocol.delimiter.ToString()));
+                        uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
                     }
                     uc = uc.ToUpper();
                     switch (uc)
                     {
                         case "VERSION":
-                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
+                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
                                 Configuration.Priority.Low);
                             break;
                         case "TIME":
-                            protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
+                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
                                 Configuration.Priority.Low);
                             break;
                         case "PING":
                             if (message.Length > 6)
                             {
                                 string time = message.Substring(6);
-                                if (time.Contains(_server._protocol.delimiter))
+                                if (time.Contains(_Network._protocol.delimiter))
                                 {
-                                    time = message.Substring(0, message.IndexOf(_server._protocol.delimiter));
-                                    protocol.Transfer("NOTICE " + _nick + " :" + protocol.delimiter.ToString() + "PING " + time,
+                                    time = message.Substring(0, message.IndexOf(_Network._protocol.delimiter));
+                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
                                         Configuration.Priority.Low);
                                 }
                             }
@@ -315,7 +322,7 @@ namespace Client
                     }
                     if (Configuration.DisplayCtcp)
                     {
-                        protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                        _Protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
@@ -323,25 +330,25 @@ namespace Client
                 }
 
             }
-            User user = new User(_nick, _host, _server, _ident);
+            User user = new User(_nick, _host, _Network, _ident);
             Channel channel = null;
-            if (chan.StartsWith(_server.channel_prefix))
+            if (chan.StartsWith(_Network.channel_prefix))
             {
-                channel = _server.getChannel(chan);
+                channel = _Network.getChannel(chan);
                 if (channel != null)
                 {
                     Window window;
                     window = channel.retrieveWindow();
                     if (window != null)
                     {
-                        if (message.StartsWith(protocol.delimiter.ToString() + "ACTION"))
+                        if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
                             channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
-                        channel.retrieveWindow().scrollback.InsertText(protocol.PRIVMSG(user.Nick, message),
+                        channel.retrieveWindow().scrollback.InsertText(_Protocol.PRIVMSG(user.Nick, message),
                             Scrollback.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
                     }
                     channel.UpdateInfo();
@@ -349,14 +356,14 @@ namespace Client
                 }
                 return true;
             }
-            if (chan == _server.nickname)
+            if (chan == _Network.nickname)
             {
                 chan = source.Substring(0, source.IndexOf("!"));
-                if (!protocol.windows.ContainsKey(_server.window + chan))
+                if (!_Protocol.windows.ContainsKey(_Network.window + chan))
                 {
-                    _server.Private(chan);
+                    _Network.Private(chan);
                 }
-                protocol.windows[_server.window + chan].scrollback.InsertText(protocol.PRIVMSG(chan, message),
+                _Protocol.windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
                     Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
                 return true;
             }
@@ -368,7 +375,7 @@ namespace Client
             if (code.Length > 6)
             {
                 string chan = code[3];
-                Channel channel = _server.getChannel(code[3]);
+                Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
                     channel.UpdateInfo();
@@ -390,7 +397,7 @@ namespace Client
         {
             string nick = source.Substring(0, source.IndexOf("!"));
             string _new = value;
-            foreach (Channel item in _server.Channels)
+            foreach (Channel item in _Network.Channels)
             {
                 if (item.ok)
                 {
@@ -427,9 +434,9 @@ namespace Client
                 string chan = parameters.Substring(0, parameters.IndexOf(" "));
                 chan = chan.Replace(" ", "");
                 string user = source;
-                if (chan.StartsWith(_server.channel_prefix))
+                if (chan.StartsWith(_Network.channel_prefix))
                 {
-                    Channel channel = _server.getChannel(chan);
+                    Channel channel = _Network.getChannel(chan);
                     if (channel != null)
                     {
                         Window window;
@@ -478,7 +485,7 @@ namespace Client
                                 {
                                     continue;
                                 }
-                                if (_server.CUModes.Contains(m) && curr <= parameters2.Count)
+                                if (_Network.CUModes.Contains(m) && curr <= parameters2.Count)
                                 {
                                     User flagged_user = channel.userFromName(parameters2[curr]);
                                     if (flagged_user != null)
@@ -542,8 +549,8 @@ namespace Client
             _host = source.Substring(source.IndexOf("@") + 1);
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
-            Channel channel = _server.getChannel(chan);
-            if (!Hooks.BeforePart(_server, channel)) { return true; }
+            Channel channel = _Network.getChannel(chan);
+            if (!Hooks.BeforePart(_Network, channel)) { return true; }
             if (channel != null)
             {
                 Window window;
@@ -592,7 +599,7 @@ namespace Client
             string chan = parameters;
             chan = chan.Replace(" ", "");
             string user = source.Substring(0, source.IndexOf("!"));
-            Channel channel = _server.getChannel(chan);
+            Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
                 Window window;
@@ -619,7 +626,7 @@ namespace Client
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
             string _new = value;
-            foreach (Channel item in _server.Channels)
+            foreach (Channel item in _Network.Channels)
             {
                 if (item.ok)
                 {
@@ -664,7 +671,7 @@ namespace Client
         {
             string user = parameters.Substring(parameters.IndexOf(" ") + 1);
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
-            Channel channel = _server.getChannel(parameters.Substring(0, parameters.IndexOf(" ")));
+            Channel channel = _Network.getChannel(parameters.Substring(0, parameters.IndexOf(" ")));
             if (channel != null)
             {
                 Window window;
@@ -716,7 +723,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@") + 1);
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
-            Channel channel = _server.getChannel(chan);
+            Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
                 Window window;
@@ -732,7 +739,7 @@ namespace Client
                         {
                             lock (channel.UserList)
                             {
-                                channel.UserList.Add(new User(user, _host, _server, _ident));
+                                channel.UserList.Add(new User(user, _host, _Network, _ident));
                             }
                             channel.redrawUsers();
                         }
@@ -767,7 +774,7 @@ namespace Client
                 {
                     return false;
                 }
-                protocol.windows[system].scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                _Protocol.windows[system].scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -853,12 +860,12 @@ namespace Client
                                 Ping();
                                 return true;
                             case "INFO":
-                                protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
+                                _Protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
-                                if (parameters.Contains(_server.channel_prefix))
+                                if (parameters.Contains(_Network.channel_prefix))
                                 {
-                                    Channel channel = _server.getChannel(parameters);
+                                    Channel channel = _Network.getChannel(parameters);
                                     if (channel != null)
                                     {
                                         Window window;
@@ -870,10 +877,10 @@ namespace Client
                                         }
                                     }
                                 }
-                                protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                _Protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
-                                protocol.Transfer("PONG ", Configuration.Priority.High);
+                                _Protocol.Transfer("PONG ", Configuration.Priority.High);
                                 return true;
                             case "NICK":
                                 if (ProcessNick(source, parameters, _value))
@@ -974,7 +981,7 @@ namespace Client
                                     break;
                             }
                         }
-                        if (source.StartsWith(_server.nickname + "!"))
+                        if (source.StartsWith(_Network.nickname + "!"))
                         {
                             string[] _data2 = data[1].Split(' ');
                             if (_data2.Length > 2)
@@ -986,37 +993,37 @@ namespace Client
                                     {
                                         channel = data[2];
                                     }
-                                    Channel curr = _server.getChannel(channel);
+                                    Channel curr = _Network.getChannel(channel);
                                     if (curr == null)
                                     {
-                                        curr = _server.Join(channel);
+                                        curr = _Network.Join(channel);
                                     }
                                     if (Configuration.aggressive_mode)
                                     {
-                                        protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
+                                        _Protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
                                     }
 
                                     if (Configuration.aggressive_exception)
                                     {
                                         curr.parsing_xe = true;
-                                        protocol.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
+                                        _Protocol.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                                     }
 
                                     if (Configuration.aggressive_bans)
                                     {
                                         curr.parsing_xb = true;
-                                        protocol.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
+                                        _Protocol.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                                     }
 
                                     if (Configuration.aggressive_invites)
                                     {
-                                        protocol.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
+                                        _Protocol.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
                                     }
 
                                     if (Configuration.aggressive_channel)
                                     {
                                         curr.parsing_who = true;
-                                        protocol.Transfer("WHO " + channel, Configuration.Priority.Low);
+                                        _Protocol.Transfer("WHO " + channel, Configuration.Priority.Low);
                                     }
                                     return true;
                                 }
@@ -1025,16 +1032,16 @@ namespace Client
                             {
                                 if (_data2[1].Contains("NICK"))
                                 {
-                                    protocol.windows[system].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
-                                    _server.nickname = _value;
+                                    _Protocol.windows[system].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                                    _Network.nickname = _value;
                                 }
                                 if (_data2[1].Contains("PART"))
                                 {
                                     string channel = _data2[2];
-                                    if (_data2[2].Contains(_server.channel_prefix))
+                                    if (_data2[2].Contains(_Network.channel_prefix))
                                     {
                                         channel = _data2[2];
-                                        Channel c = _server.getChannel(channel);
+                                        Channel c = _Network.getChannel(channel);
                                         if (c != null)
                                         {
                                             Window Chat = c.retrieveWindow();
@@ -1062,7 +1069,7 @@ namespace Client
                         }
                     }
                 }
-                protocol.windows[system].scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                _Protocol.windows[system].scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
             }
             catch (Exception fail)
             {
@@ -1084,8 +1091,8 @@ namespace Client
         /// <param name="updated">If true this text will be considered as newly obtained information</param>
         public ProcessorIRC(Network _network, Protocol _protocol, string _text, string _sn, string ws, ref DateTime _pong, long _date = 0, bool updated = true)
         {
-            _server = _network;
-            protocol = _protocol;
+            _Network = _network;
+            _Protocol = _protocol;
             text = _text;
             sn = _sn;
             system = ws;

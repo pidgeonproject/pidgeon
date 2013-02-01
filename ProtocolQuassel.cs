@@ -112,7 +112,7 @@ namespace Client
         public override bool Open()
         {
             _Thread = new System.Threading.Thread(Start);
-            type = 4;
+            ProtocolType = 4;
             Core._Main.Status(messages.get("connecting", Core.SelectedLanguage));
             _Thread.Start();
             Core.SystemThreads.Add(_Thread);

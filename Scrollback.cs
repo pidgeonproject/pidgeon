@@ -32,27 +32,49 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
-        private bool db = false;
-        public bool Modified;
-        private int scrollback_max = Configuration.scrollback_plimit;
-        private bool isDisposing;
-        private List<ContentLine> Line = new List<ContentLine>();
-        public TextBox Last;
+        /// <summary>
+        /// This is a list of all active instances of scrollbacks in system
+        /// </summary>
         public static List<Scrollback> _control = new List<Scrollback>();
-        public Window owner;
-        public bool show = true;
-        public bool px1 = true;
-        public bool px2 = false;
+        private bool db = false;
+        /// <summary>
+        /// Defines if current scrollback is modified and needs to be redrawn
+        /// </summary>
+        public bool Modified = false;
+        /// <summary>
+        /// Maximal size of text
+        /// </summary>
+        private int scrollback_max = Configuration.scrollback_plimit;
+        /// <summary>
+        /// List of all lines in this textbox
+        /// </summary>
+        private List<ContentLine> ContentLines = new List<ContentLine>();
+        public TextBox Last = null;
+        /// <summary>
+        /// Owner window
+        /// </summary>
+        public Window owner = null;
         private string Link = "";
+        public bool simple = false;
+
+        public enum MessageStyle
+        {
+            System,
+            Message,
+            Action,
+            User,
+            Channel,
+            Kick,
+            Join,
+            Part,
+        }
 
         public int Lines
         {
             get {
-                return Line.Count;
+                return ContentLines.Count;
             }
         }
-
-        public bool simple = false;
 
         public class ContentLine : IComparable
         {
@@ -79,7 +101,6 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            isDisposing = true;
             lock (_control)
             {
                 if (_control.Contains(this))
@@ -122,6 +143,9 @@ namespace Client
             Recreate(true);
         }
 
+        /// <summary>
+        /// Creates a new scrollback instance
+        /// </summary>
         public Scrollback()
         {
             lock (_control)
@@ -131,18 +155,11 @@ namespace Client
             this.BackColor = Configuration.CurrentSkin.backgroundcolor;
         }
 
-        public enum MessageStyle
-        {
-            System,
-            Message,
-            Action,
-            User,
-            Channel,
-            Kick,
-            Join,
-            Part,
-        }
-
+        /// <summary>
+        /// Check if this line needs to display notification window
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public bool Match(string text)
         {
             string matchline = "";
@@ -192,20 +209,20 @@ namespace Client
         /// Insert a text to scrollback list
         /// </summary>
         /// <param name="text">Text</param>
-        /// <param name="input_style">Style</param>
-        /// <param name="lg">Write to a log</param>
-        /// <param name="dt">Date</param>
-        /// <param name="nh">Suppress highlight</param>
+        /// <param name="InputStyle">Style</param>
+        /// <param name="WriteLog">Write to a log</param>
+        /// <param name="Date">Date</param>
+        /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, MessageStyle input_style, bool lg = true, long dt = 0, bool nh = false)
+        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             if (owner != null && owner.MicroBox)
             {
-                MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, input_style, false, dt);
+                MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
             }
 
             bool Matched = false;
-            if (!nh)
+            if (!SuppressPing)
             {
                 Matched = Match(text);
             }
@@ -215,9 +232,9 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (owner != null && owner != Core._Main.Chat && owner.ln != null)
+            if (owner != null && owner != Core._Main.Chat && !owner._Protocol.SuppressChanges && owner.ln != null)
             {
-                switch (input_style)
+                switch (InputStyle)
                 {
                     case MessageStyle.Kick:
                     case MessageStyle.System:
@@ -253,20 +270,20 @@ namespace Client
                 }
             }
             DateTime time = DateTime.Now;
-            if (dt != 0)
+            if (Date != 0)
             {
-                time = DateTime.FromBinary(dt);
+                time = DateTime.FromBinary(Date);
             }
-            lock (Line)
+            lock (ContentLines)
             {
-                Line.Add(new ContentLine(input_style, text, time, Matched));
-                if (dt != 0)
+                ContentLines.Add(new ContentLine(InputStyle, text, time, Matched));
+                if (Date != 0)
                 {
-                    Line.Sort();
+                    ContentLines.Sort();
                 }
             }
             Modified = true;
-            if (lg == true && owner != null && owner._Network != null)
+            if (WriteLog == true && owner != null && owner._Network != null)
             {
                 if (!Directory.Exists(Configuration.logs_dir))
                 {
@@ -300,7 +317,7 @@ namespace Client
                 }
                 if (Configuration.logs_xml)
                 {
-                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + input_style.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
+                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
                 }
             }
             return false;
@@ -351,10 +368,10 @@ namespace Client
                 Modified = false;
                 if (simple)
                 {
-                    lock (Line)
+                    lock (ContentLines)
                     {
                         List<string> values = new List<string>();
-                        foreach (ContentLine _line in Line)
+                        foreach (ContentLine _line in ContentLines)
                         {
                             values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text));
                         }
@@ -365,18 +382,18 @@ namespace Client
                     return;
                 }
                 int min = 0;
-                if (scrollback_max != 0 && scrollback_max < Line.Count)
+                if (scrollback_max != 0 && scrollback_max < ContentLines.Count)
                 {
-                    min = Line.Count - scrollback_max;
+                    min = ContentLines.Count - scrollback_max;
                 }
                 RT.Remove();
-                lock (Line)
+                lock (ContentLines)
                 {
-                    int max = Line.Count;
+                    int max = ContentLines.Count;
                     int current = min;
                     while (current < max)
                     {
-                        ContentLine _c = Line[current];
+                        ContentLine _c = ContentLines[current];
                         Color color = Configuration.CurrentSkin.fontcolor;
                         switch (_c.style)
                         {
@@ -674,9 +691,9 @@ namespace Client
         {
             if (MessageBox.Show("Do you really want to clear this window", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                lock (Line)
+                lock (ContentLines)
                 {
-                    Line.Clear();
+                    ContentLines.Clear();
                     Reload();
                     Recreate(true);
                 }
