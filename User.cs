@@ -23,33 +23,41 @@ namespace Client
 {
     public class User : IComparable
     {
-        
         public string Host;
         public Network _Network;
         public string Ident;
         public Protocol.Mode ChannelMode = new Protocol.Mode();
         public string Nick;
         public List<Channel> ChannelList;
-        public User(string _Nick, string host, Network network, string ident)
+        public User(string nick, string host, Network network, string ident)
         {
             ChannelList = new List<Channel>();
             _Network = network;
-            if (_Nick != "")
+            if (nick != "")
             {
-                char prefix = _Nick[0];
+                char prefix = nick[0];
                 if (network.UChars.Contains(prefix))
                 {
                     int Mode = network.UChars.IndexOf(prefix);
                     if (network.CUModes.Count >= Mode + 1)
                     {
                         ChannelMode.mode("+" + network.CUModes[Mode].ToString());
-                        _Nick = _Nick.Substring(1);
+                        nick = nick.Substring(1);
                     }
                 }
             }
-            Nick = _Nick;
+            Nick = nick;
             Ident = ident;
             Host = host;
+        }
+
+        /// <summary>
+        /// Converts a user object to string
+        /// </summary>
+        /// <returns>[nick!ident@host]</returns>
+        public override string ToString()
+        {
+            return Nick + "!" + Ident + "@" + Host;
         }
 
         public int CompareTo(object obj)

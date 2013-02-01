@@ -297,12 +297,8 @@ namespace Client
                         return;
                     }
                     Core.DebugLog("Unknown message: " + text);
-                    //ProtocolIrc.ProcessorIRC processor4 = new ProtocolIrc.ProcessorIRC(server, this, text, server.server, server.sw, ref pong, time, false);
-                    //processor4.Result();
                     return;
                 }
-                //ProtocolIrc.ProcessorIRC processor3 = new ProtocolIrc.ProcessorIRC(server, this, curr.InnerText, server.server, server.sw, ref pong, time);
-                //processor3.Result();
             }
             catch (Exception fail)
             {
