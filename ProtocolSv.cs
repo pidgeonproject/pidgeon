@@ -829,13 +829,30 @@ namespace Client
             Transfer("JOIN " + name);
         }
 
-        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
+        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal, Network network = null)
         {
-            if (Core.network != null && NetworkList.Contains(Core.network))
+            if (network == null)
             {
-                Datagram blah = new Datagram("RAW", text);
-                blah.Parameters.Add("network", Core.network.server);
-                Deliver(blah);
+                if (Core.network != null && NetworkList.Contains(Core.network))
+                {
+                    Datagram blah = new Datagram("RAW", text);
+                    blah.Parameters.Add("network", Core.network.server);
+                    Deliver(blah);
+                    return;
+                }
+            }
+            else
+            {
+                if (NetworkList.Contains(network))
+                {
+                    Datagram blah = new Datagram("RAW", text);
+                    blah.Parameters.Add("network", network.server);
+                    Deliver(blah);
+                }
+                else
+                {
+                    Core.DebugLog("Network is not a part of this services connection " + network.server);
+                }
             }
         }
     }

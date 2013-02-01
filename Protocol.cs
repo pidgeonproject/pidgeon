@@ -259,7 +259,7 @@ namespace Client
         /// </summary>
         /// <param name="data"></param>
         /// <param name="_priority"></param>
-        public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null)
         {
             
         }

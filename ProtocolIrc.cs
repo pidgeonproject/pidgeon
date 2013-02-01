@@ -168,7 +168,7 @@ namespace Client
             Transfer("PART " + name);
         }
 
-        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal)
+        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal, Network network = null)
         {
             Messages.DeliverMessage(text, Pr);
         }

@@ -68,20 +68,7 @@ namespace Client
             {
                 Text = channel.Name;
 
-                if (channel.Bl != null)
-                {
-                    lock (channel.Bl)
-                    {
-                        foreach (SimpleBan sb in channel.Bl)
-                        { 
-                            ListViewItem li = new ListViewItem(sb.Target);
-                            li.SubItems.Add(convertUNIX(sb.Time)  + " (" + sb.Time + ")");
-                            li.SubItems.Add(sb.User);
-                            
-                            listView3.Items.Add(li);
-                        }
-                    }
-                }
+                ReloadBans();
 
                 lock (channel._mode)
                 {
@@ -100,13 +87,35 @@ namespace Client
             }
         }
 
+        public void ReloadBans()
+        {
+            if (channel != null)
+            {
+                if (channel.Bl != null)
+                {
+                    listView3.Items.Clear();
+                    lock (channel.Bl)
+                    {
+                        foreach (SimpleBan sb in channel.Bl)
+                        {
+                            ListViewItem li = new ListViewItem(sb.Target);
+                            li.SubItems.Add(convertUNIX(sb.Time) + " (" + sb.Time + ")");
+                            li.SubItems.Add(sb.User);
+
+                            listView3.Items.Add(li);
+                        }
+                    }
+                }
+            }
+        }
+
         private void bClose_Click(object sender, EventArgs e)
         {
             try
             {
                 if (channel.Topic != textBox1.Text)
                 {
-                    channel._Network._protocol.Transfer("TOPIC " + channel.Name + " :" + textBox1.Text);
+                    channel._Network.Transfer("TOPIC " + channel.Name + " :" + textBox1.Text);
                 }
                 bool change = false;
                 string cset = "+";
@@ -139,7 +148,7 @@ namespace Client
                     {
                         cset = "";
                     }
-                    channel._Network._protocol.Transfer("MODE " + channel.Name + " " + cset + uset);
+                    channel._Network.Transfer("MODE " + channel.Name + " " + cset + uset);
                 }
             }
             catch (Exception f)
@@ -164,7 +173,7 @@ namespace Client
 
         private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            ReloadBans();
         }
 
         private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -179,7 +188,13 @@ namespace Client
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem item in listView3.SelectedItems)
+            {
+                if (item.Text != "")
+                {
+                    channel._Network.Transfer("MODE " + channel.Name + " -b " + item.Text);
+                }
+            }
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)

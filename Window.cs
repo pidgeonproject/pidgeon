@@ -148,8 +148,8 @@ namespace Client
                         kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
                         if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + ban + "\n" + kick }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            _channel._Network._protocol.Transfer(ban, Configuration.Priority.High);
-                            _channel._Network._protocol.Transfer(kick, Configuration.Priority.High);
+                            _channel._Network.Transfer(ban, Configuration.Priority.High);
+                            _channel._Network.Transfer(kick, Configuration.Priority.High);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace Client
                             {
                                 _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
-                            _channel._Network._protocol.Transfer("PRIVMSG " +  Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
+                            _channel._Network.Transfer("PRIVMSG " +  Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
                     }
                 }
@@ -226,7 +226,7 @@ namespace Client
                     {
                         if (user.Text != "")
                         {
-                            Core.network._protocol.Transfer("WHOIS " + Decode(user.Text));
+                            Core.network.Transfer("WHOIS " + Decode(user.Text));
                         }
                     }
                 }
@@ -255,7 +255,7 @@ namespace Client
                     {
                         if (user.Text != "")
                         {
-                            Core.network._protocol.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
+                            Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
                         }
                     }
                 }
@@ -303,7 +303,7 @@ namespace Client
                         }
                         if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                         {
-                            Core.network._protocol.Transfer(mode, Configuration.Priority.High);
+                            Core.network.Transfer(mode, Configuration.Priority.High);
                         }
                     }
                 }
@@ -361,7 +361,7 @@ namespace Client
                                 }
                                 if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                                 {
-                                    Core.network._protocol.Transfer(mode, Configuration.Priority.High);
+                                    Core.network.Transfer(mode, Configuration.Priority.High);
                                 }
                             }
                         }
@@ -378,7 +378,7 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Core.network._protocol.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
+                        Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
                     }
                 }
             }
@@ -569,7 +569,7 @@ namespace Client
                 if (channel != null)
                 {
                     channel.UserList.Clear();
-                    _Network._protocol.Transfer("WHO " + channel.Name);
+                    _Network.Transfer("WHO " + channel.Name);
                 }
             }
         }

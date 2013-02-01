@@ -244,6 +244,16 @@ namespace Client
         }
 
         /// <summary>
+        /// Transfer data to this network server
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="_priority"></param>
+        public void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
+        {
+            _protocol.Transfer(data, _priority, this);
+        }
+
+        /// <summary>
         /// Create a new network, requires name and protocol type
         /// </summary>
         /// <param name="Server"></param>

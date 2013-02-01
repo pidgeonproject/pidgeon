@@ -57,6 +57,10 @@ namespace Client
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkedList = new System.Windows.Forms.CheckedListBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.listView1 = new System.Windows.Forms.ListView();
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.contextMenuStripI = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.reloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -80,10 +84,6 @@ namespace Client
             this.contextMenuStripE = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.listView1 = new System.Windows.Forms.ListView();
-            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayout1.SuspendLayout();
@@ -215,6 +215,35 @@ namespace Client
             this.tabPage2.Text = "tabPage2";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // listView1
+            // 
+            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6});
+            this.listView1.ContextMenuStrip = this.contextMenuStripI;
+            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView1.FullRowSelect = true;
+            this.listView1.Location = new System.Drawing.Point(0, 0);
+            this.listView1.Name = "listView1";
+            this.listView1.Size = new System.Drawing.Size(1001, 378);
+            this.listView1.TabIndex = 1;
+            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView1.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Host";
+            this.columnHeader4.Width = 827;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Time";
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "By";
+            // 
             // contextMenuStripI
             // 
             this.contextMenuStripI.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -270,6 +299,7 @@ namespace Client
             this.columnHeader9});
             this.listView2.ContextMenuStrip = this.contextMenuStripI;
             this.listView2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView2.FullRowSelect = true;
             this.listView2.Location = new System.Drawing.Point(0, 0);
             this.listView2.Name = "listView2";
             this.listView2.Size = new System.Drawing.Size(1001, 378);
@@ -308,6 +338,7 @@ namespace Client
             this.columnHeader3});
             this.listView3.ContextMenuStrip = this.contextMenuStripB;
             this.listView3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView3.FullRowSelect = true;
             this.listView3.Location = new System.Drawing.Point(0, 0);
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(1001, 378);
@@ -338,7 +369,7 @@ namespace Client
             this.enforceAllToolStripMenuItem,
             this.deleteToolStripMenuItem1});
             this.contextMenuStripB.Name = "menuBan";
-            this.contextMenuStripB.Size = new System.Drawing.Size(130, 92);
+            this.contextMenuStripB.Size = new System.Drawing.Size(153, 114);
             // 
             // reloadToolStripMenuItem1
             // 
@@ -349,15 +380,17 @@ namespace Client
             // 
             // insertToolStripMenuItem1
             // 
+            this.insertToolStripMenuItem1.Enabled = false;
             this.insertToolStripMenuItem1.Name = "insertToolStripMenuItem1";
-            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(129, 22);
+            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
             this.insertToolStripMenuItem1.Text = "Insert";
             this.insertToolStripMenuItem1.Click += new System.EventHandler(this.insertToolStripMenuItem1_Click);
             // 
             // enforceAllToolStripMenuItem
             // 
+            this.enforceAllToolStripMenuItem.Enabled = false;
             this.enforceAllToolStripMenuItem.Name = "enforceAllToolStripMenuItem";
-            this.enforceAllToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.enforceAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.enforceAllToolStripMenuItem.Text = "Enforce all";
             this.enforceAllToolStripMenuItem.Click += new System.EventHandler(this.enforceAllToolStripMenuItem_Click);
             // 
@@ -388,34 +421,6 @@ namespace Client
             this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
             this.deleteToolStripMenuItem2.Text = "Delete";
             this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
-            // 
-            // listView1
-            // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader4,
-            this.columnHeader5,
-            this.columnHeader6});
-            this.listView1.ContextMenuStrip = this.contextMenuStripI;
-            this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView1.Location = new System.Drawing.Point(0, 0);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(1001, 378);
-            this.listView1.TabIndex = 1;
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
-            // 
-            // columnHeader4
-            // 
-            this.columnHeader4.Text = "Host";
-            this.columnHeader4.Width = 827;
-            // 
-            // columnHeader5
-            // 
-            this.columnHeader5.Text = "Time";
-            // 
-            // columnHeader6
-            // 
-            this.columnHeader6.Text = "By";
             // 
             // Channel_Info
             // 

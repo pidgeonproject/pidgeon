@@ -87,7 +87,7 @@ namespace Client
         /// <summary>
         /// Notification box
         /// </summary>
-        private static Notification notification;
+        private static Notification notification = null;
         /// <summary>
         /// Threads currently allocated in kernel
         /// </summary>
@@ -99,11 +99,11 @@ namespace Client
         /// <summary>
         /// Selected network
         /// </summary>
-        public static Network network;
+        public static Network network = null;
         /// <summary>
         /// Main
         /// </summary>
-        public static Main _Main;
+        public static Main _Main = null;
         /// <summary>
         /// Wheter notification is waiting
         /// </summary>
@@ -160,7 +160,6 @@ namespace Client
         {
             AppDomain domain;
             string name;
-            Module module;
             public Domain(AppDomain _appDomain, string _name)
             {
                 domain = _appDomain;
@@ -254,26 +253,6 @@ namespace Client
                 alt = Alt;
                 data = Data;
                 keys = Value;
-            }
-        }
-
-        public class Module
-        {
-            public string path;
-            public bool running;
-            public Thread thread;
-
-            public void main()
-            {
-
-            }
-
-            public Module()
-            {
-                path = "";
-                running = false;
-                thread = new Thread(main);
-                thread.Name = "plugin";
             }
         }
 
