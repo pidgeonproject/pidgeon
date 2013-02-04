@@ -105,7 +105,6 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(696, 402);
             this.Controls.Add(this.textBox1);
             this.DoubleBuffered = true;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "TrafficScanner";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrafficScanner";

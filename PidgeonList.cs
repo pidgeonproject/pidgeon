@@ -389,7 +389,10 @@ namespace Client
                         {
                             RemoveItem(item);
                         }
-                        items.Nodes.Remove(Item);
+                        if (items.Nodes.Contains(Item))
+                        {
+                            items.Nodes.Remove(Item);
+                        }
                         return;
                     }
                 }
@@ -414,7 +417,13 @@ namespace Client
                     }
                     if (curr != null)
                     {
-                        items.Nodes.Remove(Item);
+                        lock (items.Nodes)
+                        {
+                            if (items.Nodes.Contains(Item))
+                            {
+                                items.Nodes.Remove(Item);
+                            }
+                        }
                         if (curr._Network._protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
                         {
                             lock (curr._Network._protocol.windows)
@@ -423,7 +432,13 @@ namespace Client
                                 curr._Network._protocol.windows[curr._Network.window + curr.Nick].Dispose();
                             }
                         }
-                        UserList.Remove(curr);
+                        lock (UserList)
+                        {
+                            if (UserList.ContainsKey(curr))
+                            {
+                                UserList.Remove(curr);
+                            }
+                        }
                         return;
                     }
                 }
@@ -455,7 +470,13 @@ namespace Client
                     }
                     if (item != null)
                     {
-                        items.Nodes.Remove(Item);
+                        lock (items.Nodes)
+                        {
+                            if (items.Nodes.Contains(Item))
+                            {
+                                items.Nodes.Remove(Item);
+                            }
+                        }
                         lock (item.retrieveWindow())
                         {
                             if (item.retrieveWindow() != null)
@@ -463,13 +484,25 @@ namespace Client
                                 item.retrieveWindow().Visible = false;
                                 item.retrieveWindow().Dispose();
                             }
-                            item._Network.Channels.Remove(item);
+                            lock (item._Network.Channels)
+                            {
+                                item._Network.Channels.Remove(item);
+                            }
                         }
-                        Channels.Remove(item);
+                        lock (Channels)
+                        {
+                            Channels.Remove(item);
+                        }
                         return;
                     }
                 }
-                items.Nodes.Remove(Item);
+                lock (items.Nodes)
+                {
+                    if (items.Nodes.Contains(Item))
+                    {
+                        items.Nodes.Remove(Item);
+                    }
+                }
             }
             catch (Exception f)
             {
