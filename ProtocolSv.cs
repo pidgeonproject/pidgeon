@@ -457,11 +457,11 @@ namespace Client
                                         i.parsing_who = false;
                                     }
                                 }
-                                ProcessorIRC processor = new ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date, false);
+                                ProcessorIRC processor = new ProcessorIRC(server4, curr.InnerText, ref pong, date, false);
                                 processor.Result();
                                 break;
                             }
-                            ProcessorIRC processor2 = new ProcessorIRC(server4, this, curr.InnerText, server4.server, server4.sw, ref pong, date);
+                            ProcessorIRC processor2 = new ProcessorIRC(server4, curr.InnerText, ref pong, date);
                             processor2.Result();
                             break;
                         case "SNICK":

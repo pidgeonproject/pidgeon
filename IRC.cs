@@ -25,13 +25,21 @@ namespace Client
 {
     public class ProcessorIRC
     {
+        /// <summary>
+        /// Network
+        /// </summary>
         public Network _Network = null;
+        /// <summary>
+        /// Protocol of this network
+        /// </summary>
         public Protocol _Protocol = null;
         public string text;
-        public string sn;
         public DateTime pong;
         public long date = 0;
-        public string system = "";
+        /// <summary>
+        /// System window
+        /// </summary>
+        public Window system = null;
         public bool updated_text = true;
 
         private void Ping()
@@ -322,7 +330,7 @@ namespace Client
                     }
                     if (Configuration.DisplayCtcp)
                     {
-                        _Protocol.windows[system].scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                        system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
@@ -773,7 +781,7 @@ namespace Client
                 {
                     return false;
                 }
-                _Protocol.windows[system].scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                system.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -859,7 +867,7 @@ namespace Client
                                 Ping();
                                 return true;
                             case "INFO":
-                                _Protocol.windows[system].scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
+                                system.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
                                 if (parameters.Contains(_Network.channel_prefix))
@@ -876,7 +884,7 @@ namespace Client
                                         }
                                     }
                                 }
-                                _Protocol.windows[system].scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                system.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
                                 _Protocol.Transfer("PONG ", Configuration.Priority.High);
@@ -1031,7 +1039,7 @@ namespace Client
                             {
                                 if (_data2[1].Contains("NICK"))
                                 {
-                                    _Protocol.windows[system].scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                                    system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
                                     _Network.nickname = _value;
                                 }
                                 if (_data2[1].Contains("PART"))
@@ -1068,7 +1076,7 @@ namespace Client
                         }
                     }
                 }
-                _Protocol.windows[system].scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
             }
             catch (Exception fail)
             {
@@ -1088,16 +1096,19 @@ namespace Client
         /// <param name="_pong"></param>
         /// <param name="_date">Date of this message, if you specify 0 the current time will be used</param>
         /// <param name="updated">If true this text will be considered as newly obtained information</param>
-        public ProcessorIRC(Network _network, Protocol _protocol, string _text, string _sn, string ws, ref DateTime _pong, long _date = 0, bool updated = true)
+        public ProcessorIRC(Network _network, string _text, ref DateTime _pong, long _date = 0, bool updated = true)
         {
             _Network = _network;
-            _Protocol = _protocol;
+            _Protocol = _network._protocol;
             text = _text;
-            sn = _sn;
-            system = ws;
+            system = _network.system;
             pong = _pong;
             date = _date;
             updated_text = updated;
+            if (system == null)
+            {
+                throw new Exception("System window is null");
+            }
         }
     }
 

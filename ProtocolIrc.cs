@@ -38,8 +38,10 @@ namespace Client
         /// Thread which is keeping the connection online
         /// </summary>
         public System.Threading.Thread keep;
+        /// <summary>
+        /// Time of last ping
+        /// </summary>
         public DateTime pong = DateTime.Now;
-
         /// <summary>
         /// Network stream
         /// </summary>
@@ -241,7 +243,7 @@ namespace Client
                     }
                     text = _StreamReader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
-                    ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, this, text, _IRCNetwork.server, _IRCNetwork.sw, ref pong);
+                    ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
                     processor.Result();
                     pong = processor.pong;
                 }
@@ -252,7 +254,7 @@ namespace Client
             }
             catch (System.IO.IOException)
             {
-                windows["!system"].scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
+                SystemWindow.scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
                 Core._Main.Status("Disconnected from server " + Server);
                 Exit();
             }
@@ -357,7 +359,7 @@ namespace Client
             {
                 main.Abort();
             }
-            windows["!system"].scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
+            SystemWindow.scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {
                 Core.network = null;

@@ -31,6 +31,26 @@ namespace Client
         /// Displayed window
         /// </summary>
         public Window Current = null;
+        /// <summary>
+        /// Root window
+        /// </summary>
+        public Window SystemWindow
+        {
+            get
+            { 
+                lock (windows)
+                {
+                    if (windows.ContainsKey("!system"))
+                    {
+                        return windows["!system"];
+                    }
+                }
+                return null;
+            }
+        }
+        /// <summary>
+        /// Windows
+        /// </summary>
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         /// <summary>
         /// Whether this network is connected or not
@@ -290,11 +310,6 @@ namespace Client
                 Core.Connections.Remove(this);
             }
         }  
-
-        public class UserMode : NetworkMode
-        {
-            
-        }
 
         public virtual bool Open()
         {

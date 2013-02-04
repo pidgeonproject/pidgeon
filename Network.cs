@@ -78,7 +78,7 @@ namespace Client
         /// <summary>
         /// User mode of current user
         /// </summary>
-        public Protocol.UserMode usermode = new Protocol.UserMode();
+        public NetworkMode usermode = new NetworkMode();
         /// <summary>
         /// User name (real name)
         /// </summary>
@@ -100,7 +100,7 @@ namespace Client
         /// <summary>
         /// Name of system window
         /// </summary>
-        public string sw;
+        //public string sw;
         public string quit;
         /// <summary>
         /// Protocol
@@ -283,13 +283,13 @@ namespace Client
                 {
                     _protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
                     system = _protocol.windows["!" + randomuqid + server];
-                    sw = "!" + randomuqid + server;
+                    //sw = "!" + randomuqid + server;
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
                     _protocol.CreateChat("!system", true, this);
-                    sw = "!system";
+                    //sw = "!system";
                     system = _protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
