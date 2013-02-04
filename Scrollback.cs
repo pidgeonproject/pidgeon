@@ -232,7 +232,7 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (owner != null && owner != Core._Main.Chat && !owner._Protocol.SuppressChanges && owner.ln != null)
+            if (owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.ln != null)
             {
                 switch (InputStyle)
                 {

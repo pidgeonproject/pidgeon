@@ -142,7 +142,7 @@ namespace Client
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-                
+
 
                 Datagram login = new Datagram("AUTH", "");
                 login.Parameters.Add("user", nick);
@@ -189,7 +189,8 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
                 }
             }
-            catch (System.Threading.ThreadAbortException) {
+            catch (System.Threading.ThreadAbortException)
+            {
                 if (Core.IgnoreErrors)
                 {
                     return;
@@ -255,8 +256,10 @@ namespace Client
                 if (backlog)
                 {
                     Core._Main.Status("Retrieving backlog from " + name2 + ", got " + number + " packets from total of " + cache[NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    this.SuppressChanges = true;
                     if ((cache[NetworkList.IndexOf(server)].size - 2) < int.Parse(number))
                     {
+                        this.SuppressChanges = false;
                         Core._Main.Status("");
                         foreach (Channel i in server.Channels)
                         {
@@ -269,7 +272,7 @@ namespace Client
                     if (text.StartsWith("PRIVMSG "))
                     {
                         string channel = text.Substring(8);
-                        
+
                         if (channel == "" || !channel.Contains(" :"))
                         {
                             Core.DebugLog("Invalid channel provided by services");
@@ -466,7 +469,7 @@ namespace Client
                             if (sv != null)
                             {
                                 sv.nickname = curr.InnerText;
-                                windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText, 
+                                windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
                                     Scrollback.MessageStyle.User, true);
                             }
                             break;
@@ -705,8 +708,8 @@ namespace Client
                 keep.Abort();
                 Core.killThread(keep);
             }
-            if (_writer != null)  _writer.Close();
-            if (_reader != null)  _reader.Close();
+            if (_writer != null) _writer.Close();
+            if (_reader != null) _reader.Close();
             base.Exit();
         }
 
@@ -719,6 +722,7 @@ namespace Client
         {
             ProtocolType = 3;
             CreateChat("!root", true, null);
+            this.SuppressChanges = true;
             main = new System.Threading.Thread(Start);
             Core._Main.ChannelList.insertSv(this);
             Core.SystemThreads.Add(main);
