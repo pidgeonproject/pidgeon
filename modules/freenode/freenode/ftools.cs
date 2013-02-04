@@ -15,6 +15,8 @@ namespace Client
             Client.Commands.commands.Add("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
             Client.Commands.commands.Add("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
             Client.Commands.commands.Add("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
+            Client.Commands.commands.Add("jhostban", new Client.Commands.Command(Client.Commands.Type.Plugin, JoinHostBan));
+            Client.Commands.commands.Add("jb", new Client.Commands.Command(Client.Commands.Type.Plugin, OpenBan));
             return true;
         }
 
@@ -22,7 +24,7 @@ namespace Client
         {
             Name = "Freenode tools";
             Description = "This plugin enable you to use extra commands";
-            Version = "1.0.0";
+            Version = "1.6.0";
             base.Initialise();
         }
 
@@ -103,6 +105,76 @@ namespace Client
 
         }
 
+        public void OpenBan(string text)
+        {
+            if (text == "")
+            {
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                return;
+            }
+            string user = text;
+            if (text.Contains(" "))
+            {
+                user = text.Substring(0, text.IndexOf(" "));
+            }
+            if (!Core._Main.Chat.isChannel)
+            {
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                return;
+            }
+            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            System.Threading.Thread.Sleep(100);
+
+            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+
+                User host = null;
+                
+                if (curr != null)
+                {
+                    host = curr.userFromName(user);
+                    if (host != null)
+                    {
+                        if (host.Host != "")
+                        {
+                            Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host + "$##fix_your_connection", Configuration.Priority.High);
+                            return;
+                        }
+                    }
+                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
+                    return;
+                }
+            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+        }
+
+        public void JoinHostBan(string text)
+        {
+            if (text == "")
+            {
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                return;
+            }
+            string user = text;
+            if (text.Contains(" "))
+            {
+                user = text;
+            }
+            if (!Core._Main.Chat.isChannel)
+            {
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                return;
+            }
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            System.Threading.Thread.Sleep(100);
+
+            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+                if (curr != null)
+                {
+                            Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + user + "$##fix_your_connection", Configuration.Priority.High);
+                            return;
+                }
+            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+        }
+
         public void Ban(string text)
         {
             if (text == "")
@@ -122,9 +194,9 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
                 return;
             }
-            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
-            Core.network._protocol.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
+            Core.network.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
             User host = null;
             Channel curr = Core.network.getChannel(Core._Main.Chat.name);
             if (curr != null)
@@ -134,7 +206,7 @@ namespace Client
                 {
                     if (host.Host != "")
                     {
-                        Core.network._protocol.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host, Configuration.Priority.High);
+                        Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
                     Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
