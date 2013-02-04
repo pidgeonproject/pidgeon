@@ -87,22 +87,66 @@ namespace Client
             }
         }
 
+        public void ReloadExceptions()
+        {
+            if (channel != null)
+            {
+                if (channel.Bans != null)
+                {
+                    listView3.Items.Clear();
+                    lock (channel.Bans)
+                    {
+                        foreach (Except ex in channel.Exceptions)
+                        {
+                            ListViewItem li = new ListViewItem(ex.Target);
+                            li.SubItems.Add(convertUNIX(ex.Time) + " (" + ex.Time + ")");
+                            li.SubItems.Add(ex.User);
+
+                            listView2.Items.Add(li);
+                        }
+                    }
+                }
+            }
+        }
+
         public void ReloadBans()
         {
             if (channel != null)
             {
-                if (channel.Bl != null)
+                if (channel.Bans != null)
                 {
                     listView3.Items.Clear();
-                    lock (channel.Bl)
+                    lock (channel.Bans)
                     {
-                        foreach (SimpleBan sb in channel.Bl)
+                        foreach (SimpleBan sb in channel.Bans)
                         {
                             ListViewItem li = new ListViewItem(sb.Target);
                             li.SubItems.Add(convertUNIX(sb.Time) + " (" + sb.Time + ")");
                             li.SubItems.Add(sb.User);
 
                             listView3.Items.Add(li);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void ReloadInvites()
+        {
+            if (channel != null)
+            {
+                if (channel.Bans != null)
+                {
+                    listView3.Items.Clear();
+                    lock (channel.Bans)
+                    {
+                        foreach (Invite sb in channel.Invites)
+                        {
+                            ListViewItem li = new ListViewItem(sb.Target);
+                            li.SubItems.Add(convertUNIX(sb.Time) + " (" + sb.Time + ")");
+                            li.SubItems.Add(sb.User);
+
+                            listView1.Items.Add(li);
                         }
                     }
                 }
@@ -168,7 +212,13 @@ namespace Client
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem item in listView1.SelectedItems)
+            {
+                if (item.Text != "")
+                {
+                    channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Text);
+                }
+            }
         }
 
         private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -199,17 +249,43 @@ namespace Client
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            ReloadInvites();
         }
 
         private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-
+            foreach (ListViewItem item in listView2.SelectedItems)
+            {
+                if (item.Text != "")
+                {
+                    channel._Network.Transfer("MODE " + channel.Name + " -e " + item.Text);
+                }
+            }
         }
 
         private void cleanToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void reloadToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            timerBans.Enabled = true;
+            channel.ReloadBans();
+        }
+
+        private void timerBans_Tick(object sender, EventArgs e)
+        {
+            if (!channel.parsing_xb)
+            {
+                ReloadBans();
+                timerBans.Enabled = false;
+            }
+        }
+
+        private void reloadToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            ReloadExceptions();
         } 
     }
 }

@@ -195,9 +195,9 @@ namespace Client
                 if (Core.network.RenderedChannel != null)
                 {
                     string info = "";
-                    if (Core.network.RenderedChannel.Bl != null)
+                    if (Core.network.RenderedChannel.Bans != null)
                     {
-                        info += Core.network.RenderedChannel.Bl.Count.ToString();
+                        info += Core.network.RenderedChannel.Bans.Count.ToString();
                     }
                     else
                     {

@@ -92,7 +92,7 @@ namespace Client
         /// <summary>
         /// List of bans set
         /// </summary>
-        public List<SimpleBan> Bl = null;
+        public List<SimpleBan> Bans = null;
         /// <summary>
         /// Exception list 
         /// </summary>
@@ -137,7 +137,14 @@ namespace Client
         /// Tree node
         /// </summary>
         public System.Windows.Forms.TreeNode tn = null;
-        
+
+
+        public void ReloadBans()
+        {
+            parsing_xb = true;
+            Bans.Clear();
+            _Network.Transfer("MODE +b " + Name);
+        }
 
         /// <summary>
         /// Constructor (simple)
@@ -243,9 +250,9 @@ namespace Client
         /// <returns></returns>
         public bool containsBan(string host)
         {
-            lock (Bl)
+            lock (Bans)
             {
-                foreach (var name in Bl)
+                foreach (var name in Bans)
                 {
                     if (name.Target == host)
                     {

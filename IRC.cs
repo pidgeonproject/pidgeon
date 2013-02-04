@@ -379,13 +379,13 @@ namespace Client
                 if (channel != null)
                 {
                     channel.UpdateInfo();
-                    if (channel.Bl == null)
+                    if (channel.Bans == null)
                     {
-                        channel.Bl = new List<SimpleBan>();
+                        channel.Bans = new List<SimpleBan>();
                     }
                     if (!channel.containsBan(code[4]))
                     {
-                        channel.Bl.Add(new SimpleBan(code[5], code[4], code[6]));
+                        channel.Bans.Add(new SimpleBan(code[5], code[4], code[6]));
                         Core._Main.Status();
                     }
                 }
@@ -500,16 +500,16 @@ namespace Client
                                     switch (m.ToString())
                                     {
                                         case "b":
-                                            if (channel.Bl == null)
+                                            if (channel.Bans == null)
                                             {
-                                                channel.Bl = new List<SimpleBan>();
+                                                channel.Bans = new List<SimpleBan>();
                                             }
-                                            lock (channel.Bl)
+                                            lock (channel.Bans)
                                             {
                                                 if (type == '-')
                                                 {
                                                     SimpleBan br = null;
-                                                    foreach (SimpleBan xx in channel.Bl)
+                                                    foreach (SimpleBan xx in channel.Bans)
                                                     {
                                                         if (xx.Target == parameters2[curr])
                                                         {
@@ -519,11 +519,11 @@ namespace Client
                                                     }
                                                     if (br != null)
                                                     {
-                                                        channel.Bl.Remove(br);
+                                                        channel.Bans.Remove(br);
                                                     }
                                                     break;
                                                 }
-                                                channel.Bl.Add(new SimpleBan(user, parameters2[curr], ""));
+                                                channel.Bans.Add(new SimpleBan(user, parameters2[curr], ""));
                                             }
                                             curr++;
                                             break;

@@ -361,6 +361,21 @@ namespace Client
             HideLn();
         }
 
+        public void ReloadSimple()
+        {
+            lock (ContentLines)
+            {
+                List<string> values = new List<string>();
+                foreach (ContentLine _line in ContentLines)
+                {
+                    values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text));
+                }
+                simpleview.Lines = values.ToArray<string>();
+                simpleview.SelectionStart = simpleview.Text.Length;
+                simpleview.ScrollToCaret();
+            }
+        }
+
         public void Reload(bool fast = false)
         {
             if (owner == null || (owner != null && owner.Visible == true))
@@ -368,17 +383,7 @@ namespace Client
                 Modified = false;
                 if (simple)
                 {
-                    lock (ContentLines)
-                    {
-                        List<string> values = new List<string>();
-                        foreach (ContentLine _line in ContentLines)
-                        {
-                            values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text));
-                        }
-                        simpleview.Lines = values.ToArray<string>();
-                        simpleview.SelectionStart = simpleview.Text.Length;
-                        simpleview.ScrollToCaret();
-                    }
+                    ReloadSimple();
                     return;
                 }
                 int min = 0;
@@ -386,7 +391,7 @@ namespace Client
                 {
                     min = ContentLines.Count - scrollback_max;
                 }
-                RT.Remove();
+                RT.RemoveText();
                 lock (ContentLines)
                 {
                     int max = ContentLines.Count;
@@ -439,11 +444,12 @@ namespace Client
                 RT.RedrawText();
                 RT.ScrollToBottom();
 
-                db = true;
-                if (fast)
-                {
-                    Recreate(true);
-                }
+                //if (fast)
+                //{
+                    //Recreate(true);
+                //    return;
+                //}
+                //db = true;
             }
         }
 
@@ -455,8 +461,7 @@ namespace Client
             {
                 Reload();
             }
-            Recreate();
-
+            //Recreate();
         }
 
         public void HideLn()

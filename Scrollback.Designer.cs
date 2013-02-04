@@ -41,8 +41,8 @@ namespace Client
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.openLinkInBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mode1b2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mode1q2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mode1e2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mode1q2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mode1I2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
@@ -129,19 +129,19 @@ namespace Client
             this.mode1b2ToolStripMenuItem.Text = "/mode $1 +b $2";
             this.mode1b2ToolStripMenuItem.Click += new System.EventHandler(this.mode1b2ToolStripMenuItem_Click);
             // 
-            // mode1q2ToolStripMenuItem
-            // 
-            this.mode1q2ToolStripMenuItem.Name = "mode1q2ToolStripMenuItem";
-            this.mode1q2ToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.mode1q2ToolStripMenuItem.Text = "/mode $1 +q $2";
-            this.mode1q2ToolStripMenuItem.Click += new System.EventHandler(this.mode1q2ToolStripMenuItem_Click);
-            // 
             // mode1e2ToolStripMenuItem
             // 
             this.mode1e2ToolStripMenuItem.Name = "mode1e2ToolStripMenuItem";
             this.mode1e2ToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
             this.mode1e2ToolStripMenuItem.Text = "/mode $1 +e $2";
             this.mode1e2ToolStripMenuItem.Click += new System.EventHandler(this.mode1e2ToolStripMenuItem_Click);
+            // 
+            // mode1q2ToolStripMenuItem
+            // 
+            this.mode1q2ToolStripMenuItem.Name = "mode1q2ToolStripMenuItem";
+            this.mode1q2ToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.mode1q2ToolStripMenuItem.Text = "/mode $1 +q $2";
+            this.mode1q2ToolStripMenuItem.Click += new System.EventHandler(this.mode1q2ToolStripMenuItem_Click);
             // 
             // joinToolStripMenuItem
             // 
@@ -223,7 +223,7 @@ namespace Client
             // 
             // refresh
             // 
-            this.refresh.Interval = 60;
+            this.refresh.Interval = 10;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
             // 
             // simpleview

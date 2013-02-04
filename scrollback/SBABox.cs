@@ -590,7 +590,10 @@ namespace Client
             Redraw();
         }
 
-        public void Remove()
+        /// <summary>
+        /// Remove all text of this item
+        /// </summary>
+        public void RemoveText()
         {
             lock (lines)
             {
