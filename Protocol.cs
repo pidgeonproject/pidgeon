@@ -23,109 +23,31 @@ namespace Client
 {
     public class Protocol
     {
+        /// <summary>
+        /// Character which is separating the special commands (such as CTCP part)
+        /// </summary>
         public char delimiter = (char)001;
+        /// <summary>
+        /// Displayed window
+        /// </summary>
         public Window Current = null;
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
+        /// <summary>
+        /// Whether this network is connected or not
+        /// </summary>
         public bool Connected = false;
+        /// <summary>
+        /// Type of protocol
+        /// </summary>
         public int ProtocolType = 0;
+        /// <summary>
+        /// If changes to channels should be suppressed (no color changes on new messages)
+        /// </summary>
         public bool SuppressChanges = false;
         /// <summary>
         /// Password for server
         /// </summary>
         public string Password = null;
-
-        public class Mode
-        {
-            public List<string> _Mode = new List<string>();
-            public Network network = null;
-            public int ModeType = 0; //1 - channel 2 - user
-            public override string ToString()
-            {
-                string _val = "";
-                int curr = 0;
-                while (curr < _Mode.Count)
-                {
-                    _val += _Mode[curr];
-                    curr++;
-                }
-                return "+" + _val;
-            }
-
-            public Mode(int MT, Network _Network)
-            {
-                if (MT != 0)
-                {
-                    ModeType = MT;
-                }
-                network = _Network;
-            }
-
-            public Mode(string DefaultMode)
-            {
-                mode(DefaultMode);
-            }
-
-            public Mode()
-            {
-                network = null;
-            }
-
-            public bool mode(string text)
-            {
-                char prefix = ' ';
-                foreach (char _x in text)
-                {
-                    if (ModeType != 0 && network != null)
-                    {
-                        switch (ModeType)
-                        {
-                            case 2:
-                                if (network.CModes.Contains(_x))
-                                {
-                                    continue;
-                                }
-                                break;
-                            case 1:
-                                if (network.CUModes.Contains(_x) || network.PModes.Contains(_x))
-                                {
-                                    continue;
-                                }
-                                break;
-                        }
-                    }
-                    if (_x == ' ')
-                    {
-                        return true;
-                    }
-                    if (_x == '-')
-                    {
-                        prefix = _x;
-                        continue;
-                    }
-                    if (_x == '+')
-                    {
-                        prefix = _x;
-                        continue;
-                    }
-                    switch (prefix)
-                    { 
-                        case '+':
-                            if (!_Mode.Contains(_x.ToString()))
-                            {
-                                this._Mode.Add(_x.ToString());
-                            }
-                            continue;
-                        case '-':
-                            if (_Mode.Contains(_x.ToString()))
-                            {
-                                this._Mode.Remove(_x.ToString());
-                            }
-                            continue;
-                    }continue;
-                }
-                return false;
-            }
-        }
 
         /// <summary>
         /// Server
@@ -315,7 +237,7 @@ namespace Client
         /// <param name="_x">Mode</param>
         /// <param name="target">Channel or user</param>
         /// <param name="network">Network</param>
-        public virtual void WriteMode(Mode _x, string target, Network network = null)
+        public virtual void WriteMode(NetworkMode _x, string target, Network network = null)
         {
             return;
         }
@@ -369,7 +291,7 @@ namespace Client
             }
         }  
 
-        public class UserMode : Mode
+        public class UserMode : NetworkMode
         {
             
         }

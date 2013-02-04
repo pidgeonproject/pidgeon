@@ -472,7 +472,6 @@ namespace Client
 
                             foreach (char m in header)
                             {
-
                                 if (m == '+')
                                 {
                                     type = '+';

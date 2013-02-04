@@ -124,7 +124,7 @@ namespace Client
         /// <summary>
         /// Channel mode
         /// </summary>
-        public Protocol.Mode _mode;
+        public NetworkMode _mode;
         /// <summary>
         /// Whether window needs to be redraw
         /// </summary>
@@ -139,6 +139,9 @@ namespace Client
         public System.Windows.Forms.TreeNode tn = null;
 
 
+        /// <summary>
+        /// Renew the bans
+        /// </summary>
         public void ReloadBans()
         {
             parsing_xb = true;
@@ -152,7 +155,7 @@ namespace Client
         public Channel()
         {
             ok = true;
-            _mode = new Protocol.Mode(1, _Network);
+            _mode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
             lock (_control)
             {
                 _control.Add(this);
@@ -169,7 +172,7 @@ namespace Client
         {
             _Network = network;
             ok = true;
-            _mode = new Protocol.Mode(1, _Network);
+            _mode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
             lock (_control)
             {
                 _control.Add(this);

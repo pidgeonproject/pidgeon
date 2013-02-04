@@ -26,7 +26,7 @@ namespace Client
         public string Host;
         public Network _Network;
         public string Ident;
-        public Protocol.Mode ChannelMode = new Protocol.Mode();
+        public NetworkMode ChannelMode = new NetworkMode();
         public string Nick;
         public List<Channel> ChannelList;
         public User(string nick, string host, Network network, string ident)
