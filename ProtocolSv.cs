@@ -329,14 +329,28 @@ namespace Client
                             long message_time = long.Parse(curr.Attributes[2].Value);
                             if (mn != null)
                             {
-                                Channel target = mn.getChannel(message_target);
-                                if (target != null)
+                                if (message_target.StartsWith(mn.channel_prefix))
                                 {
-                                    message_window = target.retrieveWindow();
+                                    Channel target = mn.getChannel(message_target);
+                                    if (target != null)
+                                    {
+                                        message_window = target.retrieveWindow();
+                                    }
+                                    else
+                                    {
+                                        Core.DebugLog("There is no channel " + message_target);
+                                    }
                                 }
                                 else
                                 {
-                                    Core.DebugLog("There is no channel " + message_target);
+                                    lock (windows)
+                                    {
+                                        if (!windows.ContainsKey(mn.window + message_target))
+                                        {
+                                            mn.Private(message_target);
+                                        }
+                                        message_window = windows[mn.window + message_target];
+                                    }
                                 }
                             }
 

@@ -263,68 +263,82 @@ namespace Client
             Core._Main.userToolStripMenuItem.Visible = false;
             try
             {
-                if (ServiceList.ContainsValue(e.Node))
+                lock (ServiceList)
                 {
-                    foreach (var sv in ServiceList)
+                    if (ServiceList.ContainsValue(e.Node))
                     {
-                        if (sv.Value == e.Node)
+                        foreach (var sv in ServiceList)
                         {
-                            sv.Key.ShowChat("!root");
-                            Core.network = null;
-                            disconnectToolStripMenuItem.Visible = true;
-                            Core._Main.UpdateStatus();
-                            return;
-                        }
-                    }
-                }
-                if (Servers.ContainsValue(e.Node))
-                {
-                    foreach (var cu in Servers)
-                    {
-                        if (cu.Value == e.Node)
-                        {
-                            if (cu.Key.ParentSv == null)
+                            if (sv.Value == e.Node)
                             {
-                                cu.Key._protocol.ShowChat("!system");
+                                sv.Key.ShowChat("!root");
+                                Core.network = null;
+                                disconnectToolStripMenuItem.Visible = true;
+                                Core._Main.UpdateStatus();
+                                return;
                             }
-                            else
+                        }
+                    }
+                }
+                lock (Servers)
+                {
+                    if (Servers.ContainsValue(e.Node))
+                    {
+                        foreach (var cu in Servers)
+                        {
+                            if (cu.Value == e.Node)
                             {
-                                cu.Key.ParentSv.ShowChat("!" + cu.Key.window);
+                                if (cu.Key.ParentSv == null)
+                                {
+                                    cu.Key._protocol.ShowChat("!system");
+                                }
+                                else
+                                {
+                                    cu.Key.ParentSv.ShowChat("!" + cu.Key.window);
+                                }
+                                Core.network = cu.Key;
+                                disconnectToolStripMenuItem.Visible = true;
+                                Core._Main.UpdateStatus();
+                                return;
                             }
-                            Core.network = cu.Key;
-                            disconnectToolStripMenuItem.Visible = true;
-                            Core._Main.UpdateStatus();
-                            return;
                         }
                     }
                 }
-                if (UserList.ContainsValue(e.Node))
+
+                lock (UserList)
                 {
-                    foreach (var cu in UserList)
+                    if (UserList.ContainsValue(e.Node))
                     {
-                        if (cu.Value == e.Node)
+                        foreach (var cu in UserList)
                         {
-                            Core.network = cu.Key._Network;
-                            cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
-                            closeToolStripMenuItem.Visible = true;
-                            Core._Main.UpdateStatus();
-                            return;
+                            if (cu.Value == e.Node)
+                            {
+                                Core.network = cu.Key._Network;
+                                cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
+                                closeToolStripMenuItem.Visible = true;
+                                Core._Main.UpdateStatus();
+                                return;
+                            }
                         }
                     }
                 }
-                if (Channels.ContainsValue(e.Node))
+
+                lock (Channels)
                 {
-                    foreach (var cu in Channels)
+                    if (Channels.ContainsValue(e.Node))
                     {
-                        if (cu.Value == e.Node)
+                        foreach (var cu in Channels)
                         {
-                            Core.network = cu.Key._Network;
-                            partToolStripMenuItem.Visible = true;
-                            closeToolStripMenuItem.Visible = true;
-                            cu.Key._Network.RenderedChannel = cu.Key;
-                            cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
-                            Core._Main.UpdateStatus();
-                            return;
+                            if (cu.Value == e.Node)
+                            {
+                                Core.network = cu.Key._Network;
+                                partToolStripMenuItem.Visible = true;
+                                closeToolStripMenuItem.Visible = true;
+                                cu.Key._Network.RenderedChannel = cu.Key;
+                                cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
+                                Core._Main.UpdateStatus();
+                                return;
+                            }
                         }
                     }
                 }
@@ -347,153 +361,170 @@ namespace Client
         {
             try
             {
-                if (ServiceList.ContainsValue(Item))
+                lock (ServiceList)
                 {
-                    ProtocolSv network = null;
-                    foreach (var curr in ServiceList)
+                    if (ServiceList.ContainsValue(Item))
                     {
-                        if (curr.Value == Item)
+                        ProtocolSv network = null;
+                        foreach (var curr in ServiceList)
                         {
-                            network = curr.Key;
-                            network.Exit();
-                        }
-                        foreach (TreeNode node in Item.Nodes)
-                        {
-                            RemoveItem(node);
-                        }
-                        items.Nodes.Remove(items.SelectedNode);
-                        return;
-                    }
-                }
-
-                if (Servers.ContainsValue(Item))
-                {
-                    Network network = null;
-                    foreach (var cu in Servers)
-                    {
-                        if (cu.Value == Item)
-                        {
-                            network = cu.Key;
-                            if (cu.Key.Connected)
+                            if (curr.Value == Item)
                             {
-                                return;
+                                network = curr.Key;
+                                network.Exit();
                             }
-
+                            lock (Item.Nodes)
+                            {
+                                foreach (TreeNode node in Item.Nodes)
+                                {
+                                    RemoveItem(node);
+                                }
+                                items.Nodes.Remove(items.SelectedNode);
+                            }
+                            return;
                         }
-                    }
-                    if (network != null)
-                    {
-                        Core.Connections.Remove(network._protocol);
-                        Servers.Remove(network);
-                        foreach (TreeNode item in items.SelectedNode.Nodes)
-                        {
-                            RemoveItem(item);
-                        }
-                        if (items.Nodes.Contains(Item))
-                        {
-                            items.Nodes.Remove(Item);
-                        }
-                        return;
                     }
                 }
 
-                if (UserList.ContainsValue(Item))
+                lock (Servers)
                 {
-                    User curr = null;
-                    foreach (var cu in UserList)
+                    if (Servers.ContainsValue(Item))
                     {
-                        if (cu.Value == Item)
+                        Network network = null;
+                        foreach (var cu in Servers)
                         {
-                            lock (cu.Key._Network.PrivateChat)
+                            if (cu.Value == Item)
                             {
-                                if (cu.Key._Network.PrivateChat.Contains(cu.Key))
+                                network = cu.Key;
+                                if (cu.Key.Connected)
                                 {
-                                    cu.Key._Network.PrivateChat.Remove(cu.Key);
+                                    Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Scrollback.MessageStyle.System, false, 0, true);
+                                    return;
+                                }
+
+                            }
+                        }
+                        if (network != null)
+                        {
+                            Core.Connections.Remove(network._protocol);
+                            Servers.Remove(network);
+                            foreach (TreeNode item in items.SelectedNode.Nodes)
+                            {
+                                RemoveItem(item);
+                            }
+                            lock (items.Nodes)
+                            {
+                                if (items.Nodes.Contains(Item))
+                                {
+                                    items.Nodes.Remove(Item);
+                                    return;
                                 }
                             }
-                            curr = cu.Key;
-                            break;
                         }
-                    }
-                    if (curr != null)
-                    {
-                        lock (items.Nodes)
-                        {
-                            if (items.Nodes.Contains(Item))
-                            {
-                                items.Nodes.Remove(Item);
-                            }
-                        }
-                        if (curr._Network._protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
-                        {
-                            lock (curr._Network._protocol.windows)
-                            {
-                                curr._Network._protocol.windows[curr._Network.window + curr.Nick].Visible = false;
-                                curr._Network._protocol.windows[curr._Network.window + curr.Nick].Dispose();
-                            }
-                        }
-                        lock (UserList)
-                        {
-                            if (UserList.ContainsKey(curr))
-                            {
-                                UserList.Remove(curr);
-                            }
-                        }
-                        return;
                     }
                 }
 
-                if (Channels.ContainsValue(Item))
+                lock (UserList)
                 {
-                    Channel item = null;
-                    foreach (var cu in Channels)
+                    if (UserList.ContainsValue(Item))
                     {
-                        if (cu.Value == Item)
+                        User curr = null;
+                        foreach (var cu in UserList)
                         {
-                            if (cu.Key.ok)
+                            if (cu.Value == Item)
                             {
-                                cu.Key._Network._protocol.Part(cu.Key.Name);
-                                cu.Key.dispose = true;
-                                return;
-                            }
-                            lock (cu.Key._Network.Channels)
-                            {
-                                if (cu.Key._Network.Channels.Contains(cu.Key))
+                                lock (cu.Key._Network.PrivateChat)
                                 {
-                                    cu.Key.Dispose();
-                                    cu.Key._Network.Channels.Remove(cu.Key);
+                                    if (cu.Key._Network.PrivateChat.Contains(cu.Key))
+                                    {
+                                        cu.Key._Network.PrivateChat.Remove(cu.Key);
+                                    }
+                                }
+                                curr = cu.Key;
+                                break;
+                            }
+                        }
+                        if (curr != null)
+                        {
+                            lock (items.Nodes)
+                            {
+                                if (items.Nodes.Contains(Item))
+                                {
+                                    items.Nodes.Remove(Item);
                                 }
                             }
-                            item = cu.Key;
-                            break;
+                            if (curr._Network._protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
+                            {
+                                lock (curr._Network._protocol.windows)
+                                {
+                                    curr._Network._protocol.windows[curr._Network.window + curr.Nick].Visible = false;
+                                    curr._Network._protocol.windows[curr._Network.window + curr.Nick].Dispose();
+                                }
+                            }
+                            lock (UserList)
+                            {
+                                if (UserList.ContainsKey(curr))
+                                {
+                                    UserList.Remove(curr);
+                                }
+                            }
                         }
                     }
-                    if (item != null)
+                }
+
+                lock (Channels)
+                {
+                    if (Channels.ContainsValue(Item))
                     {
-                        lock (items.Nodes)
+                        Channel item = null;
+                        foreach (var cu in Channels)
                         {
-                            if (items.Nodes.Contains(Item))
+                            if (cu.Value == Item)
                             {
-                                items.Nodes.Remove(Item);
+                                if (cu.Key.ok)
+                                {
+                                    cu.Key._Network._protocol.Part(cu.Key.Name);
+                                    cu.Key.dispose = true;
+                                    return;
+                                }
+                                lock (cu.Key._Network.Channels)
+                                {
+                                    if (cu.Key._Network.Channels.Contains(cu.Key))
+                                    {
+                                        cu.Key.Dispose();
+                                        cu.Key._Network.Channels.Remove(cu.Key);
+                                    }
+                                }
+                                item = cu.Key;
+                                break;
                             }
                         }
-                        lock (item.retrieveWindow())
+                        if (item != null)
                         {
-                            if (item.retrieveWindow() != null)
+                            lock (items.Nodes)
                             {
-                                item.retrieveWindow().Visible = false;
-                                item.retrieveWindow().Dispose();
+                                if (items.Nodes.Contains(Item))
+                                {
+                                    items.Nodes.Remove(Item);
+                                }
                             }
-                            lock (item._Network.Channels)
+                            lock (item.retrieveWindow())
                             {
-                                item._Network.Channels.Remove(item);
+                                if (item.retrieveWindow() != null)
+                                {
+                                    item.retrieveWindow().Visible = false;
+                                    item.retrieveWindow().Dispose();
+                                }
+                                lock (item._Network.Channels)
+                                {
+                                    item._Network.Channels.Remove(item);
+                                }
+                            }
+                            lock (Channels)
+                            {
+                                Channels.Remove(item);
                             }
                         }
-                        lock (Channels)
-                        {
-                            Channels.Remove(item);
-                        }
-                        return;
                     }
                 }
                 lock (items.Nodes)

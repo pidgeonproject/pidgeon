@@ -291,7 +291,7 @@ namespace Client
             {
                 _host = source.Substring(source.IndexOf("@") + 1);
             }
-            
+
             chan = parameters.Replace(" ", "");
             string message = value;
             if (!chan.Contains(_Network.channel_prefix))
@@ -367,12 +367,15 @@ namespace Client
             if (chan == _Network.nickname)
             {
                 chan = source.Substring(0, source.IndexOf("!"));
-                if (!_Protocol.windows.ContainsKey(_Network.window + chan))
+                lock (_Protocol.windows)
                 {
-                    _Network.Private(chan);
+                    if (!_Protocol.windows.ContainsKey(_Network.window + chan))
+                    {
+                        _Network.Private(chan);
+                    }
+                    _Protocol.windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
+                        Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
                 }
-                _Protocol.windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
-                    Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
                 return true;
             }
             return false;
