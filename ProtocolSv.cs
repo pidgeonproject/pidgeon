@@ -736,7 +736,6 @@ namespace Client
         {
             ProtocolType = 3;
             CreateChat("!root", true, null);
-            this.SuppressChanges = true;
             main = new System.Threading.Thread(Start);
             Core._Main.ChannelList.insertSv(this);
             Core.SystemThreads.Add(main);

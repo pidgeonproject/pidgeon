@@ -542,6 +542,7 @@ namespace Client
                             }
                         }
                         channel.UpdateInfo();
+                        channel.redrawUsers();
                         return true;
                     }
                 }
