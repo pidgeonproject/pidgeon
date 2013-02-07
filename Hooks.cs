@@ -109,6 +109,31 @@ namespace Client
             return true;
         }
 
+        public static void UserPart(Network network, User user, Channel channel, string message)
+        {
+
+        }
+
+        public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
+        {
+
+        }
+
+        public static void UserTalk(Network network, User user, Channel channel, string message)
+        {
+        
+        }
+
+        public static void UserQuit(Network network, User user, Channel channel, string message)
+        { 
+        
+        }
+
+        public static void UserJoin(Network network, User user, Channel channel)
+        {
+            
+        }
+
         public static void CreatingNetwork(Network network)
         {
             foreach (Extension extension in Core.Extensions)

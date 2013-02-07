@@ -758,6 +758,7 @@ namespace Client
                     channel.UpdateInfo();
                     return true;
                 }
+                Hooks.UserJoin(_Network, channel.userFromName(user), channel);
             }
             return false;
         }
