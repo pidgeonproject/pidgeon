@@ -434,22 +434,15 @@ namespace Client
                         }
                         SBABox.Line text = Parser.link(_c.text, RT, color);
                         SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
-                        SBABox.Line line = new SBABox.Line("", RT);
+                        SBABox.Line line = new SBABox.Line(RT);
                         line.insertData(content);
                         line.Merge(text);
-                        RT.insertLine(line);
+                        RT.InsertLine(line);
                     }
                 }
 
                 RT.RedrawText();
                 RT.ScrollToBottom();
-
-                //if (fast)
-                //{
-                    //Recreate(true);
-                //    return;
-                //}
-                //db = true;
             }
         }
 
@@ -814,6 +807,49 @@ namespace Client
                     }
                 }
                 Parser.parse(kickToolStripMenuItem.Text);
+            }
+        }
+
+        private void copyTextToClipBoardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string text = null;
+                if (simple)
+                {
+                    text = simpleview.Text;
+                    Clipboard.SetText(text);
+                    return;
+                }
+                text = RT.Text;
+                if (text != null)
+                {
+                    Clipboard.SetText(RT.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void copyEntireWindowToClipBoardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string text = "";
+                lock (ContentLines)
+                {
+                    foreach (ContentLine _line in ContentLines)
+                    {
+                        text += Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + "\n";
+                    }
+                }
+                Clipboard.SetText(text);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }
