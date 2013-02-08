@@ -353,8 +353,9 @@ namespace Client
         private void Scrollback_Load(object sender, EventArgs e)
         {
             //Reload(true);
+            RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
             RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            RT.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
+            RT.Font = Configuration.CurrentSkin.SBABOX;
             simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
             simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
             RT.scrollback = this;

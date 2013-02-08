@@ -28,8 +28,8 @@ namespace Client
     public class Skin
     {
         public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
-        public string localfont;
-        public float fontsize;
+        public string localfont = "Arial";
+        public float fontsize = 11;
         public System.Drawing.Color joincolor;
         public System.Drawing.Color kickcolor;
         public System.Drawing.Color miscelancscolor;
@@ -48,8 +48,19 @@ namespace Client
         public System.Drawing.Color colortalk;
         public string name = "Default";
         public System.Drawing.Color link;
+        /// <summary>
+        /// mIRC colors
+        /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
         public bool italic;
+        /// <summary>
+        /// Font
+        /// </summary>
+        public Font SBABOX = new Font("Arial", 11);
+        /// <summary>
+        /// Spacing
+        /// </summary>
+        public int SBABOX_sp = 6;
 
         public Color colorFromXmlCode(XmlNode code)
         {
@@ -153,8 +164,6 @@ namespace Client
             colorh = System.Drawing.Color.Cyan;
             colorv = System.Drawing.Color.LightGreen;
             colordefault = System.Drawing.Color.White;
-            fontsize = 11;
-            localfont = "Arial";
             backgroundcolor = System.Drawing.Color.Black;
         }
 

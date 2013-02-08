@@ -34,7 +34,10 @@ namespace Client
             format.SetMeasurableCharacterRanges(ranges);
 
             regions = graphics.MeasureCharacterRanges(text, font, rect, format);
-            rect = regions[0].GetBounds(graphics);
+            if (regions.Length > 0)
+            {
+                rect = regions[0].GetBounds(graphics);
+            }
 
             return (int)(rect.Right + 1.0f);
         }

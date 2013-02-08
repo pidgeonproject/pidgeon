@@ -47,6 +47,19 @@ namespace Client
         public Scrollback scrollback = null;
         private List<Line> LineDB = new List<Line>();
         private bool reloading = false;
+        private int spacing = 2;
+        public int Spacing
+        {
+            get
+            {
+                return spacing;
+            }
+            set
+            {
+                spacing = value;
+                RedrawText();
+            }
+        }
 
         public class ContentText
         {
@@ -135,22 +148,31 @@ namespace Client
                 {
                     return;
                 }
-                text.Add(line);
+                lock (text)
+                {
+                    text.Add(line);
+                }
             }
 
             public void insertData(string line)
             {
-                text.Add(new ContentText(line, owner, owner.ForeColor));
+                lock (text)
+                {
+                    text.Add(new ContentText(line, owner, owner.ForeColor));
+                }
             }
 
             public override string ToString()
             {
                 string part = "";
-                foreach (ContentText data in text)
+                lock (text)
                 {
-                    if (data.Text != null)
+                    foreach (ContentText data in text)
                     {
-                        part += data.Text;
+                        if (data.Text != null)
+                        {
+                            part += data.Text;
+                        }
                     }
                 }
                 return part;
@@ -163,7 +185,10 @@ namespace Client
 
             public void Merge(Line line)
             {
-                text.AddRange(line.text);
+                lock (text)
+                {
+                    text.AddRange(line.text);
+                }
             }
 
             public Line(string Text, SBABox SBAB)
@@ -199,6 +224,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Color of text
+        /// </summary>
         public override Color ForeColor
         {
             get
@@ -269,7 +297,12 @@ namespace Client
             return false;
         }
 
-        public string maketext(int length)
+        /// <summary>
+        /// Create a random text of specific lenght
+        /// </summary>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        private string maketext(int length)
         {
             int curr = 0;
             string text = "";
@@ -294,13 +327,13 @@ namespace Client
         }
 
         /// <summary>
-        /// Redraw
+        /// Redraw line
         /// </summary>
-        /// <param name="graphics"></param>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
-        /// <param name="line"></param>
-        public void RedrawLine(ref Graphics graphics, ref float X, ref float Y, Line line)
+        /// <param name="graphics">Graphics object you are drawing to</param>
+        /// <param name="X">carret X</param>
+        /// <param name="Y">carret Y</param>
+        /// <param name="line">line</param>
+        private void RedrawLine(ref Graphics graphics, ref float X, ref float Y, Line line)
         {
             bool wrappingnow = false;
             rendered++;
@@ -314,9 +347,10 @@ namespace Client
                         extraline.insertData(part);
                         continue;
                     }
-                    if ((Y + (int)Font.Size + 8) > 0 && (Y + (int)Font.Size + 8) < this.Height)
+                    int padding = (int)Font.Size + 8;
+                    if ((Y + padding) > 0 && (Y - padding < this.Height))
                     {
-                        if (part.Text != "")
+                        if (part.Text != null && part.Text != "")
                         {
                             Brush brush = new SolidBrush(part.TextColor);
                             string TextOfThispart = part.Text;
@@ -326,22 +360,29 @@ namespace Client
                             format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
                             Font font = new Font(this.Font, FontStyle.Regular);
 
-                            if (part.Bold)
+                            if (part.Bold && part.Underline)
                             {
-                                font = new Font(font, FontStyle.Bold);
+                                font = new Font(font, FontStyle.Underline | FontStyle.Bold);
+                            }
+                            else
+                            {
+                                if (part.Bold)
+                                {
+                                    font = new Font(font, FontStyle.Bold);
+                                }
+
+                                if (part.Underline)
+                                {
+                                    font = new Font(font, FontStyle.Underline);
+                                }
                             }
 
-                            if (part.Underline)
-                            {
-                                font = new Font(font, FontStyle.Underline);
-                            }
-
-                            //SizeF stringSize = TextRenderer.Me
                             SizeF stringSize = graphics.MeasureString(part.Text, font, new Point(0, 0), format);
-                            //stringSize.Width = Buffers.MeasureDisplayStringWidth(_t, part.text, font, format);
+                            int stringWidth = Buffers.MeasureDisplayStringWidth(graphics, part.Text, font, format);
                             if (Wrap)
                             {
-                                if (X + stringSize.Width > (this.Width - vScrollBar1.Width - 20))
+                                int oversized = this.Width - vScrollBar1.Width - 20;
+                                if (X + stringWidth > oversized)
                                 {
                                     bool ls = part.Text.StartsWith(" ");
                                     bool es = part.Text.EndsWith(" ");
@@ -350,12 +391,12 @@ namespace Client
                                     foreach (string xx in words)
                                     {
                                         string value = xx;
-                                        if (graphics.MeasureString(value, font, new Point(0, 0), format).Width > (this.Width - 20) - vScrollBar1.Width)
+                                        if (graphics.MeasureString(value, font, new Point(0, 0), format).Width > oversized)
                                         {
                                             int size = xx.Length - 1;
-                                            while (graphics.MeasureString(maketext(size), font, new Point(0, 0), format).Width > (this.Width - 20) - vScrollBar1.Width)
+                                            while (graphics.MeasureString(value.Substring(0, size), font, new Point(0, 0), format).Width > oversized)
                                             {
-                                                if (size == 0)
+                                                if (size <= 0)
                                                 {
                                                     Core.DebugLog("Invalid size on SBABox, error #1");
                                                     return;
@@ -367,7 +408,7 @@ namespace Client
                                             trimmed += part1;
                                             value = part2;
                                         }
-                                        if (graphics.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > (this.Width - 40) - vScrollBar1.Width)
+                                        if (graphics.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > oversized)
                                         {
                                             if (trimmed != "" || graphics.MeasureString(value, font, new Point(0, 0), format).Width < pt.Width)
                                             {
@@ -383,15 +424,18 @@ namespace Client
                                     // we trimmed the value, now update the text temporarily
                                     TextOfThispart = trimmed;
                                     string remaining_data = part.Text.Substring(trimmed.Length);
-                                    extraline = new Line("", this);
                                     ContentText _text = new ContentText(remaining_data, this, part.TextColor);
                                     _text.Underline = part.Underline;
                                     _text.Bold = part.Bold;
                                     _text.Link = part.Link;
                                     wrappingnow = true;
+                                    extraline = new Line(this);
                                     extraline.insertData(_text);
                                 }
                             }
+
+                            stringSize = graphics.MeasureString(TextOfThispart, font, new Point(0, 0), format);
+                            stringWidth = Buffers.MeasureDisplayStringWidth(graphics, TextOfThispart, font, format);
 
                             if (part.Link != null)
                             {
@@ -399,7 +443,8 @@ namespace Client
                                 {
                                     part.Linked = true;
                                     Pen pen = new Pen(part.TextColor);
-                                    Link http = new Link((int)X, (int)Y, part.TextColor, (int)stringSize.Width, (int)stringSize.Height, this, part.Link, part.Text, part);
+                                    stringSize = graphics.MeasureString(TextOfThispart, font, new Point(0, 0), format);
+                                    Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThispart, part);
                                     lock (LinkInfo)
                                     {
                                         LinkInfo.Add(http);
@@ -408,22 +453,22 @@ namespace Client
                             }
                             graphics.DrawString(TextOfThispart, font, brush, X, Y);
 
-                            X = X + stringSize.Width;
+                            X = X + stringWidth;
                             if (Wrap)
                             {
                                 hsBar.Visible = false;
                             }
                             else
                             {
-                                if ((int)(X + stringSize.Width) > hsBar.Maximum)
+                                if ((int)(X + stringWidth) > hsBar.Maximum)
                                 {
                                     lock (hsBar)
                                     {
-                                        if (hsBar.Value > (int)(X + stringSize.Width))
+                                        if (hsBar.Value > (int)(X + stringWidth))
                                         {
-                                            hsBar.Value = (int)(X + stringSize.Width);
+                                            hsBar.Value = (int)(X + stringWidth);
                                         }
-                                        hsBar.Maximum = (int)(X + stringSize.Width);
+                                        hsBar.Maximum = (int)(X + stringWidth);
                                     }
                                 }
                             }
@@ -433,12 +478,15 @@ namespace Client
             }
             if (wrappingnow)
             {
-                Y = Y + Font.Size + 6;
+                Y = Y + Font.Size + spacing;
                 X = 0 - currentX;
                 RedrawLine(ref graphics, ref X, ref Y, extraline);
             }
         }
 
+        /// <summary>
+        /// Redraw all text
+        /// </summary>
         public void RedrawText()
         {
             try
@@ -465,10 +513,10 @@ namespace Client
                     {
                         X = 0 - currentX;
                         RedrawLine(ref _t, ref X, ref Y, text);
-                        Y = Y + Font.Size + 6;
+                        Y = Y + Font.Size + spacing;
                     }
                 }
-                scrolldown = rendered - ((int)((float)pt.Height / (Font.Size + 6)));
+                scrolldown = rendered - ((int)((float)pt.Height / (Font.Size + spacing)));
                 if (scrolldown < 0)
                 {
                     vScrollBar1.Enabled = false;
@@ -578,25 +626,33 @@ namespace Client
             InitializeComponent();
         }
 
-        public void deleteLine(int index)
+        /// <summary>
+        /// Remove a part of text at specific line
+        /// </summary>
+        /// <param name="index"></param>
+        public void deleteLine(int index, bool redraw = false)
         {
-            if (LineDB.Count > index + 1)
+            lock (LineDB)
             {
-                lock (LineDB)
+                if (LineDB.Count > index + 1)
                 {
                     LineDB.RemoveAt(index);
-                }
-                lock (vScrollBar1)
-                {
-                    if (vScrollBar1.Maximum > 2)
+                    lock (vScrollBar1)
                     {
-                        if (vScrollBar1.Value == vScrollBar1.Maximum)
+                        if (vScrollBar1.Maximum > 2)
                         {
-                            vScrollBar1.Value--;
+                            if (vScrollBar1.Value == vScrollBar1.Maximum)
+                            {
+                                vScrollBar1.Value--;
+                            }
+                            vScrollBar1.Maximum--;
                         }
-                        vScrollBar1.Maximum--;
                     }
                 }
+            }
+            if (redraw)
+            {
+                RedrawText();
             }
         }
 
@@ -672,12 +728,16 @@ namespace Client
         /// <summary>
         /// Remove all text of this item
         /// </summary>
-        public void RemoveText()
+        public void RemoveText(bool Redraw = true)
         {
             offset = 0;
             lock (LineDB)
             {
                 LineDB.Clear();
+            }
+            if (Redraw)
+            {
+                RedrawText();
             }
         }
 
@@ -709,7 +769,7 @@ namespace Client
 
         private void ScrolltoX(int x)
         {
-            offset = ((int)Font.Size + 6) * x;
+            offset = ((int)Font.Size + spacing) * x;
         }
 
         public void InsertLine(Line line)
