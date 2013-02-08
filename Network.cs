@@ -110,6 +110,43 @@ namespace Client
         /// Parent service
         /// </summary>
         public ProtocolSv ParentSv = null;
+        /// <summary>
+        /// List of channels
+        /// </summary>
+        public List<ChannelData> ChannelList = new List<ChannelData>();
+        /// <summary>
+        /// If true, the channel data will be suppressed in system window
+        /// </summary>
+        public bool SuppressData = false;
+
+        public class ChannelData
+        {
+            public string ChannelName = null;
+            public int UserCount = 0;
+            public string ChannelTopic = null;
+
+            public ChannelData(int Users, string Name, string Topic)
+            {
+                ChannelTopic = Topic;
+                UserCount = Users;
+                ChannelName = Name;
+            }
+        }
+
+        public ChannelData ContainsChannel(string channel)
+        {
+            lock (ChannelList)
+            {
+                foreach (ChannelData data in ChannelList)
+                {
+                    if (channel.ToLower() == data.ChannelName.ToLower())
+                    {
+                        return data;
+                    }
+                }
+            }
+            return null;
+        }
 
         public class Highlighter
         {

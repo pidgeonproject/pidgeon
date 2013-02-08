@@ -98,6 +98,7 @@ namespace Client
                 commands.Add("part", new Command(Type.Network));
                 commands.Add("quit", new Command(Type.System, Generic.quit));
                 commands.Add("query", new Command(Type.SystemSv, Generic.query));
+                commands.Add("map", new Command(Type.Network));
                 commands.Add("me", new Command(Type.SystemSv, Generic.msg2));
                 commands.Add("msg", new Command(Type.SystemSv, Generic.msg1));
                 commands.Add("away", new Command(Type.Network));

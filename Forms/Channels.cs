@@ -26,9 +26,68 @@ namespace Client
 {
     public partial class Channels : Form
     {
-        public Channels()
+        public Network network = null;
+        private int channels = 0;
+
+        public Channels(Network nw)
         {
+            network = nw;
             InitializeComponent();
+        }
+
+        private void Reload()
+        {
+            listView1.Items.Clear();
+            channels = 0;
+            lock (network.ChannelList)
+            {
+                foreach (Network.ChannelData channel_info in network.ChannelList)
+                {
+                    ListViewItem item = new ListViewItem(channel_info.ChannelName);
+                    item.SubItems.Add(channel_info.UserCount.ToString());
+                    item.SubItems.Add(channel_info.ChannelTopic);
+                    listView1.Items.Add(item);
+                    channels++;
+                }
+            }
+        }
+
+        private void Channels_Load(object sender, EventArgs e)
+        {
+            refreshAutoToolStripMenuItem.Checked = true;
+            Reload();
+        }
+
+        private void timerl_Tick(object sender, EventArgs e)
+        {
+            if (channels != network.ChannelList.Count)
+            {
+                Reload();
+            }
+        }
+
+        private void refreshAutoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (refreshAutoToolStripMenuItem.Checked)
+            {
+                timerl.Enabled = false;
+                refreshAutoToolStripMenuItem.Checked = false;
+            }
+            else
+            {
+                timerl.Enabled = true;
+                refreshAutoToolStripMenuItem.Checked = true;
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Reload();
+        }
+
+        private void downloadListFromServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            network.Transfer("LIST");
         }
     }
 }

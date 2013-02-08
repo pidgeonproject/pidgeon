@@ -37,6 +37,9 @@ namespace Client
         private bool UpdatedStatus = true;
         SearchItem searchbox = new SearchItem();
         bool done = false;
+        public int progress = 0;
+        public bool DisplayingProgress = false;
+        public int ProgressMax = 0;
 
         public class _WindowRequest 
         {
@@ -304,6 +307,30 @@ namespace Client
             {
                 UpdatedStatus = false;
                 UpdateStatus();
+            }
+            if (toolStripProgressBar1.Visible != DisplayingProgress)
+            {
+                toolStripProgressBar1.Visible = DisplayingProgress;
+            }
+            if (DisplayingProgress)
+            {
+                updater.Interval = 10;
+            }
+            else
+            {
+                updater.Interval = 200;
+            }
+            if (toolStripProgressBar1.Maximum != ProgressMax)
+            {
+                if (toolStripProgressBar1.Value > ProgressMax)
+                {
+                    toolStripProgressBar1.Value = ProgressMax;
+                }
+                toolStripProgressBar1.Maximum = ProgressMax;
+            }
+            if (toolStripProgressBar1.Value != progress)
+            {
+                toolStripProgressBar1.Value = progress;
             }
         }
 

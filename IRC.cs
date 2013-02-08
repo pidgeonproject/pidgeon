@@ -116,6 +116,32 @@ namespace Client
             return false;
         }
 
+        private bool ChannelData(string command, string parameters, string value)
+        {
+            string channel_name = parameters.Substring(parameters.IndexOf(" "));
+            int user_count = int.Parse(channel_name.Substring(channel_name.IndexOf(" ")));
+            
+            lock (_Network.ChannelList)
+            { 
+                Network.ChannelData channel = _Network.ContainsChannel(channel_name);
+                if (channel == null)
+                {
+                    channel = new Network.ChannelData(user_count, channel_name, value);
+                    _Network.ChannelList.Add(channel);
+                }
+                else
+                {
+                    channel.UserCount = user_count;
+                    channel.ChannelTopic = value;
+                }
+                if (_Network.SuppressData)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private bool ChannelTopic(string[] code, string command, string source, string parameters, string value)
         {
             if (code.Length > 3)
@@ -866,6 +892,18 @@ namespace Client
                                     {
                                         return true;
                                     }
+                                }
+                                break;
+                            case "321":
+                                if (_Network.SuppressData)
+                                {
+                                    return true;
+                                }
+                                break;
+                            case "322":
+                                if (ChannelData(command, parameters, _value))
+                                {
+                                    return true;
                                 }
                                 break;
                             case "PONG":

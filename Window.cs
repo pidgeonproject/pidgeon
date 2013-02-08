@@ -85,6 +85,7 @@ namespace Client
         {
             scrollback.create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
+            scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
         }
 
         public bool Redraw()

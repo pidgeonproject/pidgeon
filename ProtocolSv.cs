@@ -448,20 +448,21 @@ namespace Client
                             }
                             if (backlog)
                             {
-                                if (Core._Main.toolStripProgressBar1.Visible == false)
+                                if (Core._Main.DisplayingProgress == false)
                                 {
-                                    Core._Main.toolStripProgressBar1.Value = int.Parse(id);
-                                    Core._Main.toolStripProgressBar1.Visible = true;
+                                    Core._Main.progress = int.Parse(id);
+                                    Core._Main.DisplayingProgress = true;
                                     this.SuppressChanges = true;
-                                    Core._Main.toolStripProgressBar1.Maximum = cache[NetworkList.IndexOf(server4)].size;
+                                    Core._Main.ProgressMax = cache[NetworkList.IndexOf(server4)].size;
                                 }
-                                Core._Main.toolStripProgressBar1.Value = int.Parse(id);
+
+                                Core._Main.ProgressMax = int.Parse(id);
                                 Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[NetworkList.IndexOf(server4)].size.ToString() + " datagrams");
                                 if ((cache[NetworkList.IndexOf(server4)].size - 2) < int.Parse(id))
                                 {
                                     Core._Main.Status("");
-                                    Core._Main.toolStripProgressBar1.Visible = false;
-                                    Core._Main.toolStripProgressBar1.Value = 0;
+                                    Core._Main.DisplayingProgress = false;
+                                    Core._Main.progress = 0;
                                     this.SuppressChanges = false;
                                     foreach (Channel i in server4.Channels)
                                     {

@@ -236,7 +236,7 @@ namespace Client
             set
             {
                 base.ForeColor = value;
-                RedrawText();
+                Redraw();
             }
         }
 
@@ -250,7 +250,7 @@ namespace Client
             {
                 base.BackColor = value;
                 pt.BackColor = value;
-                RedrawText();
+                Redraw();
             }
         }
 
@@ -534,12 +534,26 @@ namespace Client
                 {
                     lock (vScrollBar1)
                     {
-                        if (vScrollBar1.Value > scrolldown)
+                        try
                         {
-                            vScrollBar1.Value = scrolldown;
+                            if (vScrollBar1.Value > scrolldown)
+                            {
+                                vScrollBar1.Value = scrolldown;
+                            }
+                            vScrollBar1.Maximum = scrolldown;
+                            vScrollBar1.Enabled = true;
                         }
-                        vScrollBar1.Maximum = scrolldown;
-                        vScrollBar1.Enabled = true;
+                        catch (ArgumentOutOfRangeException)
+                        {
+                            if (vScrollBar1.Maximum > 0)
+                            {
+                                vScrollBar1.Value = vScrollBar1.Maximum - 1;
+                            }
+                            else
+                            {
+                                vScrollBar1.Value = 0;
+                            }
+                        }
                     }
                 }
                 pt.Invalidate();
@@ -556,29 +570,39 @@ namespace Client
         {
             if (e.Delta != 0)
             {
-                int delta = (e.Delta / 16) * -1;
-                if (delta < 0)
+                try
                 {
-                    if ((vScrollBar1.Value + delta) > vScrollBar1.Minimum)
+                    lock (vScrollBar1)
                     {
-                        vScrollBar1.Value += delta;
-                    }
-                    else
-                    {
-                        vScrollBar1.Value = vScrollBar1.Minimum;
+                        int delta = (e.Delta / 16) * -1;
+                        if (delta < 0)
+                        {
+                            if ((vScrollBar1.Value + delta) > vScrollBar1.Minimum)
+                            {
+                                vScrollBar1.Value = vScrollBar1.Value + delta;
+                            }
+                            else
+                            {
+                                vScrollBar1.Value = vScrollBar1.Minimum;
+                            }
+                        }
+
+                        if (delta > 0)
+                        {
+                            if ((vScrollBar1.Value + delta) < vScrollBar1.Maximum)
+                            {
+                                vScrollBar1.Value = vScrollBar1.Value + delta;
+                            }
+                            else
+                            {
+                                vScrollBar1.Value = vScrollBar1.Maximum;
+                            }
+                        }
                     }
                 }
-
-                if (delta > 0)
+                catch (ArgumentOutOfRangeException)
                 {
-                    if ((vScrollBar1.Value + delta) < vScrollBar1.Maximum)
-                    {
-                        vScrollBar1.Value += delta;
-                    }
-                    else
-                    {
-                        vScrollBar1.Value = vScrollBar1.Maximum;
-                    }
+                    vScrollBar1.Value = vScrollBar1.Maximum;
                 }
                 ScrolltoX(vScrollBar1.Value);
                 Redraw();
@@ -660,7 +684,7 @@ namespace Client
             }
             if (redraw)
             {
-                RedrawText();
+                Redraw();
             }
         }
 
@@ -841,10 +865,17 @@ namespace Client
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            lock (vScrollBar1)
+            try
             {
-                ScrolltoX(e.NewValue);
-                Redraw();
+                lock (vScrollBar1)
+                {
+                    ScrolltoX(e.NewValue);
+                    Redraw();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
