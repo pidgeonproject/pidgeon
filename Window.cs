@@ -94,8 +94,11 @@ namespace Client
                 this.xContainer1.SplitterDistance = Configuration.x1;
                 this.xContainer4.SplitterDistance = Configuration.x4;
             }
-            listViewd.Columns[0].Width = listViewd.Width;
-            listView.Columns[0].Width = listView.Width;
+            if (listViewd != null && listViewd.Columns.Count > 0)
+            {
+                listViewd.Columns[0].Width = listViewd.Width;
+                listView.Columns[0].Width = listView.Width;
+            }
             return true;
         }
 

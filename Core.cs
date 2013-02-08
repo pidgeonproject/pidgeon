@@ -379,7 +379,10 @@ namespace Client
                 .Replace("%D%", "")
                 .Replace("%L%", "")
                 .Replace("%/L%", "")
-                .Replace("%/D%", "");
+                .Replace("%/D%", "")
+                .Replace(((char)001).ToString(), "")
+                .Replace(((char)002).ToString(), "")
+                .Replace(((char)003).ToString(), "");
         }
 
         public static void ClearRingBufferLog()

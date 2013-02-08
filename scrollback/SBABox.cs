@@ -423,7 +423,15 @@ namespace Client
                                     }
                                     // we trimmed the value, now update the text temporarily
                                     TextOfThispart = trimmed;
-                                    string remaining_data = part.Text.Substring(trimmed.Length);
+                                    string remaining_data;
+                                    if (trimmed.Length < part.Text.Length)
+                                    {
+                                        remaining_data = part.Text.Substring(trimmed.Length);
+                                    }
+                                    else
+                                    {
+                                        remaining_data = part.Text;
+                                    }
                                     ContentText _text = new ContentText(remaining_data, this, part.TextColor);
                                     _text.Underline = part.Underline;
                                     _text.Bold = part.Bold;

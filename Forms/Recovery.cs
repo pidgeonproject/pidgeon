@@ -95,5 +95,10 @@ namespace Client
             Show();
             timer.Enabled = false;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
+        }
     }
 }
