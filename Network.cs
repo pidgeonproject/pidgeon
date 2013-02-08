@@ -216,13 +216,21 @@ namespace Client
         /// <returns></returns>
         public Channel Join(string channel, bool nf = false)
         {
-            Channel _channel = new Channel(this);
-            RenderedChannel = _channel;
-            _channel.Name = channel;
-            Channels.Add(_channel);
-            Core._Main.ChannelList.insertChannel(_channel);
-            _protocol.CreateChat(channel, !nf, this, true, true);
-            return _channel;
+            Channel previous = getChannel(channel);
+            if (previous == null)
+            {
+                Channel _channel = new Channel(this);
+                RenderedChannel = _channel;
+                _channel.Name = channel;
+                Channels.Add(_channel);
+                Core._Main.ChannelList.insertChannel(_channel);
+                _protocol.CreateChat(channel, !nf, this, true, true);
+                return _channel;
+            }
+            else
+            {
+                return previous;
+            }
         }
 
         /// <summary>

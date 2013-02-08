@@ -100,7 +100,10 @@ namespace Client
                 {
                     foreach (ListViewItem item in listView1.SelectedItems)
                     {
-                        network.Join(item.Name);
+                        if (item.Name != "")
+                        {
+                            network.Join(item.Name);
+                        }
                     }
                 }
             }
