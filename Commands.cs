@@ -76,12 +76,15 @@ namespace Client
             User,
         }
 
-        public static Dictionary<string, Command> commands = new Dictionary<string, Command>();
+        public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
 
         public static void RegisterCommand(Command command, string Name)
         {
             Core.DebugLog("Registering a new command by extension: " + Name);
-            commands.Add(Name, command);
+            lock (commands)
+            {
+                commands.Add(Name, command);
+            }
         }
 
         public static void Initialise()
@@ -166,15 +169,18 @@ namespace Client
             {
                 parameter = parameter.Substring(1);
             }
-            if (commands.ContainsKey(values[0]))
+            lock (commands)
             {
-                // network commands are handled by server
-                if (commands[values[0]]._Type == Type.Network)
+                if (commands.ContainsKey(values[0]))
                 {
-                    return false;
+                    // network commands are handled by server
+                    if (commands[values[0]]._Type == Type.Network)
+                    {
+                        return false;
+                    }
+                    commands[values[0]].Launch(parameter);
+                    return true;
                 }
-                commands[values[0]].Launch(parameter);
-                return true;
             }
             return false;
         }

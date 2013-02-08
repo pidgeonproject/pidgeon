@@ -134,6 +134,16 @@ namespace Client
             
         }
 
+        public static void ChannelInfo(Network network, Channel channel, string Mode)
+        { 
+            
+        }
+
+        public static void ChannelTopic(string topic, User user, Network network, Channel channel)
+        { 
+            
+        }
+
         public static void CreatingNetwork(Network network)
         {
             foreach (Extension extension in Core.Extensions)

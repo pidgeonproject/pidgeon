@@ -71,7 +71,6 @@ namespace Client
 
                 _Network.UChars.Clear();
                 _Network.UChars.AddRange(cmodes.ToArray<char>());
-
             }
             if (parameters.Contains("CHANMODES="))
             {
@@ -90,7 +89,6 @@ namespace Client
                     _Network.SModes.AddRange(_mode[2].ToArray<char>());
                     _Network.CModes.AddRange(_mode[3].ToArray<char>());
                 }
-
             }
             return true;
         }
@@ -111,6 +109,7 @@ namespace Client
                         channel.UpdateInfo();
                         curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
+                    Hooks.ChannelInfo(_Network, channel, code[4]);
                     return true;
                 }
             }
@@ -141,6 +140,7 @@ namespace Client
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
+                    Hooks.ChannelTopic(topic, null, _Network, channel);
                     return true;
                 }
             }

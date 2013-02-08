@@ -27,7 +27,7 @@ namespace Client
         public string Name = "Unknown extension";
         public string Version = "1.0";
         public string Description = "Author of this extension is stupid";
-        public Version Required = new Version(1, 0, 8, 0);
+        public Version Required = new Version(1, 0, 9, 0);
         public Status _Status = Status.Loading;
         public bool RequiresReboot = false;
         public List<Thread> _Threads = new List<Thread>();
@@ -45,6 +45,12 @@ namespace Client
             try
             {
                 _Status = Status.Loading;
+                if (Required > System.Reflection.Assembly.GetExecutingAssembly().GetName().Version)
+                {
+                    Core.DebugLog("CORE: Terminating the extension " + Name + " which requires pidgeon " + Required.ToString());
+                    _Status = Status.Terminated;
+                    return;
+                }
                 Initialise();
             }
             catch (Exception fail)

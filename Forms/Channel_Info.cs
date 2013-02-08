@@ -30,7 +30,8 @@ namespace Client
     public partial class Channel_Info : Form
     {
         public Channel channel = null;
-        public List<char> cm;
+        public List<char> cm = null;
+
         public Channel_Info()
         {
             InitializeComponent();
@@ -56,34 +57,41 @@ namespace Client
         /// <param name="e"></param>
         private void Channel_Window_Load(object sender, EventArgs e)
         {
-            bClose.Text = messages.get("channelinfo-ok", Core.SelectedLanguage);
-            tabControl1.TabPages[0].Text = messages.get("channelinfo-t0", Core.SelectedLanguage);
-            tabControl1.TabPages[1].Text = messages.get("channelinfo-t2", Core.SelectedLanguage);
-            tabControl1.TabPages[2].Text = messages.get("channelinfo-t3", Core.SelectedLanguage);
-            tabControl1.TabPages[3].Text = messages.get("channelinfo-t4", Core.SelectedLanguage);
-
-            cm = new List<char>();
-
-            if (channel != null)
+            try
             {
-                Text = channel.Name;
+                bClose.Text = messages.get("channelinfo-ok", Core.SelectedLanguage);
+                tabControl1.TabPages[0].Text = messages.get("channelinfo-t0", Core.SelectedLanguage);
+                tabControl1.TabPages[1].Text = messages.get("channelinfo-t2", Core.SelectedLanguage);
+                tabControl1.TabPages[2].Text = messages.get("channelinfo-t3", Core.SelectedLanguage);
+                tabControl1.TabPages[3].Text = messages.get("channelinfo-t4", Core.SelectedLanguage);
 
-                ReloadBans();
+                cm = new List<char>();
 
-                lock (channel._mode)
+                if (channel != null)
                 {
-                    foreach (char item in channel._Network.CModes)
+                    Text = channel.Name;
+
+                    ReloadBans();
+
+                    lock (channel._mode)
                     {
-                        string de = "  unknown mode. Refer to ircd manual (/raw help)";
-                        cm.Add(item);
-                        if (channel._Network.Descriptions.ContainsKey(item))
+                        foreach (char item in channel._Network.CModes)
                         {
-                            de = "    " + channel._Network.Descriptions[item];
+                            string de = "  unknown mode. Refer to ircd manual (/raw help)";
+                            cm.Add(item);
+                            if (channel._Network.Descriptions.ContainsKey(item))
+                            {
+                                de = "    " + channel._Network.Descriptions[item];
+                            }
+                            checkedList.Items.Add(item.ToString() + de, channel._mode._Mode.Contains(item.ToString()));
+                            textBox1.Text = channel.Topic;
                         }
-                        checkedList.Items.Add(item.ToString() + de, channel._mode._Mode.Contains(item.ToString()));
-                        textBox1.Text = channel.Topic;
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -91,10 +99,10 @@ namespace Client
         {
             if (channel != null)
             {
-                if (channel.Bans != null)
+                if (channel.Exceptions != null)
                 {
                     listView3.Items.Clear();
-                    lock (channel.Bans)
+                    lock (channel.Exceptions)
                     {
                         foreach (Except ex in channel.Exceptions)
                         {
@@ -135,10 +143,10 @@ namespace Client
         {
             if (channel != null)
             {
-                if (channel.Bans != null)
+                if (channel.Invites != null)
                 {
                     listView3.Items.Clear();
-                    lock (channel.Bans)
+                    lock (channel.Invites)
                     {
                         foreach (Invite sb in channel.Invites)
                         {
@@ -204,26 +212,47 @@ namespace Client
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            if (textBox1.Lines.Count() > 1)
+            try
             {
-                textBox1.Text = textBox1.Lines[0];
+                if (textBox1.Lines.Count() > 1)
+                {
+                    textBox1.Text = textBox1.Lines[0];
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView1.SelectedItems)
+            try
             {
-                if (item.Text != "")
+                foreach (ListViewItem item in listView1.SelectedItems)
                 {
-                    channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Text);
+                    if (item.Text != "")
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Text);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            ReloadBans();
+            try
+            {
+                ReloadBans();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -238,28 +267,49 @@ namespace Client
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView3.SelectedItems)
+            try
             {
-                if (item.Text != "")
+                foreach (ListViewItem item in listView3.SelectedItems)
                 {
-                    channel._Network.Transfer("MODE " + channel.Name + " -b " + item.Text);
+                    if (item.Text != "")
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -b " + item.Text);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ReloadInvites();
+            try
+            {
+                ReloadInvites();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            foreach (ListViewItem item in listView2.SelectedItems)
+            try
             {
-                if (item.Text != "")
+                foreach (ListViewItem item in listView2.SelectedItems)
                 {
-                    channel._Network.Transfer("MODE " + channel.Name + " -e " + item.Text);
+                    if (item.Text != "")
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -e " + item.Text);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -270,22 +320,43 @@ namespace Client
 
         private void reloadToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            timerBans.Enabled = true;
-            channel.ReloadBans();
+            try
+            {
+                timerBans.Enabled = true;
+                channel.ReloadBans();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void timerBans_Tick(object sender, EventArgs e)
         {
-            if (!channel.parsing_xb)
+            try
             {
-                ReloadBans();
-                timerBans.Enabled = false;
+                if (!channel.parsing_xb)
+                {
+                    ReloadBans();
+                    timerBans.Enabled = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void reloadToolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            ReloadExceptions();
-        } 
+            try
+            {
+                ReloadExceptions();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
     }
 }

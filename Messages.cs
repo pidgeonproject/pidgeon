@@ -17,12 +17,79 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Text;
 
 namespace Client
 {
     public class messages
     {
+        public static List<Control> GetControls(Control form)
+        {
+            var controlList = new List<Control>();
+
+            foreach (Control childControl in form.Controls)
+            {
+                // Recurse child controls.
+                controlList.AddRange(GetControls(childControl));
+                controlList.Add(childControl);
+            }
+            return controlList;
+        }
+
+        public static List<ToolStripMenuItem> GetMenu(ToolStripMenuItem form)
+        {
+            var controlList = new List<ToolStripMenuItem>();
+
+            foreach (ToolStripItem childControl in form.DropDownItems)
+            {
+                // Recurse child controls.
+                if (typeof(ToolStripMenuItem) == childControl.GetType())
+                {
+                    controlList.AddRange(GetMenu((ToolStripMenuItem)childControl));
+                    controlList.Add((ToolStripMenuItem)childControl);
+                }
+            }
+            return controlList;
+        }
+
+        public static void Localize(Form form)
+        {
+            try
+            {
+                lock (form.Controls)
+                {
+                    foreach (Control control in GetControls(form))
+                    {
+                        if (control.Text.StartsWith("[["))
+                        {
+                            control.Text = get(control.Text);
+                        }
+                        if (control.GetType() == typeof(MenuStrip))
+                        {
+                            MenuStrip menu = (MenuStrip)control;
+                            foreach (ToolStripMenuItem item in menu.Items)
+                            {
+                                if (item.Text.StartsWith("[["))
+                                {
+                                    item.Text = get(item.Text);
+                                }
+                                foreach (ToolStripMenuItem item2 in GetMenu(item))
+                                    if (item2.Text.StartsWith("[["))
+                                    {
+                                        item2.Text = get(item2.Text);
+                                    }
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         /// <summary>
         /// Default language
         /// </summary>
@@ -91,6 +158,7 @@ namespace Client
         {
             try
             {
+                item = item.Replace("]", "").Replace("[", "");
                 if (language == null)
                 {
                     language = Language;
