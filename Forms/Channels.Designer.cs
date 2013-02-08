@@ -54,8 +54,10 @@ namespace Client
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.downloadListFromServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerl = new System.Windows.Forms.Timer(this.components);
             this.refreshAutoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerl = new System.Windows.Forms.Timer(this.components);
+            this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.knockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,6 +67,7 @@ namespace Client
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3});
+            this.listView1.ContextMenuStrip = this.contextMenuStrip1;
             this.listView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.listView1.Location = new System.Drawing.Point(0, 0);
             this.listView1.Name = "listView1";
@@ -92,9 +95,11 @@ namespace Client
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.downloadListFromServerToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.refreshAutoToolStripMenuItem});
+            this.refreshAutoToolStripMenuItem,
+            this.joinToolStripMenuItem,
+            this.knockToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(210, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(210, 136);
             // 
             // downloadListFromServerToolStripMenuItem
             // 
@@ -110,18 +115,32 @@ namespace Client
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
-            // timerl
-            // 
-            this.timerl.Enabled = true;
-            this.timerl.Interval = 2000;
-            this.timerl.Tick += new System.EventHandler(this.timerl_Tick);
-            // 
             // refreshAutoToolStripMenuItem
             // 
             this.refreshAutoToolStripMenuItem.Name = "refreshAutoToolStripMenuItem";
             this.refreshAutoToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
             this.refreshAutoToolStripMenuItem.Text = "Refresh auto";
             this.refreshAutoToolStripMenuItem.Click += new System.EventHandler(this.refreshAutoToolStripMenuItem_Click);
+            // 
+            // timerl
+            // 
+            this.timerl.Enabled = true;
+            this.timerl.Interval = 2000;
+            this.timerl.Tick += new System.EventHandler(this.timerl_Tick);
+            // 
+            // joinToolStripMenuItem
+            // 
+            this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
+            this.joinToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.joinToolStripMenuItem.Text = "Join";
+            this.joinToolStripMenuItem.Click += new System.EventHandler(this.joinToolStripMenuItem_Click);
+            // 
+            // knockToolStripMenuItem
+            // 
+            this.knockToolStripMenuItem.Name = "knockToolStripMenuItem";
+            this.knockToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.knockToolStripMenuItem.Text = "Knock";
+            this.knockToolStripMenuItem.Click += new System.EventHandler(this.knockToolStripMenuItem_Click);
             // 
             // Channels
             // 
@@ -148,5 +167,7 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.Timer timerl;
         private System.Windows.Forms.ToolStripMenuItem refreshAutoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem knockToolStripMenuItem;
     }
 }

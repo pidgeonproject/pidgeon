@@ -120,9 +120,14 @@ namespace Client
         {
             string channel_name = parameters.Substring(parameters.IndexOf(" ") + 1);
             int user_count = 0;
-            if (!int.TryParse(channel_name.Substring(channel_name.IndexOf(" ") + 1), out user_count))
+            if (channel_name.Contains(" "))
             {
-                user_count = 0;
+                if (!int.TryParse(channel_name.Substring(channel_name.IndexOf(" ") + 1), out user_count))
+                {
+                    user_count = 0;
+                }
+
+                channel_name = channel_name.Substring(0, channel_name.IndexOf(" "));
             }
             
             lock (_Network.ChannelList)
@@ -907,6 +912,13 @@ namespace Client
                             case "322":
                                 if (ChannelData(command, parameters, _value))
                                 {
+                                    return true;
+                                }
+                                break;
+                            case "323":
+                                if (_Network.SuppressData)
+                                {
+                                    _Network.SuppressData = false;
                                     return true;
                                 }
                                 break;

@@ -50,6 +50,7 @@ namespace Client
                     channels++;
                 }
             }
+            Text = "Channels [" + listView1.Items.Count.ToString() + "] on " + network.server;
         }
 
         private void Channels_Load(object sender, EventArgs e)
@@ -87,7 +88,37 @@ namespace Client
 
         private void downloadListFromServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            network.SuppressData = true;
             network.Transfer("LIST");
+        }
+
+        private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                lock (listView1.Items)
+                {
+                    foreach (ListViewItem item in listView1.SelectedItems)
+                    {
+                        network.Join(item.Name);
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void knockToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lock (listView1.Items)
+            {
+                foreach (ListViewItem item in listView1.SelectedItems)
+                {
+                    network.Transfer("KNOCK " + item.Name);
+                }
+            }
         }
     }
 }
