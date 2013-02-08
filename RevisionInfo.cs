@@ -32,7 +32,12 @@ namespace Client
                                         "Client" + "." + "version.txt"))
             using (var reader = new StreamReader(stream))
             {
-                return reader.ReadLine();
+                string result = reader.ReadLine();
+                if (!reader.EndOfStream)
+                {
+                    result += " [" + reader.ReadLine() + "]";
+                }
+                return result;
             }
         }
     }

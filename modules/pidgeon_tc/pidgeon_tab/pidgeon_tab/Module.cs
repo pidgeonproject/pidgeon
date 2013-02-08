@@ -43,65 +43,228 @@ namespace Client
 
             List<string> commands = new List<string>();
 
-            foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
+            lock (Commands.commands)
             {
-                if (cm.Value._Type == Commands.Type.System || cm.Value._Type == Commands.Type.Plugin)
-                {
-                    commands.Add(cm.Key);
-                }
-            }
 
-            if (Core.network != null && Core.network.Connected)
-            {
                 foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                 {
-                    if (cm.Value._Type == Commands.Type.SystemSv || cm.Value._Type == Commands.Type.Network)
+                    if (cm.Value._Type == Commands.Type.System || cm.Value._Type == Commands.Type.Plugin)
                     {
                         commands.Add(cm.Key);
                     }
                 }
-            }
 
-            if (Core._Main.Chat._Protocol != null)
-            {
-                foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
+                if (Core.network != null && Core.network.Connected)
                 {
-                    if (cm.Value._Type == Commands.Type.Services)
+                    foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                     {
-                        commands.Add(cm.Key);
+                        if (cm.Value._Type == Commands.Type.SystemSv || cm.Value._Type == Commands.Type.Network)
+                        {
+                            commands.Add(cm.Key);
+                        }
                     }
                 }
-            }
 
-            if (text2.StartsWith(Configuration.CommandPrefix))
-            {
-                List<string> Results = new List<string>();
-                string Resd = "";
-                foreach (var item in commands)
+                if (Core._Main.Chat._Protocol != null)
                 {
-                    if (item.StartsWith(text2.Substring(1).ToLower()))
+                    foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                     {
-                        Resd += item + ", ";
-                        Results.Add(item);
+                        if (cm.Value._Type == Commands.Type.Services)
+                        {
+                            commands.Add(cm.Key);
+                        }
                     }
                 }
-                if (Results.Count > 1)
+
+                if (text2.StartsWith(Configuration.CommandPrefix))
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                    List<string> Results = new List<string>();
+                    string Resd = "";
+                    foreach (var item in commands)
+                    {
+                        if (item.StartsWith(text2.Substring(1).ToLower()))
+                        {
+                            Resd += item + ", ";
+                            Results.Add(item);
+                        }
+                    }
+                    if (Results.Count > 1)
+                    {
+                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                        string part = "";
+                        int curr = 0;
+                        bool match = true;
+                        while (match)
+                        {
+                            char diff = ' ';
+                            foreach (var item in Results)
+                            {
+                                if (item.Length > curr && diff == ' ')
+                                {
+                                    diff = item[curr];
+                                    continue;
+                                }
+                                if (item.Length <= curr || diff != item[curr])
+                                {
+                                    match = false;
+                                    break;
+                                }
+                            }
+                            if (match)
+                            {
+                                curr = curr + 1;
+                                part += diff.ToString();
+                            }
+                        }
+                        string result = text;
+                        result = result.Substring(0, x + 1);
+                        result = result + part + text.Substring(x + text2.Length);
+                        text = result;
+                        caret = result.Length;
+                        prev = result;
+                        return;
+                    }
+                    if (Results.Count == 1)
+                    {
+                        string result = text;
+                        result = result.Substring(0, x + 1);
+                        result = result + Results[0] + " " + text.Substring(x + text2.Length);
+                        text = result;
+                        caret = result.Length;
+                        prev = result;
+                        return;
+                    }
+                }
+
+                if (Core.network == null)
+                    return;
+
+                ////
+
+
+                if (text2.StartsWith(Core.network.channel_prefix))
+                {
+                    if (Core.network.Connected)
+                    {
+
+                        if (text2.StartsWith(Core._Main.Chat._Network.channel_prefix))
+                        {
+                            List<string> Channels = new List<string>();
+                            foreach (Channel n in Core._Main.Chat._Network.Channels)
+                            {
+                                Channels.Add(n.Name);
+                            }
+                            List<string> Results = new List<string>();
+                            string Resd = "";
+                            foreach (var item in Channels)
+                            {
+                                if (item.StartsWith(text2))
+                                {
+                                    Resd += item + ", ";
+                                    Results.Add(item);
+                                }
+                            }
+                            if (Results.Count > 1)
+                            {
+                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                                string part = "";
+                                int curr = 0;
+                                bool match = true;
+                                while (match)
+                                {
+                                    char diff = ' ';
+                                    foreach (var item in Results)
+                                    {
+                                        if (item.Length > curr && diff == ' ')
+                                        {
+                                            diff = item[curr];
+                                            continue;
+                                        }
+                                        if (item.Length <= curr || diff != item[curr])
+                                        {
+                                            match = false;
+                                            break;
+                                        }
+                                    }
+                                    if (match)
+                                    {
+                                        curr = curr + 1;
+                                        part += diff.ToString();
+                                    }
+                                }
+                                string result = text;
+                                result = result.Substring(0, x);
+                                result = result + part + text.Substring(x + text2.Length);
+                                text = result;
+                                caret = result.Length;
+                                prev = result;
+                                return;
+                            }
+                            if (Results.Count == 1)
+                            {
+                                string result = text;
+                                result = result.Substring(0, x);
+                                result = result + Results[0] + " " + text.Substring(x + text2.Length);
+                                text = result;
+                                caret = result.Length;
+                                prev = result;
+                                return;
+                            }
+                        }
+                    }
+
+                }
+
+
+                // check if it's a nick
+
+                List<string> Results2 = new List<string>();
+                string Resd2 = "";
+                if (Core.network.RenderedChannel == null) { return; }
+                lock (Core.network.RenderedChannel.UserList)
+                {
+                    foreach (var item in Core.network.RenderedChannel.UserList)
+                    {
+                        if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
+                        {
+                            Resd2 += item.Nick + ", ";
+                            Results2.Add(item.Nick);
+                        }
+                    }
+                }
+                if (Results2.Count == 1)
+                {
+                    string result = text;
+                    result = result.Substring(0, x);
+                    result = result + Results2[0] + text.Substring(x + text2.Length);
+                    text = result;
+
+                    caret = result.Length;
+
+                    prev = result;
+                    return;
+                }
+
+                if (Results2.Count > 1)
+                {
+                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
                     string part = "";
                     int curr = 0;
+                    char orig = ' ';
                     bool match = true;
                     while (match)
                     {
                         char diff = ' ';
-                        foreach (var item in Results)
+                        foreach (var item in Results2)
                         {
-                            if (item.Length > curr && diff == ' ')
+                            string value = item.ToLower();
+                            if (diff == ' ')
                             {
-                                diff = item[curr];
+                                orig = item[curr];
+                                diff = value[curr];
                                 continue;
                             }
-                            if (item.Length <= curr || diff != item[curr])
+                            if (item.Length <= curr || diff != value[curr])
                             {
                                 match = false;
                                 break;
@@ -110,178 +273,19 @@ namespace Client
                         if (match)
                         {
                             curr = curr + 1;
-                            part += diff.ToString();
+                            part += orig.ToString();
                         }
                     }
                     string result = text;
-                    result = result.Substring(0, x + 1);
+                    result = result.Substring(0, x);
                     result = result + part + text.Substring(x + text2.Length);
                     text = result;
                     caret = result.Length;
                     prev = result;
+
+
                     return;
                 }
-                if (Results.Count == 1)
-                {
-                    string result = text;
-                    result = result.Substring(0, x + 1);
-                    result = result + Results[0] + " " + text.Substring(x + text2.Length);
-                    text = result;
-                    caret = result.Length;
-                    prev = result;
-                    return;
-                }
-            }
-
-            if (Core.network == null)
-                return;
-
-            ////
-
-
-            if (text2.StartsWith(Core.network.channel_prefix))
-            {
-                if (Core.network.Connected)
-                {
-
-                    if (text2.StartsWith(Core._Main.Chat._Network.channel_prefix))
-                    {
-                        List<string> Channels = new List<string>();
-                        foreach (Channel n in Core._Main.Chat._Network.Channels)
-                        {
-                            Channels.Add(n.Name);
-                        }
-                        List<string> Results = new List<string>();
-                        string Resd = "";
-                        foreach (var item in Channels)
-                        {
-                            if (item.StartsWith(text2))
-                            {
-                                Resd += item + ", ";
-                                Results.Add(item);
-                            }
-                        }
-                        if (Results.Count > 1)
-                        {
-                            Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
-                            string part = "";
-                            int curr = 0;
-                            bool match = true;
-                            while (match)
-                            {
-                                char diff = ' ';
-                                foreach (var item in Results)
-                                {
-                                    if (item.Length > curr && diff == ' ')
-                                    {
-                                        diff = item[curr];
-                                        continue;
-                                    }
-                                    if (item.Length <= curr || diff != item[curr])
-                                    {
-                                        match = false;
-                                        break;
-                                    }
-                                }
-                                if (match)
-                                {
-                                    curr = curr + 1;
-                                    part += diff.ToString();
-                                }
-                            }
-                            string result = text;
-                            result = result.Substring(0, x);
-                            result = result + part + text.Substring(x + text2.Length);
-                            text = result;
-                            caret = result.Length;
-                            prev = result;
-                            return;
-                        }
-                        if (Results.Count == 1)
-                        {
-                            string result = text;
-                            result = result.Substring(0, x);
-                            result = result + Results[0] + " " + text.Substring(x + text2.Length);
-                            text = result;
-                            caret = result.Length;
-                            prev = result;
-                            return;
-                        }
-                    }
-                }
-
-            }
-
-
-            // check if it's a nick
-
-            List<string> Results2 = new List<string>();
-            string Resd2 = "";
-            if (Core.network.RenderedChannel == null) { return; }
-            lock (Core.network.RenderedChannel.UserList)
-            {
-                foreach (var item in Core.network.RenderedChannel.UserList)
-                {
-                    if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
-                    {
-                        Resd2 += item.Nick + ", ";
-                        Results2.Add(item.Nick);
-                    }
-                }
-            }
-            if (Results2.Count == 1)
-            {
-                string result = text;
-                result = result.Substring(0, x);
-                result = result + Results2[0] + text.Substring(x + text2.Length);
-                text = result;
-
-                caret = result.Length;
-
-                prev = result;
-                return;
-            }
-
-            if (Results2.Count > 1)
-            {
-                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
-                string part = "";
-                int curr = 0;
-                char orig = ' ';
-                bool match = true;
-                while (match)
-                {
-                    char diff = ' ';
-                    foreach (var item in Results2)
-                    {
-                        string value = item.ToLower();
-                        if (diff == ' ')
-                        {
-                            orig = item[curr];
-                            diff = value[curr];
-                            continue;
-                        }
-                        if (item.Length <= curr || diff != value[curr])
-                        {
-                            match = false;
-                            break;
-                        }
-                    }
-                    if (match)
-                    {
-                        curr = curr + 1;
-                        part += orig.ToString();
-                    }
-                }
-                string result = text;
-                result = result.Substring(0, x);
-                result = result + part + text.Substring(x + text2.Length);
-                text = result;
-                caret = result.Length;
-                prev = result;
-
-
-                return;
             }
         }
     }

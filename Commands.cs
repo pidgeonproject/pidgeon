@@ -78,7 +78,7 @@ namespace Client
 
         public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
 
-        public static void RegisterCommand(Command command, string Name)
+        public static void RegisterCommand(string Name, Command command)
         {
             Core.DebugLog("Registering a new command by extension: " + Name);
             lock (commands)

@@ -11,12 +11,12 @@ namespace Client
     {
         public override bool Hook_OnLoad()
         {
-            Client.Commands.commands.Add("kick", new Client.Commands.Command(Client.Commands.Type.Plugin, Kick));
-            Client.Commands.commands.Add("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
-            Client.Commands.commands.Add("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
-            Client.Commands.commands.Add("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
-            Client.Commands.commands.Add("jhostban", new Client.Commands.Command(Client.Commands.Type.Plugin, JoinHostBan));
-            Client.Commands.commands.Add("jb", new Client.Commands.Command(Client.Commands.Type.Plugin, OpenBan));
+            Client.Commands.RegisterCommand("kick", new Client.Commands.Command(Client.Commands.Type.Plugin, Kick));
+            Client.Commands.RegisterCommand("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
+            Client.Commands.RegisterCommand("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
+            Client.Commands.RegisterCommand("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
+            Client.Commands.RegisterCommand("jhostban", new Client.Commands.Command(Client.Commands.Type.Plugin, JoinHostBan));
+            Client.Commands.RegisterCommand("jb", new Client.Commands.Command(Client.Commands.Type.Plugin, OpenBan));
             return true;
         }
 
@@ -24,7 +24,7 @@ namespace Client
         {
             Name = "Freenode tools";
             Description = "This plugin enable you to use extra commands";
-            Version = "1.6.0";
+            Version = "1.8.0";
             base.Initialise();
         }
 
