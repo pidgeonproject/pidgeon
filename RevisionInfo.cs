@@ -16,36 +16,24 @@
  ***************************************************************************/
 
 using System;
+using System.Reflection;
+using System.IO;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Diagnostics;
 using System.Text;
-using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class Help : Form
+    public static class RevisionProvider
     {
-        public Help()
+        public static string GetHash()
         {
-            InitializeComponent();
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            Process.Start(linkLabel1.Text);
-        }
-
-        private void Help_Load(object sender, EventArgs e)
-        {
-            label2.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            using (var stream = Assembly.GetExecutingAssembly()
+                                        .GetManifestResourceStream(
+                                        "Client" + "." + "version.txt"))
+            using (var reader = new StreamReader(stream))
+            {
+                return reader.ReadLine();
+            }
         }
     }
 }

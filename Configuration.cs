@@ -246,6 +246,101 @@ namespace Client
         /// </summary>
         public static int window_size = 0;
 
+        private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();
+
+        public static Dictionary<string, string> Extensions
+        {
+            get
+            {
+                lock (ExtensionConfig)
+                {
+                    Dictionary<string, string> conf = new Dictionary<string, string>();
+                    foreach (KeyValuePair<string, string> xx in ExtensionConfig)
+                    {
+                        conf.Add(xx.Key, xx.Value);
+                    }
+                    return conf;
+                }
+            }
+        }
+
+        public static void SetConfig(string key, string value)
+        {
+            lock (ExtensionConfig)
+            {
+                if (ExtensionConfig.ContainsKey(key))
+                {
+                    ExtensionConfig[key] = value;
+                }
+                else
+                {
+                    ExtensionConfig.Add(key, value);
+                }
+            }
+        }
+
+        public static void RemoveConfig(string key)
+        { 
+            lock (ExtensionConfig)
+            {
+                if (ExtensionConfig.ContainsKey(key))
+                {
+                    ExtensionConfig.Remove(key);
+                }
+             }
+        }
+
+        public static void SetConfig(string key, bool value)
+        {
+            SetConfig(key, value.ToString());
+        }
+
+        public static void SetConfig(string key, long value)
+        {
+            SetConfig(key, value.ToString());
+        }
+
+        public static void SetConfig(string key, int value)
+        {
+            SetConfig(key, value.ToString());
+        }
+
+        public static string GetConfig(string key)
+        {
+            lock (ExtensionConfig)
+            {
+                if (ExtensionConfig.ContainsKey(key))
+                {
+                    return ExtensionConfig[key];
+                }
+            }
+            return null;
+        }
+
+        public static bool GetConfig(string key, bool Default)
+        {
+            lock (ExtensionConfig)
+            {
+                if (ExtensionConfig.ContainsKey(key))
+                {
+                    return bool.Parse(ExtensionConfig[key]);
+                }
+            }
+            return Default;
+        }
+
+        public static long GetConfig(string key, long Default)
+        {
+            lock (ExtensionConfig)
+            {
+                if (ExtensionConfig.ContainsKey(key))
+                {
+                    return long.Parse(ExtensionConfig[key]);
+                }
+            }
+            return Default;
+        }
+
         public static int scrollback_plimit = 800;
 
         public enum TypeOfBan

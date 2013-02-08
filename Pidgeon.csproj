@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffers.cs" />
-    <Compile Include="build_info.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Extension.cs" />
@@ -199,6 +198,7 @@
     <Compile Include="NetworkMode.cs" />
     <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="Qt.cs" />
+    <Compile Include="RevisionInfo.cs" />
     <Compile Include="scrollback\SBABox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -378,6 +378,7 @@
   <ItemGroup>
     <Content Include="Languages\cs_czech.txt" />
     <Content Include="Languages\en_english.txt" />
+    <EmbeddedResource Include="version.txt" />
     <None Include="Resources\icon.png" />
     <Content Include="tcl84.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -419,6 +420,9 @@
     <Folder Include="Stage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

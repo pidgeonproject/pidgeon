@@ -681,6 +681,12 @@ namespace Client
                 makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
                 makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
                 makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
+
+                foreach (KeyValuePair<string, string> data in Configuration.Extensions)
+                {
+                    makenode("extension." + data.Key, data.Value, curr, confname, config, xmlnode);
+                }
+
                 string separators = "";
                 foreach (char separator in Configuration.Separators)
                 {
@@ -896,6 +902,11 @@ namespace Client
                     {
                         if (curr.Attributes.Count > 0)
                         {
+                            if (curr.Name.StartsWith("extension."))
+                            {
+                                Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
+                                continue;
+                            }
                             if (curr.Name == "list")
                             {
                                 if (curr.Attributes.Count > 2)

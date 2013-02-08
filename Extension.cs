@@ -55,6 +55,46 @@ namespace Client
             }
         }
 
+        public string GetConfig(string key, string Default)
+        {
+            return Configuration.GetConfig(Name + "." + key);
+        }
+
+        public bool GetConfig(string key, bool Default)
+        {
+            return Configuration.GetConfig(Name + "." + key, Default);
+        }
+
+        public void SetConfig(string key, string value)
+        {
+            Configuration.SetConfig(Name + "." + key, value);
+            Core.ConfigSave();
+        }
+
+        public void SetConfig(string key, bool value)
+        {
+            Configuration.SetConfig(Name + "." + key, value);
+            Core.ConfigSave();
+        }
+
+        public void SetConfig(string key, long value)
+        {
+            Configuration.SetConfig(Name + "." + key, value);
+            Core.ConfigSave();
+        }
+
+        public void SetConfig(string key, int value)
+        {
+            Configuration.SetConfig(Name + "." + key, value);
+            Core.ConfigSave();
+        }
+
+        public void RemoveConfig(string key)
+        {
+            Configuration.RemoveConfig(Name + "." + key);
+            Core.ConfigSave();
+        }
+
         public void Exit()
         {
             try
