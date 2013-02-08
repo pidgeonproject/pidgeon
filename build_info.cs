@@ -7,6 +7,6 @@ namespace Client
 {
     class build_info
     {
-        public static readonly long build_id = 106;
+        public static readonly long build_id = 107;
     }
 }
