@@ -100,9 +100,9 @@ namespace Client
                 {
                     foreach (ListViewItem item in listView1.SelectedItems)
                     {
-                        if (item.Name != "")
+                        if (item.Text != "")
                         {
-                            network.Join(item.Name);
+                            network.Join(item.Text);
                         }
                     }
                 }
@@ -119,7 +119,7 @@ namespace Client
             {
                 foreach (ListViewItem item in listView1.SelectedItems)
                 {
-                    network.Transfer("KNOCK " + item.Name);
+                    network.Transfer("KNOCK " + item.Text);
                 }
             }
         }
