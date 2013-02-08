@@ -17,7 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading;
 using System.Text;
 
 namespace Client
@@ -28,8 +28,9 @@ namespace Client
         public string Version = "1.0";
         public string Description = "Author of this extension is stupid";
         public Version Required = new Version(1, 0, 8, 0);
-        public Status _status;
+        public Status _Status = Status.Loading;
         public bool RequiresReboot = false;
+        public List<Thread> _Threads = new List<Thread>();
 
         public static void Init()
         {
@@ -43,14 +44,14 @@ namespace Client
         {
             try
             {
-                _status = Status.Loading;
+                _Status = Status.Loading;
                 Initialise();
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
                 Core.DebugLog("CORE: Terminating the extension " + Name);
-                _status = Status.Terminated;
+                _Status = Status.Terminated;
             }
         }
 
@@ -59,7 +60,28 @@ namespace Client
             try
             {
                 Core.DebugLog("CORE: Unloading " + Name);
-                _status = Status.Terminating;
+                _Status = Status.Terminating;
+                if (!Hook_Unload())
+                {
+                    Core.DebugLog("CORE: Failed to unload " + Name + " forcefully removing from memory");
+                    lock (_Threads)
+                    {
+                        foreach (Thread thread in _Threads)
+                        {
+                            try
+                            {
+                                if (thread.ThreadState == ThreadState.WaitSleepJoin || thread.ThreadState == ThreadState.Running)
+                                {
+                                    thread.Abort();
+                                }
+                            }
+                            catch (Exception fail)
+                            {
+                                Core.DebugLog("CORE: Failed to unload " + Name + " error " + fail.ToString());
+                            }
+                        }
+                    }
+                }
                 lock (Core.Extensions)
                 {
                     if (Core.Extensions.Contains(this))
@@ -68,7 +90,7 @@ namespace Client
                         Core.DebugLog("CORE: Unloaded " + Name);
                     }
                 }
-                _status = Status.Terminated;
+                _Status = Status.Terminated;
                 Core.DebugLog("CORE: Terminated " + Name);
             }
             catch (Exception fail)
@@ -82,6 +104,11 @@ namespace Client
         /// </summary>
         /// <returns></returns>
         public virtual bool Hook_OnLoad()
+        {
+            return true;
+        }
+
+        public virtual bool Hook_Unload()
         {
             return true;
         }
@@ -139,7 +166,7 @@ namespace Client
                 if (!Hook_OnLoad())
                 {
                     Core.DebugLog("Unable to load " + Name + " the OnLoad hook returned invalid value");
-                    _status = Status.Stopped;
+                    _Status = Status.Stopped;
                     return;
                 }
             }

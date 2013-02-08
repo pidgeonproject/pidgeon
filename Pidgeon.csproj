@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffers.cs" />
+    <Compile Include="build_info.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Extension.cs" />

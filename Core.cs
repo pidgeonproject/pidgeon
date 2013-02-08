@@ -1113,7 +1113,7 @@ namespace Client
                             if (x.Name == _plugin.Name)
                             {
                                 Core.Ringlog("CORE: unable to load the extension, because the extension with same name is already loaded");
-                                _plugin._status = Extension.Status.Terminated;
+                                _plugin._Status = Extension.Status.Terminated;
                                 problem = true;
                                 break;
                             }
@@ -1131,7 +1131,7 @@ namespace Client
                     if (_plugin.Hook_OnRegister())
                     {
                         _plugin.Load();
-                        _plugin._status = Extension.Status.Active;
+                        _plugin._Status = Extension.Status.Active;
                         Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
                         if (Core._Main != null)
                         {
@@ -1155,7 +1155,7 @@ namespace Client
 
         public static bool RegisterPlugin(Extension plugin)
         {
-            if (plugin._status == Extension.Status.Loading)
+            if (plugin._Status == Extension.Status.Loading)
             {
                 lock (Extensions)
                 {

@@ -40,7 +40,7 @@ namespace Client
 
         private void Help_Load(object sender, EventArgs e)
         {
-            label2.Text = Configuration.Version;
+            label2.Text = Configuration.Version + " build: " + build_info.build_id.ToString();
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)

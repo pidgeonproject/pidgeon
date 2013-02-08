@@ -42,7 +42,7 @@ namespace Client
             {
                 try
                 {
-                    if (extension._status == Extension.Status.Active)
+                    if (extension._Status == Extension.Status.Active)
                     {
                         extension.Hook_BeforeConnect(protocol);
                     }
@@ -71,7 +71,7 @@ namespace Client
             {
                 try
                 {
-                    if (extension._status == Extension.Status.Active)
+                    if (extension._Status == Extension.Status.Active)
                     {
                         extension.Hook_BeforeNote(ref caption, ref text);
                     }
@@ -140,7 +140,7 @@ namespace Client
             {
                 try
                 {
-                    if (extension._status == Extension.Status.Active)
+                    if (extension._Status == Extension.Status.Active)
                     {
                         extension.Hook_Network(network);
                     }
@@ -196,7 +196,7 @@ namespace Client
             {
                 try
                 {
-                    if (extension._status == Extension.Status.Active)
+                    if (extension._Status == Extension.Status.Active)
                     {
                         extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
                     }

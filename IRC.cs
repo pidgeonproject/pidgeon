@@ -1089,15 +1089,12 @@ namespace Client
             }
             return true;
         }
-
+        
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="_network">Network</param>
-        /// <param name="_protocol">Protocol</param>
-        /// <param name="_text">Text</param>
-        /// <param name="_sn"></param>
-        /// <param name="ws"></param>
+        /// <param name="_network"></param>
+        /// <param name="_text"></param>
         /// <param name="_pong"></param>
         /// <param name="_date">Date of this message, if you specify 0 the current time will be used</param>
         /// <param name="updated">If true this text will be considered as newly obtained information</param>
