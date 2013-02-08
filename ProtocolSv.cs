@@ -456,7 +456,7 @@ namespace Client
                                     Core._Main.ProgressMax = cache[NetworkList.IndexOf(server4)].size;
                                 }
 
-                                Core._Main.ProgressMax = int.Parse(id);
+                                Core._Main.progress = int.Parse(id);
                                 Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + cache[NetworkList.IndexOf(server4)].size.ToString() + " datagrams");
                                 if ((cache[NetworkList.IndexOf(server4)].size - 2) < int.Parse(id))
                                 {

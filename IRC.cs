@@ -118,8 +118,12 @@ namespace Client
 
         private bool ChannelData(string command, string parameters, string value)
         {
-            string channel_name = parameters.Substring(parameters.IndexOf(" "));
-            int user_count = int.Parse(channel_name.Substring(channel_name.IndexOf(" ")));
+            string channel_name = parameters.Substring(parameters.IndexOf(" ") + 1);
+            int user_count = 0;
+            if (!int.TryParse(channel_name.Substring(channel_name.IndexOf(" ") + 1), out user_count))
+            {
+                user_count = 0;
+            }
             
             lock (_Network.ChannelList)
             { 

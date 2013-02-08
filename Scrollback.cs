@@ -853,5 +853,14 @@ namespace Client
                 Core.handleException(fail);
             }
         }
+
+        private void listAllChannelsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (owner != null)
+            {
+                Channels channels = new Channels(owner._Network);
+                channels.Show();
+            }
+        }
     }
 }
