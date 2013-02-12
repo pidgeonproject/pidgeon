@@ -214,7 +214,18 @@ namespace Client
         /// <param name="channel">Channel name which is supposed to be joined</param>
         /// <param name="nf">Whether newly created window should be displayed over existing windows</param>
         /// <returns></returns>
-        public Channel Join(string channel, bool nf = false)
+        public void Join(string channel)
+        {
+            _protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
+        }
+
+        /// <summary>
+        /// Create a new instance of channel window
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="nf"></param>
+        /// <returns></returns>
+        public Channel WindowCreateNewJoin(string channel, bool nf = false)
         {
             Channel previous = getChannel(channel);
             if (previous == null)

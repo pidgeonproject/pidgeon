@@ -597,7 +597,7 @@ namespace Client
                                                 {
                                                     if (nw.getChannel(channel) == null)
                                                     {
-                                                        nw.Join(channel, true);
+                                                        nw.WindowCreateNewJoin(channel, true);
                                                     }
                                                     if (!Configuration.Retrieve_Sv)
                                                     {

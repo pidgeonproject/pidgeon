@@ -1062,7 +1062,7 @@ namespace Client
                                     Channel curr = _Network.getChannel(channel);
                                     if (curr == null)
                                     {
-                                        curr = _Network.Join(channel);
+                                        curr = _Network.WindowCreateNewJoin(channel);
                                     }
                                     if (Configuration.aggressive_mode)
                                     {

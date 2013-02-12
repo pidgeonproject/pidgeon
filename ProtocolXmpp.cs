@@ -24,8 +24,8 @@ namespace Client
 {
     class ProtocolXmpp : Protocol
     {
-        public string username;
-        public string password;
+        public string username = null;
+        public string password = null;
 
         public class Datagram
         {
