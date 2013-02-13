@@ -250,6 +250,9 @@
     </Compile>
     <Compile Include="ProtocolSv.cs" />
     <Compile Include="ScriptingCore.cs" />
+    <Compile Include="Scrollback\ProcessingLine.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Timer.cs" />
     <Compile Include="Window.cs">
       <SubType>UserControl</SubType>
@@ -277,10 +280,10 @@
     <Compile Include="Forms\Style.Designer.cs">
       <DependentUpon>Style.cs</DependentUpon>
     </Compile>
-    <Compile Include="Scrollback.cs">
+    <Compile Include="Scrollback\Scrollback.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Scrollback.Designer.cs">
+    <Compile Include="Scrollback\Scrollback.Designer.cs">
       <DependentUpon>Scrollback.cs</DependentUpon>
     </Compile>
     <Compile Include="SkinCl.cs" />
@@ -364,7 +367,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Scrollback.resx">
+    <EmbeddedResource Include="Scrollback\Scrollback.resx">
       <DependentUpon>Scrollback.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextBox.resx">

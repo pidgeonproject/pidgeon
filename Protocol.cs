@@ -137,6 +137,7 @@ namespace Client
             {
                 Current = windows[name];
                 Current.Visible = true;
+                Current.scrollback.Display();
                 if (Current != Core._Main.Chat)
                 {
                     if (Core._Main.Chat != null)
