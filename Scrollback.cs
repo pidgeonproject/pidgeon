@@ -32,11 +32,6 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
-        private bool db = false;
-        /// <summary>
-        /// Defines if current scrollback is modified and needs to be redrawn
-        /// </summary>
-        public bool Modified = false;
         /// <summary>
         /// Maximal size of text
         /// </summary>
@@ -50,6 +45,7 @@ namespace Client
         /// Owner window
         /// </summary>
         public Window owner = null;
+        private List<ContentLine> UnrenderedLines = new List<ContentLine>();
         private string Link = "";
         public bool simple = false;
         private DateTime lastDate;
@@ -69,7 +65,8 @@ namespace Client
 
         public int Lines
         {
-            get {
+            get 
+            {
                 return ContentLines.Count;
             }
         }
@@ -102,12 +99,10 @@ namespace Client
             base.Dispose(disposing);
         }
 
-        public void create()
+        public void Create()
         {
-            Modified = false;
             InitializeComponent();
 
-            refresh.Enabled = true;
             simpleview.Visible = false;
             Scrollback_Load(null, null);
 
@@ -117,13 +112,12 @@ namespace Client
             }
             else
             {
-                Recreate(true);
+                Recreate();
             }
         }
 
         public void Switch(bool advanced)
         {
-            Modified = true;
             if (advanced)
             {
                 if (simple)
@@ -139,7 +133,7 @@ namespace Client
             simple = true;
             simpleview.Visible = true;
             RT.Visible = false;
-            Recreate(true);
+            Reload();
         }
 
         /// <summary>
@@ -207,6 +201,51 @@ namespace Client
                 return true;
             }
             return false;
+        }
+
+        public void Log(string text, MessageStyle InputStyle)
+        {
+            try
+            {
+                if (!Directory.Exists(Configuration.logs_dir))
+                {
+                    Directory.CreateDirectory(Configuration.logs_dir);
+                }
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
+                {
+                    System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
+                }
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
+                {
+                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
+                }
+                if (Configuration.logs_txt)
+                {
+                    string stamp = "";
+                    if (Configuration.chat_timestamp)
+                    {
+                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                    }
+                    Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
+                }
+                if (Configuration.logs_html)
+                {
+                    string stamp = "";
+                    if (Configuration.chat_timestamp)
+                    {
+                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                    }
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
+                }
+                if (Configuration.logs_xml)
+                {
+                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
@@ -287,6 +326,12 @@ namespace Client
                     ContentLines.Sort();
                 }
             }
+
+            if (WriteLog == true && owner != null && owner._Network != null)
+            {
+                Log(text, InputStyle);
+            }
+
             if (RT != null && !RequireReload(time))
             {
                 InsertLineToText(line);
@@ -294,45 +339,12 @@ namespace Client
             }
             else
             {
-                Modified = true;
-            }
-            if (WriteLog == true && owner != null && owner._Network != null)
-            {
-                if (!Directory.Exists(Configuration.logs_dir))
+                if (RT != null)
                 {
-                    Directory.CreateDirectory(Configuration.logs_dir);
-                }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
-                {
-                    System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
-                }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
-                {
-                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
-                }
-                if (Configuration.logs_txt)
-                {
-                    string stamp = "";
-                    if (Configuration.chat_timestamp)
-                    {
-                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
-                    }
-                    Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
-                }
-                if (Configuration.logs_html)
-                {
-                    string stamp = "";
-                    if (Configuration.chat_timestamp)
-                    {
-                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
-                    }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
-                }
-                if (Configuration.logs_xml)
-                {
-                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
+                    Reload();
                 }
             }
+            
             return false;
         }
 
@@ -465,7 +477,6 @@ namespace Client
         {
             if (owner == null || (owner != null && owner.Visible == true))
             {
-                Modified = false;
                 if (simple)
                 {
                     ReloadSimple();
@@ -494,26 +505,11 @@ namespace Client
                 }
 
                 RT.RedrawText();
-                RT.ScrollToBottom();
-            }
-        }
-
-        private void refresh_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!scrollToolStripMenuItem.Checked)
-                { return; }
-                if (Modified)
+                if (ScrollingEnabled)
                 {
-                    Reload();
+                    RT.ScrollToBottom();
                 }
             }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-            //Recreate();
         }
 
         public void HideLn()
@@ -727,12 +723,15 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Redraw a text
+        /// </summary>
+        /// <param name="enforce">Deprecated</param>
         private void Recreate(bool enforce = false)
         {
-            if (db || enforce)
+            if (!simple)
             {
                 RT.RedrawText();
-                db = false;
             }
         }
 
@@ -1065,6 +1064,11 @@ namespace Client
             {
                 Core.handleException(fail);
             }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }

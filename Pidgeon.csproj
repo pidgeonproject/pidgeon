@@ -199,16 +199,16 @@
     <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="Qt.cs" />
     <Compile Include="RevisionInfo.cs" />
-    <Compile Include="scrollback\Line.cs">
+    <Compile Include="SBABOX\Line.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="scrollback\Link.cs">
+    <Compile Include="SBABOX\Link.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="scrollback\SBABox.cs">
+    <Compile Include="SBABOX\SBABox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="scrollback\SBABox.Designer.cs">
+    <Compile Include="SBABOX\SBABox.Designer.cs">
       <DependentUpon>SBABox.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\TrafficScanner.cs">
@@ -330,7 +330,7 @@
     <EmbeddedResource Include="Forms\SkinEd.resx">
       <DependentUpon>SkinEd.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="scrollback\SBABox.resx">
+    <EmbeddedResource Include="SBABOX\SBABox.resx">
       <DependentUpon>SBABox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Style.resx">

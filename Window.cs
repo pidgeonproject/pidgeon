@@ -83,7 +83,7 @@ namespace Client
 
         public void create()
         {
-            scrollback.create();
+            scrollback.Create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
             scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
             if (scrollback.owner == null || scrollback.owner._Network == null)

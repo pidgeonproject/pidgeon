@@ -39,6 +39,7 @@ namespace Client
             this.whowasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.kickToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
+            this.copyLinkToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openLinkInBrowserToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mode1b2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mode1e2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,20 +49,19 @@ namespace Client
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.mrhToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.scrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.retrieveTopicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toggleSimpleLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toggleAdvancedLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toggleSimpleLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
+            this.channelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listAllChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.retrieveTopicToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyTextToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyEntireWindowToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.listAllChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.refresh = new System.Windows.Forms.Timer(this.components);
             this.simpleview = new System.Windows.Forms.TextBox();
-            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.RT = new Client.SBABox();
-            this.copyLinkToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +93,7 @@ namespace Client
             this.copyTextToClipBoardToolStripMenuItem,
             this.copyEntireWindowToClipBoardToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 506);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 484);
             // 
             // whoisToolStripMenuItem
             // 
@@ -124,6 +124,14 @@ namespace Client
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(247, 6);
             this.toolStripMenuItem2.Visible = false;
+            // 
+            // copyLinkToClipboardToolStripMenuItem
+            // 
+            this.copyLinkToClipboardToolStripMenuItem.Name = "copyLinkToClipboardToolStripMenuItem";
+            this.copyLinkToClipboardToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.copyLinkToClipboardToolStripMenuItem.Text = "Copy link to clipboard";
+            this.copyLinkToClipboardToolStripMenuItem.Visible = false;
+            this.copyLinkToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyLinkToClipboardToolStripMenuItem_Click);
             // 
             // openLinkInBrowserToolStripMenuItem
             // 
@@ -188,21 +196,6 @@ namespace Client
             this.scrollToolStripMenuItem.Text = "Scroll";
             this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
             // 
-            // closeToolStripMenuItem
-            // 
-            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.closeToolStripMenuItem.Text = "Close";
-            this.closeToolStripMenuItem.Visible = false;
-            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
-            // 
-            // channelToolStripMenuItem
-            // 
-            this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
-            this.channelToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.channelToolStripMenuItem.Text = "Channel";
-            this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
-            // 
             // refreshToolStripMenuItem
             // 
             this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
@@ -210,12 +203,12 @@ namespace Client
             this.refreshToolStripMenuItem.Text = "Refresh";
             this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
             // 
-            // retrieveTopicToolStripMenuItem
+            // toggleAdvancedLayoutToolStripMenuItem
             // 
-            this.retrieveTopicToolStripMenuItem.Name = "retrieveTopicToolStripMenuItem";
-            this.retrieveTopicToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.retrieveTopicToolStripMenuItem.Text = "Retrieve topic";
-            this.retrieveTopicToolStripMenuItem.Click += new System.EventHandler(this.retrieveTopicToolStripMenuItem_Click);
+            this.toggleAdvancedLayoutToolStripMenuItem.Name = "toggleAdvancedLayoutToolStripMenuItem";
+            this.toggleAdvancedLayoutToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.toggleAdvancedLayoutToolStripMenuItem.Text = "Toggle advanced layout";
+            this.toggleAdvancedLayoutToolStripMenuItem.Click += new System.EventHandler(this.toggleAdvancedLayoutToolStripMenuItem_Click);
             // 
             // toggleSimpleLayoutToolStripMenuItem
             // 
@@ -224,12 +217,39 @@ namespace Client
             this.toggleSimpleLayoutToolStripMenuItem.Text = "Toggle simple layout";
             this.toggleSimpleLayoutToolStripMenuItem.Click += new System.EventHandler(this.toggleSimpleLayoutToolStripMenuItem_Click);
             // 
-            // toggleAdvancedLayoutToolStripMenuItem
+            // closeToolStripMenuItem
             // 
-            this.toggleAdvancedLayoutToolStripMenuItem.Name = "toggleAdvancedLayoutToolStripMenuItem";
-            this.toggleAdvancedLayoutToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.toggleAdvancedLayoutToolStripMenuItem.Text = "Toggle advanced layout";
-            this.toggleAdvancedLayoutToolStripMenuItem.Click += new System.EventHandler(this.toggleAdvancedLayoutToolStripMenuItem_Click);
+            this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.closeToolStripMenuItem.Text = "Close";
+            this.closeToolStripMenuItem.Visible = false;
+            this.closeToolStripMenuItem.Click += new System.EventHandler(this.closeToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(247, 6);
+            // 
+            // channelToolStripMenuItem
+            // 
+            this.channelToolStripMenuItem.Name = "channelToolStripMenuItem";
+            this.channelToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.channelToolStripMenuItem.Text = "Channel";
+            this.channelToolStripMenuItem.Click += new System.EventHandler(this.channelToolStripMenuItem_Click);
+            // 
+            // listAllChannelsToolStripMenuItem
+            // 
+            this.listAllChannelsToolStripMenuItem.Name = "listAllChannelsToolStripMenuItem";
+            this.listAllChannelsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.listAllChannelsToolStripMenuItem.Text = "List all channels on this server";
+            this.listAllChannelsToolStripMenuItem.Click += new System.EventHandler(this.listAllChannelsToolStripMenuItem_Click);
+            // 
+            // retrieveTopicToolStripMenuItem
+            // 
+            this.retrieveTopicToolStripMenuItem.Name = "retrieveTopicToolStripMenuItem";
+            this.retrieveTopicToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.retrieveTopicToolStripMenuItem.Text = "Retrieve topic";
+            this.retrieveTopicToolStripMenuItem.Click += new System.EventHandler(this.retrieveTopicToolStripMenuItem_Click);
             // 
             // copyTextToClipBoardToolStripMenuItem
             // 
@@ -245,18 +265,6 @@ namespace Client
             this.copyEntireWindowToClipBoardToolStripMenuItem.Text = "Copy entire window to clip board";
             this.copyEntireWindowToClipBoardToolStripMenuItem.Click += new System.EventHandler(this.copyEntireWindowToClipBoardToolStripMenuItem_Click);
             // 
-            // listAllChannelsToolStripMenuItem
-            // 
-            this.listAllChannelsToolStripMenuItem.Name = "listAllChannelsToolStripMenuItem";
-            this.listAllChannelsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.listAllChannelsToolStripMenuItem.Text = "List all channels on this server";
-            this.listAllChannelsToolStripMenuItem.Click += new System.EventHandler(this.listAllChannelsToolStripMenuItem_Click);
-            // 
-            // refresh
-            // 
-            this.refresh.Interval = 10;
-            this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
-            // 
             // simpleview
             // 
             this.simpleview.BackColor = System.Drawing.Color.White;
@@ -271,11 +279,6 @@ namespace Client
             this.simpleview.Size = new System.Drawing.Size(566, 320);
             this.simpleview.TabIndex = 6;
             // 
-            // toolStripMenuItem3
-            // 
-            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(247, 6);
-            // 
             // RT
             // 
             this.RT.ContextMenuStrip = this.contextMenuStrip1;
@@ -286,13 +289,10 @@ namespace Client
             this.RT.Spacing = 2;
             this.RT.TabIndex = 7;
             // 
-            // copyLinkToClipboardToolStripMenuItem
+            // timer2
             // 
-            this.copyLinkToClipboardToolStripMenuItem.Name = "copyLinkToClipboardToolStripMenuItem";
-            this.copyLinkToClipboardToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.copyLinkToClipboardToolStripMenuItem.Text = "Copy link to clipboard";
-            this.copyLinkToClipboardToolStripMenuItem.Visible = false;
-            this.copyLinkToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyLinkToClipboardToolStripMenuItem_Click);
+            this.timer2.Enabled = true;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Scrollback
             // 
@@ -313,7 +313,6 @@ namespace Client
 		
         #endregion
 
-        private System.Windows.Forms.Timer refresh;
         private System.Windows.Forms.ToolStripMenuItem mrhToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
@@ -341,6 +340,7 @@ namespace Client
         public System.Windows.Forms.ToolStripMenuItem listAllChannelsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem copyLinkToClipboardToolStripMenuItem;
+        private System.Windows.Forms.Timer timer2;
 
     }
 }

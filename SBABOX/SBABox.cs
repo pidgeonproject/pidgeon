@@ -363,7 +363,10 @@ namespace Client
                             X = X + stringWidth;
                             if (Wrap)
                             {
-                                hsBar.Visible = false;
+                                this.Invoke(new Action(delegate()
+                                    {
+                                        hsBar.Visible = false;
+                                    }));
                             }
                             else
                             {
@@ -438,46 +441,49 @@ namespace Client
         {
             try
             {
-                if (!ReloadingEnabled)
+                lock (this)
                 {
-                    return;
-                }
-                Rendering = true;
-                RenderedLineTotalCount = 0;
-
-                float X = 0 - currentX;
-                float Y = 0 - currentY;
-
-                Graphics graphics = null;
-                if (drawingGraphics == null)
-                {
-                    return;
-                }
-
-                graphics = drawingGraphics;
-
-                ClearLink();
-                lock (graphics)
-                {
-                    graphics.Clear(BackColor);
-                }
-
-                GlobalFont = new Font(this.Font, FontStyle.Regular);
-
-                lock (LineDB)
-                {
-                    foreach (Line text in LineDB)
+                    if (!ReloadingEnabled)
                     {
-                        X = 0 - currentX;
-                        RedrawLine(ref graphics, ref X, ref Y, text);
-                        Y = Y + Font.Size + spacing;
+                        return;
                     }
+                    Rendering = true;
+                    RenderedLineTotalCount = 0;
+
+                    float X = 0 - currentX;
+                    float Y = 0 - currentY;
+
+                    Graphics graphics = null;
+                    if (drawingGraphics == null)
+                    {
+                        return;
+                    }
+
+                    graphics = drawingGraphics;
+
+                    ClearLink();
+                    lock (graphics)
+                    {
+                        graphics.Clear(BackColor);
+                    }
+
+                    GlobalFont = new Font(this.Font, FontStyle.Regular);
+
+                    lock (LineDB)
+                    {
+                        foreach (Line text in LineDB)
+                        {
+                            X = 0 - currentX;
+                            RedrawLine(ref graphics, ref X, ref Y, text);
+                            Y = Y + Font.Size + spacing;
+                        }
+                    }
+
+                    UpdateBars();
+
+                    pt.Invalidate();
+                    Rendering = false;
                 }
-
-                UpdateBars();
-
-                pt.Invalidate();
-                Rendering = false;
             }
             catch (Exception fail)
             {
@@ -633,26 +639,29 @@ namespace Client
         {
             try
             {
-                isDisposing = true;
-                if (disposing)
+                lock (this)
                 {
-                    if (components != null)
-                        components.Dispose();
+                    isDisposing = true;
+                    if (disposing)
+                    {
+                        if (components != null)
+                            components.Dispose();
 
-                    // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
-                    if (backbufferGraphics != null)
-                    {
-                        backbufferGraphics.Dispose();
-                    }
-                    if (backbufferContext != null)
-                    {
-                        try
+                        // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
+                        if (backbufferGraphics != null)
                         {
-                            backbufferContext.Dispose();
+                            backbufferGraphics.Dispose();
                         }
-                        catch (Exception)
+                        if (backbufferContext != null)
                         {
-                            backbufferContext = null;
+                            try
+                            {
+                                backbufferContext.Dispose();
+                            }
+                            catch (Exception)
+                            {
+                                backbufferContext = null;
+                            }
                         }
                     }
                 }
