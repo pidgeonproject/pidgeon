@@ -45,11 +45,12 @@ namespace Client
         /// Owner window
         /// </summary>
         public Window owner = null;
-        private List<Item> UnrenderedLines = new List<Item>();
+        private List<ContentLine> UndrawnLines = new List<ContentLine>();
         private string Link = "";
         public bool simple = false;
         private DateTime lastDate;
         private bool ScrollingEnabled = true;
+        private bool ReloadWaiting = false;
 
         public enum MessageStyle
         {
@@ -106,23 +107,6 @@ namespace Client
             base.Dispose(disposing);
         }
 
-        public void Create()
-        {
-            InitializeComponent();
-
-            simpleview.Visible = false;
-            Scrollback_Load(null, null);
-
-            if (ContentLines.Count > 0)
-            {
-                Reload(true);
-            }
-            else
-            {
-                Recreate();
-            }
-        }
-
         public bool WindowVisible()
         {
             if (this.Visible == false)
@@ -169,6 +153,16 @@ namespace Client
                 ScrollbackList.Add(this);
             }
             this.BackColor = Configuration.CurrentSkin.backgroundcolor;
+
+            ReloadWaiting = true;
+        }
+
+        public void Create()
+        {
+            InitializeComponent();
+
+            simpleview.Visible = false;
+            //Scrollback_Load(null, null);
         }
 
         public string validpath(string text)
@@ -792,23 +786,33 @@ namespace Client
         {
             try
             {
-                if (RT != null && WindowVisible())
+                timer2.Enabled = false;
+                lock (UndrawnLines)
                 {
-                    lock (UnrenderedLines)
+                    if (!ReloadWaiting)
                     {
-                        if (UnrenderedLines.Count > 0)
+                        if (UndrawnLines.Count > 0)
                         {
-                            foreach (Item item in UnrenderedLines)
+                            foreach (ContentLine curr in UndrawnLines)
                             {
-                                InsertText(item);
+                                InsertLineToText(curr);
                             }
-                            UnrenderedLines.Clear();
                         }
                     }
+                    UndrawnLines.Clear();
                 }
+                if (ReloadWaiting)
+                {
+                    if (Reload())
+                    {
+                        ReloadWaiting = false;
+                    }
+                }
+                timer2.Enabled = true;
             }
             catch (Exception fail)
             {
+                timer2.Enabled = true;
                 Core.handleException(fail);
             }
         }
