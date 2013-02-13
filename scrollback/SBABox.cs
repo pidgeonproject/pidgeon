@@ -457,8 +457,10 @@ namespace Client
                 graphics = drawingGraphics;
 
                 ClearLink();
-
-                graphics.Clear(BackColor);
+                lock (graphics)
+                {
+                    graphics.Clear(BackColor);
+                }
 
                 GlobalFont = new Font(this.Font, FontStyle.Regular);
 

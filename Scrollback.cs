@@ -32,10 +32,6 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
-        /// <summary>
-        /// This is a list of all active instances of scrollbacks in system
-        /// </summary>
-        public static List<Scrollback> _control = new List<Scrollback>();
         private bool db = false;
         /// <summary>
         /// Defines if current scrollback is modified and needs to be redrawn
@@ -103,25 +99,26 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            lock (_control)
-            {
-                if (_control.Contains(this))
-                {
-                    _control.Remove(this);
-                }
-            }
             base.Dispose(disposing);
         }
 
         public void create()
         {
+            Modified = false;
             InitializeComponent();
 
             refresh.Enabled = true;
             simpleview.Visible = false;
             Scrollback_Load(null, null);
 
-            Recreate(true);
+            if (ContentLines.Count > 0)
+            {
+                Reload(true);
+            }
+            else
+            {
+                Recreate(true);
+            }
         }
 
         public void Switch(bool advanced)
@@ -150,10 +147,6 @@ namespace Client
         /// </summary>
         public Scrollback()
         {
-            lock (_control)
-            {
-                _control.Add(this);
-            }
             this.BackColor = Configuration.CurrentSkin.backgroundcolor;
         }
 
@@ -294,7 +287,7 @@ namespace Client
                     ContentLines.Sort();
                 }
             }
-            if (!RequireReload(time))
+            if (RT != null && !RequireReload(time))
             {
                 InsertLineToText(line);
                 lastDate = time;
@@ -478,6 +471,10 @@ namespace Client
                     ReloadSimple();
                     return;
                 }
+                if (RT == null)
+                {
+                    return;
+                }
                 int min = 0;
                 if (scrollback_max != 0 && scrollback_max < ContentLines.Count)
                 {
@@ -493,6 +490,7 @@ namespace Client
                         RT.InsertLine(CreateLine(ContentLines[current]));
                         current++;
                     }
+                    lastDate = ContentLines[current - 1].time;
                 }
 
                 RT.RedrawText();

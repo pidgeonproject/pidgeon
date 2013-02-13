@@ -346,11 +346,11 @@ namespace Client
                             link = link.Substring(0, link.IndexOf(prefix));
                         }
                     }
-                        SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
-                        Link.Underline = true;
-                        Link.Bold = bold;
-                      Link.Link = "http://" + ProtocolIrc.decode_text(link);
-                        return Link;
+                    SBABox.ContentText Link = new SBABox.ContentText("http://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Link.Underline = true;
+                    Link.Bold = bold;
+                    Link.Link = "http://" + ProtocolIrc.decode_text(link);
+                    return Link;
                 }
                 return null;
             }
@@ -391,247 +391,243 @@ namespace Client
 
         public static SBABox.Line link(string text, SBABox SBAB, Color _style)
         {
-            try
+            if (SBAB == null)
             {
-                SBABox.Line line = new SBABox.Line("", SBAB);
-                string result = text;
-                SBABox.ContentText lprttext;
-                string templink = text;
-                string tempdata = text;
-                Color color = _style;
-                string templine = "";
-                bool Bold = false;
-                bool _color = false;
-                bool Underlined = false;
-                int Jump = 0;
+                throw new Exception("invalid text");
+            }
+            SBABox.Line line = new SBABox.Line("", SBAB);
+            string result = text;
+            SBABox.ContentText lprttext;
+            string templink = text;
+            string tempdata = text;
+            Color color = _style;
+            string templine = "";
+            bool Bold = false;
+            bool _color = false;
+            bool Underlined = false;
+            int Jump = 0;
 
-                int carret = 0;
+            int carret = 0;
 
-                while (carret < text.Length)
+            while (carret < text.Length)
+            {
+                Jump = 1;
+                if (matchesSWPrefix(tempdata, "http://"))
                 {
-                    Jump = 1;
-                    if (matchesSWPrefix(tempdata, "http://"))
+                    string prefix = Prefix(tempdata, "http://").ToString();
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
+                    lprttext.Underline = Underlined;
+                    lprttext.Bold = Bold;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, prefix));
+                    if (matchesAPrefix(tempdata.Substring(1)))
                     {
-                        string prefix = Prefix(tempdata, "http://").ToString();
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
-                        lprttext.Underline = Underlined;
-                        lprttext.Bold = Bold;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, prefix));
-                        if (matchesAPrefix(tempdata.Substring(1)))
-                        {
-                            Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
-                    }
-                    else if (matchesSWPrefix(tempdata, "https://"))
-                    {
-                        string prefix = Prefix(tempdata, "https://").ToString();
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_https(tempdata, SBAB, Underlined, Bold));
-                        if (matchesAPrefix(tempdata.Substring(1)))
-                        {
-                            Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
-                    }
-                    else if (tempdata.StartsWith("%USER%"))
-                    {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_name(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Contains("%/USER%"))
-                        {
-                            Jump = tempdata.IndexOf("%/USER%") + 7;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length - 1;
-                        }
-                    }
-                    else if (tempdata.StartsWith(" #") || (tempdata.StartsWith("#") && text.StartsWith("#")))
-                    {
-                        if (tempdata.StartsWith(" #"))
-                        {
-                            templine += text[carret].ToString();
-                            carret++;
-                            tempdata = tempdata.Substring(1);
-                        }
-
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Underline = Underlined;
-                        lprttext.Bold = Bold;
-                        line.insertData(lprttext);
-                        templine = "";
-
-                        line.insertData(parse_chan(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Contains(" "))
-                        {
-                            Jump = tempdata.IndexOf(" ");
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
-                    }
-                    else if (tempdata.StartsWith(((char)002).ToString()))
-                    {
-                        tempdata = tempdata.Substring(1);
-                        Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        Bold = !Bold;
-                        carret++;
-                    }
-                    else if (tempdata.StartsWith(((char)003).ToString()))
-                    {
-                        int colorcode = 0;
-                        tempdata = tempdata.Substring(1);
-                        carret++;
-                        if (tempdata.Length > 1 && !_color)
-                        {
-                            if (!int.TryParse(tempdata.Substring(0, 2), out colorcode))
-                            {
-                                if (!int.TryParse(tempdata.Substring(0, 1), out colorcode))
-                                {
-                                    color = _style;
-                                    _color = true;
-                                }
-                                else
-                                {
-                                    tempdata = tempdata.Substring(1);
-                                    carret++;
-                                }
-                            }
-                            else
-                            {
-                                tempdata = tempdata.Substring(2);
-                                carret++;
-                                carret++;
-                            }
-                        }
-                        Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        if (!_color)
-                        {
-                            if (colorcode < 16)
-                            {
-                                color = Configuration.CurrentSkin.mrcl[colorcode];
-                            }
-                            else
-                            {
-                                Core.DebugLog("Invalid color for link: " + colorcode.ToString());
-                            }
-                        }
-                        if (_color)
-                        {
-                            color = _style;
-                        }
-                        _color = !_color;
-                    }
-                    else if (tempdata.StartsWith(((char)004).ToString()))
-                    {
-                        tempdata = tempdata.Substring(1);
-                        Jump = 0;
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        Underlined = !Underlined;
-                        carret++;
-                    }
-                    else if (tempdata.StartsWith("%H%"))
-                    {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_host(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Contains("%/H%"))
-                        {
-                            Jump = tempdata.IndexOf("%/H%") + 4;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
-                    }
-                    else if (tempdata.StartsWith("%L%"))
-                    {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_link(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Contains("%/L%"))
-                        {
-                            Jump = tempdata.IndexOf("%/L%") + 4;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
-                    }
-                    else if (tempdata.StartsWith("%D%"))
-                    {
-                        lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                        lprttext.Bold = Bold;
-                        lprttext.Underline = Underlined;
-                        line.insertData(lprttext);
-                        templine = "";
-                        line.insertData(parse_ident(tempdata, SBAB, Underlined, Bold));
-                        if (tempdata.Contains("%/D%"))
-                        {
-                            Jump = tempdata.IndexOf("%/D%") + 4;
-                        }
-                        else
-                        {
-                            Jump = tempdata.Length;
-                        }
+                        Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
                     }
                     else
                     {
-                        templine += text[carret];
+                        Jump = tempdata.Length;
                     }
-                    tempdata = tempdata.Substring(Jump);
-                    carret = carret + Jump;
                 }
-                lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
-                lprttext.Underline = Underlined;
-                lprttext.Bold = Bold;
-                line.insertData(lprttext);
+                else if (matchesSWPrefix(tempdata, "https://"))
+                {
+                    string prefix = Prefix(tempdata, "https://").ToString();
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_https(tempdata, SBAB, Underlined, Bold));
+                    if (matchesAPrefix(tempdata.Substring(1)))
+                    {
+                        Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
+                    }
+                }
+                else if (tempdata.StartsWith("%USER%"))
+                {
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_name(tempdata, SBAB, Underlined, Bold));
+                    if (tempdata.Contains("%/USER%"))
+                    {
+                        Jump = tempdata.IndexOf("%/USER%") + 7;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length - 1;
+                    }
+                }
+                else if (tempdata.StartsWith(" #") || (tempdata.StartsWith("#") && text.StartsWith("#")))
+                {
+                    if (tempdata.StartsWith(" #"))
+                    {
+                        templine += text[carret].ToString();
+                        carret++;
+                        tempdata = tempdata.Substring(1);
+                    }
 
-                return line;
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Underline = Underlined;
+                    lprttext.Bold = Bold;
+                    line.insertData(lprttext);
+                    templine = "";
+
+                    line.insertData(parse_chan(tempdata, SBAB, Underlined, Bold));
+                    if (tempdata.Contains(" "))
+                    {
+                        Jump = tempdata.IndexOf(" ");
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
+                    }
+                }
+                else if (tempdata.StartsWith(((char)002).ToString()))
+                {
+                    tempdata = tempdata.Substring(1);
+                    Jump = 0;
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    Bold = !Bold;
+                    carret++;
+                }
+                else if (tempdata.StartsWith(((char)003).ToString()))
+                {
+                    int colorcode = 0;
+                    tempdata = tempdata.Substring(1);
+                    carret++;
+                    if (tempdata.Length > 1 && !_color)
+                    {
+                        if (!int.TryParse(tempdata.Substring(0, 2), out colorcode))
+                        {
+                            if (!int.TryParse(tempdata.Substring(0, 1), out colorcode))
+                            {
+                                color = _style;
+                                _color = true;
+                            }
+                            else
+                            {
+                                tempdata = tempdata.Substring(1);
+                                carret++;
+                            }
+                        }
+                        else
+                        {
+                            tempdata = tempdata.Substring(2);
+                            carret++;
+                            carret++;
+                        }
+                    }
+                    Jump = 0;
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    if (!_color)
+                    {
+                        if (colorcode < 16)
+                        {
+                            color = Configuration.CurrentSkin.mrcl[colorcode];
+                        }
+                        else
+                        {
+                            Core.DebugLog("Invalid color for link: " + colorcode.ToString());
+                        }
+                    }
+                    if (_color)
+                    {
+                        color = _style;
+                    }
+                    _color = !_color;
+                }
+                else if (tempdata.StartsWith(((char)004).ToString()))
+                {
+                    tempdata = tempdata.Substring(1);
+                    Jump = 0;
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    Underlined = !Underlined;
+                    carret++;
+                }
+                else if (tempdata.StartsWith("%H%"))
+                {
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_host(tempdata, SBAB, Underlined, Bold));
+                    if (tempdata.Contains("%/H%"))
+                    {
+                        Jump = tempdata.IndexOf("%/H%") + 4;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
+                    }
+                }
+                else if (tempdata.StartsWith("%L%"))
+                {
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_link(tempdata, SBAB, Underlined, Bold));
+                    if (tempdata.Contains("%/L%"))
+                    {
+                        Jump = tempdata.IndexOf("%/L%") + 4;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
+                    }
+                }
+                else if (tempdata.StartsWith("%D%"))
+                {
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_ident(tempdata, SBAB, Underlined, Bold));
+                    if (tempdata.Contains("%/D%"))
+                    {
+                        Jump = tempdata.IndexOf("%/D%") + 4;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
+                    }
+                }
+                else
+                {
+                    templine += text[carret];
+                }
+                tempdata = tempdata.Substring(Jump);
+                carret = carret + Jump;
             }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-            return null;
+            lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+            lprttext.Underline = Underlined;
+            lprttext.Bold = Bold;
+            line.insertData(lprttext);
+
+            return line;
         }
 
         public static bool matchesPrefix(string data, string x)
@@ -680,7 +676,8 @@ namespace Client
                     {
                         return curr;
                     }
-                } else
+                }
+                else
                 {
                     if (data.Contains(curr.ToString()))
                     {
