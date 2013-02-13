@@ -33,21 +33,47 @@ namespace Client
         /// Content of box in unformatted way
         /// </summary>
         private string text = null;
-        public bool BufferOn = false;
         private bool initializationComplete = false;
         private bool isDisposing = false;
         private BufferedGraphicsContext backbufferContext = null;
         private BufferedGraphics backbufferGraphics = null;
-        private int offset = 0;
+        /// <summary>
+        /// If this is false, this control will not reload itself on change of content
+        /// </summary>
+        public bool ReloadingEnabled = true;
+        /// <summary>
+        /// Current position of carret
+        /// </summary>
+        private int currentY = 0;
+        /// <summary>
+        /// Current position of carret
+        /// </summary>
         private int currentX = 0;
-        private int scrolldown = 0;
+        /// <summary>
+        /// Current position of scroll bar
+        /// </summary>
+        private int scrollValue = 0;
+        /// <summary>
+        /// Defines whether long lines should be trimmed and continued on next line
+        /// </summary>
         public bool Wrap = true;
-        public int rendered = 0;
+        /// <summary>
+        /// Number of lines that were rendered
+        /// </summary>
+        private int RenderedLineTotalCount = 0;
         private Graphics drawingGraphics = null;
         public Scrollback scrollback = null;
         private List<Line> LineDB = new List<Line>();
-        private bool reloading = false;
+        private bool Rendering = false;
+        private Font GlobalFont = null;
+        /// <summary>
+        /// Information about all links
+        /// </summary>
+        private List<Link> LinkInfo = new List<Link>();
         private int spacing = 2;
+        /// <summary>
+        /// Spacing
+        /// </summary>
         public int Spacing
         {
             get
@@ -99,131 +125,6 @@ namespace Client
             }
         }
 
-        public List<Link> LinkInfo = new List<Link>();
-
-        public class Link
-        {
-            public int X = 0;
-            public int Y = 0;
-            public int Width = 0;
-            public int Height = 0;
-            private SBABox Parent = null;
-            public string _name = null;
-            public string _text = null;
-            public ContentText linkedtext = null;
-
-            public Link(int x, int y, System.Drawing.Color normal, int width, int height, SBABox SBAB, string http, string label, ContentText text)
-            {
-                X = x;
-                Y = y;
-                Width = width;
-                _name = label;
-                _text = http;
-                Parent = SBAB;
-                linkedtext = text;
-                Height = height;
-            }
-
-            ~Link()
-            {
-                Parent = null;
-                linkedtext = null;
-            }
-
-            public void Dispose()
-            {
-                Parent = null;
-                linkedtext = null;
-            }
-        }
-
-        public class Line
-        {
-            public List<ContentText> text = new List<ContentText>();
-            private SBABox owner = null;
-
-            public void insertData(ContentText line)
-            {
-                if (line == null)
-                {
-                    return;
-                }
-                lock (text)
-                {
-                    text.Add(line);
-                }
-            }
-
-            public void insertData(string line)
-            {
-                lock (text)
-                {
-                    text.Add(new ContentText(line, owner, owner.ForeColor));
-                }
-            }
-
-            public override string ToString()
-            {
-                string part = "";
-                lock (text)
-                {
-                    foreach (ContentText data in text)
-                    {
-                        if (data.Text != null)
-                        {
-                            part += data.Text;
-                        }
-                    }
-                }
-                return part;
-            }
-
-            ~Line()
-            {
-                owner = null;
-            }
-
-            public void Merge(Line line)
-            {
-                lock (text)
-                {
-                    text.AddRange(line.text);
-                }
-            }
-
-            public Line(string Text, SBABox SBAB)
-            {
-                if (SBAB == null)
-                {
-                    throw new Exception("SBAB must not be null");
-                }
-                CreateLine(Text, SBAB, SBAB.ForeColor);
-            }
-
-            public Line(string Text, SBABox SBAB, Color color)
-            {
-                CreateLine(Text, SBAB, color);
-            }
-
-            private void CreateLine(string Text, SBABox SBAB, Color color)
-            {
-                text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
-                owner = SBAB;
-            }
-
-            public Line(SBABox SBAB)
-            {
-                text = new List<ContentText>();
-                owner = SBAB;
-            }
-
-            public Line()
-            {
-                text = new List<ContentText>();
-                owner = null;
-            }
-        }
-
         /// <summary>
         /// Color of text
         /// </summary>
@@ -254,6 +155,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Return a text with no formatting, this can be used in case you want to copy content of this box
+        /// </summary>
         public override string Text
         {
             get
@@ -297,23 +201,6 @@ namespace Client
             return false;
         }
 
-        /// <summary>
-        /// Create a random text of specific lenght
-        /// </summary>
-        /// <param name="length"></param>
-        /// <returns></returns>
-        private string maketext(int length)
-        {
-            int curr = 0;
-            string text = "";
-            while (curr < length)
-            {
-                curr++;
-                text += "F";
-            }
-            return text;
-        }
-
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
             if (isDisposing)
@@ -336,7 +223,7 @@ namespace Client
         private void RedrawLine(ref Graphics graphics, ref float X, ref float Y, Line line)
         {
             bool wrappingnow = false;
-            rendered++;
+            RenderedLineTotalCount++;
             Line extraline = null;
             lock (line.text)
             {
@@ -347,18 +234,18 @@ namespace Client
                         extraline.insertData(part);
                         continue;
                     }
-                    int padding = (int)Font.Size + 8;
+                    int padding = (int)Font.Size + spacing;
                     if ((Y + padding) > 0 && (Y - padding < this.Height))
                     {
                         if (part.Text != null && part.Text != "")
                         {
                             Brush brush = new SolidBrush(part.TextColor);
                             string TextOfThispart = part.Text;
-                            TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
+                            //TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
                             StringFormat format = new StringFormat(StringFormat.GenericTypographic);
                             format.Trimming = StringTrimming.None;
                             format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
-                            Font font = new Font(this.Font, FontStyle.Regular);
+                            Font font = GlobalFont;
 
                             if (part.Bold && part.Underline)
                             {
@@ -377,8 +264,8 @@ namespace Client
                                 }
                             }
 
-                            SizeF stringSize = graphics.MeasureString(part.Text, font, new Point(0, 0), format);
-                            int stringWidth = Buffers.MeasureDisplayStringWidth(graphics, part.Text, font, format);
+                            RectangleF stringSize = Buffers.MeasureString(graphics,part.Text, font, format);
+                            int stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
                             if (Wrap)
                             {
                                 int oversized = this.Width - vScrollBar1.Width - 20;
@@ -423,7 +310,7 @@ namespace Client
                                     }
                                     // we trimmed the value, now update the text temporarily
                                     TextOfThispart = trimmed;
-                                    string remaining_data;
+                                    string remaining_data = null;
                                     if (trimmed.Length < part.Text.Length)
                                     {
                                         remaining_data = part.Text.Substring(trimmed.Length);
@@ -442,8 +329,11 @@ namespace Client
                                 }
                             }
 
-                            stringSize = graphics.MeasureString(TextOfThispart, font, new Point(0, 0), format);
-                            stringWidth = Buffers.MeasureDisplayStringWidth(graphics, TextOfThispart, font, format);
+                            if (TextOfThispart != part.Text)
+                            {
+                                stringSize = Buffers.MeasureString(graphics, TextOfThispart, font, format);
+                                stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
+                            }
 
                             if (part.Link != null)
                             {
@@ -451,7 +341,6 @@ namespace Client
                                 {
                                     part.Linked = true;
                                     Pen pen = new Pen(part.TextColor);
-                                    stringSize = graphics.MeasureString(TextOfThispart, font, new Point(0, 0), format);
                                     Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThispart, part);
                                     lock (LinkInfo)
                                     {
@@ -459,6 +348,7 @@ namespace Client
                                     }
                                 }
                             }
+
                             graphics.DrawString(TextOfThispart, font, brush, X, Y);
 
                             X = X + stringWidth;
@@ -493,163 +383,203 @@ namespace Client
         }
 
         /// <summary>
+        /// Reload the scroll bars and their values
+        /// </summary>
+        private void UpdateBars()
+        {
+            scrollValue = RenderedLineTotalCount - (int)((float)pt.Height / (Font.Size + spacing));
+
+            if (scrollValue < 0)
+            {
+                vScrollBar1.Enabled = false;
+            }
+
+            if (scrollValue > 0)
+            {
+                lock (vScrollBar1)
+                {
+                    try
+                    {
+                        if (vScrollBar1.Value > scrollValue)
+                        {
+                            vScrollBar1.Value = scrollValue;
+                        }
+                        vScrollBar1.Maximum = scrollValue;
+                        vScrollBar1.Enabled = true;
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        if (vScrollBar1.Maximum > 0)
+                        {
+                            vScrollBar1.Value = vScrollBar1.Maximum - 1;
+                        }
+                        else
+                        {
+                            vScrollBar1.Value = 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Redraw all text
         /// </summary>
         public void RedrawText()
         {
             try
             {
-                reloading = true;
-                rendered = 0;
-                float X = 0 - currentX;
-                float Y = 0 - offset;
+                if (!ReloadingEnabled)
+                {
+                    return;
+                }
+                Rendering = true;
+                RenderedLineTotalCount = 0;
 
-                Graphics _t;
+                float X = 0 - currentX;
+                float Y = 0 - currentY;
+
+                Graphics graphics = null;
                 if (drawingGraphics == null)
                 {
                     return;
                 }
-                _t = drawingGraphics;
+
+                graphics = drawingGraphics;
+
                 ClearLink();
 
+                graphics.Clear(BackColor);
 
-                _t.Clear(BackColor);
+                GlobalFont = new Font(this.Font, FontStyle.Regular);
 
                 lock (LineDB)
                 {
                     foreach (Line text in LineDB)
                     {
                         X = 0 - currentX;
-                        RedrawLine(ref _t, ref X, ref Y, text);
+                        RedrawLine(ref graphics, ref X, ref Y, text);
                         Y = Y + Font.Size + spacing;
                     }
                 }
-                scrolldown = rendered - ((int)((float)pt.Height / (Font.Size + spacing)));
-                if (scrolldown < 0)
-                {
-                    vScrollBar1.Enabled = false;
-                }
 
-                if (scrolldown > 0)
-                {
-                    lock (vScrollBar1)
-                    {
-                        try
-                        {
-                            if (vScrollBar1.Value > scrolldown)
-                            {
-                                vScrollBar1.Value = scrolldown;
-                            }
-                            vScrollBar1.Maximum = scrolldown;
-                            vScrollBar1.Enabled = true;
-                        }
-                        catch (ArgumentOutOfRangeException)
-                        {
-                            if (vScrollBar1.Maximum > 0)
-                            {
-                                vScrollBar1.Value = vScrollBar1.Maximum - 1;
-                            }
-                            else
-                            {
-                                vScrollBar1.Value = 0;
-                            }
-                        }
-                    }
-                }
+                UpdateBars();
+                
                 pt.Invalidate();
-                reloading = false;
+                Rendering = false;
             }
             catch (Exception fail)
             {
-                reloading = false;
+                Rendering = false;
                 Core.handleException(fail);
             }
         }
 
         public void Wheeled(Object sender, MouseEventArgs e)
         {
-            if (e.Delta != 0)
+            try
             {
-                try
+                if (e.Delta != 0)
                 {
-                    lock (vScrollBar1)
+                    try
                     {
-                        int delta = (e.Delta / 16) * -1;
-                        if (delta < 0)
+                        lock (vScrollBar1)
                         {
-                            if ((vScrollBar1.Value + delta) > vScrollBar1.Minimum)
+                            int delta = (e.Delta / 16) * -1;
+                            if (delta < 0)
                             {
-                                vScrollBar1.Value = vScrollBar1.Value + delta;
+                                if ((vScrollBar1.Value + delta) > vScrollBar1.Minimum)
+                                {
+                                    vScrollBar1.Value = vScrollBar1.Value + delta;
+                                }
+                                else
+                                {
+                                    vScrollBar1.Value = vScrollBar1.Minimum;
+                                }
                             }
-                            else
-                            {
-                                vScrollBar1.Value = vScrollBar1.Minimum;
-                            }
-                        }
 
-                        if (delta > 0)
-                        {
-                            if ((vScrollBar1.Value + delta) < vScrollBar1.Maximum)
+                            if (delta > 0)
                             {
-                                vScrollBar1.Value = vScrollBar1.Value + delta;
-                            }
-                            else
-                            {
-                                vScrollBar1.Value = vScrollBar1.Maximum;
+                                if ((vScrollBar1.Value + delta) < vScrollBar1.Maximum)
+                                {
+                                    vScrollBar1.Value = vScrollBar1.Value + delta;
+                                }
+                                else
+                                {
+                                    vScrollBar1.Value = vScrollBar1.Maximum;
+                                }
                             }
                         }
                     }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        vScrollBar1.Value = vScrollBar1.Maximum;
+                    }
+                    ScrolltoX(vScrollBar1.Value);
+                    Redraw();
+                    return;
                 }
-                catch (ArgumentOutOfRangeException)
-                {
-                    vScrollBar1.Value = vScrollBar1.Maximum;
-                }
-                ScrolltoX(vScrollBar1.Value);
-                Redraw();
-                return;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         public void ClickHandler(Object sender, MouseEventArgs e)
         {
-            Link httparea = null;
-            foreach (Link l in LinkInfo)
+            try
             {
-                if ((e.X >= l.X && e.X <= l.X + l.Width) && (e.Y <= l.Y + l.Height && e.Y >= l.Y))
+                Link httparea = null;
+                foreach (Link l in LinkInfo)
                 {
-                    httparea = l;
-                    break;
+                    if ((e.X >= l.X && e.X <= l.X + l.Width) && (e.Y <= l.Y + l.Height && e.Y >= l.Y))
+                    {
+                        httparea = l;
+                        break;
+                    }
                 }
-            }
-            if (httparea != null)
-            {
-                if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                if (httparea != null)
                 {
-                    scrollback.Click_R(httparea._name, httparea._text);
-                    return;
-                }
+                    if (e.Button == System.Windows.Forms.MouseButtons.Right)
+                    {
+                        scrollback.Click_R(httparea.Name, httparea.Text);
+                        return;
+                    }
 
-                if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                    if (e.Button == System.Windows.Forms.MouseButtons.Left)
+                    {
+                        scrollback.Click_L(httparea.Text);
+                        return;
+                    }
+                }
+                if (scrollback.owner != null)
                 {
-                    scrollback.Click_L(httparea._text);
-                    return;
+                    scrollback.owner.textbox.richTextBox1.Focus();
                 }
             }
-            if (scrollback.owner != null)
+            catch (Exception fail)
             {
-                scrollback.owner.textbox.richTextBox1.Focus();
+                Core.handleException(fail);
             }
         }
 
+        /// <summary>
+        /// This will remove all link data
+        /// </summary>
+        /// <returns></returns>
         public bool ClearLink()
         {
-            foreach (Link il in LinkInfo)
+            lock (LinkInfo)
             {
-                il.linkedtext.Linked = false;
-                il.linkedtext = null;
-                il.Dispose();
+                foreach (Link il in LinkInfo)
+                {
+                    il.linkedtext.Linked = false;
+                    il.linkedtext = null;
+                    il.Dispose();
+                }
+                LinkInfo.Clear();
             }
-            LinkInfo.Clear();
             return true;
         }
 
@@ -690,30 +620,37 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            isDisposing = true;
-            if (disposing)
+            try
             {
-                if (components != null)
-                    components.Dispose();
+                isDisposing = true;
+                if (disposing)
+                {
+                    if (components != null)
+                        components.Dispose();
 
-                // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
-                if (backbufferGraphics != null)
-                {
-                    backbufferGraphics.Dispose();
-                }
-                if (backbufferContext != null)
-                {
-                    try
+                    // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
+                    if (backbufferGraphics != null)
                     {
-                        backbufferContext.Dispose();
+                        backbufferGraphics.Dispose();
                     }
-                    catch (Exception)
+                    if (backbufferContext != null)
                     {
-                        backbufferContext = null;
+                        try
+                        {
+                            backbufferContext.Dispose();
+                        }
+                        catch (Exception)
+                        {
+                            backbufferContext = null;
+                        }
                     }
                 }
+                base.Dispose(disposing);
             }
-            base.Dispose(disposing);
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void RecreateBuffers()
@@ -752,9 +689,16 @@ namespace Client
 
         protected override void OnResize(EventArgs e)
         {
-            base.OnResize(e);
-            RecreateBuffers();
-            Redraw();
+            try
+            {
+                base.OnResize(e);
+                RecreateBuffers();
+                Redraw();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
@@ -762,7 +706,7 @@ namespace Client
         /// </summary>
         public void RemoveText(bool Redraw = true)
         {
-            offset = 0;
+            currentY = 0;
             lock (LineDB)
             {
                 LineDB.Clear();
@@ -775,7 +719,7 @@ namespace Client
 
         private void Lock()
         {
-            while (reloading)
+            while (Rendering)
             {
                 System.Threading.Thread.Sleep(10);
             }
@@ -801,7 +745,7 @@ namespace Client
 
         private void ScrolltoX(int x)
         {
-            offset = ((int)Font.Size + spacing) * x;
+            currentY = ((int)Font.Size + spacing) * x;
         }
 
         public void InsertLine(Line line)
@@ -835,6 +779,12 @@ namespace Client
             InsertLine(line);
         }
 
+        /// <summary>
+        /// Creates an instance of ContentText but won't insert it to this SBABox
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public ContentText CreateText(string text, Color color)
         {
             return new ContentText(text, this, color);
@@ -881,10 +831,17 @@ namespace Client
 
         private void ScrollBar_Scroll(object sender, ScrollEventArgs e)
         {
-            lock (hsBar)
+            try
             {
-                currentX = hsBar.Value;
-                Redraw();
+                lock (hsBar)
+                {
+                    currentX = hsBar.Value;
+                    Redraw();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }

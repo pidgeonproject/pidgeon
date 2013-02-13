@@ -28,11 +28,14 @@ namespace Client
     {
         public Network network = null;
         private int channels = 0;
+        private ListViewColumnSorter lvwColumnSorter;
 
         public Channels(Network nw)
         {
             network = nw;
             InitializeComponent();
+            lvwColumnSorter = new ListViewColumnSorter();
+            this.listView1.ListViewItemSorter = lvwColumnSorter;
         }
 
         private void Reload()
@@ -57,6 +60,38 @@ namespace Client
         {
             refreshAutoToolStripMenuItem.Checked = true;
             Reload();
+        }
+
+        private void Sort(object sender, ColumnClickEventArgs e)
+        {
+            try
+            {
+                if (e.Column == lvwColumnSorter.SortColumn)
+                {
+                    // Reverse the current sort direction for this column.
+                    if (lvwColumnSorter.Order == SortOrder.Ascending)
+                    {
+                        lvwColumnSorter.Order = SortOrder.Descending;
+                    }
+                    else
+                    {
+                        lvwColumnSorter.Order = SortOrder.Ascending;
+                    }
+                }
+                else
+                {
+                    // Set the column number that is to be sorted; default to ascending.
+                    lvwColumnSorter.SortColumn = e.Column;
+                    lvwColumnSorter.Order = SortOrder.Ascending;
+                }
+
+                // Perform the sotrt with hese new sort options.
+                this.listView1.Sort();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void timerl_Tick(object sender, EventArgs e)

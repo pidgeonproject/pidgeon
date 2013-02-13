@@ -199,6 +199,12 @@
     <Compile Include="ProtocolXmpp.cs" />
     <Compile Include="Qt.cs" />
     <Compile Include="RevisionInfo.cs" />
+    <Compile Include="scrollback\Line.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="scrollback\Link.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="scrollback\SBABox.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -417,6 +423,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Services\" />
     <Folder Include="Stage\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

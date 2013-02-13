@@ -25,7 +25,7 @@ namespace Client
 {
     class Buffers
     {
-        static public int MeasureDisplayStringWidth(Graphics graphics, string text, Font font, StringFormat format)
+        static public RectangleF MeasureString(Graphics graphics, string text, Font font, StringFormat format)
         {
             System.Drawing.RectangleF rect = new System.Drawing.RectangleF(0, 0, 10000, 10000);
             CharacterRange[] ranges = { new System.Drawing.CharacterRange(0, text.Length) };
@@ -39,6 +39,11 @@ namespace Client
                 rect = regions[0].GetBounds(graphics);
             }
 
+            return rect;
+        }
+
+        static public int MeasureDisplayStringWidth(RectangleF rect)
+        {
             return (int)(rect.Right + 1.0f);
         }
     }
