@@ -787,25 +787,33 @@ namespace Client
             try
             {
                 timer2.Enabled = false;
-                lock (UndrawnLines)
+                if (RT != null && WindowVisible())
                 {
-                    if (!ReloadWaiting)
+                    lock (UndrawnLines)
                     {
-                        if (UndrawnLines.Count > 0)
+                        if (!ReloadWaiting)
                         {
-                            foreach (ContentLine curr in UndrawnLines)
+                            if (UndrawnLines.Count > 0)
                             {
-                                InsertLineToText(curr);
+                                foreach (ContentLine curr in UndrawnLines)
+                                {
+                                    InsertLineToText(curr, false);
+                                }
+                                RT.RedrawText();
+                                if (ScrollingEnabled)
+                                {
+                                    RT.ScrollToBottom();
+                                }
                             }
                         }
+                        UndrawnLines.Clear();
                     }
-                    UndrawnLines.Clear();
-                }
-                if (ReloadWaiting)
-                {
-                    if (Reload())
+                    if (ReloadWaiting)
                     {
-                        ReloadWaiting = false;
+                        if (Reload())
+                        {
+                            ReloadWaiting = false;
+                        }
                     }
                 }
                 timer2.Enabled = true;
