@@ -162,7 +162,6 @@ namespace Client
             InitializeComponent();
 
             simpleview.Visible = false;
-            //Scrollback_Load(null, null);
         }
 
         public string validpath(string text)
@@ -305,6 +304,8 @@ namespace Client
                     mode1e2ToolStripMenuItem.Visible = false;
                     mode1I2ToolStripMenuItem.Visible = false;
                     mode1q2ToolStripMenuItem.Visible = false;
+                    copyLinkToClipboardToolStripMenuItem.Visible = false;
+                    openLinkInBrowserToolStripMenuItem.Visible = false;
                     joinToolStripMenuItem.Visible = true;
                     return;
                 }
@@ -316,6 +317,8 @@ namespace Client
                     whowasToolStripMenuItem.Visible = true;
                 }
                 mode1b2ToolStripMenuItem.Visible = true;
+                copyLinkToClipboardToolStripMenuItem.Visible = false;
+                openLinkInBrowserToolStripMenuItem.Visible = false;
                 joinToolStripMenuItem.Visible = false;
                 toolStripMenuItem1.Visible = true;
                 mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
@@ -325,19 +328,19 @@ namespace Client
                 kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.DefaultReason;
                 whoisToolStripMenuItem.Text = "/whois " + name;
                 whowasToolStripMenuItem.Text = "/whowas " + name;
-                if (link)
-                {
-                    copyLinkToClipboardToolStripMenuItem.Visible = true;
-                    openLinkInBrowserToolStripMenuItem.Visible = true;
-                }
-                if (link == false)
-                {
-                    copyLinkToClipboardToolStripMenuItem.Visible = false;
-                    openLinkInBrowserToolStripMenuItem.Visible = false;
-                }
                 mode1e2ToolStripMenuItem.Visible = true;
                 mode1I2ToolStripMenuItem.Visible = true;
                 mode1q2ToolStripMenuItem.Visible = true;
+                if (link)
+                {
+                    mode1b2ToolStripMenuItem.Visible = false;
+                    openLinkInBrowserToolStripMenuItem.Visible = false;
+                    mode1e2ToolStripMenuItem.Visible = false;
+                    mode1I2ToolStripMenuItem.Visible = false;
+                    mode1q2ToolStripMenuItem.Visible = false;
+                    copyLinkToClipboardToolStripMenuItem.Visible = true;
+                    openLinkInBrowserToolStripMenuItem.Visible = true;
+                }
             }
         }
 
