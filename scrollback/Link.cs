@@ -15,6 +15,9 @@ namespace Client
             public int Height = 0;
             private SBABox Parent = null;
             public string Name = null;
+            /// <summary>
+            /// URL
+            /// </summary>
             public string Text = null;
             public ContentText linkedtext = null;
 

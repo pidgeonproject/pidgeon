@@ -34,6 +34,7 @@ namespace Client
         /// </summary>
         private string text = null;
         private bool initializationComplete = false;
+        public bool WrapAll = true;
         private bool isDisposing = false;
         private BufferedGraphicsContext backbufferContext = null;
         private BufferedGraphics backbufferGraphics = null;
@@ -229,6 +230,7 @@ namespace Client
             {
                 foreach (ContentText part in line.text)
                 {
+                    bool RedrawLine = false;
                     if (wrappingnow)
                     {
                         extraline.insertData(part);
@@ -236,6 +238,10 @@ namespace Client
                     }
                     int padding = (int)Font.Size + spacing;
                     if ((Y + padding) > 0 && (Y - padding < this.Height))
+                    {
+                        RedrawLine = true;
+                    }
+                    if (RedrawLine || WrapAll)
                     {
                         if (part.Text != null && part.Text != "")
                         {
@@ -264,7 +270,7 @@ namespace Client
                                 }
                             }
 
-                            RectangleF stringSize = Buffers.MeasureString(graphics,part.Text, font, format);
+                            RectangleF stringSize = Buffers.MeasureString(graphics, part.Text, font, format);
                             int stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
                             if (Wrap)
                             {
@@ -335,7 +341,7 @@ namespace Client
                                 stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
                             }
 
-                            if (part.Link != null)
+                            if (part.Link != null && RedrawLine)
                             {
                                 if (!part.Linked)
                                 {
@@ -349,7 +355,10 @@ namespace Client
                                 }
                             }
 
-                            graphics.DrawString(TextOfThispart, font, brush, X, Y);
+                            if (RedrawLine)
+                            {
+                                graphics.DrawString(TextOfThispart, font, brush, X, Y);
+                            }
 
                             X = X + stringWidth;
                             if (Wrap)
@@ -464,7 +473,7 @@ namespace Client
                 }
 
                 UpdateBars();
-                
+
                 pt.Invalidate();
                 Rendering = false;
             }
@@ -735,8 +744,8 @@ namespace Client
                     while (previous < vScrollBar1.Maximum)
                     {
                         previous = vScrollBar1.Maximum;
-                        vScrollBar1.Value = vScrollBar1.Maximum;
                         ScrolltoX(vScrollBar1.Maximum);
+                        vScrollBar1.Value = vScrollBar1.Maximum;
                         Redraw();
                     }
                 }

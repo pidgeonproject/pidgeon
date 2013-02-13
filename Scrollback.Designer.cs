@@ -56,10 +56,12 @@ namespace Client
             this.toggleAdvancedLayoutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyTextToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyEntireWindowToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.listAllChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
             this.simpleview = new System.Windows.Forms.TextBox();
+            this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripSeparator();
             this.RT = new Client.SBABox();
-            this.listAllChannelsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyLinkToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -70,6 +72,7 @@ namespace Client
             this.whowasToolStripMenuItem,
             this.kickToolStripMenuItem,
             this.toolStripMenuItem2,
+            this.copyLinkToClipboardToolStripMenuItem,
             this.openLinkInBrowserToolStripMenuItem,
             this.mode1b2ToolStripMenuItem,
             this.mode1e2ToolStripMenuItem,
@@ -79,17 +82,18 @@ namespace Client
             this.toolStripMenuItem1,
             this.mrhToolStripMenuItem,
             this.scrollToolStripMenuItem,
-            this.closeToolStripMenuItem,
-            this.channelToolStripMenuItem,
             this.refreshToolStripMenuItem,
-            this.retrieveTopicToolStripMenuItem,
-            this.toggleSimpleLayoutToolStripMenuItem,
             this.toggleAdvancedLayoutToolStripMenuItem,
+            this.toggleSimpleLayoutToolStripMenuItem,
+            this.closeToolStripMenuItem,
+            this.toolStripMenuItem3,
+            this.channelToolStripMenuItem,
+            this.listAllChannelsToolStripMenuItem,
+            this.retrieveTopicToolStripMenuItem,
             this.copyTextToClipBoardToolStripMenuItem,
-            this.copyEntireWindowToClipBoardToolStripMenuItem,
-            this.listAllChannelsToolStripMenuItem});
+            this.copyEntireWindowToClipBoardToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 478);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 506);
             // 
             // whoisToolStripMenuItem
             // 
@@ -241,6 +245,13 @@ namespace Client
             this.copyEntireWindowToClipBoardToolStripMenuItem.Text = "Copy entire window to clip board";
             this.copyEntireWindowToClipBoardToolStripMenuItem.Click += new System.EventHandler(this.copyEntireWindowToClipBoardToolStripMenuItem_Click);
             // 
+            // listAllChannelsToolStripMenuItem
+            // 
+            this.listAllChannelsToolStripMenuItem.Name = "listAllChannelsToolStripMenuItem";
+            this.listAllChannelsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.listAllChannelsToolStripMenuItem.Text = "List all channels on this server";
+            this.listAllChannelsToolStripMenuItem.Click += new System.EventHandler(this.listAllChannelsToolStripMenuItem_Click);
+            // 
             // refresh
             // 
             this.refresh.Interval = 10;
@@ -260,6 +271,11 @@ namespace Client
             this.simpleview.Size = new System.Drawing.Size(566, 320);
             this.simpleview.TabIndex = 6;
             // 
+            // toolStripMenuItem3
+            // 
+            this.toolStripMenuItem3.Name = "toolStripMenuItem3";
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(247, 6);
+            // 
             // RT
             // 
             this.RT.ContextMenuStrip = this.contextMenuStrip1;
@@ -270,12 +286,13 @@ namespace Client
             this.RT.Spacing = 2;
             this.RT.TabIndex = 7;
             // 
-            // listAllChannelsToolStripMenuItem
+            // copyLinkToClipboardToolStripMenuItem
             // 
-            this.listAllChannelsToolStripMenuItem.Name = "listAllChannelsToolStripMenuItem";
-            this.listAllChannelsToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
-            this.listAllChannelsToolStripMenuItem.Text = "List all channels on this server";
-            this.listAllChannelsToolStripMenuItem.Click += new System.EventHandler(this.listAllChannelsToolStripMenuItem_Click);
+            this.copyLinkToClipboardToolStripMenuItem.Name = "copyLinkToClipboardToolStripMenuItem";
+            this.copyLinkToClipboardToolStripMenuItem.Size = new System.Drawing.Size(250, 22);
+            this.copyLinkToClipboardToolStripMenuItem.Text = "Copy link to clipboard";
+            this.copyLinkToClipboardToolStripMenuItem.Visible = false;
+            this.copyLinkToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyLinkToClipboardToolStripMenuItem_Click);
             // 
             // Scrollback
             // 
@@ -322,6 +339,8 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem copyEntireWindowToClipBoardToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem retrieveTopicToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem listAllChannelsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem copyLinkToClipboardToolStripMenuItem;
 
     }
 }

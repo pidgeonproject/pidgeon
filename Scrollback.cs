@@ -56,6 +56,8 @@ namespace Client
         public Window owner = null;
         private string Link = "";
         public bool simple = false;
+        private DateTime lastDate;
+        private bool ScrollingEnabled = true;
 
         public enum MessageStyle
         {
@@ -205,6 +207,15 @@ namespace Client
             return false;
         }
 
+        bool RequireReload(DateTime date)
+        {
+            if (date < lastDate)
+            {
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Insert a text to scrollback list
         /// </summary>
@@ -274,15 +285,24 @@ namespace Client
             {
                 time = DateTime.FromBinary(Date);
             }
+            ContentLine line = new ContentLine(InputStyle, text, time, Matched);
             lock (ContentLines)
             {
-                ContentLines.Add(new ContentLine(InputStyle, text, time, Matched));
+                ContentLines.Add(line);
                 if (Date != 0)
                 {
                     ContentLines.Sort();
                 }
             }
-            Modified = true;
+            if (!RequireReload(time))
+            {
+                InsertLineToText(line);
+                lastDate = time;
+            }
+            else
+            {
+                Modified = true;
+            }
             if (WriteLog == true && owner != null && owner._Network != null)
             {
                 if (!Directory.Exists(Configuration.logs_dir))
@@ -293,9 +313,9 @@ namespace Client
                 {
                     System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
                 }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath( owner.name)))
+                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
                 {
-                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath( owner.name));
+                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
                 }
                 if (Configuration.logs_txt)
                 {
@@ -313,7 +333,7 @@ namespace Client
                     {
                         stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text( Parser.link2(text) )) + "</font><br>\n", _getFileName() + ".html");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
                 }
                 if (Configuration.logs_xml)
                 {
@@ -352,14 +372,21 @@ namespace Client
 
         private void Scrollback_Load(object sender, EventArgs e)
         {
-            //Reload(true);
-            RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
-            RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            RT.Font = Configuration.CurrentSkin.SBABOX;
-            simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
-            RT.scrollback = this;
-            HideLn();
+            try
+            {
+                RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
+                RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                RT.Font = Configuration.CurrentSkin.SBABOX;
+                simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
+                RT.scrollback = this;
+                HideLn();
+                lastDate = DateTime.MinValue;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void ReloadSimple()
@@ -375,6 +402,70 @@ namespace Client
                 simpleview.SelectionStart = simpleview.Text.Length;
                 simpleview.ScrollToCaret();
             }
+        }
+
+        private void InsertLineToText(ContentLine line)
+        {
+            if (simple)
+            { 
+                lock(simpleview.Lines)
+                {
+                    List<string> view = simpleview.Lines.ToList<string>();
+                    view.Add(Configuration.format_date.Replace("$1", line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(line.text));
+                    simpleview.Lines = view.ToArray<string>();
+                }
+                return;
+            }
+            RT.InsertLine(CreateLine(line));
+            RT.RedrawText();
+            if (ScrollingEnabled)
+            {
+                RT.ScrollToBottom();
+            }
+        }
+
+        private SBABox.Line CreateLine(ContentLine Line)
+        {
+            ContentLine _c = Line;
+            Color color = Configuration.CurrentSkin.fontcolor;
+            switch (_c.style)
+            {
+                case MessageStyle.Action:
+                    color = Configuration.CurrentSkin.miscelancscolor;
+                    break;
+                case MessageStyle.Kick:
+                    color = Configuration.CurrentSkin.kickcolor;
+                    break;
+                case MessageStyle.System:
+                    color = Configuration.CurrentSkin.miscelancscolor;
+                    break;
+                case MessageStyle.Channel:
+                    color = Configuration.CurrentSkin.colortalk;
+                    break;
+                case MessageStyle.User:
+                    color = Configuration.CurrentSkin.changenickcolor;
+                    break;
+                case MessageStyle.Join:
+                case MessageStyle.Part:
+                    color = Configuration.CurrentSkin.joincolor;
+                    break;
+            }
+            if (_c.notice)
+            {
+                color = Configuration.CurrentSkin.highlightcolor;
+            }
+            
+            string stamp = "";
+            if (Configuration.chat_timestamp)
+            {
+                stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
+            }
+            SBABox.Line text = Parser.link(_c.text, RT, color);
+            SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
+            SBABox.Line line = new SBABox.Line(RT);
+            line.insertData(content);
+            line.Merge(text);
+            return line;
         }
 
         public void Reload(bool fast = false)
@@ -399,46 +490,8 @@ namespace Client
                     int current = min;
                     while (current < max)
                     {
-                        ContentLine _c = ContentLines[current];
-                        Color color = Configuration.CurrentSkin.fontcolor;
-                        switch (_c.style)
-                        {
-                            case MessageStyle.Action:
-                                color = Configuration.CurrentSkin.miscelancscolor;
-                                break;
-                            case MessageStyle.Kick:
-                                color = Configuration.CurrentSkin.kickcolor;
-                                break;
-                            case MessageStyle.System:
-                                color = Configuration.CurrentSkin.miscelancscolor;
-                                break;
-                            case MessageStyle.Channel:
-                                color = Configuration.CurrentSkin.colortalk;
-                                break;
-                            case MessageStyle.User:
-                                color = Configuration.CurrentSkin.changenickcolor;
-                                break;
-                            case MessageStyle.Join:
-                            case MessageStyle.Part:
-                                color = Configuration.CurrentSkin.joincolor;
-                                break;
-                        }
-                        if (_c.notice)
-                        {
-                            color = Configuration.CurrentSkin.highlightcolor;
-                        }
+                        RT.InsertLine(CreateLine(ContentLines[current]));
                         current++;
-                        string stamp = "";
-                        if (Configuration.chat_timestamp)
-                        {
-                            stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
-                        }
-                        SBABox.Line text = Parser.link(_c.text, RT, color);
-                        SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
-                        SBABox.Line line = new SBABox.Line(RT);
-                        line.insertData(content);
-                        line.Merge(text);
-                        RT.InsertLine(line);
                     }
                 }
 
@@ -449,11 +502,18 @@ namespace Client
 
         private void refresh_Tick(object sender, EventArgs e)
         {
-            if (!scrollToolStripMenuItem.Checked)
-            { return; }
-            if (Modified)
+            try
             {
-                Reload();
+                if (!scrollToolStripMenuItem.Checked)
+                { return; }
+                if (Modified)
+                {
+                    Reload();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
             //Recreate();
         }
@@ -473,13 +533,17 @@ namespace Client
         {
             try
             {
+                if (data.StartsWith("http"))
+                {
+                    ViewLn(data, false, true);
+                }
                 if (data.StartsWith("pidgeon://text"))
                 {
                     ViewLn(adds, false, true);
                 }
                 if (data.StartsWith("pidgeon://join"))
                 {
-                    ViewLn(adds, true, false);
+                    ViewLn(data, true, false);
                 }
                 if (data.StartsWith("pidgeon://ident"))
                 {
@@ -555,10 +619,12 @@ namespace Client
                 whowasToolStripMenuItem.Text = "/whowas " + name;
                 if (link)
                 {
+                    copyLinkToClipboardToolStripMenuItem.Visible = true;
                     openLinkInBrowserToolStripMenuItem.Visible = true;
                 }
                 if (link == false)
                 {
+                    copyLinkToClipboardToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                 }
                 mode1e2ToolStripMenuItem.Visible = true;
@@ -675,139 +741,260 @@ namespace Client
 
         private void channelToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Core.network != null)
+            try
             {
-                if (Core.network.RenderedChannel != null)
+                if (Core.network != null)
                 {
-                    Channel_Info info = new Channel_Info();
-                    info.channel = Core.network.RenderedChannel;
-                    info.Show();
+                    if (Core.network.RenderedChannel != null)
+                    {
+                        Channel_Info info = new Channel_Info();
+                        info.channel = Core.network.RenderedChannel;
+                        info.Show();
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void mrhToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Do you really want to clear this window", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            try
             {
-                lock (ContentLines)
+                if (MessageBox.Show("Do you really want to clear this window", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    ContentLines.Clear();
-                    Reload();
-                    Recreate(true);
+                    lock (ContentLines)
+                    {
+                        ContentLines.Clear();
+                        lastDate = DateTime.MinValue;
+                        Reload();
+                        Recreate(true);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
+            try
+            {
+                scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
+                ScrollingEnabled = scrollToolStripMenuItem.Checked;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            try
+            { 
+            
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Reload(true);
+            try
+            {
+                Reload(true);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void retrieveTopicToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner.isChannel)
+            try
             {
-                owner._Protocol.Transfer("TOPIC " + owner.name);
+                if (owner.isChannel)
+                {
+                    owner._Protocol.Transfer("TOPIC " + owner.name);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void toggleSimpleLayoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Switch(false);
+            try
+            {
+                Switch(false);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void toggleAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Switch(true);
+            try
+            {
+                Switch(true);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void mode1b2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void mode1q2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void mode1I2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void mode1e2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void openLinkInBrowserToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Link.StartsWith("http"))
+            try
             {
-                System.Diagnostics.Process.Start(Link);
+                if (Link.StartsWith("http"))
+                {
+                    System.Diagnostics.Process.Start(Link);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void joinToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Link.StartsWith("#"))
+            try
             {
-                Parser.parse("/join " + Link);
+                if (Link.StartsWith("#"))
+                {
+                    Parser.parse("/join " + Link);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                Parser.parse(whoisToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    Parser.parse(whoisToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void whowasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                Parser.parse(whowasToolStripMenuItem.Text);
+                if (owner != null)
+                {
+                    Parser.parse(whowasToolStripMenuItem.Text);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void kickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                if (Configuration.ConfirmAll)
+                if (owner != null)
                 {
-                    if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                    if (Configuration.ConfirmAll)
                     {
-                        return;
+                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                        {
+                            return;
+                        }
                     }
+                    Parser.parse(kickToolStripMenuItem.Text);
                 }
-                Parser.parse(kickToolStripMenuItem.Text);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -856,10 +1043,29 @@ namespace Client
 
         private void listAllChannelsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (owner != null)
+            try
             {
-                Channels channels = new Channels(owner._Network);
-                channels.Show();
+                if (owner != null)
+                {
+                    Channels channels = new Channels(owner._Network);
+                    channels.Show();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void copyLinkToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(Link);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }
