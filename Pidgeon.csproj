@@ -250,6 +250,9 @@
     </Compile>
     <Compile Include="ProtocolSv.cs" />
     <Compile Include="ScriptingCore.cs" />
+    <Compile Include="Scrollback\Menu.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Scrollback\ProcessingLine.cs">
       <SubType>UserControl</SubType>
     </Compile>
