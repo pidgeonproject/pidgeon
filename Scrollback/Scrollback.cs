@@ -31,7 +31,6 @@ namespace Client
 {
     public partial class Scrollback : UserControl
     {
-        private static List<Scrollback> ScrollbackList = new List<Scrollback>();
         /// <summary>
         /// Maximal size of text
         /// </summary>
@@ -97,13 +96,6 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            lock (ScrollbackList)
-            {
-                if (ScrollbackList.Contains(this))
-                {
-                    ScrollbackList.Remove(this);
-                }
-            }
             base.Dispose(disposing);
         }
 
@@ -148,10 +140,6 @@ namespace Client
         /// </summary>
         public Scrollback()
         {
-            lock (ScrollbackList)
-            {
-                ScrollbackList.Add(this);
-            }
             this.BackColor = Configuration.CurrentSkin.backgroundcolor;
 
             ReloadWaiting = true;

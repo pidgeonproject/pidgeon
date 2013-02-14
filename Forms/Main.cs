@@ -372,6 +372,7 @@ namespace Client
             }
             main.Visible = true;
             main.BringToFront();
+            main.scrollback.Display();
         }
 
         protected void Wheeled(object sender, MouseEventArgs md)

@@ -31,25 +31,32 @@ namespace Client
 {
     public partial class Scrollback
     {
+        public enum ViewType
+        { 
+            Channel,
+            User,
+            Link
+        }
+
         public void Click_R(string adds, string data)
         {
             try
             {
                 if (data.StartsWith("http"))
                 {
-                    ViewLn(data, false, true);
+                    ViewLn(data, ViewType.Link);
                 }
                 if (data.StartsWith("pidgeon://text"))
                 {
-                    ViewLn(adds, false, true);
+                    ViewLn(adds, ViewType.User);
                 }
                 if (data.StartsWith("pidgeon://join"))
                 {
-                    ViewLn(data, true, false);
+                    ViewLn(data, ViewType.Channel);
                 }
                 if (data.StartsWith("pidgeon://ident"))
                 {
-                    ViewLn("*!" + adds + "@*", false, false);
+                    ViewLn("*!" + adds + "@*", ViewType.User);
                 }
                 if (data.StartsWith("pidgeon://user"))
                 {
@@ -63,17 +70,17 @@ namespace Client
                             {
                                 if (user.Host != "")
                                 {
-                                    ViewLn("*@" + user.Host, false, false, true, adds);
+                                    ViewLn("*@" + user.Host, ViewType.User, adds);
                                     return;
                                 }
                             }
                         }
                     }
-                    ViewLn(adds + "!*@*", false, false, true, adds);
+                    ViewLn(adds + "!*@*", ViewType.User, adds);
                 }
                 if (data.StartsWith("pidgeon://hostname"))
                 {
-                    ViewLn("*@" + adds, false, false);
+                    ViewLn("*@" + adds, ViewType.User);
                 }
             }
             catch (Exception fail)
@@ -82,17 +89,13 @@ namespace Client
             }
         }
 
-        public void ViewLn(string content, bool channel, bool link = true, bool menu = false, string name = "")
+        public void ViewLn(string content, ViewType type, string name = "")
         {
             if (owner != null && owner.isChannel)
             {
                 toolStripMenuItem1.Visible = true;
                 Link = content;
-                kickToolStripMenuItem.Visible = false;
-                whoisToolStripMenuItem.Visible = false;
-                whowasToolStripMenuItem.Visible = false;
-                toolStripMenuItem2.Visible = false;
-                if (channel)
+                if (type == ViewType.Channel)
                 {
                     mode1b2ToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
@@ -102,31 +105,35 @@ namespace Client
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     joinToolStripMenuItem.Visible = true;
+                    kickToolStripMenuItem.Visible = false;
+                    whoisToolStripMenuItem.Visible = false;
+                    whowasToolStripMenuItem.Visible = false;
+                    toolStripMenuItem2.Visible = false;
                     return;
                 }
-                if (menu)
+                if (type == ViewType.User)
                 {
                     toolStripMenuItem2.Visible = true;
                     kickToolStripMenuItem.Visible = true;
                     whoisToolStripMenuItem.Visible = true;
                     whowasToolStripMenuItem.Visible = true;
+                    mode1e2ToolStripMenuItem.Visible = true;
+                    mode1I2ToolStripMenuItem.Visible = true;
+                    mode1q2ToolStripMenuItem.Visible = true;
+                    toolStripMenuItem1.Visible = true;
+                    mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
+                    mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
+                    mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
+                    mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
+                    kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.DefaultReason;
+                    whoisToolStripMenuItem.Text = "/whois " + name;
+                    whowasToolStripMenuItem.Text = "/whowas " + name;
+                    mode1b2ToolStripMenuItem.Visible = true;
+                    copyLinkToClipboardToolStripMenuItem.Visible = false;
+                    openLinkInBrowserToolStripMenuItem.Visible = false;
+                    joinToolStripMenuItem.Visible = false;
                 }
-                mode1b2ToolStripMenuItem.Visible = true;
-                copyLinkToClipboardToolStripMenuItem.Visible = false;
-                openLinkInBrowserToolStripMenuItem.Visible = false;
-                joinToolStripMenuItem.Visible = false;
-                toolStripMenuItem1.Visible = true;
-                mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
-                mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
-                mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
-                mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
-                kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.DefaultReason;
-                whoisToolStripMenuItem.Text = "/whois " + name;
-                whowasToolStripMenuItem.Text = "/whowas " + name;
-                mode1e2ToolStripMenuItem.Visible = true;
-                mode1I2ToolStripMenuItem.Visible = true;
-                mode1q2ToolStripMenuItem.Visible = true;
-                if (link)
+                if (type == ViewType.Link)
                 {
                     mode1b2ToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
@@ -135,6 +142,11 @@ namespace Client
                     mode1q2ToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = true;
                     openLinkInBrowserToolStripMenuItem.Visible = true;
+                    joinToolStripMenuItem.Visible = false;
+                    kickToolStripMenuItem.Visible = false;
+                    whoisToolStripMenuItem.Visible = false;
+                    whowasToolStripMenuItem.Visible = false;
+                    toolStripMenuItem2.Visible = false;
                 }
             }
         }

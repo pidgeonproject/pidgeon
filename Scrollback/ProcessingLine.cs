@@ -34,16 +34,6 @@ namespace Client
         public void Display()
         {
             this.Visible = true;
-            lock (ScrollbackList)
-            {
-                foreach (Scrollback x in ScrollbackList)
-                {
-                    if (x != this)
-                    {
-                        x.Visible = false;
-                    }
-                }
-            }
         }
 
         private void InsertLineToText(ContentLine line, bool Draw = true)

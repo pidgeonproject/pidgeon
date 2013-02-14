@@ -77,7 +77,6 @@ namespace Client
             listView.Visible = false;
             textbox.history = new List<string>();
             listViewd.Columns[0].Width = listViewd.Width;
-            listView.Columns[0].Width = listView.Width;
             Redraw();
         }
 
