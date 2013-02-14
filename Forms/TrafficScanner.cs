@@ -43,7 +43,10 @@ namespace Client
 
         public void Clean()
         {
-            text.Clear();
+            lock (text)
+            {
+                text.Clear();
+            }
             textBox1.Clear();
             modified = true;
         }
@@ -55,7 +58,10 @@ namespace Client
             {
                 return true;
             }
-            text.Add(server + " " + data);
+            lock (text)
+            {
+                text.Add(server + " " + data);
+            }
             return true;
         }
 
@@ -64,19 +70,21 @@ namespace Client
             if (Visible && modified)
             {
                 modified = false;
-                textBox1.Lines = text.ToArray<string>();
-                textBox1.SelectionStart = textBox1.Text.Length;
-                textBox1.ScrollToCaret();
+                lock (text)
+                {
+                    foreach (string x in text)
+                    {
+                        textBox1.AppendText(x + Environment.NewLine);
+                    }
+                    text.Clear();
+                    textBox1.ScrollToCaret();
+                }
             }
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lock (text)
-            {
-                text.Clear();
-            }
-            modified = true;
+            Clean();
         }
 
         private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
