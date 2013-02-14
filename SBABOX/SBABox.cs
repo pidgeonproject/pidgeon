@@ -361,14 +361,7 @@ namespace Client
                             }
 
                             X = X + stringWidth;
-                            if (Wrap)
-                            {
-                                this.Invoke(new Action(delegate()
-                                    {
-                                        hsBar.Visible = false;
-                                    }));
-                            }
-                            else
+                            if (!Wrap)
                             {
                                 if ((int)(X + stringWidth) > hsBar.Maximum)
                                 {

@@ -28,7 +28,7 @@ namespace Client
     public partial class PidgeonList : UserControl
     {
         public Dictionary<ProtocolSv, TreeNode> ServiceList = new Dictionary<ProtocolSv, TreeNode>();
-        
+
         public Dictionary<Network, TreeNode> Servers = new Dictionary<Network, TreeNode>();
         public LinkedList<User> _User = new LinkedList<User>();
         public Dictionary<Channel, TreeNode> Channels = new Dictionary<Channel, TreeNode>();
@@ -43,10 +43,17 @@ namespace Client
 
         private void list_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            try
             {
-                items.SelectedNode = e.Node;
-                contextMenuStrip1.Show(items, e.Location);
+                if (e.Button == MouseButtons.Right)
+                {
+                    items.SelectedNode = e.Node;
+                    contextMenuStrip1.Show(items, e.Location);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -58,11 +65,18 @@ namespace Client
         /// <param name="e"></param>
         private void ChannelList_Load(object sender, EventArgs e)
         {
-            RedrawMenu();
-            items.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            items.ForeColor = Configuration.CurrentSkin.fontcolor;
-            items.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
-            items.ItemHeight = (int)(Configuration.CurrentSkin.fontsize * 2);
+            try
+            {
+                RedrawMenu();
+                items.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                items.ForeColor = Configuration.CurrentSkin.fontcolor;
+                items.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
+                items.ItemHeight = (int)(Configuration.CurrentSkin.fontsize * 2);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void insertChannel(Channel chan)
@@ -150,7 +164,7 @@ namespace Client
                 this.items.Nodes.Add(text);
                 return;
             }
-            if(this.ServiceList.ContainsKey(network.ParentSv))
+            if (this.ServiceList.ContainsKey(network.ParentSv))
             {
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
@@ -159,7 +173,7 @@ namespace Client
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
-                
+
             }
             this.ResumeLayout();
         }
@@ -180,72 +194,79 @@ namespace Client
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            if (Core.notification_waiting)
+            try
             {
-                Core.DisplayNote();
-            }
-            lock (NetworkQueue)
-            {
-                foreach (Network it in NetworkQueue)
+                if (Core.notification_waiting)
                 {
-                    _insertNetwork(it);
+                    Core.DisplayNote();
                 }
-                NetworkQueue.Clear();
-            }
-            lock (ChannelsQueue)
-            {
-                foreach (Channel item in ChannelsQueue)
+                lock (NetworkQueue)
                 {
-                    insertChan(item);
-                }
-                ChannelsQueue.Clear();
-            }
-            List<Channel> _channels = new List<Channel>();
-            lock (Channels)
-            {
-                foreach (var chan in Channels)
-                {
-                    if (chan.Key.dispose)
+                    foreach (Network it in NetworkQueue)
                     {
-                        chan.Key._Network.Channels.Remove(chan.Key);
-                        chan.Key.retrieveWindow().Dispose();
-                        _channels.Add(chan.Key);
+                        _insertNetwork(it);
+                    }
+                    NetworkQueue.Clear();
+                }
+                lock (ChannelsQueue)
+                {
+                    foreach (Channel item in ChannelsQueue)
+                    {
+                        insertChan(item);
+                    }
+                    ChannelsQueue.Clear();
+                }
+                List<Channel> _channels = new List<Channel>();
+                lock (Channels)
+                {
+                    foreach (var chan in Channels)
+                    {
+                        if (chan.Key.dispose)
+                        {
+                            chan.Key._Network.Channels.Remove(chan.Key);
+                            chan.Key.retrieveWindow().Dispose();
+                            _channels.Add(chan.Key);
+                        }
+                    }
+                }
+                foreach (var chan in _channels)
+                {
+                    Channels.Remove(chan);
+                }
+                lock (Core._Main.WindowRequests)
+                {
+                    foreach (Main._WindowRequest item in Core._Main.WindowRequests)
+                    {
+                        Core._Main.CreateChat(item.window, item.owner, item.focus);
+                        if (item.owner != null && item.focus)
+                        {
+                            item.owner.ShowChat(item.name);
+                        }
+                    }
+                    Core._Main.WindowRequests.Clear();
+                }
+                lock (UserList)
+                {
+                    foreach (User user in _User)
+                    {
+                        _insertUs(user);
+                    }
+                    _User.Clear();
+                }
+                lock (Channels)
+                {
+                    foreach (var channel in Channels)
+                    {
+                        if (channel.Key.Redraw)
+                        {
+                            channel.Key.redrawUsers();
+                        }
                     }
                 }
             }
-            foreach (var chan in _channels)
+            catch (Exception fail)
             {
-                Channels.Remove(chan);
-            }
-            lock (Core._Main.WindowRequests)
-            {
-                foreach (Main._WindowRequest item in Core._Main.WindowRequests)
-                {
-                    Core._Main.CreateChat(item.window, item.owner, item.focus);
-                    if (item.owner != null && item.focus)
-                    {
-                        item.owner.ShowChat(item.name);
-                    }
-                }
-                Core._Main.WindowRequests.Clear();
-            }
-            lock (UserList)
-            {
-                foreach (User user in _User)
-                {
-                    _insertUs(user);
-                }
-                _User.Clear();
-            }
-            lock (Channels)
-            {
-                foreach (var channel in Channels)
-                {
-                    if (channel.Key.Redraw)
-                    {
-                        channel.Key.redrawUsers();
-                    }
-                }
+                Core.handleException(fail);
             }
         }
 
@@ -258,11 +279,11 @@ namespace Client
 
         private void items_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            RedrawMenu();
-            items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
-            Core._Main.userToolStripMenuItem.Visible = false;
             try
             {
+                RedrawMenu();
+                items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
+                Core._Main.userToolStripMenuItem.Visible = false;
                 lock (ServiceList)
                 {
                     if (ServiceList.ContainsValue(e.Node))
@@ -351,10 +372,17 @@ namespace Client
 
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (items.SelectedNode == null)
-            { return; }
+            try
+            {
+                if (items.SelectedNode == null)
+                { return; }
 
-            RemoveItem(items.SelectedNode);
+                RemoveItem(items.SelectedNode);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void RemoveItem(TreeNode Item)
@@ -543,35 +571,49 @@ namespace Client
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Servers.ContainsValue(items.SelectedNode))
+            try
             {
-                foreach (var cu in Servers)
+                if (Servers.ContainsValue(items.SelectedNode))
                 {
-                    if (cu.Value == items.SelectedNode)
+                    foreach (var cu in Servers)
                     {
-                        cu.Key._protocol.Exit();
+                        if (cu.Value == items.SelectedNode)
+                        {
+                            cu.Key._protocol.Exit();
+                        }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Channels.ContainsValue(items.SelectedNode))
+            try
             {
-                foreach (var cu in Channels)
+                if (Channels.ContainsValue(items.SelectedNode))
                 {
-                    if (cu.Value == items.SelectedNode)
+                    foreach (var cu in Channels)
                     {
-                        if (cu.Key.ok)
+                        if (cu.Value == items.SelectedNode)
                         {
-                            cu.Key._Network._protocol.Part(cu.Key.Name);
-                            cu.Key.ok = false;
+                            if (cu.Key.ok)
+                            {
+                                cu.Key._Network._protocol.Part(cu.Key.Name);
+                                cu.Key.ok = false;
+                                return;
+                            }
                             return;
                         }
-                        return;
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }
