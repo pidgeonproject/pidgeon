@@ -48,12 +48,27 @@ namespace Client
                 {
                     ring += line + "\n";
                 }
-                textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
-                                    + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
-                                    + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
-                                    + Core.recovery_exception.Message + "\n\n"
-                                    + ring + "\n\n"
-                                    + Core.recovery_exception.Source + "\n\n").Split('\n');
+                if (Core.recovery_fatal)
+                {
+                    textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. This is unrecoverable exception, the application has to be terminated now. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
+                                        + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
+                                        + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
+                                        + Core.recovery_exception.Message + "\n\n"
+                                        + ring + "\n\n"
+                                        + Core.recovery_exception.Source + "\n\n").Split('\n');
+                    bContinue.Enabled = false;
+                    bShutdown.Enabled = false;
+                }
+                else
+                {
+
+                    textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
+                                            + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
+                                            + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
+                                            + Core.recovery_exception.Message + "\n\n"
+                                            + ring + "\n\n"
+                                            + Core.recovery_exception.Source + "\n\n").Split('\n');
+                }
             }
             catch (Exception)
             {
@@ -98,7 +113,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.GetCurrentProcess().Kill();
+            Environment.Exit(1);
         }
     }
 }
