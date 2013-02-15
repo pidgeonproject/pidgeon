@@ -29,6 +29,13 @@ namespace Client
         [STAThread]
         private static void Main(string[] parameters)
         {
+            AppDomain.CurrentDomain.UnhandledException
+                += delegate(object sender, UnhandledExceptionEventArgs args)
+                {
+                    Exception exception = (Exception)args.ExceptionObject;
+                    Core.handleException(exception, true);
+                    Environment.Exit(1);
+                };
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             try

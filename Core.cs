@@ -140,6 +140,7 @@ namespace Client
         /// Ignore errors - all exceptions and debug logs are ignored and pidgeon is flagged as unstable
         /// </summary>
         public static bool IgnoreErrors = false;
+        public static bool recovery_fatal = false;
         public static string[] startup = null;
         public static List<Extension> Extensions = new List<Extension>();
 
@@ -1242,11 +1243,15 @@ namespace Client
             return true;
         }
 
-        public static int handleException(Exception _exception)
+        public static int handleException(Exception _exception, bool fatal = false)
         {
             if (IgnoreErrors)
             {
                 return -2;
+            }
+            if (fatal)
+            {
+                recovery_fatal = true;
             }
             DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             blocked = true;
@@ -1257,7 +1262,7 @@ namespace Client
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
             }
-            while (blocked)
+            while (blocked || fatal)
             {
                 Thread.Sleep(100);
             }
