@@ -129,9 +129,9 @@ namespace Client
 
                 channel_name = channel_name.Substring(0, channel_name.IndexOf(" "));
             }
-            
+
             lock (_Network.ChannelList)
-            { 
+            {
                 Network.ChannelData channel = _Network.ContainsChannel(channel_name);
                 if (channel == null)
                 {
@@ -731,20 +731,10 @@ namespace Client
                     if (updated_text && channel.containsUser(user))
                     {
                         User delete = null;
-                        lock (channel.UserList)
+                        delete = channel.userFromName(user);
+                        if (delete != null)
                         {
-                            foreach (User _user in channel.UserList)
-                            {
-                                if (_user.Nick == user)
-                                {
-                                    delete = _user;
-                                    break;
-                                }
-                            }
-                            if (delete != null)
-                            {
-                                channel.UserList.Remove(delete);
-                            }
+                            channel.UserList.Remove(delete);
                         }
                     }
                     channel.redrawUsers();
@@ -1143,7 +1133,7 @@ namespace Client
             }
             return true;
         }
-        
+
         /// <summary>
         /// Constructor
         /// </summary>

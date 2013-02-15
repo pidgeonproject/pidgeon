@@ -101,21 +101,24 @@ namespace Client
 
         private void _insertUs(User _us)
         {
-            if (Servers.ContainsKey(_us._Network))
+            lock (Servers)
             {
-                this.SuspendLayout();
-                TreeNode text = new TreeNode();
-                text.ImageIndex = 1;
-                Servers[_us._Network].Nodes.Insert(Servers[_us._Network].Nodes.Count, text);
-                text.Text = _us.Nick;
-
-                UserList.Add(_us, text);
-                Servers[_us._Network].Expand();
-                if (_us._Network._protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
+                if (Servers.ContainsKey(_us._Network))
                 {
-                    _us._Network._protocol.windows[_us._Network.window + _us.Nick].ln = text;
+                    this.SuspendLayout();
+                    TreeNode text = new TreeNode();
+                    text.ImageIndex = 1;
+                    Servers[_us._Network].Nodes.Insert(Servers[_us._Network].Nodes.Count, text);
+                    text.Text = _us.Nick;
+
+                    UserList.Add(_us, text);
+                    Servers[_us._Network].Expand();
+                    if (_us._Network._protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
+                    {
+                        _us._Network._protocol.windows[_us._Network.window + _us.Nick].ln = text;
+                    }
+                    this.ResumeLayout();
                 }
-                this.ResumeLayout();
             }
         }
 
@@ -124,7 +127,10 @@ namespace Client
             this.SuspendLayout();
             TreeNode text = new TreeNode();
             text.Text = service.Server;
-            ServiceList.Add(service, text);
+            lock (ServiceList)
+            {
+                ServiceList.Add(service, text);
+            }
             service.windows["!root"].ln = text;
             this.items.Nodes.Add(text);
             this.ResumeLayout();
@@ -132,22 +138,28 @@ namespace Client
 
         private void insertChan(Channel chan)
         {
-            if (Servers.ContainsKey(chan._Network))
+            lock (Servers)
             {
-                this.SuspendLayout();
-                TreeNode text = new TreeNode();
-                text.Text = chan.Name;
-                Servers[chan._Network].Expand();
-                Servers[chan._Network].Nodes.Insert(0, text);
-                Channels.Add(chan, text);
-                chan.tn = text;
-                text.ImageIndex = 2;
-                Window xx = chan.retrieveWindow();
-                if (xx != null)
+                if (Servers.ContainsKey(chan._Network))
                 {
-                    xx.ln = text;
+                    this.SuspendLayout();
+                    TreeNode text = new TreeNode();
+                    text.Text = chan.Name;
+                    Servers[chan._Network].Expand();
+                    Servers[chan._Network].Nodes.Insert(0, text);
+                    lock (Channels)
+                    {
+                        Channels.Add(chan, text);
+                    }
+                    chan.tn = text;
+                    text.ImageIndex = 2;
+                    Window xx = chan.retrieveWindow();
+                    if (xx != null)
+                    {
+                        xx.ln = text;
+                    }
+                    this.ResumeLayout();
                 }
-                this.ResumeLayout();
             }
         }
 
@@ -158,7 +170,10 @@ namespace Client
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.server;
-                Servers.Add(network, text);
+                lock (Servers)
+                {
+                    Servers.Add(network, text);
+                }
                 text.Expand();
                 network.system.ln = text;
                 this.items.Nodes.Add(text);
@@ -173,7 +188,6 @@ namespace Client
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
-
             }
             this.ResumeLayout();
         }

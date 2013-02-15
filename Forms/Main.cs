@@ -41,7 +41,7 @@ namespace Client
         public bool DisplayingProgress = false;
         public int ProgressMax = 0;
 
-        public class _WindowRequest 
+        public class _WindowRequest
         {
             public Window window;
             public string name;
@@ -246,141 +246,239 @@ namespace Client
 
         private void shutDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Core.Quit();
+            try
+            {
+                Core.Quit();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void Main_Load(object sender, EventArgs e)
         {
-            _Load();
-            //miscToolStripMenuItem.Visible = false;
+            try
+            {
+                _Load();
+                //miscToolStripMenuItem.Visible = false;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (fPrefs == null || fPrefs.IsDisposed)
+            try
             {
-                fPrefs = new Preferences();
+                if (fPrefs == null || fPrefs.IsDisposed)
+                {
+                    fPrefs = new Preferences();
+                }
+                fPrefs.Show();
             }
-            fPrefs.Show();
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("http://pidgeonclient.org/wiki/Help:Contents");
+            try
+            {
+                System.Diagnostics.Process.Start("http://pidgeonclient.org/wiki/Help:Contents");
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void Unshow(object main, FormClosingEventArgs closing)
         {
-            if (Core.IgnoreErrors)
+            try
             {
-                Core.DebugLog("Closing main");
-                closing.Cancel = false;
-                return;
-            }
+                if (Core.IgnoreErrors)
+                {
+                    Core.DebugLog("Closing main");
+                    closing.Cancel = false;
+                    return;
+                }
                 if (MessageBox.Show(messages.get("pidgeon-shut", Core.SelectedLanguage), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
                 {
                     closing.Cancel = true;
                     return;
                 }
                 Core.Quit();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Help _Help = new Help();
-            _Help.Show();
+            try
+            {
+                Help _Help = new Help();
+                _Help.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void newConnectionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
-            if (fConnection == null || fConnection.IsDisposed)
-                fConnection = new Connection();
+            try
+            {
+                if (fConnection == null || fConnection.IsDisposed)
+                    fConnection = new Connection();
 
 
-            fConnection.Show();
+                fConnection.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void updater_Tick(object sender, EventArgs e)
         {
-            // Someone updated status, maybe from outer thread, let's change it
-            if (UpdatedStatus)
+            try
             {
-                UpdatedStatus = false;
-                UpdateStatus();
-            }
-            if (toolStripProgressBar1.Visible != DisplayingProgress)
-            {
-                toolStripProgressBar1.Visible = DisplayingProgress;
-            }
-            if (DisplayingProgress)
-            {
-                updater.Interval = 10;
-            }
-            else
-            {
-                updater.Interval = 200;
-            }
-            if (toolStripProgressBar1.Maximum != ProgressMax)
-            {
-                if (toolStripProgressBar1.Value > ProgressMax)
+                // Someone updated status, maybe from outer thread, let's change it
+                if (UpdatedStatus)
                 {
-                    toolStripProgressBar1.Value = ProgressMax;
+                    UpdatedStatus = false;
+                    UpdateStatus();
                 }
-                toolStripProgressBar1.Maximum = ProgressMax;
+                if (toolStripProgressBar1.Visible != DisplayingProgress)
+                {
+                    toolStripProgressBar1.Visible = DisplayingProgress;
+                }
+                if (DisplayingProgress)
+                {
+                    updater.Interval = 10;
+                }
+                else
+                {
+                    updater.Interval = 200;
+                }
+                if (toolStripProgressBar1.Maximum != ProgressMax)
+                {
+                    if (toolStripProgressBar1.Value > ProgressMax)
+                    {
+                        toolStripProgressBar1.Value = ProgressMax;
+                    }
+                    toolStripProgressBar1.Maximum = ProgressMax;
+                }
+                if (toolStripProgressBar1.Value != progress)
+                {
+                    toolStripProgressBar1.Value = progress;
+                }
             }
-            if (toolStripProgressBar1.Value != progress)
+            catch (Exception fail)
             {
-                toolStripProgressBar1.Value = progress;
+                Core.handleException(fail);
             }
         }
 
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
-            Core.trafficscanner.Show();
+            try
+            {
+                Core.trafficscanner.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void taskbarBoxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MicroChat.mc.Show();
+            try
+            {
+                MicroChat.mc.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void attachToMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Chat != null)
+            try
             {
-                Chat.MicroBox = true;
+                if (Chat != null)
+                {
+                    Chat.MicroBox = true;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void detachFromMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Chat != null)
+            try
             {
-                Chat.MicroBox = false;
+                if (Chat != null)
+                {
+                    Chat.MicroBox = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void rootToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Core.network != null)
+            try
             {
-                Core.network.RenderedChannel = null;
+                if (Core.network != null)
+                {
+                    Core.network.RenderedChannel = null;
+                    main.Visible = true;
+                    Core.network._protocol.Current.Visible = false;
+                    Core.network._protocol.Current = main;
+                    return;
+                }
                 main.Visible = true;
-                Core.network._protocol.Current.Visible = false;
-                Core.network._protocol.Current = main;
-                return;
+                main.BringToFront();
+                main.scrollback.Display();
             }
-            main.Visible = true;
-            main.BringToFront();
-            main.scrollback.Display();
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         protected void Wheeled(object sender, MouseEventArgs md)
         {
-            if (Chat != null)
+            try
             {
-                Chat.scrollback.RT.Wheeled(sender, md);
-            }  
+                if (Chat != null)
+                {
+                    Chat.scrollback.RT.Wheeled(sender, md);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /*private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -418,26 +516,55 @@ namespace Client
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (searchbox.Visible)
+            try
             {
-                searchbox.Hide();
-                return;
+                if (searchbox == null)
+                {
+                    searchbox = new SearchItem();
+                }
+                if (searchbox.IsDisposed)
+                {
+                    searchbox = new SearchItem();
+                }
+                if (searchbox.Visible)
+                {
+                    searchbox.Hide();
+                    return;
+                }
+                searchbox.Show();
             }
-            searchbox.Show();
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void switchToAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Chat != null)
+            try
             {
-                Chat.scrollback.Switch(true);
+                if (Chat != null)
+                {
+                    Chat.scrollback.Switch(true);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void configurationFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SettingsEd ed = new SettingsEd();
-            ed.Show(this);
+            try
+            {
+                SettingsEd ed = new SettingsEd();
+                ed.Show(this);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void skinEdToolStripMenuItem_Click(object sender, EventArgs e)
