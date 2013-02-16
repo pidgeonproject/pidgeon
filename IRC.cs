@@ -443,6 +443,12 @@ namespace Client
         {
             string nick = source.Substring(0, source.IndexOf("!"));
             string _new = value;
+            if (nick == _Network.nickname)
+            {
+                _Network.nickname = _new;
+                _Protocol.windows[_Network.window].scrollback.InsertText("Your nick is now " + _new, Scrollback.MessageStyle.System,
+                    true, date, !updated_text);
+            }
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ok)
@@ -817,10 +823,102 @@ namespace Client
             return false;
         }
 
+        public bool ProcessThis(string source, string[] data, string _value)
+        {
+            if (source.StartsWith(_Network.nickname + "!"))
+            {
+                string[] _data2 = data[1].Split(' ');
+                if (_data2.Length > 2)
+                {
+                    if (_data2[1].Contains("JOIN"))
+                    {
+                        string channel = _data2[2];
+                        if (_data2[2].Contains("#") == false)
+                        {
+                            channel = data[2];
+                        }
+                        Channel curr = _Network.getChannel(channel);
+                        if (curr == null)
+                        {
+                            curr = _Network.WindowCreateNewJoin(channel);
+                        }
+                        if (Configuration.aggressive_mode)
+                        {
+                            _Protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
+                        }
+
+                        if (Configuration.aggressive_exception)
+                        {
+                            curr.parsing_xe = true;
+                            _Protocol.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
+                        }
+
+                        if (Configuration.aggressive_bans)
+                        {
+                            curr.parsing_xb = true;
+                            _Protocol.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
+                        }
+
+                        if (Configuration.aggressive_invites)
+                        {
+                            _Protocol.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
+                        }
+
+                        if (Configuration.aggressive_channel)
+                        {
+                            curr.parsing_who = true;
+                            _Protocol.Transfer("WHO " + channel, Configuration.Priority.Low);
+                        }
+                        return true;
+                    }
+                }
+                if (_data2.Length > 2)
+                {
+                    if (_data2[1].Contains("NICK"))
+                    {
+                        system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                        _Network.nickname = _value;
+                    }
+                    if (_data2[1].Contains("PART"))
+                    {
+                        string channel = _data2[2];
+                        if (_data2[2].Contains(_Network.channel_prefix))
+                        {
+                            channel = _data2[2];
+                            Channel c = _Network.getChannel(channel);
+                            if (c != null)
+                            {
+                                Window Chat = c.retrieveWindow();
+                                if (c != null)
+                                {
+                                    if (c.ok)
+                                    {
+                                        c.ok = false;
+                                        Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
+                                            Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                    }
+                                    else
+                                    {
+                                        Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
+                                            Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                    }
+                                }
+                                c.ok = false;
+                                c.UpdateInfo();
+                            }
+                        }
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public bool Result()
         {
             try
             {
+                bool OK = false;
                 if (text == null || text == "")
                 {
                     return false;
@@ -871,6 +969,10 @@ namespace Client
                             _value = _value.Substring(1);
                         }
                         string[] code = data[1].Split(' ');
+                        if (ProcessThis(source, data, _value))
+                        {
+                            OK = true;
+                        }
                         switch (command)
                         {
                             case "001":
@@ -994,7 +1096,7 @@ namespace Client
                                 case "315":
                                     if (FinishChan(code))
                                     {
-                                        return true;
+                                        break;
                                     }
                                     break;
                                 case "324":
@@ -1037,95 +1139,13 @@ namespace Client
                                     break;
                             }
                         }
-                        if (source.StartsWith(_Network.nickname + "!"))
-                        {
-                            string[] _data2 = data[1].Split(' ');
-                            if (_data2.Length > 2)
-                            {
-                                if (_data2[1].Contains("JOIN"))
-                                {
-                                    string channel = _data2[2];
-                                    if (_data2[2].Contains("#") == false)
-                                    {
-                                        channel = data[2];
-                                    }
-                                    Channel curr = _Network.getChannel(channel);
-                                    if (curr == null)
-                                    {
-                                        curr = _Network.WindowCreateNewJoin(channel);
-                                    }
-                                    if (Configuration.aggressive_mode)
-                                    {
-                                        _Protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
-                                    }
-
-                                    if (Configuration.aggressive_exception)
-                                    {
-                                        curr.parsing_xe = true;
-                                        _Protocol.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
-                                    }
-
-                                    if (Configuration.aggressive_bans)
-                                    {
-                                        curr.parsing_xb = true;
-                                        _Protocol.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
-                                    }
-
-                                    if (Configuration.aggressive_invites)
-                                    {
-                                        _Protocol.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
-                                    }
-
-                                    if (Configuration.aggressive_channel)
-                                    {
-                                        curr.parsing_who = true;
-                                        _Protocol.Transfer("WHO " + channel, Configuration.Priority.Low);
-                                    }
-                                    return true;
-                                }
-                            }
-                            if (_data2.Length > 2)
-                            {
-                                if (_data2[1].Contains("NICK"))
-                                {
-                                    system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
-                                    _Network.nickname = _value;
-                                }
-                                if (_data2[1].Contains("PART"))
-                                {
-                                    string channel = _data2[2];
-                                    if (_data2[2].Contains(_Network.channel_prefix))
-                                    {
-                                        channel = _data2[2];
-                                        Channel c = _Network.getChannel(channel);
-                                        if (c != null)
-                                        {
-                                            Window Chat = c.retrieveWindow();
-                                            if (c != null)
-                                            {
-                                                if (c.ok)
-                                                {
-                                                    c.ok = false;
-                                                    Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
-                                                        Scrollback.MessageStyle.Message, !c.temporary_hide, date);
-                                                }
-                                                else
-                                                {
-                                                    Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
-                                                        Scrollback.MessageStyle.Message, !c.temporary_hide, date);
-                                                }
-                                            }
-                                            c.ok = false;
-                                            c.UpdateInfo();
-                                        }
-                                    }
-                                    return true;
-                                }
-                            }
-                        }
                     }
                 }
-                system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                if (!OK)
+                {
+                    // we have no idea what we just were to parse, so print it to system window
+                    system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                }
             }
             catch (Exception fail)
             {
