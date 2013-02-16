@@ -443,12 +443,6 @@ namespace Client
         {
             string nick = source.Substring(0, source.IndexOf("!"));
             string _new = value;
-            if (nick == _Network.nickname)
-            {
-                _Network.nickname = _new;
-                _Protocol.windows[_Network.window].scrollback.InsertText("Your nick is now " + _new, Scrollback.MessageStyle.System,
-                    true, date, !updated_text);
-            }
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ok)
