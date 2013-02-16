@@ -205,11 +205,12 @@ namespace Client
                 List<string> values = new List<string>();
                 foreach (ContentLine _line in ContentLines)
                 {
-                    values.Add(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text));
+                    simpleview.AppendText(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-                simpleview.Lines = values.ToArray<string>();
-                simpleview.SelectionStart = simpleview.Text.Length;
-                simpleview.ScrollToCaret();
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToCaret();
+                }
             }
         }
 
