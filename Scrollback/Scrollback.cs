@@ -127,6 +127,7 @@ namespace Client
                     Recreate(true);
                     return;
                 }
+                Reload();
                 return;
             }
             simple = true;
