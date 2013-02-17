@@ -294,7 +294,14 @@ namespace Client
                                                     Core.DebugLog("Invalid size on SBABox, error #1");
                                                     return;
                                                 }
-                                                size--;
+                                                if (size > 10)
+                                                {
+                                                    size = size - 5;
+                                                }
+                                                else
+                                                {
+                                                    size--;
+                                                }
                                             }
                                             string part1 = xx.Substring(0, size);
                                             string part2 = value.Substring(size);
@@ -335,7 +342,12 @@ namespace Client
                                 }
                             }
 
-                            if (TextOfThispart != part.Text)
+                            if (TextOfThispart.Length < 1)
+                            {
+                                continue;
+                            }
+
+                            if (TextOfThispart.Length != part.Text.Length)
                             {
                                 stringSize = Buffers.MeasureString(graphics, TextOfThispart, font, format);
                                 stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
@@ -348,6 +360,11 @@ namespace Client
                                     part.Linked = true;
                                     Pen pen = new Pen(part.TextColor);
                                     Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThispart, part);
+                                    if (Configuration.Debugging)
+                                    { 
+                                        graphics.DrawLine(pen, new Point(http.X, http.Y), new Point(http.X + stringWidth, http.Y));
+                                        graphics.DrawLine(pen, new Point(http.X, http.Y), new Point(http.X, http.Y + (int)stringSize.Height));
+                                    }
                                     lock (LinkInfo)
                                     {
                                         LinkInfo.Add(http);
@@ -585,7 +602,6 @@ namespace Client
                 foreach (Link il in LinkInfo)
                 {
                     il.linkedtext.Linked = false;
-                    il.linkedtext = null;
                     il.Dispose();
                 }
                 LinkInfo.Clear();

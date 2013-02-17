@@ -35,14 +35,15 @@ namespace Client
 
             ~Link()
             {
-                Parent = null;
-                linkedtext = null;
+                Dispose();
             }
 
             public void Dispose()
             {
                 Parent = null;
                 linkedtext = null;
+                Name = null;
+                Text = null;
             }
         }
     }
