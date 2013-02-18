@@ -80,7 +80,7 @@ namespace Client
         /// <summary>
         /// User who set a topic
         /// </summary>
-        public string TopicUser = null;
+        public string TopicUser = "<Unknown user>";
         /// <summary>
         /// Date when a topic was set
         /// </summary>

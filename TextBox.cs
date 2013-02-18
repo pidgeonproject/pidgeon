@@ -54,124 +54,131 @@ namespace Client
 
         private void _Enter(object sender, KeyEventArgs e)
         {
-            if (Main.ShortcutHandle(sender, e))
+            try
             {
-                e.SuppressKeyPress = true;
-                return;
-            }
-            
-            if (e.Shift)
-            {
-                return;
-            }
+                if (Main.ShortcutHandle(sender, e))
+                {
+                    e.SuppressKeyPress = true;
+                    return;
+                }
 
-            if (e.Control && e.KeyCode == Keys.Enter)
-            {
-                return;
-            }
+                if (e.Shift)
+                {
+                    return;
+                }
 
-            if (!(e.KeyCode == Keys.Tab))
-            { restore = false; }
-            switch (e.KeyCode)
-            {
-                case Keys.Down:
-                    if (position == history.Count)
-                    {
-                        return;
-                    }
-                    int max = position + 1;
-                    if (history.Count <= max)
-                    {
-                        position = history.Count;
-                        richTextBox1.Text = original.Replace("\n", "");
-                        return;
-                    }
-                    position++;
-                    if (position >= history.Count)
-                    {
-                        position = history.Count - 1;
-                    }
-                    richTextBox1.Text = history[position];
-                    break;
-                case Keys.U:
-                    if (e.Control)
-                    { 
-                        
-                    }
-                    break;
-                case Keys.B:
-                    if (e.Control)
-                    {
-                        richTextBox1.AppendText(((char)002).ToString());
-                        e.SuppressKeyPress = true;
-                        if (richTextBox1.SelectionFont.Bold)
+                if (e.Control && e.KeyCode == Keys.Enter)
+                {
+                    return;
+                }
+
+                if (!(e.KeyCode == Keys.Tab))
+                { restore = false; }
+                switch (e.KeyCode)
+                {
+                    case Keys.Down:
+                        if (position == history.Count)
                         {
-                            richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Regular);
                             return;
                         }
-                        richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Bold);
-                    }
-                    return;
-                case Keys.K:
-                    if (e.Control)
-                    {
-                        richTextBox1.AppendText(((char)003).ToString());
-                        e.SuppressKeyPress = true;
-                    }
-                    break;
-                case Keys.Up:
-                    if (position < 1)
-                    {
-                        return;
-                    }
-                    if (history.Count == position)
-                    {
-                        original = richTextBox1.Text;
-                    }
-                    position = position - 1;
-                    richTextBox1.Text = history[position];
-                    return;
-                case Keys.Tab:
-                    int caret = richTextBox1.SelectionStart;
-                    string data = richTextBox1.Text;
-                    Hooks.TextTab(ref restore, ref data, ref prevtext, ref caret);
-                    richTextBox1.Text = data;
-                    restore = true;
-                    richTextBox1.Text = prevtext;
-                    richTextBox1.SelectionStart = caret;
-                    break;
-                case Keys.Enter:
-                    Core._Main.Chat.scrollback.Last = this;
-                    List<string> input = new List<string>();
-                    if (richTextBox1.Text.Contains("\n"))
-                    {
-                        input.AddRange(richTextBox1.Text.Split('\n'));
-                        foreach (var line in input)
+                        int max = position + 1;
+                        if (history.Count <= max)
                         {
-                            Parser.parse(line);
-                            if (line != "")
+                            position = history.Count;
+                            richTextBox1.Text = original.Replace("\n", "");
+                            return;
+                        }
+                        position++;
+                        if (position >= history.Count)
+                        {
+                            position = history.Count - 1;
+                        }
+                        richTextBox1.Text = history[position];
+                        break;
+                    case Keys.U:
+                        if (e.Control)
+                        {
+
+                        }
+                        break;
+                    case Keys.B:
+                        if (e.Control)
+                        {
+                            richTextBox1.AppendText(((char)002).ToString());
+                            e.SuppressKeyPress = true;
+                            if (richTextBox1.SelectionFont.Bold)
                             {
-                                history.Add(line);
+                                richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Regular);
+                                return;
                             }
+                            richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Bold);
+                        }
+                        return;
+                    case Keys.K:
+                        if (e.Control)
+                        {
+                            richTextBox1.AppendText(((char)003).ToString());
+                            e.SuppressKeyPress = true;
+                        }
+                        break;
+                    case Keys.Up:
+                        if (position < 1)
+                        {
+                            return;
+                        }
+                        if (history.Count == position)
+                        {
+                            original = richTextBox1.Text;
+                        }
+                        position = position - 1;
+                        richTextBox1.Text = history[position];
+                        return;
+                    case Keys.Tab:
+                        int caret = richTextBox1.SelectionStart;
+                        string data = richTextBox1.Text;
+                        Hooks.TextTab(ref restore, ref data, ref prevtext, ref caret);
+                        richTextBox1.Text = data;
+                        restore = true;
+                        richTextBox1.Text = prevtext;
+                        richTextBox1.SelectionStart = caret;
+                        break;
+                    case Keys.Enter:
+                        Core._Main.Chat.scrollback.Last = this;
+                        List<string> input = new List<string>();
+                        if (richTextBox1.Text.Contains("\n"))
+                        {
+                            input.AddRange(richTextBox1.Text.Split('\n'));
+                            foreach (var line in input)
+                            {
+                                Parser.parse(line);
+                                if (line != "")
+                                {
+                                    history.Add(line);
+                                }
+                            }
+                            original = "";
+                            richTextBox1.Text = "";
+                            e.SuppressKeyPress = true;
+                            position = history.Count;
+                            return;
+                        }
+                        richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
+
+                        if (richTextBox1.Text != "")
+                        {
+                            Parser.parse(richTextBox1.Text);
+                            history.Add(richTextBox1.Text);
                         }
                         original = "";
                         richTextBox1.Text = "";
-                        e.SuppressKeyPress = true;
                         position = history.Count;
+                        e.SuppressKeyPress = true;
                         return;
-                    }
-                    richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
-
-                    if (richTextBox1.Text != "")
-                    {
-                        Parser.parse(richTextBox1.Text);
-                        history.Add(richTextBox1.Text);
-                    }
-                    original = "";
-                    richTextBox1.Text = "";
-                    position = history.Count;
-                    e.SuppressKeyPress = true;
-                    return;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -210,23 +217,31 @@ namespace Client
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            if (restore)
+            try
             {
-                int selection = richTextBox1.SelectionStart;
-                if (richTextBox1.Text.Length != prevtext.Length)
+                if (restore)
                 {
-                    selection = selection - (richTextBox1.Text.Length - prevtext.Length);
-                }
-                if (selection < 0)
-                {
-                    selection = 0;
-                }
-                richTextBox1.Text = prevtext;
+                    int selection = richTextBox1.SelectionStart;
+                    if (richTextBox1.Text.Length != prevtext.Length)
+                    {
+                        selection = selection - (richTextBox1.Text.Length - prevtext.Length);
+                    }
+                    if (selection < 0)
+                    {
+                        selection = 0;
+                    }
+                    richTextBox1.Text = prevtext;
 
-                richTextBox1.SelectionStart = selection;
-                return;
+                    richTextBox1.SelectionStart = selection;
+                    return;
+                }
+                prevtext = richTextBox1.Text;
             }
-            prevtext = richTextBox1.Text;
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
+       
     }
 }

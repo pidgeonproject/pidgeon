@@ -59,6 +59,11 @@ namespace Client
         {
             try
             {
+                groupBox1.Text = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser + ">";
+                if (channel.TopicDate == 0)
+                {
+                    groupBox1.Text = "Topic (information about current topic are not present)";
+                }
                 bClose.Text = messages.get("channelinfo-ok", Core.SelectedLanguage);
                 tabControl1.TabPages[0].Text = messages.get("channelinfo-t0", Core.SelectedLanguage);
                 tabControl1.TabPages[1].Text = messages.get("channelinfo-t2", Core.SelectedLanguage);
