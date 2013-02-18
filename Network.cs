@@ -122,6 +122,17 @@ namespace Client
         /// This is true when network is just parsing the list of all channels
         /// </summary>
         public bool DownloadingList = false;
+        private Channels wChannelList = null;
+
+        public void DisplayChannelWindow()
+        {
+            if (wChannelList == null || wChannelList.IsDisposed)
+            {
+                wChannelList = new Channels(this);
+            }
+
+            wChannelList.Show();
+        }
 
         public class ChannelData
         {

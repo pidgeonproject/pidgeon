@@ -60,8 +60,8 @@ namespace Client
             this.copyTextToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyEntireWindowToClipBoardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simpleview = new System.Windows.Forms.TextBox();
-            this.RT = new Client.SBABox();
             this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.RT = new Client.SBABox();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -93,7 +93,7 @@ namespace Client
             this.copyTextToClipBoardToolStripMenuItem,
             this.copyEntireWindowToClipBoardToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 484);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(251, 506);
             // 
             // whoisToolStripMenuItem
             // 
@@ -279,6 +279,11 @@ namespace Client
             this.simpleview.Size = new System.Drawing.Size(566, 320);
             this.simpleview.TabIndex = 6;
             // 
+            // timer2
+            // 
+            this.timer2.Enabled = true;
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
             // RT
             // 
             this.RT.ContextMenuStrip = this.contextMenuStrip1;
@@ -288,11 +293,6 @@ namespace Client
             this.RT.Size = new System.Drawing.Size(566, 320);
             this.RT.Spacing = 2;
             this.RT.TabIndex = 7;
-            // 
-            // timer2
-            // 
-            this.timer2.Enabled = true;
-            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
             // 
             // Scrollback
             // 

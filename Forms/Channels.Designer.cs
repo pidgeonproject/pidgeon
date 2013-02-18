@@ -56,6 +56,7 @@ namespace Client
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshAutoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Channels_Close);
             this.knockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerl = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);

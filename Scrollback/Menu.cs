@@ -556,8 +556,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    Channels channels = new Channels(owner._Network);
-                    channels.Show();
+                    owner._Network.DisplayChannelWindow();
                 }
             }
             catch (Exception fail)

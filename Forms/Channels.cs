@@ -52,6 +52,22 @@ namespace Client
             timer1.Enabled = true;
         }
 
+        private void Channels_Close(object sender, FormClosingEventArgs e)
+        {
+            try
+            {
+                if (network.Connected)
+                {
+                    e.Cancel = true;
+                    Hide();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         private void Channels_Load(object sender, EventArgs e)
         {
             refreshAutoToolStripMenuItem.Checked = true;
@@ -166,25 +182,28 @@ namespace Client
         {
             try
             {
-                lock (Data)
+                if (Visible)
                 {
-                    int curr = 0;
-                    if (Data.Count == 0)
+                    lock (Data)
                     {
-                        timer1.Enabled = false;
-                        return;
+                        int curr = 0;
+                        if (Data.Count == 0)
+                        {
+                            timer1.Enabled = false;
+                            return;
+                        }
+                        while (curr < 100 && Data.Count > 0)
+                        {
+                            ListViewItem item = new ListViewItem(Data[0].ChannelName);
+                            item.SubItems.Add(Data[0].UserCount.ToString());
+                            item.SubItems.Add(Data[0].ChannelTopic);
+                            listView1.Items.Add(item);
+                            Data.RemoveAt(0);
+                            channels++;
+                            curr++;
+                        }
+                        Text = "Channel list [" + channels.ToString() + "]";
                     }
-                    while (curr < 100 && Data.Count > 0)
-                    {
-                        ListViewItem item = new ListViewItem(Data[0].ChannelName);
-                        item.SubItems.Add(Data[0].UserCount.ToString());
-                        item.SubItems.Add(Data[0].ChannelTopic);
-                        listView1.Items.Add(item);
-                        Data.RemoveAt(0);
-                        channels++;
-                        curr++;
-                    }
-                    Text = "Channel list [" + channels.ToString() + "]";
                 }
             }
             catch (Exception fail)
