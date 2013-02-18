@@ -124,12 +124,16 @@ namespace Client
                     simple = false;
                     RT.Visible = true;
                     simpleview.Visible = false;
+                    toggleAdvancedLayoutToolStripMenuItem.Checked = true;
+                    toggleSimpleLayoutToolStripMenuItem.Checked = false;
                     Recreate(true);
                     return;
                 }
                 Reload();
                 return;
             }
+            toggleAdvancedLayoutToolStripMenuItem.Checked = true;
+            toggleSimpleLayoutToolStripMenuItem.Checked = false;
             simple = true;
             simpleview.Visible = true;
             RT.Visible = false;
@@ -149,8 +153,8 @@ namespace Client
         public void Create()
         {
             InitializeComponent();
-
             simpleview.Visible = false;
+            toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }
 
         public string validpath(string text)
