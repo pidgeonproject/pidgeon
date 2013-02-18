@@ -46,6 +46,14 @@ namespace Client
                 }
                 return;
             }
+            lock (ContentLines)
+            {
+                if (ContentLines.Count > scrollback_max)
+                {
+                    ContentLines.RemoveAt(0);
+                    RT.RemoveLine(0);
+                }
+            }
             RT.InsertLine(CreateLine(line));
             if (Draw)
             {

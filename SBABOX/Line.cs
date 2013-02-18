@@ -169,5 +169,21 @@ namespace Client
                 owner = null;
             }
         }
+
+        public void RemoveLine(int Index, bool Redraw = false)
+        {
+            lock (LineDB)
+            {
+                if (Index < 0 || Index > (LineDB.Count - 1))
+                {
+                    throw new Exception("Index must be between 0 and " + (LineDB.Count - 1).ToString());
+                }
+                LineDB.RemoveAt(Index);
+            }
+            if (Redraw)
+            {
+                RedrawText();
+            }
+        }
     }
 }
