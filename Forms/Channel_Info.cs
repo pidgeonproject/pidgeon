@@ -59,7 +59,7 @@ namespace Client
         {
             try
             {
-                groupBox1.Text = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser + ">";
+                groupBox1.Text = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser;
                 if (channel.TopicDate == 0)
                 {
                     groupBox1.Text = "Topic (information about current topic are not present)";
