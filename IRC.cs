@@ -838,32 +838,35 @@ namespace Client
                         {
                             curr = _Network.WindowCreateNewJoin(channel);
                         }
-                        if (Configuration.aggressive_mode)
+                        if (updated_text)
                         {
-                            _Network.Transfer("MODE " + channel, Configuration.Priority.Low);
-                        }
+                            if (Configuration.aggressive_mode)
+                            {
+                                _Network.Transfer("MODE " + channel, Configuration.Priority.Low);
+                            }
 
-                        if (Configuration.aggressive_exception)
-                        {
-                            curr.parsing_xe = true;
-                            _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
-                        }
+                            if (Configuration.aggressive_exception)
+                            {
+                                curr.parsing_xe = true;
+                                _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
+                            }
 
-                        if (Configuration.aggressive_bans)
-                        {
-                            curr.parsing_xb = true;
-                            _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
-                        }
+                            if (Configuration.aggressive_bans)
+                            {
+                                curr.parsing_xb = true;
+                                _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
+                            }
 
-                        if (Configuration.aggressive_invites)
-                        {
-                            _Network.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
-                        }
+                            if (Configuration.aggressive_invites)
+                            {
+                                _Network.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
+                            }
 
-                        if (Configuration.aggressive_channel)
-                        {
-                            curr.parsing_who = true;
-                            _Network.Transfer("WHO " + channel, Configuration.Priority.Low);
+                            if (Configuration.aggressive_channel)
+                            {
+                                curr.parsing_who = true;
+                                _Network.Transfer("WHO " + channel, Configuration.Priority.Low);
+                            }
                         }
                         return true;
                     }

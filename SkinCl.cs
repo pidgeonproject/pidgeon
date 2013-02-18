@@ -126,7 +126,6 @@ namespace Client
                             localfont = curr.Value;
                             break;
                     }
-
                 }
             }
         }

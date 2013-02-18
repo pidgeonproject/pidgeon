@@ -312,6 +312,22 @@ namespace Client
                             RegisterPlugin(dll);
                         }
                     }
+                    DebugLog("Loading skin");
+                    if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "skindata"))
+                    {
+                        foreach (string skin in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "skindata", "*.ps"))
+                        {
+                            try
+                            {
+                                DebugLog("Registering skin " + skin);
+                                Skin.LoadSkin(skin);
+                            }
+                            catch (Exception fail)
+                            {
+                                DebugLog("Unable to load skin: " + fail.ToString());
+                            }
+                        }
+                    }
                     if (!File.Exists(ConfigFile))
                     {
                         Network.Highlighter simple = new Network.Highlighter();

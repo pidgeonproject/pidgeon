@@ -37,10 +37,23 @@ namespace Client
 
         private void SkinEd_Load(object sender, EventArgs e)
         {
-            groupBox1.Text = "Preview:";
-            groupBox2.Text = "Parameters:";
-            Current = Configuration.CurrentSkin;
-            button2.Focus();
+            try
+            {
+                groupBox1.Text = "Preview:";
+                groupBox2.Text = "Parameters:";
+                Current = Configuration.CurrentSkin;
+                button2.Focus();
+                foreach (Skin skin in Configuration.SL)
+                {
+                    comboBox1.Items.Add(skin.name);
+                }
+                comboBox1.SelectedText = Configuration.CurrentSkin.name;
+                Open(Configuration.CurrentSkin.name);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void _Close()
@@ -55,7 +68,14 @@ namespace Client
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Save();
+            try
+            {
+                Save();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -63,11 +83,35 @@ namespace Client
             _Close();
         }
 
+        public void Open(string name)
+        { 
+            
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
-            if (Save())
+            try
             {
-                _Close();
+                if (Save())
+                {
+                    _Close();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                Open(comboBox1.SelectedText);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }
