@@ -31,8 +31,7 @@ namespace Client
             {
                 foreach (Line l in LineDB)
                 {
-                    l.Buffer.Buffer.Clear();
-                    l.Buffer.Valid = false;
+                    l.Buffer.Invalidate();
                 }
             }
         }
@@ -44,22 +43,38 @@ namespace Client
                 public class Info
                 {
                     public string String;
+                    public string String2;
                     public int Width;
                     public RectangleF size;
                     public int Width2;
                     public RectangleF size2;
-                    public Line extraLine = null;
                     public bool Oversized = false;
+
+                    public void Remove()
+                    {
+                        //extraLine = null;
+                    }
+
                     ~Info()
                     {
-                        extraLine = null;
+                        Remove();
                     }
                 }
                 public bool Valid = false;
                 public Dictionary<ContentText, Info> Buffer = new Dictionary<ContentText, Info>();
+
                 ~GraphicsInfo()
                 {
-                    //Buffer = null;
+                    Buffer = null;
+                }
+
+                public void Invalidate()
+                {
+                    lock (Buffer)
+                    {
+                        Valid = false;
+                        Buffer.Clear();
+                    }
                 }
             }
             public List<ContentText> text = new List<ContentText>();
@@ -76,6 +91,7 @@ namespace Client
                 {
                     text.Add(line);
                 }
+                Buffer.Invalidate();
             }
 
             public void insertData(string line)
@@ -84,6 +100,7 @@ namespace Client
                 {
                     text.Add(new ContentText(line, owner, owner.ForeColor));
                 }
+                Buffer.Invalidate();
             }
 
             public override string ToString()
@@ -105,7 +122,7 @@ namespace Client
             ~Line()
             {
                 owner = null;
-                //Buffer = null;
+                Buffer = null;
             }
 
             public void Merge(Line line)
@@ -114,6 +131,7 @@ namespace Client
                 {
                     text.AddRange(line.text);
                 }
+                Buffer.Invalidate();
             }
 
             public Line(string Text, SBABox SBAB)
@@ -134,6 +152,7 @@ namespace Client
             {
                 text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
                 owner = SBAB;
+                Buffer.Valid = false;
             }
 
             public Line(SBABox SBAB)

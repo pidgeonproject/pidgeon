@@ -93,7 +93,14 @@ namespace Client
             /// <summary>
             /// Text of this part
             /// </summary>
-            public string Text = null;
+            public string Text
+            {
+                get
+                {
+                    return text;
+                }
+            }
+            private string text = null;
             /// <summary>
             /// Box which own this
             /// </summary>
@@ -113,9 +120,9 @@ namespace Client
             /// <param name="text">Text of this part</param>
             /// <param name="SBAB">Owner</param>
             /// <param name="color">Color of a text</param>
-            public ContentText(string text, SBABox SBAB, Color color)
+            public ContentText(string _text, SBABox SBAB, Color color)
             {
-                Text = text;
+                text = _text;
                 Owner = SBAB;
                 TextColor = color;
             }
@@ -236,13 +243,17 @@ namespace Client
         private void RedrawLine(ref Graphics graphics, ref float X, ref float Y, Line line)
         {
             bool wrappingnow = false;
+            // we increase the number of lines that are rendered - we do it now because this line will be either renedered or whole text won't be rendered
             RenderedLineTotalCount++;
+            // this is a line which could be drawn in case that we have to split this line to more
             Line extraline = null;
             lock (line.text)
             {
                 foreach (ContentText part in line.text)
                 {
+                    // we don't want to draw lines that will not be in visible area
                     bool RedrawLine = false;
+                    // in case that we are now wrapping this former part of line is now belonging to new line
                     if (wrappingnow)
                     {
                         extraline.insertData(part);
@@ -255,11 +266,11 @@ namespace Client
                     }
                     if (RedrawLine || WrapAll)
                     {
+                        // in case that text is nothing or null we will not draw this part
                         if (part.Text != null && part.Text != "")
                         {
                             Brush brush = new SolidBrush(part.TextColor);
                             string TextOfThisPart = part.Text;
-                            //TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
                             StringFormat format = new StringFormat(StringFormat.GenericTypographic);
                             format.Trimming = StringTrimming.None;
                             format.FormatFlags = StringFormatFlags.MeasureTrailingSpaces;
@@ -282,31 +293,52 @@ namespace Client
                                 }
                             }
 
+                            // we need to retrieve the buffer if there is some
                             Line.GraphicsInfo.Info partInfo;
                             int stringWidth = 0;
                             RectangleF stringSize;
                             
                             // if it's buffered, we get the data from a buffer instead of making shitton of calculations
+                            if (line.Buffer.Valid)
+                            {
+                                if (!line.Buffer.Buffer.ContainsKey(part))
+                                {
+                                    throw new Exception("This SBABOX line has cache that contains corrupted data");
+                                }
+                            }
+
+                            // in case there is no valid data we need to calculate them now and save them for later use
                             if (!line.Buffer.Valid)
                             {
                                 stringSize = Buffers.MeasureString(graphics, part.Text, font, format);
                                 stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
                                 partInfo = new Line.GraphicsInfo.Info();
-                                if (!line.Buffer.Buffer.ContainsKey(part))
+                                lock (line.Buffer.Buffer)
                                 {
-                                    line.Buffer.Buffer.Add(part, partInfo);
+                                    if (!line.Buffer.Buffer.ContainsKey(part))
+                                    {
+                                        line.Buffer.Buffer.Add(part, partInfo);
+                                    }
+                                    else
+                                    {
+                                        line.Buffer.Buffer[part] = partInfo;
+                                    }
                                 }
                                 partInfo.Width = stringWidth;
                                 partInfo.size = stringSize;
                             }
                             else
                             {
-                                partInfo = line.Buffer.Buffer[part];
+                                lock (line.Buffer.Buffer)
+                                {
+                                    partInfo = line.Buffer.Buffer[part];
+                                }
                                 stringSize = partInfo.size;
                                 stringWidth = partInfo.Width;
                             }
                             
-                                
+
+                            // in case this line is about to be wrapped we need to split it
                             if (Wrap && !(line.Buffer.Valid && !partInfo.Oversized))
                             {
                                 bool isOversized;
@@ -339,8 +371,12 @@ namespace Client
                                                 {
                                                     if (size <= 0)
                                                     {
+                                                        if (Configuration.Debugging)
+                                                        {
+                                                            throw new Exception("Invalid size");
+                                                        }
                                                         Core.DebugLog("Invalid size on SBABox, error #1");
-                                                        line.Buffer.Valid = false;
+                                                        line.Buffer.Invalidate();
                                                         return;
                                                     }
                                                     if (size > 10)
@@ -390,12 +426,20 @@ namespace Client
                                         extraline = new Line(this);
                                         extraline.insertData(_text);
                                         partInfo.String = TextOfThisPart;
-                                        partInfo.extraLine = extraline;
+                                        partInfo.String2 = remaining_data;
+                                        //partInfo.extraLine = extraline;
                                     }
                                     else
                                     {
                                         TextOfThisPart = partInfo.String;
-                                        extraline = partInfo.extraLine;
+                                        //extraline = partInfo.extraLine;
+                                        ContentText _text = new ContentText(partInfo.String2, this, part.TextColor);
+                                        _text.Underline = part.Underline;
+                                        _text.Bold = part.Bold;
+                                        _text.Link = part.Link;
+                                        wrappingnow = true;
+                                        extraline = new Line(this);
+                                        extraline.insertData(_text);
                                         wrappingnow = true;
                                     }
                                 }
