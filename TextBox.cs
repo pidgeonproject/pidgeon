@@ -64,6 +64,12 @@ namespace Client
             {
                 return;
             }
+
+            if (e.Alt)
+            {
+                return;
+            }
+
             if (!(e.KeyCode == Keys.Tab))
             { restore = false; }
             switch (e.KeyCode)
