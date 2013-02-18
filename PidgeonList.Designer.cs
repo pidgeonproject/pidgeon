@@ -75,6 +75,7 @@ namespace Client
             this.items.ImageList = this.list;
             this.items.Indent = 6;
             this.items.ItemHeight = 16;
+            this.items.Click += new System.EventHandler(Clicked);
             this.items.Location = new System.Drawing.Point(0, 0);
             this.items.Name = "items";
             this.items.SelectedImageIndex = 0;

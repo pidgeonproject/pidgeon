@@ -49,6 +49,7 @@ namespace Client
                 {
                     items.SelectedNode = e.Node;
                     contextMenuStrip1.Show(items, e.Location);
+                    closeToolStripMenuItem.Enabled = true;
                 }
             }
             catch (Exception fail)
@@ -57,6 +58,20 @@ namespace Client
             }
         }
 
+        private void Clicked(object sender, EventArgs e)
+        {
+            try
+            {
+                if (items.SelectedNode == null)
+                {
+                    closeToolStripMenuItem.Enabled = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
 
         /// <summary>
         /// Prepare the control
@@ -72,6 +87,8 @@ namespace Client
                 items.ForeColor = Configuration.CurrentSkin.fontcolor;
                 items.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
                 items.ItemHeight = (int)(Configuration.CurrentSkin.fontsize * 2);
+                versionToolStripMenuItem.Enabled = false;
+                closeToolStripMenuItem.Enabled = false;
             }
             catch (Exception fail)
             {
