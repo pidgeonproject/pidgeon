@@ -65,7 +65,7 @@ namespace Client
                 return;
             }
 
-            if (e.Alt)
+            if (e.Control && e.KeyCode == Keys.Enter)
             {
                 return;
             }
