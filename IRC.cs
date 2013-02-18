@@ -840,30 +840,30 @@ namespace Client
                         }
                         if (Configuration.aggressive_mode)
                         {
-                            _Protocol.Transfer("MODE " + channel, Configuration.Priority.Low);
+                            _Network.Transfer("MODE " + channel, Configuration.Priority.Low);
                         }
 
                         if (Configuration.aggressive_exception)
                         {
                             curr.parsing_xe = true;
-                            _Protocol.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
+                            _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                         }
 
                         if (Configuration.aggressive_bans)
                         {
                             curr.parsing_xb = true;
-                            _Protocol.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
+                            _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                         }
 
                         if (Configuration.aggressive_invites)
                         {
-                            _Protocol.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
+                            _Network.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
                         }
 
                         if (Configuration.aggressive_channel)
                         {
                             curr.parsing_who = true;
-                            _Protocol.Transfer("WHO " + channel, Configuration.Priority.Low);
+                            _Network.Transfer("WHO " + channel, Configuration.Priority.Low);
                         }
                         return true;
                     }
@@ -1035,7 +1035,7 @@ namespace Client
                                 system.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
-                                _Protocol.Transfer("PONG ", Configuration.Priority.High);
+                                _Network.Transfer("PONG ", Configuration.Priority.High);
                                 return true;
                             case "NICK":
                                 if (ProcessNick(source, parameters, _value))

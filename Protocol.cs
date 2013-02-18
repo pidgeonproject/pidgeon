@@ -237,7 +237,7 @@ namespace Client
         /// </summary>
         /// <param name="_Nick"></param>
         /// <returns></returns>
-        public virtual int requestNick(string _Nick)
+        public virtual int requestNick(string _Nick, Network network = null)
         {
             return 2;
         }
@@ -247,7 +247,7 @@ namespace Client
         /// </summary>
         /// <param name="cm"></param>
         /// <returns></returns>
-        public virtual bool Command(string cm)
+        public virtual bool Command(string cm, Network network = null)
         {
             return false;
         }

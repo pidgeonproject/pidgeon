@@ -105,7 +105,7 @@ namespace Client
             }
         }
 
-        public override bool Command(string cm)
+        public override bool Command(string cm, Network network = null)
         {
             try
             {
@@ -114,10 +114,10 @@ namespace Client
                     // uppercase
                     string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
                     string rest = cm.Substring(first_word.Length);
-                    Transfer(first_word + rest);
+                    Transfer(first_word + rest, Configuration.Priority.Normal, network);
                     return true;
                 }
-                Transfer(cm.ToUpper());
+                Transfer(cm.ToUpper(), Configuration.Priority.Normal, network);
                 return true;
             }
             catch (Exception ex)
@@ -238,7 +238,7 @@ namespace Client
 
         public override void Part(string name, Network network = null)
         {
-            Transfer("PART " + name);
+            Transfer("PART " + name, Configuration.Priority.High, network);
         }
 
         public void ProccessDG(string text, long time, bool backlog, Network server, string name2, string number)
@@ -744,7 +744,7 @@ namespace Client
             return true;
         }
 
-        public override int requestNick(string _Nick)
+        public override int requestNick(string _Nick, Network network = null)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
             return 0;

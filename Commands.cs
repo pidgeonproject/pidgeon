@@ -472,6 +472,11 @@ namespace Client
 
             public static void ctcp(string parameter)
             {
+                if (parameter == null || parameter == "")
+                {
+                    Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Scrollback.MessageStyle.Message);
+                    return;
+                }
                 if (parameter.Contains(" "))
                 {
                     string[] Params = parameter.Split(' ');
@@ -485,7 +490,7 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
                         return;
                     }
-                    Core.network._protocol.Transfer("PRIVMSG " + Params[0] + " :" + Core.network._protocol.delimiter +
+                    Core.network.Transfer("PRIVMSG " + Params[0] + " :" + Core.network._protocol.delimiter +
                         Params[2].ToUpper() + Core.network._protocol.delimiter);
                     Core._Main.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Scrollback.MessageStyle.Message, false);
                     return;

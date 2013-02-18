@@ -167,7 +167,7 @@ namespace Client
 
         public override void Part(string name, Network network = null)
         {
-            Transfer("PART " + name);
+            Transfer("PART " + name, Configuration.Priority.High, network);
         }
 
         public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal, Network network = null)
@@ -266,7 +266,7 @@ namespace Client
             return;
         }
 
-        public override bool Command(string cm)
+        public override bool Command(string cm, Network network = null)
         {
             try
             {
@@ -330,7 +330,7 @@ namespace Client
             Transfer("JOIN " + name);
         }
 
-        public override int requestNick(string _Nick)
+        public override int requestNick(string _Nick, Network network = null)
         {
             Transfer("NICK " + _Nick);
             return 0;
