@@ -191,6 +191,18 @@ namespace Client
             }
         }
 
+        public void ChangeSize(object sender, EventArgs e)
+        {
+            try
+            {
+                InvalidateCaches();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         public bool SearchDown(System.Text.RegularExpressions.Regex find)
         {
             if (!find.IsMatch(Text))
@@ -246,7 +258,7 @@ namespace Client
                         if (part.Text != null && part.Text != "")
                         {
                             Brush brush = new SolidBrush(part.TextColor);
-                            string TextOfThispart = part.Text;
+                            string TextOfThisPart = part.Text;
                             //TextOfThispart = Hooks.BeforeLinePartLoad(TextOfThispart);
                             StringFormat format = new StringFormat(StringFormat.GenericTypographic);
                             format.Trimming = StringTrimming.None;
@@ -270,87 +282,144 @@ namespace Client
                                 }
                             }
 
-                            RectangleF stringSize = Buffers.MeasureString(graphics, part.Text, font, format);
-                            int stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
-                            if (Wrap)
+                            Line.GraphicsInfo.Info partInfo;
+                            int stringWidth = 0;
+                            RectangleF stringSize;
+                            
+                            // if it's buffered, we get the data from a buffer instead of making shitton of calculations
+                            if (!line.Buffer.Valid)
                             {
-                                int oversized = this.Width - vScrollBar1.Width - 20;
-                                if (X + stringWidth > oversized)
+                                stringSize = Buffers.MeasureString(graphics, part.Text, font, format);
+                                stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
+                                partInfo = new Line.GraphicsInfo.Info();
+                                if (!line.Buffer.Buffer.ContainsKey(part))
                                 {
-                                    bool ls = part.Text.StartsWith(" ");
-                                    bool es = part.Text.EndsWith(" ");
-                                    string[] words = part.Text.Split(' ');
-                                    string trimmed = "";
-                                    foreach (string xx in words)
+                                    line.Buffer.Buffer.Add(part, partInfo);
+                                }
+                                partInfo.Width = stringWidth;
+                                partInfo.size = stringSize;
+                            }
+                            else
+                            {
+                                partInfo = line.Buffer.Buffer[part];
+                                stringSize = partInfo.size;
+                                stringWidth = partInfo.Width;
+                            }
+                            
+                                
+                            if (Wrap && !(line.Buffer.Valid && !partInfo.Oversized))
+                            {
+                                bool isOversized;
+                                int width = this.Width - vScrollBar1.Width - 20;
+                                if (!line.Buffer.Valid)
+                                {
+                                    isOversized = (X + stringWidth) > width;
+                                    partInfo.Oversized = isOversized;
+                                }
+                                else
+                                {
+                                    isOversized = partInfo.Oversized;
+                                }
+                                
+                                if (isOversized)
+                                {
+                                    if (!line.Buffer.Valid)
                                     {
-                                        string value = xx;
-                                        if (graphics.MeasureString(value, font, new Point(0, 0), format).Width > oversized)
+                                        bool ls = part.Text.StartsWith(" ");
+                                        bool es = part.Text.EndsWith(" ");
+                                        string[] words = part.Text.Split(' ');
+                                        string trimmed = "";
+                                        foreach (string xx in words)
                                         {
-                                            int size = xx.Length - 1;
-                                            while (graphics.MeasureString(value.Substring(0, size), font, new Point(0, 0), format).Width > oversized)
+                                            string value = xx;
+                                            if (graphics.MeasureString(value, font, new Point(0, 0), format).Width > width)
                                             {
-                                                if (size <= 0)
+                                                int size = xx.Length - 1;
+                                                while (graphics.MeasureString(value.Substring(0, size), font, new Point(0, 0), format).Width > width)
                                                 {
-                                                    Core.DebugLog("Invalid size on SBABox, error #1");
-                                                    return;
+                                                    if (size <= 0)
+                                                    {
+                                                        Core.DebugLog("Invalid size on SBABox, error #1");
+                                                        line.Buffer.Valid = false;
+                                                        return;
+                                                    }
+                                                    if (size > 10)
+                                                    {
+                                                        size = size - 5;
+                                                    }
+                                                    else
+                                                    {
+                                                        size--;
+                                                    }
                                                 }
-                                                if (size > 10)
+                                                string part1 = xx.Substring(0, size);
+                                                string part2 = value.Substring(size);
+                                                trimmed += part1;
+                                                value = part2;
+                                            }
+                                            if (graphics.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > width)
+                                            {
+                                                if (trimmed != "" || graphics.MeasureString(value, font, new Point(0, 0), format).Width < pt.Width)
                                                 {
-                                                    size = size - 5;
-                                                }
-                                                else
-                                                {
-                                                    size--;
+                                                    break;
                                                 }
                                             }
-                                            string part1 = xx.Substring(0, size);
-                                            string part2 = value.Substring(size);
-                                            trimmed += part1;
-                                            value = part2;
+                                            trimmed += value + " ";
                                         }
-                                        if (graphics.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > oversized)
+
+                                        if (!ls && trimmed.EndsWith(" ") && trimmed.Length > 0)
                                         {
-                                            if (trimmed != "" || graphics.MeasureString(value, font, new Point(0, 0), format).Width < pt.Width)
-                                            {
-                                                break;
-                                            }
+                                            trimmed = trimmed.Substring(0, trimmed.Length - 1);
                                         }
-                                        trimmed += value + " ";
-                                    }
-                                    if (!ls && trimmed.EndsWith(" ") && trimmed.Length > 0)
-                                    {
-                                        trimmed = trimmed.Substring(0, trimmed.Length - 1);
-                                    }
-                                    // we trimmed the value, now update the text temporarily
-                                    TextOfThispart = trimmed;
-                                    string remaining_data = null;
-                                    if (trimmed.Length < part.Text.Length)
-                                    {
-                                        remaining_data = part.Text.Substring(trimmed.Length);
+                                        // we trimmed the value, now update the text temporarily
+                                        TextOfThisPart = trimmed;
+                                        string remaining_data = null;
+                                        if (trimmed.Length < part.Text.Length)
+                                        {
+                                            remaining_data = part.Text.Substring(trimmed.Length);
+                                        }
+                                        else
+                                        {
+                                            remaining_data = part.Text;
+                                        }
+                                        ContentText _text = new ContentText(remaining_data, this, part.TextColor);
+                                        _text.Underline = part.Underline;
+                                        _text.Bold = part.Bold;
+                                        _text.Link = part.Link;
+                                        wrappingnow = true;
+                                        extraline = new Line(this);
+                                        extraline.insertData(_text);
+                                        partInfo.String = TextOfThisPart;
+                                        partInfo.extraLine = extraline;
                                     }
                                     else
                                     {
-                                        remaining_data = part.Text;
+                                        TextOfThisPart = partInfo.String;
+                                        extraline = partInfo.extraLine;
+                                        wrappingnow = true;
                                     }
-                                    ContentText _text = new ContentText(remaining_data, this, part.TextColor);
-                                    _text.Underline = part.Underline;
-                                    _text.Bold = part.Bold;
-                                    _text.Link = part.Link;
-                                    wrappingnow = true;
-                                    extraline = new Line(this);
-                                    extraline.insertData(_text);
                                 }
                             }
 
-                            if (TextOfThispart.Length < 1)
+                            if (TextOfThisPart.Length < 1)
                             {
                                 continue;
                             }
 
-                            if (TextOfThispart.Length != part.Text.Length)
+                            if (TextOfThisPart.Length != part.Text.Length)
                             {
-                                stringSize = Buffers.MeasureString(graphics, TextOfThispart, font, format);
-                                stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
+                                if (line.Buffer.Valid)
+                                {
+                                    stringSize = partInfo.size2;
+                                    stringWidth = partInfo.Width2;
+                                }
+                                else
+                                {
+                                    stringSize = Buffers.MeasureString(graphics, TextOfThisPart, font, format);
+                                    stringWidth = Buffers.MeasureDisplayStringWidth(stringSize);
+                                    partInfo.size2 = stringSize;
+                                    partInfo.Width2 = stringWidth;
+                                }
                             }
 
                             if (part.Link != null && RedrawLine)
@@ -359,7 +428,7 @@ namespace Client
                                 {
                                     part.Linked = true;
                                     Pen pen = new Pen(part.TextColor);
-                                    Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThispart, part);
+                                    Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThisPart, part);
                                     if (Configuration.Debugging)
                                     { 
                                         graphics.DrawLine(pen, new Point(http.X, http.Y), new Point(http.X + stringWidth, http.Y));
@@ -374,11 +443,11 @@ namespace Client
 
                             if (RedrawLine)
                             {
-                                graphics.DrawString(TextOfThispart, font, brush, X, Y);
+                                graphics.DrawString(TextOfThisPart, font, brush, X, Y);
                             }
 
                             X = X + stringWidth;
-                            if (!Wrap)
+                            if (!Wrap && RedrawLine)
                             {
                                 if ((int)(X + stringWidth) > hsBar.Maximum)
                                 {
@@ -401,6 +470,10 @@ namespace Client
                 Y = Y + Font.Size + spacing;
                 X = 0 - currentX;
                 RedrawLine(ref graphics, ref X, ref Y, extraline);
+            }
+            if (!line.Buffer.Valid)
+            {
+                line.Buffer.Valid = true;
             }
         }
 

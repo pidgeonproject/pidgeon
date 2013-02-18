@@ -25,10 +25,46 @@ namespace Client
 {
     public partial class SBABox
     {
+        public void InvalidateCaches()
+        {
+            lock (LineDB)
+            {
+                foreach (Line l in LineDB)
+                {
+                    l.Buffer.Buffer.Clear();
+                    l.Buffer.Valid = false;
+                }
+            }
+        }
+
         public class Line
         {
+            public class GraphicsInfo
+            {
+                public class Info
+                {
+                    public string String;
+                    public int Width;
+                    public RectangleF size;
+                    public int Width2;
+                    public RectangleF size2;
+                    public Line extraLine = null;
+                    public bool Oversized = false;
+                    ~Info()
+                    {
+                        extraLine = null;
+                    }
+                }
+                public bool Valid = false;
+                public Dictionary<ContentText, Info> Buffer = new Dictionary<ContentText, Info>();
+                ~GraphicsInfo()
+                {
+                    //Buffer = null;
+                }
+            }
             public List<ContentText> text = new List<ContentText>();
             private SBABox owner = null;
+            public GraphicsInfo Buffer = new GraphicsInfo();
 
             public void insertData(ContentText line)
             {
@@ -69,6 +105,7 @@ namespace Client
             ~Line()
             {
                 owner = null;
+                //Buffer = null;
             }
 
             public void Merge(Line line)
