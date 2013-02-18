@@ -427,7 +427,7 @@ namespace Client
                                         extraline.insertData(_text);
                                         partInfo.String = TextOfThisPart;
                                         partInfo.String2 = remaining_data;
-                                        //partInfo.extraLine = extraline;
+                                        partInfo.extraLine = extraline;
                                     }
                                     else
                                     {
@@ -440,7 +440,6 @@ namespace Client
                                         wrappingnow = true;
                                         extraline = new Line(this);
                                         extraline.insertData(_text);
-                                        wrappingnow = true;
                                     }
                                 }
                             }

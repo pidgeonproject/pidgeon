@@ -47,7 +47,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listView1 = new ListViewDB();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -55,9 +55,10 @@ namespace Client
             this.downloadListFromServerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshAutoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerl = new System.Windows.Forms.Timer(this.components);
             this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.knockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerl = new System.Windows.Forms.Timer(this.components);
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,9 +74,9 @@ namespace Client
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(947, 441);
             this.listView1.TabIndex = 0;
-            this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(Sort);
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
+            this.listView1.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.Sort);
             // 
             // columnHeader1
             // 
@@ -123,12 +124,6 @@ namespace Client
             this.refreshAutoToolStripMenuItem.Text = "Refresh auto";
             this.refreshAutoToolStripMenuItem.Click += new System.EventHandler(this.refreshAutoToolStripMenuItem_Click);
             // 
-            // timerl
-            // 
-            this.timerl.Enabled = true;
-            this.timerl.Interval = 2000;
-            this.timerl.Tick += new System.EventHandler(this.timerl_Tick);
-            // 
             // joinToolStripMenuItem
             // 
             this.joinToolStripMenuItem.Name = "joinToolStripMenuItem";
@@ -143,12 +138,24 @@ namespace Client
             this.knockToolStripMenuItem.Text = "Knock";
             this.knockToolStripMenuItem.Click += new System.EventHandler(this.knockToolStripMenuItem_Click);
             // 
+            // timerl
+            // 
+            this.timerl.Enabled = true;
+            this.timerl.Interval = 2000;
+            this.timerl.Tick += new System.EventHandler(this.timerl_Tick);
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Channels
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(947, 441);
             this.Controls.Add(this.listView1);
+            this.DoubleBuffered = true;
             this.Name = "Channels";
             this.Text = "Channels";
             this.Load += new System.EventHandler(this.Channels_Load);
@@ -159,7 +166,7 @@ namespace Client
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private ListViewDB listView1;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
@@ -170,5 +177,6 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem refreshAutoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem joinToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem knockToolStripMenuItem;
+        private System.Windows.Forms.Timer timer1;
     }
 }

@@ -130,6 +130,8 @@ namespace Client
                 channel_name = channel_name.Substring(0, channel_name.IndexOf(" "));
             }
 
+            _Network.DownloadingList = true;
+
             lock (_Network.ChannelList)
             {
                 Network.ChannelData channel = _Network.ContainsChannel(channel_name);
@@ -1007,6 +1009,7 @@ namespace Client
                                     _Network.SuppressData = false;
                                     return true;
                                 }
+                                _Network.DownloadingList = false;
                                 break;
                             case "PONG":
                                 Ping();

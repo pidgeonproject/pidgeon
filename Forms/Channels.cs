@@ -29,6 +29,7 @@ namespace Client
         public Network network = null;
         private int channels = 0;
         private ListViewColumnSorter lvwColumnSorter;
+        public List<Network.ChannelData> Data = new List<Network.ChannelData>();
 
         public Channels(Network nw)
         {
@@ -44,16 +45,11 @@ namespace Client
             channels = 0;
             lock (network.ChannelList)
             {
-                foreach (Network.ChannelData channel_info in network.ChannelList)
-                {
-                    ListViewItem item = new ListViewItem(channel_info.ChannelName);
-                    item.SubItems.Add(channel_info.UserCount.ToString());
-                    item.SubItems.Add(channel_info.ChannelTopic);
-                    listView1.Items.Add(item);
-                    channels++;
-                }
+                Data.Clear();
+                Data.AddRange(network.ChannelList);
             }
-            Text = "Channels [" + listView1.Items.Count.ToString() + "] on " + network.server;
+
+            timer1.Enabled = true;
         }
 
         private void Channels_Load(object sender, EventArgs e)
@@ -96,9 +92,16 @@ namespace Client
 
         private void timerl_Tick(object sender, EventArgs e)
         {
-            if (channels != network.ChannelList.Count)
+            if (network.DownloadingList)
             {
-                Reload();
+                return;
+            }
+            if (timer1.Enabled == false)
+            {
+                if (channels != network.ChannelList.Count)
+                {
+                    Reload();
+                }
             }
         }
 
@@ -156,6 +159,37 @@ namespace Client
                 {
                     network.Transfer("KNOCK " + item.Text);
                 }
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                lock (Data)
+                {
+                    int curr = 0;
+                    if (Data.Count == 0)
+                    {
+                        timer1.Enabled = false;
+                        return;
+                    }
+                    while (curr < 100 && Data.Count > 0)
+                    {
+                        ListViewItem item = new ListViewItem(Data[0].ChannelName);
+                        item.SubItems.Add(Data[0].UserCount.ToString());
+                        item.SubItems.Add(Data[0].ChannelTopic);
+                        listView1.Items.Add(item);
+                        Data.RemoveAt(0);
+                        channels++;
+                        curr++;
+                    }
+                    Text = "Channel list [" + channels.ToString() + "]";
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }

@@ -118,6 +118,10 @@ namespace Client
         /// If true, the channel data will be suppressed in system window
         /// </summary>
         public bool SuppressData = false;
+        /// <summary>
+        /// This is true when network is just parsing the list of all channels
+        /// </summary>
+        public bool DownloadingList = false;
 
         public class ChannelData
         {

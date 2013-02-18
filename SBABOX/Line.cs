@@ -47,12 +47,13 @@ namespace Client
                     public int Width;
                     public RectangleF size;
                     public int Width2;
+                    public Line extraLine = null;
                     public RectangleF size2;
                     public bool Oversized = false;
 
                     public void Remove()
                     {
-                        //extraLine = null;
+                        extraLine = null;
                     }
 
                     ~Info()
@@ -77,6 +78,7 @@ namespace Client
                     }
                 }
             }
+
             public List<ContentText> text = new List<ContentText>();
             private SBABox owner = null;
             public GraphicsInfo Buffer = new GraphicsInfo();
