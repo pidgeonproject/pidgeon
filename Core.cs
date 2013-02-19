@@ -630,6 +630,25 @@ namespace Client
             return ":" + random.ToString() + "*";
         }
 
+        public static void ProcessScript(string script, Network target)
+        {
+            try
+            {
+                Forms.ScriptEdit edit = new Forms.ScriptEdit();
+                string[] text = script.Split('\n');
+                foreach (string line in text)
+                {
+                    edit.textBox1.AppendText(line + Environment.NewLine);
+                }
+                edit.network = target;
+                edit.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         /// <summary>
         /// Create a node
         /// </summary>

@@ -321,7 +321,10 @@ namespace Client
         /// <param name="_priority"></param>
         public void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            _protocol.Transfer(data, _priority, this);
+            if (data != "")
+            {
+                _protocol.Transfer(data, _priority, this);
+            }
         }
 
         /// <summary>

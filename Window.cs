@@ -127,38 +127,54 @@ namespace Client
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string kick = "";
-            string ban = "";
             if (isChannel)
             {
-                if (SelectedUser != null)
+                try
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    string script = "";
+                    if (isChannel)
                     {
-                        Channel _channel = _Network.getChannel(name);
-                        if (_channel != null)
+                        if (SelectedUser != null)
                         {
-                            User target = _channel.userFromName(Decode(user.Text));
-                            if (target != null)
+                            foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                             {
-                                switch (Configuration.DefaultBans)
+                                string current_ban = "";
+                                Channel _channel = _Network.getChannel(name);
+                                if (_channel != null)
                                 {
-                                    case Configuration.TypeOfBan.Host:
-                                        if (target.Host != "")
+                                    User target = _channel.userFromName(Decode(user.Text));
+                                    if (target != null)
+                                    {
+                                        switch (Configuration.DefaultBans)
                                         {
-                                            ban = "MODE " + name + " +b *!*@" + target.Host;
+                                            case Configuration.TypeOfBan.Host:
+                                                if (target.Host != "")
+                                                {
+                                                    current_ban = "MODE " + name + " +b *!*@" + target.Host;
+                                                    script = current_ban + Environment.NewLine;
+                                                }
+                                                break;
                                         }
-                                        break;
+                                    }
+                                }
+                                string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
+                                script = current_kick + Environment.NewLine;
+                                if (!Configuration.ConfirmAll)
+                                {
+                                    _channel._Network.Transfer(current_ban, Configuration.Priority.High);
+                                    _channel._Network.Transfer(current_kick, Configuration.Priority.High);
                                 }
                             }
-                        }
-                        kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
-                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + ban + "\n" + kick }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                        {
-                            _channel._Network.Transfer(ban, Configuration.Priority.High);
-                            _channel._Network.Transfer(kick, Configuration.Priority.High);
+                            if (Configuration.ConfirmAll)
+                            {
+                                Core.ProcessScript(script, _Network);
+                            }
                         }
                     }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
                 }
             }
         }
@@ -178,7 +194,7 @@ namespace Client
                             {
                                 _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
-                            _channel._Network.Transfer("PRIVMSG " +  Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
+                            _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
                     }
                 }
@@ -297,23 +313,36 @@ namespace Client
 
         private void kickToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            string mode = "";
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (!isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    return;
+                }
+                string script = "";
+                if (isChannel)
+                {
+                    if (SelectedUser != null)
                     {
-                        if (user.Text != "")
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            mode = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
+                            string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
+                            script = current_kick + Environment.NewLine;
+                            if (!Configuration.ConfirmAll)
+                            {
+                                _Network.Transfer(current_kick, Configuration.Priority.High);
+                            }
                         }
-                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        if (Configuration.ConfirmAll)
                         {
-                            Core.network.Transfer(mode, Configuration.Priority.High);
+                            Core.ProcessScript(script, _Network);
                         }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -346,11 +375,12 @@ namespace Client
         {
             if (isChannel)
             {
-                string mode = "";
+                string script = "";
                 if (SelectedUser != null)
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
+                        string mode = "";
                         Channel _channel = _Network.getChannel(name);
                         if (_channel != null)
                         {
@@ -363,15 +393,20 @@ namespace Client
                                         if (target.Host != "")
                                         {
                                             mode = "MODE " + name + " +b *!*@" + target.Host;
+                                            script += mode + Environment.NewLine;
                                         }
                                         break;
                                 }
-                                if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n\n\n" + mode }), "Process command", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                                if (!Configuration.ConfirmAll)
                                 {
                                     Core.network.Transfer(mode, Configuration.Priority.High);
                                 }
                             }
                         }
+                    }
+                    if (Configuration.ConfirmAll)
+                    {
+                        Core.ProcessScript(script, _Network);
                     }
                 }
             }
