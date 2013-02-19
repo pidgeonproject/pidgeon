@@ -1003,13 +1003,6 @@ namespace Client
                                 return;
                             }
                         }
-                        else if (e.NewValue == vScrollBar1.Maximum && scrollback != null)
-                        {
-                            if (scrollback.RestoreOffset())
-                            {
-                                return;
-                            }
-                        }
                     }
                     ScrolltoX(e.NewValue);
                     Redraw();
