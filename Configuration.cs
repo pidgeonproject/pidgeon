@@ -48,6 +48,11 @@ namespace Client
         public static string nick = "PidgeonUser";
 
         /// <summary>
+        /// Enable this to make bars change the max size when reached
+        /// </summary>
+        public static bool DynamicBars = true;
+
+        /// <summary>
         /// Real name
         /// </summary>
         public static string user = "My name is hidden, dude";

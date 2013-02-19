@@ -230,6 +230,28 @@ namespace Client
             mode1q2ToolStripMenuItem.Visible = false;
         }
 
+        public bool IncreaseOffset()
+        {
+            if (scrollback_max < ContentLines.Count)
+            {
+                scrollback_max += 200;
+                Reload();
+                return true;
+            }
+            return false;
+        }
+
+        public bool RestoreOffset()
+        {
+            if (scrollback_max != Configuration.scrollback_plimit)
+            {
+                scrollback_max = Configuration.scrollback_plimit;
+                Reload();
+                return true;
+            }
+            return false;
+        }
+
         /// <summary>
         /// Redraw a text
         /// </summary>

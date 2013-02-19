@@ -658,6 +658,30 @@ namespace Client
                     {
                         vScrollBar1.Value = vScrollBar1.Maximum;
                     }
+                    if (Configuration.DynamicBars)
+                    {
+                        if (vScrollBar1.Value == 0 && scrollback != null)
+                        {
+                            if (scrollback.IncreaseOffset())
+                            {
+                                if (vScrollBar1.Maximum > 210)
+                                {
+                                    vScrollBar1.Value = 200;
+                                    ScrolltoX(100);
+                                    Redraw();
+                                }
+                                return;
+                            }
+                        }
+                        else if (vScrollBar1.Value == vScrollBar1.Maximum && scrollback != null)
+                        {
+                            if (scrollback.RestoreOffset())
+                            {
+                                return;
+                            }
+                        }
+
+                    }
                     ScrolltoX(vScrollBar1.Value);
                     Redraw();
                     return;
@@ -964,6 +988,29 @@ namespace Client
             {
                 lock (vScrollBar1)
                 {
+                    if (Configuration.DynamicBars)
+                    {
+                        if (e.NewValue == 0 && scrollback != null)
+                        {
+                            if (scrollback.IncreaseOffset())
+                            {
+                                if (vScrollBar1.Maximum > 210)
+                                {
+                                    vScrollBar1.Value = 200;
+                                    ScrolltoX(100);
+                                    Redraw();
+                                }
+                                return;
+                            }
+                        }
+                        else if (e.NewValue == vScrollBar1.Maximum && scrollback != null)
+                        {
+                            if (scrollback.RestoreOffset())
+                            {
+                                return;
+                            }
+                        }
+                    }
                     ScrolltoX(e.NewValue);
                     Redraw();
                 }
