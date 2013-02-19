@@ -93,6 +93,7 @@ namespace Client
                 listView1.Items.Add(new ListViewItem("Keyboard"));
                 listView1.Items.Add(new ListViewItem("Extensions"));
                 RefreshModules();
+                ReloadIgnores();
                 redrawS();
             }
             catch (Exception fail)
@@ -152,7 +153,7 @@ namespace Client
             {
                 lock (Configuration.HighlighterList)
                 {
-                    Configuration.HighlighterList = new List<Network.Highlighter>();
+                    Configuration.HighlighterList.Clear();
                     foreach (ListViewItem curr in list.Items)
                     {
                         Network.Highlighter hl = new Network.Highlighter();
@@ -162,6 +163,7 @@ namespace Client
                         Configuration.HighlighterList.Add(hl);
                     }
                 }
+                
                 Configuration.ConfirmAll = checkBox8.Checked;
                 Configuration.nick = textBox1.Text;
                 Configuration.quit = textBox2.Text;
@@ -178,6 +180,20 @@ namespace Client
                 Configuration.Notice = checkBox9.Checked;
                 Configuration.logs_dir = textBox5.Text;
                 Configuration.logs_name = textBox6.Text;
+                lock (Ignoring.IgnoreList)
+                {
+                    Ignoring.IgnoreList.Clear();
+                    foreach (ListViewItem curr in listView4.Items)
+                    {
+                        Ignoring.Ignore.Type type = Ignoring.Ignore.Type.Everything;
+                        if (curr.SubItems[3].Text == "User")
+                        {
+                            type = Ignoring.Ignore.Type.User;
+                        }
+                        Ignoring.Ignore x = new Ignoring.Ignore(bool.Parse(curr.SubItems[2].Text), bool.Parse(curr.SubItems[1].Text), curr.Text, type);
+                        Ignoring.IgnoreList.Add(x);
+                    }
+                }
                 if (Configuration.SL.Count >= comboBox1.SelectedIndex)
                 {
                     Configuration.CurrentSkin = Configuration.SL[comboBox1.SelectedIndex];
@@ -199,6 +215,23 @@ namespace Client
         private void bCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void ReloadIgnores()
+        {
+            lock (Ignoring.IgnoreList)
+            {
+                listView4.Items.Clear();
+                foreach (Ignoring.Ignore curr in Ignoring.IgnoreList)
+                {
+                    ListViewItem item = new ListViewItem();
+                    item.Text = curr.Text;
+                    item.SubItems.Add(curr.Simple.ToString());
+                    item.SubItems.Add(curr.Enabled.ToString());
+                    item.SubItems.Add(curr.type.ToString());
+                    listView4.Items.Add(item);
+                }
+            }
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -354,6 +387,86 @@ namespace Client
             {
                 string name = listView3.SelectedItems[0].Text;
                 
+            }
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (ListViewItem x in listView4.SelectedItems)
+                {
+                    listView4.Items.Remove(x);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void createToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = "someone_bad";
+                item.SubItems.Add("true");
+                item.SubItems.Add("false");
+                item.SubItems.Add("User");
+                listView4.Items.Add(item);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void disableToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[2].Text = "false";
+            }
+        }
+
+        private void enableToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[2].Text = "true";
+            }
+        }
+
+        private void simpleToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[1].Text = "true";
+            }
+        }
+
+        private void regexToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[1].Text = "false";
+            }
+        }
+
+        private void matchingOnlyUserStringToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[3].Text = "User";
+            }
+        }
+
+        private void matchingTextInWindowToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (ListViewItem curr in listView4.SelectedItems)
+            {
+                curr.SubItems[3].Text = "Everything";
             }
         }
     }

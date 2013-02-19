@@ -376,6 +376,10 @@ namespace Client
 
             }
             User user = new User(_nick, _host, _Network, _ident);
+            if (Ignoring.Matches(message, user))
+            {
+                return true;
+            }
             Channel channel = null;
             if (chan.StartsWith(_Network.channel_prefix))
             {

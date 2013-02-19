@@ -117,6 +117,22 @@ namespace Client
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.listView4 = new System.Windows.Forms.ListView();
+            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.regexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.matchingOnlyUserStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.matchingTextInWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.enableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.simpleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -125,11 +141,13 @@ namespace Client
             this.gro9.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
             this.gro2.SuspendLayout();
+            this.gro7.SuspendLayout();
             this.gro8.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.gro6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.fl.SuspendLayout();
+            this.contextMenuStrip4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -555,6 +573,7 @@ namespace Client
             // 
             // gro7
             // 
+            this.gro7.Controls.Add(this.listView4);
             this.gro7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro7.Location = new System.Drawing.Point(0, 0);
             this.gro7.Name = "gro7";
@@ -788,6 +807,124 @@ namespace Client
             this.openFileDialog1.Filter = "Pidgeon modules|*.pmod|All files|*.*";
             this.openFileDialog1.Title = "Open a pidgeon module";
             // 
+            // listView4
+            // 
+            this.listView4.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13});
+            this.listView4.ContextMenuStrip = this.contextMenuStrip4;
+            this.listView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView4.LabelEdit = true;
+            this.listView4.Location = new System.Drawing.Point(3, 16);
+            this.listView4.Name = "listView4";
+            this.listView4.Size = new System.Drawing.Size(455, 361);
+            this.listView4.TabIndex = 0;
+            this.listView4.UseCompatibleStateImageBehavior = false;
+            this.listView4.View = System.Windows.Forms.View.Details;
+            // 
+            // contextMenuStrip4
+            // 
+            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createToolStripMenuItem,
+            this.deleteToolStripMenuItem1,
+            this.toolStripMenuItem1,
+            this.typeToolStripMenuItem,
+            this.enableToolStripMenuItem1,
+            this.simpleToolStripMenuItem1,
+            this.regexToolStripMenuItem,
+            this.disableToolStripMenuItem1});
+            this.contextMenuStrip4.Name = "contextMenuStrip4";
+            this.contextMenuStrip4.Size = new System.Drawing.Size(113, 164);
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Ignore";
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "Simple";
+            this.columnHeader11.Width = 200;
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "Enabled";
+            // 
+            // createToolStripMenuItem
+            // 
+            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
+            this.createToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.createToolStripMenuItem.Text = "Create";
+            this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.deleteToolStripMenuItem1.Text = "Delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            // 
+            // regexToolStripMenuItem
+            // 
+            this.regexToolStripMenuItem.Name = "regexToolStripMenuItem";
+            this.regexToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.regexToolStripMenuItem.Text = "Regex";
+            this.regexToolStripMenuItem.Click += new System.EventHandler(this.regexToolStripMenuItem_Click);
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Type";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // typeToolStripMenuItem
+            // 
+            this.typeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.matchingOnlyUserStringToolStripMenuItem,
+            this.matchingTextInWindowToolStripMenuItem});
+            this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
+            this.typeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.typeToolStripMenuItem.Text = "Type";
+            // 
+            // matchingOnlyUserStringToolStripMenuItem
+            // 
+            this.matchingOnlyUserStringToolStripMenuItem.Name = "matchingOnlyUserStringToolStripMenuItem";
+            this.matchingOnlyUserStringToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.matchingOnlyUserStringToolStripMenuItem.Text = "Matching only user string";
+            this.matchingOnlyUserStringToolStripMenuItem.Click += new System.EventHandler(this.matchingOnlyUserStringToolStripMenuItem_Click);
+            // 
+            // matchingTextInWindowToolStripMenuItem
+            // 
+            this.matchingTextInWindowToolStripMenuItem.Name = "matchingTextInWindowToolStripMenuItem";
+            this.matchingTextInWindowToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.matchingTextInWindowToolStripMenuItem.Text = "Matching text in window";
+            this.matchingTextInWindowToolStripMenuItem.Click += new System.EventHandler(this.matchingTextInWindowToolStripMenuItem_Click);
+            // 
+            // enableToolStripMenuItem1
+            // 
+            this.enableToolStripMenuItem1.Name = "enableToolStripMenuItem1";
+            this.enableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.enableToolStripMenuItem1.Text = "Enable";
+            this.enableToolStripMenuItem1.Click += new System.EventHandler(this.enableToolStripMenuItem1_Click);
+            // 
+            // disableToolStripMenuItem1
+            // 
+            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
+            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.disableToolStripMenuItem1.Text = "Disable";
+            this.disableToolStripMenuItem1.Click += new System.EventHandler(this.disableToolStripMenuItem1_Click);
+            // 
+            // simpleToolStripMenuItem1
+            // 
+            this.simpleToolStripMenuItem1.Name = "simpleToolStripMenuItem1";
+            this.simpleToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.simpleToolStripMenuItem1.Text = "Simple";
+            this.simpleToolStripMenuItem1.Click += new System.EventHandler(this.simpleToolStripMenuItem1_Click);
+            // 
             // Preferences
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -811,11 +948,13 @@ namespace Client
             this.contextMenuStrip3.ResumeLayout(false);
             this.gro2.ResumeLayout(false);
             this.gro2.PerformLayout();
+            this.gro7.ResumeLayout(false);
             this.gro8.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.gro6.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.fl.ResumeLayout(false);
+            this.contextMenuStrip4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -892,6 +1031,22 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem loadModuleFromFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem unloadModuleToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.ListView listView4;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.ColumnHeader columnHeader12;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip4;
+        private System.Windows.Forms.ToolStripMenuItem createToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem regexToolStripMenuItem;
+        private System.Windows.Forms.ColumnHeader columnHeader13;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem typeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem matchingOnlyUserStringToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem matchingTextInWindowToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem simpleToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem1;
 
     }
 }
