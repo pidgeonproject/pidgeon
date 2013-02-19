@@ -33,6 +33,7 @@ namespace Client.Forms
                         network.Transfer(text, Configuration.Priority.High);
                     }
                 }
+                Close();
             }
             catch(Exception fail)
             {

@@ -151,14 +151,14 @@ namespace Client
                                                 if (target.Host != "")
                                                 {
                                                     current_ban = "MODE " + name + " +b *!*@" + target.Host;
-                                                    script = current_ban + Environment.NewLine;
+                                                    script += current_ban + Environment.NewLine;
                                                 }
                                                 break;
                                         }
                                     }
                                 }
                                 string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
-                                script = current_kick + Environment.NewLine;
+                                script += current_kick + Environment.NewLine;
                                 if (!Configuration.ConfirmAll)
                                 {
                                     _channel._Network.Transfer(current_ban, Configuration.Priority.High);
@@ -327,7 +327,7 @@ namespace Client
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
                             string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
-                            script = current_kick + Environment.NewLine;
+                            script += current_kick + Environment.NewLine;
                             if (!Configuration.ConfirmAll)
                             {
                                 _Network.Transfer(current_kick, Configuration.Priority.High);
