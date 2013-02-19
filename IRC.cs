@@ -828,6 +828,10 @@ namespace Client
                 {
                     if (_data2[1].Contains("JOIN"))
                     {
+                        if (!updated_text)
+                        {
+                            return true;
+                        }
                         string channel = _data2[2];
                         if (_data2[2].Contains("#") == false)
                         {
@@ -871,6 +875,7 @@ namespace Client
                         return true;
                     }
                 }
+
                 if (_data2.Length > 2)
                 {
                     if (_data2[1].Contains("NICK"))

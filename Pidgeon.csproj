@@ -194,6 +194,7 @@
     <Compile Include="Forms\SkinEd.Designer.cs">
       <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
+    <Compile Include="Ignoring.cs" />
     <Compile Include="IRC.cs" />
     <Compile Include="ListViewDB.cs">
       <SubType>Component</SubType>

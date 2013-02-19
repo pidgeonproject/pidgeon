@@ -733,6 +733,28 @@ namespace Client
                 }
                 config.AppendChild(xmlnode);
 
+                lock (Ignoring.IgnoreList)
+                {
+                    foreach (Ignoring.Ignore ci in Ignoring.IgnoreList)
+                    {
+                        curr = config.CreateElement("ignore");
+                        XmlAttribute enabled = config.CreateAttribute("enabled");
+                        XmlAttribute simple = config.CreateAttribute("simple");
+                        XmlAttribute text = config.CreateAttribute("text");
+                        XmlAttribute type = config.CreateAttribute("type");
+                        enabled.Value = ci.Enabled.ToString();
+                        simple.Value = ci.Simple.ToString();
+                        text.Value = ci.Text;
+                        type.Value = ci.type.ToString();
+                        curr.Attributes.Append(enabled);
+                        curr.Attributes.Append(simple);
+                        curr.Attributes.Append(text);
+                        curr.Attributes.Append(type);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
                 lock (Configuration.ShortcutKeylist)
                 {
                     foreach (Shortcut RR in Configuration.ShortcutKeylist)
@@ -925,6 +947,23 @@ namespace Client
                             if (curr.Name.StartsWith("extension."))
                             {
                                 Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
+                                continue;
+                            }
+                            if (curr.Name == "ignore")
+                            {
+                                if (curr.Attributes.Count > 3)
+                                {
+                                    Ignoring.Ignore.Type _t = Ignoring.Ignore.Type.Everything;
+                                    if (curr.Attributes[3].Value == "User")
+                                    {
+                                        _t = Ignoring.Ignore.Type.User;
+                                    }
+                                    Ignoring.Ignore ignore = new Ignoring.Ignore(bool.Parse(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), curr.Attributes[2].Value, _t);
+                                    lock (Ignoring.IgnoreList)
+                                    {
+                                        Ignoring.IgnoreList.Add(ignore);
+                                    }
+                                }
                                 continue;
                             }
                             if (curr.Name == "list")

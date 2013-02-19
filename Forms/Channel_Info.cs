@@ -82,7 +82,7 @@ namespace Client
                     {
                         foreach (char item in channel._Network.CModes)
                         {
-                            string de = "  unknown mode. Refer to ircd manual (/raw help)";
+                            string de = "   unknown mode. Refer to ircd manual (/raw help)";
                             cm.Add(item);
                             if (channel._Network.Descriptions.ContainsKey(item))
                             {
