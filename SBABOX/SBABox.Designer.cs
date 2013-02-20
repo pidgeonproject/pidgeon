@@ -35,7 +35,6 @@ namespace Client
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.hsBar = new System.Windows.Forms.HScrollBar();
             this.pt = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pt)).BeginInit();
             this.SuspendLayout();
             // 
             // vScrollBar1
@@ -67,6 +66,7 @@ namespace Client
             this.pt.Size = new System.Drawing.Size(540, 315);
             this.pt.TabIndex = 1;
             this.Resize += new System.EventHandler(ChangeSize);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(MouseIcon);
             this.pt.TabStop = false;
             this.pt.Paint += new System.Windows.Forms.PaintEventHandler(this.RepaintWindow);
             this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ClickHandler);
@@ -84,9 +84,7 @@ namespace Client
             this.Size = new System.Drawing.Size(563, 339);
             this.Load += new System.EventHandler(this.SBABox_Load);
             this.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.Wheeled);
-            ((System.ComponentModel.ISupportInitialize)(this.pt)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         #endregion

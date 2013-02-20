@@ -23,16 +23,30 @@ namespace Client
 {
     public class Configuration
     {
+        // Static config
+        // ===========================================================
+        public static readonly bool ChangingMouse = true;
+        /// <summary>
+        /// Prefix for all commands
+        /// </summary>
+        public static readonly string CommandPrefix = "/";
+        /// <summary>
+        /// Platform
+        /// </summary>
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        /// <summary>
+        /// Version
+        /// </summary>
+        public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
+
+
+        // Dynamic configuration
+        // ===========================================================
         public static bool Window_Maximized = true;
         /// <summary>
         /// Window left position
         /// </summary>
         public static int Window_Left = 0;
-
-        /// <summary>
-        /// Prefix for all commands
-        /// </summary>
-        public static readonly string CommandPrefix = "/";
 
         /// <summary>
         /// Ident
@@ -93,15 +107,6 @@ namespace Client
         public static bool aggressive_exception = false;
         public static bool aggressive_invites = false;
         public static bool aggressive_channel = true;
-
-        /// <summary>
-        /// Platform
-        /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx64;
-        /// <summary>
-        /// Version
-        /// </summary>
-        public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
 
         /// <summary>
         /// Used skin

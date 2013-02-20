@@ -48,7 +48,6 @@ namespace Client
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.text = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -98,9 +97,7 @@ namespace Client
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Disappear);
             this.Load += new System.EventHandler(this.Notification_Load);
             this.Click += new System.EventHandler(this.Notification_Click);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         #endregion

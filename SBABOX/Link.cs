@@ -46,5 +46,38 @@ namespace Client
                 Text = null;
             }
         }
+
+        public Link getLink(int X, int Y)
+        {
+            foreach (Link l in LinkInfo)
+            {
+                if ((X >= l.X && X <= l.X + l.Width) && (Y <= l.Y + l.Height && Y >= l.Y))
+                {
+                    return l;
+                }
+            }
+            return null;
+        }
+
+        public void MouseIcon(object sender, System.Windows.Forms.MouseEventArgs e)
+        {
+            try
+            {
+                if (Configuration.ChangingMouse)
+                {
+                    if (getLink(e.X, e.Y) == null)
+                    {
+                        pt.Cursor = System.Windows.Forms.Cursors.Default;
+                        return;
+                    }
+                    pt.Cursor = System.Windows.Forms.Cursors.Hand;
+                    return;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
     }
 }

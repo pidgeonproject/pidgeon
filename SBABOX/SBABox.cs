@@ -698,14 +698,7 @@ namespace Client
             try
             {
                 Link httparea = null;
-                foreach (Link l in LinkInfo)
-                {
-                    if ((e.X >= l.X && e.X <= l.X + l.Width) && (e.Y <= l.Y + l.Height && e.Y >= l.Y))
-                    {
-                        httparea = l;
-                        break;
-                    }
-                }
+                httparea = getLink(e.X, e.Y);
                 if (httparea != null)
                 {
                     if (e.Button == System.Windows.Forms.MouseButtons.Right)
