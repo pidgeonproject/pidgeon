@@ -66,7 +66,7 @@ namespace Client
             this.pt.Size = new System.Drawing.Size(540, 315);
             this.pt.TabIndex = 1;
             this.Resize += new System.EventHandler(ChangeSize);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(MouseIcon);
+            this.pt.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MouseIcon);
             this.pt.TabStop = false;
             this.pt.Paint += new System.Windows.Forms.PaintEventHandler(this.RepaintWindow);
             this.pt.MouseDown += new System.Windows.Forms.MouseEventHandler(this.ClickHandler);
