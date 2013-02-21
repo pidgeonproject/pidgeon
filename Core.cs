@@ -364,7 +364,7 @@ namespace Client
                 network = network.Substring(0, network.IndexOf("#"));
                 if (network.Contains(":"))
                 {
-                    string port = network.Substring(network.IndexOf(":"));
+                    string port = network.Substring(network.IndexOf(":") + 1);
                     network = network.Substring(0, network.IndexOf(port));
                     if (port.Contains("/"))
                     {
