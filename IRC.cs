@@ -501,6 +501,11 @@ namespace Client
                                 Scrollback.MessageStyle.Action, !channel.temporary_hide, date, !updated_text);
                         }
 
+                        if (!updated_text)
+                        {
+                            return true;
+                        }
+
                         while (change.StartsWith(" "))
                         {
                             change = change.Substring(1);

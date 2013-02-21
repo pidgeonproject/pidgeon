@@ -24,7 +24,7 @@ using System.Net;
 
 namespace Client
 {
-    class ProtocolIrc : Protocol
+    public class ProtocolIrc : Protocol
     {
         /// <summary>
         /// Thread in which the connection to server is handled

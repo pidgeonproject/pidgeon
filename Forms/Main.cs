@@ -154,6 +154,11 @@ namespace Client
                     }
                 }
                 done = true;
+
+                foreach (string text in Core.Parameters)
+                {
+                    Core.ParseLink(text);
+                }
             }
             catch (Exception f)
             {
@@ -261,7 +266,6 @@ namespace Client
             try
             {
                 _Load();
-                //miscToolStripMenuItem.Visible = false;
             }
             catch (Exception fail)
             {

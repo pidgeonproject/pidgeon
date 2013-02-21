@@ -144,6 +144,19 @@ namespace Client
         public static string[] startup = null;
         public static List<Extension> Extensions = new List<Extension>();
 
+        public static List<string> Parameters
+        {
+            get
+            {
+                List<string> data = new List<string>();
+                lock (startup)
+                {
+                    data.AddRange(startup);
+                }
+                return data;
+            }
+        }
+
         public static List<string> RingBuffer
         {
             get
@@ -334,6 +347,58 @@ namespace Client
                 Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
             }
             return false;
+        }
+
+        public static void ParseLink(string text, ProtocolSv services = null)
+        {
+            if (text.StartsWith("irc://"))
+            {
+                text = text.Substring("irc://".Length);
+                string network = text;
+                string channel = null;
+                int PORT = 6667;
+                if (network.Contains("#"))
+                {
+                    channel = network.Substring(network.IndexOf("#"));
+                }
+                network = network.Substring(0, network.IndexOf("#"));
+                if (network.Contains(":"))
+                {
+                    string port = network.Substring(network.IndexOf(":"));
+                    network = network.Substring(0, network.IndexOf(port));
+                    if (port.Contains("/"))
+                    {
+                        port = port.Substring(0, port.IndexOf("/"));
+                    }
+                    if (port.Contains("#"))
+                    {
+                        port = port.Substring(0, port.IndexOf("#"));
+                    }
+                    if (!int.TryParse(port, out PORT))
+                    {
+                        PORT = 6667;
+                    }
+                }
+                ProtocolIrc server = null;
+                foreach (Protocol protocol in Connections)
+                {
+                    if (typeof(ProtocolIrc) == protocol.GetType() && protocol.Server == network)
+                    {
+                        server = (ProtocolIrc)protocol;
+                        break;
+                    }
+                }
+
+                if (server == null)
+                {
+                    server = connectIRC(network, PORT);
+                }
+
+                if (channel != null)
+                {
+                    server._IRCNetwork.Join(channel);
+                }
+            }
         }
 
         /// <summary>
@@ -1287,7 +1352,7 @@ namespace Client
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        public static bool connectIRC(string server, int port = 6667, string pw = "", bool secured = false)
+        public static ProtocolIrc connectIRC(string server, int port = 6667, string pw = "", bool secured = false)
         {
             ProtocolIrc protocol = new ProtocolIrc();
             Connections.Add(protocol);
@@ -1298,7 +1363,7 @@ namespace Client
             network = protocol._IRCNetwork;
             protocol._IRCNetwork._protocol = protocol;
             protocol.Open();
-            return true;
+            return protocol;
         }
 
         public static int handleException(Exception _exception, bool fatal = false)
