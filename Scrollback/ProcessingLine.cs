@@ -167,7 +167,7 @@ namespace Client
                 {
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.text.Replace("$nick", owner._Network.nickname).Replace("$ident", owner._Network.ident).Replace("$name", Configuration.user);
+                        matchline = item.text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.user);
                     }
                     else
                     {
@@ -183,8 +183,8 @@ namespace Client
                     }
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.nickname)).Replace("$ident",
-                            System.Text.RegularExpressions.Regex.Escape(owner._Network.ident)).Replace("$name",
+                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname)).Replace("$ident",
+                            System.Text.RegularExpressions.Regex.Escape(owner._Network.Ident)).Replace("$name",
                             System.Text.RegularExpressions.Regex.Escape(Configuration.user));
                     }
                     else

@@ -356,9 +356,9 @@ namespace Client
                             if (message.Length > 6)
                             {
                                 string time = message.Substring(6);
-                                if (time.Contains(_Network._protocol.delimiter))
+                                if (time.Contains(_Network.protocol.delimiter))
                                 {
-                                    time = message.Substring(0, message.IndexOf(_Network._protocol.delimiter));
+                                    time = message.Substring(0, message.IndexOf(_Network.protocol.delimiter));
                                     _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
                                         Configuration.Priority.Low);
                                 }
@@ -405,7 +405,7 @@ namespace Client
                 }
                 return true;
             }
-            if (chan == _Network.nickname)
+            if (chan == _Network.Nickname)
             {
                 chan = source.Substring(0, source.IndexOf("!"));
                 lock (_Protocol.windows)
@@ -830,7 +830,7 @@ namespace Client
 
         public bool ProcessThis(string source, string[] data, string _value)
         {
-            if (source.StartsWith(_Network.nickname + "!"))
+            if (source.StartsWith(_Network.Nickname + "!"))
             {
                 string[] _data2 = data[1].Split(' ');
                 if (_data2.Length > 2)
@@ -890,7 +890,7 @@ namespace Client
                     if (_data2[1].Contains("NICK"))
                     {
                         system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
-                        _Network.nickname = _value;
+                        _Network.Nickname = _value;
                     }
                     if (_data2[1].Contains("PART"))
                     {
@@ -1110,7 +1110,7 @@ namespace Client
                                 case "315":
                                     if (FinishChan(code))
                                     {
-                                        break;
+                                        return true;
                                     }
                                     break;
                                 case "324":
@@ -1179,7 +1179,7 @@ namespace Client
         public ProcessorIRC(Network _network, string _text, ref DateTime _pong, long _date = 0, bool updated = true)
         {
             _Network = _network;
-            _Protocol = _network._protocol;
+            _Protocol = _network.protocol;
             text = _text;
             system = _network.system;
             pong = _pong;

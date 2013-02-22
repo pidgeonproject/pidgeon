@@ -181,7 +181,7 @@ namespace Client
             {
                 while (_IRCNetwork.Connected)
                 {
-                    Transfer("PING :" + _IRCNetwork._protocol.Server, Configuration.Priority.High);
+                    Transfer("PING :" + _IRCNetwork.protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
                 }
             }
@@ -208,8 +208,8 @@ namespace Client
 
                 Connected = true;
 
-                Send("USER " + _IRCNetwork.ident + " 8 * :" + _IRCNetwork.username);
-                Send("NICK " + _IRCNetwork.nickname);
+                Send("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.username);
+                Send("NICK " + _IRCNetwork.Nickname);
                 if (Password != "")
                 {
                     Send("PASS " + Password);
@@ -305,7 +305,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_IRCNetwork.nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+                Core._Main.Chat.scrollback.InsertText(Core.network.protocol.PRIVMSG(_IRCNetwork.Nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
@@ -320,7 +320,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -348,7 +348,7 @@ namespace Client
             }
             try
             {
-                Send("QUIT :" + _IRCNetwork.quit);
+                Send("QUIT :" + _IRCNetwork.Quit);
             }
             catch (Exception) { }
             _IRCNetwork.Connected = false;

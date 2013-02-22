@@ -192,7 +192,7 @@ namespace Client
                         {
                             if (Configuration.DisplayCtcp)
                             {
-                                _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                                _channel._Network.protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
                             _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
@@ -592,11 +592,11 @@ namespace Client
                         string nickname = Decode(user.Text);
                         if (nickname != "")
                         {
-                            if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
+                            if (!Core.network.protocol.windows.ContainsKey(_Network.window + nickname))
                             {
                                 _Network.Private(nickname);
                             }
-                            _Network._protocol.ShowChat(_Network.window + nickname);
+                            _Network.protocol.ShowChat(_Network.window + nickname);
                         }
                     }
                 }

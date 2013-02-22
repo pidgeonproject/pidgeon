@@ -279,6 +279,46 @@ namespace Client
             return null;
         }
 
+        public static SBABox.ContentText parse_ircd(string text, SBABox SBAB, bool under, bool bold)
+        {
+            string result = text;
+            string tempdata = text;
+            foreach (char sepa in Configuration.Separators)
+            {
+                if (tempdata.StartsWith(sepa.ToString()))
+                {
+                    if (tempdata.Substring(1).StartsWith("irc://"))
+                    {
+                        tempdata = tempdata.Substring(1);
+                        string link = result.Substring(result.IndexOf("irc://") + 6);
+                        if (link.Length > 0)
+                        {
+                            char separator = ' ';
+                            foreach (char xx in Configuration.Separators)
+                            {
+                                if (link.Contains(xx.ToString()))
+                                {
+                                    separator = xx;
+                                    break;
+                                }
+                            }
+                            if (link.Contains(separator.ToString()))
+                            {
+                                link = link.Substring(0, link.IndexOf(separator.ToString()));
+                            }
+                        }
+                        SBABox.ContentText Link = new SBABox.ContentText("irc://" + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Link.Link = "irc://" + ProtocolIrc.decode_text(link);
+                        Link.Underline = under;
+                        Link.Bold = bold;
+                        Link.Underline = true;
+                        return Link;
+                    }
+                }
+            }
+            return null;
+        }
+
         public static SBABox.ContentText parse_chan(string text, SBABox SBAB, bool under, bool bold)
         {
             if (text.StartsWith("#"))
@@ -463,6 +503,24 @@ namespace Client
                     else
                     {
                         Jump = tempdata.Length - 1;
+                    }
+                }
+                else if (matchesSWPrefix(tempdata, "irc://"))
+                {
+                    string prefix = Prefix(tempdata, "irc://").ToString();
+                    lprttext = new SBABox.ContentText(ProtocolIrc.decode_text(templine) + prefix, SBAB, color);
+                    lprttext.Bold = Bold;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    line.insertData(parse_ircd(tempdata, SBAB, Underlined, Bold));
+                    if (matchesAPrefix(tempdata.Substring(1)))
+                    {
+                        Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
+                    }
+                    else
+                    {
+                        Jump = tempdata.Length;
                     }
                 }
                 else if (tempdata.StartsWith(" #") || (tempdata.StartsWith("#") && text.StartsWith("#")))
@@ -844,10 +902,10 @@ namespace Client
                 {
                     if (input.StartsWith(Configuration.CommandPrefix))
                     {
-                        Core.network._protocol.Message(input.Substring(1), Core._Main.Chat.name);
+                        Core.network.protocol.Message(input.Substring(1), Core._Main.Chat.name);
                         return 2;
                     }
-                    Core.network._protocol.Message(input, Core._Main.Chat.name);
+                    Core.network.protocol.Message(input, Core._Main.Chat.name);
                 }
                 return 0;
             }

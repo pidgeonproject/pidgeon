@@ -95,17 +95,16 @@ namespace Client
         /// Currently rendered channel on main window
         /// </summary>
         public Channel RenderedChannel = null;
-        public string nickname;
-        public string ident;
+        public string Nickname = null;
+        public string Ident = "pidgeon";
         /// <summary>
-        /// Name of system window
+        /// Quit message
         /// </summary>
-        //public string sw;
-        public string quit;
+        public string Quit;
         /// <summary>
         /// Protocol
         /// </summary>
-        public Protocol _protocol;
+        public Protocol protocol;
         /// <summary>
         /// Parent service
         /// </summary>
@@ -219,7 +218,7 @@ namespace Client
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);
-            _protocol.CreateChat(user, true, this, true);
+            protocol.CreateChat(user, true, this, true);
             return;
         }
 
@@ -231,7 +230,7 @@ namespace Client
         /// <returns></returns>
         public void Join(string channel)
         {
-            _protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
+            protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
         }
 
         /// <summary>
@@ -250,7 +249,7 @@ namespace Client
                 _channel.Name = channel;
                 Channels.Add(_channel);
                 Core._Main.ChannelList.insertChannel(_channel);
-                _protocol.CreateChat(channel, !nf, this, true, true);
+                protocol.CreateChat(channel, !nf, this, true, true);
                 return _channel;
             }
             else
@@ -266,7 +265,7 @@ namespace Client
         {
             get 
               {
-                  if (_protocol.ProtocolType != 3)
+                  if (protocol.ProtocolType != 3)
                   {
                       return "system";
                   }
@@ -323,7 +322,7 @@ namespace Client
         {
             if (data != "")
             {
-                _protocol.Transfer(data, _priority, this);
+                protocol.Transfer(data, _priority, this);
             }
         }
 
@@ -346,25 +345,25 @@ namespace Client
                 Descriptions.Add('A', "admins only");
                 Descriptions.Add('O', "opers chan");
                 Descriptions.Add('t', "topic changes can be done only by operators");
-                _protocol = protocol;
+                protocol = protocol;
                 server = Server;
-                quit = Configuration.quit;
-                nickname = Configuration.nick;
+                Quit = Configuration.quit;
+                Nickname = Configuration.nick;
 
                 username = Configuration.user;
-                ident = Configuration.ident;
+                Ident = Configuration.ident;
                 if (protocol.ProtocolType == 3)
                 {
-                    _protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
-                    system = _protocol.windows["!" + randomuqid + server];
+                    protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
+                    system = protocol.windows["!" + randomuqid + server];
                     //sw = "!" + randomuqid + server;
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
-                    _protocol.CreateChat("!system", true, this);
+                    protocol.CreateChat("!system", true, this);
                     //sw = "!system";
-                    system = _protocol.windows["!system"];
+                    system = protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
                 Hooks.CreatingNetwork(this);

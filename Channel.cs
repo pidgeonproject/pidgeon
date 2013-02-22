@@ -488,7 +488,7 @@ namespace Client
         {
             if (Chat == null)
             {
-                foreach (var curr in _Network._protocol.windows)
+                foreach (var curr in _Network.protocol.windows)
                 {
                     if (curr.Key == _Network.window + Name)
                     {
