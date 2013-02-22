@@ -799,6 +799,18 @@ namespace Client
             return false;
         }
 
+        private bool Idle2(string source, string parameters, string value)
+        {
+            if (parameters.Contains(" "))
+            {
+                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string message = value;
+                system.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                return true;
+            }
+            return false;
+        }
+
         private bool IdleTime(string source, string parameters, string value)
         {
             if (parameters.Contains(" "))
@@ -997,6 +1009,12 @@ namespace Client
                                 if (Info(command, parameters, _value))
                                 {
                                     //return true;
+                                }
+                                break;
+                            case "301":
+                                if (Idle2(command, parameters, _value))
+                                {
+                                    return true;
                                 }
                                 break;
                             case "317":

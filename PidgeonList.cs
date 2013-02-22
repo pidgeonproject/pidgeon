@@ -605,13 +605,33 @@ namespace Client
         {
             try
             {
-                if (Servers.ContainsValue(items.SelectedNode))
+                lock (Servers)
                 {
-                    foreach (var cu in Servers)
+                    if (Servers.ContainsValue(items.SelectedNode))
                     {
-                        if (cu.Value == items.SelectedNode)
+                        foreach (var cu in Servers)
                         {
-                            cu.Key._protocol.Exit();
+                            if (cu.Value == items.SelectedNode)
+                            {
+                                cu.Key._protocol.Exit();
+                                return;
+                            }
+                        }
+                    }
+                }
+                lock (ServiceList)
+                {
+                    foreach (KeyValuePair<ProtocolSv, TreeNode> sv in ServiceList)
+                    {
+                        lock (sv.Key.NetworkList)
+                        {
+                            foreach (Network curr in sv.Key.NetworkList)
+                            {
+                                if (curr.server == items.SelectedNode.Text)
+                                {
+                                    sv.Key.Disconnect(items.SelectedNode.Text);
+                                }
+                            }
                         }
                     }
                 }

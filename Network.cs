@@ -62,19 +62,19 @@ namespace Client
         /// <summary>
         /// Specifies if you are connected to network
         /// </summary>
-        public bool Connected;
+        public bool Connected = false;
         /// <summary>
         /// List of private message windows
         /// </summary>
-        public List<User> PrivateChat = new List<User>();
+        public List<User> PrivateChat= new List<User>();
         /// <summary>
         /// System window
         /// </summary>
-        public Window system;
+        public Window system = null;
         /// <summary>
         /// Host name of server
         /// </summary>
-        public string server;
+        public string server = null;
         /// <summary>
         /// User mode of current user
         /// </summary>
@@ -82,11 +82,11 @@ namespace Client
         /// <summary>
         /// User name (real name)
         /// </summary>
-        public string username;
+        public string username = null;
         /// <summary>
         /// Randomly generated ID for this network to make it unique in case some other network would share the name
         /// </summary>
-        public string randomuqid;
+        public string randomuqid = null;
         /// <summary>
         /// List of all channels on network
         /// </summary>
@@ -95,6 +95,9 @@ namespace Client
         /// Currently rendered channel on main window
         /// </summary>
         public Channel RenderedChannel = null;
+        /// <summary>
+        /// Nickname of this user
+        /// </summary>
         public string Nickname = null;
         public string Ident = "pidgeon";
         /// <summary>
@@ -105,6 +108,10 @@ namespace Client
         /// Protocol
         /// </summary>
         public Protocol _protocol = null;
+        /// <summary>
+        /// Specifies whether this network is using SSL connection
+        /// </summary>
+        public bool isSecure = false;
         /// <summary>
         /// Parent service
         /// </summary>

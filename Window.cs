@@ -109,13 +109,20 @@ namespace Client
 
         public void Changed(object sender, SplitterEventArgs dt)
         {
-            if (Making == false)
+            try
             {
-                Configuration.x1 = xContainer1.SplitterDistance;
-                Configuration.x4 = xContainer4.SplitterDistance;
+                if (Making == false)
+                {
+                    Configuration.x1 = xContainer1.SplitterDistance;
+                    Configuration.x4 = xContainer4.SplitterDistance;
+                }
+                listViewd.Columns[0].Width = listViewd.Width;
+                listView.Columns[0].Width = listView.Width;
             }
-            listViewd.Columns[0].Width = listViewd.Width;
-            listView.Columns[0].Width = listView.Width;
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         protected override bool IsInputKey(Keys keyData)
@@ -203,56 +210,70 @@ namespace Client
 
         private void textbox_Load(object sender, EventArgs e)
         {
-            banToolStripMenuItem.Text = messages.get("ban", Core.SelectedLanguage);
-            modeToolStripMenuItem.Text = messages.get("mode", Core.SelectedLanguage);
-            kbToolStripMenuItem.Text = messages.get("kickban+text", Core.SelectedLanguage);
-            kickrToolStripMenuItem.Text = messages.get("kick-text", Core.SelectedLanguage);
-            vToolStripMenuItem.Text = messages.get("give+v", Core.SelectedLanguage);
-            hToolStripMenuItem.Text = messages.get("give+h", Core.SelectedLanguage);
-            oToolStripMenuItem.Text = messages.get("give+o", Core.SelectedLanguage);
-            aToolStripMenuItem.Text = messages.get("give+a", Core.SelectedLanguage);
-            qToolStripMenuItem.Text = messages.get("give+q", Core.SelectedLanguage);
-            vToolStripMenuItem1.Text = messages.get("give-v", Core.SelectedLanguage);
-            hToolStripMenuItem1.Text = messages.get("give-h", Core.SelectedLanguage);
-            oToolStripMenuItem1.Text = messages.get("give-o", Core.SelectedLanguage);
-            aToolStripMenuItem1.Text = messages.get("give-a", Core.SelectedLanguage);
-            qToolStripMenuItem1.Text = messages.get("give-q", Core.SelectedLanguage);
-            if (!isChannel)
+            try
             {
-                banToolStripMenuItem.Visible = false;
-                whoisToolStripMenuItem.Visible = false;
-                toolStripMenuItem1.Visible = false;
-                toolStripMenuItem2.Visible = false;
-                toolStripMenuItem3.Visible = false;
-                kbToolStripMenuItem.Visible = false;
-                whoisToolStripMenuItem.Visible = false;
-                ctToolStripMenuItem.Visible = false;
-                refreshToolStripMenuItem.Visible = false;
-                kickBanToolStripMenuItem.Visible = false;
-                modeToolStripMenuItem.Visible = false;
-                kickToolStripMenuItem.Visible = false;
-                kickrToolStripMenuItem.Visible = false;
+                banToolStripMenuItem.Text = messages.get("ban", Core.SelectedLanguage);
+                modeToolStripMenuItem.Text = messages.get("mode", Core.SelectedLanguage);
+                kbToolStripMenuItem.Text = messages.get("kickban+text", Core.SelectedLanguage);
+                kickrToolStripMenuItem.Text = messages.get("kick-text", Core.SelectedLanguage);
+                vToolStripMenuItem.Text = messages.get("give+v", Core.SelectedLanguage);
+                hToolStripMenuItem.Text = messages.get("give+h", Core.SelectedLanguage);
+                oToolStripMenuItem.Text = messages.get("give+o", Core.SelectedLanguage);
+                aToolStripMenuItem.Text = messages.get("give+a", Core.SelectedLanguage);
+                qToolStripMenuItem.Text = messages.get("give+q", Core.SelectedLanguage);
+                vToolStripMenuItem1.Text = messages.get("give-v", Core.SelectedLanguage);
+                hToolStripMenuItem1.Text = messages.get("give-h", Core.SelectedLanguage);
+                oToolStripMenuItem1.Text = messages.get("give-o", Core.SelectedLanguage);
+                aToolStripMenuItem1.Text = messages.get("give-a", Core.SelectedLanguage);
+                qToolStripMenuItem1.Text = messages.get("give-q", Core.SelectedLanguage);
+                if (!isChannel)
+                {
+                    banToolStripMenuItem.Visible = false;
+                    whoisToolStripMenuItem.Visible = false;
+                    toolStripMenuItem1.Visible = false;
+                    toolStripMenuItem2.Visible = false;
+                    toolStripMenuItem3.Visible = false;
+                    kbToolStripMenuItem.Visible = false;
+                    whoisToolStripMenuItem.Visible = false;
+                    ctToolStripMenuItem.Visible = false;
+                    refreshToolStripMenuItem.Visible = false;
+                    kickBanToolStripMenuItem.Visible = false;
+                    modeToolStripMenuItem.Visible = false;
+                    kickToolStripMenuItem.Visible = false;
+                    kickrToolStripMenuItem.Visible = false;
+                }
+                if (isChannel)
+                {
+                    synchroToolStripMenuItem.Visible = true;
+                }
             }
-            if (isChannel)
+            catch (Exception fail)
             {
-                synchroToolStripMenuItem.Visible = true;
+                Core.handleException(fail);
             }
         }
 
         private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    if (SelectedUser != null)
                     {
-                        if (user.Text != "")
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            Core.network.Transfer("WHOIS " + Decode(user.Text));
+                            if (user.Text != "")
+                            {
+                                Core.network.Transfer("WHOIS " + Decode(user.Text));
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -270,18 +291,25 @@ namespace Client
 
         double Mode(string mode)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    if (SelectedUser != null)
                     {
-                        if (user.Text != "")
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
+                            if (user.Text != "")
+                            {
+                                Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
             return 0;
         }
@@ -373,131 +401,187 @@ namespace Client
 
         private void banToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                string script = "";
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    string script = "";
+                    if (SelectedUser != null)
                     {
-                        string mode = "";
-                        Channel _channel = _Network.getChannel(name);
-                        if (_channel != null)
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            User target = _channel.userFromName(Decode(user.Text));
-                            if (target != null)
+                            string mode = "";
+                            Channel _channel = _Network.getChannel(name);
+                            if (_channel != null)
                             {
-                                switch (Configuration.DefaultBans)
+                                User target = _channel.userFromName(Decode(user.Text));
+                                if (target != null)
                                 {
-                                    case Configuration.TypeOfBan.Host:
-                                        if (target.Host != "")
-                                        {
-                                            mode = "MODE " + name + " +b *!*@" + target.Host;
-                                            script += mode + Environment.NewLine;
-                                        }
-                                        break;
-                                }
-                                if (!Configuration.ConfirmAll)
-                                {
-                                    Core.network.Transfer(mode, Configuration.Priority.High);
+                                    switch (Configuration.DefaultBans)
+                                    {
+                                        case Configuration.TypeOfBan.Host:
+                                            if (target.Host != "")
+                                            {
+                                                mode = "MODE " + name + " +b *!*@" + target.Host;
+                                                script += mode + Environment.NewLine;
+                                            }
+                                            break;
+                                    }
+                                    if (!Configuration.ConfirmAll)
+                                    {
+                                        Core.network.Transfer(mode, Configuration.Priority.High);
+                                    }
                                 }
                             }
                         }
-                    }
-                    if (Configuration.ConfirmAll)
-                    {
-                        Core.ProcessScript(script, _Network);
+                        if (Configuration.ConfirmAll)
+                        {
+                            Core.ProcessScript(script, _Network);
+                        }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void krToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    if (SelectedUser != null)
                     {
-                        Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        {
+                            Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
+                        }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    if (SelectedUser != null)
                     {
-                        string reason = Configuration.DefaultReason;
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        {
+                            string reason = Configuration.DefaultReason;
 
+                        }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (_Network == null)
-                    return;
-
-                Channel item = _Network.getChannel(name);
-                if (item != null)
+                if (isChannel)
                 {
-                    locked = false;
-                    item.redrawUsers();
+                    if (_Network == null)
+                        return;
+
+                    Channel item = _Network.getChannel(name);
+                    if (item != null)
+                    {
+                        locked = false;
+                        item.redrawUsers();
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void vERSIONToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    SendCtcp("VERSION");
+                    if (SelectedUser != null)
+                    {
+                        SendCtcp("VERSION");
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void pINGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
+                    if (SelectedUser != null)
+                    {
+                        SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    SendCtcp("PAGE");
+                    if (SelectedUser != null)
+                    {
+                        SendCtcp("PAGE");
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void tIMEToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    SendCtcp("TIME");
+                    if (SelectedUser != null)
+                    {
+                        SendCtcp("TIME");
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -544,82 +628,131 @@ namespace Client
 
         private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            if (!Resizing)
+            try
             {
-                Resizing = true;
-                listViewd.Columns[0].Width = listView.Columns[0].Width;
+                if (!Resizing)
+                {
+                    Resizing = true;
+                    listViewd.Columns[0].Width = listView.Columns[0].Width;
+                }
+                else
+                {
+                    Resizing = false;
+                }
             }
-            else
+            catch (Exception fail)
             {
-                Resizing = false;
+                Core.handleException(fail);
             }
         }
 
         private void listViewd_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
         {
-            if (!Resizing)
+            try
             {
-                Resizing = true;
-                listView.Columns[0].Width = listViewd.Columns[0].Width;
+                if (!Resizing)
+                {
+                    Resizing = true;
+                    listView.Columns[0].Width = listViewd.Columns[0].Width;
+                }
+                else
+                {
+                    Resizing = false;
+                }
             }
-            else
+            catch (Exception fail)
             {
-                Resizing = false;
+                Core.handleException(fail);
             }
         }
 
         private void listWork(object sender, EventArgs e)
         {
-            locked = true;
-            lockwork.Stop();
-            lockwork.Enabled = true;
-            lockwork.Start();
+            try
+            {
+                locked = true;
+                lockwork.Stop();
+                lockwork.Enabled = true;
+                lockwork.Start();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void listView_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedUser = listView.SelectedItems;
+            try
+            {
+                SelectedUser = listView.SelectedItems;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void messageToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            try
             {
-                if (SelectedUser != null)
+                if (isChannel)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    if (SelectedUser != null)
                     {
-                        string nickname = Decode(user.Text);
-                        if (nickname != "")
+                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
+                            string nickname = Decode(user.Text);
+                            if (nickname != "")
                             {
-                                _Network.Private(nickname);
+                                if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
+                                {
+                                    _Network.Private(nickname);
+                                }
+                                _Network._protocol.ShowChat(_Network.window + nickname);
                             }
-                            _Network._protocol.ShowChat(_Network.window + nickname);
                         }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void synchroToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (_Network.Connected)
+            try
             {
-                Channel channel = _Network.getChannel(name);
-                if (channel != null)
+                if (_Network.Connected)
                 {
-                    channel.UserList.Clear();
-                    _Network.Transfer("WHO " + channel.Name);
+                    Channel channel = _Network.getChannel(name);
+                    if (channel != null)
+                    {
+                        channel.UserList.Clear();
+                        _Network.Transfer("WHO " + channel.Name);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void lo_Tick(object sender, EventArgs e)
         {
-            locked = false;
-            lockwork.Enabled = false;
+            try
+            {
+                locked = false;
+                lockwork.Enabled = false;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
     }
 }
