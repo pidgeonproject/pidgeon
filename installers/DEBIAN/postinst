@@ -1,0 +1,5 @@
+#!/bin/sh
+gconftool-2 -s /desktop/gnome/url-handlers/irc/command '/usr/bin/pidgeon %s' --type String
+gconftool-2 -s /desktop/gnome/url-handlers/irc/enabled --type Boolean true
+
+exit 0

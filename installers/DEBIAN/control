@@ -1,0 +1,11 @@
+Package: Pidgeon
+Version: 1.0.9.1
+Section: network
+Priority: optional
+Architecture: all
+Essential: no
+Depends: mono-complete
+Installed-Size: 1024
+Maintainer: Petr Bena <benapetr@gmail.com>
+Description: Pidgeon client is advanced IRC client
+ This package will install pidgeon IRC client, with default plugins
