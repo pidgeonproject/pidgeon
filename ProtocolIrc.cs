@@ -181,7 +181,7 @@ namespace Client
             {
                 while (_IRCNetwork.Connected)
                 {
-                    Transfer("PING :" + _IRCNetwork.protocol.Server, Configuration.Priority.High);
+                    Transfer("PING :" + _IRCNetwork._protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
                 }
             }
@@ -305,7 +305,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network.protocol.PRIVMSG(_IRCNetwork.Nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+                Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(_IRCNetwork.Nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;

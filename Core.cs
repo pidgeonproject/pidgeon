@@ -1361,7 +1361,7 @@ namespace Client
             protocol.Password = pw;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
-            protocol._IRCNetwork.protocol = protocol;
+            protocol._IRCNetwork._protocol = protocol;
             protocol.Open();
             return protocol;
         }

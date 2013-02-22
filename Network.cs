@@ -104,7 +104,7 @@ namespace Client
         /// <summary>
         /// Protocol
         /// </summary>
-        public Protocol protocol;
+        public Protocol _protocol = null;
         /// <summary>
         /// Parent service
         /// </summary>
@@ -218,7 +218,7 @@ namespace Client
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);
-            protocol.CreateChat(user, true, this, true);
+            _protocol.CreateChat(user, true, this, true);
             return;
         }
 
@@ -230,7 +230,7 @@ namespace Client
         /// <returns></returns>
         public void Join(string channel)
         {
-            protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
+            _protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Client
                 _channel.Name = channel;
                 Channels.Add(_channel);
                 Core._Main.ChannelList.insertChannel(_channel);
-                protocol.CreateChat(channel, !nf, this, true, true);
+                _protocol.CreateChat(channel, !nf, this, true, true);
                 return _channel;
             }
             else
@@ -265,7 +265,7 @@ namespace Client
         {
             get 
               {
-                  if (protocol.ProtocolType != 3)
+                  if (_protocol.ProtocolType != 3)
                   {
                       return "system";
                   }
@@ -322,7 +322,7 @@ namespace Client
         {
             if (data != "")
             {
-                protocol.Transfer(data, _priority, this);
+                _protocol.Transfer(data, _priority, this);
             }
         }
 
@@ -345,7 +345,7 @@ namespace Client
                 Descriptions.Add('A', "admins only");
                 Descriptions.Add('O', "opers chan");
                 Descriptions.Add('t', "topic changes can be done only by operators");
-                protocol = protocol;
+                _protocol = protocol;
                 server = Server;
                 Quit = Configuration.quit;
                 Nickname = Configuration.nick;

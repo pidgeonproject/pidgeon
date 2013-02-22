@@ -902,10 +902,10 @@ namespace Client
                 {
                     if (input.StartsWith(Configuration.CommandPrefix))
                     {
-                        Core.network.protocol.Message(input.Substring(1), Core._Main.Chat.name);
+                        Core.network._protocol.Message(input.Substring(1), Core._Main.Chat.name);
                         return 2;
                     }
-                    Core.network.protocol.Message(input, Core._Main.Chat.name);
+                    Core.network._protocol.Message(input, Core._Main.Chat.name);
                 }
                 return 0;
             }

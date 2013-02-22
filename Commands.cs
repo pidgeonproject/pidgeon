@@ -209,10 +209,10 @@ namespace Client
                         Window window = curr.retrieveWindow();
                         if (window != null)
                         {
-                            Core.network.protocol.ShowChat(Core.network.window + window.name);
+                            Core.network._protocol.ShowChat(Core.network.window + window.name);
                         }
                     }
-                    Core.network.protocol.Join(channel);
+                    Core.network._protocol.Join(channel);
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Scrollback.MessageStyle.System);
@@ -247,7 +247,7 @@ namespace Client
                         string text = parameter;
                         if (Core.network.Connected)
                         {
-                            Core.network.protocol.Command(text);
+                            Core.network._protocol.Command(text);
                             return;
                         }
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
@@ -266,7 +266,7 @@ namespace Client
                     {
                         reason = parameter;
                     }
-                    Core.network.protocol.Command("QUIT " + reason);
+                    Core.network._protocol.Command("QUIT " + reason);
                 }
             }
 
@@ -357,7 +357,7 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Scrollback.MessageStyle.User);
                     return;
                 }
-                Core.network.protocol.requestNick(Nick);
+                Core.network._protocol.requestNick(Nick);
             }
 
             public static void connect(string parameter)
@@ -413,7 +413,7 @@ namespace Client
                         Window window = curr.retrieveWindow();
                         if (window != null)
                         {
-                            Core.network.protocol.Message2(message, curr.Name);
+                            Core.network._protocol.Message2(message, curr.Name);
                         }
                     }
                     return;
@@ -458,7 +458,7 @@ namespace Client
                                 ms = ms.Substring(1);
                             }
                             Core.network.system.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Scrollback.MessageStyle.System);
-                            Core.network.protocol.Message(ms, channel, Configuration.Priority.Normal, true);
+                            Core.network._protocol.Message(ms, channel, Configuration.Priority.Normal, true);
                             return;
                         }
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
@@ -485,8 +485,8 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
                         return;
                     }
-                    Core.network.Transfer("PRIVMSG " + Params[0] + " :" + Core.network.protocol.delimiter +
-                        Params[1].ToUpper() + Core.network.protocol.delimiter);
+                    Core.network.Transfer("PRIVMSG " + Params[0] + " :" + Core.network._protocol.delimiter +
+                        Params[1].ToUpper() + Core.network._protocol.delimiter);
                     Core._Main.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Scrollback.MessageStyle.Message, false);
                     return;
                 }
@@ -581,17 +581,17 @@ namespace Client
                 if (channel.Contains(" "))
                 {
                     channel = channel.Substring(0, channel.IndexOf(" "));
-                    if (Core.network != null && Core.network.protocol != null)
+                    if (Core.network != null && Core.network._protocol != null)
                     {
                         if (Core.network.Connected)
                         {
-                            if (!Core.network.protocol.windows.ContainsKey(Core.network.window + channel))
+                            if (!Core.network._protocol.windows.ContainsKey(Core.network.window + channel))
                             {
                                 Core.network.Private(channel);
                             }
-                            Core.network.protocol.ShowChat(Core.network.window + channel);
-                            Core.network.protocol.windows[Core.network.window + channel].scrollback.InsertText(Core.network.protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
-                            Core.network.protocol.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
+                            Core.network._protocol.ShowChat(Core.network.window + channel);
+                            Core.network._protocol.windows[Core.network.window + channel].scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                            Core.network._protocol.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;
                         }
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
@@ -600,15 +600,15 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
                     return;
                 }
-                if (Core.network != null && Core.network.protocol != null)
+                if (Core.network != null && Core.network._protocol != null)
                 {
                     if (Core.network.Connected)
                     {
-                        if (!Core.network.protocol.windows.ContainsKey(Core.network.window + channel))
+                        if (!Core.network._protocol.windows.ContainsKey(Core.network.window + channel))
                         {
                             Core.network.Private(channel);
                         }
-                        Core.network.protocol.ShowChat(Core.network.window + channel);
+                        Core.network._protocol.ShowChat(Core.network.window + channel);
                         return;
                     }
                 }
@@ -634,7 +634,7 @@ namespace Client
 
             public static void service_quit(string parameter)
             {
-                Core.network.protocol.Exit();
+                Core.network._protocol.Exit();
             }
 
             public static void pidgeon_service(string parameter)
