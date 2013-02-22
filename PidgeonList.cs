@@ -438,9 +438,11 @@ namespace Client
                                 {
                                     RemoveItem(node);
                                 }
-                                items.Nodes.Remove(items.SelectedNode);
+                                if (items.Nodes.Contains(items.SelectedNode))
+                                {
+                                    items.Nodes.Remove(items.SelectedNode);
+                                }
                             }
-                            return;
                         }
                     }
                 }
@@ -476,7 +478,6 @@ namespace Client
                                 if (items.Nodes.Contains(Item))
                                 {
                                     items.Nodes.Remove(Item);
-                                    return;
                                 }
                             }
                         }

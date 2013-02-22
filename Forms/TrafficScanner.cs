@@ -72,6 +72,15 @@ namespace Client
                 modified = false;
                 lock (text)
                 {
+                    if (text.Count > 800)
+                    {
+                        if (MessageBox.Show("There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                        {
+                            refresh.Enabled = false;
+                            scrollToolStripMenuItem.Checked = false;
+                            return;
+                        }
+                    }
                     foreach (string x in text)
                     {
                         textBox1.AppendText(x + Environment.NewLine);
