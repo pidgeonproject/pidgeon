@@ -67,27 +67,36 @@ namespace Client
 
         private void refresh_Tick(object sender, EventArgs e)
         {
-            if (Visible && modified)
+            try
             {
-                modified = false;
-                lock (text)
+                refresh.Enabled = false;
+                if (Visible && modified)
                 {
-                    if (text.Count > 800)
+                    modified = false;
+                    lock (text)
                     {
-                        if (MessageBox.Show("There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                        if (text.Count > 800)
                         {
-                            refresh.Enabled = false;
-                            scrollToolStripMenuItem.Checked = false;
-                            return;
+                            if (MessageBox.Show("There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
+                            {
+                                refresh.Enabled = false;
+                                scrollToolStripMenuItem.Checked = false;
+                                return;
+                            }
                         }
+                        foreach (string x in text)
+                        {
+                            textBox1.AppendText(x + Environment.NewLine);
+                        }
+                        text.Clear();
+                        textBox1.ScrollToCaret();
                     }
-                    foreach (string x in text)
-                    {
-                        textBox1.AppendText(x + Environment.NewLine);
-                    }
-                    text.Clear();
-                    textBox1.ScrollToCaret();
                 }
+                refresh.Enabled = true;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
