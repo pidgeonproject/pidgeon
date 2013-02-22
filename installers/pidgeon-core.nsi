@@ -1,15 +1,18 @@
- Function IsDotNETInstalled
-   Push $0
-   Push $1
+;NSIS Modern User Interface
+;Basic Example Script
+;Written by Joost Verburg
 
-   StrCpy $0 1
-   System::Call "mscoree::GetCORVersion(w, i ${NSIS_MAX_STRLEN}, *i) i .r1"
-   StrCmp $1 0 +2
-     StrCpy $0 0
+;--------------------------------
+;Include Modern UI
 
-   Pop $1
-   Exch $0
- FunctionEnd
+  !include "MUI2.nsh"
+
+;--------------------------------
+;General
+
+  ;Name and file
+  Name "Pidgeon"
+  OutFile "pidgeon_setup.exe"
 
 !define APPNAME "Pidgeon"
 !define DESCRIPTION "Pidgeon client"
@@ -22,110 +25,81 @@
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link
 !define ABOUTURL "http://pidgeonclient.org/wiki" # "Publisher" link
-# This is the size (in kB) of all the files copied into "Program Files"
- 
-RequestExecutionLevel user ;Require admin rights on NT6+ (When UAC is turned on)
- 
-InstallDir "$PROGRAMFILES\${APPNAME}"
- 
-# rtf or txt file - remember if it is txt, it must be in the DOS text format (\r\n)
-#LicenseData "license.rtf"
-# This will be in the installer/uninstaller's title bar
-Name "${APPNAME}"
 
-LicenseData "C:\Users\petr.bena\Documents\Visual Studio 2010\gpl-3.0.txt"
-#Icon "logo.ico"
-outFile "pidgeon_setup.exe"
+  ;Default installation folder
+ InstallDir "$PROGRAMFILES\${APPNAME}"
  
-!include LogicLib.nsh
- 
-# Just three pages - license agreement, install location, and installation
-page license
-page directory
-Page instfiles
- 
-!macro VerifyUserIsAdmin
-UserInfo::GetAccountType
-pop $0
-${If} $0 != "admin" ;Require admin rights on NT4+
-        messageBox mb_iconstop "Administrator rights required!"
-        setErrorLevel 740 ;ERROR_ELEVATION_REQUIRED
-        quit
-${EndIf}
-!macroend
- 
-function .onInit
-	setShellVarContext all
-	!insertmacro VerifyUserIsAdmin
-functionEnd
+  ;Request application privileges for Windows Vista
+  RequestExecutionLevel admin
 
+;--------------------------------
+;Interface Settings
+
+  !define MUI_ABORTWARNING
+
+;--------------------------------
+;Pages
+
+  !insertmacro MUI_PAGE_LICENSE "C:\Users\petr.bena\Documents\Visual Studio 2010\gpl-3.0.txt"
+  !insertmacro MUI_PAGE_COMPONENTS
+  !insertmacro MUI_PAGE_DIRECTORY
+  !insertmacro MUI_PAGE_INSTFILES
+  
+  !insertmacro MUI_UNPAGE_CONFIRM
+  !insertmacro MUI_UNPAGE_INSTFILES
+  
+;--------------------------------
+;Languages
  
-section "install"
-	# Files for the install directory - to build the installer, these should be in the same directory as the install script (this file)
-	setOutPath $INSTDIR
-	# Files added here should be removed by the uninstaller (see section "uninstall")
-	CreateDirectory $INSTDIR\modules
-	file /oname=modules\pidgeon_tab.pmod "modules\pidgeon_tab.pmod"
-	file "tcl84.dll"
-	file "Pidgeon.exe"
-	# Add any other files for the install directory (license files, app data, etc) here
- 
-	# Uninstaller - See function un.onInit and section "uninstall" for configuration
-	writeUninstaller "$INSTDIR\uninstall.exe"
- 
-	# Start Menu
-	createDirectory "$SMPROGRAMS\${APPNAME}"
-	createShortCut "$SMPROGRAMS\${APPNAME}\${APPNAME}.lnk" "$INSTDIR\Pidgeon.exe" ""
- 
-	# Registry information for add/remove programs
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayName" "${COMPANYNAME} - ${APPNAME} - ${DESCRIPTION}"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "UninstallString" "$\"$INSTDIR\uninstall.exe$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "QuietUninstallString" "$\"$INSTDIR\uninstall.exe$\" /S"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "InstallLocation" "$\"$INSTDIR$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "Publisher" "$\"${COMPANYNAME}$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "HelpLink" "$\"${HELPURL}$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "URLInfoAbout" "$\"${ABOUTURL}$\""
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "DisplayVersion" "$\"${VERSIONMAJOR}.${VERSIONMINOR}.${VERSIONBUILD}$\""
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "VersionMajor" ${VERSIONMAJOR}
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "VersionMinor" ${VERSIONMINOR}
-	# There is no option for modifying or repairing the install
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoModify" 1
-	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}" "NoRepair" 1
-	# Set the INSTALLSIZE constant (!defined at the top of this script) so Add/Remove Programs can accurately report the size
-sectionEnd
- 
-# Uninstaller
- 
-function un.onInit
-	SetShellVarContext all
- 
-	#Verify the uninstaller - last chance to back out
-	MessageBox MB_OKCANCEL "Permanantly remove ${APPNAME}?" IDOK next
-		Abort
-	next:
-!insertmacro VerifyUserIsAdmin
-functionEnd
- 
-section "uninstall"
- 
-	# Remove Start Menu launcher
-	delete "$SMPROGRAMS\${COMPANYNAME}\${APPNAME}.lnk"
-	# Try to remove the Start Menu folder - this will only happen if it is empty
-	rmDir "$SMPROGRAMS\${COMPANYNAME}"
- 
-	# Remove files
+  !insertmacro MUI_LANGUAGE "English"
+
+;--------------------------------
+;Installer Sections
+
+Section "Pidgeon" SecDummy
+SectionIn RO
+  SetOutPath "$INSTDIR"
+  
+  ;ADD YOUR OWN FILES HERE...
+  file "tcl84.dll"
+  file "Pidgeon.exe" 
+  ;Store installation folder
+  WriteUninstaller "$INSTDIR\Uninstall.exe"
+
+SectionEnd
+
+Section "Modules" SecModules
+  SetOutPath "$INSTDIR"
+  CreateDirectory $INSTDIR\modules
+  file /oname=modules\pidgeon_tab.pmod "modules\pidgeon_tab.pmod"
+SectionEnd
+
+;--------------------------------
+;Descriptions
+
+  ;Language strings
+  LangString DESC_SecDummy ${LANG_ENGLISH} "This will install the pidgeon client."
+   LangString DESC_SecModules ${LANG_ENGLISH} "This will install recommended modules for pidgeon, if you won't install this pidgeon will not have so many features."
+
+  ;Assign language strings to sections
+  !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+    !insertmacro MUI_DESCRIPTION_TEXT ${SecDummy} $(DESC_SecDummy)
+    !insertmacro MUI_DESCRIPTION_TEXT ${SecModules} $(DESC_SecModules)
+  !insertmacro MUI_FUNCTION_DESCRIPTION_END
+
+;--------------------------------
+;Uninstaller Section
+
+Section "Uninstall"
+
+  ;ADD YOUR OWN FILES HERE...
+  ;
 	delete $INSTDIR\modules\pidgeon_tab.pmod
 	delete $INSTDIR\tcl84.dll
 	delete $INSTDIR\Pidgeon.exe
- 
-	# Always delete uninstaller as the last action
-	delete $INSTDIR\uninstall.exe
- 
-	# Try to remove the install directory - this will only happen if it is empty
-	rmDir $INSTDIR
- 
-	# Remove uninstaller information from the registry
-	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${COMPANYNAME} ${APPNAME}"
-sectionEnd
+  Delete "$INSTDIR\Uninstall.exe"
+  RMDir "$INSTDIR\modules"
+  RMDir "$INSTDIR"
 
+SectionEnd
 

@@ -103,7 +103,7 @@ namespace Client
         /// <summary>
         /// Quit message
         /// </summary>
-        public string Quit;
+        public string Quit = null;
         /// <summary>
         /// Protocol
         /// </summary>
@@ -330,6 +330,22 @@ namespace Client
             if (data != "")
             {
                 _protocol.Transfer(data, _priority, this);
+            }
+        }
+
+        public void Disconnect()
+        {
+            if (ParentSv != null)
+            {
+                ParentSv.Disconnect(this);
+            }
+            else if (_protocol.GetType() == typeof(ProtocolIrc))
+            {
+                _protocol.Exit();
+            }
+            else
+            {
+                Transfer("QUIT :" + Quit);
             }
         }
 

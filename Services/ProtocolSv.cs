@@ -417,9 +417,10 @@ namespace Client
             return false;
         }
 
-        public void Disconnect(string text)
+        public void Disconnect(Network network)
         {
-            Datagram request = new Datagram("REMOVE", text);
+            Transfer("QUIT :" + network.Quit);
+            Datagram request = new Datagram("REMOVE", network.server);
             Deliver(request);
         }
 
