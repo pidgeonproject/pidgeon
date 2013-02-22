@@ -268,6 +268,16 @@ namespace Client
         /// <returns></returns>
         public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
+            if (text.Contains('\n'))
+            {
+                string[] data = text.Split('\n');
+                foreach (string Next in data)
+                {
+                    InsertText(Next, InputStyle, WriteLog, Date, SuppressPing);
+                }
+                return true;
+            }
+
             if (owner != null && owner.MicroBox)
             {
                 MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
