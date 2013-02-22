@@ -77,8 +77,8 @@ namespace Client
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 393);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 365);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -110,9 +110,8 @@ namespace Client
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 327);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 325);
             this.tableLayoutPanel2.TabIndex = 0;
-            this.tableLayoutPanel2.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel2_Paint);
             // 
             // _Nickname
             // 
@@ -173,7 +172,6 @@ namespace Client
             this.label4.TabIndex = 8;
             this.label4.Text = "hostname";
             this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label2
             // 
@@ -233,7 +231,7 @@ namespace Client
             // 
             // bConnect
             // 
-            this.bConnect.Location = new System.Drawing.Point(462, 336);
+            this.bConnect.Location = new System.Drawing.Point(462, 334);
             this.bConnect.Name = "bConnect";
             this.bConnect.Size = new System.Drawing.Size(154, 24);
             this.bConnect.TabIndex = 1;
@@ -245,7 +243,7 @@ namespace Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 393);
+            this.ClientSize = new System.Drawing.Size(619, 365);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Connection";
             this.ShowIcon = false;
