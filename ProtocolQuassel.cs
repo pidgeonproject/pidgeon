@@ -47,10 +47,10 @@ namespace Client
 
     public class ProtocolQuassel : Protocol
     {
-        public System.Threading.Thread _Thread;
-        public System.Threading.Thread keep;
+        public System.Threading.Thread _Thread = null;
+        public System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
-        private System.Net.Sockets.NetworkStream _network;
+        private System.Net.Sockets.NetworkStream _network ;
         private System.Net.Security.SslStream _networks;
         private System.IO.StreamReader _reader;
         public List<Network> sl = new List<Network>();

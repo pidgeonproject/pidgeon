@@ -72,15 +72,15 @@ namespace Client
         /// <summary>
         /// Server
         /// </summary>
-        public string Server;
+        public string Server = null;
         /// <summary>
         /// Port
         /// </summary>
-        public int Port;
+        public int Port = 6667;
         /// <summary>
         /// Ssl
         /// </summary>
-        public bool SSL;
+        public bool SSL = false;
 
         /// <summary>
         /// Create window
