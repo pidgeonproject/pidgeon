@@ -70,11 +70,19 @@ namespace Client
                 checkBox9.Checked = Configuration.Notice;
                 textBox5.Text = Configuration.logs_dir;
                 textBox6.Text = Configuration.logs_name;
+
                 foreach (Skin skin in Configuration.SL)
                 {
                     comboBox1.Items.Add(skin.name);
                 }
                 comboBox1.SelectedIndex = 0;
+
+                foreach (KeyValuePair<string, messages.container> language in messages.data)
+                {
+                    comboBox2.Items.Add(language.Key);
+                }
+                comboBox2.SelectedText = Core.SelectedLanguage;
+
                 foreach (Network.Highlighter highlight in Configuration.HighlighterList)
                 {
                     ListViewItem item = new ListViewItem();
@@ -83,6 +91,7 @@ namespace Client
                     item.SubItems.Add(highlight.simple.ToString());
                     list.Items.Add(item);
                 }
+
                 listView1.Items.Add(new ListViewItem("IRC"));
                 listView1.Items.Add(new ListViewItem("System"));
                 listView1.Items.Add(new ListViewItem("Logs"));

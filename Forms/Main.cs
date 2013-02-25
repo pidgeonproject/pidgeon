@@ -74,7 +74,7 @@ namespace Client
         public void CreateChat(Window Chat, Protocol WindowOwner, bool Focus = true)
         {
             Chat.Init();
-            Chat.create();
+            Chat.Create();
             Chat.Visible = Focus;
             Chat._Protocol = WindowOwner;
             Chat.Dock = DockStyle.Fill;

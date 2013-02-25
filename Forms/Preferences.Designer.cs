@@ -91,6 +91,22 @@ namespace Client
             this.checkBox8 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.gro7 = new System.Windows.Forms.GroupBox();
+            this.listView4 = new System.Windows.Forms.ListView();
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.matchingOnlyUserStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.matchingTextInWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.enableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.simpleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.regexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.gro8 = new System.Windows.Forms.GroupBox();
             this.listView2 = new System.Windows.Forms.ListView();
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -117,22 +133,8 @@ namespace Client
             this.bSave = new System.Windows.Forms.Button();
             this.bCancel = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.listView4 = new System.Windows.Forms.ListView();
-            this.contextMenuStrip4 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.createToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.regexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.columnHeader13 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
-            this.typeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.matchingOnlyUserStringToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.matchingTextInWindowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.enableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.disableToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.simpleToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
@@ -142,12 +144,12 @@ namespace Client
             this.contextMenuStrip3.SuspendLayout();
             this.gro2.SuspendLayout();
             this.gro7.SuspendLayout();
+            this.contextMenuStrip4.SuspendLayout();
             this.gro8.SuspendLayout();
             this.contextMenuStrip2.SuspendLayout();
             this.gro6.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.fl.SuspendLayout();
-            this.contextMenuStrip4.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -187,6 +189,8 @@ namespace Client
             // 
             // gro1
             // 
+            this.gro1.Controls.Add(this.comboBox2);
+            this.gro1.Controls.Add(this.label8);
             this.gro1.Controls.Add(this.comboBox1);
             this.gro1.Controls.Add(this.label6);
             this.gro1.Controls.Add(this.textBox7);
@@ -213,7 +217,7 @@ namespace Client
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(94, 169);
+            this.comboBox1.Location = new System.Drawing.Point(93, 208);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(356, 21);
             this.comboBox1.TabIndex = 21;
@@ -221,7 +225,7 @@ namespace Client
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 172);
+            this.label6.Location = new System.Drawing.Point(7, 211);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(28, 13);
             this.label6.TabIndex = 20;
@@ -246,7 +250,7 @@ namespace Client
             // checkBox10
             // 
             this.checkBox10.AutoSize = true;
-            this.checkBox10.Location = new System.Drawing.Point(9, 347);
+            this.checkBox10.Location = new System.Drawing.Point(11, 347);
             this.checkBox10.Name = "checkBox10";
             this.checkBox10.Size = new System.Drawing.Size(229, 17);
             this.checkBox10.TabIndex = 17;
@@ -256,7 +260,7 @@ namespace Client
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(9, 222);
+            this.checkBox9.Location = new System.Drawing.Point(11, 283);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(150, 17);
             this.checkBox9.TabIndex = 16;
@@ -582,6 +586,124 @@ namespace Client
             this.gro7.TabStop = false;
             this.gro7.Text = "Ignore";
             // 
+            // listView4
+            // 
+            this.listView4.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader10,
+            this.columnHeader11,
+            this.columnHeader12,
+            this.columnHeader13});
+            this.listView4.ContextMenuStrip = this.contextMenuStrip4;
+            this.listView4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listView4.LabelEdit = true;
+            this.listView4.Location = new System.Drawing.Point(3, 16);
+            this.listView4.Name = "listView4";
+            this.listView4.Size = new System.Drawing.Size(455, 361);
+            this.listView4.TabIndex = 0;
+            this.listView4.UseCompatibleStateImageBehavior = false;
+            this.listView4.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Ignore";
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "Simple";
+            this.columnHeader11.Width = 200;
+            // 
+            // columnHeader12
+            // 
+            this.columnHeader12.Text = "Enabled";
+            // 
+            // columnHeader13
+            // 
+            this.columnHeader13.Text = "Type";
+            // 
+            // contextMenuStrip4
+            // 
+            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createToolStripMenuItem,
+            this.deleteToolStripMenuItem1,
+            this.toolStripMenuItem1,
+            this.typeToolStripMenuItem,
+            this.enableToolStripMenuItem1,
+            this.simpleToolStripMenuItem1,
+            this.regexToolStripMenuItem,
+            this.disableToolStripMenuItem1});
+            this.contextMenuStrip4.Name = "contextMenuStrip4";
+            this.contextMenuStrip4.Size = new System.Drawing.Size(113, 164);
+            // 
+            // createToolStripMenuItem
+            // 
+            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
+            this.createToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.createToolStripMenuItem.Text = "Create";
+            this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem1
+            // 
+            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.deleteToolStripMenuItem1.Text = "Delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
+            // 
+            // typeToolStripMenuItem
+            // 
+            this.typeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.matchingOnlyUserStringToolStripMenuItem,
+            this.matchingTextInWindowToolStripMenuItem});
+            this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
+            this.typeToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.typeToolStripMenuItem.Text = "Type";
+            // 
+            // matchingOnlyUserStringToolStripMenuItem
+            // 
+            this.matchingOnlyUserStringToolStripMenuItem.Name = "matchingOnlyUserStringToolStripMenuItem";
+            this.matchingOnlyUserStringToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.matchingOnlyUserStringToolStripMenuItem.Text = "Matching only user string";
+            this.matchingOnlyUserStringToolStripMenuItem.Click += new System.EventHandler(this.matchingOnlyUserStringToolStripMenuItem_Click);
+            // 
+            // matchingTextInWindowToolStripMenuItem
+            // 
+            this.matchingTextInWindowToolStripMenuItem.Name = "matchingTextInWindowToolStripMenuItem";
+            this.matchingTextInWindowToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
+            this.matchingTextInWindowToolStripMenuItem.Text = "Matching text in window";
+            this.matchingTextInWindowToolStripMenuItem.Click += new System.EventHandler(this.matchingTextInWindowToolStripMenuItem_Click);
+            // 
+            // enableToolStripMenuItem1
+            // 
+            this.enableToolStripMenuItem1.Name = "enableToolStripMenuItem1";
+            this.enableToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.enableToolStripMenuItem1.Text = "Enable";
+            this.enableToolStripMenuItem1.Click += new System.EventHandler(this.enableToolStripMenuItem1_Click);
+            // 
+            // simpleToolStripMenuItem1
+            // 
+            this.simpleToolStripMenuItem1.Name = "simpleToolStripMenuItem1";
+            this.simpleToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.simpleToolStripMenuItem1.Text = "Simple";
+            this.simpleToolStripMenuItem1.Click += new System.EventHandler(this.simpleToolStripMenuItem1_Click);
+            // 
+            // regexToolStripMenuItem
+            // 
+            this.regexToolStripMenuItem.Name = "regexToolStripMenuItem";
+            this.regexToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.regexToolStripMenuItem.Text = "Regex";
+            this.regexToolStripMenuItem.Click += new System.EventHandler(this.regexToolStripMenuItem_Click);
+            // 
+            // disableToolStripMenuItem1
+            // 
+            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
+            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(112, 22);
+            this.disableToolStripMenuItem1.Text = "Disable";
+            this.disableToolStripMenuItem1.Click += new System.EventHandler(this.disableToolStripMenuItem1_Click);
+            // 
             // gro8
             // 
             this.gro8.Controls.Add(this.listView2);
@@ -807,123 +929,23 @@ namespace Client
             this.openFileDialog1.Filter = "Pidgeon modules|*.pmod|All files|*.*";
             this.openFileDialog1.Title = "Open a pidgeon module";
             // 
-            // listView4
+            // comboBox2
             // 
-            this.listView4.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader10,
-            this.columnHeader11,
-            this.columnHeader12,
-            this.columnHeader13});
-            this.listView4.ContextMenuStrip = this.contextMenuStrip4;
-            this.listView4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listView4.LabelEdit = true;
-            this.listView4.Location = new System.Drawing.Point(3, 16);
-            this.listView4.Name = "listView4";
-            this.listView4.Size = new System.Drawing.Size(455, 361);
-            this.listView4.TabIndex = 0;
-            this.listView4.UseCompatibleStateImageBehavior = false;
-            this.listView4.View = System.Windows.Forms.View.Details;
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(93, 172);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(356, 21);
+            this.comboBox2.TabIndex = 23;
             // 
-            // contextMenuStrip4
+            // label8
             // 
-            this.contextMenuStrip4.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createToolStripMenuItem,
-            this.deleteToolStripMenuItem1,
-            this.toolStripMenuItem1,
-            this.typeToolStripMenuItem,
-            this.enableToolStripMenuItem1,
-            this.simpleToolStripMenuItem1,
-            this.regexToolStripMenuItem,
-            this.disableToolStripMenuItem1});
-            this.contextMenuStrip4.Name = "contextMenuStrip4";
-            this.contextMenuStrip4.Size = new System.Drawing.Size(113, 164);
-            // 
-            // columnHeader10
-            // 
-            this.columnHeader10.Text = "Ignore";
-            // 
-            // columnHeader11
-            // 
-            this.columnHeader11.Text = "Simple";
-            this.columnHeader11.Width = 200;
-            // 
-            // columnHeader12
-            // 
-            this.columnHeader12.Text = "Enabled";
-            // 
-            // createToolStripMenuItem
-            // 
-            this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-            this.createToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.createToolStripMenuItem.Text = "Create";
-            this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
-            // 
-            // deleteToolStripMenuItem1
-            // 
-            this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
-            this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.deleteToolStripMenuItem1.Text = "Delete";
-            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
-            // 
-            // regexToolStripMenuItem
-            // 
-            this.regexToolStripMenuItem.Name = "regexToolStripMenuItem";
-            this.regexToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.regexToolStripMenuItem.Text = "Regex";
-            this.regexToolStripMenuItem.Click += new System.EventHandler(this.regexToolStripMenuItem_Click);
-            // 
-            // columnHeader13
-            // 
-            this.columnHeader13.Text = "Type";
-            // 
-            // toolStripMenuItem1
-            // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
-            // 
-            // typeToolStripMenuItem
-            // 
-            this.typeToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.matchingOnlyUserStringToolStripMenuItem,
-            this.matchingTextInWindowToolStripMenuItem});
-            this.typeToolStripMenuItem.Name = "typeToolStripMenuItem";
-            this.typeToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.typeToolStripMenuItem.Text = "Type";
-            // 
-            // matchingOnlyUserStringToolStripMenuItem
-            // 
-            this.matchingOnlyUserStringToolStripMenuItem.Name = "matchingOnlyUserStringToolStripMenuItem";
-            this.matchingOnlyUserStringToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.matchingOnlyUserStringToolStripMenuItem.Text = "Matching only user string";
-            this.matchingOnlyUserStringToolStripMenuItem.Click += new System.EventHandler(this.matchingOnlyUserStringToolStripMenuItem_Click);
-            // 
-            // matchingTextInWindowToolStripMenuItem
-            // 
-            this.matchingTextInWindowToolStripMenuItem.Name = "matchingTextInWindowToolStripMenuItem";
-            this.matchingTextInWindowToolStripMenuItem.Size = new System.Drawing.Size(209, 22);
-            this.matchingTextInWindowToolStripMenuItem.Text = "Matching text in window";
-            this.matchingTextInWindowToolStripMenuItem.Click += new System.EventHandler(this.matchingTextInWindowToolStripMenuItem_Click);
-            // 
-            // enableToolStripMenuItem1
-            // 
-            this.enableToolStripMenuItem1.Name = "enableToolStripMenuItem1";
-            this.enableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.enableToolStripMenuItem1.Text = "Enable";
-            this.enableToolStripMenuItem1.Click += new System.EventHandler(this.enableToolStripMenuItem1_Click);
-            // 
-            // disableToolStripMenuItem1
-            // 
-            this.disableToolStripMenuItem1.Name = "disableToolStripMenuItem1";
-            this.disableToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.disableToolStripMenuItem1.Text = "Disable";
-            this.disableToolStripMenuItem1.Click += new System.EventHandler(this.disableToolStripMenuItem1_Click);
-            // 
-            // simpleToolStripMenuItem1
-            // 
-            this.simpleToolStripMenuItem1.Name = "simpleToolStripMenuItem1";
-            this.simpleToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
-            this.simpleToolStripMenuItem1.Text = "Simple";
-            this.simpleToolStripMenuItem1.Click += new System.EventHandler(this.simpleToolStripMenuItem1_Click);
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(7, 175);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(55, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "Language";
             // 
             // Preferences
             // 
@@ -949,12 +971,12 @@ namespace Client
             this.gro2.ResumeLayout(false);
             this.gro2.PerformLayout();
             this.gro7.ResumeLayout(false);
+            this.contextMenuStrip4.ResumeLayout(false);
             this.gro8.ResumeLayout(false);
             this.contextMenuStrip2.ResumeLayout(false);
             this.gro6.ResumeLayout(false);
             this.contextMenuStrip1.ResumeLayout(false);
             this.fl.ResumeLayout(false);
-            this.contextMenuStrip4.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1047,6 +1069,8 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem enableToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem simpleToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem disableToolStripMenuItem1;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Label label8;
 
     }
 }

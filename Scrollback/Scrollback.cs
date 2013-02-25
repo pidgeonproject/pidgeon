@@ -150,6 +150,14 @@ namespace Client
             ReloadWaiting = true;
         }
 
+        public Scrollback(Window _ParentWindow)
+        {
+            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            this.owner = _ParentWindow;
+
+            ReloadWaiting = true;
+        }
+
         public void Create()
         {
             InitializeComponent();

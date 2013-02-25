@@ -29,14 +29,25 @@ namespace Client
 {
     public partial class Window : UserControl
     {
-        public static List<Window> _control = new List<Window>();
+        /// <summary>
+        /// If true the windows is being made
+        /// </summary>
         public bool Making = true;
-        public string name;
-        public bool writable;
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string name = null;
+        /// <summary>
+        /// Specifies if it's possible to write into this window
+        /// </summary>
+        public bool writable = true;
+        /// <summary>
+        /// Whether it's a channel or not
+        /// </summary>
         public bool isChannel = false;
-        public bool locked = false;
+        public bool Locked = false;
         public int locktime = 0;
-        public TreeNode ln;
+        public TreeNode treeNode = null;
         public Protocol _Protocol = null;
         public bool MicroBox = false;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
@@ -46,12 +57,7 @@ namespace Client
 
         public Window()
         {
-            lock (_control)
-            {
-                _control.Add(this);
-            }
-            this.scrollback = new Client.Scrollback();
-            this.scrollback.owner = this;
+            this.scrollback = new Client.Scrollback(this);
         }
 
         public void Init()
@@ -77,10 +83,11 @@ namespace Client
             listView.Visible = false;
             textbox.history = new List<string>();
             listViewd.Columns[0].Width = listViewd.Width;
+            listView.Columns[0].Width = listViewd.Width;
             Redraw();
         }
 
-        public void create()
+        public void Create()
         {
             scrollback.Create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
@@ -105,7 +112,6 @@ namespace Client
             }
             return true;
         }
-
 
         public void Changed(object sender, SplitterEventArgs dt)
         {
@@ -502,7 +508,7 @@ namespace Client
                     Channel item = _Network.getChannel(name);
                     if (item != null)
                     {
-                        locked = false;
+                        Locked = false;
                         item.redrawUsers();
                     }
                 }
@@ -587,13 +593,6 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            lock (_control)
-            {
-                if (_control.Contains(this))
-                {
-                    _control.Remove(this);
-                }
-            }
             lock (Core._Main.sX.Panel2.Controls)
             {
                 if (Core._Main.sX.Panel2.Controls.Contains(this))
@@ -670,7 +669,7 @@ namespace Client
         {
             try
             {
-                locked = true;
+                Locked = true;
                 lockwork.Stop();
                 lockwork.Enabled = true;
                 lockwork.Start();
@@ -746,7 +745,7 @@ namespace Client
         {
             try
             {
-                locked = false;
+                Locked = false;
                 lockwork.Enabled = false;
             }
             catch (Exception fail)

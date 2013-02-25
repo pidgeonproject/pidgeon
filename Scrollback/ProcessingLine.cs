@@ -294,33 +294,33 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.ln != null)
+            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.treeNode != null)
             {
                 switch (InputStyle)
                 {
                     case MessageStyle.Kick:
                     case MessageStyle.System:
-                        owner.ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                        owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
                         break;
                     case MessageStyle.Message:
-                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.ln.ForeColor = Configuration.CurrentSkin.colortalk;
+                            owner.treeNode.ForeColor = Configuration.CurrentSkin.colortalk;
                         }
                         break;
                     case MessageStyle.Action:
-                        if (owner.ln.ForeColor != Configuration.CurrentSkin.colortalk && owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk && owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.ln.ForeColor = Configuration.CurrentSkin.miscelancscolor;
+                            owner.treeNode.ForeColor = Configuration.CurrentSkin.miscelancscolor;
                         }
                         break;
                     case MessageStyle.Part:
                     case MessageStyle.Channel:
                     case MessageStyle.User:
                     case MessageStyle.Join:
-                        if (owner.ln.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.ln.ForeColor != Configuration.CurrentSkin.miscelancscolor && owner.ln.ForeColor != Configuration.CurrentSkin.colortalk)
+                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.miscelancscolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk)
                         {
-                            owner.ln.ForeColor = Configuration.CurrentSkin.joincolor;
+                            owner.treeNode.ForeColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
 
@@ -328,7 +328,7 @@ namespace Client
 
                 if (Matched)
                 {
-                    owner.ln.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                    owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
                 }
             }
             DateTime time = DateTime.Now;

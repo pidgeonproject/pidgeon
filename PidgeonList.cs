@@ -132,7 +132,7 @@ namespace Client
                     Servers[_us._Network].Expand();
                     if (_us._Network._protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
                     {
-                        _us._Network._protocol.windows[_us._Network.window + _us.Nick].ln = text;
+                        _us._Network._protocol.windows[_us._Network.window + _us.Nick].treeNode = text;
                     }
                     this.ResumeLayout();
                 }
@@ -148,7 +148,7 @@ namespace Client
             {
                 ServiceList.Add(service, text);
             }
-            service.windows["!root"].ln = text;
+            service.windows["!root"].treeNode = text;
             this.items.Nodes.Add(text);
             this.ResumeLayout();
         }
@@ -173,7 +173,7 @@ namespace Client
                     Window xx = chan.retrieveWindow();
                     if (xx != null)
                     {
-                        xx.ln = text;
+                        xx.treeNode = text;
                     }
                     this.ResumeLayout();
                 }
@@ -192,7 +192,7 @@ namespace Client
                     Servers.Add(network, text);
                 }
                 text.Expand();
-                network.system.ln = text;
+                network.system.treeNode = text;
                 this.items.Nodes.Add(text);
                 return;
             }
@@ -201,7 +201,7 @@ namespace Client
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.server;
-                network.system.ln = text;
+                network.system.treeNode = text;
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();

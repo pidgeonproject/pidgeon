@@ -288,7 +288,7 @@ namespace Client
                     Core._Main.UpdateStatus();
                     if (Chat != null)
                     {
-                        if (Chat.locked)
+                        if (Chat.Locked)
                         {
                             Redraw = true;
                             return;
