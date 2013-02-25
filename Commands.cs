@@ -320,7 +320,7 @@ namespace Client
             {
                 if (Core.network != null)
                 {
-                    string reason = Configuration.quit;
+                    string reason = Configuration.UserData.quit;
                     if (parameter.Length > 0)
                     {
                         reason = parameter;
@@ -406,13 +406,13 @@ namespace Client
                 }
                 if (Core.network == null)
                 {
-                    Configuration.nick = Nick;
+                    Configuration.UserData.nick = Nick;
                     Core._Main.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Scrollback.MessageStyle.User);
                     return;
                 }
                 if (!Core.network.Connected)
                 {
-                    Configuration.nick = Nick;
+                    Configuration.UserData.nick = Nick;
                     Core._Main.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Scrollback.MessageStyle.User);
                     return;
                 }

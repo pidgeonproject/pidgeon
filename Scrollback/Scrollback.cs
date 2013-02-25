@@ -188,7 +188,7 @@ namespace Client
 
         public string _getFileName()
         {
-            string name = Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.logs_name).Replace("$1", validpath(owner.name));
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner.name));
             return name;
         }
 
@@ -242,7 +242,7 @@ namespace Client
         {
             if (scrollback_max < ContentLines.Count)
             {
-                scrollback_max += 200;
+                scrollback_max += Configuration.Scrollback.DynamicSize;
                 Reload();
                 return true;
             }

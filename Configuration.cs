@@ -42,34 +42,48 @@ namespace Client
 
         // Dynamic configuration
         // ===========================================================
-        public static bool Window_Maximized = true;
-        /// <summary>
-        /// Window left position
-        /// </summary>
-        public static int Window_Left = 0;
+        public class Window
+        {
+            public static bool Window_Maximized = true;
+            /// <summary>
+            /// Window left position
+            /// </summary>
+            public static int Window_Left = 0;
+            /// <summary>
+            /// Position of textbox scroll
+            /// </summary>
+            public static int x1 = 0;
+            /// <summary>
+            /// Position of sidebar scroll
+            /// </summary>
+            public static int x4 = 0;
+            /// <summary>
+            /// Position of window
+            /// </summary>
+            public static int window_size = 0;
+        }
 
-        /// <summary>
-        /// Ident
-        /// </summary>
-        public static string ident = "pidgeon";
-        /// <summary>
-        /// Message that is delivered to server when client exit
-        /// </summary>
-        public static string quit = "Pidgeon client http://pidgeonclient.org/";
-        /// <summary>
-        /// Nick
-        /// </summary>
-        public static string nick = "PidgeonUser";
 
-        /// <summary>
-        /// Enable this to make bars change the max size when reached
-        /// </summary>
-        public static bool DynamicBars = true;
+        public class UserData
+        {
+            /// <summary>
+            /// Ident
+            /// </summary>
+            public static string ident = "pidgeon";
+            /// <summary>
+            /// Message that is delivered to server when client exit
+            /// </summary>
+            public static string quit = "Pidgeon client http://pidgeonclient.org/";
+            /// <summary>
+            /// Nick
+            /// </summary>
+            public static string nick = "PidgeonUser";
 
-        /// <summary>
-        /// Real name
-        /// </summary>
-        public static string user = "My name is hidden, dude";
+            /// <summary>
+            /// Real name
+            /// </summary>
+            public static string user = "My name is hidden, dude";
+        }
 
         /// <summary>
         /// Format of ttimestamp
@@ -142,18 +156,21 @@ namespace Client
         /// </summary>
         public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode( System.Windows.Forms.Application.ProductVersion) ;
 
-        /// <summary>
-        /// If flood protection is enabled
-        /// </summary>
-        public static bool flood_prot = false;
-        /// <summary>
-        /// If ctcp protection is enabled
-        /// </summary>
-        public static bool ctcp_prot = false;
-        /// <summary>
-        /// If notice protection is enabled
-        /// </summary>
-        public static bool notice_prot = false;
+        public class ProtectionNetwork
+        {
+            /// <summary>
+            /// If flood protection is enabled
+            /// </summary>
+            public static bool flood_prot = false;
+            /// <summary>
+            /// If ctcp protection is enabled
+            /// </summary>
+            public static bool ctcp_prot = false;
+            /// <summary>
+            /// If notice protection is enabled
+            /// </summary>
+            public static bool notice_prot = false;
+        }
 
         /// <summary>
         /// Reload time for scrollback - this is deprecated
@@ -163,35 +180,32 @@ namespace Client
         /// Time of message queue
         /// </summary>
         public static int mq = 1200;
-        
-        /// <summary>
-        /// Directory path
-        /// </summary>
-        public static string logs_dir = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "log";
-        /// <summary>
-        /// Name
-        /// </summary>
-        public static string logs_name = "$1_yyMMdd";
-
-        public static bool slapsdef = true;
-        public static bool pokesdef = true;
-
-        public static bool Retrieve_Sv = true;
 
         public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
 
-        /// <summary>
-        /// Enable XML logs
-        /// </summary>
-        public static bool logs_xml = true;
-        /// <summary>
-        /// Enable TXT logs
-        /// </summary>
-        public static bool logs_txt = true;
-        /// <summary>
-        /// Enable html logs
-        /// </summary>
-        public static bool logs_html = true;
+        public class Logs
+        {
+            /// <summary>
+            /// Enable XML logs
+            /// </summary>
+            public static bool logs_xml = true;
+            /// <summary>
+            /// Enable TXT logs
+            /// </summary>
+            public static bool logs_txt = true;
+            /// <summary>
+            /// Enable html logs
+            /// </summary>
+            public static bool logs_html = true;
+            /// <summary>
+            /// Directory path
+            /// </summary>
+            public static string logs_dir = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "log";
+            /// <summary>
+            /// Name
+            /// </summary>
+            public static string logs_name = "$1_yyMMdd";
+        }
 
         /// <summary>
         /// Enable the notice in tray
@@ -223,23 +237,9 @@ namespace Client
         /// </summary>
         public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
 
-        /// <summary>
-        /// backlog size
-        /// </summary>
-        public static int Depth = 20000;
-
         public static bool SearchRegex = true;
 
         public static bool Debugging = false;
-
-        /// <summary>
-        /// Position of textbox scroll
-        /// </summary>
-        public static int x1 = 0;
-        /// <summary>
-        /// Position of sidebar scroll
-        /// </summary>
-        public static int x4 = 0;
 
         /// <summary>
         /// If values that are being parsed are hidden
@@ -251,10 +251,26 @@ namespace Client
         /// </summary>
         public static bool ShutdownCheck = true;
 
-        /// <summary>
-        /// Position of window
-        /// </summary>
-        public static int window_size = 0;
+        
+
+        public class Scrollback
+        {
+            public static int DynamicSize = 600;
+            /// <summary>
+            /// Enable this to make bars change the max size when reached
+            /// </summary>
+            public static bool DynamicBars = true;
+        }
+
+        public class Services
+        {
+            /// <summary>
+            /// backlog size
+            /// </summary>
+            public static int Depth = 20000;
+
+            public static bool Retrieve_Sv = true;
+        }
 
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();
 

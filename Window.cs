@@ -102,8 +102,8 @@ namespace Client
         {
             if (xContainer1 != null)
             {
-                this.xContainer1.SplitterDistance = Configuration.x1;
-                this.xContainer4.SplitterDistance = Configuration.x4;
+                this.xContainer1.SplitterDistance = Configuration.Window.x1;
+                this.xContainer4.SplitterDistance = Configuration.Window.x4;
             }
             if (listViewd != null && listViewd.Columns.Count > 0)
             {
@@ -119,8 +119,8 @@ namespace Client
             {
                 if (Making == false)
                 {
-                    Configuration.x1 = xContainer1.SplitterDistance;
-                    Configuration.x4 = xContainer4.SplitterDistance;
+                    Configuration.Window.x1 = xContainer1.SplitterDistance;
+                    Configuration.Window.x4 = xContainer4.SplitterDistance;
                 }
                 listViewd.Columns[0].Width = listViewd.Width;
                 listView.Columns[0].Width = listView.Width;

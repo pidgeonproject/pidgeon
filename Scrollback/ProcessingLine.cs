@@ -166,11 +166,11 @@ namespace Client
                 {
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.user);
+                        matchline = item.text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.UserData.user);
                     }
                     else
                     {
-                        matchline = item.text.Replace("$nick", Configuration.nick).Replace("$ident", Configuration.ident).Replace("$name", Configuration.user);
+                        matchline = item.text.Replace("$nick", Configuration.UserData.nick).Replace("$ident", Configuration.UserData.ident).Replace("$name", Configuration.UserData.user);
                     }
                     if (item.simple)
                     {
@@ -184,13 +184,13 @@ namespace Client
                     {
                         matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname)).Replace("$ident",
                             System.Text.RegularExpressions.Regex.Escape(owner._Network.Ident)).Replace("$name",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.user));
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }
                     else
                     {
-                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.nick)).Replace("$ident",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.ident)).Replace("$name",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.user));
+                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.nick)).Replace("$ident",
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.ident)).Replace("$name",
+                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }
                     System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(matchline);
                     if (regex.IsMatch(text))
@@ -215,19 +215,19 @@ namespace Client
         {
             try
             {
-                if (!Directory.Exists(Configuration.logs_dir))
+                if (!Directory.Exists(Configuration.Logs.logs_dir))
                 {
-                    Directory.CreateDirectory(Configuration.logs_dir);
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir);
                 }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
                 {
-                    System.IO.Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
+                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
                 }
-                if (!Directory.Exists(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
                 {
-                    Directory.CreateDirectory(Configuration.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
                 }
-                if (Configuration.logs_txt)
+                if (Configuration.Logs.logs_txt)
                 {
                     string stamp = "";
                     if (Configuration.chat_timestamp)
@@ -236,7 +236,7 @@ namespace Client
                     }
                     Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
                 }
-                if (Configuration.logs_html)
+                if (Configuration.Logs.logs_html)
                 {
                     string stamp = "";
                     if (Configuration.chat_timestamp)
@@ -245,7 +245,7 @@ namespace Client
                     }
                     Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
                 }
-                if (Configuration.logs_xml)
+                if (Configuration.Logs.logs_xml)
                 {
                     Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
                 }

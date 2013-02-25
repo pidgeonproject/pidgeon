@@ -55,21 +55,21 @@ namespace Client
                 lname.Text = messages.get("preferences-name", Core.SelectedLanguage);
                 lquit.Text = messages.get("preferences-quit", Core.SelectedLanguage);
                 label4.Text = messages.get("preferences-al", Core.SelectedLanguage);
-                textBox1.Text = Configuration.nick;
-                textBox2.Text = Configuration.quit;
-                textBox3.Text = Configuration.ident;
-                textBox4.Text = Configuration.user;
-                checkBox3.Checked = Configuration.logs_xml;
-                checkBox5.Checked = Configuration.flood_prot;
-                checkBox1.Checked = Configuration.logs_txt;
-                checkBox2.Checked = Configuration.logs_html;
-                checkBox7.Checked = Configuration.notice_prot;
+                textBox1.Text = Configuration.UserData.nick;
+                textBox2.Text = Configuration.UserData.quit;
+                textBox3.Text = Configuration.UserData.ident;
+                textBox4.Text = Configuration.UserData.user;
+                checkBox3.Checked = Configuration.Logs.logs_xml;
+                checkBox5.Checked = Configuration.ProtectionNetwork.flood_prot;
+                checkBox1.Checked = Configuration.Logs.logs_txt;
+                checkBox2.Checked = Configuration.Logs.logs_html;
+                checkBox7.Checked = Configuration.ProtectionNetwork.notice_prot;
                 checkBox4.Checked = Configuration.DisplayCtcp;
-                checkBox6.Checked = Configuration.ctcp_prot;
+                checkBox6.Checked = Configuration.ProtectionNetwork.ctcp_prot;
                 checkBox8.Checked = Configuration.ConfirmAll;
                 checkBox9.Checked = Configuration.Notice;
-                textBox5.Text = Configuration.logs_dir;
-                textBox6.Text = Configuration.logs_name;
+                textBox5.Text = Configuration.Logs.logs_dir;
+                textBox6.Text = Configuration.Logs.logs_name;
 
                 foreach (Skin skin in Configuration.SL)
                 {
@@ -174,21 +174,21 @@ namespace Client
                 }
                 
                 Configuration.ConfirmAll = checkBox8.Checked;
-                Configuration.nick = textBox1.Text;
-                Configuration.quit = textBox2.Text;
-                Configuration.ident = textBox3.Text;
-                Configuration.user = textBox4.Text;
-                Configuration.logs_xml = checkBox3.Checked;
-                Configuration.flood_prot = checkBox5.Checked;
-                Configuration.logs_txt = checkBox1.Checked;
-                Configuration.logs_html = checkBox2.Checked;
+                Configuration.UserData.nick = textBox1.Text;
+                Configuration.UserData.quit = textBox2.Text;
+                Configuration.UserData.ident = textBox3.Text;
+                Configuration.UserData.user = textBox4.Text;
+                Configuration.Logs.logs_xml = checkBox3.Checked;
+                Configuration.ProtectionNetwork.flood_prot = checkBox5.Checked;
+                Configuration.Logs.logs_txt = checkBox1.Checked;
+                Configuration.Logs.logs_html = checkBox2.Checked;
                 Configuration.CheckUpdate = checkBox10.Checked;
-                Configuration.notice_prot = checkBox7.Checked;
+                Configuration.ProtectionNetwork.notice_prot = checkBox7.Checked;
                 Configuration.DisplayCtcp = checkBox4.Checked;
-                Configuration.ctcp_prot = checkBox6.Checked;
+                Configuration.ProtectionNetwork.ctcp_prot = checkBox6.Checked;
                 Configuration.Notice = checkBox9.Checked;
-                Configuration.logs_dir = textBox5.Text;
-                Configuration.logs_name = textBox6.Text;
+                Configuration.Logs.logs_dir = textBox5.Text;
+                Configuration.Logs.logs_name = textBox6.Text;
                 lock (Ignoring.IgnoreList)
                 {
                     Ignoring.IgnoreList.Clear();

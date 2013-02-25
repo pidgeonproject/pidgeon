@@ -658,15 +658,15 @@ namespace Client
                     {
                         vScrollBar1.Value = vScrollBar1.Maximum;
                     }
-                    if (Configuration.DynamicBars)
+                    if (Configuration.Scrollback.DynamicBars)
                     {
                         if (vScrollBar1.Value == 0 && scrollback != null)
                         {
                             if (scrollback.IncreaseOffset())
                             {
-                                if (vScrollBar1.Maximum > 210)
+                                if (vScrollBar1.Maximum > Configuration.Scrollback.DynamicSize + 10)
                                 {
-                                    vScrollBar1.Value = 200;
+                                    vScrollBar1.Value = Configuration.Scrollback.DynamicSize;
                                     ScrolltoX(100);
                                     Redraw();
                                 }
@@ -981,15 +981,15 @@ namespace Client
             {
                 lock (vScrollBar1)
                 {
-                    if (Configuration.DynamicBars)
+                    if (Configuration.Scrollback.DynamicBars)
                     {
                         if (e.NewValue == 0 && scrollback != null)
                         {
                             if (scrollback.IncreaseOffset())
                             {
-                                if (vScrollBar1.Maximum > 210)
+                                if (vScrollBar1.Maximum > Configuration.Scrollback.DynamicSize + 10)
                                 {
-                                    vScrollBar1.Value = 200;
+                                    vScrollBar1.Value = Configuration.Scrollback.DynamicSize;
                                     ScrolltoX(100);
                                     Redraw();
                                 }

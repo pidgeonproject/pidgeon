@@ -278,7 +278,7 @@ namespace Client
                             protocol.Deliver(response);
                             Datagram request = new Datagram("BACKLOGSV");
                             request.Parameters.Add("network", i);
-                            request.Parameters.Add("size", Configuration.Depth.ToString());
+                            request.Parameters.Add("size", Configuration.Services.Depth.ToString());
                             protocol.Deliver(request);
                         }
                     }
@@ -305,7 +305,7 @@ namespace Client
                                         {
                                             nw.WindowCreateNewJoin(channel, true);
                                         }
-                                        if (!Configuration.Retrieve_Sv)
+                                        if (!Configuration.Services.Retrieve_Sv)
                                         {
                                             protocol.SendData(nw.server, "TOPIC " + channel, Configuration.Priority.Normal);
                                             protocol.SendData(nw.server, "MODE " + channel, Configuration.Priority.Low);
