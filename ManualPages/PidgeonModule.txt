@@ -1,0 +1,11 @@
+﻿This command load module to kernel
+
+Example: /pidgeon.module modules/pidgeon_tc.pmod
+
+Synopsys: /pidgeon.module module
+
+Parameters:
+
+- module
+
+This manual page was written by Petr Bena <benapetr@gmail.com>

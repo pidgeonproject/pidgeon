@@ -1,0 +1,12 @@
+﻿This command will give you oper flag on servers that support it
+
+Example: /oper username pw
+
+Synopsys: /oper username [pw]
+
+Parameters:
+
+- username - your username
+- pw - password
+
+This manual page was written by Petr Bena <benapetr@gmail.com>

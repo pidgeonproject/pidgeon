@@ -1,0 +1,11 @@
+﻿This command will display a manual page
+
+Example: /pidgeon.man connect
+
+Synopsys: /pidgeon.man page
+
+Parameters:
+
+- page - Manual page to display
+
+This manual page was written by Petr Bena <benapetr@gmail.com>

@@ -1,0 +1,12 @@
+﻿This command will connect you to a server, when you are using pidgeon services
+
+Example: /connect irc.tm-irc.org
+
+Synopsys: /connect [$]hostname[:port]
+
+Parameters:
+
+- $ prefix - when used the connection will use SSL
+- port - Specifies the port to use for this connection
+
+This manual page was written by Petr Bena <benapetr@gmail.com>

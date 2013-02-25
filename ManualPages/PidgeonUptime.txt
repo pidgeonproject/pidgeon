@@ -1,0 +1,7 @@
+﻿This command display up time
+
+Example: /pidgeon.uptime
+
+Synopsys: /pidgeon.uptime
+
+This manual page was written by Petr Bena <benapetr@gmail.com

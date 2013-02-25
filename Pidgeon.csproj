@@ -406,6 +406,12 @@
     <Content Include="Languages\en_english.txt" />
     <EmbeddedResource Include="version.txt" />
     <None Include="Resources\icon.png" />
+    <Content Include="ManualPages\Connect.txt" />
+    <Content Include="ManualPages\Oper.txt" />
+    <Content Include="ManualPages\PidgeonMan.txt" />
+    <Content Include="ManualPages\PidgeonModule.txt" />
+    <Content Include="ManualPages\PidgeonUptime.txt" />
+    <Content Include="ManualPages\Server.txt" />
     <Content Include="tcl84.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -442,9 +448,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Stage\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>

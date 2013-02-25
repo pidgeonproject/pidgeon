@@ -1,0 +1,12 @@
+﻿This command will connect you to a server
+
+Example: /server irc.tm-irc.org
+
+Synopsys: /server [$]hostname[:port]
+
+Parameters:
+
+- $ prefix - when used the connection will use SSL
+- port - Specifies the port to use for this connection
+
+This manual page was written by Petr Bena <benapetr@gmail.com>

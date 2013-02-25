@@ -61,6 +61,26 @@ namespace Client.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to This command will connect you to a server, when you are using pidgeon services
+        ///
+        ///Example: /connect irc.tm-irc.org
+        ///
+        ///Synopsys: /connect [$]hostname[:port]
+        ///
+        ///Parameters:
+        ///
+        ///- $ prefix - when used the connection will use SSL
+        ///- port - Specifies the port to use for this connection
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com&gt;.
+        /// </summary>
+        internal static string Connect {
+            get {
+                return ResourceManager.GetString("Connect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to window-menu-file=File;
         ///window-menu-quit=Exit;
         ///window-menu-conf=Nastaveni;
@@ -117,6 +137,99 @@ namespace Client.Properties {
             get {
                 object obj = ResourceManager.GetObject("Image1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command will give you oper flag on servers that support it
+        ///
+        ///Example: /oper username pw
+        ///
+        ///Synopsys: /oper username [pw]
+        ///
+        ///Parameters:
+        ///
+        ///- username - your username
+        ///- pw - password
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com&gt;.
+        /// </summary>
+        internal static string Oper {
+            get {
+                return ResourceManager.GetString("Oper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command will display a manual page
+        ///
+        ///Example: /pidgeon.man connect
+        ///
+        ///Synopsys: /pidgeon.man page
+        ///
+        ///Parameters:
+        ///
+        ///- page - Manual page to display
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com&gt;.
+        /// </summary>
+        internal static string PidgeonMan {
+            get {
+                return ResourceManager.GetString("PidgeonMan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command load module to kernel
+        ///
+        ///Example: /pidgeon.module modules/pidgeon_tc.pmod
+        ///
+        ///Synopsys: /pidgeon.module module
+        ///
+        ///Parameters:
+        ///
+        ///- module
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com&gt;.
+        /// </summary>
+        internal static string PidgeonModule {
+            get {
+                return ResourceManager.GetString("PidgeonModule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command display up time
+        ///
+        ///Example: /pidgeon.uptime
+        ///
+        ///Synopsys: /pidgeon.uptime
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com.
+        /// </summary>
+        internal static string PidgeonUptime {
+            get {
+                return ResourceManager.GetString("PidgeonUptime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This command will connect you to a server
+        ///
+        ///Example: /server irc.tm-irc.org
+        ///
+        ///Synopsys: /server [$]hostname[:port]
+        ///
+        ///Parameters:
+        ///
+        ///- $ prefix - when used the connection will use SSL
+        ///- port - Specifies the port to use for this connection
+        ///
+        ///This manual page was written by Petr Bena &lt;benapetr@gmail.com&gt;.
+        /// </summary>
+        internal static string Server {
+            get {
+                return ResourceManager.GetString("Server", resourceCulture);
             }
         }
     }

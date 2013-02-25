@@ -35,6 +35,7 @@ namespace Client
                 }
             }
             private Action<string> action = null;
+
             public virtual void Launch(string parameter = null)
             {
                 if (action != null)
@@ -60,11 +61,21 @@ namespace Client
                 Register();
             }
 
+            public Command(string ManualPage, string Name, Type _type, Action<string> _Action)
+            {
+                type = _type;
+                action = _Action;
+                RegisterManual(Name, ManualPage);
+                Register();
+            }
+
             ~Command()
             {
                 Unregister();
             }
         }
+
+        private static Dictionary<string, string> ManualPages = new Dictionary<string, string>();
 
         public enum Type
         {
@@ -77,6 +88,21 @@ namespace Client
         }
 
         public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
+
+        public static void RegisterManual(string key, string value)
+        {
+            lock (ManualPages)
+            {
+                if (ManualPages.ContainsKey(key))
+                {
+                    ManualPages[key] = value;
+                }
+                else
+                {
+                    ManualPages.Add(key, value);
+                }
+            }
+        }
 
         public static void RegisterCommand(string Name, Command command)
         {
@@ -92,7 +118,9 @@ namespace Client
             try
             {
                 commands.Add("server", new Command(Type.System, Generic.server));
+                RegisterManual("server", Client.Properties.Resources.Server);
                 commands.Add("nick", new Command(Type.System, Generic.nick));
+                RegisterManual("connect", Client.Properties.Resources.Connect);
                 commands.Add("connect", new Command(Type.Services, Generic.connect));
                 commands.Add("join", new Command(Type.SystemSv, Generic.join));
                 commands.Add("part", new Command(Type.Network));
@@ -130,6 +158,7 @@ namespace Client
                 commands.Add("userip", new Command(Type.Network));
                 commands.Add("version", new Command(Type.Network));
                 commands.Add("wallops", new Command(Type.Network));
+                RegisterManual("oper", Client.Properties.Resources.Oper);
                 commands.Add("oper", new Command(Type.Network));
                 commands.Add("who", new Command(Type.Network));
                 commands.Add("whois", new Command(Type.Network));
@@ -140,6 +169,7 @@ namespace Client
                 commands.Add("raw", new Command(Type.System, Generic.raw));
                 commands.Add("chanserv", new Command(Type.Network));
                 commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
+                RegisterManual("pidgeon.uptime", Client.Properties.Resources.PidgeonUptime);
                 commands.Add("pidgeon.uptime", new Command(Type.System, Generic.up));
                 commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
                 commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
@@ -154,7 +184,10 @@ namespace Client
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
                 commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
                 commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
+                RegisterManual("pidgeon.man", Client.Properties.Resources.PidgeonMan);
+                commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
+                RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
             }
             catch (Exception fail)
             {
@@ -188,6 +221,32 @@ namespace Client
 
         private class Generic
         {
+            public static void man(string parameter)
+            {
+                if (parameter != "")
+                {
+                    lock (ManualPages)
+                    {
+                        if (ManualPages.ContainsKey(parameter))
+                        {
+                                Core._Main.Chat.scrollback.InsertText("Pidgeon " + Configuration.Version + " manual page for "
+                                    + parameter + Environment.NewLine + "===================================================================="
+                                    + Environment.NewLine + Environment.NewLine
+                                    + ManualPages[parameter]
+                                    + Environment.NewLine + "===================================================================="
+                                    + Environment.NewLine + "EOM", Scrollback.MessageStyle.System, false, 0, true);
+                                return;
+                        }
+                        else
+                        {
+                            Core._Main.Chat.scrollback.InsertText("This command is unknown", Scrollback.MessageStyle.Message);
+                        }
+                    }
+                    return;
+                }
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+            }
+
             public static void join(string parameter)
             {
                 if (parameter != "")
