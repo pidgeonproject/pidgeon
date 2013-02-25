@@ -67,7 +67,6 @@ namespace Client
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lnick = new System.Windows.Forms.Label();
             this.gro4 = new System.Windows.Forms.GroupBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.checkBox7 = new System.Windows.Forms.CheckBox();
             this.checkBox6 = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
@@ -178,14 +177,14 @@ namespace Client
             // panel1
             // 
             this.panel1.Controls.Add(this.gro1);
+            this.panel1.Controls.Add(this.gro6);
+            this.panel1.Controls.Add(this.gro5);
             this.panel1.Controls.Add(this.gro4);
             this.panel1.Controls.Add(this.gro3);
             this.panel1.Controls.Add(this.gro9);
             this.panel1.Controls.Add(this.gro2);
             this.panel1.Controls.Add(this.gro7);
             this.panel1.Controls.Add(this.gro8);
-            this.panel1.Controls.Add(this.gro6);
-            this.panel1.Controls.Add(this.gro5);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(203, 3);
             this.panel1.Name = "panel1";
@@ -356,7 +355,6 @@ namespace Client
             // 
             // gro4
             // 
-            this.gro4.Controls.Add(this.label3);
             this.gro4.Controls.Add(this.checkBox7);
             this.gro4.Controls.Add(this.checkBox6);
             this.gro4.Controls.Add(this.checkBox5);
@@ -367,15 +365,6 @@ namespace Client
             this.gro4.TabIndex = 3;
             this.gro4.TabStop = false;
             this.gro4.Text = "Protections";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 97);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(44, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Number";
             // 
             // checkBox7
             // 
@@ -1067,7 +1056,6 @@ namespace Client
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox7;
         private System.Windows.Forms.CheckBox checkBox6;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.GroupBox gro6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox gro5;

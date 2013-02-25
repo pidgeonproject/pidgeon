@@ -284,7 +284,7 @@ namespace Client
             this.tIMEToolStripMenuItem});
             this.ctToolStripMenuItem.Name = "ctToolStripMenuItem";
             this.ctToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.ctToolStripMenuItem.Text = "ctcp";
+            this.ctToolStripMenuItem.Text = "CTCP";
             // 
             // vERSIONToolStripMenuItem
             // 
@@ -303,6 +303,7 @@ namespace Client
             // dCCToolStripMenuItem
             // 
             this.dCCToolStripMenuItem.Name = "dCCToolStripMenuItem";
+            this.dCCToolStripMenuItem.Enabled = false;
             this.dCCToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dCCToolStripMenuItem.Text = "DCC";
             // 
