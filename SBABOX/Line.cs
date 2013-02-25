@@ -174,15 +174,19 @@ namespace Client
         {
             lock (LineDB)
             {
-                if (Index < 0 || Index > (LineDB.Count - 1))
+                if (LineDB.Count > 0)
                 {
-                    throw new Exception("Index must be between 0 and " + (LineDB.Count - 1).ToString());
+                    if (Index < 0 || Index > (LineDB.Count - 1))
+                    {
+                        throw new Exception("Index must be between 0 and " + (LineDB.Count - 1).ToString());
+                    }
+                    LineDB.RemoveAt(Index);
+
+                    if (Redraw)
+                    {
+                        RedrawText();
+                    }
                 }
-                LineDB.RemoveAt(Index);
-            }
-            if (Redraw)
-            {
-                RedrawText();
             }
         }
     }
