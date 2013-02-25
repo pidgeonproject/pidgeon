@@ -258,6 +258,20 @@ namespace Client
         }
 
         /// <summary>
+        /// Insert a text to scrollback list [deprecated]
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="InputStyle">Style</param>
+        /// <param name="WriteLog">Write to a log</param>
+        /// <param name="Date">Date</param>
+        /// <param name="SuppressPing">Suppress highlight</param>
+        /// <returns></returns>
+        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        {
+            return insertText(text, InputStyle, WriteLog, Date, SuppressPing, false);
+        }
+
+        /// <summary>
         /// Insert a text to scrollback list
         /// </summary>
         /// <param name="text">Text</param>
@@ -266,7 +280,21 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        public bool InsertTextAndIgnoreUpdate(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        {
+            return insertText(text, InputStyle, WriteLog, Date, SuppressPing, true);
+        }
+
+        /// <summary>
+        /// Insert a text to scrollback list
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="InputStyle">Style</param>
+        /// <param name="WriteLog">Write to a log</param>
+        /// <param name="Date">Date</param>
+        /// <param name="SuppressPing">Suppress highlight</param>
+        /// <returns></returns>
+        private bool insertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             if (text.Contains('\n'))
             {
