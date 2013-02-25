@@ -229,7 +229,7 @@ namespace Client
                     {
                         if (ManualPages.ContainsKey(parameter))
                         {
-                                Core._Main.Chat.scrollback.InsertText("Pidgeon " + Configuration.Version + " manual page for "
+                                Core._Main.Chat.scrollback.InsertText(Configuration.Version + " | Manual page for "
                                     + parameter + Environment.NewLine + "===================================================================="
                                     + Environment.NewLine + Environment.NewLine
                                     + ManualPages[parameter]

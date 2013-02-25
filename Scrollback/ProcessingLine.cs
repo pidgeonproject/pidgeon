@@ -50,7 +50,6 @@ namespace Client
             {
                 if (ContentLines.Count > scrollback_max)
                 {
-                    ContentLines.RemoveAt(0);
                     RT.RemoveLine(0);
                 }
             }
