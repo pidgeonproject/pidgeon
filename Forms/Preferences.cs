@@ -81,7 +81,7 @@ namespace Client
                 {
                     comboBox2.Items.Add(language.Key);
                 }
-                comboBox2.SelectedText = Core.SelectedLanguage;
+                comboBox2.Text = Core.SelectedLanguage;
 
                 foreach (Network.Highlighter highlight in Configuration.HighlighterList)
                 {
