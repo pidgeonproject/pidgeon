@@ -266,7 +266,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             if (text.Contains('\n'))
             {
@@ -294,7 +294,7 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.ln != null)
+            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.ln != null)
             {
                 switch (InputStyle)
                 {
