@@ -285,6 +285,27 @@ namespace Client
                 }
             }
 
+            public static void sRemove(XmlNode curr, ProtocolSv protocol)
+            {
+                System.Windows.Forms.TreeNode item = null;
+                foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.Servers)
+                {
+                    if (n.Key.server == curr.InnerText)
+                    {
+                        item = n.Value;
+                        break;
+                    }
+                }
+                if (item != null)
+                {
+                    Core._Main.ChannelList.RemoveAll(item);
+                }
+                else
+                {
+                    Core.DebugLog("Unable to remove " + curr.InnerText);
+                }
+            }
+
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)
             {
                 if (curr.InnerText == "")

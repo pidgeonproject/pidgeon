@@ -221,7 +221,6 @@ namespace Client
         /// <param name="user">User name</param>
         public void Private(string user)
         {
-            Core._Main.userToolStripMenuItem.Visible = true;
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);

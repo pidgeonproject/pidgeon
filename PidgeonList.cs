@@ -314,7 +314,6 @@ namespace Client
             {
                 RedrawMenu();
                 items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
-                Core._Main.userToolStripMenuItem.Visible = false;
                 lock (ServiceList)
                 {
                     if (ServiceList.ContainsValue(e.Node))
@@ -413,6 +412,38 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail);
+            }
+        }
+
+        public void RemoveAll(TreeNodeCollection Item, TreeNode node)
+        {
+            if (Item.Contains(node))
+            {
+                Item.Remove(node);
+                return;
+            }
+            foreach (TreeNode Node in Item)
+            {
+                if (Node.Nodes.Count > 0)
+                {
+                    RemoveAll(Node.Nodes, node);
+                }
+            }
+        }
+
+        public void RemoveAll(TreeNode Item)
+        {
+            if (items.Nodes.Contains(Item))
+            {
+                items.Nodes.Remove(Item);
+                return;
+            }
+            foreach (TreeNode node in items.Nodes)
+            {
+                if (node.Nodes.Count > 0)
+                {
+                    RemoveAll(node.Nodes, Item);
+                }
             }
         }
 
@@ -556,6 +587,7 @@ namespace Client
                                     }
                                 }
                                 item = cu.Key;
+                                RemoveAll(Item);
                                 break;
                             }
                         }

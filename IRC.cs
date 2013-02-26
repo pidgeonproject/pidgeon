@@ -941,6 +941,7 @@ namespace Client
 
         public bool Result()
         {
+            string last = "";
             try
             {
                 bool OK = false;
@@ -953,6 +954,7 @@ namespace Client
                     string[] data = text.Split(':');
                     if (data.Length > 1)
                     {
+                        last = text;
                         string command = "";
                         string parameters = "";
                         string command2 = "";
@@ -1182,6 +1184,7 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail);
+                Core.DebugLog("String: " + last);
             }
             return true;
         }

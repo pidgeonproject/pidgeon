@@ -411,7 +411,6 @@ namespace Client
         public System.Windows.Forms.ToolStripStatusLabel toolStripStatusNetwork;
         private System.Windows.Forms.Timer updater;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
-        public System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
         public System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem taskbarBoxToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
@@ -427,5 +426,6 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem configurationFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem skinEdToolStripMenuItem;
         public System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
     }
 }
