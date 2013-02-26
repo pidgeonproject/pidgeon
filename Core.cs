@@ -730,9 +730,9 @@ namespace Client
                 System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
                 System.Xml.XmlNode curr = null;
                 XmlAttribute confname = null;
-                makenode("network.ident", Configuration.ident, curr, confname, config, xmlnode);
-                makenode("quitmessage", Configuration.quit, curr, confname, config, xmlnode);
-                makenode("network.nick", Configuration.nick, curr, confname, config, xmlnode);
+                makenode("network.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
+                makenode("quitmessage", Configuration.UserData.quit, curr, confname, config, xmlnode);
+                makenode("network.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
                 makenode("scrollback.showctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                 makenode("formats.user", Configuration.format_nick, curr, confname, config, xmlnode);
                 makenode("formats.date", Configuration.format_date, curr, confname, config, xmlnode);
@@ -743,19 +743,19 @@ namespace Client
                 makenode("irc.auto.exception", Configuration.aggressive_exception.ToString(), curr, confname, config, xmlnode);
                 makenode("irc.auto.invites", Configuration.aggressive_invites.ToString(), curr, confname, config, xmlnode);
 
-                makenode("location.maxi", Configuration.Window_Maximized.ToString(), curr, confname, config, xmlnode);
-                makenode("window.size", Configuration.window_size.ToString(), curr, confname, config, xmlnode);
-                makenode("location.x1", Configuration.x1.ToString(), curr, confname, config, xmlnode);
-                makenode("location.x4", Configuration.x4.ToString(), curr, confname, config, xmlnode);
-                makenode("logs.dir", Configuration.logs_dir, curr, confname, config, xmlnode);
-                makenode("logs.type", Configuration.logs_name, curr, confname, config, xmlnode);
-                makenode("shield.ctcp", Configuration.ctcp_prot.ToString(), curr, confname, config, xmlnode);
-                makenode("shield.flood", Configuration.flood_prot.ToString(), curr, confname, config, xmlnode);
-                makenode("shield.notice", Configuration.notice_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("location.maxi", Configuration.Window.Window_Maximized.ToString(), curr, confname, config, xmlnode);
+                makenode("window.size", Configuration.Window.window_size.ToString(), curr, confname, config, xmlnode);
+                makenode("location.x1", Configuration.Window.x1.ToString(), curr, confname, config, xmlnode);
+                makenode("location.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
+                makenode("logs.type", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
+                makenode("shield.ctcp", Configuration.ProtectionNetwork.ctcp_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("shield.flood", Configuration.ProtectionNetwork.flood_prot.ToString(), curr, confname, config, xmlnode);
+                makenode("shield.notice", Configuration.ProtectionNetwork.notice_prot.ToString(), curr, confname, config, xmlnode);
                 makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-                makenode("logs.html", Configuration.logs_html.ToString(), curr, confname, config, xmlnode);
-                makenode("logs.xml", Configuration.logs_xml.ToString(), curr, confname, config, xmlnode);
-                makenode("logs.txt", Configuration.logs_txt.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.html", Configuration.Logs.logs_html.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
+                makenode("logs.txt", Configuration.Logs.logs_txt.ToString(), curr, confname, config, xmlnode);
                 makenode("updater.check", Configuration.CheckUpdate.ToString(), curr, confname, config, xmlnode);
                 makenode("debugger", Configuration.Debugging.ToString(), curr, confname, config, xmlnode);
 
@@ -766,7 +766,7 @@ namespace Client
                 makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
                 makenode("notification.tray", Configuration.Notice.ToString(), curr, confname, config, xmlnode);
                 makenode("sniffer", Configuration.NetworkSniff.ToString(), curr, confname, config, xmlnode);
-                makenode("pidgeon.size", Configuration.Depth.ToString(), curr, confname, config, xmlnode);
+                makenode("pidgeon.size", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
                 makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
                 makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
                 makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
@@ -1065,28 +1065,28 @@ namespace Client
                                 switch (curr.Attributes[0].Value)
                                 {
                                     case "location.x1":
-                                        Configuration.x1 = int.Parse(curr.InnerText);
+                                        Configuration.Window.x1 = int.Parse(curr.InnerText);
                                         break;
                                     case "window.size":
-                                        Configuration.window_size = int.Parse(curr.InnerText);
+                                        Configuration.Window.window_size = int.Parse(curr.InnerText);
                                         break;
                                     case "location.x4":
-                                        Configuration.x4 = int.Parse(curr.InnerText);
+                                        Configuration.Window.x4 = int.Parse(curr.InnerText);
                                         break;
                                     case "location.maxi":
-                                        Configuration.Window_Maximized = bool.Parse(curr.InnerText);
+                                        Configuration.Window.Window_Maximized = bool.Parse(curr.InnerText);
                                         break;
                                     case "timestamp.display":
                                         Configuration.chat_timestamp = bool.Parse(curr.InnerText);
                                         break;
                                     case "network.nick":
-                                        Configuration.nick = curr.InnerText;
+                                        Configuration.UserData.nick = curr.InnerText;
                                         break;
                                     case "network.n2":
                                         Configuration.Nick2 = curr.InnerText;
                                         break;
                                     case "network.ident":
-                                        Configuration.ident = curr.InnerText;
+                                        Configuration.UserData.ident = curr.InnerText;
                                         break;
                                     case "scrollback.showctcp":
                                         Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
@@ -1122,31 +1122,31 @@ namespace Client
                                         Configuration.DefaultReason = curr.InnerText;
                                         break;
                                     case "logs.type":
-                                        Configuration.logs_name = curr.InnerText;
+                                        Configuration.Logs.logs_name = curr.InnerText;
                                         break;
                                     case "shield.ctcp":
-                                        Configuration.ctcp_prot = bool.Parse(curr.InnerText);
+                                        Configuration.ProtectionNetwork.ctcp_prot = bool.Parse(curr.InnerText);
                                         break;
                                     case "shield.flood":
-                                        Configuration.flood_prot = bool.Parse(curr.InnerText);
+                                        Configuration.ProtectionNetwork.flood_prot = bool.Parse(curr.InnerText);
                                         break;
                                     case "shield.notice":
-                                        Configuration.notice_prot = bool.Parse(curr.InnerText);
+                                        Configuration.ProtectionNetwork.notice_prot = bool.Parse(curr.InnerText);
                                         break;
                                     case "ignore.ctcp":
                                         Configuration.DisplayCtcp = bool.Parse(curr.InnerText);
                                         break;
                                     case "logs.html":
-                                        Configuration.logs_html = bool.Parse(curr.InnerText);
+                                        Configuration.Logs.logs_html = bool.Parse(curr.InnerText);
                                         break;
                                     case "logs.dir":
-                                        Configuration.logs_dir = curr.InnerText;
+                                        Configuration.Logs.logs_dir = curr.InnerText;
                                         break;
                                     case "logs.xml":
-                                        Configuration.logs_xml = bool.Parse(curr.InnerText);
+                                        Configuration.Logs.logs_xml = bool.Parse(curr.InnerText);
                                         break;
                                     case "logs.txt":
-                                        Configuration.logs_txt = bool.Parse(curr.InnerText);
+                                        Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
                                         break;
                                     case "scrollback_plimit":
                                         Configuration.scrollback_plimit = int.Parse(curr.InnerText);
@@ -1155,7 +1155,7 @@ namespace Client
                                         Configuration.Notice = bool.Parse(curr.InnerText);
                                         break;
                                     case "pidgeon.size":
-                                        Configuration.Depth = int.Parse(curr.InnerText);
+                                        Configuration.Services.Depth = int.Parse(curr.InnerText);
                                         break;
                                     case "history.nick":
                                         Configuration.LastNick = curr.InnerText;
@@ -1338,7 +1338,7 @@ namespace Client
         {
             ProtocolSv protocol = new ProtocolSv();
             protocol.Server = server;
-            protocol.nick = Configuration.nick;
+            protocol.nick = Configuration.UserData.nick;
             protocol.Port = port;
             protocol.password = password;
             Connections.Add(protocol);

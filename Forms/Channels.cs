@@ -70,8 +70,15 @@ namespace Client
 
         private void Channels_Load(object sender, EventArgs e)
         {
-            refreshAutoToolStripMenuItem.Checked = true;
-            Reload();
+            try
+            {
+                refreshAutoToolStripMenuItem.Checked = true;
+                Reload();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void Sort(object sender, ColumnClickEventArgs e)

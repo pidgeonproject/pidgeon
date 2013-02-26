@@ -245,57 +245,78 @@ namespace Client
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listView1.SelectedItems.Count != 1) return;
-            switch (listView1.SelectedItems[0].Index)
-            { 
-                case 0:
-                    gro1.BringToFront();
-                    break;
-                case 1:
-                    gro2.BringToFront();
-                    break;
-                case 2:
-                    gro3.BringToFront();
-                    break;
-                case 3:
-                    gro4.BringToFront();
-                    break;
-                case 4:
-                    gro5.BringToFront();
-                    break;
-                case 5:
-                    gro6.BringToFront();
-                    break;
-                case 6:
-                    gro7.BringToFront();
-                    break;
-                case 7:
-                    gro8.BringToFront();
-                    break;
-                case 8:
-                    gro9.BringToFront();
-                    break;
+            try
+            {
+                if (listView1.SelectedItems.Count != 1) return;
+                switch (listView1.SelectedItems[0].Index)
+                {
+                    case 0:
+                        gro1.BringToFront();
+                        break;
+                    case 1:
+                        gro2.BringToFront();
+                        break;
+                    case 2:
+                        gro3.BringToFront();
+                        break;
+                    case 3:
+                        gro4.BringToFront();
+                        break;
+                    case 4:
+                        gro5.BringToFront();
+                        break;
+                    case 5:
+                        gro6.BringToFront();
+                        break;
+                    case 6:
+                        gro7.BringToFront();
+                        break;
+                    case 7:
+                        gro8.BringToFront();
+                        break;
+                    case 8:
+                        gro9.BringToFront();
+                        break;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (list.SelectedItems.Count > 0)
-            { 
-                foreach(ListViewItem curr in list.SelectedItems)
+            try
+            {
+                if (list.SelectedItems.Count > 0)
                 {
-                    list.Items.Remove(curr);
+                    foreach (ListViewItem curr in list.SelectedItems)
+                    {
+                        list.Items.Remove(curr);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ListViewItem item = new ListViewItem();
-            item.Text = "$nick!$ident@$host.*$name";
-            item.SubItems.Add("true");
-            item.SubItems.Add("true");
-            list.Items.Add(item);
+            try
+            {
+                ListViewItem item = new ListViewItem();
+                item.Text = "$nick!$ident@$host.*$name";
+                item.SubItems.Add("true");
+                item.SubItems.Add("true");
+                list.Items.Add(item);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void enableToolStripMenuItem_Click(object sender, EventArgs e)

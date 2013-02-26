@@ -30,22 +30,38 @@ namespace Client
     {
         public Help()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start(linkLabel1.Text);
+            try
+            {
+                Process.Start(linkLabel1.Text);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void Help_Load(object sender, EventArgs e)
         {
-            label2.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
-        }
-
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
-        {
-
+            try
+            {
+                label2.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
     }
 }

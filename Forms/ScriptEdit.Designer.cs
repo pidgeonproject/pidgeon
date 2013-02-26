@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ScriptEdit));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -49,10 +50,10 @@
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 3;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(743, 363);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(743, 388);
             this.tableLayoutPanel1.TabIndex = 2;
             // 
             // label1
@@ -60,18 +61,18 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(737, 80);
+            this.label1.Size = new System.Drawing.Size(737, 94);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Do you really want to execute following commands?";
+            this.label1.Text = resources.GetString("label1.Text");
             // 
             // textBox1
             // 
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(3, 83);
+            this.textBox1.Location = new System.Drawing.Point(3, 97);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(737, 237);
+            this.textBox1.Size = new System.Drawing.Size(737, 248);
             this.textBox1.TabIndex = 2;
             // 
             // panel1
@@ -79,7 +80,7 @@
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 326);
+            this.panel1.Location = new System.Drawing.Point(3, 351);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(737, 34);
             this.panel1.TabIndex = 3;
@@ -108,7 +109,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(743, 363);
+            this.ClientSize = new System.Drawing.Size(743, 388);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ScriptEdit";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

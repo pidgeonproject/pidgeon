@@ -34,71 +34,85 @@ namespace Client
 
         private void Connection_Load(object sender, EventArgs e)
         {
-            label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
-            label6.Text = messages.get("nconnection-p", Core.SelectedLanguage);
-            label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);
-            label3.Text = messages.get("nconnection-start-port", Core.SelectedLanguage);
-            label2.Text = messages.get("nconnection-ident", Core.SelectedLanguage);
-            label1.Text = messages.get("nconnection-name", Core.SelectedLanguage);
-            textBox2.Text = "6667";
-            textBox1.Text = Configuration.ident;
-            _Nickname.Text = Configuration.nick;
-            comboBox1.Items.Add("irc");
-            comboBox1.SelectedItem = "irc";
-            if (Configuration.LastPort != "")
+            try
             {
-                textBox2.Text = Configuration.LastPort;
+                label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
+                label6.Text = messages.get("nconnection-p", Core.SelectedLanguage);
+                label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);
+                label3.Text = messages.get("nconnection-start-port", Core.SelectedLanguage);
+                label2.Text = messages.get("nconnection-ident", Core.SelectedLanguage);
+                label1.Text = messages.get("nconnection-name", Core.SelectedLanguage);
+                textBox2.Text = "6667";
+                textBox1.Text = Configuration.UserData.ident;
+                _Nickname.Text = Configuration.UserData.nick;
+                comboBox1.Items.Add("irc");
+                comboBox1.SelectedItem = "irc";
+                if (Configuration.LastPort != "")
+                {
+                    textBox2.Text = Configuration.LastPort;
+                }
+                if (Configuration.LastNick != "")
+                {
+                    _Nickname.Text = Configuration.LastNick;
+                }
+                if (Configuration.LastHost != "")
+                {
+                    comboBox2.Text = Configuration.LastHost;
+                }
+                comboBox1.Items.Add("quassel");
+                comboBox1.Items.Add("pidgeon service");
+                Text = messages.get("connection", Core.SelectedLanguage);
+                bConnect.Text = messages.get("bconnect", Core.SelectedLanguage);
             }
-            if (Configuration.LastNick != "")
+            catch (Exception fail)
             {
-                _Nickname.Text = Configuration.LastNick;
+                Core.handleException(fail);
             }
-            if (Configuration.LastHost != "")
-            { 
-                comboBox2.Text = Configuration.LastHost;
-            }
-            comboBox1.Items.Add("quassel");
-            comboBox1.Items.Add("pidgeon service");
-            Text  = messages.get("connection", Core.SelectedLanguage);
-            bConnect.Text = messages.get("bconnect", Core.SelectedLanguage);
         }
 
         private void bConnect_Click(object sender, EventArgs e)
         {
-            int port;
-            if (textBox1.Text == "")
+            try
             {
-                MessageBox.Show(messages.get("nconnection-2", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                int port;
+                if (textBox1.Text == "")
+                {
+                    MessageBox.Show(messages.get("nconnection-2", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (textBox2.Text == "" || !int.TryParse(textBox2.Text, out port))
+                {
+                    MessageBox.Show(messages.get("nconnection-3", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                if (_Nickname.Text == "")
+                {
+                    MessageBox.Show(messages.get("nconnection-1", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                Configuration.UserData.nick = _Nickname.Text;
+                Configuration.UserData.ident = textBox1.Text;
+                Configuration.LastHost = comboBox2.Text;
+                Configuration.LastPort = textBox2.Text;
+                Configuration.LastNick = _Nickname.Text;
+                switch (comboBox1.SelectedIndex)
+                {
+                    case 0:
+                        Core.connectIRC(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        break;
+                    case 1:
+                        Core.connectQl(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        break;
+                    case 2:
+                        Core.connectPS(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        break;
+                }
+                Close();
             }
-            if (textBox2.Text == "" || !int.TryParse(textBox2.Text, out port))
+            catch (Exception fail)
             {
-                MessageBox.Show(messages.get("nconnection-3", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
+                Core.handleException(fail);
             }
-            if (_Nickname.Text == "")
-            {
-                MessageBox.Show(messages.get("nconnection-1", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            Configuration.nick = _Nickname.Text;
-            Configuration.ident = textBox1.Text;
-            Configuration.LastHost = comboBox2.Text;
-            Configuration.LastPort = textBox2.Text;
-            Configuration.LastNick = _Nickname.Text;
-            switch (comboBox1.SelectedIndex)
-            {
-                case 0:
-                    Core.connectIRC(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
-                    break;
-                case 1:
-                    Core.connectQl(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
-                    break;
-                case 2:
-                    Core.connectPS(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
-                    break;
-            }
-            Close();
         }
     }
 }

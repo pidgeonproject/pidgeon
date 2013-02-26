@@ -30,6 +30,15 @@ namespace Client.Forms
                 {
                     if (text != "")
                     {
+                        if (text.StartsWith("#"))
+                        {
+                            continue;
+                        }
+                        if (text.StartsWith(Configuration.CommandPrefix))
+                        {
+                            Core.ProcessCommand(text);
+                            continue;
+                        }
                         network.Transfer(text, Configuration.Priority.High);
                     }
                 }

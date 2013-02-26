@@ -61,7 +61,7 @@ namespace Client
         {
             if (done)
             {
-                Configuration.window_size = sX.SplitterDistance;
+                Configuration.Window.window_size = sX.SplitterDistance;
             }
         }
 
@@ -106,25 +106,24 @@ namespace Client
 
         public void _Load()
         {
-            fileToolStripMenuItem.Text = messages.get("window-menu-file", Core.SelectedLanguage);
-            shutDownToolStripMenuItem.Text = messages.get("window-menu-quit", Core.SelectedLanguage);
-            if (Configuration.Window_Maximized)
+            messages.Localize(this);
+            if (Configuration.Window.Window_Maximized)
             {
                 this.WindowState = FormWindowState.Maximized;
             }
             try
             {
-                if (Configuration.x4 == 0)
+                if (Configuration.Window.x4 == 0)
                 {
-                    Configuration.window_size = 80;
-                    Configuration.x1 = Height - 80;
-                    Configuration.x4 = 600;
+                    Configuration.Window.window_size = 80;
+                    Configuration.Window.x1 = Height - 80;
+                    Configuration.Window.x4 = 600;
                     if (Width > 200)
                     {
-                        Configuration.x4 = this.Width - 200;
+                        Configuration.Window.x4 = this.Width - 200;
                     }
                 }
-                sX.SplitterDistance = Configuration.window_size;
+                sX.SplitterDistance = Configuration.Window.window_size;
                 ChannelList = new PidgeonList();
                 toolStripProgressBar1.Visible = false;
                 ChannelList.Visible = true;
@@ -536,6 +535,8 @@ namespace Client
                     return;
                 }
                 searchbox.Show();
+                searchbox.TopMost = true;
+                searchbox.textBox1.Focus();
             }
             catch (Exception fail)
             {

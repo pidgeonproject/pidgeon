@@ -221,6 +221,39 @@ namespace Client
             return false;
         }
 
+        public bool SearchDown(string find)
+        {
+            if (!Text.Contains(find))
+            {
+                return false;
+            }
+            int line = 0;
+
+            return false;
+        }
+
+        public bool SearchUp(System.Text.RegularExpressions.Regex find)
+        {
+            if (!find.IsMatch(Text))
+            {
+                return false;
+            }
+            int line = 0;
+
+            return false;
+        }
+
+        public bool SearchUp(string find)
+        {
+            if (!Text.Contains(find))
+            {
+                return false;
+            }
+            int line = 0;
+
+            return false;
+        }
+
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
             if (isDisposing)

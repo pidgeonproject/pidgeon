@@ -179,7 +179,7 @@ namespace Client
             {
                 simple = true;
                 enabled = false;
-                text = Configuration.user;
+                text = Configuration.UserData.user;
             }
         }
 
@@ -370,11 +370,11 @@ namespace Client
                 Descriptions.Add('t', "topic changes can be done only by operators");
                 _protocol = protocol;
                 server = Server;
-                Quit = Configuration.quit;
-                Nickname = Configuration.nick;
+                Quit = Configuration.UserData.quit;
+                Nickname = Configuration.UserData.nick;
 
-                username = Configuration.user;
-                Ident = Configuration.ident;
+                username = Configuration.UserData.user;
+                Ident = Configuration.UserData.ident;
                 if (protocol.ProtocolType == 3)
                 {
                     protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);

@@ -318,7 +318,6 @@ namespace Client
         public System.Windows.Forms.ToolStripMenuItem channelToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         public System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.TextBox simpleview;
         private System.Windows.Forms.ToolStripMenuItem toggleSimpleLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toggleAdvancedLayoutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openLinkInBrowserToolStripMenuItem;
@@ -341,6 +340,7 @@ namespace Client
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem3;
         private System.Windows.Forms.ToolStripMenuItem copyLinkToClipboardToolStripMenuItem;
         private System.Windows.Forms.Timer timer2;
+        public System.Windows.Forms.TextBox simpleview;
 
     }
 }

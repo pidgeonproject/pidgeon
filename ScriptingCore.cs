@@ -650,25 +650,25 @@ namespace Client
             interp.registerObject(Configuration.aggressive_mode, "configuration_aggressive_mode");
             interp.registerObject(Configuration.chat_timestamp, "configuration_chat_timestamp");
             interp.registerObject(Configuration.ConfirmAll, "configuration_confirm");
-            interp.registerObject(Configuration.ctcp_prot, "configuration_ctcp_prot");
+            interp.registerObject(Configuration.ProtectionNetwork.ctcp_prot, "configuration_ctcp_prot");
             interp.registerObject(Configuration.CurrentSkin, "configuration_skin_name");
             interp.registerObject(Configuration.DefaultReason, "configuration_kickban_reason");
-            interp.registerObject(Configuration.Depth, "configuration_depth");
+            interp.registerObject(Configuration.Services.Depth, "configuration_depth");
             interp.registerObject(Configuration.DisplayCtcp, "configuration_display_ctcp");
-            interp.registerObject(Configuration.flood_prot, "configuration_flood");
+            interp.registerObject(Configuration.ProtectionNetwork.flood_prot, "configuration_flood");
             interp.registerObject(Configuration.format_date, "configuration_dateformat");
             interp.registerObject(Configuration.format_nick, "configuration_nickformat");
             interp.registerObject(Configuration.HidingParsed, "configuration_hiding_parsed");
-            interp.registerObject(Configuration.ident, "configuration_ident");
+            interp.registerObject(Configuration.UserData.ident, "configuration_ident");
             interp.registerObject(Configuration.LastHost, "configuration_lasthost");
             interp.registerObject(Configuration.LastNick, "configuration_lastnick");
             interp.registerObject(Configuration.LastPort, "configuration_lastport");
             interp.registerObject(Configuration.mq, "configuration_mq");
-            interp.registerObject(Configuration.nick, "configuration_nick");
+            interp.registerObject(Configuration.UserData.nick, "configuration_nick");
             interp.registerObject(Configuration.Notice, "configuration_notice");
-            interp.registerObject(Configuration.quit, "configuration_quit");
+            interp.registerObject(Configuration.UserData.quit, "configuration_quit");
             interp.registerObject(Configuration.timestamp_mask, "configuration_timemask");
-            interp.registerObject(Configuration.user, "configuration_user");
+            interp.registerObject(Configuration.UserData.user, "configuration_user");
             interp.registerObject(Configuration.Version, "configuration_version");
             
         }
