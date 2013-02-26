@@ -650,12 +650,10 @@ namespace Client
             interp.registerObject(Configuration.aggressive_mode, "configuration_aggressive_mode");
             interp.registerObject(Configuration.chat_timestamp, "configuration_chat_timestamp");
             interp.registerObject(Configuration.ConfirmAll, "configuration_confirm");
-            interp.registerObject(Configuration.ProtectionNetwork.ctcp_prot, "configuration_ctcp_prot");
             interp.registerObject(Configuration.CurrentSkin, "configuration_skin_name");
             interp.registerObject(Configuration.DefaultReason, "configuration_kickban_reason");
             interp.registerObject(Configuration.Services.Depth, "configuration_depth");
             interp.registerObject(Configuration.DisplayCtcp, "configuration_display_ctcp");
-            interp.registerObject(Configuration.ProtectionNetwork.flood_prot, "configuration_flood");
             interp.registerObject(Configuration.format_date, "configuration_dateformat");
             interp.registerObject(Configuration.format_nick, "configuration_nickformat");
             interp.registerObject(Configuration.HidingParsed, "configuration_hiding_parsed");

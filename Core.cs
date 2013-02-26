@@ -749,9 +749,6 @@ namespace Client
                 makenode("location.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
                 makenode("logs.dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
                 makenode("logs.type", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
-                makenode("shield.ctcp", Configuration.ProtectionNetwork.ctcp_prot.ToString(), curr, confname, config, xmlnode);
-                makenode("shield.flood", Configuration.ProtectionNetwork.flood_prot.ToString(), curr, confname, config, xmlnode);
-                makenode("shield.notice", Configuration.ProtectionNetwork.notice_prot.ToString(), curr, confname, config, xmlnode);
                 makenode("ignore.ctcp", Configuration.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                 makenode("logs.html", Configuration.Logs.logs_html.ToString(), curr, confname, config, xmlnode);
                 makenode("logs.xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
@@ -1123,15 +1120,6 @@ namespace Client
                                         break;
                                     case "logs.type":
                                         Configuration.Logs.logs_name = curr.InnerText;
-                                        break;
-                                    case "shield.ctcp":
-                                        Configuration.ProtectionNetwork.ctcp_prot = bool.Parse(curr.InnerText);
-                                        break;
-                                    case "shield.flood":
-                                        Configuration.ProtectionNetwork.flood_prot = bool.Parse(curr.InnerText);
-                                        break;
-                                    case "shield.notice":
-                                        Configuration.ProtectionNetwork.notice_prot = bool.Parse(curr.InnerText);
                                         break;
                                     case "ignore.ctcp":
                                         Configuration.DisplayCtcp = bool.Parse(curr.InnerText);

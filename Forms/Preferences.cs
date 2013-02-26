@@ -60,12 +60,9 @@ namespace Client
                 textBox3.Text = Configuration.UserData.ident;
                 textBox4.Text = Configuration.UserData.user;
                 checkBox3.Checked = Configuration.Logs.logs_xml;
-                checkBox5.Checked = Configuration.ProtectionNetwork.flood_prot;
                 checkBox1.Checked = Configuration.Logs.logs_txt;
                 checkBox2.Checked = Configuration.Logs.logs_html;
-                checkBox7.Checked = Configuration.ProtectionNetwork.notice_prot;
                 checkBox4.Checked = Configuration.DisplayCtcp;
-                checkBox6.Checked = Configuration.ProtectionNetwork.ctcp_prot;
                 checkBox8.Checked = Configuration.ConfirmAll;
                 checkBox9.Checked = Configuration.Notice;
                 textBox5.Text = Configuration.Logs.logs_dir;
@@ -95,8 +92,7 @@ namespace Client
                 listView1.Items.Add(new ListViewItem("IRC"));
                 listView1.Items.Add(new ListViewItem("System"));
                 listView1.Items.Add(new ListViewItem("Logs"));
-                listView1.Items.Add(new ListViewItem("Protections"));
-                listView1.Items.Add(new ListViewItem("Network"));
+                //listView1.Items.Add(new ListViewItem("Network"));
                 listView1.Items.Add(new ListViewItem("Highlighting"));
                 listView1.Items.Add(new ListViewItem("Ignore list"));
                 listView1.Items.Add(new ListViewItem("Keyboard"));
@@ -179,13 +175,10 @@ namespace Client
                 Configuration.UserData.ident = textBox3.Text;
                 Configuration.UserData.user = textBox4.Text;
                 Configuration.Logs.logs_xml = checkBox3.Checked;
-                Configuration.ProtectionNetwork.flood_prot = checkBox5.Checked;
                 Configuration.Logs.logs_txt = checkBox1.Checked;
                 Configuration.Logs.logs_html = checkBox2.Checked;
                 Configuration.CheckUpdate = checkBox10.Checked;
-                Configuration.ProtectionNetwork.notice_prot = checkBox7.Checked;
                 Configuration.DisplayCtcp = checkBox4.Checked;
-                Configuration.ProtectionNetwork.ctcp_prot = checkBox6.Checked;
                 Configuration.Notice = checkBox9.Checked;
                 Configuration.Logs.logs_dir = textBox5.Text;
                 Configuration.Logs.logs_name = textBox6.Text;
@@ -260,21 +253,15 @@ namespace Client
                         gro3.BringToFront();
                         break;
                     case 3:
-                        gro4.BringToFront();
-                        break;
-                    case 4:
-                        gro5.BringToFront();
-                        break;
-                    case 5:
                         gro6.BringToFront();
                         break;
-                    case 6:
+                    case 4:
                         gro7.BringToFront();
                         break;
-                    case 7:
+                    case 5:
                         gro8.BringToFront();
                         break;
-                    case 8:
+                    case 6:
                         gro9.BringToFront();
                         break;
                 }

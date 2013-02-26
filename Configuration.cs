@@ -156,22 +156,6 @@ namespace Client
         /// </summary>
         public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode( System.Windows.Forms.Application.ProductVersion) ;
 
-        public class ProtectionNetwork
-        {
-            /// <summary>
-            /// If flood protection is enabled
-            /// </summary>
-            public static bool flood_prot = false;
-            /// <summary>
-            /// If ctcp protection is enabled
-            /// </summary>
-            public static bool ctcp_prot = false;
-            /// <summary>
-            /// If notice protection is enabled
-            /// </summary>
-            public static bool notice_prot = false;
-        }
-
         /// <summary>
         /// Reload time for scrollback - this is deprecated
         /// </summary>

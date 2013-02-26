@@ -66,10 +66,6 @@ namespace Client
             this.lquit = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.lnick = new System.Windows.Forms.Label();
-            this.gro4 = new System.Windows.Forms.GroupBox();
-            this.checkBox7 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.gro3 = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
@@ -141,7 +137,6 @@ namespace Client
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gro1.SuspendLayout();
-            this.gro4.SuspendLayout();
             this.gro3.SuspendLayout();
             this.gro9.SuspendLayout();
             this.contextMenuStrip3.SuspendLayout();
@@ -169,9 +164,9 @@ namespace Client
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 87.55656F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.44344F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(667, 442);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(667, 415);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -179,7 +174,6 @@ namespace Client
             this.panel1.Controls.Add(this.gro1);
             this.panel1.Controls.Add(this.gro6);
             this.panel1.Controls.Add(this.gro5);
-            this.panel1.Controls.Add(this.gro4);
             this.panel1.Controls.Add(this.gro3);
             this.panel1.Controls.Add(this.gro9);
             this.panel1.Controls.Add(this.gro2);
@@ -188,7 +182,7 @@ namespace Client
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(203, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(461, 380);
+            this.panel1.Size = new System.Drawing.Size(461, 370);
             this.panel1.TabIndex = 6;
             // 
             // gro1
@@ -212,7 +206,7 @@ namespace Client
             this.gro1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro1.Location = new System.Drawing.Point(0, 0);
             this.gro1.Name = "gro1";
-            this.gro1.Size = new System.Drawing.Size(461, 380);
+            this.gro1.Size = new System.Drawing.Size(461, 370);
             this.gro1.TabIndex = 0;
             this.gro1.TabStop = false;
             this.gro1.Text = "IRC";
@@ -282,7 +276,7 @@ namespace Client
             // checkBox9
             // 
             this.checkBox9.AutoSize = true;
-            this.checkBox9.Location = new System.Drawing.Point(11, 283);
+            this.checkBox9.Location = new System.Drawing.Point(11, 321);
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(150, 17);
             this.checkBox9.TabIndex = 16;
@@ -353,49 +347,6 @@ namespace Client
             this.lnick.TabIndex = 8;
             this.lnick.Text = "label1";
             // 
-            // gro4
-            // 
-            this.gro4.Controls.Add(this.checkBox7);
-            this.gro4.Controls.Add(this.checkBox6);
-            this.gro4.Controls.Add(this.checkBox5);
-            this.gro4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gro4.Location = new System.Drawing.Point(0, 0);
-            this.gro4.Name = "gro4";
-            this.gro4.Size = new System.Drawing.Size(461, 380);
-            this.gro4.TabIndex = 3;
-            this.gro4.TabStop = false;
-            this.gro4.Text = "Protections";
-            // 
-            // checkBox7
-            // 
-            this.checkBox7.AutoSize = true;
-            this.checkBox7.Location = new System.Drawing.Point(6, 66);
-            this.checkBox7.Name = "checkBox7";
-            this.checkBox7.Size = new System.Drawing.Size(104, 17);
-            this.checkBox7.TabIndex = 2;
-            this.checkBox7.Text = "CTCP protection";
-            this.checkBox7.UseVisualStyleBackColor = true;
-            // 
-            // checkBox6
-            // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Location = new System.Drawing.Point(6, 44);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(107, 17);
-            this.checkBox6.TabIndex = 1;
-            this.checkBox6.Text = "Notice protection";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(6, 23);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(102, 17);
-            this.checkBox5.TabIndex = 0;
-            this.checkBox5.Text = "Flood protection";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
             // gro3
             // 
             this.gro3.Controls.Add(this.groupBox1);
@@ -409,7 +360,7 @@ namespace Client
             this.gro3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro3.Location = new System.Drawing.Point(0, 0);
             this.gro3.Name = "gro3";
-            this.gro3.Size = new System.Drawing.Size(461, 380);
+            this.gro3.Size = new System.Drawing.Size(461, 370);
             this.gro3.TabIndex = 2;
             this.gro3.TabStop = false;
             this.gro3.Text = "Logs";
@@ -483,7 +434,7 @@ namespace Client
             this.gro9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro9.Location = new System.Drawing.Point(0, 0);
             this.gro9.Name = "gro9";
-            this.gro9.Size = new System.Drawing.Size(461, 380);
+            this.gro9.Size = new System.Drawing.Size(461, 370);
             this.gro9.TabIndex = 6;
             this.gro9.TabStop = false;
             this.gro9.Text = "Plugins";
@@ -499,7 +450,7 @@ namespace Client
             this.listView3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.listView3.FullRowSelect = true;
             this.listView3.HideSelection = false;
-            this.listView3.Location = new System.Drawing.Point(3, 38);
+            this.listView3.Location = new System.Drawing.Point(3, 28);
             this.listView3.Name = "listView3";
             this.listView3.Size = new System.Drawing.Size(455, 339);
             this.listView3.TabIndex = 3;
@@ -563,7 +514,7 @@ namespace Client
             this.gro2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro2.Location = new System.Drawing.Point(0, 0);
             this.gro2.Name = "gro2";
-            this.gro2.Size = new System.Drawing.Size(461, 380);
+            this.gro2.Size = new System.Drawing.Size(461, 370);
             this.gro2.TabIndex = 1;
             this.gro2.TabStop = false;
             this.gro2.Text = "System";
@@ -594,7 +545,7 @@ namespace Client
             this.gro7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro7.Location = new System.Drawing.Point(0, 0);
             this.gro7.Name = "gro7";
-            this.gro7.Size = new System.Drawing.Size(461, 380);
+            this.gro7.Size = new System.Drawing.Size(461, 370);
             this.gro7.TabIndex = 6;
             this.gro7.TabStop = false;
             this.gro7.Text = "Ignore";
@@ -611,7 +562,7 @@ namespace Client
             this.listView4.LabelEdit = true;
             this.listView4.Location = new System.Drawing.Point(3, 16);
             this.listView4.Name = "listView4";
-            this.listView4.Size = new System.Drawing.Size(455, 361);
+            this.listView4.Size = new System.Drawing.Size(455, 351);
             this.listView4.TabIndex = 0;
             this.listView4.UseCompatibleStateImageBehavior = false;
             this.listView4.View = System.Windows.Forms.View.Details;
@@ -723,7 +674,7 @@ namespace Client
             this.gro8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro8.Location = new System.Drawing.Point(0, 0);
             this.gro8.Name = "gro8";
-            this.gro8.Size = new System.Drawing.Size(461, 380);
+            this.gro8.Size = new System.Drawing.Size(461, 370);
             this.gro8.TabIndex = 7;
             this.gro8.TabStop = false;
             this.gro8.Text = "Shortcuts";
@@ -740,7 +691,7 @@ namespace Client
             this.listView2.LabelEdit = true;
             this.listView2.Location = new System.Drawing.Point(3, 16);
             this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(455, 361);
+            this.listView2.Size = new System.Drawing.Size(455, 351);
             this.listView2.TabIndex = 4;
             this.listView2.UseCompatibleStateImageBehavior = false;
             this.listView2.View = System.Windows.Forms.View.Details;
@@ -792,7 +743,7 @@ namespace Client
             this.gro6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro6.Location = new System.Drawing.Point(0, 0);
             this.gro6.Name = "gro6";
-            this.gro6.Size = new System.Drawing.Size(461, 380);
+            this.gro6.Size = new System.Drawing.Size(461, 370);
             this.gro6.TabIndex = 5;
             this.gro6.TabStop = false;
             this.gro6.Text = "Highlighting";
@@ -890,7 +841,7 @@ namespace Client
             this.gro5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gro5.Location = new System.Drawing.Point(0, 0);
             this.gro5.Name = "gro5";
-            this.gro5.Size = new System.Drawing.Size(461, 380);
+            this.gro5.Size = new System.Drawing.Size(461, 370);
             this.gro5.TabIndex = 4;
             this.gro5.TabStop = false;
             this.gro5.Text = "Network  ";
@@ -901,7 +852,7 @@ namespace Client
             this.listView1.Location = new System.Drawing.Point(3, 3);
             this.listView1.MultiSelect = false;
             this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(194, 380);
+            this.listView1.Size = new System.Drawing.Size(194, 370);
             this.listView1.TabIndex = 2;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.List;
@@ -912,16 +863,16 @@ namespace Client
             this.fl.Controls.Add(this.bSave);
             this.fl.Controls.Add(this.bCancel);
             this.fl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fl.Location = new System.Drawing.Point(203, 389);
+            this.fl.Location = new System.Drawing.Point(203, 379);
             this.fl.Name = "fl";
-            this.fl.Size = new System.Drawing.Size(461, 50);
+            this.fl.Size = new System.Drawing.Size(461, 33);
             this.fl.TabIndex = 5;
             // 
             // bSave
             // 
             this.bSave.Location = new System.Drawing.Point(3, 3);
             this.bSave.Name = "bSave";
-            this.bSave.Size = new System.Drawing.Size(137, 29);
+            this.bSave.Size = new System.Drawing.Size(137, 28);
             this.bSave.TabIndex = 4;
             this.bSave.Text = "button1";
             this.bSave.UseVisualStyleBackColor = true;
@@ -931,7 +882,7 @@ namespace Client
             // 
             this.bCancel.Location = new System.Drawing.Point(146, 3);
             this.bCancel.Name = "bCancel";
-            this.bCancel.Size = new System.Drawing.Size(114, 29);
+            this.bCancel.Size = new System.Drawing.Size(114, 28);
             this.bCancel.TabIndex = 0;
             this.bCancel.Text = "button1";
             this.bCancel.UseVisualStyleBackColor = true;
@@ -948,7 +899,7 @@ namespace Client
             this.groupBox1.Controls.Add(this.radioButton2);
             this.groupBox1.Controls.Add(this.radioButton1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(3, 266);
+            this.groupBox1.Location = new System.Drawing.Point(3, 256);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(455, 111);
             this.groupBox1.TabIndex = 7;
@@ -993,7 +944,7 @@ namespace Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(667, 442);
+            this.ClientSize = new System.Drawing.Size(667, 415);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Preferences";
             this.ShowIcon = false;
@@ -1004,8 +955,6 @@ namespace Client
             this.panel1.ResumeLayout(false);
             this.gro1.ResumeLayout(false);
             this.gro1.PerformLayout();
-            this.gro4.ResumeLayout(false);
-            this.gro4.PerformLayout();
             this.gro3.ResumeLayout(false);
             this.gro3.PerformLayout();
             this.gro9.ResumeLayout(false);
@@ -1044,7 +993,6 @@ namespace Client
         private System.Windows.Forms.Label lnick;
         private System.Windows.Forms.GroupBox gro2;
         private System.Windows.Forms.GroupBox gro3;
-        private System.Windows.Forms.GroupBox gro4;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox checkBox1;
@@ -1053,9 +1001,6 @@ namespace Client
         private System.Windows.Forms.TextBox textBox5;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox7;
-        private System.Windows.Forms.CheckBox checkBox6;
         private System.Windows.Forms.GroupBox gro6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox gro5;

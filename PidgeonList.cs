@@ -575,7 +575,7 @@ namespace Client
                                 if (cu.Key.ok)
                                 {
                                     cu.Key._Network._protocol.Part(cu.Key.Name);
-                                    cu.Key.dispose = true;
+                                    //cu.Key.dispose = true;
                                     return;
                                 }
                                 lock (cu.Key._Network.Channels)
