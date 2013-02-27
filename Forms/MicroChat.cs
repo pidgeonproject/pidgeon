@@ -84,7 +84,7 @@ namespace Client
 
         private void MicroChat_Load(object sender, EventArgs e)
         {
-
+            messages.Localize(this);
         }
     }
 }

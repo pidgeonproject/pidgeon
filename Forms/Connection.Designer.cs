@@ -237,7 +237,7 @@ namespace Client
             // 
             this.bConnect.Location = new System.Drawing.Point(470, 269);
             this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(154, 24);
+            this.bConnect.Size = new System.Drawing.Size(154, 28);
             this.bConnect.TabIndex = 1;
             this.bConnect.Text = "button1";
             this.bConnect.UseVisualStyleBackColor = true;

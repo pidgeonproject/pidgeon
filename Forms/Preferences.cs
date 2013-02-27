@@ -47,7 +47,7 @@ namespace Client
                     checkBox10.Checked = false;
                     checkBox10.Enabled = false;
                 }
-                unloadModuleToolStripMenuItem.Enabled = false;
+                messages.Localize(this);
                 bSave.Text = messages.get("global-ok", Core.SelectedLanguage);
                 bCancel.Text = messages.get("global-cancel", Core.SelectedLanguage);
                 lnick.Text = messages.get("preferences-nick", Core.SelectedLanguage);
