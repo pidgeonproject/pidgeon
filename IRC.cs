@@ -332,34 +332,37 @@ namespace Client
                 string uc;
                 if (message.StartsWith(_Protocol.delimiter.ToString()))
                 {
-                    uc = message.Substring(1);
-                    if (uc.Contains(_Protocol.delimiter))
+                    if (updated_text)
                     {
-                        uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
-                    }
-                    uc = uc.ToUpper();
-                    switch (uc)
-                    {
-                        case "VERSION":
-                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
-                                Configuration.Priority.Low);
-                            break;
-                        case "TIME":
-                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
-                                Configuration.Priority.Low);
-                            break;
-                        case "PING":
-                            if (message.Length > 6)
-                            {
-                                string time = message.Substring(6);
-                                if (time.Contains(_Network._protocol.delimiter))
+                        uc = message.Substring(1);
+                        if (uc.Contains(_Protocol.delimiter))
+                        {
+                            uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
+                        }
+                        uc = uc.ToUpper();
+                        switch (uc)
+                        {
+                            case "VERSION":
+                                _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
+                                    Configuration.Priority.Low);
+                                break;
+                            case "TIME":
+                                _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
+                                    Configuration.Priority.Low);
+                                break;
+                            case "PING":
+                                if (message.Length > 6)
                                 {
-                                    time = message.Substring(0, message.IndexOf(_Network._protocol.delimiter));
-                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
-                                        Configuration.Priority.Low);
+                                    string time = message.Substring(6);
+                                    if (time.Contains(_Network._protocol.delimiter))
+                                    {
+                                        time = message.Substring(0, message.IndexOf(_Network._protocol.delimiter));
+                                        _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
+                                            Configuration.Priority.Low);
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
                     if (Configuration.DisplayCtcp)
                     {
