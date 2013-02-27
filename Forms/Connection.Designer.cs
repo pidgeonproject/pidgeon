@@ -61,24 +61,27 @@ namespace Client
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.bConnect = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 160F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 257F));
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.bConnect, 1, 1);
+            this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 1, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 34F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(619, 365);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(724, 300);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -103,14 +106,14 @@ namespace Client
             this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 7;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 40F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(453, 325);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(461, 260);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // _Nickname
@@ -118,7 +121,7 @@ namespace Client
             this._Nickname.Dock = System.Windows.Forms.DockStyle.Top;
             this._Nickname.Location = new System.Drawing.Point(83, 3);
             this._Nickname.Name = "_Nickname";
-            this._Nickname.Size = new System.Drawing.Size(367, 20);
+            this._Nickname.Size = new System.Drawing.Size(375, 20);
             this._Nickname.TabIndex = 0;
             // 
             // label1
@@ -136,7 +139,7 @@ namespace Client
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Location = new System.Drawing.Point(83, 99);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(367, 21);
+            this.comboBox2.Size = new System.Drawing.Size(375, 21);
             this.comboBox2.TabIndex = 6;
             // 
             // textBox1
@@ -144,7 +147,7 @@ namespace Client
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox1.Location = new System.Drawing.Point(83, 35);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(367, 20);
+            this.textBox1.Size = new System.Drawing.Size(375, 20);
             this.textBox1.TabIndex = 1;
             // 
             // textBox2
@@ -152,7 +155,7 @@ namespace Client
             this.textBox2.Dock = System.Windows.Forms.DockStyle.Top;
             this.textBox2.Location = new System.Drawing.Point(83, 67);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(367, 20);
+            this.textBox2.Size = new System.Drawing.Size(375, 20);
             this.textBox2.TabIndex = 4;
             // 
             // label3
@@ -188,7 +191,7 @@ namespace Client
             this.textBox3.Location = new System.Drawing.Point(83, 131);
             this.textBox3.Name = "textBox3";
             this.textBox3.PasswordChar = '*';
-            this.textBox3.Size = new System.Drawing.Size(367, 20);
+            this.textBox3.Size = new System.Drawing.Size(375, 20);
             this.textBox3.TabIndex = 10;
             this.textBox3.UseSystemPasswordChar = true;
             // 
@@ -218,7 +221,7 @@ namespace Client
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Location = new System.Drawing.Point(83, 163);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(367, 21);
+            this.comboBox1.Size = new System.Drawing.Size(375, 21);
             this.comboBox1.TabIndex = 18;
             // 
             // label5
@@ -228,10 +231,11 @@ namespace Client
             this.label5.Size = new System.Drawing.Size(53, 24);
             this.label5.TabIndex = 14;
             this.label5.Text = "label";
+            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // bConnect
             // 
-            this.bConnect.Location = new System.Drawing.Point(462, 334);
+            this.bConnect.Location = new System.Drawing.Point(470, 269);
             this.bConnect.Name = "bConnect";
             this.bConnect.Size = new System.Drawing.Size(154, 24);
             this.bConnect.TabIndex = 1;
@@ -239,11 +243,21 @@ namespace Client
             this.bConnect.UseVisualStyleBackColor = true;
             this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBox1.Image = global::Client.Properties.Resources.system1;
+            this.pictureBox1.Location = new System.Drawing.Point(470, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(251, 260);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
             // Connection
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(619, 365);
+            this.ClientSize = new System.Drawing.Size(724, 300);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "Connection";
             this.ShowIcon = false;
@@ -253,6 +267,7 @@ namespace Client
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -275,6 +290,7 @@ namespace Client
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.PictureBox pictureBox1;
 
 
     }

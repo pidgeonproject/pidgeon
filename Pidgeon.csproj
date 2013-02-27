@@ -412,6 +412,7 @@
     <Content Include="ManualPages\PidgeonModule.txt" />
     <Content Include="ManualPages\PidgeonUptime.txt" />
     <Content Include="ManualPages\Server.txt" />
+    <None Include="Resources\darknetwork.png" />
     <Content Include="tcl84.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

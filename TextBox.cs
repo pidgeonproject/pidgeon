@@ -150,7 +150,6 @@ namespace Client
                         richTextBox1.SelectionStart = caret;
                         break;
                     case Keys.Enter:
-                        Core._Main.Chat.scrollback.Last = this;
                         List<string> input = new List<string>();
                         if (richTextBox1.Text.Contains("\n"))
                         {

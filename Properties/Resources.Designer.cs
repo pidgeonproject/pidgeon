@@ -232,5 +232,12 @@ namespace Client.Properties {
                 return ResourceManager.GetString("Server", resourceCulture);
             }
         }
+        
+        internal static System.Drawing.Bitmap system1 {
+            get {
+                object obj = ResourceManager.GetObject("system1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

@@ -39,7 +39,6 @@ namespace Client
         /// List of all lines in this textbox
         /// </summary>
         private List<ContentLine> ContentLines = new List<ContentLine>();
-        public TextBox Last = null;
         /// <summary>
         /// Owner window
         /// </summary>
