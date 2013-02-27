@@ -36,10 +36,6 @@ namespace Client
         public string text;
         public DateTime pong;
         public long date = 0;
-        /// <summary>
-        /// System window
-        /// </summary>
-        public Window system = null;
         public bool updated_text = true;
 
         private void Ping()
@@ -367,7 +363,7 @@ namespace Client
                     }
                     if (Configuration.DisplayCtcp)
                     {
-                        system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                        _Network.system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
@@ -805,7 +801,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 string message = value;
-                system.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                _Network.system.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -834,7 +830,7 @@ namespace Client
                 {
                     return false;
                 }
-                system.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                _Network.system.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -901,7 +897,7 @@ namespace Client
                 {
                     if (_data2[1].Contains("NICK"))
                     {
-                        system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                        _Network.system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
                         _Network.Nickname = _value;
                     }
                     if (_data2[1].Contains("PART"))
@@ -959,7 +955,7 @@ namespace Client
                         string parameters = "";
                         string command2 = "";
                         string source;
-                        string _value;
+                        string value;
                         source = text.Substring(1);
                         source = source.Substring(0, source.IndexOf(" "));
                         command2 = text.Substring(1);
@@ -968,17 +964,17 @@ namespace Client
                         {
                             command2 = command2.Substring(0, command2.IndexOf(" :"));
                         }
-                        string[] _command = command2.Split(' ');
-                        if (_command.Length > 0)
+                        string[] Commands = command2.Split(' ');
+                        if (Commands.Length > 0)
                         {
-                            command = _command[0];
+                            command = Commands[0];
                         }
-                        if (_command.Length > 1)
+                        if (Commands.Length > 1)
                         {
                             int curr = 1;
-                            while (curr < _command.Length)
+                            while (curr < Commands.Length)
                             {
-                                parameters += _command[curr] + " ";
+                                parameters += Commands[curr] + " ";
                                 curr++;
                             }
                             if (parameters.EndsWith(" "))
@@ -986,35 +982,35 @@ namespace Client
                                 parameters = parameters.Substring(0, parameters.Length - 1);
                             }
                         }
-                        _value = "";
+                        value = "";
                         if (text.Length > 3 + command2.Length + source.Length)
                         {
-                            _value = text.Substring(3 + command2.Length + source.Length);
+                            value = text.Substring(3 + command2.Length + source.Length);
                         }
-                        if (_value.StartsWith(":"))
+                        if (value.StartsWith(":"))
                         {
-                            _value = _value.Substring(1);
+                            value = value.Substring(1);
                         }
                         string[] code = data[1].Split(' ');
-                        if (ProcessThis(source, data, _value))
+                        if (ProcessThis(source, data, value))
                         {
                             OK = true;
                         }
                         switch (command)
                         {
                             case "001":
-                                return true;
+                                break;
                             case "002":
                             case "003":
                             case "004":
                             case "005":
-                                if (Info(command, parameters, _value))
+                                if (Info(command, parameters, value))
                                 {
                                     //return true;
                                 }
                                 break;
                             case "301":
-                                if (Idle2(command, parameters, _value))
+                                if (Idle2(command, parameters, value))
                                 {
                                     return true;
                                 }
@@ -1022,7 +1018,7 @@ namespace Client
                             case "317":
                                 if (Configuration.FriendlyWho)
                                 {
-                                    if (IdleTime(command, parameters, _value))
+                                    if (IdleTime(command, parameters, value))
                                     {
                                         return true;
                                     }
@@ -1035,7 +1031,7 @@ namespace Client
                                 }
                                 break;
                             case "322":
-                                if (ChannelData(command, parameters, _value))
+                                if (ChannelData(command, parameters, value))
                                 {
                                     return true;
                                 }
@@ -1052,7 +1048,7 @@ namespace Client
                                 Ping();
                                 return true;
                             case "INFO":
-                                system.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
+                                _Network.system.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
                                 if (parameters.Contains(_Network.channel_prefix))
@@ -1064,60 +1060,60 @@ namespace Client
                                         window = channel.retrieveWindow();
                                         if (window != null)
                                         {
-                                            window.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                            window.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                             return true;
                                         }
                                     }
                                 }
-                                system.scrollback.InsertText("[" + source + "] " + _value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                _Network.system.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
                                 _Network.Transfer("PONG ", Configuration.Priority.High);
                                 return true;
                             case "NICK":
-                                if (ProcessNick(source, parameters, _value))
+                                if (ProcessNick(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "PRIVMSG":
-                                if (ProcessPM(source, parameters, _value))
+                                if (ProcessPM(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "TOPIC":
-                                if (Topic(source, parameters, _value))
+                                if (Topic(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "MODE":
-                                if (Mode(source, parameters, _value))
+                                if (Mode(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "PART":
-                                if (Part(source, parameters, _value))
+                                if (Part(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "QUIT":
-                                if (Quit(source, parameters, _value))
+                                if (Quit(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "JOIN":
-                                if (Join(source, parameters, _value))
+                                if (Join(source, parameters, value))
                                 {
                                     return true;
                                 }
                                 break;
                             case "KICK":
-                                if (Kick(source, parameters, _value))
+                                if (Kick(source, parameters, value))
                                 {
                                     return true;
                                 }
@@ -1134,13 +1130,13 @@ namespace Client
                                     }
                                     break;
                                 case "324":
-                                    if (ChannelInfo(code, command, source, parameters, _value))
+                                    if (ChannelInfo(code, command, source, parameters, value))
                                     {
                                         return true;
                                     }
                                     break;
                                 case "332":
-                                    if (ChannelTopic(code, command, source, parameters, _value))
+                                    if (ChannelTopic(code, command, source, parameters, value))
                                     {
                                         return true;
                                     }
@@ -1178,7 +1174,7 @@ namespace Client
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
-                    system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                    _Network.system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
                 }
             }
             catch (Exception fail)
@@ -1202,14 +1198,9 @@ namespace Client
             _Network = _network;
             _Protocol = _network._protocol;
             text = _text;
-            system = _network.system;
             pong = _pong;
             date = _date;
             updated_text = updated;
-            if (system == null)
-            {
-                throw new Exception("System window is null");
-            }
         }
     }
 

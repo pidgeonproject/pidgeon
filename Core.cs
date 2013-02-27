@@ -1358,6 +1358,7 @@ namespace Client
         {
             if (IgnoreErrors)
             {
+                Console.WriteLine("EXCEPTION: " + _exception.StackTrace);
                 return -2;
             }
             if (fatal)
@@ -1396,47 +1397,32 @@ namespace Client
                             server.Exit();
                         }
                     }
-                    catch (Exception)
-                    { }
-                    bool terminated = false;
-                    System.Threading.Thread.Sleep(200);
-                    try
+                    catch (Exception fail)
                     {
-                        foreach (Thread th in SystemThreads)
+                        Core.handleException(fail);
+                    }
+                    foreach (Thread th in SystemThreads)
+                    {
+                        try
                         {
-                            if (th.ThreadState == System.Threading.ThreadState.Aborted || th.ThreadState == System.Threading.ThreadState.Stopped || th.ThreadState == System.Threading.ThreadState.Unstarted)
+                            if (th.ThreadState != System.Threading.ThreadState.WaitSleepJoin && th.ThreadState != System.Threading.ThreadState.Running)
                             {
                                 continue;
                             }
                             th.Abort();
                         }
-                        Thread.Sleep(800);
-                        terminated = true;
-                        foreach (Thread th in SystemThreads)
+                        catch (Exception fail)
                         {
-                            if (th.ThreadState == System.Threading.ThreadState.Running)
-                            {
-                                terminated = false;
-                            }
+                            Core.handleException(fail);
                         }
-                        // remove this
-                        System.Diagnostics.Process.GetCurrentProcess().Kill();
                     }
-                    catch (Exception)
-                    {
-                        terminated = false;
-                    }
-                    System.Windows.Forms.Application.Exit();
-                    if (terminated)
-                    {
-                        System.Windows.Forms.Application.Exit();
-                        return true;
-                    }
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    Thread.Sleep(800);
+                    Environment.Exit(0);
                 }
             }
-            catch (Exception)
+            catch (Exception fail)
             {
+                Console.WriteLine(fail.StackTrace.ToString());
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             return true;
