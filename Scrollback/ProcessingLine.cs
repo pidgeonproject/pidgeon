@@ -100,7 +100,7 @@ namespace Client
             {
                 stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
             }
-            SBABox.Line text = Parser.link(_c.text, RT, color);
+            SBABox.Line text = Parser.FormatLine(_c.text, RT, color);
             SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
             SBABox.Line line = new SBABox.Line(RT);
             line.insertData(content);

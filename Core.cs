@@ -767,6 +767,7 @@ namespace Client
                 makenode("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
                 makenode("default.reason", Configuration.DefaultReason, curr, confname, config, xmlnode);
                 makenode("network.n2", Configuration.Nick2, curr, confname, config, xmlnode);
+                makenode("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
 
                 foreach (KeyValuePair<string, string> data in Configuration.Extensions)
                 {
@@ -774,11 +775,21 @@ namespace Client
                 }
 
                 string separators = "";
-                foreach (char separator in Configuration.Separators)
+                foreach (char separator in Configuration.Parser.Separators)
                 {
                     separators = separators + separator.ToString();
                 }
                 makenode("delimiters", separators, curr, confname, config, xmlnode);
+
+                lock (Configuration.Parser.Protocols)
+                {
+                    foreach (string xx in Configuration.Parser.Protocols)
+                    {
+                        curr = config.CreateElement("protocol");
+                        curr.InnerText = xx;
+                        xmlnode.AppendChild(curr);
+                    }
+                }
 
                 lock (Configuration.HighlighterList)
                 {
@@ -991,6 +1002,7 @@ namespace Client
         {
             // Check if config file is present
             Restore(ConfigFile);
+            bool Protocols = false;
             if (File.Exists(ConfigFile))
             {
                 try
@@ -1047,6 +1059,18 @@ namespace Client
                                 }
                                 continue;
                             }
+
+                            if (curr.Name == "protocol")
+                            {
+                                if (!Protocols)
+                                {
+                                    Configuration.Parser.Protocols.Clear();
+                                    Protocols = true;
+                                }
+                                Configuration.Parser.Protocols.Add(curr.InnerText);
+                                continue;
+                            }
+
                             if (curr.Name == "shortcut")
                             {
                                 if (curr.Attributes.Count > 2)
@@ -1166,7 +1190,10 @@ namespace Client
                                         {
                                             temp.Add(part);
                                         }
-                                        Configuration.Separators = temp;
+                                        Configuration.Parser.Separators = temp;
+                                        break;
+                                    case "colors.changelinks":
+                                        Configuration.Colors.ChangeLinks = bool.Parse(curr.InnerText);
                                         break;
                                     case "debugger":
                                         Configuration.Debugging = bool.Parse(curr.InnerText);

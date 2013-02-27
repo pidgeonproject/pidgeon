@@ -63,7 +63,6 @@ namespace Client
             public static int window_size = 0;
         }
 
-
         public class UserData
         {
             /// <summary>
@@ -83,6 +82,11 @@ namespace Client
             /// Real name
             /// </summary>
             public static string user = "My name is hidden, dude";
+        }
+
+        public class Colors
+        {
+            public static bool ChangeLinks = false;
         }
 
         /// <summary>
@@ -137,7 +141,11 @@ namespace Client
         /// </summary>
         public static bool DisplayCtcp = true;
 
-        public static List<char> Separators = new List<char> { '<', ' ', '>', ',', '!', '[', ']', '{', '}', (char)1, (char)2};
+        public class Parser
+        {
+            public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
+            public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
+        }
 
         /// <summary>
         /// Network Scan
