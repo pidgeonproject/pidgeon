@@ -170,22 +170,6 @@ namespace Client
             return text.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_");
         }
 
-        public bool Find(string text)
-        {
-            if (simple)
-            {
-                if (!simpleview.Text.Contains(text))
-                {
-                    return false;
-                }
-                simpleview.SelectionStart = simpleview.Text.IndexOf(text);
-                simpleview.SelectionLength = text.Length;
-                simpleview.ScrollToCaret();
-                return true;
-            }
-            return false;
-        }
-
         public string _getFileName()
         {
             string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner.name));
@@ -216,12 +200,12 @@ namespace Client
             lock (ContentLines)
             {
                 simpleview.Text = "";
-                string everything = "";
+                StringBuilder everything = new StringBuilder("");
                 foreach (ContentLine _line in ContentLines)
                 {
-                    everything += Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine;
+                    everything.Append(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-                simpleview.AppendText(everything);
+                simpleview.AppendText(everything.ToString());
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToCaret();
