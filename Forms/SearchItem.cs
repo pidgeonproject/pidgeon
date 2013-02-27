@@ -29,6 +29,8 @@ namespace Client
 {
     public partial class SearchItem : Form
     {
+        public bool Direction = false;
+
         public SearchItem()
         {
             InitializeComponent();
@@ -47,6 +49,21 @@ namespace Client
             }
         }
 
+        public void SearchItem_Keys(object sender, KeyEventArgs keys)
+        {
+            try
+            {
+                if (keys.KeyCode == Keys.Enter)
+                {
+                    SearchRun(Direction);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         private void SearchItem_Load(object sender, EventArgs e)
         {
             Top = Core._Main.Top + Core._Main.Height - 200;
@@ -56,6 +73,7 @@ namespace Client
 
         public void SearchRun(bool tp)
         {
+            Direction = tp;
             Scrollback text = null;
             if (Core._Main.Chat == null || Core._Main.Chat.scrollback == null)
             {

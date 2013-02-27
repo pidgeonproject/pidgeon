@@ -50,6 +50,7 @@ namespace Client
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.button2 = new System.Windows.Forms.Button();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(SearchItem_Shut);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(SearchItem_Keys);
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
