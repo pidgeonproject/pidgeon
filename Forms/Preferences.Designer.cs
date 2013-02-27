@@ -755,12 +755,13 @@ namespace Client
             this.columnHeader1,
             this.columnHeader2});
             this.list.ContextMenuStrip = this.contextMenuStrip1;
+            this.list.Dock = System.Windows.Forms.DockStyle.Fill;
             this.list.FullRowSelect = true;
             this.list.HideSelection = false;
             this.list.LabelEdit = true;
-            this.list.Location = new System.Drawing.Point(11, 50);
+            this.list.Location = new System.Drawing.Point(3, 49);
             this.list.Name = "list";
-            this.list.Size = new System.Drawing.Size(439, 329);
+            this.list.Size = new System.Drawing.Size(455, 318);
             this.list.TabIndex = 3;
             this.list.UseCompatibleStateImageBehavior = false;
             this.list.View = System.Windows.Forms.View.Details;

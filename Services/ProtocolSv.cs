@@ -269,6 +269,9 @@ namespace Client
                         case "SNICK":
                             ResponsesSv.sNick(curr, this);
                             break;
+                        case "SREMOVE":
+                            ResponsesSv.sRemove(curr, this);
+                            break;
                         case "SCONNECT":
                             ResponsesSv.sConnect(curr, this);
                             break;

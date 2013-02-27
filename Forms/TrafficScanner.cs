@@ -84,10 +84,12 @@ namespace Client
                                 return;
                             }
                         }
+                        string xx = "";
                         foreach (string x in text)
                         {
-                            textBox1.AppendText(x + Environment.NewLine);
+                            xx += x + Environment.NewLine;
                         }
+                        textBox1.AppendText(xx);
                         text.Clear();
                         textBox1.ScrollToCaret();
                     }

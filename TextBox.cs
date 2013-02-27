@@ -46,9 +46,16 @@ namespace Client
 
         private void Wheeled(object sender, MouseEventArgs e)
         {
-            if (parent.scrollback != null)
+            try
             {
-                parent.scrollback.RT.Wheeled(sender, e);
+                if (parent.scrollback != null)
+                {
+                    parent.scrollback.RT.Wheeled(sender, e);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 

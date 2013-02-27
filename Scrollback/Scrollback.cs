@@ -216,10 +216,12 @@ namespace Client
             lock (ContentLines)
             {
                 simpleview.Text = "";
+                string everything = "";
                 foreach (ContentLine _line in ContentLines)
                 {
-                    simpleview.AppendText(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
+                    everything += Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine;
                 }
+                simpleview.AppendText(everything);
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToCaret();
