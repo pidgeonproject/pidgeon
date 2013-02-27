@@ -36,6 +36,7 @@ namespace Client
         private int MinimalWidth = 220;
         private bool initializationComplete = false;
         public bool WrapAll = true;
+        private int RecursiveMax = 0;
         private bool isDisposing = false;
         private BufferedGraphicsContext backbufferContext = null;
         private BufferedGraphics backbufferGraphics = null;
@@ -286,6 +287,12 @@ namespace Client
             bool wrappingnow = false;
             // we increase the number of lines that are rendered - we do it now because this line will be either renedered or whole text won't be rendered
             RenderedLineTotalCount++;
+            RecursiveMax++;
+            if (RecursiveMax > 20)
+            {
+                Core.DebugLog("Recursive point reached");
+                return;
+            }
             // this is a line which could be drawn in case that we have to split this line to more
             Line extraline = null;
             lock (line.text)
@@ -648,6 +655,7 @@ namespace Client
                         foreach (Line text in LineDB)
                         {
                             X = 0 - currentX;
+                            RecursiveMax = 0;
                             RedrawLine(ref graphics, ref X, ref Y, text);
                             Y = Y + Font.Size + spacing;
                         }
