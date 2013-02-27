@@ -33,6 +33,7 @@ namespace Client
         /// Content of box in unformatted way
         /// </summary>
         private string text = null;
+        private int MinimalWidth = 220;
         private bool initializationComplete = false;
         public bool WrapAll = true;
         private bool isDisposing = false;
@@ -256,13 +257,20 @@ namespace Client
 
         protected void RepaintWindow(object sender, PaintEventArgs e)
         {
-            if (isDisposing)
+            try
             {
-                return;
+                if (isDisposing)
+                {
+                    return;
+                }
+                if (backbufferGraphics != null)
+                {
+                    backbufferGraphics.Render(e.Graphics);
+                }
             }
-            if (backbufferGraphics != null)
+            catch (Exception fail)
             {
-                backbufferGraphics.Render(e.Graphics);
+                Core.handleException(fail);
             }
         }
 
@@ -402,7 +410,7 @@ namespace Client
                                                 int size = xx.Length - 1;
                                                 while (graphics.MeasureString(value.Substring(0, size), font, new Point(0, 0), format).Width > width)
                                                 {
-                                                    if (size <= 0)
+                                                    if (size <= 1)
                                                     {
                                                         if (Configuration.Debugging)
                                                         {
@@ -606,6 +614,12 @@ namespace Client
                     {
                         return;
                     }
+
+                    if (this.Width < MinimalWidth)
+                    {
+                        return;
+                    }
+
                     Rendering = true;
                     RenderedLineTotalCount = 0;
 
@@ -615,6 +629,7 @@ namespace Client
                     Graphics graphics = null;
                     if (drawingGraphics == null)
                     {
+                        Rendering = false;
                         return;
                     }
 
@@ -850,36 +865,43 @@ namespace Client
 
         private void RecreateBuffers()
         {
-            // Check initialization has completed so we know backbufferContext has been assigned.
-            // Check that we aren't disposing or this could be invalid.
-            if (!initializationComplete || isDisposing)
-                return;
-
-            // We recreate the buffer with a width and height of the control. The "+ 1"
-            // guarantees we never have a buffer with a width or height of 0.
-            backbufferContext.MaximumBuffer = new Size(pt.Width + 1, pt.Height + 1);
-
-            // Dispose of old backbufferGraphics (if one has been created already)
-
-            if (backbufferGraphics != null)
+            try
             {
-                lock (backbufferGraphics)
+                // Check initialization has completed so we know backbufferContext has been assigned.
+                // Check that we aren't disposing or this could be invalid.
+                if (!initializationComplete || isDisposing)
+                    return;
+
+                // We recreate the buffer with a width and height of the control. The "+ 1"
+                // guarantees we never have a buffer with a width or height of 0.
+                backbufferContext.MaximumBuffer = new Size(pt.Width + 1, pt.Height + 1);
+
+                // Dispose of old backbufferGraphics (if one has been created already)
+
+                if (backbufferGraphics != null)
                 {
-                    backbufferGraphics.Dispose();
+                    lock (backbufferGraphics)
+                    {
+                        backbufferGraphics.Dispose();
+                    }
                 }
+
+                // Create new backbufferGrpahics that matches the current size of buffer.
+                backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
+                new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
+
+                // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
+                drawingGraphics = backbufferGraphics.Graphics;
+
+                // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
+
+                // Invalidate the control so a repaint gets called somewhere down the line.
+                pt.Invalidate();
             }
-
-            // Create new backbufferGrpahics that matches the current size of buffer.
-            backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
-            new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
-
-            // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
-            drawingGraphics = backbufferGraphics.Graphics;
-
-            // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
-
-            // Invalidate the control so a repaint gets called somewhere down the line.
-            pt.Invalidate();
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         protected override void OnResize(EventArgs e)
@@ -987,25 +1009,32 @@ namespace Client
 
         private void SBABox_Load(object sender, EventArgs e)
         {
-            backbufferContext = BufferedGraphicsManager.Current;
-            initializationComplete = true;
-            vScrollBar1.Minimum = 0;
-            vScrollBar1.Value = 0;
-            vScrollBar1.Maximum = 0;
-            vScrollBar1.Enabled = false;
-            if (Wrap)
+            try
             {
-                hsBar.Visible = false;
+                backbufferContext = BufferedGraphicsManager.Current;
+                initializationComplete = true;
+                vScrollBar1.Minimum = 0;
+                vScrollBar1.Value = 0;
+                vScrollBar1.Maximum = 0;
+                vScrollBar1.Enabled = false;
+                if (Wrap)
+                {
+                    hsBar.Visible = false;
+                }
+
+                RecreateBuffers();
+
+                this.SetStyle(
+                ControlStyles.UserPaint |
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer, true);
+
+                Redraw();
             }
-
-            RecreateBuffers();
-
-            this.SetStyle(
-            ControlStyles.UserPaint |
-            ControlStyles.AllPaintingInWmPaint |
-            ControlStyles.DoubleBuffer, true);
-
-            Redraw();
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
