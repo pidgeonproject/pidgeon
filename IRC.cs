@@ -1007,10 +1007,7 @@ namespace Client
                             case "003":
                             case "004":
                             case "005":
-                                if (Info(command, parameters, value))
-                                {
-                                    //return true;
-                                }
+                                Info(command, parameters, value);
                                 break;
                             case "301":
                                 if (Idle2(command, parameters, value))
