@@ -24,6 +24,17 @@ namespace Client
 {
     public class Commands
     {
+        public class CommandLink
+        {
+            public bool Overrides = false;
+            public string Target = null;
+            public CommandLink(string target, bool overrides = false)
+            {
+                Target = target;
+                Overrides = overrides;
+            }
+        }
+
         public class Command
         {
             private Type type;

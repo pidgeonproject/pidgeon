@@ -614,33 +614,34 @@ namespace Client
                 User delete = null;
                 if (window != null)
                 {
-                    channel.retrieveWindow().scrollback.InsertText(messages.get("window-p1",
+                    window.scrollback.InsertText(messages.get("window-p1",
                         Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                         Scrollback.MessageStyle.Part,
                         !channel.temporary_hide, date, !updated_text);
 
-                    if (channel.containsUser(user))
+                    if (updated_text)
                     {
-                        lock (channel.UserList)
+                        if (channel.containsUser(user))
                         {
-                            foreach (User _user in channel.UserList)
+                            lock (channel.UserList)
                             {
-                                if (_user.Nick == user)
+                                foreach (User _user in channel.UserList)
                                 {
-                                    delete = _user;
-                                    break;
+                                    if (_user.Nick == user)
+                                    {
+                                        delete = _user;
+                                        break;
+                                    }
                                 }
                             }
-                        }
 
-                        if (updated_text)
-                        {
                             if (delete != null)
                             {
                                 channel.UserList.Remove(delete);
                             }
                             channel.redrawUsers();
                             channel.UpdateInfo();
+                            return true;
                         }
                         return true;
                     }
@@ -663,7 +664,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    channel.retrieveWindow().scrollback.InsertText(messages.get("channel-topic",
+                    window.scrollback.InsertText(messages.get("channel-topic",
                         Core.SelectedLanguage, new List<string> { source, value }), Scrollback.MessageStyle.Channel,
                         !channel.temporary_hide, date, !updated_text);
                     return true;
@@ -734,7 +735,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    channel.retrieveWindow().scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
+                    window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
 
@@ -776,7 +777,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    channel.retrieveWindow().scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
+                    window.scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
                         new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
                     if (updated_text)
