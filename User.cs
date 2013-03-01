@@ -23,15 +23,40 @@ namespace Client
 {
     public class User : IComparable
     {
-        public string Host;
-        public Network _Network;
-        public string Ident;
+        /// <summary>
+        /// Host name
+        /// </summary>
+        public string Host = null;
+        public Network _Network = null;
+        public string Ident = null;
         public NetworkMode ChannelMode = new NetworkMode();
-        public string Nick;
-        public List<Channel> ChannelList;
+        public string Nick = null;
+        public string RealName = null;
+        public List<Channel> ChannelList
+        {
+            get
+            {
+                List<Channel> List = new List<Channel>();
+                if (_Network == null)
+                {
+                    return null;
+                }
+                lock (_Network.Channels)
+                {
+                    foreach (Channel xx in _Network.Channels)
+                    {
+                        if (xx.containsUser(Nick))
+                        {
+                            List.Add(xx);
+                        }
+                    }
+                }
+                return List;
+            }
+        }
+
         public User(string nick, string host, Network network, string ident)
         {
-            ChannelList = new List<Channel>();
             _Network = network;
             if (nick != "")
             {

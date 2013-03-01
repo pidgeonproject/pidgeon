@@ -78,7 +78,7 @@ namespace Client
 
                     ReloadBans();
 
-                    lock (channel._mode)
+                    lock (channel.ChannelMode)
                     {
                         foreach (char item in channel._Network.CModes)
                         {
@@ -88,7 +88,7 @@ namespace Client
                             {
                                 de = "    " + channel._Network.Descriptions[item];
                             }
-                            checkedList.Items.Add(item.ToString() + de, channel._mode._Mode.Contains(item.ToString()));
+                            checkedList.Items.Add(item.ToString() + de, channel.ChannelMode._Mode.Contains(item.ToString()));
                             textBox1.Text = channel.Topic;
                         }
                     }
@@ -181,7 +181,7 @@ namespace Client
                 {
                     if (checkedList.CheckedItems.Contains(item))
                     {
-                        if (!channel._mode._Mode.Contains(item[0].ToString()))
+                        if (!channel.ChannelMode._Mode.Contains(item[0].ToString()))
                         {
                             cset += item[0];
                             change = true;
@@ -189,7 +189,7 @@ namespace Client
                         continue;
 
                     }
-                    if (channel._mode._Mode.Contains(item[0].ToString()))
+                    if (channel.ChannelMode._Mode.Contains(item[0].ToString()))
                     {
                         uset += item[0];
                         change = true;
@@ -340,7 +340,7 @@ namespace Client
         {
             try
             {
-                if (!channel.parsing_xb)
+                if (!channel.parsing_bans)
                 {
                     ReloadBans();
                     timerBans.Enabled = false;

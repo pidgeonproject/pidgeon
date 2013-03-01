@@ -230,7 +230,7 @@ namespace Client
                         info += "??";
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
-                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel._mode.ToString() + " b/i/e: " + info;
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/i/e: " + info;
                     if (Configuration.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)
@@ -483,39 +483,6 @@ namespace Client
                 Core.handleException(fail);
             }
         }
-
-        /*private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            foreach (Protocol network in Core.Connections)
-            {
-                if (network.type == 2)
-                {
-                    ProtocolSv sv = (ProtocolSv)network;
-                    foreach (Network server in sv.NetworkList)
-                    {
-                        if (server.server == "irc.tm-irc.org")
-                        {
-                            server._protocol.Join("#pidgeon", server);
-                            return;
-                        }
-                    }
-                }
-                if (network.Server == "irc.tm-irc.org")
-                {
-                    network.Join("#pidgeon");
-                    return;
-                }
-            }
-            Core.connectIRC("irc.tm-irc.org");
-            foreach (Protocol network in Core.Connections)
-            {
-                if (network.Server == "irc.tm-irc.org")
-                {
-                    network.Join("#pidgeon");
-                    return;
-                }
-            }
-        } */
 
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {

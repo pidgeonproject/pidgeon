@@ -168,7 +168,7 @@ namespace Client
                     {
                         Channels.Add(chan, text);
                     }
-                    chan.tn = text;
+                    chan.TreeNode = text;
                     text.ImageIndex = 2;
                     Window xx = chan.retrieveWindow();
                     if (xx != null)
@@ -572,7 +572,7 @@ namespace Client
                         {
                             if (cu.Value == Item)
                             {
-                                if (cu.Key.ok)
+                                if (cu.Key.ChannelWork)
                                 {
                                     cu.Key._Network._protocol.Part(cu.Key.Name);
                                     //cu.Key.dispose = true;
@@ -668,10 +668,10 @@ namespace Client
                     {
                         if (cu.Value == items.SelectedNode)
                         {
-                            if (cu.Key.ok)
+                            if (cu.Key.ChannelWork)
                             {
                                 cu.Key._Network._protocol.Part(cu.Key.Name);
-                                cu.Key.ok = false;
+                                cu.Key.ChannelWork = false;
                                 return;
                             }
                             return;

@@ -160,7 +160,7 @@ namespace Client
                         {
                             i.temporary_hide = false;
                             i.parsing_xe = false;
-                            i.parsing_xb = false;
+                            i.parsing_bans = false;
                             i.parsing_who = false;
                         }
                     }
@@ -220,7 +220,7 @@ namespace Client
                     foreach (Channel i in server.Channels)
                     {
                         i.parsing_who = true;
-                        i.parsing_xb = true;
+                        i.parsing_bans = true;
                         i.temporary_hide = true;
                     }
                 }

@@ -757,7 +757,7 @@ namespace Client
                 makenode("debugger", Configuration.Debugging.ToString(), curr, confname, config, xmlnode);
 
                 makenode("history.nick", Configuration.LastNick, curr, confname, config, xmlnode);
-                makenode("scrollback_plimit", Configuration.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                makenode("scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
                 makenode("history.host", Configuration.LastHost, curr, confname, config, xmlnode);
                 makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
                 makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
@@ -1161,7 +1161,7 @@ namespace Client
                                         Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
                                         break;
                                     case "scrollback_plimit":
-                                        Configuration.scrollback_plimit = int.Parse(curr.InnerText);
+                                        Configuration.Scrollback.scrollback_plimit = int.Parse(curr.InnerText);
                                         break;
                                     case "notification.tray":
                                         Configuration.Notice = bool.Parse(curr.InnerText);

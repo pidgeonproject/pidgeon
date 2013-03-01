@@ -169,6 +169,11 @@ namespace Client
             return;
         }
 
+        public virtual void Hook_Initialise(Main main)
+        {
+            return;
+        }
+
         public virtual void Hook_InputOnTab(ref string prev, ref string text, ref int caret, ref bool restore)
         {
             return;

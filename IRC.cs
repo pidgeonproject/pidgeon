@@ -101,7 +101,7 @@ namespace Client
                     Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
-                        channel._mode.mode(code[4]);
+                        channel.ChannelMode.mode(code[4]);
                         channel.UpdateInfo();
                         curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
@@ -225,7 +225,7 @@ namespace Client
             return false;
         }
 
-        private bool ParseUs(string[] code)
+        private bool ParseUser(string[] code)
         {
             if (code.Length > 8)
             {
@@ -234,13 +234,13 @@ namespace Client
                 string host = code[5];
                 string nick = code[7];
                 string server = code[6];
-                string mode = "";
+                char mode = '\0';
                 if (code[8].Length > 0)
                 {
-                    mode = code[8][code[8].Length - 1].ToString();
-                    if (mode == "G" || mode == "H")
+                    mode = code[8][code[8].Length - 1];
+                    if (!_Network.UChars.Contains(mode))
                     {
-                        mode = "";
+                        mode = '\0';
                     }
                 }
                 if (channel != null)
@@ -249,20 +249,35 @@ namespace Client
                     {
                         if (!channel.containsUser(nick))
                         {
-                            User _user = new User(mode + nick, host, _Network, ident);
-                            channel.UserList.Add(_user);
+                            User _user = null;
+                            if (mode != '\0')
+                            {
+                                _user = new User(mode.ToString() + nick, host, _Network, ident);
+                            }
+                            else
+                            {
+                                _user = new User(nick, host, _Network, ident);
+                            }
+                            lock (channel.UserList)
+                            {
+                                channel.UserList.Add(_user);
+                            }
                             return true;
                         }
-                        foreach (User u in channel.UserList)
+                        lock (channel.UserList)
                         {
-                            if (u.Nick == nick)
+                            foreach (User u in channel.UserList)
                             {
-                                u.Ident = ident;
-                                u.Host = host;
-                                break;
+                                if (u.Nick == nick)
+                                {
+                                    u.Ident = ident;
+                                    u.Host = host;
+                                    break;
+                                }
                             }
                         }
                     }
+                    channel.redrawUsers();
                     if (Configuration.HidingParsed && channel.parsing_who)
                     {
                         return true;
@@ -450,7 +465,7 @@ namespace Client
             string _new = value;
             foreach (Channel item in _Network.Channels)
             {
-                if (item.ok)
+                if (item.ChannelWork)
                 {
                     lock (item.UserList)
                     {
@@ -510,7 +525,7 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        channel._mode.mode(change);
+                        channel.ChannelMode.mode(change);
 
                         while (change.EndsWith(" ") && change.Length > 1)
                         {
@@ -685,7 +700,7 @@ namespace Client
             string _new = value;
             foreach (Channel item in _Network.Channels)
             {
-                if (item.ok)
+                if (item.ChannelWork)
                 {
                     User target = null;
                     lock (item.UserList)
@@ -878,7 +893,7 @@ namespace Client
 
                             if (Configuration.aggressive_bans)
                             {
-                                curr.parsing_xb = true;
+                                curr.parsing_bans = true;
                                 _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                             }
 
@@ -916,9 +931,9 @@ namespace Client
                                 Window Chat = c.retrieveWindow();
                                 if (c != null)
                                 {
-                                    if (c.ok)
+                                    if (c.ChannelWork)
                                     {
-                                        c.ok = false;
+                                        c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
                                             Scrollback.MessageStyle.Message, !c.temporary_hide, date);
                                     }
@@ -928,7 +943,7 @@ namespace Client
                                             Scrollback.MessageStyle.Message, !c.temporary_hide, date);
                                     }
                                 }
-                                c.ok = false;
+                                c.ChannelWork = false;
                                 c.UpdateInfo();
                             }
                         }
@@ -1149,7 +1164,7 @@ namespace Client
                                     }
                                     break;
                                 case "352":
-                                    if (ParseUs(code))
+                                    if (ParseUser(code))
                                     {
                                         return true;
                                     }
