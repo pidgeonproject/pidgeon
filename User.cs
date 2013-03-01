@@ -55,6 +55,25 @@ namespace Client
             }
         }
 
+        public void SymbolMode(char symbol)
+        {
+            if (_Network == null)
+            {
+                return;
+            }
+
+            if (symbol == '\0')
+            {
+                return;
+            }
+
+            if (_Network.UChars.Contains(symbol))
+            {
+                char mode = _Network.CUModes[_Network.UChars.IndexOf(symbol)];
+                ChannelMode.mode("+" + mode.ToString());
+            }
+        }
+
         public User(string nick, string host, Network network, string ident)
         {
             _Network = network;
@@ -63,12 +82,8 @@ namespace Client
                 char prefix = nick[0];
                 if (network.UChars.Contains(prefix))
                 {
-                    int Mode = network.UChars.IndexOf(prefix);
-                    if (network.CUModes.Count >= Mode + 1)
-                    {
-                        ChannelMode.mode("+" + network.CUModes[Mode].ToString());
-                        nick = nick.Substring(1);
-                    }
+                    SymbolMode(prefix);
+                    nick = nick.Substring(1);
                 }
             }
             Nick = nick;

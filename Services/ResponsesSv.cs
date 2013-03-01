@@ -287,13 +287,23 @@ namespace Client
 
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
+                Network remove = null;
                 System.Windows.Forms.TreeNode item = null;
-                foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.Servers)
+                lock (Core._Main.ChannelList.Servers)
                 {
-                    if (n.Key.server == curr.InnerText)
+                    foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.Servers)
                     {
-                        item = n.Value;
-                        break;
+                        if (n.Key.server == curr.InnerText)
+                        {
+                            item = n.Value;
+                            remove = n.Key;
+                            break;
+                        }
+                    }
+                
+                    if (remove != null)
+                    {
+                        Core._Main.ChannelList.Servers.Remove(remove);
                     }
                 }
                 if (item != null)
@@ -389,12 +399,18 @@ namespace Client
                                             host = host.Substring(0, host.IndexOf("+"));
                                         }
                                     }
-                                    User f2 = new User(us, host, nw, ident);
-                                    if (user.Contains("+") && !user.StartsWith("+"))
+                                    lock (channel.UserList)
                                     {
-                                        f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
+                                        if (!channel.containsUser(us))
+                                        {
+                                            User f2 = new User(us, host, nw, ident);
+                                            if (user.Contains("+") && !user.StartsWith("+"))
+                                            {
+                                                f2.ChannelMode.mode(user.Substring(user.IndexOf("+")));
+                                            }
+                                            channel.UserList.Add(f2);
+                                        }
                                     }
-                                    channel.UserList.Add(f2);
                                 }
 
                             }

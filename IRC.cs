@@ -277,7 +277,6 @@ namespace Client
                             }
                         }
                     }
-                    channel.redrawUsers();
                     if (Configuration.HidingParsed && channel.parsing_who)
                     {
                         return true;
@@ -302,11 +301,33 @@ namespace Client
                     string[] _chan = data[2].Split(' ');
                     foreach (var user in _chan)
                     {
-                        if (!channel.containsUser(user) && user != "")
+                        string _user = user;
+                        char _UserMode = '\0';
+                        if (_user.Length > 0)
                         {
+                            foreach (char mode in _Network.UChars)
+                            {
+                                if (_user[0] == mode)
+                                {
+                                    _UserMode = user[0];
+                                    _user = _user.Substring(1);
+                                }
+                            }
+
                             lock (channel.UserList)
                             {
-                                channel.UserList.Add(new User(user, "", _Network, ""));
+                                User _u = channel.userFromName(_user);
+                                if (_u == null && _user != "")
+                                {
+                                    channel.UserList.Add(new User(user, "", _Network, ""));
+                                }
+                                else
+                                {
+                                    if (_u != null)
+                                    {
+                                        _u.SymbolMode(_UserMode);
+                                    }
+                                }
                             }
                         }
                     }
@@ -797,14 +818,14 @@ namespace Client
                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
                     if (updated_text)
                     {
-                        if (!channel.containsUser(user))
+                        lock (channel.UserList)
                         {
-                            lock (channel.UserList)
+                            if (!channel.containsUser(user))
                             {
-                                channel.UserList.Add(new User(user, _host, _Network, _ident));
+                                    channel.UserList.Add(new User(user, _host, _Network, _ident));
                             }
-                            channel.redrawUsers();
                         }
+                        channel.redrawUsers();
                     }
                     channel.UpdateInfo();
                     return true;

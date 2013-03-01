@@ -28,7 +28,7 @@ namespace Client
         /// </summary>
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
         /// <summary>
-        /// Channel user
+        /// Channel user symbols (oper and such)
         /// </summary>
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
         /// <summary>
