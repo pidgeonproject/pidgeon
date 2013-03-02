@@ -23,27 +23,67 @@ namespace Client
 {
     public class User : IComparable
     {
-        public string Host;
-        public Network _Network;
-        public string Ident;
+        /// <summary>
+        /// Host name
+        /// </summary>
+        public string Host = null;
+        public Network _Network = null;
+        public string Ident = null;
         public NetworkMode ChannelMode = new NetworkMode();
-        public string Nick;
-        public List<Channel> ChannelList;
+        public string Nick = null;
+        public string RealName = null;
+        public List<Channel> ChannelList
+        {
+            get
+            {
+                List<Channel> List = new List<Channel>();
+                if (_Network == null)
+                {
+                    return null;
+                }
+                lock (_Network.Channels)
+                {
+                    foreach (Channel xx in _Network.Channels)
+                    {
+                        if (xx.containsUser(Nick))
+                        {
+                            List.Add(xx);
+                        }
+                    }
+                }
+                return List;
+            }
+        }
+
+        public void SymbolMode(char symbol)
+        {
+            if (_Network == null)
+            {
+                return;
+            }
+
+            if (symbol == '\0')
+            {
+                return;
+            }
+
+            if (_Network.UChars.Contains(symbol))
+            {
+                char mode = _Network.CUModes[_Network.UChars.IndexOf(symbol)];
+                ChannelMode.mode("+" + mode.ToString());
+            }
+        }
+
         public User(string nick, string host, Network network, string ident)
         {
-            ChannelList = new List<Channel>();
             _Network = network;
             if (nick != "")
             {
                 char prefix = nick[0];
                 if (network.UChars.Contains(prefix))
                 {
-                    int Mode = network.UChars.IndexOf(prefix);
-                    if (network.CUModes.Count >= Mode + 1)
-                    {
-                        ChannelMode.mode("+" + network.CUModes[Mode].ToString());
-                        nick = nick.Substring(1);
-                    }
+                    SymbolMode(prefix);
+                    nick = nick.Substring(1);
                 }
             }
             Nick = nick;

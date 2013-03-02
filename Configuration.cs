@@ -252,6 +252,11 @@ namespace Client
             /// Enable this to make bars change the max size when reached
             /// </summary>
             public static bool DynamicBars = true;
+
+            /// <summary>
+            /// Size
+            /// </summary>
+            public static int scrollback_plimit = 200;
         }
 
         public class Services
@@ -358,8 +363,6 @@ namespace Client
             }
             return Default;
         }
-
-        public static int scrollback_plimit = 800;
 
         public enum TypeOfBan
         { 

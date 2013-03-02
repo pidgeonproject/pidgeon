@@ -23,9 +23,9 @@ namespace Client
 {
     public class ChannelParameterMode
     {
-        public string Target = "";
-        public string Time;
-        public string User;
+        public string Target = null;
+        public string Time = null;
+        public string User = null;
     }
     public class Invite : ChannelParameterMode
     {
@@ -64,7 +64,7 @@ namespace Client
         /// <summary>
         /// Network the channel belongs to
         /// </summary>
-        public Network _Network;
+        public Network _Network = null;
         /// <summary>
         /// List of all users in current channel
         /// </summary>
@@ -72,7 +72,7 @@ namespace Client
         /// <summary>
         /// Topic
         /// </summary>
-        public string Topic;
+        public string Topic = null;
         /// <summary>
         /// Whether channel is in proccess of dispose
         /// </summary>
@@ -84,7 +84,7 @@ namespace Client
         /// <summary>
         /// Date when a topic was set
         /// </summary>
-        public int TopicDate;
+        public int TopicDate = 0;
         /// <summary>
         /// Invites
         /// </summary>
@@ -112,7 +112,7 @@ namespace Client
         /// <summary>
         /// If true the channel is processing ban data
         /// </summary>
-        public bool parsing_xb = false;
+        public bool parsing_bans = false;
         /// <summary>
         /// If true the channel is processing exception data
         /// </summary>
@@ -124,19 +124,19 @@ namespace Client
         /// <summary>
         /// Channel mode
         /// </summary>
-        public NetworkMode _mode;
+        public NetworkMode ChannelMode = null;
         /// <summary>
         /// Whether window needs to be redraw
         /// </summary>
-        public bool Redraw;
+        public bool Redraw = false;
         /// <summary>
         /// If true the window is considered usable
         /// </summary>
-        public bool ok;
+        public bool ChannelWork = false;
         /// <summary>
         /// Tree node
         /// </summary>
-        public System.Windows.Forms.TreeNode tn = null;
+        public System.Windows.Forms.TreeNode TreeNode = null;
 
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Client
         /// </summary>
         public void ReloadBans()
         {
-            parsing_xb = true;
+            parsing_bans = true;
             Bans.Clear();
             _Network.Transfer("MODE +b " + Name);
         }
@@ -154,8 +154,8 @@ namespace Client
         /// </summary>
         public Channel()
         {
-            ok = true;
-            _mode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
+            ChannelWork = true;
+            ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
             lock (_control)
             {
                 _control.Add(this);
@@ -171,8 +171,8 @@ namespace Client
         public Channel(Network network)
         {
             _Network = network;
-            ok = true;
-            _mode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
+            ChannelWork = true;
+            ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
             lock (_control)
             {
                 _control.Add(this);
@@ -184,7 +184,7 @@ namespace Client
 
         public void UpdateInfo()
         {
-            if (tn != null)
+            if (TreeNode != null)
             {
                 string text ="";
                 string trimmed = Topic;
@@ -197,13 +197,13 @@ namespace Client
                         trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
                     }
                 }
-                if (!ok)
+                if (!ChannelWork)
                 {
                     text = "[PARTED CHAN] ";
                     
                 }
-                text += Name + " " + UserList.Count + " users, mode: " + _mode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
-                tn.ToolTipText = text;
+                text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
+                TreeNode.ToolTipText = text;
             }
         }
 
@@ -233,15 +233,9 @@ namespace Client
         /// <returns></returns>
         public bool containsUser(string user)
         {
-            lock (UserList)
+            if (userFromName(user) != null)
             {
-                foreach (var name in UserList)
-                {
-                    if (name.Nick == user)
-                    {
-                        return true;
-                    }
-                }
+                return true;
             }
             return false;
         }
@@ -438,7 +432,7 @@ namespace Client
             }
         }
 
-        public string uchr(User nick)
+        private string uchr(User nick)
         {
             if (nick.ChannelMode._Mode.Count < 1)
             {
@@ -462,7 +456,7 @@ namespace Client
             }
             return "";
         }
-
+        
         /// <summary>
         /// Return user object if specified user exist
         /// </summary>
@@ -472,7 +466,7 @@ namespace Client
         {
                 foreach (User item in UserList)
                 {
-                    if (name == item.Nick)
+                    if (name.ToLower() == item.Nick.ToLower())
                     {
                         return item;
                     }

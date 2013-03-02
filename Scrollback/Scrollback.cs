@@ -34,7 +34,7 @@ namespace Client
         /// <summary>
         /// Maximal size of text
         /// </summary>
-        private int scrollback_max = Configuration.scrollback_plimit;
+        private int scrollback_max = Configuration.Scrollback.scrollback_plimit;
         /// <summary>
         /// List of all lines in this textbox
         /// </summary>
@@ -236,9 +236,9 @@ namespace Client
 
         public bool RestoreOffset()
         {
-            if (scrollback_max != Configuration.scrollback_plimit)
+            if (scrollback_max != Configuration.Scrollback.scrollback_plimit)
             {
-                scrollback_max = Configuration.scrollback_plimit;
+                scrollback_max = Configuration.Scrollback.scrollback_plimit;
                 Reload();
                 return true;
             }

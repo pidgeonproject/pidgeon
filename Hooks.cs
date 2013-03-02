@@ -219,6 +219,25 @@ namespace Client
             }
         }
 
+        public static void Initialise(Main main)
+        {
+            foreach (Extension extension in Core.Extensions)
+            {
+                try
+                {
+                    if (extension._Status == Extension.Status.Active)
+                    {
+                        extension.Hook_Initialise(main);
+                    }
+                }
+                catch (Exception mf)
+                {
+                    Core.DebugLog("Error in hook Initialise(Main) module " + extension.Name);
+                    Core.handleException(mf);
+                }
+            }
+        }
+
         public static void BeforeOptions(ref Preferences preferences)
         { 
             
