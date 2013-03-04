@@ -84,7 +84,6 @@ namespace Client
             textbox.history = new List<string>();
             listViewd.Columns[0].Width = listViewd.Width;
             listView.Columns[0].Width = listViewd.Width;
-            Redraw();
         }
 
         public void Create()
@@ -96,14 +95,21 @@ namespace Client
             {
                 scrollback.listAllChannelsToolStripMenuItem.Visible = false;
             }
+            Redraw();
         }
 
         public bool Redraw()
         {
             if (xContainer1 != null)
             {
-                this.xContainer1.SplitterDistance = Configuration.Window.x1;
-                this.xContainer4.SplitterDistance = Configuration.Window.x4;
+                if (this.xContainer1.SplitterDistance != Configuration.Window.x1)
+                {
+                    xContainer1.SplitterDistance = Configuration.Window.x1;
+                }
+                if (this.xContainer4.SplitterDistance != Configuration.Window.x4)
+                {
+                    xContainer4.SplitterDistance = Configuration.Window.x4;
+                }
             }
             if (listViewd != null && listViewd.Columns.Count > 0)
             {

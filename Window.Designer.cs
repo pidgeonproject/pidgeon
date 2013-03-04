@@ -100,7 +100,8 @@ namespace Client
             // 
             this.xContainer1.Panel2.Controls.Add(this.textbox);
             this.xContainer1.Size = new System.Drawing.Size(749, 333);
-            this.xContainer1.SplitterDistance = 166;
+            //this.xContainer1.SplitterDistance = 166;
+            this.xContainer1.SplitterDistance = Configuration.Window.x1;
             this.xContainer1.TabIndex = 0;
             this.xContainer1.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.Changed);
             // 
@@ -119,7 +120,8 @@ namespace Client
             this.xContainer4.Panel2.Controls.Add(this.listViewd);
             this.xContainer4.Panel2.Controls.Add(this.listView);
             this.xContainer4.Size = new System.Drawing.Size(749, 166);
-            this.xContainer4.SplitterDistance = 249;
+            //this.xContainer4.SplitterDistance = 249;
+            this.xContainer4.SplitterDistance = Configuration.Window.x4;
             this.xContainer4.TabIndex = 0;
             this.xContainer4.SplitterMoved += new System.Windows.Forms.SplitterEventHandler(this.Changed);
             // 

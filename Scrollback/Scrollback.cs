@@ -49,6 +49,7 @@ namespace Client
         private DateTime lastDate;
         private bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
+        private bool Changed = false;
 
         public enum MessageStyle
         {
