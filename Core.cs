@@ -23,7 +23,6 @@ using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.AddIn;
 using System.Text;
 
 namespace Client

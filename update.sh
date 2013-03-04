@@ -1,6 +1,2 @@
-#!/bin/sh
-
-count=`git rev-list HEAD --count`
-cat templates/build.cs | sed "s/%DATA%/$count/" > build_info.cs
-
-exit 0
+git rev-list HEAD --count > version.txt
+git describe --always >> version.txt
