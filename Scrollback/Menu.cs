@@ -248,6 +248,7 @@ namespace Client
                 }
             }
         }
+
         private void channelToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -295,6 +296,10 @@ namespace Client
             {
                 scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
                 ScrollingEnabled = scrollToolStripMenuItem.Checked;
+                if (ScrollingEnabled && Changed)
+                {
+                    Reload();
+                }
             }
             catch (Exception fail)
             {
@@ -318,7 +323,7 @@ namespace Client
         {
             try
             {
-                Reload(true);
+                Reload(true, true);
             }
             catch (Exception fail)
             {

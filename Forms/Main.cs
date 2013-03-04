@@ -79,7 +79,6 @@ namespace Client
             Chat._Protocol = WindowOwner;
             Chat.Dock = DockStyle.Fill;
             Chat.Location = new System.Drawing.Point(0, 0);
-            Chat.Redraw();
             Chat.CreateControl();
             if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {

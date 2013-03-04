@@ -136,15 +136,9 @@ namespace Client
             if (windows.ContainsKey(name))
             {
                 Current = windows[name];
-                Current.Visible = true;
                 Current.scrollback.Display();
-                if (Current != Core._Main.Chat)
-                {
-                    if (Core._Main.Chat != null)
-                    {
-                        Core._Main.Chat.Visible = false;
-                    }
-                }
+                Current.BringToFront();
+                Current.Visible = true;
                 Current.Redraw();
                 if (Current.isChannel)
                 {
@@ -158,8 +152,14 @@ namespace Client
                 {
                     Current.textbox.Focus();
                 }
+                if (Current != Core._Main.Chat)
+                {
+                    if (Core._Main.Chat != null)
+                    {
+                        Core._Main.Chat.Visible = false;
+                    }
+                }
                 Core._Main.Chat = windows[name];
-                Current.BringToFront();
                 Current.Making = false;
                 Core._Main.UpdateStatus();
             }

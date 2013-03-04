@@ -77,6 +77,7 @@ namespace Client
             this.items.ItemHeight = 16;
             this.items.Click += new System.EventHandler(Clicked);
             this.items.Location = new System.Drawing.Point(0, 0);
+            this.items.DrawNode += new System.Windows.Forms.DrawTreeNodeEventHandler(DrawTreeNodeHighlightSelectedEvenWithoutFocus);
             this.items.Name = "items";
             this.items.SelectedImageIndex = 0;
             this.items.ShowNodeToolTips = true;

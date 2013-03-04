@@ -39,6 +39,39 @@ namespace Client
         public PidgeonList()
         {
             InitializeComponent();
+            items.DrawMode = TreeViewDrawMode.OwnerDrawText;
+        }
+
+        private void DrawTreeNodeHighlightSelectedEvenWithoutFocus(object sender, DrawTreeNodeEventArgs e)
+        {
+            try
+            {
+                Color foreColor;
+                if (e.Node == ((TreeView)sender).SelectedNode)
+                {
+                    foreColor = SystemColors.HighlightText;
+                    e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Bounds);
+                    ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds, foreColor, SystemColors.Highlight);
+                }
+                else
+                {
+                    SolidBrush blueBrush = new SolidBrush(Configuration.CurrentSkin.backgroundcolor);
+                    foreColor = (e.Node.ForeColor == Color.Empty) ? ((TreeView)sender).ForeColor : e.Node.ForeColor;
+                    e.Graphics.FillRectangle(blueBrush, e.Bounds);
+                }
+
+                TextRenderer.DrawText(
+                    e.Graphics,
+                    e.Node.Text,
+                    e.Node.NodeFont ?? e.Node.TreeView.Font,
+                    e.Bounds,
+                    foreColor,
+                    TextFormatFlags.GlyphOverhangPadding);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void list_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)

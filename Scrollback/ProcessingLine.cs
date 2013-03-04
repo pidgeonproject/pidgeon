@@ -40,6 +40,11 @@ namespace Client
         {
             if (simple)
             {
+                if (!ScrollingEnabled)
+                {
+                    Changed = true;
+                    return;
+                }
                 lock (simpleview.Lines)
                 {
                     simpleview.AppendText(Configuration.format_date.Replace("$1", line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(line.text) + Environment.NewLine);
@@ -62,6 +67,8 @@ namespace Client
                     RT.ScrollToBottom();
                 }
             }
+
+            Changed = false;
         }
 
         private SBABox.Line CreateLine(ContentLine Line)
@@ -108,8 +115,15 @@ namespace Client
             return line;
         }
 
-        public bool Reload(bool fast = false)
+        public bool Reload(bool fast = false, bool enforce = false)
         {
+            if (!enforce && !Changed)
+            {
+                return false;
+            }
+
+            Changed = false;
+
             if (owner == null || (owner != null && WindowVisible()))
             {
                 if (simple)
@@ -378,6 +392,8 @@ namespace Client
                 Log(text, InputStyle);
             }
 
+            Changed = true;
+
             if (Thread.CurrentThread == Core._KernelThread && WindowVisible())
             {
                 if (!RequireReload(time))
@@ -387,7 +403,7 @@ namespace Client
                 }
                 else
                 {
-                    Reload();
+                    Reload(false, true);
                 }
             }
             else
