@@ -35,11 +35,11 @@ namespace Client
         public LinkedList<Channel> ChannelsQueue = new LinkedList<Channel>();
         public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
         public List<Network> NetworkQueue = new List<Network>();
+        public static bool Updated = false;
 
         public PidgeonList()
         {
             InitializeComponent();
-            items.DrawMode = TreeViewDrawMode.OwnerDrawText;
         }
 
         private void DrawTreeNodeHighlightSelectedEvenWithoutFocus(object sender, DrawTreeNodeEventArgs e)
@@ -138,6 +138,7 @@ namespace Client
                     return;
                 }
                 ChannelsQueue.AddLast(chan);
+                Updated = true;
             }
         }
 
@@ -163,10 +164,11 @@ namespace Client
 
                     UserList.Add(_us, text);
                     Servers[_us._Network].Expand();
-                    if (_us._Network._protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
+                    if (_us._Network._Protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
                     {
-                        _us._Network._protocol.windows[_us._Network.window + _us.Nick].treeNode = text;
+                        _us._Network._Protocol.windows[_us._Network.window + _us.Nick].treeNode = text;
                     }
+                    Updated = true;
                     this.ResumeLayout();
                 }
             }
@@ -253,6 +255,7 @@ namespace Client
             {
                 network.ParentSv = ParentSv;
                 NetworkQueue.Add(network);
+                Updated = true;
             }
         }
 
@@ -264,6 +267,15 @@ namespace Client
                 {
                     Core.DisplayNote();
                 }
+
+                // there is no update needed so skip
+                if (!Updated)
+                {
+                    return;
+                }
+
+                Updated = false;
+
                 lock (NetworkQueue)
                 {
                     foreach (Network it in NetworkQueue)
@@ -272,6 +284,7 @@ namespace Client
                     }
                     NetworkQueue.Clear();
                 }
+
                 lock (ChannelsQueue)
                 {
                     foreach (Channel item in ChannelsQueue)
@@ -280,6 +293,7 @@ namespace Client
                     }
                     ChannelsQueue.Clear();
                 }
+
                 List<Channel> _channels = new List<Channel>();
                 lock (Channels)
                 {
@@ -293,10 +307,12 @@ namespace Client
                         }
                     }
                 }
+
                 foreach (var chan in _channels)
                 {
                     Channels.Remove(chan);
                 }
+
                 lock (Core._Main.WindowRequests)
                 {
                     foreach (Main._WindowRequest item in Core._Main.WindowRequests)
@@ -309,6 +325,7 @@ namespace Client
                     }
                     Core._Main.WindowRequests.Clear();
                 }
+
                 lock (UserList)
                 {
                     foreach (User user in _User)
@@ -317,6 +334,7 @@ namespace Client
                     }
                     _User.Clear();
                 }
+
                 lock (Channels)
                 {
                     foreach (var channel in Channels)
@@ -374,7 +392,7 @@ namespace Client
                             {
                                 if (cu.Key.ParentSv == null)
                                 {
-                                    cu.Key._protocol.ShowChat("!system");
+                                    cu.Key._Protocol.ShowChat("!system");
                                 }
                                 else
                                 {
@@ -398,7 +416,7 @@ namespace Client
                             if (cu.Value == e.Node)
                             {
                                 Core.network = cu.Key._Network;
-                                cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
+                                cu.Key._Network._Protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
                                 closeToolStripMenuItem.Visible = true;
                                 Core._Main.UpdateStatus();
                                 return;
@@ -419,7 +437,7 @@ namespace Client
                                 partToolStripMenuItem.Visible = true;
                                 closeToolStripMenuItem.Visible = true;
                                 cu.Key._Network.RenderedChannel = cu.Key;
-                                cu.Key._Network._protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
+                                cu.Key._Network._Protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
                                 Core._Main.UpdateStatus();
                                 return;
                             }
@@ -531,7 +549,7 @@ namespace Client
                         }
                         if (network != null)
                         {
-                            Core.Connections.Remove(network._protocol);
+                            Core.Connections.Remove(network._Protocol);
                             Servers.Remove(network);
                             foreach (TreeNode item in items.SelectedNode.Nodes)
                             {
@@ -577,12 +595,12 @@ namespace Client
                                     items.Nodes.Remove(Item);
                                 }
                             }
-                            if (curr._Network._protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
+                            if (curr._Network._Protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
                             {
-                                lock (curr._Network._protocol.windows)
+                                lock (curr._Network._Protocol.windows)
                                 {
-                                    curr._Network._protocol.windows[curr._Network.window + curr.Nick].Visible = false;
-                                    curr._Network._protocol.windows[curr._Network.window + curr.Nick].Dispose();
+                                    curr._Network._Protocol.windows[curr._Network.window + curr.Nick].Visible = false;
+                                    curr._Network._Protocol.windows[curr._Network.window + curr.Nick].Dispose();
                                 }
                             }
                             lock (UserList)
@@ -607,7 +625,7 @@ namespace Client
                             {
                                 if (cu.Key.ChannelWork)
                                 {
-                                    cu.Key._Network._protocol.Part(cu.Key.Name);
+                                    cu.Key._Network._Protocol.Part(cu.Key.Name);
                                     //cu.Key.dispose = true;
                                     return;
                                 }
@@ -703,7 +721,7 @@ namespace Client
                         {
                             if (cu.Key.ChannelWork)
                             {
-                                cu.Key._Network._protocol.Part(cu.Key.Name);
+                                cu.Key._Network._Protocol.Part(cu.Key.Name);
                                 cu.Key.ChannelWork = false;
                                 return;
                             }

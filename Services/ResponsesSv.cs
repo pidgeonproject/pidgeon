@@ -66,7 +66,7 @@ namespace Client
 
                 if (message_window != null)
                 {
-                    message_window.scrollback.InsertTextAndIgnoreUpdate(mn._protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, true, message_time, true);
+                    message_window.scrollback.InsertTextAndIgnoreUpdate(mn._Protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, true, message_time, true);
                 }
                 else
                 {

@@ -62,11 +62,11 @@ namespace Client
         /// <summary>
         /// Thread for IO logs
         /// </summary>
-        public static Thread Thread_logs;
+        public static Thread Thread_logs = null;
         /// <summary>
         /// Thread for update system
         /// </summary>
-        public static Thread ThUp;
+        public static Thread ThUp = null;
         /// <summary>
         /// Module layers
         /// </summary>
@@ -74,11 +74,11 @@ namespace Client
         /// <summary>
         /// Pointer to exception class during recovery
         /// </summary>
-        public static Exception recovery_exception;
+        public static Exception recovery_exception = null;
         /// <summary>
         /// Recovery thread
         /// </summary>
-        public static Thread _RecoveryThread;
+        public static Thread _RecoveryThread = null;
         /// <summary>
         /// Timers
         /// </summary>
@@ -120,10 +120,6 @@ namespace Client
         /// </summary>
         private static int randomuq = 0;
         /// <summary>
-        /// Defines wheter some thread is working with random
-        /// </summary>
-        private static bool sequence_worklock = false;
-        /// <summary>
         /// Path to skin
         /// </summary>
         public static string SkinPath = "Skin";
@@ -139,10 +135,26 @@ namespace Client
         /// Ignore errors - all exceptions and debug logs are ignored and pidgeon is flagged as unstable
         /// </summary>
         public static bool IgnoreErrors = false;
+        /// <summary>
+        /// If this is true the recovery window will not allow to ignore
+        /// </summary>
         public static bool recovery_fatal = false;
+        /// <summary>
+        /// Parameters that were retrieved in console (deprecated)
+        /// </summary>
         public static string[] startup = null;
+        /// <summary>
+        /// Cache of current params
+        /// </summary>
+        private static List<string> startup_params = new List<string>();
+        /// <summary>
+        /// Extensions loaded in core
+        /// </summary>
         public static List<Extension> Extensions = new List<Extension>();
 
+        /// <summary>
+        /// Parameters that were retrieved in console
+        /// </summary>
         public static List<string> Parameters
         {
             get
@@ -150,7 +162,7 @@ namespace Client
                 List<string> data = new List<string>();
                 lock (startup)
                 {
-                    data.AddRange(startup);
+                    data.AddRange(startup_params);
                 }
                 return data;
             }
@@ -280,6 +292,10 @@ namespace Client
                 _KernelThread = System.Threading.Thread.CurrentThread;
                 LoadTime = DateTime.Now;
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
+                foreach (string data in startup)
+                {
+                    startup_params.Add(data);
+                }
                 if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
                 {
                     ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
@@ -348,6 +364,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Connect to irc link
+        /// </summary>
+        /// <param name="text">link</param>
+        /// <param name="services"></param>
         public static void ParseLink(string text, ProtocolSv services = null)
         {
             if (text.StartsWith("irc://"))
@@ -411,9 +432,14 @@ namespace Client
 
         public static void killThread(Thread name)
         {
-            if (name.ThreadState == System.Threading.ThreadState.Running)
+            if (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
             {
                 name.Abort();
+                Core.DebugLog("Killed thread " + name.Name);
+            }
+            else
+            {
+                Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
             }
 
             if (Core.IgnoreErrors)
@@ -448,7 +474,8 @@ namespace Client
                 .Replace("%/D%", "")
                 .Replace(((char)001).ToString(), "")
                 .Replace(((char)002).ToString(), "")
-                .Replace(((char)003).ToString(), "");
+                .Replace(((char)003).ToString(), "")
+                .Replace(((char)004).ToString(), "");
         }
 
         public static void ClearRingBufferLog()
@@ -469,6 +496,10 @@ namespace Client
             lock (Ring)
             {
                 Ring.Add(text);
+                while (Ring.Count > Configuration.MaximalRingLogSize)
+                {
+                    Ring.RemoveAt(0);
+                }
             }
             Console.WriteLine(text);
         }
@@ -525,6 +556,7 @@ namespace Client
                     command = command.Substring(1);
                 }
 
+                // in case that it's known command we return
                 if (Commands.Proccess(command))
                 {
                     return true;
@@ -532,6 +564,7 @@ namespace Client
 
                 string[] values = command.Split(' ');
 
+                // if not we can try to pass it to server
                 if (Core._Main.Chat._Protocol != null)
                 {
                     if (_Main.Chat._Protocol.Connected)
@@ -629,18 +662,13 @@ namespace Client
                 return;
             }
             data = Protocol.decode_text(Core.RemoveSpecial(data));
-            if (_KernelThread == Thread.CurrentThread)
-            {
-                notification_waiting = true;
-                notification_data = data;
-                notification_caption = caption;
-                DisplayNote();
-                return;
-            }
             notification_waiting = true;
             notification_data = data;
             notification_caption = caption;
-            return;
+            if (_KernelThread == Thread.CurrentThread)
+            {
+                DisplayNote();
+            }
         }
 
         /// <summary>
@@ -668,14 +696,21 @@ namespace Client
         /// <returns></returns>
         public static string retrieveRandom()
         {
-            while (sequence_worklock)
+            int random = 0;
+            bool lockWasTaken = false;
+            try
             {
-                Thread.Sleep(100);
+                Monitor.Enter(_KernelThread, ref lockWasTaken);
+                randomuq++;
+                random = randomuq;
             }
-            sequence_worklock = true;
-            randomuq++;
-            int random = randomuq;
-            sequence_worklock = false;
+            finally
+            {
+                if (lockWasTaken)
+                {
+                    Monitor.Exit(_KernelThread);
+                }
+            }
             return ":" + random.ToString() + "*";
         }
 
@@ -1375,7 +1410,7 @@ namespace Client
             protocol.Password = pw;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
-            protocol._IRCNetwork._protocol = protocol;
+            protocol._IRCNetwork._Protocol = protocol;
             protocol.Open();
             return protocol;
         }

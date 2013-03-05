@@ -45,10 +45,19 @@ namespace Client
         /// Whether it's a channel or not
         /// </summary>
         public bool isChannel = false;
+        /// <summary>
+        /// Lock the window for any changes
+        /// </summary>
         public bool Locked = false;
         public int locktime = 0;
         public TreeNode treeNode = null;
+        /// <summary>
+        /// Deprecated, use _Network._Protocol instead
+        /// </summary>
         public Protocol _Protocol = null;
+        /// <summary>
+        /// In case this is true, we are in micro chat
+        /// </summary>
         public bool MicroBox = false;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
@@ -137,6 +146,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// this is a hack
+        /// </summary>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Tab)
@@ -211,7 +225,7 @@ namespace Client
                         {
                             if (Configuration.DisplayCtcp)
                             {
-                                _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                                _channel._Network._Protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
                             _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
@@ -254,7 +268,7 @@ namespace Client
                     kickToolStripMenuItem.Visible = false;
                     kickrToolStripMenuItem.Visible = false;
                 }
-                if (isChannel)
+                else
                 {
                     synchroToolStripMenuItem.Visible = true;
                 }
@@ -301,7 +315,7 @@ namespace Client
             return user;
         }
 
-        double Mode(string mode)
+        bool Mode(string mode)
         {
             try
             {
@@ -323,7 +337,7 @@ namespace Client
             {
                 Core.handleException(fail);
             }
-            return 0;
+            return true;
         }
 
         private void qToolStripMenuItem_Click(object sender, EventArgs e)
@@ -491,7 +505,6 @@ namespace Client
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
                             string reason = Configuration.DefaultReason;
-
                         }
                     }
                 }
@@ -599,36 +612,49 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            lock (Core._Main.sX.Panel2.Controls)
+            try
             {
-                if (Core._Main.sX.Panel2.Controls.Contains(this))
+                lock (Core._Main.sX.Panel2.Controls)
                 {
-                    Core._Main.sX.Panel2.Controls.Remove(this);
-                }
-            }
-            if (_Protocol != null)
-            {
-                lock (_Protocol.windows)
-                {
-                    if (_Network != null)
+                    if (Core._Main.sX.Panel2.Controls.Contains(this))
                     {
-                        if (_Protocol.windows.ContainsKey(_Network.window + name))
+                        Core._Main.sX.Panel2.Controls.Remove(this);
+                    }
+                }
+                if (_Protocol != null)
+                {
+                    lock (_Protocol.windows)
+                    {
+                        if (_Network != null)
                         {
-                            _Protocol.windows.Remove(_Network.window + name);
+                            if (_Protocol.windows.ContainsKey(_Network.window + name))
+                            {
+                                _Protocol.windows.Remove(_Network.window + name);
+                            }
+                        }
+                        if (_Protocol.windows.ContainsKey(name))
+                        {
+                            _Protocol.windows.Remove(name);
                         }
                     }
-                    if (_Protocol.windows.ContainsKey(name))
-                    {
-                        _Protocol.windows.Remove(name);
-                    }
                 }
+                base.Dispose(disposing);
+            } catch (Exception df)
+            {
+                Core.handleException(df);
             }
-            base.Dispose(disposing);
         }
 
         private void listViewd_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedUser = listViewd.SelectedItems;
+            try
+            {
+                SelectedUser = listViewd.SelectedItems;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
@@ -711,11 +737,11 @@ namespace Client
                             string nickname = Decode(user.Text);
                             if (nickname != "")
                             {
-                                if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
+                                if (!Core.network._Protocol.windows.ContainsKey(_Network.window + nickname))
                                 {
                                     _Network.Private(nickname);
                                 }
-                                _Network._protocol.ShowChat(_Network.window + nickname);
+                                _Network._Protocol.ShowChat(_Network.window + nickname);
                             }
                         }
                     }

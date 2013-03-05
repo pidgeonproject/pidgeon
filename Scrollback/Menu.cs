@@ -279,8 +279,8 @@ namespace Client
                     {
                         ContentLines.Clear();
                         lastDate = DateTime.MinValue;
-                        Reload();
-                        Recreate(true);
+                        Reload(true, true);
+                        //Recreate(true);
                     }
                 }
             }
@@ -296,7 +296,7 @@ namespace Client
             {
                 scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
                 ScrollingEnabled = scrollToolStripMenuItem.Checked;
-                if (ScrollingEnabled && Changed)
+                if (ScrollingEnabled)
                 {
                     Reload();
                 }
