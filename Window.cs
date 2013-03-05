@@ -146,6 +146,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// this is a hack
+        /// </summary>
+        /// <param name="keyData"></param>
+        /// <returns></returns>
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Tab)
@@ -263,7 +268,7 @@ namespace Client
                     kickToolStripMenuItem.Visible = false;
                     kickrToolStripMenuItem.Visible = false;
                 }
-                if (isChannel)
+                else
                 {
                     synchroToolStripMenuItem.Visible = true;
                 }
@@ -310,7 +315,7 @@ namespace Client
             return user;
         }
 
-        double Mode(string mode)
+        bool Mode(string mode)
         {
             try
             {
@@ -332,7 +337,7 @@ namespace Client
             {
                 Core.handleException(fail);
             }
-            return 0;
+            return true;
         }
 
         private void qToolStripMenuItem_Click(object sender, EventArgs e)
@@ -500,7 +505,6 @@ namespace Client
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
                             string reason = Configuration.DefaultReason;
-
                         }
                     }
                 }
@@ -608,36 +612,49 @@ namespace Client
 
         protected override void Dispose(bool disposing)
         {
-            lock (Core._Main.sX.Panel2.Controls)
+            try
             {
-                if (Core._Main.sX.Panel2.Controls.Contains(this))
+                lock (Core._Main.sX.Panel2.Controls)
                 {
-                    Core._Main.sX.Panel2.Controls.Remove(this);
-                }
-            }
-            if (_Protocol != null)
-            {
-                lock (_Protocol.windows)
-                {
-                    if (_Network != null)
+                    if (Core._Main.sX.Panel2.Controls.Contains(this))
                     {
-                        if (_Protocol.windows.ContainsKey(_Network.window + name))
+                        Core._Main.sX.Panel2.Controls.Remove(this);
+                    }
+                }
+                if (_Protocol != null)
+                {
+                    lock (_Protocol.windows)
+                    {
+                        if (_Network != null)
                         {
-                            _Protocol.windows.Remove(_Network.window + name);
+                            if (_Protocol.windows.ContainsKey(_Network.window + name))
+                            {
+                                _Protocol.windows.Remove(_Network.window + name);
+                            }
+                        }
+                        if (_Protocol.windows.ContainsKey(name))
+                        {
+                            _Protocol.windows.Remove(name);
                         }
                     }
-                    if (_Protocol.windows.ContainsKey(name))
-                    {
-                        _Protocol.windows.Remove(name);
-                    }
                 }
+                base.Dispose(disposing);
+            } catch (Exception df)
+            {
+                Core.handleException(df);
             }
-            base.Dispose(disposing);
         }
 
         private void listViewd_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SelectedUser = listViewd.SelectedItems;
+            try
+            {
+                SelectedUser = listViewd.SelectedItems;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
