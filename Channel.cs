@@ -285,6 +285,7 @@ namespace Client
                         if (Chat.Locked)
                         {
                             Redraw = true;
+                            PidgeonList.Updated = true;
                             return;
                         }
                         if (Chat.listView.Visible)
@@ -299,6 +300,7 @@ namespace Client
                         {
                             Chat.listView.Visible = true;
                             Redraw = true;
+                            PidgeonList.Updated = true;
                             return;
                         }
                         lock (UserList)
@@ -424,6 +426,7 @@ namespace Client
                 }
 
                 Redraw = true;
+                PidgeonList.Updated = true;
                 return;
             }
             catch (Exception f)

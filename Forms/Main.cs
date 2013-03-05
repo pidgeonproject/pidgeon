@@ -229,7 +229,7 @@ namespace Client
                         info += "??";
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
-                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/i/e: " + info;
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)

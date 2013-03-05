@@ -123,6 +123,7 @@ namespace Client
             {
                 // Create a request to create this window
                 Core._Main.WindowRequests.Add(request);
+                PidgeonList.Updated = true;
             }
         }
 

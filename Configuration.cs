@@ -15,6 +15,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// This file contains all configuration of pidgeon, functions to save and load it are in core not here
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,6 +27,9 @@ namespace Client
     {
         // Static config
         // ===========================================================
+        /// <summary>
+        /// Changing this to false will disable changing of mouse pointer in SBA box
+        /// </summary>
         public static readonly bool ChangingMouse = true;
         /// <summary>
         /// Prefix for all commands
@@ -42,6 +47,9 @@ namespace Client
 
         // Dynamic configuration
         // ===========================================================
+        /// <summary>
+        /// Configuration for window
+        /// </summary>
         public class Window
         {
             public static bool Window_Maximized = true;
@@ -63,6 +71,9 @@ namespace Client
             public static int window_size = 0;
         }
 
+        /// <summary>
+        /// Personal default configuration for all connections
+        /// </summary>
         public class UserData
         {
             /// <summary>
@@ -77,7 +88,6 @@ namespace Client
             /// Nick
             /// </summary>
             public static string nick = "PidgeonUser";
-
             /// <summary>
             /// Real name
             /// </summary>
@@ -86,6 +96,9 @@ namespace Client
 
         public class Colors
         {
+            /// <summary>
+            /// If this is true the link color will be overriden by color defined by color code
+            /// </summary>
             public static bool ChangeLinks = false;
         }
 
@@ -94,7 +107,7 @@ namespace Client
         /// </summary>
         public static string format_date = "($1) ";
         /// <summary>
-        /// Format of nick
+        /// Format of nick in a scrollback
         /// </summary>
         public static string format_nick = "<$1> ";
 
@@ -104,7 +117,6 @@ namespace Client
         /// If true a client will ask before executing generated kick bans
         /// </summary>
         public static bool ConfirmAll = true;
-
         /// <summary>
         /// If timestamp is displayed
         /// </summary>
@@ -119,23 +131,39 @@ namespace Client
         /// </summary>
         public static string DefaultReason = "Removed from the channel";
 
+        /// <summary>
+        /// If this is true the /mode run on every new channel in order to retrieve its mode no matter if server offer it or not
+        /// </summary>
         public static bool aggressive_mode = true;
-        public static bool aggressive_whois = true;
+        /// <summary>
+        /// If this is true the /whois is run on every user in a new channel in order to get all information about every user in that channel
+        /// </summary>
+        public static bool aggressive_whois = false;
+        /// <summary>
+        /// If this is true the /mode +b is run on every new channel
+        /// </summary>
         public static bool aggressive_bans = true;
+        /// <summary>
+        /// If this is true the /mode +e is run on every new channel
+        /// </summary>
         public static bool aggressive_exception = false;
+        /// <summary>
+        /// If this is true the /mode +I is run on every new channel
+        /// </summary>
         public static bool aggressive_invites = false;
+        /// <summary>
+        /// If this is true the /who is run on every new channel in order to get all information about every user in that channel
+        /// </summary>
         public static bool aggressive_channel = true;
 
         /// <summary>
         /// Used skin
         /// </summary>
         public static Skin CurrentSkin = new Skin();
-
         /// <summary>
         /// Default bans
         /// </summary>
         public static TypeOfBan DefaultBans = TypeOfBan.Host;
-
         /// <summary>
         /// If true, ctcp messages will be printed to window
         /// </summary>
@@ -173,6 +201,9 @@ namespace Client
         /// </summary>
         public static int mq = 1200;
 
+        /// <summary>
+        /// Shortcuts enabled
+        /// </summary>
         public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
 
         public class Logs
@@ -204,6 +235,9 @@ namespace Client
         /// </summary>
         public static bool Notice = true;
 
+        /// <summary>
+        /// This is a nick that is used in case the current nick is in use
+        /// </summary>
         public static string Nick2 = "";
 
         /// <summary>
@@ -218,6 +252,8 @@ namespace Client
         /// Last used port
         /// </summary>
         public static string LastPort = "";
+
+        public static int MaximalRingLogSize = 20000;
 
         /// <summary>
         /// List of loaded skins

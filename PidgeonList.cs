@@ -35,11 +35,11 @@ namespace Client
         public LinkedList<Channel> ChannelsQueue = new LinkedList<Channel>();
         public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
         public List<Network> NetworkQueue = new List<Network>();
+        public static bool Updated = false;
 
         public PidgeonList()
         {
             InitializeComponent();
-            items.DrawMode = TreeViewDrawMode.OwnerDrawText;
         }
 
         private void DrawTreeNodeHighlightSelectedEvenWithoutFocus(object sender, DrawTreeNodeEventArgs e)
@@ -138,6 +138,7 @@ namespace Client
                     return;
                 }
                 ChannelsQueue.AddLast(chan);
+                Updated = true;
             }
         }
 
@@ -167,6 +168,7 @@ namespace Client
                     {
                         _us._Network._protocol.windows[_us._Network.window + _us.Nick].treeNode = text;
                     }
+                    Updated = true;
                     this.ResumeLayout();
                 }
             }
@@ -253,6 +255,7 @@ namespace Client
             {
                 network.ParentSv = ParentSv;
                 NetworkQueue.Add(network);
+                Updated = true;
             }
         }
 
@@ -264,6 +267,15 @@ namespace Client
                 {
                     Core.DisplayNote();
                 }
+
+                // there is no update needed so skip
+                if (!Updated)
+                {
+                    return;
+                }
+
+                Updated = false;
+
                 lock (NetworkQueue)
                 {
                     foreach (Network it in NetworkQueue)
@@ -272,6 +284,7 @@ namespace Client
                     }
                     NetworkQueue.Clear();
                 }
+
                 lock (ChannelsQueue)
                 {
                     foreach (Channel item in ChannelsQueue)
@@ -280,6 +293,7 @@ namespace Client
                     }
                     ChannelsQueue.Clear();
                 }
+
                 List<Channel> _channels = new List<Channel>();
                 lock (Channels)
                 {
@@ -293,10 +307,12 @@ namespace Client
                         }
                     }
                 }
+
                 foreach (var chan in _channels)
                 {
                     Channels.Remove(chan);
                 }
+
                 lock (Core._Main.WindowRequests)
                 {
                     foreach (Main._WindowRequest item in Core._Main.WindowRequests)
@@ -309,6 +325,7 @@ namespace Client
                     }
                     Core._Main.WindowRequests.Clear();
                 }
+
                 lock (UserList)
                 {
                     foreach (User user in _User)
@@ -317,6 +334,7 @@ namespace Client
                     }
                     _User.Clear();
                 }
+
                 lock (Channels)
                 {
                     foreach (var channel in Channels)

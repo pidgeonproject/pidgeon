@@ -195,6 +195,8 @@ namespace Client
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
                 commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
                 commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
+                commands.Add("pidgeon.ring.file.overwrite", new Command(Type.System, Generic.forced_pidgeon_file));
+                commands.Add("pidgeon.ring.file", new Command(Type.System, Generic.pidgeon_file));
                 RegisterManual("pidgeon.man", Client.Properties.Resources.PidgeonMan);
                 commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
@@ -625,6 +627,60 @@ namespace Client
             public static void ring_show(string parameter)
             {
                 Core.PrintRing(Core._Main.Chat, false);
+            }
+
+            public static void pidgeon_file(string parameter)
+            {
+                if (parameter != "")
+                {
+                    if (System.IO.File.Exists(parameter))
+                    {
+                        Core._Main.Chat.scrollback.InsertText("This file already exist, use .overwite to overwrite it", Scrollback.MessageStyle.System, false);
+                        return;
+                    }
+
+                    string data = "";
+                    foreach (string text in Core.RingBuffer)
+                    {
+                        data += text;
+                    }
+
+                    try
+                    {
+                        System.IO.File.WriteAllText(parameter, data);
+                    }
+                    catch (Exception fail)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Scrollback.MessageStyle.System, false);
+                        Core.DebugLog("Unable to write: " + fail.ToString());
+                    }
+                    return;
+                } 
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+            }
+
+            public static void forced_pidgeon_file(string parameter)
+            {
+                if (parameter != "")
+                {
+                    string data = "";
+                    foreach (string text in Core.RingBuffer)
+                    {
+                        data += text;
+                    }
+
+                    try
+                    {
+                        System.IO.File.WriteAllText(parameter, data);
+                    }
+                    catch (Exception fail)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Scrollback.MessageStyle.System, false);
+                        Core.DebugLog("Unable to write: " + fail.ToString());
+                    }
+                    return;
+                }
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
             }
 
             public static void query(string parameter)
