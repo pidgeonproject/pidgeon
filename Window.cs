@@ -45,10 +45,19 @@ namespace Client
         /// Whether it's a channel or not
         /// </summary>
         public bool isChannel = false;
+        /// <summary>
+        /// Lock the window for any changes
+        /// </summary>
         public bool Locked = false;
         public int locktime = 0;
         public TreeNode treeNode = null;
+        /// <summary>
+        /// Deprecated, use _Network._Protocol instead
+        /// </summary>
         public Protocol _Protocol = null;
+        /// <summary>
+        /// In case this is true, we are in micro chat
+        /// </summary>
         public bool MicroBox = false;
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
@@ -211,7 +220,7 @@ namespace Client
                         {
                             if (Configuration.DisplayCtcp)
                             {
-                                _channel._Network._protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                                _channel._Network._Protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
                             _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
@@ -711,11 +720,11 @@ namespace Client
                             string nickname = Decode(user.Text);
                             if (nickname != "")
                             {
-                                if (!Core.network._protocol.windows.ContainsKey(_Network.window + nickname))
+                                if (!Core.network._Protocol.windows.ContainsKey(_Network.window + nickname))
                                 {
                                     _Network.Private(nickname);
                                 }
-                                _Network._protocol.ShowChat(_Network.window + nickname);
+                                _Network._Protocol.ShowChat(_Network.window + nickname);
                             }
                         }
                     }

@@ -50,6 +50,7 @@ namespace Client
         private bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
+        private string LogfilePath = null;
 
         public enum MessageStyle
         {
@@ -115,6 +116,10 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// This function switch between rendering types
+        /// </summary>
+        /// <param name="advanced"></param>
         public void Switch(bool advanced)
         {
             if (advanced)
@@ -165,14 +170,28 @@ namespace Client
             toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }
 
-        public string validpath(string text)
+        /// <summary>
+        /// Return a file path without special symbols not supported in windows or linux
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public string validpath()
         {
-            return text.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_");
+            if (LogfilePath != null)
+            {
+                return LogfilePath;
+            }
+            if (owner == null)
+            {
+                throw new Exception("You can't enable logging for a window that has no parent");
+            }
+            LogfilePath = owner.name.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
+            return LogfilePath;
         }
 
         public string _getFileName()
         {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner.name));
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath());
             return name;
         }
 

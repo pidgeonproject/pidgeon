@@ -489,11 +489,11 @@ namespace Client
                 {
                     throw new Exception("Network is NULL for " + Name);
                 }
-                if (_Network._protocol == null)
+                if (_Network._Protocol == null)
                 {
                     throw new Exception("Protocol is NULL for " + _Network.server);
                 }
-                foreach (var curr in _Network._protocol.windows)
+                foreach (var curr in _Network._Protocol.windows)
                 {
                     if (curr.Key == _Network.window + Name)
                     {

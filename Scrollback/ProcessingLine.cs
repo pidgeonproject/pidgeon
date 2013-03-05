@@ -237,9 +237,9 @@ namespace Client
                 {
                     System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
                 }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name)))
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath()))
                 {
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath(owner.name));
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath());
                 }
                 if (Configuration.Logs.logs_txt)
                 {
@@ -309,6 +309,7 @@ namespace Client
         /// <returns></returns>
         private bool insertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
+            // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {
                 string[] data = text.Split('\n');
@@ -364,7 +365,6 @@ namespace Client
                             owner.treeNode.ForeColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
-
                 }
 
                 if (Matched)

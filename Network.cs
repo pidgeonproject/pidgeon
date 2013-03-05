@@ -99,6 +99,9 @@ namespace Client
         /// Nickname of this user
         /// </summary>
         public string Nickname = null;
+        /// <summary>
+        /// Identification of user
+        /// </summary>
         public string Ident = "pidgeon";
         /// <summary>
         /// Quit message
@@ -107,7 +110,7 @@ namespace Client
         /// <summary>
         /// Protocol
         /// </summary>
-        public Protocol _protocol = null;
+        public Protocol _Protocol = null;
         /// <summary>
         /// Specifies whether this network is using SSL connection
         /// </summary>
@@ -154,6 +157,7 @@ namespace Client
             }
         }
 
+        
         public ChannelData ContainsChannel(string channel)
         {
             lock (ChannelList)
@@ -174,7 +178,8 @@ namespace Client
             public bool simple;
             public string text;
             public bool enabled;
-            public System.Text.RegularExpressions.Regex regex;
+            public System.Text.RegularExpressions.Regex regex = null;
+
             public Highlighter()
             {
                 simple = true;
@@ -224,7 +229,7 @@ namespace Client
             User u = new User(user, "", this, "");
             PrivateChat.Add(u);
             Core._Main.ChannelList.insertUser(u);
-            _protocol.CreateChat(user, true, this, true);
+            _Protocol.CreateChat(user, true, this, true);
             return;
         }
 
@@ -236,7 +241,7 @@ namespace Client
         /// <returns></returns>
         public void Join(string channel)
         {
-            _protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
+            _Protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
         }
 
         /// <summary>
@@ -255,7 +260,7 @@ namespace Client
                 _channel.Name = channel;
                 Channels.Add(_channel);
                 Core._Main.ChannelList.insertChannel(_channel);
-                _protocol.CreateChat(channel, !nf, this, true, true);
+                _Protocol.CreateChat(channel, !nf, this, true, true);
                 return _channel;
             }
             else
@@ -271,7 +276,7 @@ namespace Client
         {
             get 
               {
-                  if (_protocol.ProtocolType != 3)
+                  if (_Protocol.ProtocolType != 3)
                   {
                       return "system";
                   }
@@ -328,7 +333,7 @@ namespace Client
         {
             if (data != "")
             {
-                _protocol.Transfer(data, _priority, this);
+                _Protocol.Transfer(data, _priority, this);
             }
         }
 
@@ -338,9 +343,9 @@ namespace Client
             {
                 ParentSv.Disconnect(this);
             }
-            else if (_protocol.GetType() == typeof(ProtocolIrc))
+            else if (_Protocol.GetType() == typeof(ProtocolIrc))
             {
-                _protocol.Exit();
+                _Protocol.Exit();
             }
             else
             {
@@ -367,7 +372,7 @@ namespace Client
                 Descriptions.Add('A', "admins only");
                 Descriptions.Add('O', "opers chan");
                 Descriptions.Add('t', "topic changes can be done only by operators");
-                _protocol = protocol;
+                _Protocol = protocol;
                 server = Server;
                 Quit = Configuration.UserData.quit;
                 Nickname = Configuration.UserData.nick;

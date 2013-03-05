@@ -1410,7 +1410,7 @@ namespace Client
             protocol.Password = pw;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
-            protocol._IRCNetwork._protocol = protocol;
+            protocol._IRCNetwork._Protocol = protocol;
             protocol.Open();
             return protocol;
         }

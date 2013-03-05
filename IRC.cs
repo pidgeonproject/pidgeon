@@ -390,9 +390,9 @@ namespace Client
                                 if (message.Length > 6)
                                 {
                                     string time = message.Substring(6);
-                                    if (time.Contains(_Network._protocol.delimiter))
+                                    if (time.Contains(_Network._Protocol.delimiter))
                                     {
-                                        time = message.Substring(0, message.IndexOf(_Network._protocol.delimiter));
+                                        time = message.Substring(0, message.IndexOf(_Network._Protocol.delimiter));
                                         _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
                                             Configuration.Priority.Low);
                                     }
@@ -1233,7 +1233,7 @@ namespace Client
         public ProcessorIRC(Network _network, string _text, ref DateTime _pong, long _date = 0, bool updated = true)
         {
             _Network = _network;
-            _Protocol = _network._protocol;
+            _Protocol = _network._Protocol;
             text = _text;
             pong = _pong;
             date = _date;
