@@ -129,7 +129,7 @@ namespace Client
                     Recreate(true);
                     return;
                 }
-                Reload();
+                Reload(true, true);
                 return;
             }
             toggleAdvancedLayoutToolStripMenuItem.Checked = false;
@@ -137,7 +137,7 @@ namespace Client
             simple = true;
             simpleview.Visible = true;
             RT.Visible = false;
-            Reload();
+            Reload(true, true);
         }
 
         /// <summary>
@@ -229,6 +229,7 @@ namespace Client
             if (scrollback_max < ContentLines.Count)
             {
                 scrollback_max += Configuration.Scrollback.DynamicSize;
+                Changed = true;
                 Reload();
                 return true;
             }
@@ -240,6 +241,7 @@ namespace Client
             if (scrollback_max != Configuration.Scrollback.scrollback_plimit)
             {
                 scrollback_max = Configuration.Scrollback.scrollback_plimit;
+                Changed = true;
                 Reload();
                 return true;
             }
@@ -254,7 +256,7 @@ namespace Client
         {
             if (!simple)
             {
-                RT.RedrawText();
+                //RT.RedrawText();
             }
         }
 
