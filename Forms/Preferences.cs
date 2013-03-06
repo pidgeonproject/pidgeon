@@ -41,7 +41,7 @@ namespace Client
         {
             try
             {
-                checkBox10.Checked = Configuration.CheckUpdate;
+                checkBox10.Checked = Configuration.Kernel.CheckUpdate;
                 if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
                 {
                     checkBox10.Checked = false;
@@ -62,9 +62,9 @@ namespace Client
                 checkBox3.Checked = Configuration.Logs.logs_xml;
                 checkBox1.Checked = Configuration.Logs.logs_txt;
                 checkBox2.Checked = Configuration.Logs.logs_html;
-                checkBox4.Checked = Configuration.DisplayCtcp;
+                checkBox4.Checked = Configuration.irc.DisplayCtcp;
                 checkBox8.Checked = Configuration.ConfirmAll;
-                checkBox9.Checked = Configuration.Notice;
+                checkBox9.Checked = Configuration.Kernel.Notice;
                 textBox5.Text = Configuration.Logs.logs_dir;
                 textBox6.Text = Configuration.Logs.logs_name;
 
@@ -177,9 +177,9 @@ namespace Client
                 Configuration.Logs.logs_xml = checkBox3.Checked;
                 Configuration.Logs.logs_txt = checkBox1.Checked;
                 Configuration.Logs.logs_html = checkBox2.Checked;
-                Configuration.CheckUpdate = checkBox10.Checked;
-                Configuration.DisplayCtcp = checkBox4.Checked;
-                Configuration.Notice = checkBox9.Checked;
+                Configuration.Kernel.CheckUpdate = checkBox10.Checked;
+                Configuration.irc.DisplayCtcp = checkBox4.Checked;
+                Configuration.Kernel.Notice = checkBox9.Checked;
                 Configuration.Logs.logs_dir = textBox5.Text;
                 Configuration.Logs.logs_name = textBox6.Text;
                 lock (Ignoring.IgnoreList)
