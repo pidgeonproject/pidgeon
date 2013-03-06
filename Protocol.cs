@@ -196,7 +196,7 @@ namespace Client
         /// <returns></returns>
         public string PRIVMSG(string user, string text)
         {
-            return Configuration.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
+            return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
         }
 
         /// <summary>

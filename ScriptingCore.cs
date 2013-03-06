@@ -643,29 +643,29 @@ namespace Client
 
         public static void GenerateInterp(TclInterpreter interp)
         {
-            interp.registerObject(Configuration.aggressive_bans, "configuration_aggressive_bans");
-            interp.registerObject(Configuration.aggressive_channel, "configuration_aggressive_channel");
-            interp.registerObject(Configuration.aggressive_exception, "configuration_aggressive_exception");
-            interp.registerObject(Configuration.aggressive_invites, "configuration_aggressive_invites");
-            interp.registerObject(Configuration.aggressive_mode, "configuration_aggressive_mode");
-            interp.registerObject(Configuration.chat_timestamp, "configuration_chat_timestamp");
+            interp.registerObject(Configuration.ChannelModes.aggressive_bans, "configuration_aggressive_bans");
+            interp.registerObject(Configuration.ChannelModes.aggressive_channel, "configuration_aggressive_channel");
+            interp.registerObject(Configuration.ChannelModes.aggressive_exception, "configuration_aggressive_exception");
+            interp.registerObject(Configuration.ChannelModes.aggressive_invites, "configuration_aggressive_invites");
+            interp.registerObject(Configuration.ChannelModes.aggressive_mode, "configuration_aggressive_mode");
+            interp.registerObject(Configuration.Scrollback.chat_timestamp, "configuration_chat_timestamp");
             interp.registerObject(Configuration.ConfirmAll, "configuration_confirm");
             interp.registerObject(Configuration.CurrentSkin, "configuration_skin_name");
-            interp.registerObject(Configuration.DefaultReason, "configuration_kickban_reason");
+            interp.registerObject(Configuration.irc.DefaultReason, "configuration_kickban_reason");
             interp.registerObject(Configuration.Services.Depth, "configuration_depth");
-            interp.registerObject(Configuration.DisplayCtcp, "configuration_display_ctcp");
-            interp.registerObject(Configuration.format_date, "configuration_dateformat");
-            interp.registerObject(Configuration.format_nick, "configuration_nickformat");
-            interp.registerObject(Configuration.HidingParsed, "configuration_hiding_parsed");
+            interp.registerObject(Configuration.irc.DisplayCtcp, "configuration_display_ctcp");
+            interp.registerObject(Configuration.Scrollback.format_date, "configuration_dateformat");
+            interp.registerObject(Configuration.Scrollback.format_nick, "configuration_nickformat");
+            interp.registerObject(Configuration.Kernel.HidingParsed, "configuration_hiding_parsed");
             interp.registerObject(Configuration.UserData.ident, "configuration_ident");
-            interp.registerObject(Configuration.LastHost, "configuration_lasthost");
-            interp.registerObject(Configuration.LastNick, "configuration_lastnick");
+            interp.registerObject(Configuration.UserData.LastHost, "configuration_lasthost");
+            interp.registerObject(Configuration.UserData.LastNick, "configuration_lastnick");
             interp.registerObject(Configuration.LastPort, "configuration_lastport");
             interp.registerObject(Configuration.mq, "configuration_mq");
             interp.registerObject(Configuration.UserData.nick, "configuration_nick");
-            interp.registerObject(Configuration.Notice, "configuration_notice");
+            interp.registerObject(Configuration.Kernel.Notice, "configuration_notice");
             interp.registerObject(Configuration.UserData.quit, "configuration_quit");
-            interp.registerObject(Configuration.timestamp_mask, "configuration_timemask");
+            interp.registerObject(Configuration.Scrollback.timestamp_mask, "configuration_timemask");
             interp.registerObject(Configuration.UserData.user, "configuration_user");
             interp.registerObject(Configuration.Version, "configuration_version");
             

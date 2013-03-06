@@ -178,7 +178,7 @@ namespace Client
                                     User target = _channel.userFromName(Decode(user.Text));
                                     if (target != null)
                                     {
-                                        switch (Configuration.DefaultBans)
+                                        switch (Configuration.irc.DefaultBans)
                                         {
                                             case Configuration.TypeOfBan.Host:
                                                 if (target.Host != "")
@@ -190,7 +190,7 @@ namespace Client
                                         }
                                     }
                                 }
-                                string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
+                                string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                                 script += current_kick + Environment.NewLine;
                                 if (!Configuration.ConfirmAll)
                                 {
@@ -223,7 +223,7 @@ namespace Client
                         Channel _channel = _Network.getChannel(name);
                         if (_channel != null)
                         {
-                            if (Configuration.DisplayCtcp)
+                            if (Configuration.irc.DisplayCtcp)
                             {
                                 _channel._Network._Protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
@@ -380,7 +380,7 @@ namespace Client
                     {
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason;
+                            string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                             script += current_kick + Environment.NewLine;
                             if (!Configuration.ConfirmAll)
                             {
@@ -443,7 +443,7 @@ namespace Client
                                 User target = _channel.userFromName(Decode(user.Text));
                                 if (target != null)
                                 {
-                                    switch (Configuration.DefaultBans)
+                                    switch (Configuration.irc.DefaultBans)
                                     {
                                         case Configuration.TypeOfBan.Host:
                                             if (target.Host != "")
@@ -483,7 +483,7 @@ namespace Client
                     {
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.DefaultReason);
+                            Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason);
                         }
                     }
                 }
@@ -504,7 +504,7 @@ namespace Client
                     {
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            string reason = Configuration.DefaultReason;
+                            string reason = Configuration.irc.DefaultReason;
                         }
                     }
                 }

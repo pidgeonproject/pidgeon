@@ -51,13 +51,13 @@ namespace Client
                 {
                     textBox2.Text = Configuration.LastPort;
                 }
-                if (Configuration.LastNick != "")
+                if (Configuration.UserData.LastNick != "")
                 {
-                    _Nickname.Text = Configuration.LastNick;
+                    _Nickname.Text = Configuration.UserData.LastNick;
                 }
-                if (Configuration.LastHost != "")
+                if (Configuration.UserData.LastHost != "")
                 {
-                    comboBox2.Text = Configuration.LastHost;
+                    comboBox2.Text = Configuration.UserData.LastHost;
                 }
                 comboBox1.Items.Add("quassel");
                 comboBox1.Items.Add("pidgeon service");
@@ -92,9 +92,9 @@ namespace Client
                 }
                 Configuration.UserData.nick = _Nickname.Text;
                 Configuration.UserData.ident = textBox1.Text;
-                Configuration.LastHost = comboBox2.Text;
+                Configuration.UserData.LastHost = comboBox2.Text;
                 Configuration.LastPort = textBox2.Text;
-                Configuration.LastNick = _Nickname.Text;
+                Configuration.UserData.LastNick = _Nickname.Text;
                 switch (comboBox1.SelectedIndex)
                 {
                     case 0:

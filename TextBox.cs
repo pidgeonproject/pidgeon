@@ -28,7 +28,7 @@ namespace Client
     public partial class TextBox : UserControl
     {
         public static List<TextBox> _control = new List<TextBox>(); 
-        public List<string> history;
+        public List<string> history = null;
         public int position = 0;
         public string prevtext = "";
         public string original = "";
@@ -79,6 +79,16 @@ namespace Client
                     return;
                 }
 
+                if (e.Control && e.KeyCode == Keys.Down)
+                {
+                    return;
+                }
+
+                if (e.Control && e.KeyCode == Keys.Up)
+                {
+                    return;
+                }
+
                 if (!(e.KeyCode == Keys.Tab))
                 { restore = false; }
                 switch (e.KeyCode)
@@ -101,12 +111,6 @@ namespace Client
                             position = history.Count - 1;
                         }
                         richTextBox1.Text = history[position];
-                        break;
-                    case Keys.U:
-                        if (e.Control)
-                        {
-
-                        }
                         break;
                     case Keys.B:
                         if (e.Control)
@@ -143,7 +147,7 @@ namespace Client
                     case Keys.Tab:
                         int caret = richTextBox1.SelectionStart;
                         string data = richTextBox1.Text;
-                        Hooks.TextTab(ref restore, ref data, ref prevtext, ref caret);
+                        Hooks._Scrollback.TextTab(ref restore, ref data, ref prevtext, ref caret);
                         richTextBox1.Text = data;
                         restore = true;
                         richTextBox1.Text = prevtext;

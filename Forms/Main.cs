@@ -139,7 +139,7 @@ namespace Client
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
-                if (Configuration.Debugging)
+                if (Configuration.Kernel.Debugging)
                 {
                     Core.PrintRing(Chat, false);
                 }
@@ -230,7 +230,7 @@ namespace Client
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
                     toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
-                    if (Configuration.DisplaySizeOfBuffer)
+                    if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)
                         {

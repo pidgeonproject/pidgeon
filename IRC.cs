@@ -105,7 +105,7 @@ namespace Client
                         channel.UpdateInfo();
                         curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
-                    Hooks.ChannelInfo(_Network, channel, code[4]);
+                    Hooks._Network.ChannelInfo(_Network, channel, code[4]);
                     return true;
                 }
             }
@@ -173,7 +173,7 @@ namespace Client
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
-                    Hooks.ChannelTopic(topic, null, _Network, channel);
+                    Hooks._Network.ChannelTopic(topic, null, _Network, channel);
                     return true;
                 }
             }
@@ -188,7 +188,7 @@ namespace Client
                 if (channel != null)
                 {
                     channel.redrawUsers();
-                    if (Configuration.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
                     {
                         channel.parsing_who = false;
                         return true;
@@ -277,7 +277,7 @@ namespace Client
                             }
                         }
                     }
-                    if (Configuration.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
                     {
                         return true;
                     }
@@ -400,7 +400,7 @@ namespace Client
                                 break;
                         }
                     }
-                    if (Configuration.DisplayCtcp)
+                    if (Configuration.irc.DisplayCtcp)
                     {
                         _Network.system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
@@ -642,7 +642,7 @@ namespace Client
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
             Channel channel = _Network.getChannel(chan);
-            if (!Hooks.BeforePart(_Network, channel)) { return true; }
+            if (!Hooks._Network.BeforePart(_Network, channel)) { return true; }
             if (channel != null)
             {
                 Window window;
@@ -830,7 +830,7 @@ namespace Client
                     channel.UpdateInfo();
                     return true;
                 }
-                Hooks.UserJoin(_Network, channel.userFromName(user), channel);
+                Hooks._Network.UserJoin(_Network, channel.userFromName(user), channel);
             }
             return false;
         }
@@ -901,29 +901,29 @@ namespace Client
                         }
                         if (updated_text)
                         {
-                            if (Configuration.aggressive_mode)
+                            if (Configuration.ChannelModes.aggressive_mode)
                             {
                                 _Network.Transfer("MODE " + channel, Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_exception)
+                            if (Configuration.ChannelModes.aggressive_exception)
                             {
                                 curr.parsing_xe = true;
                                 _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_bans)
+                            if (Configuration.ChannelModes.aggressive_bans)
                             {
                                 curr.parsing_bans = true;
                                 _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_invites)
+                            if (Configuration.ChannelModes.aggressive_invites)
                             {
                                 _Network.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_channel)
+                            if (Configuration.ChannelModes.aggressive_channel)
                             {
                                 curr.parsing_who = true;
                                 _Network.Transfer("WHO " + channel, Configuration.Priority.Low);

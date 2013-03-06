@@ -67,7 +67,7 @@ namespace Client
             {
                 if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
                 {
-                    if (Configuration.CheckUpdate)
+                    if (Configuration.Kernel.CheckUpdate)
                     {
                         Core.Ringlog("UPTH: Checking for updates...");
                         temporarydir = System.IO.Path.GetTempPath() + "pidgeon" + DateTime.Now.ToBinary().ToString();
@@ -76,7 +76,7 @@ namespace Client
                             return;
                         }
                         System.IO.Directory.CreateDirectory(temporarydir);
-                        if (Download(Configuration.UpdaterUrl + "&type=" + System.Web.HttpUtility.UrlEncode(Configuration.CurrentPlatform.ToString()), temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
+                        if (Download(Configuration.Kernel.UpdaterUrl + "&type=" + System.Web.HttpUtility.UrlEncode(Configuration.CurrentPlatform.ToString()), temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                         {
                             info = System.IO.File.ReadAllText(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
                             if (info.Contains("[update-need]"))

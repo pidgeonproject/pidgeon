@@ -24,243 +24,255 @@ namespace Client
 {
     class Hooks
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        public static void AfterCore()
+        public class _Sys
         {
-            
-        }
-
-        /// <summary>
-        /// This hook allow you to call functions before you open connection
-        /// </summary>
-        /// <param name="server"></param>
-        public static void BeforeConnect(Protocol protocol)
-        {
-            foreach (Extension extension in Core.Extensions)
+            /// <summary>
+            /// Event to happen when core finish
+            /// </summary>
+            public static void AfterCore()
             {
-                try
+
+            }
+
+            public static bool BeforeNote(ref string caption, ref string text)
+            {
+                foreach (Extension extension in Core.Extensions)
                 {
-                    if (extension._Status == Extension.Status.Active)
+                    try
                     {
-                        extension.Hook_BeforeConnect(protocol);
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_BeforeNote(ref caption, ref text);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeNote(string, string) module " + extension.Name);
+                        Core.handleException(mf);
                     }
                 }
-                catch (Exception mf)
+                return true;
+            }
+
+            public static void Initialise(Main main)
+            {
+                foreach (Extension extension in Core.Extensions)
                 {
-                    Core.DebugLog("Error in hook BeforeConnect(string, string) module " + extension.Name);
-                    Core.handleException(mf);
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_Initialise(main);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook Initialise(Main) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
                 }
             }
-            return;
-        }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="network"></param>
-        public static void AfterConnectToNetwork(Network network)
-        {
-            
-        }
-
-        public static bool BeforeNote(ref string caption, ref string text)
-        {
-            foreach (Extension extension in Core.Extensions)
+            public static void BeforeOptions(ref Preferences preferences)
             {
-                try
-                {
-                    if (extension._Status == Extension.Status.Active)
-                    {
-                        extension.Hook_BeforeNote(ref caption, ref text);
-                    }
-                }
-                catch (Exception mf)
-                {
-                    Core.DebugLog("Error in hook BeforeNote(string, string) module " + extension.Name);
-                    Core.handleException(mf);
-                }
+
             }
-            return true;
         }
 
-        /// <summary>
-        /// Events to happen before user is kicked from channel, in case you return false, the kick is cancelled
-        /// </summary>
-        /// <param name="network">Network</param>
-        /// <param name="Source">Performer</param>
-        /// <param name="Target">User who get kick msg</param>
-        /// <param name="Reason">Reason</param>
-        /// <param name="Ch">Channel</param>
-        public static bool BeforeKick(Network network, string Source, string Target, string Reason, string Ch)
+        public class _Protocol
         {
-            return true;
-        }
-
-        /// <summary>
-        /// Events to happen before joining, if return false, the join is cancelled
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="Channel"></param>
-        /// <returns></returns>
-        public static bool BeforeJoin(Network network, string Channel)
-        {
-            return true;
-        }
-
-        public static void UserPart(Network network, User user, Channel channel, string message)
-        {
-
-        }
-
-        public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
-        {
-
-        }
-
-        public static void UserTalk(Network network, User user, Channel channel, string message)
-        {
-        
-        }
-
-        public static void UserQuit(Network network, User user, Channel channel, string message)
-        { 
-        
-        }
-
-        public static void UserJoin(Network network, User user, Channel channel)
-        {
-            
-        }
-
-        public static void ChannelInfo(Network network, Channel channel, string Mode)
-        { 
-            
-        }
-
-        public static void ChannelTopic(string topic, User user, Network network, Channel channel)
-        { 
-            
-        }
-
-        public static void CreatingNetwork(Network network)
-        {
-            foreach (Extension extension in Core.Extensions)
+            /// <summary>
+            /// This hook allow you to call functions before you open connection
+            /// </summary>
+            /// <param name="server"></param>
+            public static void BeforeConnect(Protocol protocol)
             {
-                try
+                foreach (Extension extension in Core.Extensions)
                 {
-                    if (extension._Status == Extension.Status.Active)
+                    try
                     {
-                        extension.Hook_Network(network);
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_BeforeConnect(protocol);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeConnect(string, string) module " + extension.Name);
+                        Core.handleException(mf);
                     }
                 }
-                catch (Exception mf)
-                {
-                    Core.DebugLog("Error in hook CreatingNetwork(network) module " + extension.Name);
-                    Core.handleException(mf);
-                }
+                return;
             }
-            return;
-        }
 
-        /// <summary>
-        /// Events to happen before leaving a channel, if return false, the quiting is cancelled
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="channel"></param>
-        /// <returns></returns>
-        public static bool BeforePart(Network network, Channel channel)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Events to happen before quiting, if return false, the exiting is cancelled
-        /// </summary>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        public static bool BeforeExit(Network network)
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Events to happen before command, can't be stopped
-        /// </summary>
-        /// <param name="protocol"></param>
-        /// <param name="command"></param>
-        public static void BeforeCommand(Protocol protocol, string command)
-        { 
-        
-        }
-
-        public static void BeforeMode(Network network)
-        { 
-            
-        }
-
-        public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
-        {
-            foreach (Extension extension in Core.Extensions)
+            /// <summary>
+            /// Events to happen before command, can't be stopped
+            /// </summary>
+            /// <param name="protocol"></param>
+            /// <param name="command"></param>
+            public static void BeforeCommand(Protocol protocol, string command)
             {
-                try
+
+            }
+        }
+
+        public class _Scrollback
+        {
+            public static string BeforeParser(string Text)
+            {
+                return Text;
+            }
+
+            public static string BeforeInsertLine(string Text, string Line)
+            {
+                return Text;
+            }
+
+            public static string AfterParser(string Text)
+            {
+                return Text;
+            }
+
+            public static string BeforeLinePartLoad(string Text)
+            {
+                return Text;
+            }
+
+            public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
+            {
+                foreach (Extension extension in Core.Extensions)
                 {
-                    if (extension._Status == Extension.Status.Active)
+                    try
                     {
-                        extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_InputOnTab(ref PrevText, ref Text, ref CarretPosition, ref restore);
+                        }
                     }
-                }
-                catch (Exception mf)
-                {
-                    Core.DebugLog("Error in hook TextTab(bool, string, string, int) module " + extension.Name);
-                    Core.handleException(mf);
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook TextTab(bool, string, string, int) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
                 }
             }
         }
 
-        public static void Initialise(Main main)
+        public class _Network
         {
-            foreach (Extension extension in Core.Extensions)
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="network"></param>
+            public static void AfterConnectToNetwork(Network network)
             {
-                try
+
+            }
+
+            /// <summary>
+            /// Events to happen before user is kicked from channel, in case you return false, the kick is cancelled
+            /// </summary>
+            /// <param name="network">Network</param>
+            /// <param name="Source">Performer</param>
+            /// <param name="Target">User who get kick msg</param>
+            /// <param name="Reason">Reason</param>
+            /// <param name="Ch">Channel</param>
+            public static bool BeforeKick(Network network, string Source, string Target, string Reason, string Ch)
+            {
+                return true;
+            }
+
+            /// <summary>
+            /// Events to happen before joining, if return false, the join is cancelled
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="Channel"></param>
+            /// <returns></returns>
+            public static bool BeforeJoin(Network network, string Channel)
+            {
+                return true;
+            }
+
+            public static void UserPart(Network network, User user, Channel channel, string message)
+            {
+
+            }
+
+            public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
+            {
+
+            }
+
+            public static void UserTalk(Network network, User user, Channel channel, string message)
+            {
+
+            }
+
+            public static void UserQuit(Network network, User user, Channel channel, string message)
+            {
+
+            }
+
+            public static void UserJoin(Network network, User user, Channel channel)
+            {
+
+            }
+
+            public static void ChannelInfo(Network network, Channel channel, string Mode)
+            {
+
+            }
+
+            public static void ChannelTopic(string topic, User user, Network network, Channel channel)
+            {
+
+            }
+
+            public static void CreatingNetwork(Network network)
+            {
+                foreach (Extension extension in Core.Extensions)
                 {
-                    if (extension._Status == Extension.Status.Active)
+                    try
                     {
-                        extension.Hook_Initialise(main);
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_Network(network);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook CreatingNetwork(network) module " + extension.Name);
+                        Core.handleException(mf);
                     }
                 }
-                catch (Exception mf)
-                {
-                    Core.DebugLog("Error in hook Initialise(Main) module " + extension.Name);
-                    Core.handleException(mf);
-                }
+                return;
             }
-        }
 
-        public static void BeforeOptions(ref Preferences preferences)
-        { 
-            
-        }
+            /// <summary>
+            /// Events to happen before leaving a channel, if return false, the quiting is cancelled
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="channel"></param>
+            /// <returns></returns>
+            public static bool BeforePart(Network network, Channel channel)
+            {
+                return true;
+            }
 
-        public static string BeforeParser(string Text)
-        {
-            return Text;
-        }
+            /// <summary>
+            /// Events to happen before quiting, if return false, the exiting is cancelled
+            /// </summary>
+            /// <param name="network"></param>
+            /// <returns></returns>
+            public static bool BeforeExit(Network network)
+            {
+                return true;
+            }
 
-        public static string BeforeInsertLine(string Text, string Line)
-        {
-            return Text;
-        }
+            public static void BeforeMode(Network network)
+            {
 
-        public static string AfterParser(string Text)
-        {
-            return Text;
-        }
-
-        public static string BeforeLinePartLoad(string Text)
-        {
-            return Text;
+            }
         }
     }
 }

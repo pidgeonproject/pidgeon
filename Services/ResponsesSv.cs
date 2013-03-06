@@ -48,6 +48,8 @@ namespace Client
                         else
                         {
                             Core.DebugLog("There is no channel " + message_target);
+                            target = mn.WindowCreateNewJoin(message_target);
+                            message_window = target.retrieveWindow();
                         }
                     }
                     else

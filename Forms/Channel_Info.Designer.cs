@@ -81,12 +81,14 @@ namespace Client
             this.insertToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.enforceAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.reloadToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripE = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.reloadToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.timerBans = new System.Windows.Forms.Timer(this.components);
             this.reloadToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.timerBans = new System.Windows.Forms.Timer(this.components);
+            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tableLayout1.SuspendLayout();
@@ -250,17 +252,18 @@ namespace Client
             // contextMenuStripI
             // 
             this.contextMenuStripI.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.reloadToolStripMenuItem,
-            this.deleteToolStripMenuItem,
+            this.refreshToolStripMenuItem,
             this.insertToolStripMenuItem,
-            this.cleanToolStripMenuItem});
+            this.cleanToolStripMenuItem,
+            this.deleteToolStripMenuItem,
+            this.reloadToolStripMenuItem});
             this.contextMenuStripI.Name = "menuBan";
-            this.contextMenuStripI.Size = new System.Drawing.Size(111, 92);
+            this.contextMenuStripI.Size = new System.Drawing.Size(114, 114);
             // 
             // reloadToolStripMenuItem
             // 
             this.reloadToolStripMenuItem.Name = "reloadToolStripMenuItem";
-            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.reloadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.reloadToolStripMenuItem.Text = "Reload";
             this.reloadToolStripMenuItem.Click += new System.EventHandler(this.reloadToolStripMenuItem_Click);
             // 
@@ -407,29 +410,6 @@ namespace Client
             this.deleteToolStripMenuItem1.Text = "Delete";
             this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
             // 
-            // contextMenuStripE
-            // 
-            this.contextMenuStripE.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.insertToolStripMenuItem2,
-            this.deleteToolStripMenuItem2,
-            this.reloadToolStripMenuItem3});
-            this.contextMenuStripE.Name = "menuBan";
-            this.contextMenuStripE.Size = new System.Drawing.Size(153, 92);
-            // 
-            // insertToolStripMenuItem2
-            // 
-            this.insertToolStripMenuItem2.Enabled = false;
-            this.insertToolStripMenuItem2.Name = "insertToolStripMenuItem2";
-            this.insertToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
-            this.insertToolStripMenuItem2.Text = "Insert";
-            // 
-            // deleteToolStripMenuItem2
-            // 
-            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
-            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
-            this.deleteToolStripMenuItem2.Text = "Delete";
-            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
-            // 
             // reloadToolStripMenuItem2
             // 
             this.reloadToolStripMenuItem2.Name = "reloadToolStripMenuItem2";
@@ -437,16 +417,54 @@ namespace Client
             this.reloadToolStripMenuItem2.Text = "Reload";
             this.reloadToolStripMenuItem2.Click += new System.EventHandler(this.reloadToolStripMenuItem2_Click);
             // 
-            // timerBans
+            // contextMenuStripE
             // 
-            this.timerBans.Tick += new System.EventHandler(this.timerBans_Tick);
+            this.contextMenuStripE.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.refreshToolStripMenuItem1,
+            this.insertToolStripMenuItem2,
+            this.deleteToolStripMenuItem2,
+            this.reloadToolStripMenuItem3});
+            this.contextMenuStripE.Name = "menuBan";
+            this.contextMenuStripE.Size = new System.Drawing.Size(153, 114);
+            // 
+            // insertToolStripMenuItem2
+            // 
+            this.insertToolStripMenuItem2.Enabled = false;
+            this.insertToolStripMenuItem2.Name = "insertToolStripMenuItem2";
+            this.insertToolStripMenuItem2.Size = new System.Drawing.Size(113, 22);
+            this.insertToolStripMenuItem2.Text = "Insert";
+            // 
+            // deleteToolStripMenuItem2
+            // 
+            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(113, 22);
+            this.deleteToolStripMenuItem2.Text = "Delete";
+            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
             // 
             // reloadToolStripMenuItem3
             // 
             this.reloadToolStripMenuItem3.Name = "reloadToolStripMenuItem3";
-            this.reloadToolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
+            this.reloadToolStripMenuItem3.Size = new System.Drawing.Size(113, 22);
             this.reloadToolStripMenuItem3.Text = "Reload";
             this.reloadToolStripMenuItem3.Click += new System.EventHandler(this.reloadToolStripMenuItem3_Click);
+            // 
+            // timerBans
+            // 
+            this.timerBans.Tick += new System.EventHandler(this.timerBans_Tick);
+            // 
+            // refreshToolStripMenuItem
+            // 
+            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
+            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.refreshToolStripMenuItem.Text = "Refresh";
+            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
+            // 
+            // refreshToolStripMenuItem1
+            // 
+            this.refreshToolStripMenuItem1.Name = "refreshToolStripMenuItem1";
+            this.refreshToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.refreshToolStripMenuItem1.Text = "Refresh";
+            this.refreshToolStripMenuItem1.Click += new System.EventHandler(this.refreshToolStripMenuItem1_Click);
             // 
             // Channel_Info
             // 
@@ -517,6 +535,8 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem2;
         private System.Windows.Forms.Timer timerBans;
         private System.Windows.Forms.ToolStripMenuItem reloadToolStripMenuItem3;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem1;
 
 
     }

@@ -54,7 +54,7 @@ namespace Client
         public bool insert(string server, string data)
         {
             modified = true;
-            if (!Configuration.NetworkSniff)
+            if (!Configuration.Kernel.NetworkSniff)
             {
                 return true;
             }
