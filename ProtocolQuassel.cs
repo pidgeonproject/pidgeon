@@ -25,11 +25,6 @@ namespace Client
     {
         string Input = "";
 
-        public void Login()
-        { 
-            
-        }
-
         public void Proccess()
         {
             switch (Input)

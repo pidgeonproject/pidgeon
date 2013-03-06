@@ -71,6 +71,22 @@ namespace Client
             public static int window_size = 0;
         }
 
+        public class irc
+        {
+            /// <summary>
+            /// Default bans
+            /// </summary>
+            public static TypeOfBan DefaultBans = TypeOfBan.Host;
+            /// <summary>
+            /// If true, ctcp messages will be printed to window
+            /// </summary>
+            public static bool DisplayCtcp = true;
+            /// <summary>
+            /// Default kick
+            /// </summary>
+            public static string DefaultReason = "Removed from the channel";
+        }
+
         /// <summary>
         /// Personal default configuration for all connections
         /// </summary>
@@ -92,6 +108,21 @@ namespace Client
             /// Real name
             /// </summary>
             public static string user = "My name is hidden, dude";
+            /// <summary>
+            /// This is a nick that is used in case the current nick is in use
+            /// </summary>
+            public static string Nick2 = "";
+            /// <summary>
+            /// Last used nick
+            /// </summary>
+            public static string LastNick = "";
+            /// <summary>
+            /// Last used host
+            /// </summary>
+            public static string LastHost = "";
+            /// <summary>
+            /// Last used port
+            /// </summary>
         }
 
         public class Colors
@@ -102,14 +133,39 @@ namespace Client
             public static bool ChangeLinks = false;
         }
 
-        /// <summary>
-        /// Format of ttimestamp
-        /// </summary>
-        public static string format_date = "($1) ";
-        /// <summary>
-        /// Format of nick in a scrollback
-        /// </summary>
-        public static string format_nick = "<$1> ";
+        public class Kernel
+        {
+            /// <summary>
+            /// Network Scan
+            /// </summary>
+            public static bool NetworkSniff = true;
+            public static bool DisplaySizeOfBuffer = true;
+            /// <summary>
+            /// If updates are allowed
+            /// </summary>
+            public static bool CheckUpdate = true;
+            /// <summary>
+            /// Enable the notice in tray
+            /// </summary>
+            public static bool Notice = true;
+            /// <summary>
+            /// Updater
+            /// </summary>
+            public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode(System.Windows.Forms.Application.ProductVersion);
+
+            public static int MaximalRingLogSize = 20000;
+            public static bool SearchRegex = true;
+
+            public static bool Debugging = false;
+            /// <summary>
+            /// If values that are being parsed are hidden
+            /// </summary>
+            public static bool HidingParsed = true;
+            /// <summary>
+            /// Require confirmation from user before exiting
+            /// </summary>
+            public static bool ShutdownCheck = true;
+        }
 
         public static bool FriendlyWho = true;
 
@@ -117,57 +173,39 @@ namespace Client
         /// If true a client will ask before executing generated kick bans
         /// </summary>
         public static bool ConfirmAll = true;
-        /// <summary>
-        /// If timestamp is displayed
-        /// </summary>
-        public static bool chat_timestamp = true;
-        /// <summary>
-        /// Timestamp mask
-        /// </summary>
-        public static string timestamp_mask = "HH:mm:ss";
 
-        /// <summary>
-        /// Default kick
-        /// </summary>
-        public static string DefaultReason = "Removed from the channel";
-
-        /// <summary>
-        /// If this is true the /mode run on every new channel in order to retrieve its mode no matter if server offer it or not
-        /// </summary>
-        public static bool aggressive_mode = true;
-        /// <summary>
-        /// If this is true the /whois is run on every user in a new channel in order to get all information about every user in that channel
-        /// </summary>
-        public static bool aggressive_whois = false;
-        /// <summary>
-        /// If this is true the /mode +b is run on every new channel
-        /// </summary>
-        public static bool aggressive_bans = true;
-        /// <summary>
-        /// If this is true the /mode +e is run on every new channel
-        /// </summary>
-        public static bool aggressive_exception = false;
-        /// <summary>
-        /// If this is true the /mode +I is run on every new channel
-        /// </summary>
-        public static bool aggressive_invites = false;
-        /// <summary>
-        /// If this is true the /who is run on every new channel in order to get all information about every user in that channel
-        /// </summary>
-        public static bool aggressive_channel = true;
+        public class ChannelModes
+        {
+            /// <summary>
+            /// If this is true the /mode run on every new channel in order to retrieve its mode no matter if server offer it or not
+            /// </summary>
+            public static bool aggressive_mode = true;
+            /// <summary>
+            /// If this is true the /whois is run on every user in a new channel in order to get all information about every user in that channel
+            /// </summary>
+            public static bool aggressive_whois = false;
+            /// <summary>
+            /// If this is true the /mode +b is run on every new channel
+            /// </summary>
+            public static bool aggressive_bans = true;
+            /// <summary>
+            /// If this is true the /mode +e is run on every new channel
+            /// </summary>
+            public static bool aggressive_exception = false;
+            /// <summary>
+            /// If this is true the /mode +I is run on every new channel
+            /// </summary>
+            public static bool aggressive_invites = false;
+            /// <summary>
+            /// If this is true the /who is run on every new channel in order to get all information about every user in that channel
+            /// </summary>
+            public static bool aggressive_channel = true;
+        }
 
         /// <summary>
         /// Used skin
         /// </summary>
         public static Skin CurrentSkin = new Skin();
-        /// <summary>
-        /// Default bans
-        /// </summary>
-        public static TypeOfBan DefaultBans = TypeOfBan.Host;
-        /// <summary>
-        /// If true, ctcp messages will be printed to window
-        /// </summary>
-        public static bool DisplayCtcp = true;
 
         public class Parser
         {
@@ -176,30 +214,15 @@ namespace Client
         }
 
         /// <summary>
-        /// Network Scan
+        /// Time of message queue
         /// </summary>
-        public static bool NetworkSniff = true;
-
-        public static bool DisplaySizeOfBuffer = true;
-
-        /// <summary>
-        /// If updates are allowed
-        /// </summary>
-        public static bool CheckUpdate = true;
-
-        /// <summary>
-        /// Updater
-        /// </summary>
-        public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode( System.Windows.Forms.Application.ProductVersion) ;
+        public static int mq = 1200;
 
         /// <summary>
         /// Reload time for scrollback - this is deprecated
         /// </summary>
         public static int reload_time = 100;
-        /// <summary>
-        /// Time of message queue
-        /// </summary>
-        public static int mq = 1200;
+        
 
         /// <summary>
         /// Shortcuts enabled
@@ -229,31 +252,8 @@ namespace Client
             /// </summary>
             public static string logs_name = "$1_yyMMdd";
         }
-
-        /// <summary>
-        /// Enable the notice in tray
-        /// </summary>
-        public static bool Notice = true;
-
-        /// <summary>
-        /// This is a nick that is used in case the current nick is in use
-        /// </summary>
-        public static string Nick2 = "";
-
-        /// <summary>
-        /// Last used nick
-        /// </summary>
-        public static string LastNick = "";
-        /// <summary>
-        /// Last used host
-        /// </summary>
-        public static string LastHost = "";
-        /// <summary>
-        /// Last used port
-        /// </summary>
+        
         public static string LastPort = "";
-
-        public static int MaximalRingLogSize = 20000;
 
         /// <summary>
         /// List of loaded skins
@@ -264,23 +264,7 @@ namespace Client
         /// Highlighter list
         /// </summary>
         public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
-
-        public static bool SearchRegex = true;
-
-        public static bool Debugging = false;
-
-        /// <summary>
-        /// If values that are being parsed are hidden
-        /// </summary>
-        public static bool HidingParsed = true;
-
-        /// <summary>
-        /// Require confirmation from user before exiting
-        /// </summary>
-        public static bool ShutdownCheck = true;
-
         
-
         public class Scrollback
         {
             public static int DynamicSize = 600;
@@ -288,11 +272,26 @@ namespace Client
             /// Enable this to make bars change the max size when reached
             /// </summary>
             public static bool DynamicBars = true;
-
             /// <summary>
             /// Size
             /// </summary>
             public static int scrollback_plimit = 200;
+            /// <summary>
+            /// If timestamp is displayed
+            /// </summary>
+            public static bool chat_timestamp = true;
+            /// <summary>
+            /// Timestamp mask
+            /// </summary>
+            public static string timestamp_mask = "HH:mm:ss";
+            /// <summary>
+            /// Format of ttimestamp
+            /// </summary>
+            public static string format_date = "($1) ";
+            /// <summary>
+            /// Format of nick in a scrollback
+            /// </summary>
+            public static string format_nick = "<$1> ";
         }
 
         public class Services

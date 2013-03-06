@@ -47,7 +47,7 @@ namespace Client
                 }
                 lock (simpleview.Lines)
                 {
-                    simpleview.AppendText(Configuration.format_date.Replace("$1", line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(line.text) + Environment.NewLine);
+                    simpleview.AppendText(Configuration.Scrollback.format_date.Replace("$1", line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(line.text) + Environment.NewLine);
                 }
                 return;
             }
@@ -103,9 +103,9 @@ namespace Client
             }
 
             string stamp = "";
-            if (Configuration.chat_timestamp)
+            if (Configuration.Scrollback.chat_timestamp)
             {
-                stamp = Configuration.format_date.Replace("$1", _c.time.ToString(Configuration.timestamp_mask));
+                stamp = Configuration.Scrollback.format_date.Replace("$1", _c.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
             SBABox.Line text = Parser.FormatLine(_c.text, RT, color);
             SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
@@ -244,18 +244,18 @@ namespace Client
                 if (Configuration.Logs.logs_txt)
                 {
                     string stamp = "";
-                    if (Configuration.chat_timestamp)
+                    if (Configuration.Scrollback.chat_timestamp)
                     {
-                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
                     }
                     Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
                 }
                 if (Configuration.Logs.logs_html)
                 {
                     string stamp = "";
-                    if (Configuration.chat_timestamp)
+                    if (Configuration.Scrollback.chat_timestamp)
                     {
-                        stamp = Configuration.format_date.Replace("$1", DateTime.Now.ToString(Configuration.timestamp_mask));
+                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
                     }
                     Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
                 }

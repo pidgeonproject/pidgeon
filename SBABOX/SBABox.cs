@@ -412,7 +412,7 @@ namespace Client
                                                 {
                                                     if (size <= 1)
                                                     {
-                                                        if (Configuration.Debugging)
+                                                        if (Configuration.Kernel.Debugging)
                                                         {
                                                             throw new Exception("Invalid size");
                                                         }
@@ -513,7 +513,7 @@ namespace Client
                                     part.Linked = true;
                                     Pen pen = new Pen(part.TextColor);
                                     Link http = new Link((int)X, (int)Y, part.TextColor, stringWidth, (int)stringSize.Height, this, part.Link, TextOfThisPart, part);
-                                    if (Configuration.Debugging)
+                                    if (Configuration.Kernel.Debugging)
                                     { 
                                         graphics.DrawLine(pen, new Point(http.X, http.Y), new Point(http.X + stringWidth, http.Y));
                                         graphics.DrawLine(pen, new Point(http.X, http.Y), new Point(http.X, http.Y + (int)stringSize.Height));

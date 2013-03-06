@@ -125,7 +125,7 @@ namespace Client
                     mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
                     mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
                     mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
-                    kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.DefaultReason;
+                    kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.irc.DefaultReason;
                     whoisToolStripMenuItem.Text = "/whois " + name;
                     whowasToolStripMenuItem.Text = "/whowas " + name;
                     mode1b2ToolStripMenuItem.Visible = true;
@@ -544,7 +544,7 @@ namespace Client
                 {
                     foreach (ContentLine _line in ContentLines)
                     {
-                        text += Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + "\n";
+                        text += Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + "\n";
                     }
                 }
                 Clipboard.SetText(text);

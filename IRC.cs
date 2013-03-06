@@ -188,7 +188,7 @@ namespace Client
                 if (channel != null)
                 {
                     channel.redrawUsers();
-                    if (Configuration.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
                     {
                         channel.parsing_who = false;
                         return true;
@@ -277,7 +277,7 @@ namespace Client
                             }
                         }
                     }
-                    if (Configuration.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
                     {
                         return true;
                     }
@@ -400,7 +400,7 @@ namespace Client
                                 break;
                         }
                     }
-                    if (Configuration.DisplayCtcp)
+                    if (Configuration.irc.DisplayCtcp)
                     {
                         _Network.system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
@@ -901,29 +901,29 @@ namespace Client
                         }
                         if (updated_text)
                         {
-                            if (Configuration.aggressive_mode)
+                            if (Configuration.ChannelModes.aggressive_mode)
                             {
                                 _Network.Transfer("MODE " + channel, Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_exception)
+                            if (Configuration.ChannelModes.aggressive_exception)
                             {
                                 curr.parsing_xe = true;
                                 _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_bans)
+                            if (Configuration.ChannelModes.aggressive_bans)
                             {
                                 curr.parsing_bans = true;
                                 _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_invites)
+                            if (Configuration.ChannelModes.aggressive_invites)
                             {
                                 _Network.Transfer("MODE " + channel + " +I", Configuration.Priority.Low);
                             }
 
-                            if (Configuration.aggressive_channel)
+                            if (Configuration.ChannelModes.aggressive_channel)
                             {
                                 curr.parsing_who = true;
                                 _Network.Transfer("WHO " + channel, Configuration.Priority.Low);

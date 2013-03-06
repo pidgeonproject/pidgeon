@@ -222,7 +222,7 @@ namespace Client
                 StringBuilder everything = new StringBuilder("");
                 foreach (ContentLine _line in ContentLines)
                 {
-                    everything.Append(Configuration.format_date.Replace("$1", _line.time.ToString(Configuration.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
+                    everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
                 simpleview.AppendText(everything.ToString());
                 if (ScrollingEnabled)
