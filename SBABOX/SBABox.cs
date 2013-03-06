@@ -174,13 +174,13 @@ namespace Client
                 lock (LineDB)
                 {
                     text = "";
-                    text = Hooks.BeforeParser(text);
+                    text = Hooks._Scrollback.BeforeParser(text);
                     foreach (Line _l in LineDB)
                     {
                         string line = _l.ToString();
                         if (line != null)
                         {
-                            text = Hooks.BeforeInsertLine(text, line + "\n");
+                            text = Hooks._Scrollback.BeforeInsertLine(text, line + "\n");
                             text += line + "\n";
                         }
                     }

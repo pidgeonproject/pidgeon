@@ -105,7 +105,7 @@ namespace Client
                         channel.UpdateInfo();
                         curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
-                    Hooks.ChannelInfo(_Network, channel, code[4]);
+                    Hooks._Network.ChannelInfo(_Network, channel, code[4]);
                     return true;
                 }
             }
@@ -173,7 +173,7 @@ namespace Client
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
-                    Hooks.ChannelTopic(topic, null, _Network, channel);
+                    Hooks._Network.ChannelTopic(topic, null, _Network, channel);
                     return true;
                 }
             }
@@ -642,7 +642,7 @@ namespace Client
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
             Channel channel = _Network.getChannel(chan);
-            if (!Hooks.BeforePart(_Network, channel)) { return true; }
+            if (!Hooks._Network.BeforePart(_Network, channel)) { return true; }
             if (channel != null)
             {
                 Window window;
@@ -830,7 +830,7 @@ namespace Client
                     channel.UpdateInfo();
                     return true;
                 }
-                Hooks.UserJoin(_Network, channel.userFromName(user), channel);
+                Hooks._Network.UserJoin(_Network, channel.userFromName(user), channel);
             }
             return false;
         }

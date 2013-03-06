@@ -393,7 +393,7 @@ namespace Client
                     system = protocol.windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
-                Hooks.CreatingNetwork(this);
+                Hooks._Network.CreatingNetwork(this);
             }
             catch (Exception ex)
             {

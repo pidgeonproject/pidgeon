@@ -348,7 +348,7 @@ namespace Client
                         simple.text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
-                    Hooks.AfterCore();
+                    Hooks._Sys.AfterCore();
                     return true;
                 }
                 Updater _finalisingupdater = new Updater();

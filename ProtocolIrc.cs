@@ -200,7 +200,7 @@ namespace Client
             {
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
-                Hooks.BeforeConnect(this);
+                Hooks._Protocol.BeforeConnect(this);
                 _IRCNetwork.Connected = true;
 
                 _StreamWriter = new System.IO.StreamWriter(_networkStream);
@@ -342,7 +342,7 @@ namespace Client
             {
                 return;
             }
-            if (!Hooks.BeforeExit(_IRCNetwork))
+            if (!Hooks._Network.BeforeExit(_IRCNetwork))
             {
                 return;
             }
