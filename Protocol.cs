@@ -53,22 +53,21 @@ namespace Client
         /// </summary>
         public Dictionary<string, Window> windows = new Dictionary<string, Window>();
         /// <summary>
-        /// Whether this network is connected or not
+        /// Whether this server is connected or not
         /// </summary>
         public bool Connected = false;
         /// <summary>
-        /// Type of protocol
+        /// Type of protocol (deprecated)
         /// </summary>
         public int ProtocolType = 0;
         /// <summary>
-        /// If changes to channels should be suppressed (no color changes on new messages)
+        /// If changes to windows should be suppressed (no color changes on new messages)
         /// </summary>
         public bool SuppressChanges = false;
         /// <summary>
         /// Password for server
         /// </summary>
         public string Password = null;
-
         /// <summary>
         /// Server
         /// </summary>
@@ -222,13 +221,27 @@ namespace Client
         }
 
         /// <summary>
+        /// Send a message to server (deprecated)
+        /// </summary>
+        /// <param name="text">Message</param>
+        /// <param name="to">User or a channel (needs to be prefixed with #)</param>
+        /// <param name="_priority">Priority</param>
+        /// <returns></returns>
+        public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        {
+            return 0;
+        }
+
+        /// <summary>
         /// Send a message to server
         /// </summary>
         /// <param name="text">Message</param>
         /// <param name="to">User or a channel (needs to be prefixed with #)</param>
+        /// <param name="network"></param>
         /// <param name="_priority"></param>
+        /// <param name="pmsg"></param>
         /// <returns></returns>
-        public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        public virtual int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             return 0;
         }
@@ -300,16 +313,25 @@ namespace Client
         /// </summary>
         public virtual void Exit() 
         {
-            if (windows.ContainsValue(Core._Main.Chat))
+            if (SystemWindow != null)
             {
-                Core._Main.main.Visible = true;
-                Core._Main.Chat.Visible = false;
-                Core._Main.Chat.Dispose();
-                Core._Main.Chat = Core._Main.main;
+                if (windows.ContainsValue(SystemWindow))
+                {
+                    Core._Main.main.Visible = true;
+                    if (Core._Main.main != SystemWindow)
+                    {
+                        SystemWindow.Visible = false;
+                    }
+                    SystemWindow.Dispose();
+                    Core._Main.Chat = Core._Main.main;
+                }
             }
-            if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+            lock (Core.Connections)
             {
-                Core.Connections.Remove(this);
+                if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                {
+                    Core.Connections.Remove(this);
+                }
             }
         }  
 

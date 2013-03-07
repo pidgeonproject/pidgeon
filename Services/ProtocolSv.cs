@@ -364,24 +364,34 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Deprecated, scheduled for removal in 1.2.0
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="_priority"></param>
+        /// <param name="pmsg"></param>
+        /// <returns></returns>
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            if (!pmsg)
-            {
-                //Core._Main.Chat.scrollback.InsertText(Core.network._protocol.PRIVMSG(Core.network.nickname, text),
-                //    Scrollback.MessageStyle.Message, true, 0, true);
-            }
+            Core.DebugLog("Warning, this function is deprecated: ProtocolSv.Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) " + Environment.StackTrace);
+            Message(text, to, Core.network, _priority, pmsg);
+            return 0;
+        }
+
+        public override int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        {
             Datagram message = new Datagram("MESSAGE", text);
-            if (Core.network != null && NetworkList.Contains(Core.network))
+            if (network != null && NetworkList.Contains(network))
             {
-                message.Parameters.Add("network", Core.network.server);
+                message.Parameters.Add("network", network.server);
                 message.Parameters.Add("priority", _priority.ToString());
                 message.Parameters.Add("to", to);
                 Deliver(message);
             }
             else
             {
-                Core.DebugLog("Invalid network");
+                Core.DebugLog("Invalid network for message to: " + to);
             }
             return 0;
         }

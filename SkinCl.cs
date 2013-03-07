@@ -177,7 +177,11 @@ namespace Client
         /// <param name="name"></param>
         public static void LoadSkin(string name)
         {
-            
+            Skin skin = new Skin(name);
+            lock (Configuration.SL)
+            {
+                Configuration.SL.Add(skin);
+            }
         }
     }
 }

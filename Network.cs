@@ -51,12 +51,13 @@ namespace Client
         /// Special channel user modes with parameters as a string
         /// </summary>
         public List<char> PModes = new List<char> { 'b', 'I', 'e' };
-
         /// <summary>
         /// Descriptions for channel and user modes
         /// </summary>
         public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
-
+        /// <summary>
+        /// Check if the info is parsed
+        /// </summary>
         public bool parsed_info = false;
         public string channel_prefix = "#";
         /// <summary>
@@ -135,12 +136,19 @@ namespace Client
 
         public void DisplayChannelWindow()
         {
-            if (wChannelList == null || wChannelList.IsDisposed)
+            try
             {
-                wChannelList = new Channels(this);
-            }
+                if (wChannelList == null || wChannelList.IsDisposed)
+                {
+                    wChannelList = new Channels(this);
+                }
 
-            wChannelList.Show();
+                wChannelList.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public class ChannelData
@@ -157,7 +165,6 @@ namespace Client
             }
         }
 
-        
         public ChannelData ContainsChannel(string channel)
         {
             lock (ChannelList)
@@ -288,6 +295,18 @@ namespace Client
         }
 
         /// <summary>
+        /// Send a message to network
+        /// </summary>
+        /// <param name="text">Text of message</param>
+        /// <param name="to">Sending to</param>
+        /// <param name="_priority">Priority</param>
+        /// <param name="pmsg">If this is private message (so it needs to be handled in a different way)</param>
+        public void Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        {
+            _Protocol.Message(text, to, this, _priority, pmsg);
+        }
+
+        /// <summary>
         /// Unregister info for user and channel modes
         /// </summary>
         /// <param name="key"></param>
@@ -302,7 +321,7 @@ namespace Client
                     return true;
                 }
             }
-                return false;
+            return false;
         }
 
         /// <summary>
@@ -360,9 +379,9 @@ namespace Client
         /// <param name="protocol"></param>
         public Network(string Server, Protocol protocol)
         {
-            randomuqid = Core.retrieveRandom();
             try
             {
+                randomuqid = Core.retrieveRandom();
                 Descriptions.Add('n', "no /knock is allowed on channel");
                 Descriptions.Add('r', "registered channel");
                 Descriptions.Add('m', "talking is restricted");

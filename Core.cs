@@ -444,7 +444,7 @@ namespace Client
 
             if (Core.IgnoreErrors)
             {
-                DebugLog("Ignoring kill request for thread " + name.Name + " because system is in unstable mode");
+                DebugLog("Not removing thread from thread queue " + name.Name + " because system is shutting down");
                 return;
             }
 

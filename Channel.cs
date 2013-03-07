@@ -29,16 +29,16 @@ namespace Client
     }
     public class Invite : ChannelParameterMode
     {
-        public Invite(string user,string target, string time)
+        public Invite(string user, string target, string time)
         {
-        
+
         }
     }
     public class Except : ChannelParameterMode
     {
         public Except()
-        { 
-        
+        {
+
         }
     }
     public class SimpleBan : ChannelParameterMode
@@ -186,7 +186,7 @@ namespace Client
         {
             if (TreeNode != null)
             {
-                string text ="";
+                string text = "";
                 string trimmed = Topic;
                 if (trimmed.Length > 160)
                 {
@@ -200,7 +200,7 @@ namespace Client
                 if (!ChannelWork)
                 {
                     text = "[PARTED CHAN] ";
-                    
+
                 }
                 text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
                 TreeNode.ToolTipText = text;
@@ -356,7 +356,7 @@ namespace Client
                                 users.Add(nick);
                             }
                         }
-                        
+
                         listView.Items.Clear();
 
                         owners.Sort();
@@ -459,7 +459,7 @@ namespace Client
             }
             return "";
         }
-        
+
         /// <summary>
         /// Return user object if specified user exist
         /// </summary>
@@ -467,14 +467,14 @@ namespace Client
         /// <returns></returns>
         public User userFromName(string name)
         {
-                foreach (User item in UserList)
+            foreach (User item in UserList)
+            {
+                if (name.ToLower() == item.Nick.ToLower())
                 {
-                    if (name.ToLower() == item.Nick.ToLower())
-                    {
-                        return item;
-                    }
+                    return item;
                 }
-                return null;
+            }
+            return null;
         }
 
         /// <summary>

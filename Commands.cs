@@ -530,7 +530,7 @@ namespace Client
                                 ms = ms.Substring(1);
                             }
                             Core.network.system.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Scrollback.MessageStyle.System);
-                            Core.network._Protocol.Message(ms, channel, Configuration.Priority.Normal, true);
+                            Core.network.Message(ms, channel, Configuration.Priority.Normal, true);
                             return;
                         }
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
@@ -717,7 +717,7 @@ namespace Client
                             }
                             Core.network._Protocol.ShowChat(Core.network.window + channel);
                             Core.network._Protocol.windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
-                            Core.network._Protocol.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
+                            Core.network.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;
                         }
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);

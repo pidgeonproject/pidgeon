@@ -291,7 +291,7 @@ namespace Client
         {
             try
             {
-                _StreamWriter.WriteLine(ms);
+                _StreamWriter.WriteLine(ms); 
                 Core.trafficscanner.insert(Server, " << " + ms);
                 _StreamWriter.Flush();
             }
@@ -302,6 +302,12 @@ namespace Client
         }
 
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        {
+            Message(text, to, null, _priority, pmsg);
+            return 0;
+        }
+
+        public override int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             if (!pmsg)
             {
