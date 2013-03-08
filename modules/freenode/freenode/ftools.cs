@@ -36,7 +36,7 @@ namespace Client
                 return;
             }
             string user = text;
-            string reason = Configuration.DefaultReason;
+            string reason = Configuration.irc.DefaultReason;
             if (text.Contains(" "))
             {
                 reason = text.Substring(text.IndexOf(" " + 1));
@@ -47,9 +47,9 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
                 return;
             }
-            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
-            Core.network._protocol.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
+            Core.network.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
         }
 
         public void Op(string text)
@@ -59,7 +59,7 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
                 return;
             }
-            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
         }
 
         public void Quiet(string text)
@@ -70,7 +70,7 @@ namespace Client
                 return;
             }
             string user = text;
-            string reason = Configuration.DefaultReason;
+            string reason = Configuration.irc.DefaultReason;
             if (text.Contains(" "))
             {
                 reason = text.Substring(text.IndexOf(" " + 1));
@@ -90,9 +90,9 @@ namespace Client
                 {
                     if (host.Host != "")
                     {
-                        Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+                        Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
                         System.Threading.Thread.Sleep(100);
-                        Core.network._protocol.Transfer("MODE " + Core._Main.Chat.name + " +q *!*@" + host.Host, Configuration.Priority.High);
+                        Core.network.Transfer("MODE " + Core._Main.Chat.name + " +q *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
                     Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
@@ -122,7 +122,7 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
                 return;
             }
-            Core.network._protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
 
             Channel curr = Core.network.getChannel(Core._Main.Chat.name);
@@ -183,7 +183,7 @@ namespace Client
                 return;
             }
             string user = text;
-            string reason = Configuration.DefaultReason;
+            string reason = Configuration.irc.DefaultReason;
             if (text.Contains(" "))
             {
                 reason = text.Substring(text.IndexOf(" " + 1));

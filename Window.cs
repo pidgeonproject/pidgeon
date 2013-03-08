@@ -186,6 +186,10 @@ namespace Client
                                                     current_ban = "MODE " + name + " +b *!*@" + target.Host;
                                                     script += current_ban + Environment.NewLine;
                                                 }
+                                                else
+                                                {
+                                                    script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
+                                                }
                                                 break;
                                         }
                                     }
@@ -193,6 +197,10 @@ namespace Client
                                     {
                                         script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                                     }
+                                }
+                                else
+                                {
+                                    script += "# can't find a channel for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                                 }
                                 string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                                 script += current_kick + Environment.NewLine;
@@ -455,6 +463,10 @@ namespace Client
                                                 mode = "MODE " + name + " +b *!*@" + target.Host;
                                                 script += mode + Environment.NewLine;
                                             }
+                                            else
+                                            {
+                                                script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
+                                            }
                                             break;
                                     }
                                     if (!Configuration.ConfirmAll)
@@ -466,6 +478,10 @@ namespace Client
                                 {
                                     script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                                 }
+                            }
+                            else
+                            {
+                                script += "# can't find a channel for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                             }
                         }
                         if (Configuration.ConfirmAll)
@@ -647,7 +663,8 @@ namespace Client
                     }
                 }
                 base.Dispose(disposing);
-            } catch (Exception df)
+            }
+            catch (Exception df)
             {
                 Core.handleException(df);
             }
