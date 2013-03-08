@@ -302,6 +302,7 @@ namespace Client
             catch (System.Xml.XmlException xx)
             {
                 Core.DebugLog("Unable to parse: " + xx.ToString());
+                Core.Ringlog("Invalid xml: " + dg);
             }
             catch (Exception fail)
             {

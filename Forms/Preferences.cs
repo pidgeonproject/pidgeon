@@ -42,6 +42,7 @@ namespace Client
             try
             {
                 checkBox10.Checked = Configuration.Kernel.CheckUpdate;
+                messages.Localize(this);
                 if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
                 {
                     checkBox10.Checked = false;

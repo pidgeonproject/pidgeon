@@ -29,15 +29,15 @@ namespace Client
         /// <summary>
         /// Thread in which the connection to server is handled
         /// </summary>
-        public System.Threading.Thread main;
+        public System.Threading.Thread main = null;
         /// <summary>
         /// Thread which is handling the delivery of data
         /// </summary>
-        public System.Threading.Thread deliveryqueue;
+        public System.Threading.Thread deliveryqueue = null;
         /// <summary>
         /// Thread which is keeping the connection online
         /// </summary>
-        public System.Threading.Thread keep;
+        public System.Threading.Thread keep = null;
         /// <summary>
         /// Time of last ping
         /// </summary>
@@ -45,7 +45,7 @@ namespace Client
         /// <summary>
         /// Network stream
         /// </summary>
-        private System.Net.Sockets.NetworkStream _networkStream;
+        private System.Net.Sockets.NetworkStream _networkStream = null;
         /// <summary>
         /// Stream reader for server
         /// </summary>
@@ -58,7 +58,10 @@ namespace Client
         /// Stream writer for server
         /// </summary>
         private System.IO.StreamWriter _StreamWriter;
-        MessagesClass Messages = new MessagesClass();
+        /// <summary>
+        /// Messages
+        /// </summary>
+        private MessagesClass Messages = new MessagesClass();
 
         class MessagesClass
         {

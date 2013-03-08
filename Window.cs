@@ -189,6 +189,10 @@ namespace Client
                                                 break;
                                         }
                                     }
+                                    else
+                                    {
+                                        script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
+                                    }
                                 }
                                 string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                                 script += current_kick + Environment.NewLine;
@@ -457,6 +461,10 @@ namespace Client
                                     {
                                         Core.network.Transfer(mode, Configuration.Priority.High);
                                     }
+                                }
+                                else
+                                {
+                                    script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                                 }
                             }
                         }

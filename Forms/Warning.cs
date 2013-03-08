@@ -36,7 +36,7 @@ namespace Client
 
         private void Warning_Load(object sender, EventArgs e)
         {
-
+            messages.Localize(this);
         }
     }
 }

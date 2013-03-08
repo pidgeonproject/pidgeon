@@ -194,18 +194,19 @@ namespace Client
 
         public class IO
         {
-            public class fl
+            public class FileLine
             {
                 public string filename;
                 public string line;
-                public fl(string File, string Line)
+                public FileLine(string File, string Line)
                 {
                     line = Line;
                     filename = File;
                 }
             }
-            public static List<fl> processing = new List<fl>();
-            public static List<fl> data = new List<fl>();
+
+            public static List<FileLine> processing = new List<FileLine>();
+            public static List<FileLine> data = new List<FileLine>();
 
             public static void Save()
             {
@@ -219,7 +220,7 @@ namespace Client
                 }
                 if (data.Count > 0)
                 {
-                    foreach (fl xx in data)
+                    foreach (FileLine xx in data)
                     {
                         File.AppendAllText(xx.filename, xx.line);
                     }
@@ -259,16 +260,16 @@ namespace Client
             {
                 lock (processing)
                 {
-                    processing.Add(new fl(file, line));
+                    processing.Add(new FileLine(file, line));
                 }
             }
         }
 
         public class Shortcut
         {
-            public bool control = false;
-            public bool alt = false;
-            public bool shift = false;
+            public bool control;
+            public bool alt;
+            public bool shift;
             public System.Windows.Forms.Keys keys;
             public string data;
             public Shortcut(System.Windows.Forms.Keys Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")

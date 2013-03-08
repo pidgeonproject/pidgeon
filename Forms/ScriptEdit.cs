@@ -49,5 +49,10 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
+
+        private void ScriptEdit_Load(object sender, EventArgs e)
+        {
+            messages.Localize(this);
+        }
     }
 }
