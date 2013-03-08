@@ -56,6 +56,7 @@ namespace Client
         {
             try
             {
+                messages.Localize(this);
                 label2.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
             }
             catch (Exception fail)

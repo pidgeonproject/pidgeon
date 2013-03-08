@@ -66,9 +66,17 @@ namespace Client
 
         private void SearchItem_Load(object sender, EventArgs e)
         {
-            Top = Core._Main.Top + Core._Main.Height - 200;
-            Left = Core._Main.Left + 200;
-            textBox1.Focus();
+            try
+            {
+                messages.Localize(this);
+                Top = Core._Main.Top + Core._Main.Height - 200;
+                Left = Core._Main.Left + 200;
+                textBox1.Focus();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void SearchRun(bool tp)

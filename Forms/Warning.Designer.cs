@@ -51,7 +51,7 @@ namespace Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(423, 269);
+            this.ClientSize = new System.Drawing.Size(610, 152);
             this.Name = "Warning";
             this.Text = "Warning";
             this.Load += new System.EventHandler(this.Warning_Load);

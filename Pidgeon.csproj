@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -111,6 +111,9 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Pigeon_clip_art_hight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -288,12 +291,6 @@
     <Compile Include="Protocol.cs" />
     <Compile Include="ProtocolIrc.cs" />
     <Compile Include="ProtocolQuassel.cs" />
-    <Compile Include="Forms\Style.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Style.Designer.cs">
-      <DependentUpon>Style.cs</DependentUpon>
-    </Compile>
     <Compile Include="Scrollback\Scrollback.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -353,9 +350,6 @@
     <EmbeddedResource Include="SBABOX\SBABox.resx">
       <DependentUpon>SBABox.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Style.resx">
-      <DependentUpon>Style.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\TrafficScanner.resx">
       <DependentUpon>TrafficScanner.cs</DependentUpon>
     </EmbeddedResource>
@@ -413,6 +407,8 @@
     <Content Include="ManualPages\PidgeonUptime.txt" />
     <Content Include="ManualPages\Server.txt" />
     <None Include="Resources\darknetwork.png" />
+    <Content Include="Pigeon_clip_art_hight.ico" />
+    <Content Include="Resources\Pigeon_clip_art_hight.png" />
     <Content Include="tcl84.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

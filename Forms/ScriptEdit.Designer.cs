@@ -112,8 +112,10 @@
             this.ClientSize = new System.Drawing.Size(743, 388);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "ScriptEdit";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Execute script";
+            this.Load += new System.EventHandler(this.ScriptEdit_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.panel1.ResumeLayout(false);

@@ -40,11 +40,18 @@ namespace Client
 
         private void Updater_Load(object sender, EventArgs e)
         {
-            Focus();
-            BringToFront();
-            if (finalize)
+            try
             {
-                progressBar1.Visible = false;
+                Focus();
+                BringToFront();
+                if (finalize)
+                {
+                    progressBar1.Visible = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -56,8 +63,10 @@ namespace Client
                 _b.DownloadFile(file, where);
                 return true;
             }
-            catch (Exception)
-            { }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
             return false;
         }
 
@@ -108,115 +117,129 @@ namespace Client
 
         private void update_Click(object sender, EventArgs e)
         {
-            update.Enabled = false;
-            progressBar1.Maximum = info.Split('\n').Length;
-            string tempdir_ = System.IO.Path.GetTempPath() + "pidgeon_" + DateTime.Now.ToBinary().ToString();
-            progressBar1.Value = 1;
-            System.IO.Directory.CreateDirectory(tempdir_);
-            foreach (string line in info.Split('\n'))
+            try
             {
-                if (line.Contains("|"))
+                update.Enabled = false;
+                progressBar1.Maximum = info.Split('\n').Length;
+                string tempdir_ = System.IO.Path.GetTempPath() + "pidgeon_" + DateTime.Now.ToBinary().ToString();
+                progressBar1.Value = 1;
+                System.IO.Directory.CreateDirectory(tempdir_);
+                foreach (string line in info.Split('\n'))
                 {
-                    string[] x = line.Split('|');
-                    switch (x[0])
+                    if (line.Contains("|"))
                     {
-                        case "copy":
-                            System.IO.File.Copy(x[1].Replace("!1", tempdir_).Replace("!2", temporarydir).Replace("/",
-                                System.IO.Path.DirectorySeparatorChar.ToString()), x[2].Replace("!1", tempdir_).Replace("!2", temporarydir).Replace("/",
-                                System.IO.Path.DirectorySeparatorChar.ToString()));
-                            break;
-                        case "deleteall":
-                            System.IO.Directory.Delete(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1], true);
-                            break;
-                        case "deletefile":
-                            System.IO.File.Delete(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1]);
-                            break;
-                        case "download":
-                            lStatus.Text += "/n Downloading " + x[2] + "";
-                            if (!Download(x[2], temporarydir + System.IO.Path.DirectorySeparatorChar + x[1].Replace("!1", tempdir_).Replace("!2", temporarydir)))
-                            {
-                                lStatus.Text += "/n Unable to get " + x[2] + "";
+                        string[] x = line.Split('|');
+                        switch (x[0])
+                        {
+                            case "copy":
+                                System.IO.File.Copy(x[1].Replace("!1", tempdir_).Replace("!2", temporarydir).Replace("/",
+                                    System.IO.Path.DirectorySeparatorChar.ToString()), x[2].Replace("!1", tempdir_).Replace("!2", temporarydir).Replace("/",
+                                    System.IO.Path.DirectorySeparatorChar.ToString()));
+                                break;
+                            case "deleteall":
+                                System.IO.Directory.Delete(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1], true);
+                                break;
+                            case "deletefile":
+                                System.IO.File.Delete(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1]);
+                                break;
+                            case "download":
+                                lStatus.Text += "/n Downloading " + x[2] + "";
+                                if (!Download(x[2], temporarydir + System.IO.Path.DirectorySeparatorChar + x[1].Replace("!1", tempdir_).Replace("!2", temporarydir)))
+                                {
+                                    lStatus.Text += "/n Unable to get " + x[2] + "";
+                                    return;
+                                }
+                                break;
+                            case "md":
+                                System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1]);
+                                break;
+                            case "done":
+                                if (!System.IO.File.Exists(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe"))
+                                {
+                                    System.IO.File.Copy(System.Windows.Forms.Application.ExecutablePath, tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                                }
+                                System.Diagnostics.Process _pro = new Process();
+                                info = info + "\n\n\n\ntemp2: " + tempdir_ + "^";
+                                info = info + "temp: " + temporarydir + "^";
+                                info = info + "previous: " + System.Windows.Forms.Application.StartupPath;
+                                System.IO.File.WriteAllText(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat", info);
+                                System.Diagnostics.Process.Start(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                                Core._KernelThread.Abort();
+                                Application.Exit();
                                 return;
-                            }
-                            break;
-                        case "md":
-                            System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + System.IO.Path.DirectorySeparatorChar + x[1]);
-                            break;
-                        case "done":
-                            if (!System.IO.File.Exists(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe"))
-                            {
-                                System.IO.File.Copy(System.Windows.Forms.Application.ExecutablePath, tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
-                            }
-                            System.Diagnostics.Process _pro = new Process();
-                            info = info + "\n\n\n\ntemp2: " + tempdir_ + "^";
-                            info = info + "temp: " + temporarydir + "^";
-                            info = info + "previous: " + System.Windows.Forms.Application.StartupPath;
-                            System.IO.File.WriteAllText(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat", info);
-                            System.Diagnostics.Process.Start(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
-                            Core._KernelThread.Abort();
-                            Application.Exit();
-                            return;
-                    }
-                    if (progressBar1.Value < progressBar1.Maximum)
-                    {
-                        progressBar1.Value++;
+                        }
+                        if (progressBar1.Value < progressBar1.Maximum)
+                        {
+                            progressBar1.Value++;
+                        }
                     }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            timer1.Enabled = false;
-            if (finalize)
+            try
             {
-                string up = System.IO.File.ReadAllText(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
-                string td = up.Substring(up.IndexOf("temp: ") + 6);
-                td = td.Substring(0, td.IndexOf("^"));
-                string main = up.Substring(up.IndexOf("previous: ") + 10);
-                System.Threading.Thread.Sleep(10000);
-                foreach (string line in up.Split('\n'))
+                timer1.Enabled = false;
+                if (finalize)
                 {
-                    if (line.Contains("|"))
+                    string up = System.IO.File.ReadAllText(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
+                    string td = up.Substring(up.IndexOf("temp: ") + 6);
+                    td = td.Substring(0, td.IndexOf("^"));
+                    string main = up.Substring(up.IndexOf("previous: ") + 10);
+                    System.Threading.Thread.Sleep(10000);
+                    foreach (string line in up.Split('\n'))
                     {
-                        string[] x = line.Split('|');
-                        if (x[0] == "aftercopy")
+                        if (line.Contains("|"))
                         {
-                            System.IO.File.Copy(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!0", main).Replace("!2", td).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()),
-                                x[2].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()), true);
-                        }
-                        if (x[0] == "afterdeleteall")
-                        {
-                            if (System.IO.Directory.Exists(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString())))
+                            string[] x = line.Split('|');
+                            if (x[0] == "aftercopy")
                             {
-                                System.IO.Directory.Delete(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()), true);
+                                System.IO.File.Copy(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!0", main).Replace("!2", td).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()),
+                                    x[2].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()), true);
+                            }
+                            if (x[0] == "afterdeleteall")
+                            {
+                                if (System.IO.Directory.Exists(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString())))
+                                {
+                                    System.IO.Directory.Delete(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()), true);
+                                }
+                            }
+                            if (x[0] == "afterdeletefile")
+                            {
+                                System.IO.File.Delete(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()));
                             }
                         }
-                        if (x[0] == "afterdeletefile")
-                        {
-                            System.IO.File.Delete(x[1].Replace("!1", System.Windows.Forms.Application.StartupPath).Replace("!2", td).Replace("!0", main).Replace("/", System.IO.Path.DirectorySeparatorChar.ToString()));
-                        }
                     }
-                }
 
-                Process _pro = new Process();
-                if (Configuration.CurrentPlatform == Core.Platform.Windowsx86 || Configuration.CurrentPlatform == Core.Platform.Windowsx64)
-                {
-                    _pro.StartInfo.Verb = "runas";
-                    _pro.StartInfo.UseShellExecute = true;
-                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                    Process _pro = new Process();
+                    if (Configuration.CurrentPlatform == Core.Platform.Windowsx86 || Configuration.CurrentPlatform == Core.Platform.Windowsx64)
+                    {
+                        _pro.StartInfo.Verb = "runas";
+                        _pro.StartInfo.UseShellExecute = true;
+                        _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
+                    }
+                    if (Configuration.CurrentPlatform == Core.Platform.MacOSx86)
+                    {
+                        _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
+                    }
+                    if (Configuration.CurrentPlatform == Core.Platform.Linuxx86 || Configuration.CurrentPlatform == Core.Platform.Linuxx64)
+                    {
+                        _pro.StartInfo.UseShellExecute = true;
+                        _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
+                    }
+                    System.Windows.Forms.Application.Exit();
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                 }
-                if (Configuration.CurrentPlatform == Core.Platform.MacOSx86)
-                {
-                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
-                }
-                if (Configuration.CurrentPlatform == Core.Platform.Linuxx86 || Configuration.CurrentPlatform == Core.Platform.Linuxx64)
-                {
-                    _pro.StartInfo.UseShellExecute = true;
-                    _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
-                }
-                System.Windows.Forms.Application.Exit();
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
     }

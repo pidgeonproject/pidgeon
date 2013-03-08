@@ -36,6 +36,7 @@ namespace Client
         {
             try
             {
+                messages.Localize(this);
                 label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
                 label6.Text = messages.get("nconnection-p", Core.SelectedLanguage);
                 label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);

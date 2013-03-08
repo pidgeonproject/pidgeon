@@ -82,8 +82,8 @@ namespace Client
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             this.richTextBox1.Click += new System.EventHandler(this.richTextBox1_TextChanged);
-            this.richTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.richTextBox1_TextChanged);
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.richTextBox1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.richTextBox1_TextChanged);
             // 
             // panel1
             // 
@@ -98,7 +98,7 @@ namespace Client
             this.panel1.TabIndex = 1;
             // 
             // maskedTextBox1
-            //
+            // 
             this.maskedTextBox1.Location = new System.Drawing.Point(408, 4);
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(85, 20);
@@ -108,12 +108,12 @@ namespace Client
             // 
             // maskedTextBox2
             // 
-            this.maskedTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.maskedTextBoxEnter);
             this.maskedTextBox2.Location = new System.Drawing.Point(317, 4);
             this.maskedTextBox2.Name = "maskedTextBox2";
             this.maskedTextBox2.Size = new System.Drawing.Size(85, 20);
             this.maskedTextBox2.TabIndex = 5;
             this.maskedTextBox2.TextChanged += new System.EventHandler(this.maskedTextBox2_MaskInputRejected);
+            this.maskedTextBox2.KeyDown += new System.Windows.Forms.KeyEventHandler(this.maskedTextBoxEnter);
             // 
             // button2
             // 
@@ -142,6 +142,7 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(682, 425);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Name = "SettingsEd";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SettingsEd";
             this.Load += new System.EventHandler(this.SettingsEd_Load);
