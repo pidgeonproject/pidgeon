@@ -49,6 +49,7 @@ namespace Client
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Help));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.about = new System.Windows.Forms.Panel();
+            this.Info = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label2 = new System.Windows.Forms.Label();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
@@ -56,9 +57,9 @@ namespace Client
             this.licensetext = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.Info = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -91,12 +92,20 @@ namespace Client
             this.about.Size = new System.Drawing.Size(613, 469);
             this.about.TabIndex = 0;
             // 
+            // Info
+            // 
+            this.Info.Location = new System.Drawing.Point(19, 130);
+            this.Info.Name = "Info";
+            this.Info.Size = new System.Drawing.Size(556, 142);
+            this.Info.TabIndex = 6;
+            this.Info.Text = resources.GetString("Info.Text");
+            // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(483, 11);
+            this.pictureBox1.Image = global::Client.Properties.Resources.Pigeon_clip_art_hight;
+            this.pictureBox1.Location = new System.Drawing.Point(453, 11);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(121, 116);
+            this.pictureBox1.Size = new System.Drawing.Size(151, 116);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -154,14 +163,6 @@ namespace Client
             this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // Info
-            // 
-            this.Info.Location = new System.Drawing.Point(19, 130);
-            this.Info.Name = "Info";
-            this.Info.Size = new System.Drawing.Size(556, 142);
-            this.Info.TabIndex = 6;
-            this.Info.Text = resources.GetString("Info.Text");
-            // 
             // Help
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -177,6 +178,7 @@ namespace Client
             this.tableLayoutPanel1.ResumeLayout(false);
             this.about.ResumeLayout(false);
             this.about.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

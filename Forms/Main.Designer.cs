@@ -47,6 +47,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripCurrent = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusNetwork = new System.Windows.Forms.ToolStripStatusLabel();
@@ -374,6 +375,7 @@ namespace Client
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Main";
             this.Text = "Pidgeon Client v 1.0";

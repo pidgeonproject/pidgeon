@@ -47,7 +47,7 @@ namespace Client
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.listView1 = new ListViewDB();
+            this.listView1 = new Client.ListViewDB();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -56,7 +56,6 @@ namespace Client
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshAutoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.joinToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(Channels_Close);
             this.knockToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timerl = new System.Windows.Forms.Timer(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
@@ -158,7 +157,9 @@ namespace Client
             this.Controls.Add(this.listView1);
             this.DoubleBuffered = true;
             this.Name = "Channels";
+            this.ShowIcon = false;
             this.Text = "Channels";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Channels_Close);
             this.Load += new System.EventHandler(this.Channels_Load);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);

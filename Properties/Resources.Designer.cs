@@ -213,6 +213,13 @@ namespace Client.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Pigeon_clip_art_hight {
+            get {
+                object obj = ResourceManager.GetObject("Pigeon_clip_art_hight", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to This command will connect you to a server
         ///

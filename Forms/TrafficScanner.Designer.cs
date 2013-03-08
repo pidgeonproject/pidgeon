@@ -106,6 +106,7 @@ namespace Client
             this.Controls.Add(this.textBox1);
             this.DoubleBuffered = true;
             this.Name = "TrafficScanner";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TrafficScanner";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Stop);
