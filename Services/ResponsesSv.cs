@@ -320,9 +320,6 @@ namespace Client
                                     {
                                         request.Parameters.Add("last", protocol.buffer.LastMQID[mq[id]].ToString());
                                         protocol.Deliver(request);
-                                        protocol.ProcessBuffer(i);
-                                        id++;
-                                        continue;
                                     }
                                 }
                             }
@@ -394,6 +391,10 @@ namespace Client
                                         response2.Parameters.Add("channel", channel);
                                         protocol.Deliver(response2);
                                     }
+                                }
+                                if (Configuration.Services.UsingCache)
+                                {
+                                    protocol.ProcessBuffer(curr.Attributes[0].Value);
                                 }
                                 System.Threading.Thread.Sleep(800);
                             }

@@ -305,7 +305,7 @@ namespace Client
             /// <summary>
             /// Services can store cached traffic to local temp
             /// </summary>
-            public static bool UsingCache = true;
+            public static bool UsingCache = false;
         }
 
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();

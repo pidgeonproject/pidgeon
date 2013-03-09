@@ -820,6 +820,8 @@ namespace Client
                 makenode("default.reason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
                 makenode("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
                 makenode("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
+                makenode("services.usingcache", Configuration.Services.UsingCache.ToString(), curr, confname, config, xmlnode);
+
 
                 foreach (KeyValuePair<string, string> data in Configuration.Extensions)
                 {
@@ -1249,6 +1251,9 @@ namespace Client
                                         break;
                                     case "debugger":
                                         Configuration.Kernel.Debugging = bool.Parse(curr.InnerText);
+                                        break;
+                                    case "services.usingcache":
+                                        Configuration.Services.UsingCache = bool.Parse(curr.InnerText);
                                         break;
                                 }
                             }

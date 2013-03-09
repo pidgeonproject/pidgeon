@@ -26,6 +26,7 @@ namespace Client
 {
     public partial class ProtocolSv
     {
+        public List<string> ProcessedData = new List<string>();
         public void ProcessBuffer(string network)
         {
             int id = 0;
@@ -34,46 +35,53 @@ namespace Client
             {
                 return;
             }
-            
+
+            if (ProcessedData.Contains(NetworkID))
+            {
+                return;
+            }
+
+            ProcessedData.Add(NetworkID);
+            int LastMQID =buffer.LastMQID[NetworkID];
+            string last = LastMQID.ToString();
             Core._Main.progress = id;
             Core._Main.DisplayingProgress = true;
             SuppressChanges = true;
             Core._Main.ProgressMax = buffer.LastMQID[NetworkID];
+            Network server = null;
+            server = retrieveNetwork(network);
+            if (server == null)
+            {
+                throw new Exception("ERROR #2: There is no network object " + network);
+            }
             lock (buffer.data[NetworkID])
             {
+                string blah = null;
                 foreach (Datagram line in buffer.data[NetworkID])
                 {
-                    try
+                    id++;
+                    Core._Main.progress = id;
+                    Core._Main.Status("Retrieving local cache from " + network + ", got " + id + " packets from total of " + last + " datagrams");
+                    if (id >= LastMQID)
                     {
-                        id++;
-                        Core._Main.progress = id;
-                        Core._Main.Status("Retrieving local cache from " + network + ", got " + id + " packets from total of " + buffer.LastMQID[NetworkID].ToString() + " datagrams");
-                        if (id >= buffer.LastMQID[NetworkID])
-                        {
-                            Core._Main.Status("");
-                            Core._Main.DisplayingProgress = false;
-                            Core._Main.progress = 0;
-                            SuppressChanges = false;
-                        }
-                        Network server = null;
-                        server = retrieveNetwork(network);
-                        long date = 0;
-                        if (!long.TryParse(line.Parameters["time"], out date))
-                        {
-                            Core.DebugLog("Warning: " + line.Parameters["time"] + " is not a correct time");
-                        }
-                        if (server == null)
-                        {
-                            throw new Exception("ERROR #2: There is no network object " + network);
-                        }
-                        ProcessorIRC processor = new ProcessorIRC(server, line._InnerText, ref pong, date, false);
-                        processor.Result();
+                        Core._Main.Status("");
+                        Core._Main.DisplayingProgress = false;
+                        Core._Main.progress = 0;
+                        SuppressChanges = false;
                     }
-                    catch (Exception fail)
+                    long date = 0;
+                    if (!long.TryParse(line.Parameters["time"], out date))
                     {
-                        Core.handleException(fail);
-                        id++;
+                        Core.DebugLog("Warning: " + line.Parameters["time"] + " is not a correct time");
                     }
+                    if (line._InnerText == blah)
+                    {
+                         Core.DebugLog("");
+                    }
+
+                    ProcessorIRC processor = new ProcessorIRC(server, line._InnerText, ref pong, date, false);
+                    processor.Result();
+                    blah = line._InnerText;
                 }
             }
         }

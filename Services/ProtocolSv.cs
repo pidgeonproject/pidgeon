@@ -51,6 +51,9 @@ namespace Client
 
             public void Load()
             { 
+                Networks = new Dictionary<string, string>();
+                data = new Dictionary<string,List<Datagram>>();
+                LastMQID = new Dictionary<string, int>();
                 if (!System.IO.Directory.Exists(Root))
                 {
                     System.IO.Directory.CreateDirectory(Root);
