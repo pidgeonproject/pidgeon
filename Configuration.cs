@@ -38,7 +38,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx64;
         /// <summary>
         /// Version
         /// </summary>
@@ -302,6 +302,10 @@ namespace Client
             public static int Depth = 20000;
 
             public static bool Retrieve_Sv = true;
+            /// <summary>
+            /// Services can store cached traffic to local temp
+            /// </summary>
+            public static bool UsingCache = true;
         }
 
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();

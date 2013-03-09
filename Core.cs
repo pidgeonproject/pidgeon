@@ -52,6 +52,10 @@ namespace Client
         /// </summary>
         public static string ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar + "configuration.dat";
         /// <summary>
+        /// Root dir
+        /// </summary>
+        public static string Root = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar;
+        /// <summary>
         /// Language used in system
         /// </summary>
         public static string SelectedLanguage = "en";
@@ -151,7 +155,6 @@ namespace Client
         /// Extensions loaded in core
         /// </summary>
         public static List<Extension> Extensions = new List<Extension>();
-
         /// <summary>
         /// Parameters that were retrieved in console
         /// </summary>
@@ -165,6 +168,16 @@ namespace Client
                     data.AddRange(startup_params);
                 }
                 return data;
+            }
+        }
+        /// <summary>
+        /// Location of temporary stuff
+        /// </summary>
+        public static string PermanentTemp
+        {
+            get
+            {
+                return Root + "Temp" + System.IO.Path.DirectorySeparatorChar;
             }
         }
 
@@ -316,6 +329,10 @@ namespace Client
                     LoadSkin();
                     DebugLog("Loading configuration file");
                     ConfigurationLoad();
+                    if (!Directory.Exists(PermanentTemp))
+                    {
+                        Directory.CreateDirectory(PermanentTemp);
+                    }
                     DebugLog("Running updater");
                     ThUp = new Thread(Updater.Run);
                     ThUp.Name = "pidgeon service";

@@ -130,35 +130,46 @@ namespace Client
                     }
                 }
                 string name = curr.Attributes[0].Value;
-                Network server4 = null;
-                server4 = protocol.retrieveNetwork(name);
-                if (server4 == null)
+                Network server = null;
+                server = protocol.retrieveNetwork(name);
+                if (server == null)
                 {
-                    server4 = new Network(name, protocol);
-                    protocol.NetworkList.Add(server4);
+                    server = new Network(name, protocol);
+                    protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
-                    server4.Nickname = protocol.nick;
-                    server4.Connected = true;
+                    server.Nickname = protocol.nick;
+                    server.Connected = true;
                 }
                 if (backlog)
                 {
+                    if (Configuration.Services.UsingCache)
+                    {
+                        if (protocol.buffer.Networks.ContainsKey(name))
+                        {
+                            protocol.buffer.Insert(name, Datagram.LoadXML(curr));
+                        }
+                    }
                     if (Core._Main.DisplayingProgress == false)
                     {
                         Core._Main.progress = int.Parse(id);
                         Core._Main.DisplayingProgress = true;
                         protocol.SuppressChanges = true;
-                        Core._Main.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server4)].size;
+                        Core._Main.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
                     Core._Main.progress = int.Parse(id);
-                    Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server4)].size.ToString() + " datagrams");
-                    if ((protocol.cache[protocol.NetworkList.IndexOf(server4)].size - 2) < int.Parse(id))
+                    Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < int.Parse(id))
                     {
                         Core._Main.Status("");
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
+                        if (Configuration.Services.UsingCache)
+                        {
+                            protocol.buffer.Save();
+                        }
                         protocol.SuppressChanges = false;
-                        foreach (Channel i in server4.Channels)
+                        foreach (Channel i in server.Channels)
                         {
                             i.temporary_hide = false;
                             i.parsing_xe = false;
@@ -166,11 +177,11 @@ namespace Client
                             i.parsing_who = false;
                         }
                     }
-                    ProcessorIRC processor = new ProcessorIRC(server4, curr.InnerText, ref protocol.pong, date, false);
+                    ProcessorIRC processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
                     processor.Result();
                     return;
                 }
-                ProcessorIRC processor2 = new ProcessorIRC(server4, curr.InnerText, ref protocol.pong, date);
+                ProcessorIRC processor2 = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
                 processor2.Result();
             }
             
@@ -265,6 +276,22 @@ namespace Client
                 if (curr.InnerText != "")
                 {
                     string[] _networks = curr.InnerText.Split('|');
+                    string[] mq = null;
+                    if (Configuration.Services.UsingCache)
+                    {
+                        if (curr.Attributes.Count > 0)
+                        {
+                            mq = curr.Attributes[0].Value.Split('|');
+                            if (_networks.Length != mq.Length)
+                            {
+                                Core.DebugLog("Invalid buffer " + curr.Attributes[0].Value);
+                                mq = null;
+                            }
+                        }
+                        protocol.buffer = new Buffer(protocol);
+                        protocol.buffer.Load();
+                    }
+                    int id = 0;
                     foreach (string i in _networks)
                     {
                         if (i != "")
@@ -281,8 +308,27 @@ namespace Client
                             Datagram request = new Datagram("BACKLOGSV");
                             request.Parameters.Add("network", i);
                             request.Parameters.Add("size", Configuration.Services.Depth.ToString());
+                            if (Configuration.Services.UsingCache && mq != null)
+                            {
+                                if (!protocol.buffer.Networks.ContainsValue(mq[id]))
+                                {
+                                    protocol.buffer.Make(i, mq[id]);
+                                }
+                                if (protocol.buffer.Loaded)
+                                {
+                                    if (protocol.buffer.LastMQID.ContainsKey(mq[id]))
+                                    {
+                                        request.Parameters.Add("last", protocol.buffer.LastMQID[mq[id]].ToString());
+                                        protocol.Deliver(request);
+                                        protocol.ProcessBuffer(i);
+                                        id++;
+                                        continue;
+                                    }
+                                }
+                            }
                             protocol.Deliver(request);
                         }
+                        id++;
                     }
                 }
             }

@@ -39,8 +39,116 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
+        public Buffer buffer = null;
 
+        public class Buffer
+        {
+            public Dictionary<string, string> Networks = new Dictionary<string, string>();
+            public Dictionary<string, List<Datagram>> data = null;
+            public Dictionary<string, int> LastMQID = new Dictionary<string, int>();
+            public bool Loaded;
+            private string Root = null;
 
+            public void Load()
+            { 
+                if (!System.IO.Directory.Exists(Root))
+                {
+                    System.IO.Directory.CreateDirectory(Root);
+                }
+                if (System.IO.File.Exists(Root + "data"))
+                {
+                    List<string> networks = new List<string>();
+                    networks.AddRange(System.IO.File.ReadAllLines(Root + "data"));
+                    foreach (string curr in networks)
+                    {
+                        if (curr == "")
+                        {
+                            continue;
+                        }
+                        if (System.IO.File.Exists(Root + curr))
+                        {
+                            lock (data)
+                            {
+                                Networks.Add(curr.Substring(curr.IndexOf("~") + 1), curr);
+                                data.Add(curr, new List<Datagram>());
+                                int id = 0;
+                                foreach (string line in System.IO.File.ReadAllLines(Root + curr))
+                                {
+                                    if (line != "")
+                                    {
+                                        Datagram datagram = Datagram.LoadXML(line);
+                                        id = int.Parse(datagram.Parameters["MQID"]);
+                                        data[curr].Add(datagram);
+                                    }
+                                }
+                                LastMQID.Add(curr, id);
+                            }
+                        }
+                    }
+                    Loaded = true;
+                }
+            }
+
+            public void Save()
+            {
+                if (System.IO.File.Exists(Root + "data"))
+                {
+                    System.IO.File.Delete(Root + "data");
+                }
+                foreach (KeyValuePair<string, List<Datagram>> network in data)
+                {
+                    if (System.IO.File.Exists(Root + network.Key))
+                    {
+                        System.IO.File.Delete(Root + network.Key);
+                    }
+                    System.IO.File.AppendAllText(Root + "data", network.Key + Environment.NewLine);
+                    StringBuilder text = new StringBuilder("");
+                    foreach (Datagram xx in network.Value)
+                    {
+                        text.Append(xx.ToDocumentXmlText() + Environment.NewLine);
+                    }
+                    string file = text.ToString();
+                    text.Clear();
+                    System.IO.File.WriteAllText(Root + network.Key, file);
+                }
+            }
+
+            public void Make(string network, string network_id)
+            {
+                if (!Networks.ContainsKey(network))
+                {
+                    Networks.Add(network, network_id);
+                    data.Add(network_id, new List<Datagram>());
+                    LastMQID.Add(network_id, -1);
+                }
+            }
+
+            public void Insert(string server, Datagram datagram)
+            {
+                if (!Networks.ContainsKey(server))
+                {
+                    throw new Exception("There is no such network in storage");
+                }
+                string Server = Networks[server];
+                lock (data)
+                {
+                    if (data.ContainsKey(Server))
+                    {
+                        LastMQID[Server] = int.Parse(datagram.Parameters["MQID"]);
+                        data[Server].Add(datagram);
+                        return;
+                    }
+                    throw new Exception("There is no such network in storage");
+                }
+            }
+
+            public Buffer(ProtocolSv parent)
+            {
+                Root = Core.PermanentTemp + "cache_" + parent.Server + System.IO.Path.DirectorySeparatorChar;
+                data = new Dictionary<string, List<Datagram>>();
+                Loaded = false;
+            }
+        }
 
         public string nick = "";
         public bool auth = false;
@@ -48,39 +156,6 @@ namespace Client
         {
             public int size = 0;
             public int current = 0;
-        }
-
-        public class Datagram
-        {
-            /// <summary>
-            /// Constructor
-            /// </summary>
-            /// <param name="Name">Name of a datagram</param>
-            /// <param name="Text">Value</param>
-            public Datagram(string Name, string Text = "")
-            {
-                _Datagram = Name;
-                _InnerText = Text;
-            }
-
-            public string ToDocumentXmlText()
-            {
-                XmlDocument datagram = new XmlDocument();
-                XmlNode b1 = datagram.CreateElement(_Datagram.ToUpper());
-                foreach (KeyValuePair<string, string> curr in Parameters)
-                {
-                    XmlAttribute b2 = datagram.CreateAttribute(curr.Key);
-                    b2.Value = curr.Value;
-                    b1.Attributes.Append(b2);
-                }
-                b1.InnerText = this._InnerText;
-                datagram.AppendChild(b1);
-                return datagram.InnerXml;
-            }
-
-            public string _InnerText;
-            public string _Datagram;
-            public Dictionary<string, string> Parameters = new Dictionary<string, string>();
         }
 
         public enum Status

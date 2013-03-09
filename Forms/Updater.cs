@@ -65,7 +65,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.DebugLog("Failed to download " + fail.ToString());
             }
             return false;
         }
