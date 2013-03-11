@@ -39,7 +39,8 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
-        public Buffer buffer = null;
+        public ProtocolSv.Buffer buffer = null;
+        public Services.Buffer sBuffer = null;
 
         public class Buffer
         {

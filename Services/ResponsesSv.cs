@@ -65,7 +65,6 @@ namespace Client
                     }
                 }
 
-
                 if (message_window != null)
                 {
                     message_window.scrollback.InsertTextAndIgnoreUpdate(mn._Protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, true, message_time, true);
@@ -259,7 +258,6 @@ namespace Client
                     case "OFFLINE":
                         connected = false;
                         break;
-
                 }
                 foreach (Network s2 in protocol.NetworkList)
                 {
