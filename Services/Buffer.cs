@@ -44,13 +44,74 @@ namespace Client.Services
             public Window(Client.Window owner)
             {
                 Name = owner.name;
-<<<<<<< HEAD
                 isChannel = owner.isChannel;
-=======
->>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                 lines = new List<Scrollback.ContentLine>();
                 lines.AddRange(owner.scrollback.Data);
             }
+        }
+
+        public class ChannelInfo
+        {
+            /// <summary>
+            /// Name of a channel including the special prefix
+            /// </summary>
+            public string Name;
+            /// <summary>
+            /// Topic
+            /// </summary>
+            public string Topic = null;
+            /// <summary>
+            /// Whether channel is in proccess of dispose
+            /// </summary>
+            public bool dispose = false;
+            /// <summary>
+            /// User who set a topic
+            /// </summary>
+            public string TopicUser = "<Unknown user>";
+            /// <summary>
+            /// Date when a topic was set
+            /// </summary>
+            public int TopicDate = 0;
+            /// <summary>
+            /// Invites
+            /// </summary>
+            public List<Invite> Invites = null;
+            /// <summary>
+            /// List of bans set
+            /// </summary>
+            public List<SimpleBan> Bans = null;
+            /// <summary>
+            /// Exception list 
+            /// </summary>
+            public List<Except> Exceptions = null;
+            /// <summary>
+            /// If channel output is temporarily hidden
+            /// </summary>
+            public bool temporary_hide = false;
+            /// <summary>
+            /// If true the channel is processing the /who data
+            /// </summary>
+            public bool parsing_who = false;
+            /// <summary>
+            /// If true the channel is processing ban data
+            /// </summary>
+            public bool parsing_bans = false;
+            /// <summary>
+            /// If true the channel is processing exception data
+            /// </summary>
+            public bool parsing_xe = false;
+            /// <summary>
+            /// If true the channel is processing whois data
+            /// </summary>
+            public bool parsing_wh = false;
+            /// <summary>
+            /// Whether window needs to be redraw
+            /// </summary>
+            public bool Redraw = false;
+            /// <summary>
+            /// If true the window is considered usable
+            /// </summary>
+            public bool ChannelWork = false;
         }
 
         [Serializable]
@@ -61,7 +122,6 @@ namespace Client.Services
             public string NetworkID = null;
             public string Server = null;
             public int lastMQID = 0;
-<<<<<<< HEAD
             /// <summary>
             /// User modes
             /// </summary>
@@ -93,19 +153,10 @@ namespace Client.Services
             /// <summary>
             /// Descriptions for channel and user modes
             /// </summary>
-            public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+            //public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
 
-
-=======
-            public int LastMQID
-            {
-                get
-                {
-                    return lastMQID;
-                }
-            }
->>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
-            public List<Buffer.Window> windows = new List<Window>();
+            public List<Buffer.Window> _windows = new List<Window>();
+            public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
 
             public NetworkInfo()
             { 
@@ -114,9 +165,9 @@ namespace Client.Services
 
             public Buffer.Window getW(string window)
             {
-                lock (windows)
+                lock (_windows)
                 {
-                    foreach (Buffer.Window xx in windows)
+                    foreach (Buffer.Window xx in _windows)
                     {
                         if (xx.Name == window)
                         {
@@ -137,6 +188,21 @@ namespace Client.Services
                 }
                 target.scrollback.SetText(Source.lines);
                 target.isChannel = Source.isChannel;
+            }
+
+            public ChannelInfo getChannel(string name)
+            {
+                lock (_channels)
+                {
+                    foreach (ChannelInfo ch in _channels)
+                    {
+                        if (ch.Name == name)
+                        {
+                            return ch;
+                        }
+                    }
+                }
+                return null;
             }
 
             public NetworkInfo(string nick)
@@ -270,18 +336,16 @@ namespace Client.Services
                     string uid = protocol.sBuffer.getUID(network.server);
                     if (networkInfo.ContainsKey(uid))
                     {
-                        networkInfo[uid].windows.Clear();
-                        networkInfo[uid].windows.Add(new Buffer.Window(network.system));
-<<<<<<< HEAD
+                        networkInfo[uid]._windows.Clear();
+                        networkInfo[uid]._channels.Clear();
+                        networkInfo[uid]._windows.Add(new Buffer.Window(network.system));
                         networkInfo[uid].CModes = network.CModes;
                         networkInfo[uid].CUModes = network.CUModes;
                         networkInfo[uid].PModes = network.PModes;
                         networkInfo[uid].SModes = network.SModes;
-                        networkInfo[uid].Descriptions = network.Descriptions;
+                        //networkInfo[uid].Descriptions = network.Descriptions;
                         networkInfo[uid].XModes = network.XModes;
                         networkInfo[uid].UChars = network.UChars;
-=======
->>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                         lock (network.Channels)
                         {
                             foreach (Channel xx in network.Channels)
@@ -289,8 +353,24 @@ namespace Client.Services
                                 Client.Window window = xx.retrieveWindow();
                                 if (window != null)
                                 {
-                                    networkInfo[uid].windows.Add(new Buffer.Window(window));
+                                    networkInfo[uid]._windows.Add(new Buffer.Window(window));
                                 }
+                                ChannelInfo info = new ChannelInfo();
+                                info.Bans = xx.Bans;
+                                info.dispose = xx.dispose;
+                                info.Exceptions = xx.Exceptions;
+                                info.Invites = xx.Invites;
+                                info.Name = xx.Name;
+                                info.parsing_bans = xx.parsing_bans;
+                                info.parsing_wh = xx.parsing_wh;
+                                info.parsing_who = xx.parsing_who;
+                                info.parsing_xe = xx.parsing_xe;
+                                info.Redraw = xx.Redraw;
+                                info.temporary_hide = xx.temporary_hide;
+                                info.Topic = xx.Topic;
+                                info.TopicDate = xx.TopicDate;
+                                info.TopicUser = xx.TopicUser;
+                                networkInfo[uid]._channels.Add(info);
                             }
 
                             //foreach (User user in network.PrivateChat)
@@ -323,11 +403,7 @@ namespace Client.Services
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
-<<<<<<< HEAD
                         Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Scrollback.MessageStyle.System, false);
-=======
-                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.LastMQID.ToString(), Scrollback.MessageStyle.System, false);
->>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                     }
                 }
             }

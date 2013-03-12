@@ -29,6 +29,11 @@ namespace Client
     }
     public class Invite : ChannelParameterMode
     {
+        public Invite()
+        {
+        
+        }
+
         public Invite(string user, string target, string time)
         {
 
@@ -43,6 +48,11 @@ namespace Client
     }
     public class SimpleBan : ChannelParameterMode
     {
+        public SimpleBan()
+        {
+        
+        }
+
         public SimpleBan(string user, string target, string time)
         {
             Target = target;

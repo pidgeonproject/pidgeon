@@ -337,7 +337,7 @@ namespace Client
                                 else
                                 {
                                     protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.system, nw.system.name);
-                                    nw.Descriptions = protocol.sBuffer.networkInfo[mq[id]].Descriptions;
+                                    //nw.Descriptions = protocol.sBuffer.networkInfo[mq[id]].Descriptions;
                                     nw.CModes = protocol.sBuffer.networkInfo[mq[id]].CModes;
                                     nw.CUModes = protocol.sBuffer.networkInfo[mq[id]].CUModes;
                                     nw.Nickname = protocol.sBuffer.networkInfo[mq[id]].Nick;
@@ -416,6 +416,25 @@ namespace Client
                                                     if (xx != null)
                                                     {
                                                         protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.name);
+                                                    }
+                                                    Services.Buffer.ChannelInfo channel_info = protocol.sBuffer.networkInfo[ID].getChannel(channel);
+                                                    if (channel_info != null)
+                                                    {
+                                                        xx.Bans = channel_info.Bans;
+                                                        xx.Exceptions = channel_info.Exceptions;
+                                                        xx.ChannelWork = channel_info.ChannelWork;
+                                                        xx.Invites = channel_info.Invites;
+                                                        xx.Name = channel_info.Name;
+                                                        xx.parsing_bans = channel_info.parsing_bans;
+                                                        xx.parsing_wh = channel_info.parsing_wh;
+                                                        xx.parsing_who = channel_info.parsing_who;
+                                                        xx.parsing_xe = channel_info.parsing_xe;
+                                                        xx.Redraw = channel_info.Redraw;
+                                                        xx.temporary_hide = channel_info.temporary_hide;
+                                                        xx.Topic = channel_info.Topic;
+                                                        xx.TopicDate = channel_info.TopicDate;
+                                                        xx.TopicUser = channel_info.TopicUser;
+
                                                     }
                                                 }
                                             }
