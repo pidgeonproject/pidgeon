@@ -85,6 +85,10 @@ namespace Client
             /// Default kick
             /// </summary>
             public static string DefaultReason = "Removed from the channel";
+            /// <summary>
+            /// Time of message queue
+            /// </summary>
+            public static int mq = 1200;
         }
 
         /// <summary>
@@ -212,11 +216,6 @@ namespace Client
             public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
             public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
         }
-
-        /// <summary>
-        /// Time of message queue
-        /// </summary>
-        public static int mq = 1200;
 
         /// <summary>
         /// Reload time for scrollback - this is deprecated

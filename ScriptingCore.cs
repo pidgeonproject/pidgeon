@@ -661,7 +661,7 @@ namespace Client
             interp.registerObject(Configuration.UserData.LastHost, "configuration_lasthost");
             interp.registerObject(Configuration.UserData.LastNick, "configuration_lastnick");
             interp.registerObject(Configuration.LastPort, "configuration_lastport");
-            interp.registerObject(Configuration.mq, "configuration_mq");
+            interp.registerObject(Configuration.irc.mq, "configuration_mq");
             interp.registerObject(Configuration.UserData.nick, "configuration_nick");
             interp.registerObject(Configuration.Kernel.Notice, "configuration_notice");
             interp.registerObject(Configuration.UserData.quit, "configuration_quit");

@@ -133,6 +133,11 @@ namespace Client
         /// </summary>
         public bool DownloadingList = false;
         private Channels wChannelList = null;
+        /// <summary>
+        /// Channel windows
+        /// </summary>
+        public Dictionary<Channel, Window> ChannelW = new Dictionary<Channel, Window>();
+        public Dictionary<User, Window> PMW = new Dictionary<User, Window>();
 
         public void DisplayChannelWindow()
         {

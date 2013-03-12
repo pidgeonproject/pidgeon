@@ -51,6 +51,22 @@ namespace Client
         private bool ReloadWaiting = false;
         private bool Changed = false;
         private string LogfilePath = null;
+        public List<ContentLine> Data
+        {
+            get
+            {
+                List<ContentLine> data = new List<ContentLine>();
+                lock (ContentLines)
+                {
+                    data.AddRange(ContentLines);
+                }
+                lock (UndrawnLines)
+                {
+                    data.AddRange(UndrawnLines);
+                }
+                return data;
+            }
+        }
 
         public enum MessageStyle
         {
@@ -72,8 +88,18 @@ namespace Client
             }
         }
 
+        [Serializable]
         public class ContentLine : IComparable
         {
+            public DateTime time;
+            public string text;
+            public bool notice = false;
+            public MessageStyle style;
+            public ContentLine()
+            { 
+
+            }
+            
             public ContentLine(MessageStyle _style, string Text, DateTime when, bool _notice)
             {
                 style = _style;
@@ -89,10 +115,6 @@ namespace Client
                 }
                 return 0;
             }
-            public DateTime time;
-            public string text;
-            public bool notice = false;
-            public MessageStyle style;
         }
 
         protected override void Dispose(bool disposing)

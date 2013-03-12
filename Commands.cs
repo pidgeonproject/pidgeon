@@ -201,6 +201,7 @@ namespace Client
                 commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
                 RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
+                commands.Add("pidgeon.services.flush", new Command(Type.System, Generic.services_flush));
             }
             catch (Exception fail)
             {
@@ -288,6 +289,19 @@ namespace Client
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+            }
+
+            public static void services_flush(string parameter)
+            {
+                if (Core.network == null)
+                {
+                    return;
+                }
+                if (Core.network._Protocol.GetType() == typeof(ProtocolSv))
+                {
+                    ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
+                    protocol.sBuffer.Snapshot();
+                }
             }
 
             public static void module(string parameter)

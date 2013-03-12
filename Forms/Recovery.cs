@@ -44,6 +44,11 @@ namespace Client
             try
             {
                 string ring = "";
+                string inner = "";
+                if (Core.recovery_exception.InnerException != null)
+                {
+                    inner = Core.recovery_exception.InnerException.ToString() + "\n\n";
+                }
                 foreach (string line in Core.RingBuffer)
                 {
                     ring += line + "\n";
@@ -54,6 +59,7 @@ namespace Client
                                         + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
                                         + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
                                         + Core.recovery_exception.Message + "\n\n"
+                                        + inner
                                         + ring + "\n\n"
                                         + Core.recovery_exception.Source + "\n\n").Split('\n');
                     bContinue.Enabled = false;

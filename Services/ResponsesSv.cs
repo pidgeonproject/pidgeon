@@ -143,10 +143,10 @@ namespace Client
                 {
                     if (Configuration.Services.UsingCache)
                     {
-                        if (protocol.buffer.Networks.ContainsKey(name))
-                        {
-                            protocol.buffer.Insert(name, Datagram.LoadXML(curr));
-                        }
+                        //if (protocol.buffer.Networks.ContainsKey(name))
+                        //{
+                        //    protocol.buffer.Insert(name, Datagram.LoadXML(curr));
+                        //}
                     }
                     if (Core._Main.DisplayingProgress == false)
                     {
@@ -163,10 +163,6 @@ namespace Client
                         Core._Main.Status("");
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
-                        if (Configuration.Services.UsingCache)
-                        {
-                            protocol.buffer.Save();
-                        }
                         protocol.SuppressChanges = false;
                         foreach (Channel i in server.Channels)
                         {
@@ -287,7 +283,6 @@ namespace Client
                             }
                         }
                         protocol.buffer = new Buffer(protocol);
-                        protocol.buffer.Load();
                     }
                     int id = 0;
                     foreach (string i in _networks)

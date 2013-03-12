@@ -312,6 +312,7 @@ namespace Client
                 }
                 if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
                 {
+                    Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
                     ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
                 }
                 string is64 = " which is a 32 bit system";
@@ -821,6 +822,7 @@ namespace Client
                 makenode("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
                 makenode("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
                 makenode("services.usingcache", Configuration.Services.UsingCache.ToString(), curr, confname, config, xmlnode);
+                makenode("message_mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
 
 
                 foreach (KeyValuePair<string, string> data in Configuration.Extensions)

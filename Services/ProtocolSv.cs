@@ -42,6 +42,9 @@ namespace Client
         public ProtocolSv.Buffer buffer = null;
         public Services.Buffer sBuffer = null;
 
+        public string nick = "";
+        public bool auth = false;
+
         public class Buffer
         {
             public Dictionary<string, string> Networks = new Dictionary<string, string>();
@@ -50,71 +53,9 @@ namespace Client
             public bool Loaded;
             private string Root = null;
 
-            public void Load()
-            { 
-                Networks = new Dictionary<string, string>();
-                data = new Dictionary<string,List<Datagram>>();
-                LastMQID = new Dictionary<string, int>();
-                if (!System.IO.Directory.Exists(Root))
-                {
-                    System.IO.Directory.CreateDirectory(Root);
-                }
-                if (System.IO.File.Exists(Root + "data"))
-                {
-                    List<string> networks = new List<string>();
-                    networks.AddRange(System.IO.File.ReadAllLines(Root + "data"));
-                    foreach (string curr in networks)
-                    {
-                        if (curr == "")
-                        {
-                            continue;
-                        }
-                        if (System.IO.File.Exists(Root + curr))
-                        {
-                            lock (data)
-                            {
-                                Networks.Add(curr.Substring(curr.IndexOf("~") + 1), curr);
-                                data.Add(curr, new List<Datagram>());
-                                int id = 0;
-                                foreach (string line in System.IO.File.ReadAllLines(Root + curr))
-                                {
-                                    if (line != "")
-                                    {
-                                        Datagram datagram = Datagram.LoadXML(line);
-                                        id = int.Parse(datagram.Parameters["MQID"]);
-                                        data[curr].Add(datagram);
-                                    }
-                                }
-                                LastMQID.Add(curr, id);
-                            }
-                        }
-                    }
-                    Loaded = true;
-                }
-            }
-
-            public void Save()
+            public string getUID(string server)
             {
-                if (System.IO.File.Exists(Root + "data"))
-                {
-                    System.IO.File.Delete(Root + "data");
-                }
-                foreach (KeyValuePair<string, List<Datagram>> network in data)
-                {
-                    if (System.IO.File.Exists(Root + network.Key))
-                    {
-                        System.IO.File.Delete(Root + network.Key);
-                    }
-                    System.IO.File.AppendAllText(Root + "data", network.Key + Environment.NewLine);
-                    StringBuilder text = new StringBuilder("");
-                    foreach (Datagram xx in network.Value)
-                    {
-                        text.Append(xx.ToDocumentXmlText() + Environment.NewLine);
-                    }
-                    string file = text.ToString();
-                    text.Clear();
-                    System.IO.File.WriteAllText(Root + network.Key, file);
-                }
+                return Networks[server];
             }
 
             public void Make(string network, string network_id)
@@ -127,25 +68,6 @@ namespace Client
                 }
             }
 
-            public void Insert(string server, Datagram datagram)
-            {
-                if (!Networks.ContainsKey(server))
-                {
-                    throw new Exception("There is no such network in storage");
-                }
-                string Server = Networks[server];
-                lock (data)
-                {
-                    if (data.ContainsKey(Server))
-                    {
-                        LastMQID[Server] = int.Parse(datagram.Parameters["MQID"]);
-                        data[Server].Add(datagram);
-                        return;
-                    }
-                    throw new Exception("There is no such network in storage");
-                }
-            }
-
             public Buffer(ProtocolSv parent)
             {
                 Root = Core.PermanentTemp + "cache_" + parent.Server + System.IO.Path.DirectorySeparatorChar;
@@ -154,8 +76,6 @@ namespace Client
             }
         }
 
-        public string nick = "";
-        public bool auth = false;
         public class Cache
         {
             public int size = 0;
@@ -212,6 +132,7 @@ namespace Client
                 Scrollback.MessageStyle.System);
             try
             {
+                sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
                 _writer = new System.IO.StreamWriter(_networkStream);
@@ -393,6 +314,10 @@ namespace Client
         public override void Exit()
         {
             Connected = false;
+            if (Configuration.Services.UsingCache)
+            {
+                sBuffer.Snapshot();
+            }
             lock (NetworkList)
             {
                 foreach (Network network in NetworkList)
