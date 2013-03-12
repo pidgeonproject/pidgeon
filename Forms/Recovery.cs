@@ -72,6 +72,7 @@ namespace Client
                                             + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
                                             + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
                                             + Core.recovery_exception.Message + "\n\n"
+                                            + inner
                                             + ring + "\n\n"
                                             + Core.recovery_exception.Source + "\n\n").Split('\n');
                 }

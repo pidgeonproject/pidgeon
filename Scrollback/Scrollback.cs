@@ -139,6 +139,24 @@ namespace Client
         }
 
         /// <summary>
+        /// Change the text to specified list
+        /// </summary>
+        /// <param name="text"></param>
+        public void SetText(List<ContentLine> text)
+        {
+            lock (UndrawnLines)
+            {
+                UndrawnLines.Clear();
+                lock (ContentLines)
+                {
+                    ContentLines.Clear();
+                    UndrawnLines.AddRange(text);
+                }
+            }
+            Changed = true;
+        }
+
+        /// <summary>
         /// This function switch between rendering types
         /// </summary>
         /// <param name="advanced"></param>

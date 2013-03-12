@@ -39,42 +39,11 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
-        public ProtocolSv.Buffer buffer = null;
         public Services.Buffer sBuffer = null;
 
         public string nick = "";
         public bool auth = false;
 
-        public class Buffer
-        {
-            public Dictionary<string, string> Networks = new Dictionary<string, string>();
-            public Dictionary<string, List<Datagram>> data = null;
-            public Dictionary<string, int> LastMQID = new Dictionary<string, int>();
-            public bool Loaded;
-            private string Root = null;
-
-            public string getUID(string server)
-            {
-                return Networks[server];
-            }
-
-            public void Make(string network, string network_id)
-            {
-                if (!Networks.ContainsKey(network))
-                {
-                    Networks.Add(network, network_id);
-                    data.Add(network_id, new List<Datagram>());
-                    LastMQID.Add(network_id, -1);
-                }
-            }
-
-            public Buffer(ProtocolSv parent)
-            {
-                Root = Core.PermanentTemp + "cache_" + parent.Server + System.IO.Path.DirectorySeparatorChar;
-                data = new Dictionary<string, List<Datagram>>();
-                Loaded = false;
-            }
-        }
 
         public class Cache
         {

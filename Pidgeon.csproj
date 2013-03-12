@@ -213,7 +213,6 @@
     <Compile Include="Qt.cs" />
     <Compile Include="Services\Buffer.cs" />
     <Compile Include="Services\Datagram.cs" />
-    <Compile Include="Services\Loader.cs" />
     <Compile Include="Services\ResponsesSv.cs" />
     <Compile Include="RevisionInfo.cs" />
     <Compile Include="SBABOX\Line.cs">

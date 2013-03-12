@@ -33,8 +33,17 @@ namespace Client
                 string message_nick = curr.Attributes[0].Value;
                 string message_text = curr.InnerText;
                 string message_target = curr.Attributes[3].Value;
+                string MQID = curr.Attributes[4].Value;
                 Window message_window = null;
                 Network mn = protocol.retrieveNetwork(curr.Attributes[1].Value);
+                if (Configuration.Services.UsingCache)
+                { 
+                    string ID = protocol.sBuffer.getUID(curr.Attributes[1].Value);
+                    if (ID != null)
+                    {
+                        protocol.sBuffer.networkInfo[ID].MQID(MQID);
+                    }
+                }
                 long message_time = long.Parse(curr.Attributes[2].Value);
                 if (mn != null)
                 {
@@ -109,23 +118,28 @@ namespace Client
             {
                 long date = 0;
                 bool backlog = false;
+                string MQID = null;
                 string id = "";
-                foreach (XmlAttribute time in curr.Attributes)
+                foreach (XmlAttribute xx in curr.Attributes)
                 {
-                    if (time.Name == "time")
+                    switch (xx.Name)
                     {
-                        if (!long.TryParse(time.Value, out date))
-                        {
-                            Core.DebugLog("Warning: " + time.Value + " is not a correct time");
-                        }
-                    }
-                }
-                foreach (XmlAttribute i in curr.Attributes)
-                {
-                    if (i.Name == "buffer")
-                    {
-                        id = i.Value;
-                        backlog = true;
+                        case "time":
+                            if (!long.TryParse(xx.Value, out date))
+                            {
+                                Core.DebugLog("Warning: " + xx.Value + " is not a correct time");
+                            }
+                            break;
+                        case "MQID":
+                            MQID = xx.Value;
+                            break;
+                        case "buffer":
+                            if (xx.Name == "buffer")
+                            {
+                                id = xx.Value;
+                                backlog = true;
+                            }
+                            break;
                     }
                 }
                 string name = curr.Attributes[0].Value;
@@ -139,15 +153,20 @@ namespace Client
                     server.Nickname = protocol.nick;
                     server.Connected = true;
                 }
+                if (Configuration.Services.UsingCache)
+                {
+                    if (MQID != null)
+                    {
+                        string UID = protocol.sBuffer.getUID(name);
+
+                        if (UID != null)
+                        {
+                            protocol.sBuffer.networkInfo[UID].MQID(MQID);
+                        }
+                    }
+                }
                 if (backlog)
                 {
-                    if (Configuration.Services.UsingCache)
-                    {
-                        //if (protocol.buffer.Networks.ContainsKey(name))
-                        //{
-                        //    protocol.buffer.Insert(name, Datagram.LoadXML(curr));
-                        //}
-                    }
                     if (Core._Main.DisplayingProgress == false)
                     {
                         Core._Main.progress = int.Parse(id);
@@ -179,7 +198,7 @@ namespace Client
                 ProcessorIRC processor2 = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
                 processor2.Result();
             }
-            
+
             public static void sNick(XmlNode curr, ProtocolSv protocol)
             {
                 Network sv = protocol.retrieveNetwork(curr.Attributes[0].Value);
@@ -282,8 +301,13 @@ namespace Client
                                 mq = null;
                             }
                         }
-                        protocol.buffer = new Buffer(protocol);
                     }
+
+                    if (Configuration.Services.UsingCache)
+                    {
+                        protocol.sBuffer.ReadDisk();
+                    }
+
                     int id = 0;
                     foreach (string i in _networks)
                     {
@@ -303,17 +327,16 @@ namespace Client
                             request.Parameters.Add("size", Configuration.Services.Depth.ToString());
                             if (Configuration.Services.UsingCache && mq != null)
                             {
-                                if (!protocol.buffer.Networks.ContainsValue(mq[id]))
+                                if (!protocol.sBuffer.Networks.ContainsValue(mq[id]))
                                 {
-                                    protocol.buffer.Make(i, mq[id]);
+                                    protocol.sBuffer.Make(i, mq[id]);
                                 }
-                                if (protocol.buffer.Loaded)
+                                else
                                 {
-                                    if (protocol.buffer.LastMQID.ContainsKey(mq[id]))
-                                    {
-                                        request.Parameters.Add("last", protocol.buffer.LastMQID[mq[id]].ToString());
-                                        protocol.Deliver(request);
-                                    }
+                                    protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.system, nw.system.name);
+                                    int mqid = protocol.sBuffer.networkInfo[mq[id]].LastMQID;
+                                    request.Parameters.Add("last", mqid.ToString());
+                                    protocol.Deliver(request);
                                 }
                             }
                             protocol.Deliver(request);
@@ -338,7 +361,7 @@ namespace Client
                             break;
                         }
                     }
-                
+
                     if (remove != null)
                     {
                         Core._Main.ChannelList.Servers.Remove(remove);
@@ -372,7 +395,19 @@ namespace Client
                                     {
                                         if (nw.getChannel(channel) == null)
                                         {
-                                            nw.WindowCreateNewJoin(channel, true);
+                                            Channel xx = nw.WindowCreateNewJoin(channel, true);
+                                            if (Configuration.Services.UsingCache)
+                                            {
+                                                string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
+                                                if (ID != null && protocol.sBuffer.networkInfo.ContainsKey(ID))
+                                                { 
+                                                    Window window = xx.retrieveWindow();
+                                                    if (xx != null)
+                                                    {
+                                                        protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.name);
+                                                    }
+                                                }
+                                            }
                                         }
                                         if (!Configuration.Services.Retrieve_Sv)
                                         {
@@ -387,7 +422,7 @@ namespace Client
                                 }
                                 if (Configuration.Services.UsingCache)
                                 {
-                                    protocol.ProcessBuffer(curr.Attributes[0].Value);
+
                                 }
                                 System.Threading.Thread.Sleep(800);
                             }

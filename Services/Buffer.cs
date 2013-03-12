@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -60,6 +61,32 @@ namespace Client.Services
                 
             }
 
+            public Buffer.Window getW(string window)
+            {
+                lock (windows)
+                {
+                    foreach (Buffer.Window xx in windows)
+                    {
+                        if (xx.Name == window)
+                        {
+                            return xx;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            public void recoverWindowText(Client.Window target, string source)
+            {
+                Buffer.Window Source = getW(source);
+                if (Source == null)
+                {
+                    Core.DebugLog("Failed to recover " + source);
+                    return;
+                }
+                target.scrollback.SetText(Source.lines);
+            }
+
             public NetworkInfo(string nick)
             {
                 Nick = nick;
@@ -77,6 +104,7 @@ namespace Client.Services
             }
         }
 
+        public Dictionary<string, string> Networks = new Dictionary<string, string>();
         public Dictionary<string, NetworkInfo> networkInfo = new Dictionary<string,NetworkInfo>();
         public ProtocolSv protocol = null;
         public bool Loaded = false;
@@ -90,49 +118,69 @@ namespace Client.Services
             protocol = _s;
         }
 
+        public string getUID(string server)
+        {
+            if (Networks.ContainsKey(server))
+            {
+                return Networks[server];
+            }
+            return null;
+        }
+
+        public void Make(string network, string network_id)
+        {
+            if (!Networks.ContainsKey(network))
+            {
+                Networks.Add(network, network_id);
+                networkInfo.Add(network_id, new NetworkInfo());
+            }
+        }
+
         public void ReadDisk()
         {
-            if (!Directory.Exists(Root))
+            try
             {
-                Core.DebugLog("There is no folder for buffer of " + protocol.Server);
+                lock (networkInfo)
+                {
+                    networkInfo.Clear();
+                    if (!Directory.Exists(Root))
+                    {
+                        Core.DebugLog("There is no folder for buffer of " + protocol.Server);
+                        Loaded = false;
+                        return;
+                    }
+                    if (!File.Exists(Root + "data"))
+                    {
+                        Core.DebugLog("There is no main for buffer of " + protocol.Server);
+                        Loaded = false;
+                        return;
+                    }
+                    Data = new List<string>();
+                    lock (Data)
+                    {
+                        Data.AddRange(File.ReadAllLines(Root + "data"));
+                    }
+                    foreach (string network in Data)
+                    {
+                        if (network != "")
+                        {
+                            string content = File.ReadAllText(Root + network);
+                            NetworkInfo info = DeserializeNetwork(content);
+                            networkInfo.Add(network, info);
+                            Networks.Add(info.Server, network);
+                        }
+                    }
+                }
+                Modified = false;
+                Loaded = true;
+            }
+            catch (Exception fail)
+            {
+                Core.DebugLog("Failed to load buffer, invalidating it " + fail.ToString());
                 Loaded = false;
-                return;
+                Modified = true;
+                networkInfo.Clear();
             }
-            if (!File.Exists(Root + "data"))
-            {
-                Core.DebugLog("There is no folder for buffer of " + protocol.Server);
-                Loaded = false;
-                return;
-            }
-            Data = new List<string>();
-            lock (Data)
-            {
-                Data.AddRange(File.ReadAllLines(Root + "data"));
-            }
-        }
-
-        public static string SerializeLine(List<Scrollback.ContentLine> line)
-        {
-            XmlSerializer xs = new XmlSerializer(line.GetType());
-            StringWriter data = new StringWriter();
-            xs.Serialize(data, line);
-            return data.ToString();
-        }
-
-        public static List<Scrollback.ContentLine> DeserializeLine(string text)
-        {
-            XmlSerializer xs = new XmlSerializer(typeof(List<Scrollback.ContentLine>));
-            StringReader data = new StringReader(text);
-            List<Scrollback.ContentLine> line = (List<Scrollback.ContentLine>)xs.Deserialize(data);
-            return line;
-        }
-
-        public static string SerializeNetwork(NetworkInfo line)
-        {
-            XmlSerializer xs = new XmlSerializer(line.GetType());
-            StringWriter data = new StringWriter();
-            xs.Serialize(data, line);
-            return data.ToString();
         }
 
         public void Clear()
@@ -145,11 +193,21 @@ namespace Client.Services
             Directory.Delete(Root, true);
         }
 
-        public static NetworkInfo DeserializeNetwork(string text)
+        public static string SerializeNetwork(NetworkInfo line)
         {
             XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
-            StringReader data = new StringReader(text);
-            NetworkInfo info = (NetworkInfo)xs.Deserialize(data);
+            StringWriter data = new StringWriter();
+            xs.Serialize(data, line);
+            return data.ToString();
+        }
+
+        public static NetworkInfo DeserializeNetwork(string text)
+        {
+            XmlDocument document = new XmlDocument();
+            document.LoadXml(text);
+            XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
+            XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
+            NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
             return info;
         }
 
@@ -161,7 +219,7 @@ namespace Client.Services
                 foreach (Network network in protocol.NetworkList)
                 {
                     NetworkInfo info = new NetworkInfo(network.Nickname);
-                    info.NetworkID = protocol.buffer.getUID(network.server);
+                    info.NetworkID = protocol.sBuffer.getUID(network.server);
                     info.Server = network.server;
                     info.windows.Add(new Buffer.Window(network.system));
                     lock (network.Channels)
@@ -211,7 +269,7 @@ namespace Client.Services
                     {
                         string xx = SerializeNetwork(network.Value);
                         File.WriteAllText(Root + network.Key, xx);
-                        files.Add(Root + network.Key);
+                        files.Add(network.Key);
                     }
                 }
 
