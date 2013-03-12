@@ -44,7 +44,10 @@ namespace Client.Services
             public Window(Client.Window owner)
             {
                 Name = owner.name;
+<<<<<<< HEAD
                 isChannel = owner.isChannel;
+=======
+>>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                 lines = new List<Scrollback.ContentLine>();
                 lines.AddRange(owner.scrollback.Data);
             }
@@ -58,6 +61,7 @@ namespace Client.Services
             public string NetworkID = null;
             public string Server = null;
             public int lastMQID = 0;
+<<<<<<< HEAD
             /// <summary>
             /// User modes
             /// </summary>
@@ -92,6 +96,15 @@ namespace Client.Services
             public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
 
 
+=======
+            public int LastMQID
+            {
+                get
+                {
+                    return lastMQID;
+                }
+            }
+>>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
             public List<Buffer.Window> windows = new List<Window>();
 
             public NetworkInfo()
@@ -259,6 +272,7 @@ namespace Client.Services
                     {
                         networkInfo[uid].windows.Clear();
                         networkInfo[uid].windows.Add(new Buffer.Window(network.system));
+<<<<<<< HEAD
                         networkInfo[uid].CModes = network.CModes;
                         networkInfo[uid].CUModes = network.CUModes;
                         networkInfo[uid].PModes = network.PModes;
@@ -266,6 +280,8 @@ namespace Client.Services
                         networkInfo[uid].Descriptions = network.Descriptions;
                         networkInfo[uid].XModes = network.XModes;
                         networkInfo[uid].UChars = network.UChars;
+=======
+>>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                         lock (network.Channels)
                         {
                             foreach (Channel xx in network.Channels)
@@ -307,7 +323,11 @@ namespace Client.Services
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
+<<<<<<< HEAD
                         Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Scrollback.MessageStyle.System, false);
+=======
+                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.LastMQID.ToString(), Scrollback.MessageStyle.System, false);
+>>>>>>> 984773b3b16b1531f4f23c009f716a9f9f9319b9
                     }
                 }
             }
