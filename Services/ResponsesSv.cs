@@ -330,13 +330,15 @@ namespace Client
                                 if (!protocol.sBuffer.Networks.ContainsValue(mq[id]))
                                 {
                                     protocol.sBuffer.Make(i, mq[id]);
+                                    protocol.sBuffer.networkInfo[mq[id]].NetworkID = mq[id];
+                                    protocol.sBuffer.networkInfo[mq[id]].Nick = nw.Nickname;
+                                    protocol.sBuffer.networkInfo[mq[id]].Server = nw.server;
                                 }
                                 else
                                 {
                                     protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.system, nw.system.name);
                                     int mqid = protocol.sBuffer.networkInfo[mq[id]].LastMQID;
                                     request.Parameters.Add("last", mqid.ToString());
-                                    protocol.Deliver(request);
                                 }
                             }
                             protocol.Deliver(request);
@@ -419,10 +421,6 @@ namespace Client
                                         response2.Parameters.Add("channel", channel);
                                         protocol.Deliver(response2);
                                     }
-                                }
-                                if (Configuration.Services.UsingCache)
-                                {
-
                                 }
                                 System.Threading.Thread.Sleep(800);
                             }

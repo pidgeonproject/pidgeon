@@ -280,7 +280,6 @@ namespace Client
                         ContentLines.Clear();
                         lastDate = DateTime.MinValue;
                         Reload(true, true);
-                        //Recreate(true);
                     }
                 }
             }

@@ -43,7 +43,8 @@ namespace Client.Services
             public Window(Client.Window owner)
             {
                 Name = owner.name;
-                lines = owner.scrollback.Data;
+                lines = new List<Scrollback.ContentLine>();
+                lines.AddRange(owner.scrollback.Data);
             }
         }
 
@@ -54,7 +55,7 @@ namespace Client.Services
             public string Nick = null;
             public string NetworkID = null;
             public string Server = null;
-            private int lastMQID = 0;
+            public int lastMQID = 0;
             public int LastMQID
             {
                 get
@@ -219,32 +220,32 @@ namespace Client.Services
 
         public void Snapshot()
         {
-            networkInfo.Clear();
             lock (protocol.NetworkList)
             {
                 foreach (Network network in protocol.NetworkList)
                 {
-                    NetworkInfo info = new NetworkInfo(network.Nickname);
-                    info.NetworkID = protocol.sBuffer.getUID(network.server);
-                    info.Server = network.server;
-                    info.windows.Add(new Buffer.Window(network.system));
-                    lock (network.Channels)
+                    string uid = protocol.sBuffer.getUID(network.server);
+                    if (networkInfo.ContainsKey(uid))
                     {
-                        foreach (Channel xx in network.Channels)
+                        networkInfo[uid].windows.Clear();
+                        networkInfo[uid].windows.Add(new Buffer.Window(network.system));
+                        lock (network.Channels)
                         {
-                            Client.Window window = xx.retrieveWindow();
-                            if (window != null)
+                            foreach (Channel xx in network.Channels)
                             {
-                                info.windows.Add(new Buffer.Window(window));
+                                Client.Window window = xx.retrieveWindow();
+                                if (window != null)
+                                {
+                                    networkInfo[uid].windows.Add(new Buffer.Window(window));
+                                }
                             }
-                        }
 
-                        //foreach (User user in network.PrivateChat)
-                        //{ 
-                        //    network
-                        //}
+                            //foreach (User user in network.PrivateChat)
+                            //{ 
+                            //    network
+                            //}
+                        }
                     }
-                    networkInfo.Add(info.NetworkID, info);
                 }
             }
             WriteDisk();
@@ -260,6 +261,21 @@ namespace Client.Services
             File.WriteAllText(file, data.ToString());
         }
 
+        public void PrintInfo()
+        {
+            if (Core._Main.Chat != null)
+            {
+                Core._Main.Chat.scrollback.InsertText("Information about cache:", Scrollback.MessageStyle.System, false);
+                lock (networkInfo)
+                {
+                    foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.LastMQID.ToString(), Scrollback.MessageStyle.System, false);
+                    }
+                }
+            }
+        }
+
         public void WriteDisk()
         {
             try
@@ -268,6 +284,7 @@ namespace Client.Services
                 {
                     Directory.CreateDirectory(Root);
                 }
+                Core.DebugLog("Saving cache for " + protocol.Server);
                 List<string> files = new List<string>();
                 lock (networkInfo)
                 {
@@ -281,6 +298,7 @@ namespace Client.Services
 
                 ListFile(files, Root + "data");
                 Modified = false;
+                Core.DebugLog("Done");
             }
             catch (Exception fail)
             {
