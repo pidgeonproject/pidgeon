@@ -54,6 +54,14 @@ namespace Client.Services
             public string Nick = null;
             public string NetworkID = null;
             public string Server = null;
+            private int lastMQID = 0;
+            public int LastMQID
+            {
+                get
+                {
+                    return lastMQID;
+                }
+            }
             public List<Buffer.Window> windows = new List<Window>();
 
             public NetworkInfo()
@@ -92,14 +100,12 @@ namespace Client.Services
                 Nick = nick;
             }
 
-            public int LastMQID = 0;
-
             public void MQID(string text)
             {
                 int mqid = int.Parse(text);
-                if (LastMQID < mqid)
+                if (lastMQID < mqid)
                 {
-                    LastMQID = mqid;
+                    lastMQID = mqid;
                 }
             }
         }
