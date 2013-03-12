@@ -162,7 +162,10 @@ namespace Client
                     Servers[_us._Network].Nodes.Insert(Servers[_us._Network].Nodes.Count, text);
                     text.Text = _us.Nick;
 
-                    UserList.Add(_us, text);
+                    lock (UserList)
+                    {
+                        UserList.Add(_us, text);
+                    }
                     Servers[_us._Network].Expand();
                     if (_us._Network._Protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
                     {
@@ -326,7 +329,7 @@ namespace Client
                     Core._Main.WindowRequests.Clear();
                 }
 
-                lock (UserList)
+                lock (_User)
                 {
                     foreach (User user in _User)
                     {

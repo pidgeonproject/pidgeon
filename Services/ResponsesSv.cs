@@ -330,13 +330,24 @@ namespace Client
                                 if (!protocol.sBuffer.Networks.ContainsValue(mq[id]))
                                 {
                                     protocol.sBuffer.Make(i, mq[id]);
+                                    protocol.sBuffer.networkInfo[mq[id]].NetworkID = mq[id];
+                                    protocol.sBuffer.networkInfo[mq[id]].Nick = nw.Nickname;
+                                    protocol.sBuffer.networkInfo[mq[id]].Server = nw.server;
                                 }
                                 else
                                 {
                                     protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.system, nw.system.name);
-                                    int mqid = protocol.sBuffer.networkInfo[mq[id]].LastMQID;
+                                    nw.Descriptions = protocol.sBuffer.networkInfo[mq[id]].Descriptions;
+                                    nw.CModes = protocol.sBuffer.networkInfo[mq[id]].CModes;
+                                    nw.CUModes = protocol.sBuffer.networkInfo[mq[id]].CUModes;
+                                    nw.Nickname = protocol.sBuffer.networkInfo[mq[id]].Nick;
+                                    nw.PModes = protocol.sBuffer.networkInfo[mq[id]].PModes;
+                                    nw.SModes = protocol.sBuffer.networkInfo[mq[id]].SModes;
+                                    nw.UChars = protocol.sBuffer.networkInfo[mq[id]].UChars;
+                                    nw.UModes = protocol.sBuffer.networkInfo[mq[id]].UModes;
+                                    nw.XModes = protocol.sBuffer.networkInfo[mq[id]].XModes;
+                                    int mqid = protocol.sBuffer.networkInfo[mq[id]].lastMQID;
                                     request.Parameters.Add("last", mqid.ToString());
-                                    protocol.Deliver(request);
                                 }
                             }
                             protocol.Deliver(request);
@@ -419,10 +430,6 @@ namespace Client
                                         response2.Parameters.Add("channel", channel);
                                         protocol.Deliver(response2);
                                     }
-                                }
-                                if (Configuration.Services.UsingCache)
-                                {
-
                                 }
                                 System.Threading.Thread.Sleep(800);
                             }

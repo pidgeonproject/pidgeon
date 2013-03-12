@@ -30,6 +30,7 @@ namespace Client.Services
         public class Window
         {
             public bool isChannel = false;
+            public bool isPM = false;
             public List<Scrollback.ContentLine> lines = null;
             public string Name = null;
             public string topic = null;
@@ -43,7 +44,9 @@ namespace Client.Services
             public Window(Client.Window owner)
             {
                 Name = owner.name;
-                lines = owner.scrollback.Data;
+                isChannel = owner.isChannel;
+                lines = new List<Scrollback.ContentLine>();
+                lines.AddRange(owner.scrollback.Data);
             }
         }
 
@@ -54,14 +57,41 @@ namespace Client.Services
             public string Nick = null;
             public string NetworkID = null;
             public string Server = null;
-            private int lastMQID = 0;
-            public int LastMQID
-            {
-                get
-                {
-                    return lastMQID;
-                }
-            }
+            public int lastMQID = 0;
+            /// <summary>
+            /// User modes
+            /// </summary>
+            public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+            /// <summary>
+            /// Channel user symbols (oper and such)
+            /// </summary>
+            public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+            /// <summary>
+            /// Channel user modes
+            /// </summary>
+            public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+            /// <summary>
+            /// Channel modes
+            /// </summary>
+            public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+            /// <summary>
+            /// Special channel modes with parameter as a string
+            /// </summary>
+            public List<char> SModes = new List<char> { 'k', 'L' };
+            /// <summary>
+            /// Special channel modes with parameter as a number
+            /// </summary>
+            public List<char> XModes = new List<char> { 'l' };
+            /// <summary>
+            /// Special channel user modes with parameters as a string
+            /// </summary>
+            public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+            /// <summary>
+            /// Descriptions for channel and user modes
+            /// </summary>
+            public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+
+
             public List<Buffer.Window> windows = new List<Window>();
 
             public NetworkInfo()
@@ -93,6 +123,7 @@ namespace Client.Services
                     return;
                 }
                 target.scrollback.SetText(Source.lines);
+                target.isChannel = Source.isChannel;
             }
 
             public NetworkInfo(string nick)
@@ -219,32 +250,39 @@ namespace Client.Services
 
         public void Snapshot()
         {
-            networkInfo.Clear();
             lock (protocol.NetworkList)
             {
                 foreach (Network network in protocol.NetworkList)
                 {
-                    NetworkInfo info = new NetworkInfo(network.Nickname);
-                    info.NetworkID = protocol.sBuffer.getUID(network.server);
-                    info.Server = network.server;
-                    info.windows.Add(new Buffer.Window(network.system));
-                    lock (network.Channels)
+                    string uid = protocol.sBuffer.getUID(network.server);
+                    if (networkInfo.ContainsKey(uid))
                     {
-                        foreach (Channel xx in network.Channels)
+                        networkInfo[uid].windows.Clear();
+                        networkInfo[uid].windows.Add(new Buffer.Window(network.system));
+                        networkInfo[uid].CModes = network.CModes;
+                        networkInfo[uid].CUModes = network.CUModes;
+                        networkInfo[uid].PModes = network.PModes;
+                        networkInfo[uid].SModes = network.SModes;
+                        networkInfo[uid].Descriptions = network.Descriptions;
+                        networkInfo[uid].XModes = network.XModes;
+                        networkInfo[uid].UChars = network.UChars;
+                        lock (network.Channels)
                         {
-                            Client.Window window = xx.retrieveWindow();
-                            if (window != null)
+                            foreach (Channel xx in network.Channels)
                             {
-                                info.windows.Add(new Buffer.Window(window));
+                                Client.Window window = xx.retrieveWindow();
+                                if (window != null)
+                                {
+                                    networkInfo[uid].windows.Add(new Buffer.Window(window));
+                                }
                             }
-                        }
 
-                        //foreach (User user in network.PrivateChat)
-                        //{ 
-                        //    network
-                        //}
+                            //foreach (User user in network.PrivateChat)
+                            //{ 
+                            //    network
+                            //}
+                        }
                     }
-                    networkInfo.Add(info.NetworkID, info);
                 }
             }
             WriteDisk();
@@ -260,6 +298,21 @@ namespace Client.Services
             File.WriteAllText(file, data.ToString());
         }
 
+        public void PrintInfo()
+        {
+            if (Core._Main.Chat != null)
+            {
+                Core._Main.Chat.scrollback.InsertText("Information about cache:", Scrollback.MessageStyle.System, false);
+                lock (networkInfo)
+                {
+                    foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
+                    {
+                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Scrollback.MessageStyle.System, false);
+                    }
+                }
+            }
+        }
+
         public void WriteDisk()
         {
             try
@@ -268,6 +321,7 @@ namespace Client.Services
                 {
                     Directory.CreateDirectory(Root);
                 }
+                Core.DebugLog("Saving cache for " + protocol.Server);
                 List<string> files = new List<string>();
                 lock (networkInfo)
                 {
@@ -281,6 +335,7 @@ namespace Client.Services
 
                 ListFile(files, Root + "data");
                 Modified = false;
+                Core.DebugLog("Done");
             }
             catch (Exception fail)
             {

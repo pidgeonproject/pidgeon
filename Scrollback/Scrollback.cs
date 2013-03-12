@@ -60,10 +60,6 @@ namespace Client
                 {
                     data.AddRange(ContentLines);
                 }
-                lock (UndrawnLines)
-                {
-                    data.AddRange(UndrawnLines);
-                }
                 return data;
             }
         }
@@ -107,6 +103,7 @@ namespace Client
                 text = Text;
                 notice = _notice;
             }
+
             public int CompareTo(object obj)
             {
                 if (obj is ContentLine)
@@ -150,9 +147,10 @@ namespace Client
                 lock (ContentLines)
                 {
                     ContentLines.Clear();
-                    UndrawnLines.AddRange(text);
+                    ContentLines.AddRange(text);
                 }
             }
+            ReloadWaiting = true;
             Changed = true;
         }
 
