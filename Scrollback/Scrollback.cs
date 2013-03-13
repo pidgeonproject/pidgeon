@@ -309,15 +309,13 @@ namespace Client
         {
             try
             {
+                timer2.Enabled = false;
                 if (RT != null && WindowVisible())
                 {
-                    // for performance reason we will issue lock only if needed
-                    if (!ReloadWaiting && UndrawnLines.Count > 0)
+                    lock (UndrawnLines)
                     {
-                        lock (UndrawnLines)
+                        if (!ReloadWaiting)
                         {
-                            timer2.Enabled = false;
-                            // double check because this is thread safe
                             if (UndrawnLines.Count > 0)
                             {
                                 foreach (ContentLine curr in UndrawnLines)
@@ -329,22 +327,19 @@ namespace Client
                                 {
                                     RT.ScrollToBottom();
                                 }
-                                UndrawnLines.Clear();
                             }
-                            timer2.Enabled = true;
                         }
+                        UndrawnLines.Clear();
                     }
-
                     if (ReloadWaiting)
                     {
-                        timer2.Enabled = false;
                         if (Reload())
                         {
                             ReloadWaiting = false;
                         }
-                        timer2.Enabled = true;
                     }
                 }
+                timer2.Enabled = true;
             }
             catch (Exception fail)
             {
