@@ -92,10 +92,10 @@ namespace Client
             public bool notice = false;
             public MessageStyle style;
             public ContentLine()
-            { 
+            {
 
             }
-            
+
             public ContentLine(MessageStyle _style, string Text, DateTime when, bool _notice)
             {
                 style = _style;
@@ -321,13 +321,15 @@ namespace Client
         {
             try
             {
-                timer2.Enabled = false;
                 if (RT != null && WindowVisible())
                 {
-                    lock (UndrawnLines)
+                    // for performance reason we will issue lock only if needed
+                    if (!ReloadWaiting && UndrawnLines.Count > 0)
                     {
-                        if (!ReloadWaiting)
+                        lock (UndrawnLines)
                         {
+                            timer2.Enabled = false;
+                            // double check because this is thread safe
                             if (UndrawnLines.Count > 0)
                             {
                                 foreach (ContentLine curr in UndrawnLines)
@@ -339,10 +341,11 @@ namespace Client
                                 {
                                     RT.ScrollToBottom();
                                 }
+                                UndrawnLines.Clear();
                             }
                         }
-                        UndrawnLines.Clear();
                     }
+
                     if (ReloadWaiting)
                     {
                         if (Reload())
@@ -350,8 +353,8 @@ namespace Client
                             ReloadWaiting = false;
                         }
                     }
+                    timer2.Enabled = true;
                 }
-                timer2.Enabled = true;
             }
             catch (Exception fail)
             {

@@ -305,7 +305,9 @@ namespace Client
 
                     if (Configuration.Services.UsingCache)
                     {
+                        Core._Main.Status("Loading disk cache from disk...");
                         protocol.sBuffer.ReadDisk();
+                        Core._Main.Status("");
                     }
 
                     int id = 0;
