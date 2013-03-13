@@ -1068,7 +1068,7 @@ namespace Client
                                 }
                                 break;
                             case "317":
-                                if (Configuration.FriendlyWho)
+                                if (Configuration.irc.FriendlyWhois)
                                 {
                                     if (IdleTime(command, parameters, value))
                                     {

@@ -74,31 +74,31 @@ namespace Client
         public void SetConfig(string key, string value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core.ConfigSave();
+            Core._Configuration.ConfigSave();
         }
 
         public void SetConfig(string key, bool value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core.ConfigSave();
+            Core._Configuration.ConfigSave();
         }
 
         public void SetConfig(string key, long value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core.ConfigSave();
+            Core._Configuration.ConfigSave();
         }
 
         public void SetConfig(string key, int value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core.ConfigSave();
+            Core._Configuration.ConfigSave();
         }
 
         public void RemoveConfig(string key)
         {
             Configuration.RemoveConfig(Name + "." + key);
-            Core.ConfigSave();
+            Core._Configuration.ConfigSave();
         }
 
         public void Exit()

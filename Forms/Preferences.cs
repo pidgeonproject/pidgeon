@@ -201,7 +201,7 @@ namespace Client
                 {
                     Configuration.CurrentSkin = Configuration.SL[comboBox1.SelectedIndex];
                 }
-                Core.ConfigSave();
+                Core._Configuration.ConfigSave();
             }
             catch (Exception f)
             {

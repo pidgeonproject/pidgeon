@@ -252,7 +252,7 @@ namespace Client
         /// <returns></returns>
         public void Join(string channel)
         {
-            _Protocol.Transfer("JOIN " + channel, Configuration.Priority.Normal, this);
+            Transfer("JOIN " + channel, Configuration.Priority.Normal);
         }
 
         /// <summary>
