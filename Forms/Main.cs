@@ -105,13 +105,14 @@ namespace Client
 
         public void _Load()
         {
-            messages.Localize(this);
-            if (Configuration.Window.Window_Maximized)
-            {
-                this.WindowState = FormWindowState.Maximized;
-            }
             try
             {
+                messages.Localize(this);
+                skinEdToolStripMenuItem.Enabled = false;
+                if (Configuration.Window.Window_Maximized)
+                {
+                    this.WindowState = FormWindowState.Maximized;
+                }
                 if (Configuration.Window.x4 == 0)
                 {
                     Configuration.Window.window_size = 80;

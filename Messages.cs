@@ -31,7 +31,7 @@ namespace Client
 
         public class container
         {
-            public string language;
+            public string language = null;
             public Dictionary<string, string> Cache;
             public container(string LanguageCode)
             {
@@ -106,6 +106,15 @@ namespace Client
             {
                 Core.handleException(fail);
             }
+        }
+
+        /// <summary>
+        /// Load all languages
+        /// </summary>
+        public static void Read()
+        {
+            messages.data.Add("en", new messages.container("en"));
+            messages.data.Add("cs", new messages.container("cs"));
         }
 
         private static string parse(string text, string name)

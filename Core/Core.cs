@@ -251,8 +251,7 @@ namespace Client
                 }
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
-                messages.data.Add("en", new messages.container("en"));
-                messages.data.Add("cs", new messages.container("cs"));
+                messages.Read();
                 trafficscanner = new TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {

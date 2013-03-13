@@ -23,6 +23,7 @@ using System.Text;
 
 namespace Client
 {
+    [Serializable]
     public class NetworkMode
     {
         /// <summary>
