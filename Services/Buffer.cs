@@ -150,11 +150,8 @@ namespace Client.Services
             /// Special channel user modes with parameters as a string
             /// </summary>
             public List<char> PModes = new List<char> { 'b', 'I', 'e' };
-            /// <summary>
-            /// Descriptions for channel and user modes
-            /// </summary>
-            //public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
 
+            [Serializable]
             public class Description
             {
                 public char Char;
@@ -173,7 +170,6 @@ namespace Client.Services
             }
 
             public List<Description> Descriptions = new List<Description>();
-
             public List<Buffer.Window> _windows = new List<Window>();
             public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
             public List<string> PrivateWins = new List<string>();
@@ -312,6 +308,7 @@ namespace Client.Services
                     {
                         if (network != "")
                         {
+                            Core._Main.Status("Reading disk cache for " + network);
                             string content = File.ReadAllText(Root + network);
                             NetworkInfo info = DeserializeNetwork(content);
                             networkInfo.Add(network, info);
@@ -414,6 +411,7 @@ namespace Client.Services
                                 info.temporary_hide = xx.temporary_hide;
                                 info.Topic = xx.Topic;
                                 info.TopicDate = xx.TopicDate;
+                                info.ChannelWork = xx.ChannelWork;
                                 info.TopicUser = xx.TopicUser;
                                 networkInfo[uid]._channels.Add(info);
                             }

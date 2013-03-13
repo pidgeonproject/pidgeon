@@ -69,6 +69,7 @@ namespace Client
         /// <summary>
         /// Internal list of classes of this kind, just for debugging and recovery
         /// </summary>
+        [NonSerialized]
         public static List<Channel> _control = new List<Channel>();
         /// <summary>
         /// Name of a channel including the special prefix
@@ -77,10 +78,12 @@ namespace Client
         /// <summary>
         /// Network the channel belongs to
         /// </summary>
+        [NonSerialized]
         public Network _Network = null;
         /// <summary>
         /// List of all users in current channel
         /// </summary>
+        [NonSerialized]
         public List<User> UserList = new List<User>();
         /// <summary>
         /// Topic
@@ -113,6 +116,7 @@ namespace Client
         /// <summary>
         /// Window this channel is rendered to, if any
         /// </summary>
+        [NonSerialized]
         private Window Chat = null;
         /// <summary>
         /// If channel output is temporarily hidden
@@ -137,6 +141,7 @@ namespace Client
         /// <summary>
         /// Channel mode
         /// </summary>
+        [NonSerialized]
         public NetworkMode ChannelMode = null;
         /// <summary>
         /// Whether window needs to be redraw
