@@ -115,30 +115,44 @@ namespace Client
 
         private void timerl_Tick(object sender, EventArgs e)
         {
-            if (network.DownloadingList)
+            try
             {
-                return;
-            }
-            if (timer1.Enabled == false)
-            {
-                if (channels != network.ChannelList.Count)
+                if (network.DownloadingList)
                 {
-                    Reload();
+                    return;
                 }
+                if (timer1.Enabled == false)
+                {
+                    if (channels != network.ChannelList.Count)
+                    {
+                        Reload();
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
         private void refreshAutoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (refreshAutoToolStripMenuItem.Checked)
+            try
             {
-                timerl.Enabled = false;
-                refreshAutoToolStripMenuItem.Checked = false;
+                if (refreshAutoToolStripMenuItem.Checked)
+                {
+                    timerl.Enabled = false;
+                    refreshAutoToolStripMenuItem.Checked = false;
+                }
+                else
+                {
+                    timerl.Enabled = true;
+                    refreshAutoToolStripMenuItem.Checked = true;
+                }
             }
-            else
+            catch (Exception fail)
             {
-                timerl.Enabled = true;
-                refreshAutoToolStripMenuItem.Checked = true;
+                Core.handleException(fail);
             }
         }
 
@@ -149,8 +163,15 @@ namespace Client
 
         private void downloadListFromServerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            network.SuppressData = true;
-            network.Transfer("LIST");
+            try
+            {
+                network.SuppressData = true;
+                network.Transfer("LIST");
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void joinToolStripMenuItem_Click(object sender, EventArgs e)
@@ -176,12 +197,19 @@ namespace Client
 
         private void knockToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            lock (listView1.Items)
+            try
             {
-                foreach (ListViewItem item in listView1.SelectedItems)
+                lock (listView1.Items)
                 {
-                    network.Transfer("KNOCK " + item.Text);
+                    foreach (ListViewItem item in listView1.SelectedItems)
+                    {
+                        network.Transfer("KNOCK " + item.Text);
+                    }
                 }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 

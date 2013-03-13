@@ -69,9 +69,9 @@ namespace Client
         {
             try
             {
-                refresh.Enabled = false;
                 if (Visible && modified)
                 {
+                    refresh.Enabled = false;
                     modified = false;
                     lock (text)
                     {
@@ -93,8 +93,8 @@ namespace Client
                         text.Clear();
                         textBox1.ScrollToCaret();
                     }
+                    refresh.Enabled = true;
                 }
-                refresh.Enabled = true;
             }
             catch (Exception fail)
             {
@@ -104,7 +104,14 @@ namespace Client
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Clean();
+            try
+            {
+                Clean();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void scrollToolStripMenuItem_Click(object sender, EventArgs e)

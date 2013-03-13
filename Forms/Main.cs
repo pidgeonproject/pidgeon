@@ -361,18 +361,28 @@ namespace Client
                     UpdatedStatus = false;
                     UpdateStatus();
                 }
+
+                // Visible is not a variable but property so don't change it even to same value for performance reasons
                 if (toolStripProgressBar1.Visible != DisplayingProgress)
                 {
                     toolStripProgressBar1.Visible = DisplayingProgress;
                 }
+
                 if (DisplayingProgress)
                 {
-                    updater.Interval = 10;
+                    if (updater.Interval != 10)
+                    {
+                        updater.Interval = 10;
+                    }
                 }
                 else
                 {
-                    updater.Interval = 200;
+                    if (updater.Interval != 200)
+                    {
+                        updater.Interval = 200;
+                    }
                 }
+
                 if (toolStripProgressBar1.Maximum != ProgressMax)
                 {
                     if (toolStripProgressBar1.Value > ProgressMax)
