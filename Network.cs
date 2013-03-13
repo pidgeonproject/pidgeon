@@ -134,10 +134,9 @@ namespace Client
         public bool DownloadingList = false;
         private Channels wChannelList = null;
         /// <summary>
-        /// Channel windows
+        /// Private windows
         /// </summary>
-        public Dictionary<Channel, Window> ChannelW = new Dictionary<Channel, Window>();
-        public Dictionary<User, Window> PMW = new Dictionary<User, Window>();
+        public Dictionary<User, Window> PrivateWins = new Dictionary<User, Window>();
 
         public void DisplayChannelWindow()
         {
@@ -236,13 +235,13 @@ namespace Client
         /// Create private message to user
         /// </summary>
         /// <param name="user">User name</param>
-        public void Private(string user)
+        public User Private(string user)
         {
-            User u = new User(user, "", this, "");
-            PrivateChat.Add(u);
-            Core._Main.ChannelList.insertUser(u);
-            _Protocol.CreateChat(user, true, this, true);
-            return;
+            User referenced_user = new User(user, "", this, "");
+            PrivateChat.Add(referenced_user);
+            Core._Main.ChannelList.insertUser(referenced_user);
+            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true));
+            return referenced_user;
         }
 
         /// <summary>

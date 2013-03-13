@@ -155,12 +155,32 @@ namespace Client.Services
             /// </summary>
             //public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
 
+            public class Description
+            {
+                public char Char;
+                public string String;
+
+                public Description()
+                { 
+                
+                }
+
+                public Description(char c, string s)
+                {
+                    Char = c;
+                    String = s;
+                }
+            }
+
+            public List<Description> Descriptions = new List<Description>();
+
             public List<Buffer.Window> _windows = new List<Window>();
             public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
+            public List<string> PrivateWins = new List<string>();
 
             public NetworkInfo()
-            {
-
+            { 
+            
             }
 
             public Buffer.Window getW(string window)
@@ -210,6 +230,11 @@ namespace Client.Services
                 Nick = nick;
             }
 
+            public NetworkInfo(Network network)
+            {
+                Nick = network.Nickname;
+            }
+
             public void MQID(string text)
             {
                 int mqid = int.Parse(text);
@@ -243,7 +268,7 @@ namespace Client.Services
             return null;
         }
 
-        public void Make(string network, string network_id)
+        public void Make(string network, string network_id, Network _network = null)
         {
             if (Networks.ContainsKey(network))
             {
@@ -251,7 +276,12 @@ namespace Client.Services
                 Networks.Remove(network);
             }
             Networks.Add(network, network_id);
-            networkInfo.Add(network_id, new NetworkInfo());
+            if (_network == null)
+            {
+                networkInfo.Add(network_id, new NetworkInfo());
+                return;
+            }
+            networkInfo.Add(network_id, new NetworkInfo(_network));
         }
 
         public void ReadDisk()
@@ -333,9 +363,15 @@ namespace Client.Services
         {
             lock (protocol.NetworkList)
             {
+                List<Network> unknown = new List<Network>();
                 foreach (Network network in protocol.NetworkList)
                 {
                     string uid = protocol.sBuffer.getUID(network.server);
+                    if (uid == null)
+                    {
+                        unknown.Add(network);
+                        continue;
+                    }
                     if (networkInfo.ContainsKey(uid))
                     {
                         networkInfo[uid]._windows.Clear();
@@ -345,7 +381,14 @@ namespace Client.Services
                         networkInfo[uid].CUModes = network.CUModes;
                         networkInfo[uid].PModes = network.PModes;
                         networkInfo[uid].SModes = network.SModes;
-                        //networkInfo[uid].Descriptions = network.Descriptions;
+                        lock (network.Descriptions)
+                        {
+                            networkInfo[uid].Descriptions.Clear();
+                            foreach (KeyValuePair<char, string> description in network.Descriptions)
+                            {
+                                networkInfo[uid].Descriptions.Add(new NetworkInfo.Description(description.Key, description.Value));
+                            }
+                        }
                         networkInfo[uid].XModes = network.XModes;
                         networkInfo[uid].UChars = network.UChars;
                         lock (network.Channels)
@@ -375,13 +418,19 @@ namespace Client.Services
                                 networkInfo[uid]._channels.Add(info);
                             }
 
-                            //foreach (User user in network.PrivateChat)
-                            //{ 
-                            //    network
-                            //}
+                            foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
+                            {
+                                Buffer.Window window = new Buffer.Window(wn.Value);
+                                networkInfo[uid].PrivateWins.Add(window.Name);
+                                networkInfo[uid]._windows.Add(window);
+                            }
                         }
                     }
                 }
+                //foreach (Network network in unknown)
+                //{
+                //    NetworkInfo info = new NetworkInfo(network);
+                //}
             }
             WriteDisk();
         }

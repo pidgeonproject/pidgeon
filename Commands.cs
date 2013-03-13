@@ -202,6 +202,7 @@ namespace Client
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
                 RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
                 commands.Add("pidgeon.services.info", new Command(Type.System, Generic.services_cache));
+                commands.Add("pidgeon.services.clear", new Command(Type.System, Generic.services_clear));
                 commands.Add("pidgeon.services.flush", new Command(Type.System, Generic.services_flush));
             }
             catch (Exception fail)
@@ -654,6 +655,20 @@ namespace Client
                 {
                     ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
                     protocol.sBuffer.PrintInfo();
+                }
+            }
+
+            public static void services_clear(string parameter)
+            {
+                if (Core.network == null)
+                {
+                    return;
+                }
+                if (Core.network._Protocol.GetType() == typeof(ProtocolSv))
+                {
+                    ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
+                    protocol.sBuffer.Clear();
+                    Core._Main.Chat.scrollback.InsertText("Services cache was cleared", Scrollback.MessageStyle.System, false);
                 }
             }
 

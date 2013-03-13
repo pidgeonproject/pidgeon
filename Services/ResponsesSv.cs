@@ -325,6 +325,7 @@ namespace Client
                             Datagram request = new Datagram("BACKLOGSV");
                             request.Parameters.Add("network", i);
                             request.Parameters.Add("size", Configuration.Services.Depth.ToString());
+                            // we need to recover data from local storage
                             if (Configuration.Services.UsingCache && mq != null)
                             {
                                 if (!protocol.sBuffer.Networks.ContainsValue(mq[id]))
@@ -337,7 +338,6 @@ namespace Client
                                 else
                                 {
                                     protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.system, nw.system.name);
-                                    //nw.Descriptions = protocol.sBuffer.networkInfo[mq[id]].Descriptions;
                                     nw.CModes = protocol.sBuffer.networkInfo[mq[id]].CModes;
                                     nw.CUModes = protocol.sBuffer.networkInfo[mq[id]].CUModes;
                                     nw.Nickname = protocol.sBuffer.networkInfo[mq[id]].Nick;
@@ -346,6 +346,19 @@ namespace Client
                                     nw.UChars = protocol.sBuffer.networkInfo[mq[id]].UChars;
                                     nw.UModes = protocol.sBuffer.networkInfo[mq[id]].UModes;
                                     nw.XModes = protocol.sBuffer.networkInfo[mq[id]].XModes;
+                                    lock (nw.Descriptions)
+                                    {
+                                        nw.Descriptions.Clear();
+                                        foreach (Client.Services.Buffer.NetworkInfo.Description description in protocol.sBuffer.networkInfo[mq[id]].Descriptions)
+                                        {
+                                            nw.Descriptions.Add(description.Char, description.String);
+                                        }
+                                    }
+                                    foreach (string ms in protocol.sBuffer.networkInfo[mq[id]].PrivateWins)
+                                    {
+                                        User current_pm = nw.Private(ms);
+                                        protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.PrivateWins[current_pm], ms);
+                                    }
                                     int mqid = protocol.sBuffer.networkInfo[mq[id]].lastMQID;
                                     request.Parameters.Add("last", mqid.ToString());
                                 }

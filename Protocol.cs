@@ -89,7 +89,7 @@ namespace Client
         /// <param name="network">Network the window belongs to</param>
         /// <param name="writable">If true user will be able to send text in window</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
-        public virtual void CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
+        public virtual Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
         {
             Main._WindowRequest request = new Main._WindowRequest();
             if (id == null)
@@ -124,6 +124,7 @@ namespace Client
                 Core._Main.WindowRequests.Add(request);
                 PidgeonList.Updated = true;
             }
+            return request.window;
         }
 
         /// <summary>
