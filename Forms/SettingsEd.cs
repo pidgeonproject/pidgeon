@@ -84,10 +84,17 @@ namespace Client
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            Moving = true;
-            maskedTextBox1.Text = (richTextBox1.GetLineFromCharIndex(richTextBox1.SelectionStart) + 1).ToString();
-            maskedTextBox2.Text = (richTextBox1.SelectionStart - richTextBox1.GetFirstCharIndexOfCurrentLine() + 1).ToString();
-            Moving = false;
+            try
+            {
+                Moving = true;
+                maskedTextBox1.Text = (richTextBox1.GetLineFromCharIndex(richTextBox1.SelectionStart) + 1).ToString();
+                maskedTextBox2.Text = (richTextBox1.SelectionStart - richTextBox1.GetFirstCharIndexOfCurrentLine() + 1).ToString();
+                Moving = false;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void cursor()
@@ -115,8 +122,10 @@ namespace Client
                     }
                 }
             }
-            catch (Exception)
-            { }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void maskedTextBoxEnter(object sender, KeyEventArgs e)

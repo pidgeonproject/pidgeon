@@ -59,16 +59,15 @@ namespace Client
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.richTextBox1, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 91.05882F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 8.941176F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(682, 425);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
@@ -78,7 +77,7 @@ namespace Client
             this.richTextBox1.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.richTextBox1.Location = new System.Drawing.Point(3, 3);
             this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(676, 380);
+            this.richTextBox1.Size = new System.Drawing.Size(676, 367);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             this.richTextBox1.Click += new System.EventHandler(this.richTextBox1_TextChanged);
@@ -91,15 +90,15 @@ namespace Client
             this.panel1.Controls.Add(this.maskedTextBox2);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.button1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 389);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 376);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(676, 33);
+            this.panel1.Size = new System.Drawing.Size(676, 46);
             this.panel1.TabIndex = 1;
             // 
             // maskedTextBox1
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(408, 4);
+            this.maskedTextBox1.Location = new System.Drawing.Point(382, 7);
             this.maskedTextBox1.Name = "maskedTextBox1";
             this.maskedTextBox1.Size = new System.Drawing.Size(85, 20);
             this.maskedTextBox1.TabIndex = 6;
@@ -108,7 +107,7 @@ namespace Client
             // 
             // maskedTextBox2
             // 
-            this.maskedTextBox2.Location = new System.Drawing.Point(317, 4);
+            this.maskedTextBox2.Location = new System.Drawing.Point(291, 7);
             this.maskedTextBox2.Name = "maskedTextBox2";
             this.maskedTextBox2.Size = new System.Drawing.Size(85, 20);
             this.maskedTextBox2.TabIndex = 5;
@@ -117,7 +116,7 @@ namespace Client
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(178, 0);
+            this.button2.Location = new System.Drawing.Point(152, 3);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(133, 26);
             this.button2.TabIndex = 3;
@@ -127,7 +126,7 @@ namespace Client
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(28, 0);
+            this.button1.Location = new System.Drawing.Point(2, 3);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(133, 26);
             this.button1.TabIndex = 2;

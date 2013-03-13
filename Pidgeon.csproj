@@ -129,6 +129,7 @@
     <Compile Include="Channel.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Core\Config_Core.cs" />
+    <Compile Include="Core\Core_IO.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Forms\Channels.cs">
       <SubType>Form</SubType>

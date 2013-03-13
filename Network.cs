@@ -132,6 +132,9 @@ namespace Client
         /// This is true when network is just parsing the list of all channels
         /// </summary>
         public bool DownloadingList = false;
+        /// <summary>
+        /// Pointer to channel window
+        /// </summary>
         private Channels wChannelList = null;
         /// <summary>
         /// Private windows

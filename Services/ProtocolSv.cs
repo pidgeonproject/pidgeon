@@ -75,32 +75,25 @@ namespace Client
 
         public override bool Command(string cm, Network network = null)
         {
-            try
+            if (cm.StartsWith(" ") != true && cm.Contains(" "))
             {
-                if (cm.StartsWith(" ") != true && cm.Contains(" "))
-                {
-                    // uppercase
-                    string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
-                    string rest = cm.Substring(first_word.Length);
-                    Transfer(first_word + rest, Configuration.Priority.Normal, network);
-                    return true;
-                }
-                Transfer(cm.ToUpper(), Configuration.Priority.Normal, network);
+                // uppercase
+                string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
+                string rest = cm.Substring(first_word.Length);
+                Transfer(first_word + rest, Configuration.Priority.Normal, network);
                 return true;
             }
-            catch (Exception ex)
-            {
-                Core.handleException(ex);
-            }
-            return false;
+            Transfer(cm.ToUpper(), Configuration.Priority.Normal, network);
+            return true;
         }
 
         public void Start()
         {
-            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Scrollback.MessageStyle.System);
             try
             {
+                Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                Scrollback.MessageStyle.System);
+
                 sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
@@ -126,7 +119,6 @@ namespace Client
                 Core.SystemThreads.Add(keep);
                 keep.Name = "pinger thread";
                 keep.Start();
-
             }
             catch (Exception b)
             {
@@ -370,16 +362,25 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Create a remote connection to server
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="port"></param>
+        /// <returns></returns>
         public override bool ConnectTo(string server, int port)
         {
+            // remove space
             while (server.StartsWith(" "))
             {
                 server = server.Substring(1);
             }
+            // in case that server is invalid, we ignore the request
             if (server == "")
             {
                 return false;
             }
+            // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
                 windows["!root"].scrollback.InsertText("Connecting to " + server, Scrollback.MessageStyle.User, true);
@@ -446,7 +447,13 @@ namespace Client
             Transfer("JOIN " + name);
         }
 
-        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal, Network network = null)
+        /// <summary>
+        /// Send a raw data to irc server you pick, you should always fill in network, or current network will be used
+        /// </summary>
+        /// <param name="text">Message</param>
+        /// <param name="priority">priority</param>
+        /// <param name="network">This value must be filled in - it's not required because some old functions do not provide it</param>
+        public override void Transfer(string text, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
         {
             if (network == null)
             {

@@ -211,28 +211,6 @@ namespace Client
             public static bool aggressive_channel = true;
         }
 
-        /// <summary>
-        /// Used skin
-        /// </summary>
-        public static Skin CurrentSkin = new Skin();
-
-        public class Parser
-        {
-            public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
-            public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
-        }
-
-        /// <summary>
-        /// Reload time for scrollback - this is deprecated
-        /// </summary>
-        public static int reload_time = 100;
-        
-
-        /// <summary>
-        /// Shortcuts enabled
-        /// </summary>
-        public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
-
         public class Logs
         {
             /// <summary>
@@ -257,16 +235,6 @@ namespace Client
             public static string logs_name = "$1_yyMMdd";
         }
 
-        /// <summary>
-        /// List of loaded skins
-        /// </summary>
-        public static List<Skin> SL = new List<Skin>();
-
-        /// <summary>
-        /// Highlighter list
-        /// </summary>
-        public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
-        
         public class Scrollback
         {
             public static int DynamicSize = 600;
@@ -310,6 +278,38 @@ namespace Client
             public static bool UsingCache = false;
         }
 
+        public class Parser
+        {
+            public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
+            public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
+        }
+
+        /// <summary>
+        /// Used skin
+        /// </summary>
+        public static Skin CurrentSkin = new Skin();
+
+        /// <summary>
+        /// Reload time for scrollback - this is deprecated
+        /// </summary>
+        public static int reload_time = 100;
+        
+
+        /// <summary>
+        /// Shortcuts enabled
+        /// </summary>
+        public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
+
+        /// <summary>
+        /// List of loaded skins
+        /// </summary>
+        public static List<Skin> SL = new List<Skin>();
+
+        /// <summary>
+        /// Highlighter list
+        /// </summary>
+        public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
+        
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();
 
         public static Dictionary<string, string> Extensions
