@@ -91,61 +91,70 @@ namespace Client
 
         public void ViewLn(string content, ViewType type, string name = "")
         {
-            if (owner != null && owner.isChannel)
+            if (owner != null)
             {
                 toolStripMenuItem1.Visible = true;
                 Link = content;
                 if (type == ViewType.Channel)
                 {
-                    mode1b2ToolStripMenuItem.Visible = false;
+                    if (owner.isChannel)
+                    {
+                        mode1b2ToolStripMenuItem.Visible = false;
+                        mode1e2ToolStripMenuItem.Visible = false;
+                        mode1I2ToolStripMenuItem.Visible = false;
+                        mode1q2ToolStripMenuItem.Visible = false;
+                        kickToolStripMenuItem.Visible = false;
+                        whoisToolStripMenuItem.Visible = false;
+                        whowasToolStripMenuItem.Visible = false;
+                    }
+                    toolStripMenuItem2.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
-                    mode1e2ToolStripMenuItem.Visible = false;
-                    mode1I2ToolStripMenuItem.Visible = false;
-                    mode1q2ToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     joinToolStripMenuItem.Visible = true;
-                    kickToolStripMenuItem.Visible = false;
-                    whoisToolStripMenuItem.Visible = false;
-                    whowasToolStripMenuItem.Visible = false;
-                    toolStripMenuItem2.Visible = false;
                     return;
                 }
                 if (type == ViewType.User)
                 {
+                    if (owner.isChannel)
+                    {
+                        kickToolStripMenuItem.Visible = true;
+                        whoisToolStripMenuItem.Visible = true;
+                        whowasToolStripMenuItem.Visible = true;
+                        mode1e2ToolStripMenuItem.Visible = true;
+                        mode1I2ToolStripMenuItem.Visible = true;
+                        mode1q2ToolStripMenuItem.Visible = true;
+                        mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
+                        mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
+                        mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
+                        mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
+                        kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.irc.DefaultReason;
+                        whoisToolStripMenuItem.Text = "/whois " + name;
+                        whowasToolStripMenuItem.Text = "/whowas " + name;
+                        mode1b2ToolStripMenuItem.Visible = true;
+                    }
                     toolStripMenuItem2.Visible = true;
-                    kickToolStripMenuItem.Visible = true;
-                    whoisToolStripMenuItem.Visible = true;
-                    whowasToolStripMenuItem.Visible = true;
-                    mode1e2ToolStripMenuItem.Visible = true;
-                    mode1I2ToolStripMenuItem.Visible = true;
-                    mode1q2ToolStripMenuItem.Visible = true;
                     toolStripMenuItem1.Visible = true;
-                    mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
-                    mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
-                    mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
-                    mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
-                    kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.irc.DefaultReason;
-                    whoisToolStripMenuItem.Text = "/whois " + name;
-                    whowasToolStripMenuItem.Text = "/whowas " + name;
-                    mode1b2ToolStripMenuItem.Visible = true;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     joinToolStripMenuItem.Visible = false;
                 }
                 if (type == ViewType.Link)
                 {
-                    mode1b2ToolStripMenuItem.Visible = false;
+                    if (owner.isChannel)
+                    {
+                        mode1b2ToolStripMenuItem.Visible = false;
+                        mode1e2ToolStripMenuItem.Visible = false;
+                        mode1I2ToolStripMenuItem.Visible = false;
+                        mode1q2ToolStripMenuItem.Visible = false;
+                        kickToolStripMenuItem.Visible = false;
+                        whoisToolStripMenuItem.Visible = false;
+                        whowasToolStripMenuItem.Visible = false;
+                    }
                     openLinkInBrowserToolStripMenuItem.Visible = false;
-                    mode1e2ToolStripMenuItem.Visible = false;
-                    mode1I2ToolStripMenuItem.Visible = false;
-                    mode1q2ToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = true;
                     openLinkInBrowserToolStripMenuItem.Visible = true;
                     joinToolStripMenuItem.Visible = false;
-                    kickToolStripMenuItem.Visible = false;
-                    whoisToolStripMenuItem.Visible = false;
-                    whowasToolStripMenuItem.Visible = false;
                     toolStripMenuItem2.Visible = false;
                 }
             }

@@ -722,136 +722,153 @@ namespace Client
 
         public static string link2(string text)
         {
-            string result = text;
-            string templink = text;
-            string tempdata = text;
-            while (matchesPrefix(tempdata, "http://"))
+            try
             {
-                string separator = Prefix(tempdata, "http://").ToString();
-                string link = templink.Substring(templink.IndexOf(separator + "http://") + 8);
-                if (link.Length > 0)
+                string result = text;
+                string templink = text;
+                string tempdata = text;
+                while (matchesPrefix(tempdata, "http://"))
                 {
-                    if (link.Contains(separator))
+                    string separator = Prefix(tempdata, "http://").ToString();
+                    string link = templink.Substring(templink.IndexOf(separator + "http://") + 8);
+                    if (link.Length > 0)
                     {
-                        link = link.Substring(0, link.IndexOf(separator));
-                    }
-                    result = result.Replace(" http://" + link, " <a href=\"http://" + link + "\">http://" + link + "</a>");
-                    templink = templink.Replace(separator + "http://" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
-                    continue;
-
-                }
-                tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
-            }
-            tempdata = result;
-            templink = result;
-            while (matchesPrefix(tempdata, "#"))
-            {
-                string separator = Prefix(tempdata, "#").ToString();
-                string link = templink.Substring(templink.IndexOf(separator + "#") + 2);
-                if (link.Length > 0)
-                {
-                    if (link.Contains(separator))
-                    {
-                        link = link.Substring(0, link.IndexOf(separator));
-                    }
-                    result = result.Replace(separator + "#" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
-                    templink = templink.Replace(separator + "#" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
-                    continue;
-
-                }
-                tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
-            }
-            if (result.Contains("%USER%") && result.Contains("%/USER%"))
-            {
-                string link = result.Substring(templink.IndexOf("%USER%") + 6);
-                if (link.Length > 0)
-                {
-                    link = link.Substring(0, link.IndexOf("%/USER%"));
-                    result = result.Replace("%USER%" + link + "%/USER%", "<a href=\"pidgeon://user/#" + link + "\">" + link + "</a>");
-                }
-            }
-            templink = result;
-            tempdata = result;
-            while (result.Contains("%L%") && result.Contains("%/L%"))
-            {
-                string link = result.Substring(result.IndexOf("%L%") + 3);
-                if (link.Length > 0)
-                {
-                    link = link.Substring(0, link.IndexOf("%/L%"));
-                    result = result.Replace("%L%" + link + "%/L%", "<a href=\"pidgeon://text/#" + link + "\">" + link + "</a>");
-                }
-            }
-            templink = result;
-            tempdata = result;
-            while (matchesPrefix(tempdata, "https://"))
-            {
-                string pr = Prefix(tempdata, "https://").ToString();
-                string link = templink.Substring(templink.IndexOf(pr + "https://") + 9);
-                if (link.Length > 0)
-                {
-                    if (link.Contains(pr))
-                    {
-                        link = link.Substring(0, link.IndexOf(pr));
-                    }
-                    result = result.Replace(pr + "https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
-                    templink = templink.Replace(pr + "https://" + link, "");
-                    tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
-                    continue;
-
-                }
-                tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
-            }
-            char colorchar = (char)3;
-            int color = 0;
-            bool closed = false;
-
-            while (result.Contains(colorchar.ToString()))
-            {
-                int position = 0;
-                while (result.Length > position)
-                {
-                    if (result[position] == colorchar)
-                    {
-                        if (closed)
+                        if (link.Contains(separator))
                         {
-                            result = result.Remove(position, 1);
-                            result = result.Insert(position, "</FONT>");
-                            closed = false;
-                            break;
+                            link = link.Substring(0, link.IndexOf(separator));
                         }
+                        result = result.Replace(" http://" + link, " <a href=\"http://" + link + "\">http://" + link + "</a>");
+                        templink = templink.Replace(separator + "http://" + link, "");
+                        tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
+                        continue;
 
-                        if (!closed)
+                    }
+                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
+                }
+                tempdata = result;
+                templink = result;
+                while (matchesPrefix(tempdata, "#"))
+                {
+                    string separator = Prefix(tempdata, "#").ToString();
+                    string link = templink.Substring(templink.IndexOf(separator + "#") + 2);
+                    if (link.Length > 0)
+                    {
+                        if (link.Contains(separator))
                         {
-                            if (!int.TryParse(result[position + 1].ToString() + result[position + 2].ToString(), out color))
+                            link = link.Substring(0, link.IndexOf(separator));
+                        }
+                        result = result.Replace(separator + "#" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
+                        templink = templink.Replace(separator + "#" + link, "");
+                        tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
+                        continue;
+
+                    }
+                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
+                }
+                if (result.Contains("%USER%") && result.Contains("%/USER%"))
+                {
+                    string link = result.Substring(templink.IndexOf("%USER%") + 6);
+                    if (link.Length > 0)
+                    {
+                        link = link.Substring(0, link.IndexOf("%/USER%"));
+                        result = result.Replace("%USER%" + link + "%/USER%", "<a href=\"pidgeon://user/#" + link + "\">" + link + "</a>");
+                    }
+                }
+                templink = result;
+                tempdata = result;
+                while (result.Contains("%L%") && result.Contains("%/L%"))
+                {
+                    string link = result.Substring(result.IndexOf("%L%") + 3);
+                    if (link.Length > 0)
+                    {
+                        link = link.Substring(0, link.IndexOf("%/L%"));
+                        result = result.Replace("%L%" + link + "%/L%", "<a href=\"pidgeon://text/#" + link + "\">" + link + "</a>");
+                    }
+                }
+                templink = result;
+                tempdata = result;
+                while (matchesPrefix(tempdata, "https://"))
+                {
+                    string pr = Prefix(tempdata, "https://").ToString();
+                    string link = templink.Substring(templink.IndexOf(pr + "https://") + 9);
+                    if (link.Length > 0)
+                    {
+                        if (link.Contains(pr))
+                        {
+                            link = link.Substring(0, link.IndexOf(pr));
+                        }
+                        result = result.Replace(pr + "https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
+                        templink = templink.Replace(pr + "https://" + link, "");
+                        tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
+                        continue;
+
+                    }
+                    tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
+                }
+                char colorchar = (char)3;
+                int color = 0;
+                bool closed = false;
+
+                while (result.Contains(colorchar.ToString()))
+                {
+                    int position = 0;
+                    while (result.Length > position)
+                    {
+                        if (result[position] == colorchar)
+                        {
+                            if (closed)
                             {
-                                if (!int.TryParse(result[position + 1].ToString(), out color))
-                                {
-                                    color = 0;
-                                }
-                            }
-                            if (color > 9)
-                            {
-                                result = result.Remove(position, 3);
-                            }
-                            else
-                            {
-                                result = result.Remove(position, 2);
-                            }
-                            closed = true;
-                            if (color < 16)
-                            {
-                                result = result.Insert(position, "<font color=\"" + Configuration.CurrentSkin.mrcl[color].ToArgb().ToString() + "\">");
+                                result = result.Remove(position, 1);
+                                result = result.Insert(position, "</FONT>");
+                                closed = false;
                                 break;
                             }
-                        }
-                    }
-                    position++;
-                }
-            }
 
-            return result;
+                            if (!closed)
+                            {
+                                if (result.Length > position + 3)
+                                {
+                                    if (!int.TryParse(result[position + 1].ToString() + result[position + 2].ToString(), out color))
+                                    {
+                                        if (!int.TryParse(result[position + 1].ToString(), out color))
+                                        {
+                                            color = 0;
+                                        }
+                                    }
+                                }
+                                if (color > 9)
+                                {
+                                    if (result.Length > position + 4)
+                                    {
+                                        result = result.Remove(position, 3);
+                                    }
+                                }
+                                else
+                                {
+                                    if (result.Length > position + 3)
+                                    {
+                                        result = result.Remove(position, 2);
+                                    }
+                                }
+                                closed = true;
+                                if (color < 16)
+                                {
+                                    result = result.Insert(position, "<font color=\"" + Configuration.CurrentSkin.mrcl[color].ToArgb().ToString() + "\">");
+                                    break;
+                                }
+                            }
+                        }
+                        position++;
+                    }
+                }
+
+                return result;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+                return "";
+            }
         }
 
         public static int parse(string input)

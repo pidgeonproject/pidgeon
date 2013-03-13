@@ -305,6 +305,7 @@ namespace Client
             return false;
         }
 
+        /*
         private void timer2_Tick(object sender, EventArgs e)
         {
             try
@@ -340,6 +341,51 @@ namespace Client
                     }
                 }
                 timer2.Enabled = true;
+            }
+            catch (Exception fail)
+            {
+                timer2.Enabled = true;
+                Core.handleException(fail);
+            }
+        } */
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (RT != null && WindowVisible())
+                {
+                    lock (UndrawnLines)
+                    {
+                        if (!ReloadWaiting)
+                        {
+                            if (UndrawnLines.Count > 0)
+                            {
+                                timer2.Enabled = false;
+                                foreach (ContentLine curr in UndrawnLines)
+                                {
+                                    InsertLineToText(curr, false);
+                                }
+                                RT.RedrawText();
+                                if (ScrollingEnabled)
+                                {
+                                    RT.ScrollToBottom();
+                                }
+                                timer2.Enabled = true;
+                            }
+                        }
+                        UndrawnLines.Clear();
+                    }
+                    if (ReloadWaiting)
+                    {
+                        timer2.Enabled = false;
+                        if (Reload())
+                        {
+                            ReloadWaiting = false;
+                        }
+                        timer2.Enabled = true;
+                    }
+                }
             }
             catch (Exception fail)
             {
