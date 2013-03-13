@@ -27,11 +27,12 @@ namespace Client
         public string Time = null;
         public string User = null;
     }
+
     public class Invite : ChannelParameterMode
     {
         public Invite()
         {
-        
+            // This empty constructor is here so that we can serialize this
         }
 
         public Invite(string user, string target, string time)
@@ -39,18 +40,20 @@ namespace Client
 
         }
     }
+
     public class Except : ChannelParameterMode
     {
         public Except()
         {
-
+            // This empty constructor is here so that we can serialize this
         }
     }
+
     public class SimpleBan : ChannelParameterMode
     {
         public SimpleBan()
         {
-        
+            
         }
 
         public SimpleBan(string user, string target, string time)
@@ -140,14 +143,13 @@ namespace Client
         /// </summary>
         public bool Redraw = false;
         /// <summary>
-        /// If true the window is considered usable
+        /// If true the window is considered usable, in case it's false, the window is flagged as parted channel
         /// </summary>
         public bool ChannelWork = false;
         /// <summary>
         /// Tree node
         /// </summary>
         public System.Windows.Forms.TreeNode TreeNode = null;
-
 
         /// <summary>
         /// Renew the bans
@@ -192,6 +194,9 @@ namespace Client
             Chat = null;
         }
 
+        /// <summary>
+        /// Recreate information in side menu
+        /// </summary>
         public void UpdateInfo()
         {
             if (TreeNode != null)

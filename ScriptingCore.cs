@@ -649,7 +649,7 @@ namespace Client
             interp.registerObject(Configuration.ChannelModes.aggressive_invites, "configuration_aggressive_invites");
             interp.registerObject(Configuration.ChannelModes.aggressive_mode, "configuration_aggressive_mode");
             interp.registerObject(Configuration.Scrollback.chat_timestamp, "configuration_chat_timestamp");
-            interp.registerObject(Configuration.ConfirmAll, "configuration_confirm");
+            interp.registerObject(Configuration.irc.ConfirmAll, "configuration_confirm");
             interp.registerObject(Configuration.CurrentSkin, "configuration_skin_name");
             interp.registerObject(Configuration.irc.DefaultReason, "configuration_kickban_reason");
             interp.registerObject(Configuration.Services.Depth, "configuration_depth");
@@ -660,7 +660,7 @@ namespace Client
             interp.registerObject(Configuration.UserData.ident, "configuration_ident");
             interp.registerObject(Configuration.UserData.LastHost, "configuration_lasthost");
             interp.registerObject(Configuration.UserData.LastNick, "configuration_lastnick");
-            interp.registerObject(Configuration.LastPort, "configuration_lastport");
+            interp.registerObject(Configuration.UserData.LastPort, "configuration_lastport");
             interp.registerObject(Configuration.irc.mq, "configuration_mq");
             interp.registerObject(Configuration.UserData.nick, "configuration_nick");
             interp.registerObject(Configuration.Kernel.Notice, "configuration_notice");

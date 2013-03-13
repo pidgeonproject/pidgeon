@@ -812,8 +812,8 @@ namespace Client
                 makenode("history.nick", Configuration.UserData.LastNick, curr, confname, config, xmlnode);
                 makenode("scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
                 makenode("history.host", Configuration.UserData.LastHost, curr, confname, config, xmlnode);
-                makenode("history.port", Configuration.LastPort, curr, confname, config, xmlnode);
-                makenode("confirm.all", Configuration.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+                makenode("history.port", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
+                makenode("confirm.all", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
                 makenode("notification.tray", Configuration.Kernel.Notice.ToString(), curr, confname, config, xmlnode);
                 makenode("sniffer", Configuration.Kernel.NetworkSniff.ToString(), curr, confname, config, xmlnode);
                 makenode("pidgeon.size", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
@@ -1238,7 +1238,7 @@ namespace Client
                                         Configuration.Kernel.CheckUpdate = bool.Parse(curr.InnerText);
                                         break;
                                     case "history.port":
-                                        Configuration.LastPort = curr.InnerText;
+                                        Configuration.UserData.LastPort = curr.InnerText;
                                         break;
                                     case "delimiters":
                                         List<char> temp = new List<char>();

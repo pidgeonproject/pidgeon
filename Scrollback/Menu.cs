@@ -495,7 +495,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    if (Configuration.ConfirmAll)
+                    if (Configuration.irc.ConfirmAll)
                     {
                         if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
                         {

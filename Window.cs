@@ -204,13 +204,13 @@ namespace Client
                                 }
                                 string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                                 script += current_kick + Environment.NewLine;
-                                if (!Configuration.ConfirmAll)
+                                if (!Configuration.irc.ConfirmAll)
                                 {
                                     _channel._Network.Transfer(current_ban, Configuration.Priority.High);
                                     _channel._Network.Transfer(current_kick, Configuration.Priority.High);
                                 }
                             }
-                            if (Configuration.ConfirmAll)
+                            if (Configuration.irc.ConfirmAll)
                             {
                                 Core.ProcessScript(script, _Network);
                             }
@@ -394,12 +394,12 @@ namespace Client
                         {
                             string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
                             script += current_kick + Environment.NewLine;
-                            if (!Configuration.ConfirmAll)
+                            if (!Configuration.irc.ConfirmAll)
                             {
                                 _Network.Transfer(current_kick, Configuration.Priority.High);
                             }
                         }
-                        if (Configuration.ConfirmAll)
+                        if (Configuration.irc.ConfirmAll)
                         {
                             Core.ProcessScript(script, _Network);
                         }
@@ -469,7 +469,7 @@ namespace Client
                                             }
                                             break;
                                     }
-                                    if (!Configuration.ConfirmAll)
+                                    if (!Configuration.irc.ConfirmAll)
                                     {
                                         Core.network.Transfer(mode, Configuration.Priority.High);
                                     }
@@ -484,7 +484,7 @@ namespace Client
                                 script += "# can't find a channel for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
                             }
                         }
-                        if (Configuration.ConfirmAll)
+                        if (Configuration.irc.ConfirmAll)
                         {
                             Core.ProcessScript(script, _Network);
                         }

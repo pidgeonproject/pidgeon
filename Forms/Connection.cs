@@ -48,9 +48,9 @@ namespace Client
                 _Nickname.Text = Configuration.UserData.nick;
                 comboBox1.Items.Add("irc");
                 comboBox1.SelectedItem = "irc";
-                if (Configuration.LastPort != "")
+                if (Configuration.UserData.LastPort != "")
                 {
-                    textBox2.Text = Configuration.LastPort;
+                    textBox2.Text = Configuration.UserData.LastPort;
                 }
                 if (Configuration.UserData.LastNick != "")
                 {
@@ -94,7 +94,7 @@ namespace Client
                 Configuration.UserData.nick = _Nickname.Text;
                 Configuration.UserData.ident = textBox1.Text;
                 Configuration.UserData.LastHost = comboBox2.Text;
-                Configuration.LastPort = textBox2.Text;
+                Configuration.UserData.LastPort = textBox2.Text;
                 Configuration.UserData.LastNick = _Nickname.Text;
                 switch (comboBox1.SelectedIndex)
                 {

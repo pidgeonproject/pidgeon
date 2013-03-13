@@ -71,8 +71,19 @@ namespace Client
             public static int window_size = 0;
         }
 
+        /// <summary>
+        /// Configuration of IRC
+        /// </summary>
         public class irc
         {
+            /// <summary>
+            /// If true the system will convert whois data to some format
+            /// </summary>
+            public static bool FriendlyWhois = true;
+            /// <summary>
+            /// If true a client will ask before executing generated kick bans
+            /// </summary>
+            public static bool ConfirmAll = true;
             /// <summary>
             /// Default bans
             /// </summary>
@@ -127,6 +138,7 @@ namespace Client
             /// <summary>
             /// Last used port
             /// </summary>
+            public static string LastPort = "";
         }
 
         public class Colors
@@ -170,13 +182,6 @@ namespace Client
             /// </summary>
             public static bool ShutdownCheck = true;
         }
-
-        public static bool FriendlyWho = true;
-
-        /// <summary>
-        /// If true a client will ask before executing generated kick bans
-        /// </summary>
-        public static bool ConfirmAll = true;
 
         public class ChannelModes
         {
@@ -251,8 +256,6 @@ namespace Client
             /// </summary>
             public static string logs_name = "$1_yyMMdd";
         }
-        
-        public static string LastPort = "";
 
         /// <summary>
         /// List of loaded skins

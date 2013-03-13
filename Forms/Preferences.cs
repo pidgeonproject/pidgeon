@@ -64,7 +64,7 @@ namespace Client
                 checkBox1.Checked = Configuration.Logs.logs_txt;
                 checkBox2.Checked = Configuration.Logs.logs_html;
                 checkBox4.Checked = Configuration.irc.DisplayCtcp;
-                checkBox8.Checked = Configuration.ConfirmAll;
+                checkBox8.Checked = Configuration.irc.ConfirmAll;
                 checkBox9.Checked = Configuration.Kernel.Notice;
                 textBox5.Text = Configuration.Logs.logs_dir;
                 textBox6.Text = Configuration.Logs.logs_name;
@@ -170,7 +170,7 @@ namespace Client
                     }
                 }
                 
-                Configuration.ConfirmAll = checkBox8.Checked;
+                Configuration.irc.ConfirmAll = checkBox8.Checked;
                 Configuration.UserData.nick = textBox1.Text;
                 Configuration.UserData.quit = textBox2.Text;
                 Configuration.UserData.ident = textBox3.Text;
