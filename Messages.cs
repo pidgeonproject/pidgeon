@@ -24,6 +24,24 @@ namespace Client
 {
     public class messages
     {
+        /// <summary>
+        /// Default language
+        /// </summary>
+        public static string Language = "en";
+
+        public class container
+        {
+            public string language;
+            public Dictionary<string, string> Cache;
+            public container(string LanguageCode)
+            {
+                language = LanguageCode;
+                Cache = new Dictionary<string, string>();
+            }
+        }
+
+        public static Dictionary<string, container> data = new Dictionary<string, container>();
+
         public static List<Control> GetControls(Control form)
         {
             var controlList = new List<Control>();
@@ -89,23 +107,6 @@ namespace Client
                 Core.handleException(fail);
             }
         }
-
-        /// <summary>
-        /// Default language
-        /// </summary>
-        public static string Language = "en";
-        public class container
-        {
-            public string language;
-            public Dictionary<string, string> Cache;
-            public container(string LanguageCode)
-            {
-                language = LanguageCode;
-                Cache = new Dictionary<string, string>();
-            }
-        }
-
-        public static Dictionary<string, container> data = new Dictionary<string, container>();
 
         private static string parse(string text, string name)
         {

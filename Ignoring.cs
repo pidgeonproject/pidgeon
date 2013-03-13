@@ -52,6 +52,7 @@ namespace Client
             /// Type
             /// </summary>
             public Type type = Type.User;
+
             public Ignore(bool enabled, bool simple, string data, Type _Type)
             {
                 Enabled = enabled;

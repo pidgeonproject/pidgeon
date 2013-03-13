@@ -60,7 +60,7 @@ namespace Client
                 }
                 if (data.StartsWith("pidgeon://user"))
                 {
-                    if (this.owner.isChannel)
+                    if (this.owner != null && this.owner.isChannel)
                     {
                         Channel channel = owner._Network.getChannel(owner.name);
                         if (channel != null)
