@@ -206,12 +206,12 @@
     </Compile>
     <Compile Include="Ignoring.cs" />
     <Compile Include="IRC.cs" />
-    <Compile Include="ListViewDB.cs">
+    <Compile Include="Graphics\ListViewDB.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="NetworkMode.cs" />
-    <Compile Include="ProtocolXmpp.cs" />
-    <Compile Include="Qt.cs" />
+    <Compile Include="Protocols\ProtocolXmpp.cs" />
+    <Compile Include="Protocols\Qt.cs" />
     <Compile Include="Services\Buffer.cs" />
     <Compile Include="Services\Datagram.cs" />
     <Compile Include="Services\ResponsesSv.cs" />
@@ -241,10 +241,10 @@
       <DependentUpon>Warning.cs</DependentUpon>
     </Compile>
     <Compile Include="Hooks.cs" />
-    <Compile Include="PidgeonList.cs">
+    <Compile Include="Graphics\PidgeonList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PidgeonList.Designer.cs">
+    <Compile Include="Graphics\PidgeonList.Designer.cs">
       <DependentUpon>PidgeonList.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Recovery.cs">
@@ -274,10 +274,10 @@
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Timer.cs" />
-    <Compile Include="Window.cs">
+    <Compile Include="Graphics\Window.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Window.Designer.cs">
+    <Compile Include="Graphics\Window.Designer.cs">
       <DependentUpon>Window.cs</DependentUpon>
     </Compile>
     <Compile Include="Messages.cs" />
@@ -292,8 +292,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Protocol.cs" />
-    <Compile Include="ProtocolIrc.cs" />
-    <Compile Include="ProtocolQuassel.cs" />
+    <Compile Include="Protocols\ProtocolIrc.cs" />
+    <Compile Include="Protocols\ProtocolQuassel.cs" />
     <Compile Include="Scrollback\Scrollback.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -301,10 +301,10 @@
       <DependentUpon>Scrollback.cs</DependentUpon>
     </Compile>
     <Compile Include="SkinCl.cs" />
-    <Compile Include="TextBox.cs">
+    <Compile Include="Graphics\TextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TextBox.Designer.cs">
+    <Compile Include="Graphics\TextBox.Designer.cs">
       <DependentUpon>TextBox.cs</DependentUpon>
     </Compile>
     <Compile Include="User.cs" />
@@ -362,13 +362,13 @@
     <EmbeddedResource Include="Forms\Warning.resx">
       <DependentUpon>Warning.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PidgeonList.resx">
+    <EmbeddedResource Include="Graphics\PidgeonList.resx">
       <DependentUpon>PidgeonList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Recovery.resx">
       <DependentUpon>Recovery.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Window.resx">
+    <EmbeddedResource Include="Graphics\Window.resx">
       <DependentUpon>Window.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -384,7 +384,7 @@
     <EmbeddedResource Include="Scrollback\Scrollback.resx">
       <DependentUpon>Scrollback.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TextBox.resx">
+    <EmbeddedResource Include="Graphics\TextBox.resx">
       <DependentUpon>TextBox.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
