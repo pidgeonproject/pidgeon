@@ -37,8 +37,8 @@ namespace Client.Services
             public bool Changed = true;
 
             public Window()
-            { 
-                
+            {
+
             }
 
             public Window(Client.Window owner)
@@ -159,8 +159,8 @@ namespace Client.Services
             public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
 
             public NetworkInfo()
-            { 
-                
+            {
+
             }
 
             public Buffer.Window getW(string window)
@@ -221,7 +221,7 @@ namespace Client.Services
         }
 
         public Dictionary<string, string> Networks = new Dictionary<string, string>();
-        public Dictionary<string, NetworkInfo> networkInfo = new Dictionary<string,NetworkInfo>();
+        public Dictionary<string, NetworkInfo> networkInfo = new Dictionary<string, NetworkInfo>();
         public ProtocolSv protocol = null;
         public bool Loaded = false;
         public string Root = null;
@@ -245,11 +245,13 @@ namespace Client.Services
 
         public void Make(string network, string network_id)
         {
-            if (!Networks.ContainsKey(network))
+            if (Networks.ContainsKey(network))
             {
-                Networks.Add(network, network_id);
-                networkInfo.Add(network_id, new NetworkInfo());
+                networkInfo.Remove(Networks[network]);
+                Networks.Remove(network);
             }
+            Networks.Add(network, network_id);
+            networkInfo.Add(network_id, new NetworkInfo());
         }
 
         public void ReadDisk()

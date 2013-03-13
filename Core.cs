@@ -1257,6 +1257,9 @@ namespace Client
                                     case "services.usingcache":
                                         Configuration.Services.UsingCache = bool.Parse(curr.InnerText);
                                         break;
+                                    case "message_mq":
+                                        Configuration.irc.mq = int.Parse(curr.InnerText);
+                                        break;
                                 }
                             }
                         }
