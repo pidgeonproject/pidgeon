@@ -169,7 +169,7 @@ namespace Client
                     simpleview.Visible = false;
                     toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     toggleSimpleLayoutToolStripMenuItem.Checked = false;
-                    Recreate(true);
+                    RT.RedrawText();
                     return;
                 }
                 Reload(true, true);
@@ -305,18 +305,6 @@ namespace Client
             return false;
         }
 
-        /// <summary>
-        /// Redraw a text
-        /// </summary>
-        /// <param name="enforce">Deprecated</param>
-        private void Recreate(bool enforce = false)
-        {
-            if (!simple)
-            {
-                //RT.RedrawText();
-            }
-        }
-
         private void timer2_Tick(object sender, EventArgs e)
         {
             try
@@ -343,17 +331,19 @@ namespace Client
                                 }
                                 UndrawnLines.Clear();
                             }
+                            timer2.Enabled = true;
                         }
                     }
 
                     if (ReloadWaiting)
                     {
+                        timer2.Enabled = false;
                         if (Reload())
                         {
                             ReloadWaiting = false;
                         }
+                        timer2.Enabled = true;
                     }
-                    timer2.Enabled = true;
                 }
             }
             catch (Exception fail)
