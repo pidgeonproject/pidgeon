@@ -68,6 +68,16 @@ namespace Client
                 checkBox9.Checked = Configuration.Kernel.Notice;
                 textBox5.Text = Configuration.Logs.logs_dir;
                 textBox6.Text = Configuration.Logs.logs_name;
+                radioButton3.Checked = true;
+                switch (Configuration.Logs.ServicesLogs)
+                { 
+                    case Configuration.Logs.ServiceLogs.full:
+                        radioButton1.Checked = true;
+                        break;
+                    case Configuration.Logs.ServiceLogs.incremental:
+                        radioButton2.Checked = true;
+                        break;
+                }
 
                 foreach (Skin skin in Configuration.SL)
                 {
@@ -183,6 +193,18 @@ namespace Client
                 Configuration.Kernel.Notice = checkBox9.Checked;
                 Configuration.Logs.logs_dir = textBox5.Text;
                 Configuration.Logs.logs_name = textBox6.Text;
+                if (radioButton1.Checked)
+                {
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
+                }
+                if (radioButton2.Checked)
+                {
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.incremental;
+                }
+                if (radioButton3.Checked)
+                {
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.none;
+                }
                 lock (Ignoring.IgnoreList)
                 {
                     Ignoring.IgnoreList.Clear();

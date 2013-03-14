@@ -39,7 +39,7 @@ namespace Client
                     {
                         channel.ChannelMode.mode(code[4]);
                         channel.UpdateInfo();
-                        curr.scrollback.InsertText("Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
                     Hooks._Network.ChannelInfo(_Network, channel, code[4]);
                     return true;
@@ -105,7 +105,7 @@ namespace Client
                         {
                             System.Threading.Thread.Sleep(100);
                         }
-                        curr.scrollback.InsertText("Topic: " + topic, Scrollback.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Topic: " + topic, Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
@@ -151,7 +151,7 @@ namespace Client
                     Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
-                        curr.scrollback.InsertText("Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
+                        WindowText(curr, "Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
                             Scrollback.MessageStyle.Channel, !channel.temporary_hide, date, !updated_text);
                         return true;
                     }
@@ -214,7 +214,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    window.scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
+                    WindowText(window, messages.get("join", Core.SelectedLanguage,
                         new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
                         Scrollback.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
                     if (updated_text)
@@ -278,7 +278,7 @@ namespace Client
                 User delete = null;
                 if (window != null)
                 {
-                    window.scrollback.InsertText(messages.get("window-p1",
+                    WindowText(window, messages.get("window-p1",
                         Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                         Scrollback.MessageStyle.Part,
                         !channel.temporary_hide, date, !updated_text);
@@ -328,7 +328,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    window.scrollback.InsertText(messages.get("channel-topic",
+                    WindowText(window, messages.get("channel-topic",
                         Core.SelectedLanguage, new List<string> { source, value }), Scrollback.MessageStyle.Channel,
                         !channel.temporary_hide, date, !updated_text);
                     return true;
@@ -357,10 +357,10 @@ namespace Client
                                     curr.Nick = _new;
                                     item.redrawUsers();
                                 }
-                                Window x = item.retrieveWindow();
-                                if (x != null)
+                                Window window = item.retrieveWindow();
+                                if (window != null)
                                 {
-                                    x.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage,
+                                    WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
                                         new List<string> { nick, _new }), Scrollback.MessageStyle.Channel,
                                         !item.temporary_hide, date, !updated_text);
                                 }
@@ -389,7 +389,7 @@ namespace Client
                         string change = parameters.Substring(parameters.IndexOf(" "));
                         if (window != null)
                         {
-                            channel.retrieveWindow().scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage,
+                            WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
                                 new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }),
                                 Scrollback.MessageStyle.Action, !channel.temporary_hide, date, !updated_text);
                         }

@@ -130,6 +130,7 @@ namespace Client
                     make_node("logs.xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
                     make_comment("If you want to save logs in TXT", config, xmlnode);
                     make_node("logs.txt", Configuration.Logs.logs_txt.ToString(), curr, confname, config, xmlnode);
+                    make_node("logs.services.log.type", Configuration.Logs.ServicesLogs.ToString(), curr, confname, config, xmlnode);
                     // System
                     make_comment(" ============= SYSTEM ============= ", config, xmlnode);
                     make_comment("Check for updates (recommended)", config, xmlnode);
@@ -478,6 +479,19 @@ namespace Client
                                                 break;
                                             case "message_mq":
                                                 Configuration.irc.mq = int.Parse(curr.InnerText);
+                                                break;
+                                            case "logs.services.log.type":
+                                                Configuration.Logs.ServiceLogs type = Configuration.Logs.ServiceLogs.none;
+                                                switch (curr.InnerText.ToLower())
+                                                { 
+                                                    case "incremental":
+                                                        type = Configuration.Logs.ServiceLogs.incremental;
+                                                        break;
+                                                    case "full":
+                                                        type = Configuration.Logs.ServiceLogs.full;
+                                                        break;
+                                                }
+                                                Configuration.Logs.ServicesLogs = type;
                                                 break;
                                         }
                                     }

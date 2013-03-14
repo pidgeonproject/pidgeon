@@ -233,6 +233,15 @@ namespace Client
             /// Name
             /// </summary>
             public static string logs_name = "$1_yyMMdd";
+
+            public static ServiceLogs ServicesLogs = ServiceLogs.none;
+
+            public enum ServiceLogs
+            { 
+                full,
+                incremental,
+                none
+            }
         }
 
         public class Scrollback

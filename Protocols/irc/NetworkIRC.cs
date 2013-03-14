@@ -247,7 +247,7 @@ namespace Client
                     }
                     if (Configuration.irc.DisplayCtcp)
                     {
-                        _Network.SystemWindow.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                        WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
@@ -308,7 +308,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 string message = value;
-                _Network.SystemWindow.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -336,7 +336,7 @@ namespace Client
                 {
                     return false;
                 }
-                _Network.SystemWindow.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -369,10 +369,10 @@ namespace Client
                     }
                     if (target != null)
                     {
-                        Window x = item.retrieveWindow();
-                        if (x != null && x.scrollback != null)
+                        Window window = item.retrieveWindow();
+                        if (window != null && window.scrollback != null)
                         {
-                            x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
+                            WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                 new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                                 Scrollback.MessageStyle.Join,
                                 !item.temporary_hide, date, !updated_text);

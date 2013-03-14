@@ -37,6 +37,7 @@ namespace Client
         public DateTime pong;
         public long date = 0;
         public bool updated_text = true;
+        public bool isServices = false;
 
         private void Ping()
         {
@@ -406,6 +407,41 @@ namespace Client
         }
 
         /// <summary>
+        /// This function handle the writing to scrollback
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="InputStyle"></param>
+        /// <param name="WriteLog"></param>
+        /// <param name="Date"></param>
+        /// <param name="SuppressPing"></param>
+        public void WindowText(Window window, string text, Scrollback.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        {
+            bool logging = WriteLog;
+
+            if (logging && isServices)
+            {
+                if (Configuration.Logs.ServicesLogs == Configuration.Logs.ServiceLogs.none)
+                {
+                    logging = false;
+                }
+                else if (Configuration.Logs.ServicesLogs == Configuration.Logs.ServiceLogs.full)
+                {
+                    logging = true;
+                }
+                else if (Configuration.Logs.ServicesLogs == Configuration.Logs.ServiceLogs.incremental)
+                {
+                    logging = false;
+                    if (updated_text)
+                    {
+                        logging = true;
+                    }
+                }
+            }
+
+            window.scrollback.InsertText(text, InputStyle, logging, Date, SuppressPing);
+        }
+
+        /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="_network"></param>
@@ -421,6 +457,10 @@ namespace Client
             pong = _pong;
             date = _date;
             updated_text = updated;
+            if (_network._Protocol.GetType() == typeof(ProtocolSv))
+            {
+                isServices = true;
+            }
         }
     }
 
