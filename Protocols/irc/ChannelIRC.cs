@@ -442,7 +442,6 @@ namespace Client
                                         flagged_user.ChannelMode.mode(type.ToString() + m.ToString());
                                     }
                                     curr++;
-                                    channel.redrawUsers();
                                 }
                                 if (parameters2.Count > curr)
                                 {
@@ -453,27 +452,19 @@ namespace Client
                                             {
                                                 channel.Bans = new List<SimpleBan>();
                                             }
-                                            lock (channel.Bans)
+
+                                            if (type == '-')
                                             {
-                                                if (type == '-')
-                                                {
-                                                    SimpleBan br = null;
-                                                    foreach (SimpleBan xx in channel.Bans)
-                                                    {
-                                                        if (xx.Target == parameters2[curr])
-                                                        {
-                                                            br = xx;
-                                                            break;
-                                                        }
-                                                    }
-                                                    if (br != null)
-                                                    {
-                                                        channel.Bans.Remove(br);
-                                                    }
-                                                    break;
-                                                }
-                                                channel.Bans.Add(new SimpleBan(user, parameters2[curr], ""));
+                                                channel.RemoveBan(parameters2[curr]);
                                             }
+                                            else
+                                            {
+                                                lock (channel.Bans)
+                                                {
+                                                    channel.Bans.Add(new SimpleBan(user, parameters2[curr], ""));
+                                                }
+                                            }
+
                                             curr++;
                                             break;
                                     }

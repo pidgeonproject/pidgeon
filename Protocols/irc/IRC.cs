@@ -44,56 +44,6 @@ namespace Client
             return;
         }
 
-        private bool Quit(string source, string parameters, string value)
-        {
-            string user = source.Substring(0, source.IndexOf("!"));
-            string _ident;
-            string _host;
-            _host = source.Substring(source.IndexOf("@") + 1);
-            _ident = source.Substring(source.IndexOf("!") + 1);
-            _ident = _ident.Substring(0, _ident.IndexOf("@"));
-            string _new = value;
-            foreach (Channel item in _Network.Channels)
-            {
-                if (item.ChannelWork)
-                {
-                    User target = null;
-                    lock (item.UserList)
-                    {
-                        foreach (User curr in item.UserList)
-                        {
-                            if (curr.Nick == user)
-                            {
-                                target = curr;
-                                break;
-                            }
-                        }
-                    }
-                    if (target != null)
-                    {
-                        Window x = item.retrieveWindow();
-                        if (x != null && x.scrollback != null)
-                        {
-                            x.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
-                                new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                                Scrollback.MessageStyle.Join,
-                                !item.temporary_hide, date, !updated_text);
-                        }
-                        if (updated_text)
-                        {
-                            lock (item.UserList)
-                            {
-                                item.UserList.Remove(target);
-                            }
-                            item.UpdateInfo();
-                            item.redrawUsers();
-                        }
-                    }
-                }
-            }
-            return true;
-        }
-
         public bool ProcessThis(string source, string[] data, string _value)
         {
             if (source.StartsWith(_Network.Nickname + "!"))

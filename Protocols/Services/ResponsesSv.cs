@@ -307,7 +307,6 @@ namespace Client
                     {
                         Core._Main.Status("Loading disk cache from disk...");
                         protocol.sBuffer.ReadDisk();
-                        Core._Main.Status("");
                     }
 
                     int id = 0;
@@ -369,6 +368,7 @@ namespace Client
                         }
                         id++;
                     }
+                    Core._Main.Status("Waiting for services to send us remaining backlog");
                 }
             }
 

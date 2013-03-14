@@ -480,6 +480,34 @@ namespace Client
             return "";
         }
 
+        public void InsertBan(string ban, string user)
+        { 
+            
+        }
+
+        public bool RemoveBan(string ban)
+        {
+            SimpleBan br = null;
+            lock (Bans)
+            {
+                foreach (SimpleBan xx in Bans)
+                {
+                    if (xx.Target == ban)
+                    {
+                        br = xx;
+                        break;
+                    }
+                }
+            
+                if (br != null)
+                {
+                    Bans.Remove(br);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Return user object if specified user exist
         /// </summary>

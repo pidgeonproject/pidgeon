@@ -174,6 +174,14 @@ namespace Client
                 UserCount = Users;
                 ChannelName = Name;
             }
+
+            /// <summary>
+            /// This constructor needs to exist for xml deserialization don't remove it
+            /// </summary>
+            public ChannelData()
+            { 
+                
+            }
         }
 
         public ChannelData ContainsChannel(string channel)

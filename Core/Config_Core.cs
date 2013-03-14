@@ -69,12 +69,16 @@ namespace Client
                     System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
                     System.Xml.XmlNode curr = null;
                     XmlAttribute confname = null;
+                    // Network
+                    make_comment(" ============= NETWORK ============= ", config, xmlnode);
                     make_comment("Ident", config, xmlnode);
                     make_node("network.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
                     make_comment("Message that is displayed when you quit the network", config, xmlnode);
                     make_node("quitmessage", Configuration.UserData.quit, curr, confname, config, xmlnode);
                     make_comment("Nickname which is being used on all networks", config, xmlnode);
                     make_node("network.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
+                    // Scrollback
+                    make_comment(" ============= SCROLLBACK ============= ", config, xmlnode);
                     make_comment("If this is true, you will see when someone tries to CTCP you", config, xmlnode);
                     make_node("scrollback.showctcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                     make_comment("Format of user in window", config, xmlnode);
@@ -82,6 +86,10 @@ namespace Client
                     make_comment("Format of date in window", config, xmlnode);
                     make_node("formats.date", Configuration.Scrollback.format_date, curr, confname, config, xmlnode);
                     make_comment("Set this to true to automatically whois everyone in channel upon join", config, xmlnode);
+                    make_comment("Limit of scrollback size", config, xmlnode);
+                    make_node("scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                    // irc
+                    make_comment(" ============= IRC ============= ", config, xmlnode);
                     make_node("irc.auto.whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to check the channel modes on join", config, xmlnode);
                     make_node("irc.auto.mode", Configuration.ChannelModes.aggressive_mode.ToString(), curr, confname, config, xmlnode);
@@ -92,6 +100,16 @@ namespace Client
                     make_node("irc.auto.exception", Configuration.ChannelModes.aggressive_exception.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to get a list of invite on join", config, xmlnode);
                     make_node("irc.auto.invites", Configuration.ChannelModes.aggressive_invites.ToString(), curr, confname, config, xmlnode);
+                    make_comment("If CTCP should be completely ignored", config, xmlnode);
+                    make_node("ignore.ctcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Whether all generated commands need to be confirmed", config, xmlnode);
+                    make_node("confirm.all", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Reason for kick / ban", config, xmlnode);
+                    make_node("default.reason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
+                    make_comment("Second nick", config, xmlnode);
+                    make_node("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
+                    // Windows
+                    make_comment(" ============= WINDOWS ============= ", config, xmlnode);
                     make_comment("Main window is maximized", config, xmlnode);
                     make_node("location.maxi", Configuration.Window.Window_Maximized.ToString(), curr, confname, config, xmlnode);
                     make_comment("Size of main win", config, xmlnode);
@@ -101,48 +119,45 @@ namespace Client
                     make_comment("Location of slide bar", config, xmlnode);
                     make_node("location.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
+                    // Logs
+                    make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_node("logs.dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
                     make_comment("Type of logs to save", config, xmlnode);
                     make_node("logs.type", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
-                    make_comment("If CTCP should be completely ignored", config, xmlnode);
-                    make_node("ignore.ctcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                     make_comment("If you want to save logs in html", config, xmlnode);
                     make_node("logs.html", Configuration.Logs.logs_html.ToString(), curr, confname, config, xmlnode);
                     make_comment("If you want to save logs in XML", config, xmlnode);
                     make_node("logs.xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
                     make_comment("If you want to save logs in TXT", config, xmlnode);
                     make_node("logs.txt", Configuration.Logs.logs_txt.ToString(), curr, confname, config, xmlnode);
+                    // System
+                    make_comment(" ============= SYSTEM ============= ", config, xmlnode);
                     make_comment("Check for updates (recommended)", config, xmlnode);
                     make_node("updater.check", Configuration.Kernel.CheckUpdate.ToString(), curr, confname, config, xmlnode);
                     make_comment("If pidgeon is running in debug mode", config, xmlnode);
                     make_node("debugger", Configuration.Kernel.Debugging.ToString(), curr, confname, config, xmlnode);
-                    // Histories
-                    make_comment("Last nickname you used", config, xmlnode);
-                    make_node("history.nick", Configuration.UserData.LastNick, curr, confname, config, xmlnode);
-                    make_comment("Limit of scrollback size", config, xmlnode);
-                    make_node("scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Last host you used", config, xmlnode);
-                    make_node("history.host", Configuration.UserData.LastHost, curr, confname, config, xmlnode);
-                    make_comment("Last host you connected to", config, xmlnode);
-                    make_node("history.port", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
-                    make_comment("Whether all generated commands need to be confirmed", config, xmlnode);
-                    make_node("confirm.all", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
                     make_comment("If notification are displayed", config, xmlnode);
                     make_node("notification.tray", Configuration.Kernel.Notice.ToString(), curr, confname, config, xmlnode);
                     make_comment("Network sniffer", config, xmlnode);
                     make_node("sniffer", Configuration.Kernel.NetworkSniff.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Size of backlog for services", config, xmlnode);
-                    make_node("pidgeon.size", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
                     make_comment("Skin", config, xmlnode);
                     make_node("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
-                    make_comment("Reason for kick / ban", config, xmlnode);
-                    make_node("default.reason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
-                    make_comment("Second nick", config, xmlnode);
-                    make_node("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
                     make_comment("Whether color codes override the system color for links", config, xmlnode);
                     make_node("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
+                    // Services
+                    make_comment(" ============= SERVICES ============= ", config, xmlnode);
+                    make_comment("Size of backlog for services", config, xmlnode);
+                    make_node("pidgeon.size", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
                     make_comment("If services are using local cache (incomparably faster)", config, xmlnode);
                     make_node("services.usingcache", Configuration.Services.UsingCache.ToString(), curr, confname, config, xmlnode);
+                    // Histories
+                    make_comment(" ============= USER ============= ", config, xmlnode);
+                    make_comment("Last nickname you used", config, xmlnode);
+                    make_node("history.nick", Configuration.UserData.LastNick, curr, confname, config, xmlnode);
+                    make_comment("Last host you used", config, xmlnode);
+                    make_node("history.host", Configuration.UserData.LastHost, curr, confname, config, xmlnode);
+                    make_comment("Last host you connected to", config, xmlnode);
+                    make_node("history.port", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
                     make_node("message_mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
 
 

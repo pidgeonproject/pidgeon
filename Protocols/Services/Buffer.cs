@@ -117,6 +117,9 @@ namespace Client.Services
         [Serializable]
         public class NetworkInfo
         {
+            /// <summary>
+            /// Mode
+            /// </summary>
             public string mode = "+i";
             public string Nick = null;
             public string NetworkID = null;
@@ -150,6 +153,10 @@ namespace Client.Services
             /// Special channel user modes with parameters as a string
             /// </summary>
             public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+            /// <summary>
+            /// List of channels
+            /// </summary>
+            public List<Network.ChannelData> ChannelList = new List<Network.ChannelData>();
 
             [Serializable]
             public class Description
@@ -158,8 +165,8 @@ namespace Client.Services
                 public string String;
 
                 public Description()
-                { 
-                
+                {
+
                 }
 
                 public Description(char c, string s)
@@ -175,8 +182,8 @@ namespace Client.Services
             public List<string> PrivateWins = new List<string>();
 
             public NetworkInfo()
-            { 
-            
+            {
+
             }
 
             public Buffer.Window getW(string window)
@@ -377,7 +384,12 @@ namespace Client.Services
                         networkInfo[uid].CModes = network.CModes;
                         networkInfo[uid].CUModes = network.CUModes;
                         networkInfo[uid].PModes = network.PModes;
+                        networkInfo[uid].mode = network.usermode.ToString();
                         networkInfo[uid].SModes = network.SModes;
+                        lock (network.ChannelList)
+                        {
+                            networkInfo[uid].ChannelList.AddRange(network.ChannelList);
+                        }
                         lock (network.Descriptions)
                         {
                             networkInfo[uid].Descriptions.Clear();
@@ -419,16 +431,19 @@ namespace Client.Services
                             foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
                             {
                                 Buffer.Window window = new Buffer.Window(wn.Value);
-                                networkInfo[uid].PrivateWins.Add(window.Name);
-                                networkInfo[uid]._windows.Add(window);
+                                if (!networkInfo[uid].PrivateWins.Contains(window.Name))
+                                {
+                                    networkInfo[uid].PrivateWins.Add(window.Name);
+                                    networkInfo[uid]._windows.Add(window);
+                                }
+                                else
+                                {
+                                    Core.DebugLog("ERROR: Multiple same private windows detected of " + window.Name);
+                                }
                             }
                         }
                     }
                 }
-                //foreach (Network network in unknown)
-                //{
-                //    NetworkInfo info = new NetworkInfo(network);
-                //}
             }
             WriteDisk();
         }
