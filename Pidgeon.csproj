@@ -206,10 +206,12 @@
       <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
     <Compile Include="Ignoring.cs" />
-    <Compile Include="IRC.cs" />
+    <Compile Include="irc\ChannelIRC.cs" />
+    <Compile Include="irc\IRC.cs" />
     <Compile Include="Graphics\ListViewDB.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="irc\NetworkIRC.cs" />
     <Compile Include="NetworkMode.cs" />
     <Compile Include="Protocols\ProtocolXmpp.cs" />
     <Compile Include="Protocols\Qt.cs" />
