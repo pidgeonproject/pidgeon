@@ -128,7 +128,7 @@ namespace Client
             string text = "";
             try
             {
-                while (!_reader.EndOfStream)
+                while (!_reader.EndOfStream && Connected)
                 {
                     text = _reader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);

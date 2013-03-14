@@ -68,6 +68,7 @@ namespace Client
                 checkBox9.Checked = Configuration.Kernel.Notice;
                 textBox5.Text = Configuration.Logs.logs_dir;
                 textBox6.Text = Configuration.Logs.logs_name;
+                textBox7.Text = Configuration.UserData.Nick2;
                 radioButton3.Checked = true;
                 switch (Configuration.Logs.ServicesLogs)
                 { 
@@ -193,6 +194,7 @@ namespace Client
                 Configuration.Kernel.Notice = checkBox9.Checked;
                 Configuration.Logs.logs_dir = textBox5.Text;
                 Configuration.Logs.logs_name = textBox6.Text;
+                Configuration.UserData.Nick2 = textBox7.Text;
                 if (radioButton1.Checked)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;

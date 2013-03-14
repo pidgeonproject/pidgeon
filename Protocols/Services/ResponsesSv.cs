@@ -240,6 +240,7 @@ namespace Client
             public static void sBacklog(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;
+                Core._Main.Status("");
                 Network server = protocol.retrieveNetwork(network);
                 if (server != null)
                 {
@@ -347,6 +348,8 @@ namespace Client
                                     nw.UChars = protocol.sBuffer.networkInfo[mq[id]].UChars;
                                     nw.UModes = protocol.sBuffer.networkInfo[mq[id]].UModes;
                                     nw.XModes = protocol.sBuffer.networkInfo[mq[id]].XModes;
+                                    nw.ChannelList.Clear();
+                                    nw.ChannelList.AddRange(protocol.sBuffer.networkInfo[mq[id]].ChannelList);
                                     lock (nw.Descriptions)
                                     {
                                         nw.Descriptions.Clear();

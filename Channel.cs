@@ -28,6 +28,7 @@ namespace Client
         public string User = null;
     }
 
+    [Serializable]
     public class Invite : ChannelParameterMode
     {
         public Invite()
@@ -41,6 +42,7 @@ namespace Client
         }
     }
 
+    [Serializable]
     public class Except : ChannelParameterMode
     {
         public Except()
@@ -49,11 +51,12 @@ namespace Client
         }
     }
 
+    [Serializable]
     public class SimpleBan : ChannelParameterMode
     {
         public SimpleBan()
         {
-            
+            // This empty constructor is here so that we can serialize this
         }
 
         public SimpleBan(string user, string target, string time)
@@ -64,6 +67,7 @@ namespace Client
         }
     }
 
+    [Serializable]
     public class Channel
     {
         /// <summary>
