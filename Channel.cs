@@ -511,9 +511,9 @@ namespace Client
                 }
                 if (_Network._Protocol == null)
                 {
-                    throw new Exception("Protocol is NULL for " + _Network.server);
+                    throw new Exception("Protocol is NULL for " + _Network.ServerName);
                 }
-                foreach (var curr in _Network._Protocol.windows)
+                foreach (var curr in _Network._Protocol.Windows)
                 {
                     if (curr.Key == _Network.window + Name)
                     {

@@ -233,13 +233,13 @@ namespace Client
                 {
                     Directory.CreateDirectory(Configuration.Logs.logs_dir);
                 }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server))
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName))
                 {
-                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server);
+                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName);
                 }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath()))
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath()))
                 {
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + validpath());
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath());
                 }
                 if (Configuration.Logs.logs_txt)
                 {

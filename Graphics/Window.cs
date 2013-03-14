@@ -237,7 +237,7 @@ namespace Client
                         {
                             if (Configuration.irc.DisplayCtcp)
                             {
-                                _channel._Network._Protocol.windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                                _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
                             }
                             _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
@@ -647,18 +647,18 @@ namespace Client
                 }
                 if (_Protocol != null)
                 {
-                    lock (_Protocol.windows)
+                    lock (_Protocol.Windows)
                     {
                         if (_Network != null)
                         {
-                            if (_Protocol.windows.ContainsKey(_Network.window + name))
+                            if (_Protocol.Windows.ContainsKey(_Network.window + name))
                             {
-                                _Protocol.windows.Remove(_Network.window + name);
+                                _Protocol.Windows.Remove(_Network.window + name);
                             }
                         }
-                        if (_Protocol.windows.ContainsKey(name))
+                        if (_Protocol.Windows.ContainsKey(name))
                         {
-                            _Protocol.windows.Remove(name);
+                            _Protocol.Windows.Remove(name);
                         }
                     }
                 }
@@ -762,7 +762,7 @@ namespace Client
                             string nickname = Decode(user.Text);
                             if (nickname != "")
                             {
-                                if (!Core.network._Protocol.windows.ContainsKey(_Network.window + nickname))
+                                if (!Core.network._Protocol.Windows.ContainsKey(_Network.window + nickname))
                                 {
                                     _Network.Private(nickname);
                                 }

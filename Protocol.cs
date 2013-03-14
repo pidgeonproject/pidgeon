@@ -38,11 +38,11 @@ namespace Client
         {
             get
             { 
-                lock (windows)
+                lock (Windows)
                 {
-                    if (windows.ContainsKey("!system"))
+                    if (Windows.ContainsKey("!system"))
                     {
-                        return windows["!system"];
+                        return Windows["!system"];
                     }
                 }
                 return null;
@@ -51,7 +51,7 @@ namespace Client
         /// <summary>
         /// Windows
         /// </summary>
-        public Dictionary<string, Window> windows = new Dictionary<string, Window>();
+        public Dictionary<string, Window> Windows = new Dictionary<string, Window>();
         /// <summary>
         /// Whether this server is connected or not
         /// </summary>
@@ -107,11 +107,11 @@ namespace Client
 
             if (network != null && !name.Contains("!"))
             { 
-                windows.Add(network.window + id, request.window);
+                Windows.Add(network.window + id, request.window);
             }
             else
             {
-                windows.Add(id, request.window);
+                Windows.Add(id, request.window);
             }
             
             if (channelw == true)
@@ -134,9 +134,9 @@ namespace Client
         /// <returns></returns>
         public virtual bool ShowChat(string name)
         {
-            if (windows.ContainsKey(name))
+            if (Windows.ContainsKey(name))
             {
-                Current = windows[name];
+                Current = Windows[name];
                 Current.scrollback.Display();
                 Current.BringToFront();
                 Current.Visible = true;
@@ -160,7 +160,7 @@ namespace Client
                         Core._Main.Chat.Visible = false;
                     }
                 }
-                Core._Main.Chat = windows[name];
+                Core._Main.Chat = Windows[name];
                 Current.Making = false;
                 Core._Main.UpdateStatus();
             }
@@ -316,7 +316,7 @@ namespace Client
         {
             if (SystemWindow != null)
             {
-                if (windows.ContainsValue(SystemWindow))
+                if (Windows.ContainsValue(SystemWindow))
                 {
                     Core._Main.main.Visible = true;
                     if (Core._Main.main != SystemWindow)

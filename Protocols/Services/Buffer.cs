@@ -363,7 +363,7 @@ namespace Client.Services
                 List<Network> unknown = new List<Network>();
                 foreach (Network network in protocol.NetworkList)
                 {
-                    string uid = protocol.sBuffer.getUID(network.server);
+                    string uid = protocol.sBuffer.getUID(network.ServerName);
                     if (uid == null)
                     {
                         unknown.Add(network);
@@ -373,7 +373,7 @@ namespace Client.Services
                     {
                         networkInfo[uid]._windows.Clear();
                         networkInfo[uid]._channels.Clear();
-                        networkInfo[uid]._windows.Add(new Buffer.Window(network.system));
+                        networkInfo[uid]._windows.Add(new Buffer.Window(network.SystemWindow));
                         networkInfo[uid].CModes = network.CModes;
                         networkInfo[uid].CUModes = network.CUModes;
                         networkInfo[uid].PModes = network.PModes;

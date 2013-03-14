@@ -206,18 +206,18 @@
       <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
     <Compile Include="Ignoring.cs" />
-    <Compile Include="irc\ChannelIRC.cs" />
-    <Compile Include="irc\IRC.cs" />
+    <Compile Include="Protocols\irc\ChannelIRC.cs" />
+    <Compile Include="Protocols\irc\IRC.cs" />
     <Compile Include="Graphics\ListViewDB.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="irc\NetworkIRC.cs" />
+    <Compile Include="Protocols\irc\NetworkIRC.cs" />
     <Compile Include="NetworkMode.cs" />
     <Compile Include="Protocols\ProtocolXmpp.cs" />
     <Compile Include="Protocols\Qt.cs" />
-    <Compile Include="Services\Buffer.cs" />
-    <Compile Include="Services\Datagram.cs" />
-    <Compile Include="Services\ResponsesSv.cs" />
+    <Compile Include="Protocols\Services\Buffer.cs" />
+    <Compile Include="Protocols\Services\Datagram.cs" />
+    <Compile Include="Protocols\Services\ResponsesSv.cs" />
     <Compile Include="RevisionInfo.cs" />
     <Compile Include="SBABOX\Line.cs">
       <SubType>UserControl</SubType>
@@ -268,7 +268,7 @@
     <Compile Include="Forms\Updater.Designer.cs">
       <DependentUpon>Updater.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\ProtocolSv.cs" />
+    <Compile Include="Protocols\Services\ProtocolSv.cs" />
     <Compile Include="ScriptingCore.cs" />
     <Compile Include="Scrollback\Menu.cs">
       <SubType>UserControl</SubType>

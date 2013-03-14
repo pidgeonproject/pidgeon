@@ -229,7 +229,7 @@ namespace Client
 
         public string _getFileName()
         {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.server + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath());
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath());
             return name;
         }
 

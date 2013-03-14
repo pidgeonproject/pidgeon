@@ -170,9 +170,9 @@ namespace Client
                         UserList.Add(_us, text);
                     }
                     Servers[_us._Network].Expand();
-                    if (_us._Network._Protocol.windows.ContainsKey(_us._Network.window + _us.Nick))
+                    if (_us._Network._Protocol.Windows.ContainsKey(_us._Network.window + _us.Nick))
                     {
-                        _us._Network._Protocol.windows[_us._Network.window + _us.Nick].treeNode = text;
+                        _us._Network._Protocol.Windows[_us._Network.window + _us.Nick].treeNode = text;
                     }
                     Updated = true;
                     this.ResumeLayout();
@@ -189,7 +189,7 @@ namespace Client
             {
                 ServiceList.Add(service, text);
             }
-            service.windows["!root"].treeNode = text;
+            service.Windows["!root"].treeNode = text;
             this.items.Nodes.Add(text);
             this.ResumeLayout();
         }
@@ -227,13 +227,13 @@ namespace Client
             {
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
-                text.Text = network.server;
+                text.Text = network.ServerName;
                 lock (Servers)
                 {
                     Servers.Add(network, text);
                 }
                 text.Expand();
-                network.system.treeNode = text;
+                network.SystemWindow.treeNode = text;
                 this.items.Nodes.Add(text);
                 return;
             }
@@ -241,8 +241,8 @@ namespace Client
             {
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
-                text.Text = network.server;
-                network.system.treeNode = text;
+                text.Text = network.ServerName;
+                network.SystemWindow.treeNode = text;
                 ServiceList[network.ParentSv].Nodes.Add(text);
                 Servers.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
@@ -614,12 +614,12 @@ namespace Client
                                 items.Nodes.Remove(Item);
                             }
                         }
-                        if (curr._Network._Protocol.windows.ContainsKey(curr._Network.window + curr.Nick))
+                        if (curr._Network._Protocol.Windows.ContainsKey(curr._Network.window + curr.Nick))
                         {
-                            lock (curr._Network._Protocol.windows)
+                            lock (curr._Network._Protocol.Windows)
                             {
-                                curr._Network._Protocol.windows[curr._Network.window + curr.Nick].Visible = false;
-                                curr._Network._Protocol.windows[curr._Network.window + curr.Nick].Dispose();
+                                curr._Network._Protocol.Windows[curr._Network.window + curr.Nick].Visible = false;
+                                curr._Network._Protocol.Windows[curr._Network.window + curr.Nick].Dispose();
                             }
                         }
                         lock (UserList)

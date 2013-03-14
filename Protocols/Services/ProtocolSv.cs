@@ -171,7 +171,7 @@ namespace Client
         {
             foreach (Network i in NetworkList)
             {
-                if (i.server == server)
+                if (i.ServerName == server)
                 {
                     return i;
                 }
@@ -350,7 +350,7 @@ namespace Client
             Datagram message = new Datagram("MESSAGE", text);
             if (network != null && NetworkList.Contains(network))
             {
-                message.Parameters.Add("network", network.server);
+                message.Parameters.Add("network", network.ServerName);
                 message.Parameters.Add("priority", _priority.ToString());
                 message.Parameters.Add("to", to);
                 Deliver(message);
@@ -383,7 +383,7 @@ namespace Client
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
-                windows["!root"].scrollback.InsertText("Connecting to " + server, Scrollback.MessageStyle.User, true);
+                Windows["!root"].scrollback.InsertText("Connecting to " + server, Scrollback.MessageStyle.User, true);
                 Datagram request = new Datagram("CONNECT", server);
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
@@ -408,7 +408,7 @@ namespace Client
         public void Disconnect(Network network)
         {
             Transfer("QUIT :" + network.Quit);
-            Datagram request = new Datagram("REMOVE", network.server);
+            Datagram request = new Datagram("REMOVE", network.ServerName);
             Deliver(request);
         }
 
@@ -428,7 +428,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    windows["!root"].scrollback.InsertText(er.Message, Scrollback.MessageStyle.User);
+                    Windows["!root"].scrollback.InsertText(er.Message, Scrollback.MessageStyle.User);
                     Exit();
                 }
                 catch (Exception f)
@@ -460,7 +460,7 @@ namespace Client
                 if (Core.network != null && NetworkList.Contains(Core.network))
                 {
                     Datagram data = new Datagram("RAW", text);
-                    data.Parameters.Add("network", Core.network.server);
+                    data.Parameters.Add("network", Core.network.ServerName);
                     Deliver(data);
                     return;
                 }
@@ -470,12 +470,12 @@ namespace Client
                 if (NetworkList.Contains(network))
                 {
                     Datagram data = new Datagram("RAW", text);
-                    data.Parameters.Add("network", network.server);
+                    data.Parameters.Add("network", network.ServerName);
                     Deliver(data);
                 }
                 else
                 {
-                    Core.DebugLog("Network is not a part of this services connection " + network.server);
+                    Core.DebugLog("Network is not a part of this services connection " + network.ServerName);
                 }
             }
         }

@@ -545,7 +545,7 @@ namespace Client
                             {
                                 ms = ms.Substring(1);
                             }
-                            Core.network.system.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Scrollback.MessageStyle.System);
+                            Core.network.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Scrollback.MessageStyle.System);
                             Core.network.Message(ms, channel, Configuration.Priority.Normal, true);
                             return;
                         }
@@ -754,12 +754,12 @@ namespace Client
                     {
                         if (Core.network.Connected)
                         {
-                            if (!Core.network._Protocol.windows.ContainsKey(Core.network.window + channel))
+                            if (!Core.network._Protocol.Windows.ContainsKey(Core.network.window + channel))
                             {
                                 Core.network.Private(channel);
                             }
                             Core.network._Protocol.ShowChat(Core.network.window + channel);
-                            Core.network._Protocol.windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                            Core.network._Protocol.Windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
                             Core.network.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;
                         }
@@ -773,7 +773,7 @@ namespace Client
                 {
                     if (Core.network.Connected)
                     {
-                        if (!Core.network._Protocol.windows.ContainsKey(Core.network.window + channel))
+                        if (!Core.network._Protocol.Windows.ContainsKey(Core.network.window + channel))
                         {
                             Core.network.Private(channel);
                         }

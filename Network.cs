@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 
 namespace Client
@@ -59,6 +60,9 @@ namespace Client
         /// Check if the info is parsed
         /// </summary>
         public bool parsed_info = false;
+        /// <summary>
+        /// Symbol prefix of channels
+        /// </summary>
         public string channel_prefix = "#";
         /// <summary>
         /// Specifies if you are connected to network
@@ -71,11 +75,11 @@ namespace Client
         /// <summary>
         /// System window
         /// </summary>
-        public Window system = null;
+        public Window SystemWindow = null;
         /// <summary>
         /// Host name of server
         /// </summary>
-        public string server = null;
+        public string ServerName = null;
         /// <summary>
         /// User mode of current user
         /// </summary>
@@ -83,7 +87,7 @@ namespace Client
         /// <summary>
         /// User name (real name)
         /// </summary>
-        public string username = null;
+        public string UserName = null;
         /// <summary>
         /// Randomly generated ID for this network to make it unique in case some other network would share the name
         /// </summary>
@@ -296,7 +300,7 @@ namespace Client
                   }
                   else
                   {
-                      return randomuqid + server;
+                      return randomuqid + ServerName;
                   }
               }
         }
@@ -399,16 +403,16 @@ namespace Client
                 Descriptions.Add('O', "opers chan");
                 Descriptions.Add('t', "topic changes can be done only by operators");
                 _Protocol = protocol;
-                server = Server;
+                ServerName = Server;
                 Quit = Configuration.UserData.quit;
                 Nickname = Configuration.UserData.nick;
 
-                username = Configuration.UserData.user;
+                UserName = Configuration.UserData.user;
                 Ident = Configuration.UserData.ident;
                 if (protocol.ProtocolType == 3)
                 {
-                    protocol.CreateChat("!" + server, false, this, false, false, "!" + randomuqid + server);
-                    system = protocol.windows["!" + randomuqid + server];
+                    protocol.CreateChat("!" + ServerName, false, this, false, false, "!" + randomuqid + ServerName);
+                    SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
                     //sw = "!" + randomuqid + server;
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
@@ -416,7 +420,7 @@ namespace Client
                 {
                     protocol.CreateChat("!system", true, this);
                     //sw = "!system";
-                    system = protocol.windows["!system"];
+                    SystemWindow = protocol.Windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }
                 Hooks._Network.CreatingNetwork(this);

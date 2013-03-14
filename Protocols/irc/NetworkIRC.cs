@@ -247,7 +247,7 @@ namespace Client
                     }
                     if (Configuration.irc.DisplayCtcp)
                     {
-                        _Network.system.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
+                        _Network.SystemWindow.scrollback.InsertText("CTCP from (" + _nick + ") " + message,
                             Scrollback.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
@@ -288,13 +288,13 @@ namespace Client
             if (chan == _Network.Nickname)
             {
                 chan = source.Substring(0, source.IndexOf("!"));
-                lock (_Protocol.windows)
+                lock (_Protocol.Windows)
                 {
-                    if (!_Protocol.windows.ContainsKey(_Network.window + chan))
+                    if (!_Protocol.Windows.ContainsKey(_Network.window + chan))
                     {
                         _Network.Private(chan);
                     }
-                    _Protocol.windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
+                    _Protocol.Windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
                         Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
                 }
                 return true;
@@ -308,7 +308,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 string message = value;
-                _Network.system.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                _Network.SystemWindow.scrollback.InsertText(name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -337,7 +337,7 @@ namespace Client
                 {
                     return false;
                 }
-                _Network.system.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                _Network.SystemWindow.scrollback.InsertText("WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;

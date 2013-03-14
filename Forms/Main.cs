@@ -198,7 +198,7 @@ namespace Client
             this.toolStripInfo.Text = StatusBox;
             if (Core.network != null)
             {
-                toolStripStatusNetwork.Text = Core.network.server + "    w/c/p " + Core.network._Protocol.windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
+                toolStripStatusNetwork.Text = Core.network.ServerName + "    w/c/p " + Core.network._Protocol.Windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
                 if (Core.network.RenderedChannel != null)
                 {
                     string info = "";

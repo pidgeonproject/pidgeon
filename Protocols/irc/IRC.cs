@@ -155,7 +155,7 @@ namespace Client
                 {
                     if (_data2[1].Contains("NICK"))
                     {
-                        _Network.system.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                        _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
                         _Network.Nickname = _value;
                     }
                     if (_data2[1].Contains("PART"))
@@ -318,7 +318,7 @@ namespace Client
                                 Ping();
                                 return true;
                             case "INFO":
-                                _Network.system.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
+                                _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
                                 if (parameters.Contains(_Network.channel_prefix))
@@ -335,7 +335,7 @@ namespace Client
                                         }
                                     }
                                 }
-                                _Network.system.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "PING":
                                 _Network.Transfer("PONG ", Configuration.Priority.High);
@@ -444,7 +444,7 @@ namespace Client
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
-                    _Network.system.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                    _Network.SystemWindow.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
                 }
             }
             catch (Exception fail)
