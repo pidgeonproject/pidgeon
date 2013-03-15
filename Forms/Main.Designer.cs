@@ -84,6 +84,7 @@ namespace Client
             this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -322,7 +323,7 @@ namespace Client
             // rootToolStripMenuItem
             // 
             this.rootToolStripMenuItem.Name = "rootToolStripMenuItem";
-            this.rootToolStripMenuItem.Size = new System.Drawing.Size(99, 22);
+            this.rootToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.rootToolStripMenuItem.Text = "Root";
             this.rootToolStripMenuItem.Click += new System.EventHandler(this.rootToolStripMenuItem_Click);
             // 
@@ -395,7 +396,7 @@ namespace Client
 
         private System.Windows.Forms.ToolStripStatusLabel toolStripInfo;
         private System.Windows.Forms.ToolStripStatusLabel toolStripCo;
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        public System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem newConnectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem preferencesToolStripMenuItem;

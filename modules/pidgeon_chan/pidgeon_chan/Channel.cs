@@ -41,6 +41,8 @@ namespace Client
                         _m.helpToolStripMenuItem.DropDownItems.Remove(separator);
                     }
                 }
+                _m.menuStrip1.ResumeLayout(false);
+                _m.menuStrip1.PerformLayout();
                 return true;
             }
             catch (Exception fail)
@@ -54,10 +56,14 @@ namespace Client
         {
             _m = main;
             item = new ToolStripMenuItem("#pidgeon");
+            item.Size = new System.Drawing.Size(200, 22);
             item.Click += new EventHandler(pidgeonToolStripMenuItem_Click);
             separator = new ToolStripSeparator();
+            separator.Size = new System.Drawing.Size(200, 22);
             main.helpToolStripMenuItem.DropDownItems.Add(separator);
             main.helpToolStripMenuItem.DropDownItems.Add(item);
+            _m.menuStrip1.ResumeLayout(false);
+            _m.menuStrip1.PerformLayout();
         }
 
         private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
