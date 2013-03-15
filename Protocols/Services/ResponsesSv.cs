@@ -359,32 +359,34 @@ namespace Client
                                 }
                                 else
                                 {
-                                    protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.SystemWindow, nw.SystemWindow.name);
-                                    nw.CModes = protocol.sBuffer.networkInfo[mq[id]].CModes;
-                                    nw.CUModes = protocol.sBuffer.networkInfo[mq[id]].CUModes;
-                                    nw.Nickname = protocol.sBuffer.networkInfo[mq[id]].Nick;
-                                    nw.PModes = protocol.sBuffer.networkInfo[mq[id]].PModes;
-                                    nw.SModes = protocol.sBuffer.networkInfo[mq[id]].SModes;
-                                    nw.UChars = protocol.sBuffer.networkInfo[mq[id]].UChars;
-                                    nw.UModes = protocol.sBuffer.networkInfo[mq[id]].UModes;
-                                    nw.XModes = protocol.sBuffer.networkInfo[mq[id]].XModes;
+                                    Services.Buffer.NetworkInfo info = protocol.sBuffer.networkInfo[mq[id]];
+                                    info.recoverWindowText(nw.SystemWindow, nw.SystemWindow.name);
+                                    nw.CModes = info.CModes;
+                                    nw.CUModes = info.CUModes;
+                                    nw.Nickname = info.Nick;
+                                    nw.PModes = info.PModes;
+                                    nw.SModes = info.SModes;
+                                    nw.UChars = info.UChars;
+                                    nw.UModes = info.UModes;
+                                    nw.XModes = info.XModes;
                                     nw.ChannelList.Clear();
-                                    nw.ChannelList.AddRange(protocol.sBuffer.networkInfo[mq[id]].ChannelList);
-                                    protocol.sBuffer.networkInfo[mq[id]].ChannelList.Clear();
+                                    nw.ChannelList.AddRange(info.ChannelList);
+                                    info.ChannelList.Clear();
+                                    info.ChannelList = null;
                                     lock (nw.Descriptions)
                                     {
                                         nw.Descriptions.Clear();
-                                        foreach (Client.Services.Buffer.NetworkInfo.Description description in protocol.sBuffer.networkInfo[mq[id]].Descriptions)
+                                        foreach (Client.Services.Buffer.NetworkInfo.Description description in info.Descriptions)
                                         {
                                             nw.Descriptions.Add(description.Char, description.String);
                                         }
                                     }
-                                    foreach (string ms in protocol.sBuffer.networkInfo[mq[id]].PrivateWins)
+                                    foreach (string ms in info.PrivateWins)
                                     {
                                         User current_pm = nw.Private(ms);
-                                        protocol.sBuffer.networkInfo[mq[id]].recoverWindowText(nw.PrivateWins[current_pm], ms);
+                                        info.recoverWindowText(nw.PrivateWins[current_pm], ms);
                                     }
-                                    int mqid = protocol.sBuffer.networkInfo[mq[id]].lastMQID;
+                                    int mqid = info.lastMQID;
                                     request.Parameters.Add("last", mqid.ToString());
                                 }
                             }
