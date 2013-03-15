@@ -209,7 +209,13 @@ namespace Client.Services
                     Core.DebugLog("Failed to recover " + source);
                     return;
                 }
+                if (Source.lines == null)
+                {
+                    throw new Exception("This window doesn't contain any lines");
+                }
                 target.scrollback.SetText(Source.lines);
+                Source.lines.Clear();
+                Source.lines = null;
                 target.isChannel = Source.isChannel;
             }
 
@@ -380,6 +386,7 @@ namespace Client.Services
                     {
                         networkInfo[uid]._windows.Clear();
                         networkInfo[uid]._channels.Clear();
+                        networkInfo[uid].PrivateWins.Clear();
                         networkInfo[uid]._windows.Add(new Buffer.Window(network.SystemWindow));
                         networkInfo[uid].CModes = network.CModes;
                         networkInfo[uid].CUModes = network.CUModes;

@@ -350,6 +350,7 @@ namespace Client
                                     nw.XModes = protocol.sBuffer.networkInfo[mq[id]].XModes;
                                     nw.ChannelList.Clear();
                                     nw.ChannelList.AddRange(protocol.sBuffer.networkInfo[mq[id]].ChannelList);
+                                    protocol.sBuffer.networkInfo[mq[id]].ChannelList.Clear();
                                     lock (nw.Descriptions)
                                     {
                                         nw.Descriptions.Clear();

@@ -79,7 +79,7 @@ namespace Client
                     {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText(stamp + Protocol.decode_text(text) + "\n", _getFileName(owner, directory) + ".txt");
+                    Core.IO.InsertText(stamp + Protocol.decode_text(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory) + ".txt");
                 }
                 if (Configuration.Logs.logs_html)
                 {
@@ -88,11 +88,11 @@ namespace Client
                     {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.decode_text(text)) + "</font><br>\n", _getFileName(owner, directory) + ".html");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.decode_text(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory) + ".html");
                 }
                 if (Configuration.Logs.logs_xml)
                 {
-                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.decode_text(text)) + "</line>\n", _getFileName(owner, directory) + ".xml");
+                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.decode_text(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory) + ".xml");
                 }
             }
             catch (Exception fail)

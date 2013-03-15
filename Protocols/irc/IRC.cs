@@ -420,7 +420,11 @@ namespace Client
 
             if (logging && isServices)
             {
-                if (Configuration.Logs.ServicesLogs == Configuration.Logs.ServiceLogs.none)
+                if (Configuration.Services.UsingCache && Configuration.Logs.ServicesLogs != Configuration.Logs.ServiceLogs.none)
+                {
+                    logging = true;
+                }
+                else if (Configuration.Logs.ServicesLogs == Configuration.Logs.ServiceLogs.none)
                 {
                     logging = false;
                 }
