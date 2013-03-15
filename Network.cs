@@ -162,6 +162,7 @@ namespace Client
             }
         }
 
+        [Serializable]
         public class ChannelData
         {
             public string ChannelName = null;
@@ -184,6 +185,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retrieve information about given channel
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <returns></returns>
         public ChannelData ContainsChannel(string channel)
         {
             lock (ChannelList)

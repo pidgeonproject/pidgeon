@@ -208,31 +208,6 @@ namespace Client
             toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }
 
-        /// <summary>
-        /// Return a file path without special symbols not supported in windows or linux
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public string validpath()
-        {
-            if (LogfilePath != null)
-            {
-                return LogfilePath;
-            }
-            if (owner == null)
-            {
-                throw new Exception("You can't enable logging for a window that has no parent");
-            }
-            LogfilePath = owner.name.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
-            return LogfilePath;
-        }
-
-        public string _getFileName()
-        {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath());
-            return name;
-        }
-
         private void Scrollback_Load(object sender, EventArgs e)
         {
             try
@@ -304,50 +279,6 @@ namespace Client
             }
             return false;
         }
-
-        /*
-        private void timer2_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                timer2.Enabled = false;
-                if (RT != null && WindowVisible())
-                {
-                    lock (UndrawnLines)
-                    {
-                        if (!ReloadWaiting)
-                        {
-                            if (UndrawnLines.Count > 0)
-                            {
-                                foreach (ContentLine curr in UndrawnLines)
-                                {
-                                    InsertLineToText(curr, false);
-                                }
-                                RT.RedrawText();
-                                if (ScrollingEnabled)
-                                {
-                                    RT.ScrollToBottom();
-                                }
-                            }
-                        }
-                        UndrawnLines.Clear();
-                    }
-                    if (ReloadWaiting)
-                    {
-                        if (Reload())
-                        {
-                            ReloadWaiting = false;
-                        }
-                    }
-                }
-                timer2.Enabled = true;
-            }
-            catch (Exception fail)
-            {
-                timer2.Enabled = true;
-                Core.handleException(fail);
-            }
-        } */
 
         private void timer2_Tick(object sender, EventArgs e)
         {

@@ -225,51 +225,6 @@ namespace Client
             return false;
         }
 
-        public void Log(string text, MessageStyle InputStyle)
-        {
-            try
-            {
-                if (!Directory.Exists(Configuration.Logs.logs_dir))
-                {
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir);
-                }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName))
-                {
-                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName);
-                }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath()))
-                {
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath());
-                }
-                if (Configuration.Logs.logs_txt)
-                {
-                    string stamp = "";
-                    if (Configuration.Scrollback.chat_timestamp)
-                    {
-                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
-                    }
-                    Core.IO.InsertText(stamp + text + "\n", _getFileName() + ".txt");
-                }
-                if (Configuration.Logs.logs_html)
-                {
-                    string stamp = "";
-                    if (Configuration.Scrollback.chat_timestamp)
-                    {
-                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
-                    }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + ProtocolIrc.decode_text(Parser.link2(text))) + "</font><br>\n", _getFileName() + ".html");
-                }
-                if (Configuration.Logs.logs_xml)
-                {
-                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(text) + "</line>\n", _getFileName() + ".xml");
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
         /// <summary>
         /// Insert a text to scrollback list [deprecated]
         /// </summary>
@@ -389,7 +344,7 @@ namespace Client
 
             if (WriteLog == true && owner != null && owner._Network != null)
             {
-                Log(text, InputStyle);
+                LineLogs.Log(text, InputStyle, owner, LogfilePath);
             }
 
             Changed = true;
