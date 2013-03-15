@@ -240,7 +240,23 @@ namespace Client
             public static void sBacklog(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;
-                Core._Main.Status("");
+
+                lock (protocol.WaitingNetw)
+                {
+                    if (protocol.WaitingNetw.Contains(network))
+                    {
+                        protocol.WaitingNetw.Remove(network);
+                    }
+                    if (protocol.WaitingNetw.Count == 0)
+                    {
+                        Core._Main.Status("");
+                    }
+                    else
+                    {
+                        Core._Main.Status("Waiting for backlog for " + protocol.WaitingNetw[0]);
+                    }
+                }
+
                 Network server = protocol.retrieveNetwork(network);
                 if (server != null)
                 {
@@ -327,6 +343,10 @@ namespace Client
                             Datagram request = new Datagram("BACKLOGSV");
                             request.Parameters.Add("network", i);
                             request.Parameters.Add("size", Configuration.Services.Depth.ToString());
+                            lock (protocol.WaitingNetw)
+                            {
+                                protocol.WaitingNetw.Add(i);
+                            }
                             // we need to recover data from local storage
                             if (Configuration.Services.UsingCache && mq != null)
                             {

@@ -44,6 +44,8 @@ namespace Client
         public string nick = "";
         public bool auth = false;
 
+        public List<string> WaitingNetw = new List<string>();
+
 
         public class Cache
         {

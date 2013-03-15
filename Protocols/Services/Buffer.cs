@@ -50,6 +50,7 @@ namespace Client.Services
             }
         }
 
+        [Serializable]
         public class ChannelInfo
         {
             /// <summary>

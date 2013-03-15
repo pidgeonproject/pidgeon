@@ -37,6 +37,7 @@ namespace Client
         /// <summary>
         /// Network associated with mode
         /// </summary>
+        [NonSerialized]
         public Network network = null;
         /// <summary>
         /// Type

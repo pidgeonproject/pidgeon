@@ -52,6 +52,7 @@ namespace Client
                 if (action != null)
                 {
                     action(parameter);
+
                 }
             }
 

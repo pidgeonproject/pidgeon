@@ -21,12 +21,14 @@ using System.Text;
 
 namespace Client
 {
+    [Serializable]
     public class User : IComparable
     {
         /// <summary>
         /// Host name
         /// </summary>
         public string Host = null;
+        [NonSerialized]
         public Network _Network = null;
         public string Ident = null;
         public NetworkMode ChannelMode = new NetworkMode();
