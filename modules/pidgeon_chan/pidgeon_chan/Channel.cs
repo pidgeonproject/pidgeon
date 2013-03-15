@@ -25,7 +25,7 @@ namespace Client
                     ProtocolSv sv = (ProtocolSv)network;
                     foreach (Network server in sv.NetworkList)
                     {
-                        if (server.server == "irc.tm-irc.org")
+                        if (server. == "irc.tm-irc.org")
                         {
                             server._Protocol.Join("#pidgeon", server);
                             return;
