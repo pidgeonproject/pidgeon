@@ -109,6 +109,10 @@ namespace Client
             {
                 messages.Localize(this);
                 skinEdToolStripMenuItem.Enabled = false;
+                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+                {
+                    this.Icon = (System.Drawing.Icon)Client.Properties.Resources.Pigeon_clip_art_hight1;
+                }
                 if (Configuration.Window.Window_Maximized)
                 {
                     this.WindowState = FormWindowState.Maximized;

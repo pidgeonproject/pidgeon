@@ -414,7 +414,6 @@
     <Content Include="ManualPages\PidgeonUptime.txt" />
     <Content Include="ManualPages\Server.txt" />
     <None Include="Resources\darknetwork.png" />
-    <Content Include="ManualPages\ServicesClear.txt" />
     <Content Include="Resources\Pigeon_clip_art_hight.ico" />
     <Content Include="Resources\Pigeon_clip_art_hight.png" />
     <Content Include="tcl84.dll">

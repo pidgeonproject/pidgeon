@@ -220,6 +220,13 @@ namespace Client.Properties {
             }
         }
         
+        internal static System.Drawing.Icon Pigeon_clip_art_hight1 {
+            get {
+                object obj = ResourceManager.GetObject("Pigeon_clip_art_hight1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to This command will connect you to a server
         ///

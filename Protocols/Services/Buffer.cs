@@ -383,70 +383,74 @@ namespace Client.Services
                         unknown.Add(network);
                         continue;
                     }
-                    if (networkInfo.ContainsKey(uid))
+                    lock (networkInfo)
                     {
-                        networkInfo[uid]._windows.Clear();
-                        networkInfo[uid]._channels.Clear();
-                        networkInfo[uid].PrivateWins.Clear();
-                        networkInfo[uid]._windows.Add(new Buffer.Window(network.SystemWindow));
-                        networkInfo[uid].CModes = network.CModes;
-                        networkInfo[uid].CUModes = network.CUModes;
-                        networkInfo[uid].PModes = network.PModes;
-                        networkInfo[uid].mode = network.usermode.ToString();
-                        networkInfo[uid].SModes = network.SModes;
-                        lock (network.ChannelList)
+                        if (networkInfo.ContainsKey(uid))
                         {
-                            networkInfo[uid].ChannelList.AddRange(network.ChannelList);
-                        }
-                        lock (network.Descriptions)
-                        {
-                            networkInfo[uid].Descriptions.Clear();
-                            foreach (KeyValuePair<char, string> description in network.Descriptions)
+                            networkInfo[uid]._windows.Clear();
+                            networkInfo[uid]._channels.Clear();
+                            networkInfo[uid].PrivateWins.Clear();
+                            networkInfo[uid]._windows.Add(new Buffer.Window(network.SystemWindow));
+                            networkInfo[uid].CModes = network.CModes;
+                            networkInfo[uid].CUModes = network.CUModes;
+                            networkInfo[uid].PModes = network.PModes;
+                            networkInfo[uid].mode = network.usermode.ToString();
+                            networkInfo[uid].SModes = network.SModes;
+                            networkInfo[uid].ChannelList = new List<Network.ChannelData>();
+                            lock (network.ChannelList)
                             {
-                                networkInfo[uid].Descriptions.Add(new NetworkInfo.Description(description.Key, description.Value));
+                                networkInfo[uid].ChannelList.AddRange(network.ChannelList);
                             }
-                        }
-                        networkInfo[uid].XModes = network.XModes;
-                        networkInfo[uid].UChars = network.UChars;
-                        lock (network.Channels)
-                        {
-                            foreach (Channel xx in network.Channels)
+                            lock (network.Descriptions)
                             {
-                                Client.Window window = xx.retrieveWindow();
-                                if (window != null)
+                                networkInfo[uid].Descriptions.Clear();
+                                foreach (KeyValuePair<char, string> description in network.Descriptions)
                                 {
-                                    networkInfo[uid]._windows.Add(new Buffer.Window(window));
+                                    networkInfo[uid].Descriptions.Add(new NetworkInfo.Description(description.Key, description.Value));
                                 }
-                                ChannelInfo info = new ChannelInfo();
-                                info.Bans = xx.Bans;
-                                info.dispose = xx.dispose;
-                                info.Exceptions = xx.Exceptions;
-                                info.Invites = xx.Invites;
-                                info.Name = xx.Name;
-                                info.parsing_bans = xx.parsing_bans;
-                                info.parsing_wh = xx.parsing_wh;
-                                info.parsing_who = xx.parsing_who;
-                                info.parsing_xe = xx.parsing_xe;
-                                info.Redraw = xx.Redraw;
-                                info.temporary_hide = xx.temporary_hide;
-                                info.Topic = xx.Topic;
-                                info.TopicDate = xx.TopicDate;
-                                info.ChannelWork = xx.ChannelWork;
-                                info.TopicUser = xx.TopicUser;
-                                networkInfo[uid]._channels.Add(info);
                             }
+                            networkInfo[uid].XModes = network.XModes;
+                            networkInfo[uid].UChars = network.UChars;
+                            lock (network.Channels)
+                            {
+                                foreach (Channel xx in network.Channels)
+                                {
+                                    Client.Window window = xx.retrieveWindow();
+                                    if (window != null)
+                                    {
+                                        networkInfo[uid]._windows.Add(new Buffer.Window(window));
+                                    }
+                                    ChannelInfo info = new ChannelInfo();
+                                    info.Bans = xx.Bans;
+                                    info.dispose = xx.dispose;
+                                    info.Exceptions = xx.Exceptions;
+                                    info.Invites = xx.Invites;
+                                    info.Name = xx.Name;
+                                    info.parsing_bans = xx.parsing_bans;
+                                    info.parsing_wh = xx.parsing_wh;
+                                    info.parsing_who = xx.parsing_who;
+                                    info.parsing_xe = xx.parsing_xe;
+                                    info.Redraw = xx.Redraw;
+                                    info.temporary_hide = xx.temporary_hide;
+                                    info.Topic = xx.Topic;
+                                    info.TopicDate = xx.TopicDate;
+                                    info.ChannelWork = xx.ChannelWork;
+                                    info.TopicUser = xx.TopicUser;
+                                    networkInfo[uid]._channels.Add(info);
+                                }
 
-                            foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
-                            {
-                                Buffer.Window window = new Buffer.Window(wn.Value);
-                                if (!networkInfo[uid].PrivateWins.Contains(window.Name))
+                                foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
                                 {
-                                    networkInfo[uid].PrivateWins.Add(window.Name);
-                                    networkInfo[uid]._windows.Add(window);
-                                }
-                                else
-                                {
-                                    Core.DebugLog("ERROR: Multiple same private windows detected of " + window.Name);
+                                    Buffer.Window window = new Buffer.Window(wn.Value);
+                                    if (!networkInfo[uid].PrivateWins.Contains(window.Name))
+                                    {
+                                        networkInfo[uid].PrivateWins.Add(window.Name);
+                                        networkInfo[uid]._windows.Add(window);
+                                    }
+                                    else
+                                    {
+                                        Core.DebugLog("ERROR: Multiple same private windows detected of " + window.Name);
+                                    }
                                 }
                             }
                         }
