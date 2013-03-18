@@ -813,11 +813,6 @@ namespace Client
             return false;
         }
 
-        public static bool RegisterPlugin(TclInterpreter plugin)
-        {
-            return false;
-        }
-
         public static bool RegisterPlugin(string path)
         {
             try
