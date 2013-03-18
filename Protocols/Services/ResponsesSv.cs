@@ -469,6 +469,7 @@ namespace Client
                                                         xx.parsing_bans = channel_info.parsing_bans;
                                                         xx.parsing_wh = channel_info.parsing_wh;
                                                         xx.parsing_who = channel_info.parsing_who;
+                                                        xx.ChannelMode = new NetworkMode(channel_info.mode);
                                                         xx.parsing_xe = channel_info.parsing_xe;
                                                         xx.Redraw = channel_info.Redraw;
                                                         xx.temporary_hide = channel_info.temporary_hide;

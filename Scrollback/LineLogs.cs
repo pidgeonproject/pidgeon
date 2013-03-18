@@ -52,7 +52,9 @@ namespace Client
 
         public static string _getFileName(Window owner, string directory)
         {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
+                Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + 
+                DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
             return name;
         }
 

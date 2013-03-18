@@ -949,6 +949,7 @@ namespace Client
             protocol.Server = server;
             protocol.nick = Configuration.UserData.nick;
             protocol.Port = port;
+            protocol.SSL = secured;
             protocol.password = password;
             Connections.Add(protocol);
             protocol.Open();
@@ -968,6 +969,7 @@ namespace Client
             protocol.Server = server;
             protocol.Port = port;
             protocol.Password = pw;
+            protocol.SSL = secured;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
             protocol._IRCNetwork._Protocol = protocol;

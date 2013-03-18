@@ -59,7 +59,6 @@ namespace Client
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tableLayoutPanel1.SuspendLayout();
             this.about.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -178,7 +177,6 @@ namespace Client
             this.tableLayoutPanel1.ResumeLayout(false);
             this.about.ResumeLayout(false);
             this.about.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }

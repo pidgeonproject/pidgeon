@@ -83,7 +83,6 @@ namespace Client
             this.updater = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
             this.sX.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -109,18 +108,18 @@ namespace Client
             // 
             // toolStripStatusNetwork
             // 
-            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusNetwork.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusNetwork.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
             this.toolStripStatusNetwork.Size = new System.Drawing.Size(4, 17);
             // 
             // toolStripStatusChannel
             // 
-            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusChannel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripStatusChannel.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripStatusChannel.Name = "toolStripStatusChannel";
             this.toolStripStatusChannel.Size = new System.Drawing.Size(4, 17);
@@ -133,9 +132,9 @@ namespace Client
             // toolStripInfo
             // 
             this.toolStripInfo.AutoSize = false;
-            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right)
+                        | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
             this.toolStripInfo.BorderStyle = System.Windows.Forms.Border3DStyle.SunkenInner;
             this.toolStripInfo.Name = "toolStripInfo";
             this.toolStripInfo.Size = new System.Drawing.Size(851, 17);
@@ -223,8 +222,8 @@ namespace Client
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.P)));
+            this.toolStripMenuItem3.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.P)));
             this.toolStripMenuItem3.Size = new System.Drawing.Size(238, 22);
             this.toolStripMenuItem3.Text = "Packet viewer";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
@@ -239,8 +238,8 @@ namespace Client
             // taskbarBoxToolStripMenuItem
             // 
             this.taskbarBoxToolStripMenuItem.Name = "taskbarBoxToolStripMenuItem";
-            this.taskbarBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt) 
-            | System.Windows.Forms.Keys.M)));
+            this.taskbarBoxToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Alt)
+                        | System.Windows.Forms.Keys.M)));
             this.taskbarBoxToolStripMenuItem.Size = new System.Drawing.Size(238, 22);
             this.taskbarBoxToolStripMenuItem.Text = "Small Chat";
             this.taskbarBoxToolStripMenuItem.Click += new System.EventHandler(this.taskbarBoxToolStripMenuItem_Click);
@@ -384,7 +383,6 @@ namespace Client
             this.statusStrip1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sX)).EndInit();
             this.sX.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
