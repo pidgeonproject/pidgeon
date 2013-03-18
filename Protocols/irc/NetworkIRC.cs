@@ -355,18 +355,7 @@ namespace Client
             {
                 if (item.ChannelWork)
                 {
-                    User target = null;
-                    lock (item.UserList)
-                    {
-                        foreach (User curr in item.UserList)
-                        {
-                            if (curr.Nick == user)
-                            {
-                                target = curr;
-                                break;
-                            }
-                        }
-                    }
+                    User target = item.userFromName(user);
                     if (target != null)
                     {
                         Window window = item.retrieveWindow();

@@ -163,7 +163,14 @@ namespace Client
                                 Parser.parse(line);
                                 if (line != "")
                                 {
-                                    history.Add(line);
+                                    lock (history)
+                                    {
+                                        while (history.Count > Configuration.Window.history)
+                                        {
+                                            history.RemoveAt(0);
+                                        }
+                                        history.Add(line);
+                                    }
                                 }
                             }
                             original = "";

@@ -19,6 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Net.Sockets;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Linq;
 using System.Net;
 
@@ -45,7 +49,8 @@ namespace Client
         /// <summary>
         /// Network stream
         /// </summary>
-        private System.Net.Sockets.NetworkStream _networkStream = null;
+        private NetworkStream _networkStream = null;
+        private SslStream _networkSsl = null;
         /// <summary>
         /// Stream reader for server
         /// </summary>
@@ -194,6 +199,11 @@ namespace Client
             }
         }
 
+        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+
         public void Start()
         {
             Messages.protocol = this;
@@ -201,13 +211,24 @@ namespace Client
                 Scrollback.MessageStyle.System);
             try
             {
-                _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                if (!SSL)
+                {
+                    _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                    _StreamWriter = new System.IO.StreamWriter(_networkStream);
+                    _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
+                }
+
+                if (SSL)
+                {
+                    System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
+                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                        new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                    _StreamWriter = new System.IO.StreamWriter(_networkSsl);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
+                }
 
                 Hooks._Protocol.BeforeConnect(this);
                 _IRCNetwork.Connected = true;
-
-                _StreamWriter = new System.IO.StreamWriter(_networkStream);
-                _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
 
                 Connected = true;
 

@@ -38,7 +38,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx64;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         /// <summary>
         /// Version
         /// </summary>
@@ -69,6 +69,10 @@ namespace Client
             /// Position of window
             /// </summary>
             public static int window_size = 0;
+            /// <summary>
+            /// Maximal size of history
+            /// </summary>
+            public static int history = 200;
         }
 
         /// <summary>
@@ -278,13 +282,13 @@ namespace Client
             /// <summary>
             /// backlog size
             /// </summary>
-            public static int Depth = 20000;
+            public static int Depth = 600000;
 
             public static bool Retrieve_Sv = true;
             /// <summary>
             /// Services can store cached traffic to local temp
             /// </summary>
-            public static bool UsingCache = false;
+            public static bool UsingCache = true;
         }
 
         public class Parser

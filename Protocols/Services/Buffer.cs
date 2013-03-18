@@ -31,6 +31,7 @@ namespace Client.Services
         {
             public bool isChannel = false;
             public bool isPM = false;
+            public List<string> history = new List<string>();
             public List<Scrollback.ContentLine> lines = null;
             public string Name = null;
             public string topic = null;
@@ -46,6 +47,10 @@ namespace Client.Services
                 Name = owner.name;
                 isChannel = owner.isChannel;
                 lines = new List<Scrollback.ContentLine>();
+                if (owner.textbox != null)
+                {
+                    history.AddRange(owner.textbox.history);
+                }
                 lines.AddRange(owner.scrollback.Data);
             }
         }
@@ -113,6 +118,7 @@ namespace Client.Services
             /// If true the window is considered usable
             /// </summary>
             public bool ChannelWork = false;
+            public string mode = "";
         }
 
         [Serializable]
@@ -217,6 +223,11 @@ namespace Client.Services
                 target.scrollback.SetText(Source.lines);
                 Source.lines.Clear();
                 Source.lines = null;
+                if (target.textbox != null)
+                {
+                    target.textbox.history = new List<string>();
+                    target.textbox.history.AddRange(Source.history);
+                }
                 target.isChannel = Source.isChannel;
             }
 
@@ -344,12 +355,15 @@ namespace Client.Services
 
         public void Clear()
         {
-            lock (networkInfo)
+            ClearData();
+        }
+
+        public void ClearData()
+        {
+            if (Directory.Exists(Root))
             {
-                networkInfo.Clear();
+                Directory.Delete(Root, true);
             }
-            Modified = true;
-            Directory.Delete(Root, true);
         }
 
         public static string SerializeNetwork(NetworkInfo line)
@@ -431,6 +445,7 @@ namespace Client.Services
                                     info.parsing_who = xx.parsing_who;
                                     info.parsing_xe = xx.parsing_xe;
                                     info.Redraw = xx.Redraw;
+                                    info.mode = xx.ChannelMode.ToString();
                                     info.temporary_hide = xx.temporary_hide;
                                     info.Topic = xx.Topic;
                                     info.TopicDate = xx.TopicDate;

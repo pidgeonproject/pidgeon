@@ -170,6 +170,7 @@ namespace Client
                 return data;
             }
         }
+
         /// <summary>
         /// Location of temporary stuff
         /// </summary>
@@ -813,114 +814,6 @@ namespace Client
             return false;
         }
 
-        public static bool RegisterPlugin(string path)
-        {
-            try
-            {
-                if (File.Exists(path))
-                {
-                    System.Reflection.Assembly library = System.Reflection.Assembly.LoadFrom(path);
-                    if (library == null)
-                    {
-                        Core.DebugLog("Unable to load " + path + " because the file can't be read");
-                        return false;
-                    }
-                    Type[] types = library.GetTypes();
-                    Type type = library.GetType("Client.RestrictedModule");
-                    Type pluginInfo = null;
-                    foreach (Type curr in types)
-                    {
-                        if (curr.IsAssignableFrom(type))
-                        {
-                            pluginInfo = curr;
-                            break;
-                        }
-                    }
-                    if (pluginInfo == null)
-                    {
-                        Core.DebugLog("Unable to load " + path + " because the library contains no module");
-                        return false;
-                    }
-                    Extension _plugin = (Extension)Activator.CreateInstance(pluginInfo);
-                    lock (Extensions)
-                    {
-                        if (Extensions.Contains(_plugin))
-                        {
-                            Core.DebugLog("Unable to load extension because the handle is already known to core");
-                            return false;
-                        }
-                        bool problem = false;
-                        foreach (Extension x in Core.Extensions)
-                        {
-                            if (x.Name == _plugin.Name)
-                            {
-                                Core.Ringlog("CORE: unable to load the extension, because the extension with same name is already loaded");
-                                _plugin._Status = Extension.Status.Terminated;
-                                problem = true;
-                                break;
-                            }
-                        }
-                        if (problem)
-                        {
-                            if (Core.Extensions.Contains(_plugin))
-                            {
-                                Core.Extensions.Remove(_plugin);
-                            }
-                        }
-                        Core.Ringlog("CORE: everything is fine, registering " + _plugin.Name);
-                        Extensions.Add(_plugin);
-                    }
-                    if (_plugin.Hook_OnRegister())
-                    {
-                        _plugin.Load();
-                        _plugin._Status = Extension.Status.Active;
-                        Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
-                        if (Core._Main != null)
-                        {
-                            Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Scrollback.MessageStyle.System, false);
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        Core.Ringlog("CORE: failed to run OnRegister for " + _plugin.Name);
-                    }
-                    return false;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-            return false;
-        }
-
-        public static bool RegisterPlugin(Extension plugin)
-        {
-            if (plugin._Status == Extension.Status.Loading)
-            {
-                lock (Extensions)
-                {
-                    if (Extensions.Contains(plugin))
-                    {
-                        return false;
-                    }
-                    Extensions.Add(plugin);
-                }
-                if (plugin.Hook_OnRegister())
-                {
-                    plugin.Load();
-                    if (Core._Main != null)
-                    {
-                        Core._Main.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Scrollback.MessageStyle.System, false);
-                    }
-                    return true;
-                }
-                return false;
-            }
-            return true;
-        }
-
         public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
@@ -944,12 +837,12 @@ namespace Client
             protocol.Server = server;
             protocol.nick = Configuration.UserData.nick;
             protocol.Port = port;
+            protocol.SSL = secured;
             protocol.password = password;
             Connections.Add(protocol);
             protocol.Open();
             return true;
         }
-
 
         /// <summary>
         /// Connect to IRC
@@ -963,6 +856,7 @@ namespace Client
             protocol.Server = server;
             protocol.Port = port;
             protocol.Password = pw;
+            protocol.SSL = secured;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;
             protocol._IRCNetwork._Protocol = protocol;
