@@ -233,8 +233,8 @@ namespace Client
                         _pro.StartInfo.UseShellExecute = true;
                         _pro = System.Diagnostics.Process.Start(main + System.IO.Path.DirectorySeparatorChar + "pidgeon");
                     }
-                    System.Windows.Forms.Application.Exit();
-                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    Core.IgnoreErrors = true;
+                    Environment.Exit(0);
                 }
             }
             catch (Exception fail)
