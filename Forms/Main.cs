@@ -162,6 +162,7 @@ namespace Client
                 {
                     Core.ParseLink(text);
                 }
+                Hooks._Sys.Initialise(this);
             }
             catch (Exception f)
             {

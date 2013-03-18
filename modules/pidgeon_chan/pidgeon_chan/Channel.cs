@@ -57,6 +57,7 @@ namespace Client
             _m = main;
             item = new ToolStripMenuItem("#pidgeon");
             item.Size = new System.Drawing.Size(200, 22);
+            item.Text = "#pidgeon";
             item.Click += new EventHandler(pidgeonToolStripMenuItem_Click);
             separator = new ToolStripSeparator();
             separator.Size = new System.Drawing.Size(200, 22);
@@ -64,6 +65,8 @@ namespace Client
             main.helpToolStripMenuItem.DropDownItems.Add(item);
             _m.menuStrip1.ResumeLayout(false);
             _m.menuStrip1.PerformLayout();
+            _m.Refresh();
+            Core.DebugLog("Registered #pidgeon in menu");
         }
 
         private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)

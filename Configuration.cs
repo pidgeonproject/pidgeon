@@ -69,6 +69,10 @@ namespace Client
             /// Position of window
             /// </summary>
             public static int window_size = 0;
+            /// <summary>
+            /// Maximal size of history
+            /// </summary>
+            public static int history = 200;
         }
 
         /// <summary>

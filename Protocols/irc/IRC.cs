@@ -165,61 +165,62 @@ namespace Client
             try
             {
                 bool OK = false;
-                if (text == null || text == "")
+                if (text == null)
                 {
                     return false;
                 }
                 if (text.StartsWith(":"))
                 {
+                    // :ottermaton!~mark@lancaster.hacc.edu JOIN #debian
                     string[] data = text.Split(':');
                     if (data.Length > 1)
                     {
                         last = text;
                         string command = "";
                         string parameters = "";
-                        string command2 = "";
-                        string source;
-                        string value;
-                        source = text.Substring(1);
+                        string value = "";
+                        string source = source = text.Substring(1);
                         source = source.Substring(0, source.IndexOf(" "));
-                        command2 = text.Substring(1);
-                        command2 = command2.Substring(source.Length + 1);
+                        string command2 = text.Substring(source.Length + 2);
                         if (command2.Contains(" :"))
                         {
                             command2 = command2.Substring(0, command2.IndexOf(" :"));
                         }
-                        string[] Commands = command2.Split(' ');
-                        if (Commands.Length > 0)
+
+                        if (command2.Contains(" "))
                         {
-                            command = Commands[0];
-                        }
-                        if (Commands.Length > 1)
-                        {
-                            int curr = 1;
-                            while (curr < Commands.Length)
+                            command = command2.Substring(0, command2.IndexOf(" "));
+                            if (command2.Length > 1 + command.Length)
                             {
-                                parameters += Commands[curr] + " ";
-                                curr++;
-                            }
-                            if (parameters.EndsWith(" "))
-                            {
-                                parameters = parameters.Substring(0, parameters.Length - 1);
+                                parameters = command2.Substring(1 + command.Length);
+                                if (parameters.EndsWith(" "))
+                                {
+                                    parameters = parameters.Substring(0, parameters.Length - 1);
+                                }
                             }
                         }
-                        value = "";
-                        if (text.Length > 3 + command2.Length + source.Length)
+                        else
+                        {
+                            command = command2;
+                        }
+
+                        if (text.Length > (3 + command2.Length + source.Length))
                         {
                             value = text.Substring(3 + command2.Length + source.Length);
                         }
+
                         if (value.StartsWith(":"))
                         {
                             value = value.Substring(1);
                         }
+
                         string[] code = data[1].Split(' ');
+
                         if (ProcessThis(source, data, value))
                         {
                             OK = true;
                         }
+
                         switch (command)
                         {
                             case "001":
@@ -340,6 +341,7 @@ namespace Client
                                 }
                                 break;
                         }
+
                         if (data[1].Contains(" "))
                         {
                             switch (command)
