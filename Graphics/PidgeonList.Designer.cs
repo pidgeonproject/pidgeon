@@ -71,13 +71,13 @@ namespace Client
             this.items.Dock = System.Windows.Forms.DockStyle.Fill;
             this.items.FullRowSelect = true;
             this.items.HideSelection = false;
-            this.items.ImageIndex = 0;
+            this.items.ImageIndex = 5;
             this.items.ImageList = this.list;
             this.items.Indent = 6;
-            this.items.ItemHeight = 16;
+            this.items.ItemHeight = 20;
             this.items.Location = new System.Drawing.Point(0, 0);
             this.items.Name = "items";
-            this.items.SelectedImageIndex = 0;
+            this.items.SelectedImageIndex = 3;
             this.items.ShowNodeToolTips = true;
             this.items.Size = new System.Drawing.Size(182, 321);
             this.items.TabIndex = 0;
@@ -136,6 +136,10 @@ namespace Client
             this.list.Images.SetKeyName(0, "Image2.png");
             this.list.Images.SetKeyName(1, "50px-IRC_icon.png");
             this.list.Images.SetKeyName(2, "irc_channel.ico");
+            this.list.Images.SetKeyName(3, "Arrow.png");
+            this.list.Images.SetKeyName(4, "At.png");
+            this.list.Images.SetKeyName(5, "Exclamation mark.png");
+            this.list.Images.SetKeyName(6, "Hash.png");
             // 
             // PidgeonList
             // 

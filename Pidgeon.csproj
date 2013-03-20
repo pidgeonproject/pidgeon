@@ -428,6 +428,7 @@
     <Content Include="Resources\At.png" />
     <Content Include="Resources\Exclamation mark.png" />
     <Content Include="Resources\Hash.png" />
+    <Content Include="Resources\Letter S.png" />
     <Content Include="Resources\Pigeon_clip_art_hight.ico" />
     <Content Include="Resources\Pigeon_clip_art_hight.png" />
     <Content Include="tcl84.dll">

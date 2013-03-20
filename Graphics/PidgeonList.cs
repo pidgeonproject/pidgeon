@@ -174,7 +174,7 @@ namespace Client
                 {
                     this.SuspendLayout();
                     TreeNode text = new TreeNode();
-                    text.ImageIndex = 1;
+                    text.ImageIndex = 4;
                     ServerList[user._Network].Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
                     text.Text = user.Nick;
 
@@ -223,7 +223,7 @@ namespace Client
                         ChannelList.Add(channel, text);
                     }
                     channel.TreeNode = text;
-                    text.ImageIndex = 2;
+                    text.ImageIndex = 6;
                     Window xx = channel.retrieveWindow();
                     if (xx != null)
                     {
