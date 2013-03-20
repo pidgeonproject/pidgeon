@@ -308,7 +308,7 @@ namespace Client
         {
             get 
               {
-                  if (_Protocol.ProtocolType != 3)
+                  if (_Protocol.GetType() != typeof(ProtocolSv))
                   {
                       return "system";
                   }
@@ -429,11 +429,10 @@ namespace Client
 
                 UserName = Configuration.UserData.user;
                 Ident = Configuration.UserData.ident;
-                if (protocol.ProtocolType == 3)
+                if (protocol.GetType() == typeof(ProtocolSv))
                 {
                     protocol.CreateChat("!" + ServerName, false, this, false, false, "!" + randomuqid + ServerName);
                     SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
-                    //sw = "!" + randomuqid + server;
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
