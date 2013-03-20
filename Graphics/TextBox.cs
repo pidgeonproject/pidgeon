@@ -27,7 +27,6 @@ namespace Client
 {
     public partial class TextBox : UserControl
     {
-        public static List<TextBox> _control = new List<TextBox>(); 
         public List<string> history = null;
         public int position = 0;
         public string prevtext = "";
@@ -35,12 +34,8 @@ namespace Client
         public Window parent = null;
         public bool restore = false;
 
-        public TextBox()
+        public void Init()
         {
-            lock (_control)
-            {
-                _control.Add(this);
-            }
             InitializeComponent();
         }
 
@@ -203,18 +198,6 @@ namespace Client
         {
             richTextBox1.Height = this.Height - 2;
             richTextBox1.Width = this.Width - 2;
-        }
-
-        new public void Dispose()
-        {
-            lock (_control)
-            {
-                if (_control.Contains(this))
-                {
-                    _control.Remove(this);
-                }
-            }
-            this.components.Dispose();
         }
 
         private void TextBox_Load(object sender, EventArgs e)

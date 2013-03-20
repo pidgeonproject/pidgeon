@@ -407,15 +407,21 @@ namespace Client
             try
             {
                 randomuqid = Core.retrieveRandom();
-                Descriptions.Add('n', "no /knock is allowed on channel");
-                Descriptions.Add('r', "registered channel");
-                Descriptions.Add('m', "talking is restricted");
-                Descriptions.Add('i', "users need to be invited to join");
-                Descriptions.Add('s', "channel is secret (doesn't appear on list)");
-                Descriptions.Add('p', "channel is private");
-                Descriptions.Add('A', "admins only");
-                Descriptions.Add('O', "opers chan");
-                Descriptions.Add('t', "topic changes can be done only by operators");
+                lock (Descriptions)
+                {
+                    if (Descriptions.Count < 1)
+                    {
+                        Descriptions.Add('n', "no /knock is allowed on channel");
+                        Descriptions.Add('r', "registered channel");
+                        Descriptions.Add('m', "talking is restricted");
+                        Descriptions.Add('i', "users need to be invited to join");
+                        Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                        Descriptions.Add('p', "channel is private");
+                        Descriptions.Add('A', "admins only");
+                        Descriptions.Add('O', "opers chan");
+                        Descriptions.Add('t', "topic changes can be done only by operators");
+                    }
+                }
                 _Protocol = protocol;
                 ServerName = Server;
                 Quit = Configuration.UserData.quit;

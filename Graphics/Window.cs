@@ -79,7 +79,6 @@ namespace Client
         public void Init()
         {
             InitializeComponent();
-
             kbToolStripMenuItem.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
             listView.View = View.Details;
@@ -97,6 +96,7 @@ namespace Client
 
         public void Create()
         {
+            textbox.Init();
             scrollback.Create();
             scrollback.channelToolStripMenuItem.Visible = isChannel;
             scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
