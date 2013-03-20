@@ -69,19 +69,15 @@ namespace Client
                     return;
                 }
 
-                if (e.Control && e.KeyCode == Keys.Enter)
+                if (e.Control)
                 {
-                    return;
-                }
-
-                if (e.Control && e.KeyCode == Keys.Down)
-                {
-                    return;
-                }
-
-                if (e.Control && e.KeyCode == Keys.Up)
-                {
-                    return;
+                    switch (e.KeyCode)
+                    {
+                        case Keys.Enter:
+                        case Keys.Down:
+                        case Keys.Up:
+                            return;
+                    }
                 }
 
                 if (!(e.KeyCode == Keys.Tab))
@@ -170,10 +166,11 @@ namespace Client
                             }
                             original = "";
                             richTextBox1.Text = "";
-                            e.SuppressKeyPress = true;
                             position = history.Count;
+                            e.SuppressKeyPress = true;
                             return;
                         }
+
                         richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
 
                         if (richTextBox1.Text != "")
@@ -242,6 +239,5 @@ namespace Client
                 Core.handleException(fail);
             }
         }
-       
     }
 }

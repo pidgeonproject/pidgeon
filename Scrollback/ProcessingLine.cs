@@ -33,7 +33,10 @@ namespace Client
     {
         public void Display()
         {
-            this.Visible = true;
+            if (!this.Visible)
+            {
+                this.Visible = true;
+            }
         }
 
         private void InsertLineToText(ContentLine line, bool Draw = true)

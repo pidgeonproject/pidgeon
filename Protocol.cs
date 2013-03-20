@@ -177,7 +177,6 @@ namespace Client
             return text.Replace("%####%", "%");
         }
 
-
         /// <summary>
         /// Escape system char
         /// </summary>

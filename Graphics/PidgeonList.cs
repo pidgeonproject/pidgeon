@@ -27,13 +27,22 @@ namespace Client
 {
     public partial class PidgeonList : UserControl
     {
+        /// <summary>
+        /// List of services which are currently in sidebar
+        /// </summary>
         public Dictionary<ProtocolSv, TreeNode> ServiceList = new Dictionary<ProtocolSv, TreeNode>();
-        public Dictionary<Network, TreeNode> Servers = new Dictionary<Network, TreeNode>();
-        private LinkedList<User> _User = new LinkedList<User>();
-        public Dictionary<Channel, TreeNode> Channels = new Dictionary<Channel, TreeNode>();
-        private LinkedList<Channel> ChannelsQueue = new LinkedList<Channel>();
+        /// <summary>
+        /// List of servers which are currently in sidebar
+        /// </summary>
+        public Dictionary<Network, TreeNode> ServerList = new Dictionary<Network, TreeNode>();
+        /// <summary>
+        /// List of channels which are currently in sidebar
+        /// </summary>
+        public Dictionary<Channel, TreeNode> ChannelList = new Dictionary<Channel, TreeNode>();
         public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
-        private List<Network> NetworkQueue = new List<Network>();
+        private LinkedList<User> queueUsers = new LinkedList<User>();
+        private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
+        private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
 
         public PidgeonList()
@@ -134,42 +143,42 @@ namespace Client
         /// <param name="chan"></param>
         public void insertChannel(Channel chan)
         {
-            lock (ChannelsQueue)
+            lock (queueChannels)
             {
-                if (ChannelsQueue.Contains(chan))
+                if (queueChannels.Contains(chan))
                 {
                     return;
                 }
-                ChannelsQueue.AddLast(chan);
+                queueChannels.AddLast(chan);
                 Updated = true;
             }
         }
 
         public void insertUser(User _us)
         {
-            lock (_User)
+            lock (queueUsers)
             {
-                _User.AddLast(_us);
+                queueUsers.AddLast(_us);
             }
         }
 
         private void _insertUs(User _us)
         {
-            lock (Servers)
+            lock (ServerList)
             {
-                if (Servers.ContainsKey(_us._Network))
+                if (ServerList.ContainsKey(_us._Network))
                 {
                     this.SuspendLayout();
                     TreeNode text = new TreeNode();
                     text.ImageIndex = 1;
-                    Servers[_us._Network].Nodes.Insert(Servers[_us._Network].Nodes.Count, text);
+                    ServerList[_us._Network].Nodes.Insert(ServerList[_us._Network].Nodes.Count, text);
                     text.Text = _us.Nick;
 
                     lock (UserList)
                     {
                         UserList.Add(_us, text);
                     }
-                    Servers[_us._Network].Expand();
+                    ServerList[_us._Network].Expand();
                     if (_us._Network._Protocol.Windows.ContainsKey(_us._Network.window + _us.Nick))
                     {
                         _us._Network._Protocol.Windows[_us._Network.window + _us.Nick].treeNode = text;
@@ -196,18 +205,18 @@ namespace Client
 
         private void insertChan(Channel chan)
         {
-            lock (Servers)
+            lock (ServerList)
             {
-                if (Servers.ContainsKey(chan._Network))
+                if (ServerList.ContainsKey(chan._Network))
                 {
                     this.SuspendLayout();
                     TreeNode text = new TreeNode();
                     text.Text = chan.Name;
-                    Servers[chan._Network].Expand();
-                    Servers[chan._Network].Nodes.Insert(0, text);
-                    lock (Channels)
+                    ServerList[chan._Network].Expand();
+                    ServerList[chan._Network].Nodes.Insert(0, text);
+                    lock (ChannelList)
                     {
-                        Channels.Add(chan, text);
+                        ChannelList.Add(chan, text);
                     }
                     chan.TreeNode = text;
                     text.ImageIndex = 2;
@@ -228,9 +237,9 @@ namespace Client
                 this.SuspendLayout();
                 TreeNode text = new TreeNode();
                 text.Text = network.ServerName;
-                lock (Servers)
+                lock (ServerList)
                 {
-                    Servers.Add(network, text);
+                    ServerList.Add(network, text);
                 }
                 text.Expand();
                 network.SystemWindow.treeNode = text;
@@ -244,7 +253,7 @@ namespace Client
                 text.Text = network.ServerName;
                 network.SystemWindow.treeNode = text;
                 ServiceList[network.ParentSv].Nodes.Add(text);
-                Servers.Add(network, text);
+                ServerList.Add(network, text);
                 ServiceList[network.ParentSv].Expand();
             }
             this.ResumeLayout();
@@ -256,11 +265,11 @@ namespace Client
         /// <param name="network"></param>
         public void insertNetwork(Network network, ProtocolSv ParentSv = null)
         {
-            if (NetworkQueue.Contains(network)) return;
-            lock (NetworkQueue)
+            if (queueNetwork.Contains(network)) return;
+            lock (queueNetwork)
             {
                 network.ParentSv = ParentSv;
-                NetworkQueue.Add(network);
+                queueNetwork.Add(network);
                 Updated = true;
             }
         }
@@ -282,28 +291,28 @@ namespace Client
 
                 Updated = false;
 
-                lock (NetworkQueue)
+                lock (queueNetwork)
                 {
-                    foreach (Network it in NetworkQueue)
+                    foreach (Network it in queueNetwork)
                     {
                         _insertNetwork(it);
                     }
-                    NetworkQueue.Clear();
+                    queueNetwork.Clear();
                 }
 
-                lock (ChannelsQueue)
+                lock (queueChannels)
                 {
-                    foreach (Channel item in ChannelsQueue)
+                    foreach (Channel item in queueChannels)
                     {
                         insertChan(item);
                     }
-                    ChannelsQueue.Clear();
+                    queueChannels.Clear();
                 }
 
                 List<Channel> _channels = new List<Channel>();
-                lock (Channels)
+                lock (ChannelList)
                 {
-                    foreach (var chan in Channels)
+                    foreach (var chan in ChannelList)
                     {
                         if (chan.Key.dispose)
                         {
@@ -316,7 +325,7 @@ namespace Client
 
                 foreach (var chan in _channels)
                 {
-                    Channels.Remove(chan);
+                    ChannelList.Remove(chan);
                 }
 
                 lock (Core._Main.WindowRequests)
@@ -332,18 +341,18 @@ namespace Client
                     Core._Main.WindowRequests.Clear();
                 }
 
-                lock (_User)
+                lock (queueUsers)
                 {
-                    foreach (User user in _User)
+                    foreach (User user in queueUsers)
                     {
                         _insertUs(user);
                     }
-                    _User.Clear();
+                    queueUsers.Clear();
                 }
 
-                lock (Channels)
+                lock (ChannelList)
                 {
-                    foreach (var channel in Channels)
+                    foreach (var channel in ChannelList)
                     {
                         if (channel.Key.Redraw)
                         {
@@ -390,11 +399,11 @@ namespace Client
                     }
                 }
 
-                lock (Servers)
+                lock (ServerList)
                 {
-                    if (Servers.ContainsValue(e.Node))
+                    if (ServerList.ContainsValue(e.Node))
                     {
-                        foreach (var cu in Servers)
+                        foreach (var cu in ServerList)
                         {
                             if (cu.Value == e.Node)
                             {
@@ -433,11 +442,11 @@ namespace Client
                     }
                 }
 
-                lock (Channels)
+                lock (ChannelList)
                 {
-                    if (Channels.ContainsValue(e.Node))
+                    if (ChannelList.ContainsValue(e.Node))
                     {
-                        foreach (var cu in Channels)
+                        foreach (var cu in ChannelList)
                         {
                             if (cu.Value == e.Node)
                             {
@@ -537,12 +546,12 @@ namespace Client
                 }
             }
 
-            lock (Servers)
+            lock (ServerList)
             {
-                if (Servers.ContainsValue(Item))
+                if (ServerList.ContainsValue(Item))
                 {
                     Network network = null;
-                    foreach (var cu in Servers)
+                    foreach (var cu in ServerList)
                     {
                         if (cu.Value == Item)
                         {
@@ -558,7 +567,7 @@ namespace Client
                     if (network != null)
                     {
                         Core.Connections.Remove(network._Protocol);
-                        Servers.Remove(network);
+                        ServerList.Remove(network);
                         foreach (TreeNode item in items.SelectedNode.Nodes)
                         {
                             RemoveItem(item);
@@ -633,12 +642,12 @@ namespace Client
                 }
             }
 
-            lock (Channels)
+            lock (ChannelList)
             {
-                if (Channels.ContainsValue(Item))
+                if (ChannelList.ContainsValue(Item))
                 {
                     Channel item = null;
-                    foreach (var cu in Channels)
+                    foreach (var cu in ChannelList)
                     {
                         if (cu.Value == Item)
                         {
@@ -682,9 +691,9 @@ namespace Client
                                 item._Network.Channels.Remove(item);
                             }
                         }
-                        lock (Channels)
+                        lock (ChannelList)
                         {
-                            Channels.Remove(item);
+                            ChannelList.Remove(item);
                         }
                     }
                 }
@@ -702,11 +711,11 @@ namespace Client
         {
             try
             {
-                lock (Servers)
+                lock (ServerList)
                 {
-                    if (Servers.ContainsValue(items.SelectedNode))
+                    if (ServerList.ContainsValue(items.SelectedNode))
                     {
-                        foreach (var cu in Servers)
+                        foreach (var cu in ServerList)
                         {
                             if (cu.Value == items.SelectedNode)
                             {
@@ -727,9 +736,9 @@ namespace Client
         {
             try
             {
-                if (Channels.ContainsValue(items.SelectedNode))
+                if (ChannelList.ContainsValue(items.SelectedNode))
                 {
-                    foreach (var cu in Channels)
+                    foreach (var cu in ChannelList)
                     {
                         if (cu.Value == items.SelectedNode)
                         {

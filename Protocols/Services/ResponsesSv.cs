@@ -402,9 +402,9 @@ namespace Client
             {
                 Network remove = null;
                 System.Windows.Forms.TreeNode item = null;
-                lock (Core._Main.ChannelList.Servers)
+                lock (Core._Main.ChannelList.ServerList)
                 {
-                    foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.Servers)
+                    foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.ServerList)
                     {
                         if (n.Key.ServerName == curr.InnerText)
                         {
@@ -416,7 +416,7 @@ namespace Client
 
                     if (remove != null)
                     {
-                        Core._Main.ChannelList.Servers.Remove(remove);
+                        Core._Main.ChannelList.ServerList.Remove(remove);
                     }
                 }
                 if (item != null)

@@ -485,7 +485,7 @@ namespace Client
         }
 
         public void InsertBan(string ban, string user)
-        { 
+        {
             
         }
 
