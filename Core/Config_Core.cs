@@ -118,9 +118,11 @@ namespace Client
                     make_node("location.x1", Configuration.Window.x1.ToString(), curr, confname, config, xmlnode);
                     make_comment("Location of slide bar", config, xmlnode);
                     make_node("location.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Where the logs are being saved", config, xmlnode);
+                    make_comment("Maximum history", config, xmlnode);
+                    make_node("Configuration.Window.history", Configuration.Window.history.ToString(), curr, confname, config, xmlnode);
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
+                    make_comment("Where the logs are being saved", config, xmlnode);
                     make_node("logs.dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
                     make_comment("Type of logs to save", config, xmlnode);
                     make_node("logs.type", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
@@ -492,6 +494,9 @@ namespace Client
                                                         break;
                                                 }
                                                 Configuration.Logs.ServicesLogs = type;
+                                                break;
+                                            case "Configuration.Window.history":
+                                                Configuration.Window.history = int.Parse(curr.InnerText);
                                                 break;
                                         }
                                     }
