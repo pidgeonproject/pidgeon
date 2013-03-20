@@ -71,7 +71,6 @@ namespace Client
             this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.synchroToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.listView = new System.Windows.Forms.ListView();
-            this.textbox = new Client.TextBox();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.pINGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pAGEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -485,7 +484,5 @@ namespace Client
         private System.Windows.Forms.ToolStripMenuItem synchroToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
         private System.Windows.Forms.Timer lockwork;
-        //public PidgeonList pidgeonList;
-
     }
 }

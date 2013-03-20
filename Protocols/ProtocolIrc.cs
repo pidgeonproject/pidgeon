@@ -23,7 +23,6 @@ using System.Net.Sockets;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Linq;
 using System.Net;
 
 namespace Client

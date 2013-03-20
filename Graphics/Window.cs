@@ -63,23 +63,25 @@ namespace Client
         public bool isPM = false;
         public Network _Network = null;
         public bool Resizing = false;
+        public bool ignoreChange = false;
 
         public Window()
         {
             this.scrollback = new Client.Scrollback(this);
+            this.textbox = new TextBox();
+            textbox.parent = this;
+            if (textbox.history == null)
+            {
+                textbox.history = new List<string>();
+            }
         }
 
         public void Init()
         {
-            this.SetStyle(
-            ControlStyles.AllPaintingInWmPaint |
-            ControlStyles.UserPaint |
-            ControlStyles.OptimizedDoubleBuffer, true);
             InitializeComponent();
 
             kbToolStripMenuItem.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
-            scrollback.owner = this;
             listView.View = View.Details;
             listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
@@ -87,10 +89,8 @@ namespace Client
             listViewd.View = View.Details;
             listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
             listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            textbox.parent = this;
             listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
             listView.Visible = false;
-            textbox.history = new List<string>();
             listViewd.Columns[0].Width = listViewd.Width;
             listView.Columns[0].Width = listViewd.Width;
         }
@@ -109,6 +109,7 @@ namespace Client
 
         public bool Redraw()
         {
+            ignoreChange = true;
             if (xContainer1 != null)
             {
                 if (this.xContainer1.SplitterDistance != Configuration.Window.x1)
@@ -125,6 +126,7 @@ namespace Client
                 listViewd.Columns[0].Width = listViewd.Width;
                 listView.Columns[0].Width = listView.Width;
             }
+            ignoreChange = false;
             return true;
         }
 
@@ -132,13 +134,13 @@ namespace Client
         {
             try
             {
-                if (Making == false)
+                if (Making == false && ignoreChange == false)
                 {
                     Configuration.Window.x1 = xContainer1.SplitterDistance;
                     Configuration.Window.x4 = xContainer4.SplitterDistance;
+                    listViewd.Columns[0].Width = listViewd.Width;
+                    listView.Columns[0].Width = listView.Width;
                 }
-                listViewd.Columns[0].Width = listViewd.Width;
-                listView.Columns[0].Width = listView.Width;
             }
             catch (Exception fail)
             {
@@ -154,7 +156,11 @@ namespace Client
         protected override bool IsInputKey(Keys keyData)
         {
             if (keyData == Keys.Tab)
+            {
                 return true;
+            }
+
+            // this way we override the keycode
             return base.IsInputKey(keyData);
         }
 

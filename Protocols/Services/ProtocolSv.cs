@@ -16,10 +16,14 @@
  ***************************************************************************/
 
 using System;
-using System.Xml;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Net.Sockets;
+using System.Xml;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Net;
 
 namespace Client
 {
@@ -30,12 +34,12 @@ namespace Client
         public DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
-        private System.IO.StreamReader _reader = null;
+        private System.IO.StreamReader _StreamReader = null;
         /// <summary>
         /// List of networks loaded on server
         /// </summary>
         public List<Network> NetworkList = new List<Network>();
-        private System.IO.StreamWriter _writer = null;
+        private System.IO.StreamWriter _StreamWriter = null;
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
@@ -99,8 +103,24 @@ namespace Client
                 sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
-                _writer = new System.IO.StreamWriter(_networkStream);
-                _reader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
+                _StreamWriter = new System.IO.StreamWriter(_networkStream);
+                _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
+
+                if (!SSL)
+                {
+                    _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                    _StreamWriter = new System.IO.StreamWriter(_networkStream);
+                    _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
+                }
+
+                if (SSL)
+                {
+                    System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
+                    //_networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                    //    new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                    //_StreamWriter = new System.IO.StreamWriter(_networkSsl);
+                    //_StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
+                }
 
                 Connected = true;
 
@@ -130,9 +150,9 @@ namespace Client
             string text = "";
             try
             {
-                while (!_reader.EndOfStream && Connected)
+                while (!_StreamReader.EndOfStream && Connected)
                 {
-                    text = _reader.ReadLine();
+                    text = _StreamReader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
                     while (Core.blocked)
                     {
@@ -298,8 +318,8 @@ namespace Client
                 keep.Abort();
                 Core.killThread(keep);
             }
-            if (_writer != null) _writer.Close();
-            if (_reader != null) _reader.Close();
+            if (_StreamWriter != null) _StreamWriter.Close();
+            if (_StreamReader != null) _StreamReader.Close();
             base.Exit();
         }
 
@@ -424,9 +444,9 @@ namespace Client
             {
                 try
                 {
-                    _writer.WriteLine(text);
+                    _StreamWriter.WriteLine(text);
                     Core.trafficscanner.insert(Server, " << " + text);
-                    _writer.Flush();
+                    _StreamWriter.Flush();
                 }
                 catch (System.IO.IOException er)
                 {

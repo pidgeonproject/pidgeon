@@ -212,7 +212,7 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the user", Scrollback.MessageStyle.System, false);
                 return;
             }
             Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);

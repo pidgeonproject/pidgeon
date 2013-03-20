@@ -132,6 +132,7 @@ namespace Client.Services
             public string NetworkID = null;
             public string Server = null;
             public int lastMQID = 0;
+            public List<int> MQ = new List<int>();
             /// <summary>
             /// User modes
             /// </summary>
@@ -188,6 +189,17 @@ namespace Client.Services
             public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
             public List<string> PrivateWins = new List<string>();
 
+            public class Range
+            {
+                int X;
+                int Y;
+                public Range(int x, int y)
+                {
+                    Y = y;
+                    X = x;
+                }
+            }
+
             public NetworkInfo()
             {
 
@@ -206,6 +218,41 @@ namespace Client.Services
                     }
                 }
                 return null;
+            }
+
+            public bool containsMQID(int id)
+            {
+                lock (MQ)
+                {
+                    if (MQ.Contains(id))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            public Range getRange(int startindex = 0)
+            {
+                Range range = null;
+
+                int index = startindex;
+
+                while (index < lastMQID && containsMQID(index))
+                {
+                    index++;
+                }
+
+                int Y = index;
+
+                while (Y < lastMQID && !containsMQID(index))
+                {
+                    Y++;
+                }
+
+                range = new Range(index, Y);
+
+                return range;
             }
 
             public void recoverWindowText(Client.Window target, string source)
