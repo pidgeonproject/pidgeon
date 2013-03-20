@@ -24,11 +24,6 @@ namespace Client
 {
     public class messages
     {
-        /// <summary>
-        /// Default language
-        /// </summary>
-        public static string Language = "en";
-
         public class container
         {
             public string language = null;
@@ -39,6 +34,11 @@ namespace Client
                 Cache = new Dictionary<string, string>();
             }
         }
+
+        /// <summary>
+        /// Default language
+        /// </summary>
+        public static string Language = "en";
 
         public static Dictionary<string, container> data = new Dictionary<string, container>();
 

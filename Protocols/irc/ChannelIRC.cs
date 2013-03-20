@@ -37,7 +37,7 @@ namespace Client
                     Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
-                        channel.ChannelMode.mode(code[4]);
+                        channel.ChannelMode.ChangeMode(code[4]);
                         channel.UpdateInfo();
                         WindowText(curr, "Mode: " + code[4], Scrollback.MessageStyle.Channel, true, date, !updated_text);
                     }
@@ -404,7 +404,7 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        channel.ChannelMode.mode(change);
+                        channel.ChannelMode.ChangeMode(change);
 
                         while (change.EndsWith(" ") && change.Length > 1)
                         {
@@ -439,7 +439,7 @@ namespace Client
                                     User flagged_user = channel.userFromName(parameters2[curr]);
                                     if (flagged_user != null)
                                     {
-                                        flagged_user.ChannelMode.mode(type.ToString() + m.ToString());
+                                        flagged_user.ChannelMode.ChangeMode(type.ToString() + m.ToString());
                                     }
                                     curr++;
                                 }

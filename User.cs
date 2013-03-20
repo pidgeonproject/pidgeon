@@ -72,7 +72,7 @@ namespace Client
             if (_Network.UChars.Contains(symbol))
             {
                 char mode = _Network.CUModes[_Network.UChars.IndexOf(symbol)];
-                ChannelMode.mode("+" + mode.ToString());
+                ChannelMode.ChangeMode("+" + mode.ToString());
             }
         }
 

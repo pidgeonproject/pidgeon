@@ -33,7 +33,7 @@ namespace Client
         /// <summary>
         /// Optional parameters for each mode
         /// </summary>
-        public string parameter = null;
+        public string Parameters = null;
         /// <summary>
         /// Network associated with mode
         /// </summary>
@@ -74,11 +74,15 @@ namespace Client
 
         public NetworkMode(string DefaultMode)
         {
-            mode(DefaultMode);
+            ChangeMode(DefaultMode);
         }
 
+        /// <summary>
+        /// This needs to be there for serialization to work
+        /// </summary>
         public NetworkMode()
         {
+            // place holder :)
             network = null;
         }
 
@@ -87,7 +91,7 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public bool mode(string text)
+        public bool ChangeMode(string text)
         {
             char prefix = ' ';
             foreach (char _x in text)
