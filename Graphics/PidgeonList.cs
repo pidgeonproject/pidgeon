@@ -138,50 +138,54 @@ namespace Client
         }
 
         /// <summary>
-        /// Insert a channel to menu
+        /// Insert a channel to list
         /// </summary>
-        /// <param name="chan"></param>
-        public void insertChannel(Channel chan)
+        /// <param name="channel"></param>
+        public void insertChannel(Channel channel)
         {
             lock (queueChannels)
             {
-                if (queueChannels.Contains(chan))
+                if (queueChannels.Contains(channel))
                 {
                     return;
                 }
-                queueChannels.AddLast(chan);
+                queueChannels.AddLast(channel);
                 Updated = true;
             }
         }
 
-        public void insertUser(User _us)
+        /// <summary>
+        /// Insert a user to list (thread safe)
+        /// </summary>
+        /// <param name="user"></param>
+        public void insertUser(User user)
         {
             lock (queueUsers)
             {
-                queueUsers.AddLast(_us);
+                queueUsers.AddLast(user);
             }
         }
 
-        private void _insertUs(User _us)
+        private void _insertUser(User user)
         {
             lock (ServerList)
             {
-                if (ServerList.ContainsKey(_us._Network))
+                if (ServerList.ContainsKey(user._Network))
                 {
                     this.SuspendLayout();
                     TreeNode text = new TreeNode();
                     text.ImageIndex = 1;
-                    ServerList[_us._Network].Nodes.Insert(ServerList[_us._Network].Nodes.Count, text);
-                    text.Text = _us.Nick;
+                    ServerList[user._Network].Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+                    text.Text = user.Nick;
 
                     lock (UserList)
                     {
-                        UserList.Add(_us, text);
+                        UserList.Add(user, text);
                     }
-                    ServerList[_us._Network].Expand();
-                    if (_us._Network._Protocol.Windows.ContainsKey(_us._Network.window + _us.Nick))
+                    ServerList[user._Network].Expand();
+                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
                     {
-                        _us._Network._Protocol.Windows[_us._Network.window + _us.Nick].treeNode = text;
+                        user._Network._Protocol.Windows[user._Network.window + user.Nick].treeNode = text;
                     }
                     Updated = true;
                     this.ResumeLayout();
@@ -203,24 +207,24 @@ namespace Client
             this.ResumeLayout();
         }
 
-        private void insertChan(Channel chan)
+        private void insertChan(Channel channel)
         {
             lock (ServerList)
             {
-                if (ServerList.ContainsKey(chan._Network))
+                if (ServerList.ContainsKey(channel._Network))
                 {
                     this.SuspendLayout();
                     TreeNode text = new TreeNode();
-                    text.Text = chan.Name;
-                    ServerList[chan._Network].Expand();
-                    ServerList[chan._Network].Nodes.Insert(0, text);
+                    text.Text = channel.Name;
+                    ServerList[channel._Network].Expand();
+                    ServerList[channel._Network].Nodes.Insert(0, text);
                     lock (ChannelList)
                     {
-                        ChannelList.Add(chan, text);
+                        ChannelList.Add(channel, text);
                     }
-                    chan.TreeNode = text;
+                    channel.TreeNode = text;
                     text.ImageIndex = 2;
-                    Window xx = chan.retrieveWindow();
+                    Window xx = channel.retrieveWindow();
                     if (xx != null)
                     {
                         xx.treeNode = text;
@@ -345,7 +349,7 @@ namespace Client
                 {
                     foreach (User user in queueUsers)
                     {
-                        _insertUs(user);
+                        _insertUser(user);
                     }
                     queueUsers.Clear();
                 }
