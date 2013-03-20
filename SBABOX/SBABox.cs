@@ -790,7 +790,7 @@ namespace Client
             {
                 foreach (Link il in LinkInfo)
                 {
-                    il.linkedtext.Linked = false;
+                    il.LinkedText.Linked = false;
                     il.Dispose();
                 }
                 LinkInfo.Clear();

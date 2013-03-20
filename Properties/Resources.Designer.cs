@@ -60,6 +60,20 @@ namespace Client.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap Arrow {
+            get {
+                object obj = ResourceManager.GetObject("Arrow", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap At {
+            get {
+                object obj = ResourceManager.GetObject("At", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         /// <summary>
         ///   Looks up a localized string similar to This command will connect you to a server, when you are using pidgeon services
         ///
@@ -108,6 +122,7 @@ namespace Client.Properties {
         ///window-menu-quit=Exit;
         ///window-menu-conf=Preferences;
         ///window-menu-help=Help;
+        ///
         ///pidgeon-shut=Do you really want to exit?;
         ///invalid-server=This is not a valid server name;
         ///invalid-command=Invalid command;
@@ -118,11 +133,25 @@ namespace Client.Properties {
         ///error1=You need to be connected;
         ///join=$1 just joined the channel;
         ///left=The $1 just left the channel;
-        ///topic-data=Topic was set at $2 by  [rest of string was truncated]&quot;;.
+        ///topic-data=Topic was set at $2 b [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string en_english {
             get {
                 return ResourceManager.GetString("en_english", resourceCulture);
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Exclamation_mark {
+            get {
+                object obj = ResourceManager.GetObject("Exclamation_mark", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        internal static System.Drawing.Bitmap Hash {
+            get {
+                object obj = ResourceManager.GetObject("Hash", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         

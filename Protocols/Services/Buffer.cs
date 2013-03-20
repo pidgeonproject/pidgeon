@@ -274,6 +274,7 @@ namespace Client.Services
                 {
                     target.textbox.history = new List<string>();
                     target.textbox.history.AddRange(Source.history);
+                    target.textbox.position = Source.history.Count;
                 }
                 target.isChannel = Source.isChannel;
             }

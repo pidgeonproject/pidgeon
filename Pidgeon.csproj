@@ -424,6 +424,10 @@
     <Content Include="ManualPages\PidgeonUptime.txt" />
     <Content Include="ManualPages\Server.txt" />
     <None Include="Resources\darknetwork.png" />
+    <Content Include="Resources\Arrow.png" />
+    <Content Include="Resources\At.png" />
+    <Content Include="Resources\Exclamation mark.png" />
+    <Content Include="Resources\Hash.png" />
     <Content Include="Resources\Pigeon_clip_art_hight.ico" />
     <Content Include="Resources\Pigeon_clip_art_hight.png" />
     <Content Include="tcl84.dll">
