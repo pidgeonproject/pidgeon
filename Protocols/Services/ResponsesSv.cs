@@ -119,6 +119,7 @@ namespace Client
                 long date = 0;
                 bool backlog = false;
                 string MQID = null;
+                bool range = false;
                 string id = "";
                 foreach (XmlAttribute xx in curr.Attributes)
                 {
@@ -139,6 +140,9 @@ namespace Client
                                 id = xx.Value;
                                 backlog = true;
                             }
+                            break;
+                        case "range":
+                            range = true;
                             break;
                     }
                 }
@@ -165,6 +169,9 @@ namespace Client
                         }
                     }
                 }
+
+                ProcessorIRC processor = null;
+
                 if (backlog)
                 {
                     if (Core._Main.DisplayingProgress == false)
@@ -191,12 +198,12 @@ namespace Client
                             i.parsing_who = false;
                         }
                     }
-                    ProcessorIRC processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
+                    processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
                     processor.Result();
                     return;
                 }
-                ProcessorIRC processor2 = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
-                processor2.Result();
+                processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
+                processor.Result();
             }
 
             public static void sNick(XmlNode curr, ProtocolSv protocol)

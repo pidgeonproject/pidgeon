@@ -64,6 +64,7 @@ namespace Client
         public Network _Network = null;
         public bool Resizing = false;
         public bool ignoreChange = false;
+        private Channel channel = null;
 
         public Window()
         {
@@ -178,7 +179,7 @@ namespace Client
                             foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                             {
                                 string current_ban = "";
-                                Channel _channel = _Network.getChannel(name);
+                                Channel _channel = getChannel();
                                 if (_channel != null)
                                 {
                                     User target = _channel.userFromName(Decode(user.Text));
@@ -238,7 +239,7 @@ namespace Client
                 {
                     foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                     {
-                        Channel _channel = _Network.getChannel(name);
+                        Channel _channel = getChannel();
                         if (_channel != null)
                         {
                             if (Configuration.irc.DisplayCtcp)
@@ -455,7 +456,7 @@ namespace Client
                         foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
                             string mode = "";
-                            Channel _channel = _Network.getChannel(name);
+                            Channel _channel = getChannel();
                             if (_channel != null)
                             {
                                 User target = _channel.userFromName(Decode(user.Text));
@@ -554,7 +555,7 @@ namespace Client
                     if (_Network == null)
                         return;
 
-                    Channel item = _Network.getChannel(name);
+                    Channel item = getChannel();
                     if (item != null)
                     {
                         Locked = false;
@@ -602,6 +603,27 @@ namespace Client
             {
                 Core.handleException(fail);
             }
+        }
+
+        public Channel getChannel()
+        {
+            if (channel != null)
+            {
+                return channel;
+            }
+            if (isChannel)
+            {
+                if (_Network != null)
+                {
+                    Channel chan = _Network.getChannel(name);
+                    if (chan != null)
+                    {
+                        channel = chan;
+                        return channel;
+                    }
+                }
+            }
+            return null;
         }
 
         private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
@@ -790,7 +812,7 @@ namespace Client
             {
                 if (_Network.Connected)
                 {
-                    Channel channel = _Network.getChannel(name);
+                    Channel channel = getChannel();
                     if (channel != null)
                     {
                         channel.UserList.Clear();
@@ -810,6 +832,14 @@ namespace Client
             {
                 Locked = false;
                 lockwork.Enabled = false;
+                if (isChannel)
+                {
+                    Channel channel = getChannel();
+                    if (channel != null && channel.UserListRefreshWait)
+                    {
+                        channel.redrawUsers();
+                    }
+                }
             }
             catch (Exception fail)
             {

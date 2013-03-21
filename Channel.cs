@@ -159,6 +159,10 @@ namespace Client
         /// Tree node
         /// </summary>
         public System.Windows.Forms.TreeNode TreeNode = null;
+        /// <summary>
+        /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
+        /// </summary>
+        public bool UserListRefreshWait = false;
 
         /// <summary>
         /// Renew the bans
@@ -310,6 +314,7 @@ namespace Client
                         {
                             Redraw = true;
                             PidgeonList.Updated = true;
+                            UserListRefreshWait = true;
                             return;
                         }
                         if (Chat.listView.Visible)

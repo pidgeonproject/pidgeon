@@ -129,6 +129,12 @@ namespace Client
 
             if (owner == null || (owner != null && WindowVisible()))
             {
+                if (SortNeeded)
+                {
+                    ContentLines.Sort();
+                    SortNeeded = false;
+                }
+
                 if (simple)
                 {
                     ReloadSimple();
@@ -284,6 +290,7 @@ namespace Client
             }
 
             bool Matched = false;
+
             if (!SuppressPing)
             {
                 Matched = Match(text);
@@ -330,18 +337,22 @@ namespace Client
                     owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
                 }
             }
+
             DateTime time = DateTime.Now;
+
             if (Date != 0)
             {
                 time = DateTime.FromBinary(Date);
             }
+
             ContentLine line = new ContentLine(InputStyle, text, time, Matched);
+
             lock (ContentLines)
             {
                 ContentLines.Add(line);
                 if (Date != 0)
                 {
-                    ContentLines.Sort();
+                    SortNeeded = true;
                 }
             }
 

@@ -51,6 +51,7 @@ namespace Client
         private bool ReloadWaiting = false;
         private bool Changed = false;
         private string LogfilePath = null;
+        public bool SortNeeded = false;
         public List<ContentLine> Data
         {
             get

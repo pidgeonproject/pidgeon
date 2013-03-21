@@ -242,11 +242,11 @@ namespace Client
         /// <returns></returns>
         public Channel getChannel(string name)
         {
-            foreach (Channel cu in Channels)
+            foreach (Channel chan in Channels)
             {
-                if (cu.Name == name)
+                if (chan.Name == name)
                 {
-                    return cu;
+                    return chan;
                 }
             }
             return null;

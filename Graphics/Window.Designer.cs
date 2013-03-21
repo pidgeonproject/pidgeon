@@ -422,7 +422,7 @@ namespace Client
             // 
             // lockwork
             // 
-            this.lockwork.Interval = 8000;
+            this.lockwork.Interval = Configuration.Window.LockWork;
             this.lockwork.Tick += new System.EventHandler(this.lo_Tick);
             // 
             // Window
