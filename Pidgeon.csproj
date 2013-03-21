@@ -127,7 +127,10 @@
   <ItemGroup>
     <Compile Include="Buffers.cs" />
     <Compile Include="Channel.cs" />
-    <Compile Include="Commands.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\Commands_IRC.cs" />
+    <Compile Include="Commands\Commands_Services.cs" />
+    <Compile Include="Commands\Commands_System.cs" />
     <Compile Include="Core\Config_Core.cs" />
     <Compile Include="Core\Core_IO.cs" />
     <Compile Include="Core\Core_Modules.cs" />
