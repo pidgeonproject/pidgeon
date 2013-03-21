@@ -665,7 +665,6 @@ namespace Client
                             {
                                 if (cu.Key._Network.Channels.Contains(cu.Key))
                                 {
-                                    cu.Key.Dispose();
                                     cu.Key._Network.Channels.Remove(cu.Key);
                                 }
                             }

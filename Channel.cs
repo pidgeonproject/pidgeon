@@ -71,11 +71,6 @@ namespace Client
     public class Channel
     {
         /// <summary>
-        /// Internal list of classes of this kind, just for debugging and recovery
-        /// </summary>
-        [NonSerialized]
-        public static List<Channel> _control = new List<Channel>();
-        /// <summary>
         /// Name of a channel including the special prefix
         /// </summary>
         public string Name;
@@ -181,10 +176,6 @@ namespace Client
         {
             ChannelWork = true;
             ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
-            lock (_control)
-            {
-                _control.Add(this);
-            }
             Topic = "";
             TopicUser = "";
             Chat = null;
@@ -198,10 +189,6 @@ namespace Client
             _Network = network;
             ChannelWork = true;
             ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
-            lock (_control)
-            {
-                _control.Add(this);
-            }
             Topic = "";
             TopicUser = "";
             Chat = null;
@@ -232,25 +219,6 @@ namespace Client
                 }
                 text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
                 TreeNode.ToolTipText = text;
-            }
-        }
-
-        /// <summary>
-        /// Remove the object, be sure to remove all references before, otherwise it may cause a crash
-        /// </summary>
-        public void Dispose()
-        {
-            lock (_control)
-            {
-                if (retrieveWindow() != null)
-                {
-                    retrieveWindow().Dispose();
-                }
-
-                if (_control.Contains(this))
-                {
-                    _control.Remove(this);
-                }
             }
         }
 
