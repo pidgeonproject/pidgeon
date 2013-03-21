@@ -424,6 +424,7 @@
     <Content Include="ManualPages\PidgeonUptime.txt" />
     <Content Include="ManualPages\Server.txt" />
     <None Include="Resources\darknetwork.png" />
+    <Content Include="ManualPages\ServicesClear.txt" />
     <Content Include="Resources\Arrow.png" />
     <Content Include="Resources\At.png" />
     <Content Include="Resources\Exclamation mark.png" />

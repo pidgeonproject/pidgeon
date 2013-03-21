@@ -1,0 +1,7 @@
+﻿This command will clear the file cache of services
+
+Example: /services.cache.clear
+
+Synopsys: /services.cache.clear
+
+This manual page was written by Petr Bena <benapetr@gmail.com>
