@@ -355,6 +355,7 @@ namespace Client
                                                 NetworkData.Networks.Add(info);
                                             }
                                         }
+                                        continue;
                                     }
                                     if (curr.Name == "ignore")
                                     {
@@ -410,145 +411,148 @@ namespace Client
                                         }
                                         continue;
                                     }
-                                    if (curr.Attributes[0].Name == "confname")
+                                    if (curr.Attributes.Count > 0)
                                     {
-                                        switch (curr.Attributes[0].Value)
+                                        if (curr.Attributes[0].Name == "confname")
                                         {
-                                            case "location.x1":
-                                                Configuration.Window.x1 = int.Parse(curr.InnerText);
-                                                break;
-                                            case "window.size":
-                                                Configuration.Window.window_size = int.Parse(curr.InnerText);
-                                                break;
-                                            case "location.x4":
-                                                Configuration.Window.x4 = int.Parse(curr.InnerText);
-                                                break;
-                                            case "location.maxi":
-                                                Configuration.Window.Window_Maximized = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "timestamp.display":
-                                                Configuration.Scrollback.chat_timestamp = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "network.nick":
-                                                Configuration.UserData.nick = curr.InnerText;
-                                                break;
-                                            case "network.n2":
-                                                Configuration.UserData.Nick2 = curr.InnerText;
-                                                break;
-                                            case "network.ident":
-                                                Configuration.UserData.ident = curr.InnerText;
-                                                break;
-                                            case "scrollback.showctcp":
-                                                Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "formats.user":
-                                                Configuration.Scrollback.format_nick = curr.InnerText;
-                                                break;
-                                            case "formats.date":
-                                                Configuration.Scrollback.format_date = curr.InnerText;
-                                                break;
-                                            case "formats.datetime":
-                                                Configuration.Scrollback.timestamp_mask = curr.InnerText;
-                                                break;
-                                            case "irc.auto.whois":
-                                                Configuration.ChannelModes.aggressive_whois = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "irc.auto.bans":
-                                                Configuration.ChannelModes.aggressive_bans = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "irc.auto.exception":
-                                                Configuration.ChannelModes.aggressive_exception = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "irc.auto.channels":
-                                                Configuration.ChannelModes.aggressive_channel = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "irc.auto.invites":
-                                                Configuration.ChannelModes.aggressive_invites = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "irc.auto.mode":
-                                                Configuration.ChannelModes.aggressive_mode = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "network.reason":
-                                                Configuration.irc.DefaultReason = curr.InnerText;
-                                                break;
-                                            case "logs.type":
-                                                Configuration.Logs.logs_name = curr.InnerText;
-                                                break;
-                                            case "ignore.ctcp":
-                                                Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "logs.html":
-                                                Configuration.Logs.logs_html = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "logs.dir":
-                                                Configuration.Logs.logs_dir = curr.InnerText;
-                                                break;
-                                            case "logs.xml":
-                                                Configuration.Logs.logs_xml = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "logs.txt":
-                                                Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "scrollback_plimit":
-                                                Configuration.Scrollback.scrollback_plimit = int.Parse(curr.InnerText);
-                                                break;
-                                            case "notification.tray":
-                                                Configuration.Kernel.Notice = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "pidgeon.size":
-                                                Configuration.Services.Depth = int.Parse(curr.InnerText);
-                                                break;
-                                            case "history.nick":
-                                                Configuration.UserData.LastNick = curr.InnerText;
-                                                break;
-                                            case "sniffer":
-                                                Configuration.Kernel.NetworkSniff = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "history.host":
-                                                Configuration.UserData.LastHost = curr.InnerText;
-                                                break;
-                                            case "updater.check":
-                                                Configuration.Kernel.CheckUpdate = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "history.port":
-                                                Configuration.UserData.LastPort = curr.InnerText;
-                                                break;
-                                            case "delimiters":
-                                                List<char> temp = new List<char>();
-                                                foreach (char part in curr.InnerText)
-                                                {
-                                                    temp.Add(part);
-                                                }
-                                                Configuration.Parser.Separators = temp;
-                                                break;
-                                            case "colors.changelinks":
-                                                Configuration.Colors.ChangeLinks = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "debugger":
-                                                Configuration.Kernel.Debugging = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "services.usingcache":
-                                                Configuration.Services.UsingCache = bool.Parse(curr.InnerText);
-                                                break;
-                                            case "message_mq":
-                                                Configuration.irc.mq = int.Parse(curr.InnerText);
-                                                break;
-                                            case "logs.services.log.type":
-                                                Configuration.Logs.ServiceLogs type = Configuration.Logs.ServiceLogs.none;
-                                                switch (curr.InnerText.ToLower())
-                                                { 
-                                                    case "incremental":
-                                                        type = Configuration.Logs.ServiceLogs.incremental;
-                                                        break;
-                                                    case "full":
-                                                        type = Configuration.Logs.ServiceLogs.full;
-                                                        break;
-                                                }
-                                                Configuration.Logs.ServicesLogs = type;
-                                                break;
-                                            case "Configuration.Window.history":
-                                                Configuration.Window.history = int.Parse(curr.InnerText);
-                                                break;
+                                            switch (curr.Attributes[0].Value)
+                                            {
+                                                case "location.x1":
+                                                    Configuration.Window.x1 = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "window.size":
+                                                    Configuration.Window.window_size = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "location.x4":
+                                                    Configuration.Window.x4 = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "location.maxi":
+                                                    Configuration.Window.Window_Maximized = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "timestamp.display":
+                                                    Configuration.Scrollback.chat_timestamp = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "network.nick":
+                                                    Configuration.UserData.nick = curr.InnerText;
+                                                    break;
+                                                case "network.n2":
+                                                    Configuration.UserData.Nick2 = curr.InnerText;
+                                                    break;
+                                                case "network.ident":
+                                                    Configuration.UserData.ident = curr.InnerText;
+                                                    break;
+                                                case "scrollback.showctcp":
+                                                    Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "formats.user":
+                                                    Configuration.Scrollback.format_nick = curr.InnerText;
+                                                    break;
+                                                case "formats.date":
+                                                    Configuration.Scrollback.format_date = curr.InnerText;
+                                                    break;
+                                                case "formats.datetime":
+                                                    Configuration.Scrollback.timestamp_mask = curr.InnerText;
+                                                    break;
+                                                case "irc.auto.whois":
+                                                    Configuration.ChannelModes.aggressive_whois = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "irc.auto.bans":
+                                                    Configuration.ChannelModes.aggressive_bans = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "irc.auto.exception":
+                                                    Configuration.ChannelModes.aggressive_exception = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "irc.auto.channels":
+                                                    Configuration.ChannelModes.aggressive_channel = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "irc.auto.invites":
+                                                    Configuration.ChannelModes.aggressive_invites = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "irc.auto.mode":
+                                                    Configuration.ChannelModes.aggressive_mode = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "network.reason":
+                                                    Configuration.irc.DefaultReason = curr.InnerText;
+                                                    break;
+                                                case "logs.type":
+                                                    Configuration.Logs.logs_name = curr.InnerText;
+                                                    break;
+                                                case "ignore.ctcp":
+                                                    Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "logs.html":
+                                                    Configuration.Logs.logs_html = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "logs.dir":
+                                                    Configuration.Logs.logs_dir = curr.InnerText;
+                                                    break;
+                                                case "logs.xml":
+                                                    Configuration.Logs.logs_xml = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "logs.txt":
+                                                    Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "scrollback_plimit":
+                                                    Configuration.Scrollback.scrollback_plimit = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "notification.tray":
+                                                    Configuration.Kernel.Notice = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "pidgeon.size":
+                                                    Configuration.Services.Depth = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "history.nick":
+                                                    Configuration.UserData.LastNick = curr.InnerText;
+                                                    break;
+                                                case "sniffer":
+                                                    Configuration.Kernel.NetworkSniff = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "history.host":
+                                                    Configuration.UserData.LastHost = curr.InnerText;
+                                                    break;
+                                                case "updater.check":
+                                                    Configuration.Kernel.CheckUpdate = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "history.port":
+                                                    Configuration.UserData.LastPort = curr.InnerText;
+                                                    break;
+                                                case "delimiters":
+                                                    List<char> temp = new List<char>();
+                                                    foreach (char part in curr.InnerText)
+                                                    {
+                                                        temp.Add(part);
+                                                    }
+                                                    Configuration.Parser.Separators = temp;
+                                                    break;
+                                                case "colors.changelinks":
+                                                    Configuration.Colors.ChangeLinks = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "debugger":
+                                                    Configuration.Kernel.Debugging = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "services.usingcache":
+                                                    Configuration.Services.UsingCache = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "message_mq":
+                                                    Configuration.irc.mq = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "logs.services.log.type":
+                                                    Configuration.Logs.ServiceLogs type = Configuration.Logs.ServiceLogs.none;
+                                                    switch (curr.InnerText.ToLower())
+                                                    {
+                                                        case "incremental":
+                                                            type = Configuration.Logs.ServiceLogs.incremental;
+                                                            break;
+                                                        case "full":
+                                                            type = Configuration.Logs.ServiceLogs.full;
+                                                            break;
+                                                    }
+                                                    Configuration.Logs.ServicesLogs = type;
+                                                    break;
+                                                case "Configuration.Window.history":
+                                                    Configuration.Window.history = int.Parse(curr.InnerText);
+                                                    break;
+                                            }
                                         }
                                     }
                                 }

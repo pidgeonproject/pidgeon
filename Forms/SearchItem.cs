@@ -95,11 +95,25 @@ namespace Client
             {
                 if (checkBox1.Checked)
                 {
-                    text.RT.SearchDown(new System.Text.RegularExpressions.Regex(textBox1.Text));
+                    if (tp)
+                    {
+                        text.RT.SearchDown(new System.Text.RegularExpressions.Regex(textBox1.Text));
+                    }
+                    else
+                    {
+                        text.RT.SearchUp(new System.Text.RegularExpressions.Regex(textBox1.Text));
+                    }
                 }
                 else
                 {
-                    text.RT.SearchDown(textBox1.Text);
+                    if (tp)
+                    {
+                        text.RT.SearchDown(textBox1.Text);
+                    }
+                    else
+                    {
+                        text.RT.SearchUp(new System.Text.RegularExpressions.Regex(textBox1.Text));
+                    }
                 }
             }
             else

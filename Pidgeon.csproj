@@ -230,10 +230,16 @@
     <Compile Include="Protocols\Services\Datagram.cs" />
     <Compile Include="Protocols\Services\ResponsesSv.cs" />
     <Compile Include="RevisionInfo.cs" />
+    <Compile Include="SBABOX\Events.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SBABOX\Line.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SBABOX\Link.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SBABOX\Rendering.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="SBABOX\SBABox.cs">

@@ -25,28 +25,20 @@ namespace Client
 {
     public partial class SBABox
     {
-        public void InvalidateCaches()
-        {
-            lock (LineDB)
-            {
-                foreach (Line l in LineDB)
-                {
-                    l.Buffer.Invalidate();
-                }
-            }
-        }
-
         public class Line
         {
             public class GraphicsInfo
             {
                 public class Info
                 {
-                    public string String;
-                    public string String2;
-                    public int Width;
+                    public string String = null;
+                    public string String2 = null;
+                    /// <summary>
+                    /// Cached size
+                    /// </summary>
+                    public int Width = 0;
                     public RectangleF size;
-                    public int Width2;
+                    public int Width2 = 0;
                     public Line extraLine = null;
                     public RectangleF size2;
                     public bool Oversized = false;
@@ -61,8 +53,10 @@ namespace Client
                         Remove();
                     }
                 }
+
                 public bool Valid = false;
                 public Dictionary<ContentText, Info> Buffer = new Dictionary<ContentText, Info>();
+                public int Y = 0;
 
                 ~GraphicsInfo()
                 {
@@ -121,17 +115,27 @@ namespace Client
                 return part;
             }
 
+            /// <summary>
+            /// When we remove the line we should free the memory allocated for it
+            /// </summary>
             ~Line()
             {
                 owner = null;
                 Buffer = null;
             }
 
+            /// <summary>
+            /// Merge with a different instance of line, context of another line will be appended to this one
+            /// </summary>
+            /// <param name="line"></param>
             public void Merge(Line line)
             {
-                lock (text)
+                lock (line.text)
                 {
-                    text.AddRange(line.text);
+                    lock (text)
+                    {
+                        text.AddRange(line.text);
+                    }
                 }
                 Buffer.Invalidate();
             }
@@ -150,13 +154,6 @@ namespace Client
                 CreateLine(Text, SBAB, color);
             }
 
-            private void CreateLine(string Text, SBABox SBAB, Color color)
-            {
-                text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
-                owner = SBAB;
-                Buffer.Valid = false;
-            }
-
             public Line(SBABox SBAB)
             {
                 text = new List<ContentText>();
@@ -167,6 +164,24 @@ namespace Client
             {
                 text = new List<ContentText>();
                 owner = null;
+            }
+
+            private void CreateLine(string Text, SBABox SBAB, Color color)
+            {
+                text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
+                owner = SBAB;
+                Buffer.Valid = false;
+            }
+        }
+
+        public void InvalidateCaches()
+        {
+            lock (LineDB)
+            {
+                foreach (Line l in LineDB)
+                {
+                    l.Buffer.Invalidate();
+                }
             }
         }
 
@@ -187,6 +202,67 @@ namespace Client
                         RedrawText();
                     }
                 }
+            }
+        }
+
+        public void InsertLine(Line line)
+        {
+            lock (LineDB)
+            {
+                LineDB.Add(line);
+            }
+        }
+
+        public void InsertLine(string text, Color color)
+        {
+            lock (LineDB)
+            {
+                LineDB.Add(new Line(text, this, color));
+            }
+        }
+
+        public void InsertLine(string text)
+        {
+            InsertLine(text, ForeColor);
+        }
+
+        public void InsertLine(List<ContentText> text)
+        {
+            Line line = new Line(this);
+            lock (text)
+            {
+                line.text.AddRange(text);
+            }
+            InsertLine(line);
+        }
+
+        /// <summary>
+        /// Remove a part of text at specific line
+        /// </summary>
+        /// <param name="index"></param>
+        public void deleteLine(int index, bool redraw = false)
+        {
+            lock (LineDB)
+            {
+                if (LineDB.Count > index + 1)
+                {
+                    LineDB.RemoveAt(index);
+                    lock (vScrollBar1)
+                    {
+                        if (vScrollBar1.Maximum > 2)
+                        {
+                            if (vScrollBar1.Value == vScrollBar1.Maximum)
+                            {
+                                vScrollBar1.Value--;
+                            }
+                            vScrollBar1.Maximum--;
+                        }
+                    }
+                }
+            }
+            if (redraw)
+            {
+                Redraw();
             }
         }
     }
