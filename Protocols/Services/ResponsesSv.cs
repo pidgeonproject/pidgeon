@@ -190,6 +190,11 @@ namespace Client
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
                         protocol.SuppressChanges = false;
+                        if (Configuration.Services.UsingCache)
+                        {
+                            // get all holes we are missing from backlog
+                            protocol.sBuffer.retrieveData(name);
+                        }
                         foreach (Channel i in server.Channels)
                         {
                             i.temporary_hide = false;
@@ -306,6 +311,36 @@ namespace Client
                         break;
                     }
                 }
+            }
+
+            public static void sError(XmlNode curr, ProtocolSv protocol)
+            {
+                string error = "Error ocurred on services: ";
+                string code = "unknown";
+                string description = "this is an unknown error";
+                if (curr.Attributes != null)
+                {
+                    foreach (XmlAttribute xx in curr.Attributes)
+                    {
+                        switch (xx.Name.ToLower())
+                        { 
+                            case "description":
+                                description = xx.Value;
+                                break;
+                            case "code":
+                                code = xx.Value;
+                                break;
+                        }
+                    }
+                }
+
+                error += "code (" + code + ") description: " + description;
+                if (protocol.SystemWindow == null)
+                {
+                    Core._Main.main.scrollback.InsertText(error, Scrollback.MessageStyle.User);
+                    return;
+                }
+                protocol.SystemWindow.scrollback.InsertText(error, Scrollback.MessageStyle.User);
             }
 
             public static void sNetworkList(XmlNode curr, ProtocolSv protocol)

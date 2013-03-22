@@ -23,7 +23,6 @@ using System.Xml;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Net;
 
 namespace Client
 {
@@ -278,6 +277,9 @@ namespace Client
                             break;
                         case "SAUTH":
                             ResponsesSv.sAuth(curr, this);
+                            break;
+                        case "SFAIL":
+                            ResponsesSv.sError(curr, this);
                             break;
                     }
                 }

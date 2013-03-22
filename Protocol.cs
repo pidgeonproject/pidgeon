@@ -15,6 +15,12 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// Documentation
+///////////////////////
+// This file contains a default class for protocols which all the other classes are inherited from
+// some functions are returning integer, which should be 0 on success and 2 by default
+// which means that the function was never overriden, so that a function working with that can catch it
+
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -217,7 +223,7 @@ namespace Client
         /// <returns></returns>
         public virtual int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            return 0;
+            return 2;
         }
 
         /// <summary>
@@ -229,7 +235,7 @@ namespace Client
         /// <returns></returns>
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            return 0;
+            return 2;
         }
 
         /// <summary>
@@ -243,7 +249,7 @@ namespace Client
         /// <returns></returns>
         public virtual int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            return 0;
+            return 2;
         }
 
         /// <summary>

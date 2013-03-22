@@ -235,7 +235,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Insert a text to scrollback list [deprecated]
+        /// Insert a text to scrollback list
         /// </summary>
         /// <param name="text">Text</param>
         /// <param name="InputStyle">Style</param>

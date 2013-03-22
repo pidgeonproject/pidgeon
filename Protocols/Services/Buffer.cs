@@ -166,6 +166,11 @@ namespace Client.Services
             /// </summary>
             public List<Network.ChannelData> ChannelList = new List<Network.ChannelData>();
 
+            public List<Description> Descriptions = new List<Description>();
+            public List<Buffer.Window> _windows = new List<Window>();
+            public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
+            public List<string> PrivateWins = new List<string>();
+
             [Serializable]
             public class Description
             {
@@ -184,15 +189,10 @@ namespace Client.Services
                 }
             }
 
-            public List<Description> Descriptions = new List<Description>();
-            public List<Buffer.Window> _windows = new List<Window>();
-            public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
-            public List<string> PrivateWins = new List<string>();
-
             public class Range
             {
-                int X;
-                int Y;
+                public int X;
+                public int Y;
                 public Range(int x, int y)
                 {
                     Y = y;
@@ -238,19 +238,27 @@ namespace Client.Services
 
                 int index = startindex;
 
-                while (index < lastMQID && containsMQID(index))
+                lock (MQ)
                 {
-                    index++;
+                    while (index < lastMQID && containsMQID(index))
+                    {
+                        index++;
+                    }
+
+                    if (index >= lastMQID)
+                    {
+                        return null;
+                    }
+
+                    int Y = index;
+
+                    while (Y < lastMQID && !containsMQID(index))
+                    {
+                        Y++;
+                    }
+
+                    range = new Range(index, Y);
                 }
-
-                int Y = index;
-
-                while (Y < lastMQID && !containsMQID(index))
-                {
-                    Y++;
-                }
-
-                range = new Range(index, Y);
 
                 return range;
             }
@@ -307,6 +315,13 @@ namespace Client.Services
             public void MQID(string text)
             {
                 int mqid = int.Parse(text);
+                lock (MQ)
+                {
+                    if (!containsMQID(mqid))
+                    {
+                        MQ.Add(mqid);
+                    }
+                }
                 if (lastMQID < mqid)
                 {
                     lastMQID = mqid;
@@ -521,6 +536,40 @@ namespace Client.Services
                 }
             }
             WriteDisk();
+        }
+
+        public void Init(object network)
+        {
+            try
+            {
+                NetworkInfo nw = (NetworkInfo)network;
+                NetworkInfo.Range range = nw.getRange();
+                while (range != null)
+                {
+                    ProtocolSv.Datagram request = new ProtocolSv.Datagram("BACKLOGRANGE");
+                    request.Parameters.Add("network", nw.Server);
+                    request.Parameters.Add("from", range.X.ToString());
+                    request.Parameters.Add("to", range.Y.ToString());
+                    protocol.Deliver(request);
+                    range = nw.getRange(range.Y + 1);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public void retrieveData(string network)
+        {
+            lock (networkInfo)
+            {
+                if (networkInfo.ContainsKey(Networks[network]))
+                {
+                    System.Threading.Thread th = new System.Threading.Thread(Init);
+                    th.Start(networkInfo[Networks[network]]);
+                }
+            }
         }
 
         public static void ListFile(List<string> list, string file)

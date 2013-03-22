@@ -47,7 +47,6 @@ namespace Client
             }
             directory = owner.name.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
             return directory;
-
         }
 
         public static string _getFileName(Window owner, string directory)
