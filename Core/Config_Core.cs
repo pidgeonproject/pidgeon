@@ -186,6 +186,28 @@ namespace Client
                         }
                     }
 
+                    lock (NetworkData.Networks)
+                    {
+                        foreach (NetworkData.NetworkInfo ni in NetworkData.Networks)
+                        {
+                            curr = config.CreateElement("network");
+                            XmlAttribute name = config.CreateAttribute("name");
+                            XmlAttribute server = config.CreateAttribute("server");
+                            XmlAttribute ssl = config.CreateAttribute("ssl");
+                            XmlAttribute type = config.CreateAttribute("type");
+                            type.Value = ni.protocolType.ToString();
+                            name.Value = ni.Name;
+                            server.Value = ni.Server;
+                            ssl.Value = ni.SSL.ToString();
+                            curr.Attributes.Append(name);
+                            curr.Attributes.Append(server);
+                            curr.Attributes.Append(type);
+                            curr.Attributes.Append(ssl);
+                            xmlnode.AppendChild(curr);
+                        }
+                    }
+                    config.AppendChild(xmlnode);
+
                     lock (Configuration.HighlighterList)
                     {
                         foreach (Network.Highlighter high in Configuration.HighlighterList)
@@ -287,7 +309,10 @@ namespace Client
                         Configuration.HighlighterList = new List<Network.Highlighter>();
                     }
                     configuration.Load(ConfigFile);
-
+                    lock (NetworkData.Networks)
+                    {
+                        NetworkData.Networks.Clear();
+                    }
                     foreach (XmlNode node in configuration.ChildNodes)
                     {
                         if (node.Name == "configuration.pidgeon")
@@ -304,6 +329,32 @@ namespace Client
                                     {
                                         Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
                                         continue;
+                                    }
+                                    if (curr.Name == "network")
+                                    {
+                                        if (curr.Attributes.Count > 3)
+                                        {
+                                            NetworkData.NetworkInfo info = new NetworkData.NetworkInfo();
+                                            foreach (XmlAttribute xx in curr.Attributes)
+                                            {
+                                                switch (xx.Name.ToLower())
+                                                { 
+                                                    case "name":
+                                                        info.Name = xx.Value;
+                                                        break;
+                                                    case "server":
+                                                        info.Server = xx.Value;
+                                                        break;
+                                                    case "ssl":
+                                                        info.SSL = bool.Parse(xx.Value);
+                                                        break;
+                                                }
+                                            }
+                                            lock (NetworkData.Networks)
+                                            {
+                                                NetworkData.Networks.Add(info);
+                                            }
+                                        }
                                     }
                                     if (curr.Name == "ignore")
                                     {

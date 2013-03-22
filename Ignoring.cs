@@ -27,11 +27,6 @@ namespace Client
     {
         public class Ignore
         {
-            public enum Type
-            {
-                Everything,
-                User
-            }
             /// <summary>
             /// If this item should be ignored
             /// </summary>
@@ -63,6 +58,12 @@ namespace Client
                 type = _Type;
                 Text = data;
                 Simple = simple;
+            }
+
+            public enum Type
+            {
+                Everything,
+                User
             }
         }
 

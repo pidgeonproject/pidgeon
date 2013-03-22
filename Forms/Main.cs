@@ -566,5 +566,18 @@ namespace Client
                 Core.handleException(x);
             }
         }
+
+        private void favoriteNetworksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Forms.NetworkDB form = new Forms.NetworkDB();
+                form.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
     }
 }

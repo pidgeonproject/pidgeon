@@ -24,6 +24,44 @@ namespace Client
 {
     public class Network
     {
+        public class Highlighter
+        {
+            public bool simple;
+            public string text;
+            public bool enabled;
+            public System.Text.RegularExpressions.Regex regex = null;
+
+            public Highlighter()
+            {
+                simple = true;
+                enabled = false;
+                text = Configuration.UserData.user;
+            }
+        }
+
+        [Serializable]
+        public class ChannelData
+        {
+            public string ChannelName = null;
+            public int UserCount = 0;
+            public string ChannelTopic = null;
+
+            public ChannelData(int Users, string Name, string Topic)
+            {
+                ChannelTopic = Topic;
+                UserCount = Users;
+                ChannelName = Name;
+            }
+
+            /// <summary>
+            /// This constructor needs to exist for xml deserialization don't remove it
+            /// </summary>
+            public ChannelData()
+            {
+
+            }
+        }
+
         /// <summary>
         /// User modes
         /// </summary>
@@ -144,6 +182,23 @@ namespace Client
         /// Private windows
         /// </summary>
         public Dictionary<User, Window> PrivateWins = new Dictionary<User, Window>();
+        /// <summary>
+        /// Window ID of this network system window
+        /// </summary>
+        public string window
+        {
+            get
+            {
+                if (_Protocol.GetType() != typeof(ProtocolSv))
+                {
+                    return "system";
+                }
+                else
+                {
+                    return randomuqid + ServerName;
+                }
+            }
+        }
 
         public void DisplayChannelWindow()
         {
@@ -159,29 +214,6 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail);
-            }
-        }
-
-        [Serializable]
-        public class ChannelData
-        {
-            public string ChannelName = null;
-            public int UserCount = 0;
-            public string ChannelTopic = null;
-
-            public ChannelData(int Users, string Name, string Topic)
-            {
-                ChannelTopic = Topic;
-                UserCount = Users;
-                ChannelName = Name;
-            }
-
-            /// <summary>
-            /// This constructor needs to exist for xml deserialization don't remove it
-            /// </summary>
-            public ChannelData()
-            { 
-                
             }
         }
 
@@ -203,21 +235,6 @@ namespace Client
                 }
             }
             return null;
-        }
-
-        public class Highlighter
-        {
-            public bool simple;
-            public string text;
-            public bool enabled;
-            public System.Text.RegularExpressions.Regex regex = null;
-
-            public Highlighter()
-            {
-                simple = true;
-                enabled = false;
-                text = Configuration.UserData.user;
-            }
         }
 
         /// <summary>
@@ -302,24 +319,6 @@ namespace Client
         }
 
         /// <summary>
-        /// Window ID of this network system window
-        /// </summary>
-        public string window
-        {
-            get 
-              {
-                  if (_Protocol.GetType() != typeof(ProtocolSv))
-                  {
-                      return "system";
-                  }
-                  else
-                  {
-                      return randomuqid + ServerName;
-                  }
-              }
-        }
-
-        /// <summary>
         /// Send a message to network
         /// </summary>
         /// <param name="text">Text of message</param>
@@ -381,6 +380,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Disconnect you from network
+        /// </summary>
         public void Disconnect()
         {
             if (ParentSv != null)
@@ -438,7 +440,6 @@ namespace Client
                 else
                 {
                     protocol.CreateChat("!system", true, this);
-                    //sw = "!system";
                     SystemWindow = protocol.Windows["!system"];
                     Core._Main.ChannelList.insertNetwork(this);
                 }

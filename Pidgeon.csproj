@@ -216,6 +216,7 @@
       <DependentUpon>SkinEd.cs</DependentUpon>
     </Compile>
     <Compile Include="Ignoring.cs" />
+    <Compile Include="NetworkData.cs" />
     <Compile Include="Protocols\irc\ChannelIRC.cs" />
     <Compile Include="Protocols\irc\IRC.cs" />
     <Compile Include="Graphics\ListViewDB.cs">

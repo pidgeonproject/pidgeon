@@ -24,9 +24,18 @@ namespace Client
 {
     public class Extension
     {
+        /// <summary>
+        /// Name of extension
+        /// </summary>
         public string Name = "Unknown extension";
+        /// <summary>
+        /// Version
+        /// </summary>
         public string Version = "1.0";
-        public string Description = "Author of this extension is stupid";
+        /// <summary>
+        /// Description of extension
+        /// </summary>
+        public string Description = "There is no description provided";
         public Version Required = new Version(1, 0, 9, 0);
         public Status _Status = Status.Loading;
         public bool RequiresReboot = false;

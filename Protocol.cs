@@ -38,23 +38,6 @@ namespace Client
         /// </summary>
         public Window Current = null;
         /// <summary>
-        /// Root window
-        /// </summary>
-        public Window SystemWindow
-        {
-            get
-            { 
-                lock (Windows)
-                {
-                    if (Windows.ContainsKey("!system"))
-                    {
-                        return Windows["!system"];
-                    }
-                }
-                return null;
-            }
-        }
-        /// <summary>
         /// Windows
         /// </summary>
         public Dictionary<string, Window> Windows = new Dictionary<string, Window>();
@@ -86,6 +69,23 @@ namespace Client
         /// Ssl
         /// </summary>
         public bool SSL = false;
+        /// <summary>
+        /// Root window
+        /// </summary>
+        public Window SystemWindow
+        {
+            get
+            {
+                lock (Windows)
+                {
+                    if (Windows.ContainsKey("!system"))
+                    {
+                        return Windows["!system"];
+                    }
+                }
+                return null;
+            }
+        }
 
         /// <summary>
         /// Create window

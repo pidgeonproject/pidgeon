@@ -119,5 +119,17 @@ namespace Client
             scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
             refresh.Enabled = scrollToolStripMenuItem.Checked;
         }
+
+        private void copyDataToClipboradToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Clipboard.SetText(textBox1.Text);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
     }
 }

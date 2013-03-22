@@ -51,6 +51,8 @@ namespace Client
             this.scrollToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refresh = new System.Windows.Forms.Timer(this.components);
+            this.copyDataToClipboradToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,23 +75,25 @@ namespace Client
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.scrollToolStripMenuItem,
-            this.clearToolStripMenuItem});
+            this.clearToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.copyDataToClipboradToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(196, 98);
             // 
             // scrollToolStripMenuItem
             // 
             this.scrollToolStripMenuItem.Checked = true;
             this.scrollToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.scrollToolStripMenuItem.Name = "scrollToolStripMenuItem";
-            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.scrollToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.scrollToolStripMenuItem.Text = "Scroll";
             this.scrollToolStripMenuItem.Click += new System.EventHandler(this.scrollToolStripMenuItem_Click);
             // 
             // clearToolStripMenuItem
             // 
             this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
             this.clearToolStripMenuItem.Text = "Clear";
             this.clearToolStripMenuItem.Click += new System.EventHandler(this.clearToolStripMenuItem_Click);
             // 
@@ -97,6 +101,18 @@ namespace Client
             // 
             this.refresh.Enabled = true;
             this.refresh.Tick += new System.EventHandler(this.refresh_Tick);
+            // 
+            // copyDataToClipboradToolStripMenuItem
+            // 
+            this.copyDataToClipboradToolStripMenuItem.Name = "copyDataToClipboradToolStripMenuItem";
+            this.copyDataToClipboradToolStripMenuItem.Size = new System.Drawing.Size(195, 22);
+            this.copyDataToClipboradToolStripMenuItem.Text = "Copy data to clipborad";
+            this.copyDataToClipboradToolStripMenuItem.Click += new System.EventHandler(this.copyDataToClipboradToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(192, 6);
             // 
             // TrafficScanner
             // 
@@ -123,5 +139,7 @@ namespace Client
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem scrollToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem copyDataToClipboradToolStripMenuItem;
     }
 }

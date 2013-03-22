@@ -44,12 +44,7 @@ namespace Client
         /// </summary>
         public ModeType _ModeType = ModeType.Network;
 
-        public enum ModeType
-        { 
-            Channel,
-            User,
-            Network
-        }
+
 
         public override string ToString()
         {
@@ -145,6 +140,13 @@ namespace Client
                 } continue;
             }
             return false;
+        }
+
+        public enum ModeType
+        {
+            Channel,
+            User,
+            Network
         }
     }
 }

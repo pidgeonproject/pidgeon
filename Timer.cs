@@ -15,9 +15,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-
-
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +29,7 @@ namespace Client
         {
             public int last_id = 0;
         }
+
         private static LastID last = new LastID();
         public int Time = 0;
         public string Command = null;

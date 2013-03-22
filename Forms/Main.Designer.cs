@@ -81,6 +81,8 @@ namespace Client
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sX = new System.Windows.Forms.SplitContainer();
             this.updater = new System.Windows.Forms.Timer(this.components);
+            this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripSeparator();
+            this.favoriteNetworksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sX)).BeginInit();
@@ -167,6 +169,8 @@ namespace Client
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.newConnectionToolStripMenuItem,
             this.toolStripMenuItem1,
+            this.favoriteNetworksToolStripMenuItem,
+            this.toolStripMenuItem6,
             this.preferencesToolStripMenuItem,
             this.toolStripMenuItem2,
             this.shutDownToolStripMenuItem});
@@ -367,6 +371,19 @@ namespace Client
             this.updater.Interval = 200;
             this.updater.Tick += new System.EventHandler(this.updater_Tick);
             // 
+            // toolStripMenuItem6
+            // 
+            this.toolStripMenuItem6.Name = "toolStripMenuItem6";
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(200, 6);
+            // 
+            // favoriteNetworksToolStripMenuItem
+            // 
+            this.favoriteNetworksToolStripMenuItem.Name = "favoriteNetworksToolStripMenuItem";
+            this.favoriteNetworksToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
+            this.favoriteNetworksToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.favoriteNetworksToolStripMenuItem.Text = "Favorite networks";
+            this.favoriteNetworksToolStripMenuItem.Click += new System.EventHandler(this.favoriteNetworksToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.ClientSize = new System.Drawing.Size(874, 410);
@@ -427,5 +444,7 @@ namespace Client
         public System.Windows.Forms.ToolStripMenuItem miscToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem favoriteNetworksToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem6;
     }
 }
