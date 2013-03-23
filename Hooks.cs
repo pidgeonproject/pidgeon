@@ -73,7 +73,7 @@ namespace Client
                 }
             }
 
-            public static void BeforeOptions(ref Preferences preferences)
+            public static void BeforeOptions(ref Forms.Preferences preferences)
             {
 
             }

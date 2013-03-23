@@ -90,7 +90,7 @@ namespace Client
         /// <summary>
         /// Notification box
         /// </summary>
-        private static Notification notification = null;
+        private static Forms.Notification notification = null;
         /// <summary>
         /// Threads currently allocated in kernel
         /// </summary>
@@ -106,7 +106,7 @@ namespace Client
         /// <summary>
         /// Main
         /// </summary>
-        public static Main _Main = null;
+        public static Forms.Main _Main = null;
         /// <summary>
         /// Wheter notification is waiting
         /// </summary>
@@ -130,7 +130,7 @@ namespace Client
         /// <summary>
         /// Packet scan
         /// </summary>
-        public static TrafficScanner trafficscanner;
+        public static Forms.TrafficScanner trafficscanner;
         /// <summary>
         /// System is blocked - if this is set to true, all subsystems and kernel are supposed to freeze
         /// </summary>
@@ -479,7 +479,7 @@ namespace Client
             }
         }
 
-        public static void PrintRing(Window window, bool write = true)
+        public static void PrintRing(Graphics.Window window, bool write = true)
         {
             lock (Ring)
             {

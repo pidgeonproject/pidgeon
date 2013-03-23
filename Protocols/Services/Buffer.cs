@@ -42,7 +42,7 @@ namespace Client.Services
 
             }
 
-            public Window(Client.Window owner)
+            public Window(Graphics.Window owner)
             {
                 Name = owner.name;
                 isChannel = owner.isChannel;
@@ -263,7 +263,7 @@ namespace Client.Services
                 return range;
             }
 
-            public void recoverWindowText(Client.Window target, string source)
+            public void recoverWindowText(Graphics.Window target, string source)
             {
                 Buffer.Window Source = getW(source);
                 if (Source == null)

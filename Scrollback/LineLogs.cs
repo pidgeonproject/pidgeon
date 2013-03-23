@@ -35,7 +35,7 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string validpath(Window owner, string directory)
+        public static string validpath(Graphics.Window owner, string directory)
         {
             if (directory != null)
             {
@@ -49,7 +49,7 @@ namespace Client
             return directory;
         }
 
-        public static string _getFileName(Window owner, string directory)
+        public static string _getFileName(Graphics.Window owner, string directory)
         {
             string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
                 Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + 
@@ -57,7 +57,7 @@ namespace Client
             return name;
         }
 
-        public static void Log(string text, Client.Scrollback.MessageStyle InputStyle, Window owner, string directory)
+        public static void Log(string text, Client.Scrollback.MessageStyle InputStyle, Graphics.Window owner, string directory)
         {
             try
             {

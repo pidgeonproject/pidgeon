@@ -416,7 +416,7 @@ namespace Client
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        public void WindowText(Window window, string text, Scrollback.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public void WindowText(Graphics.Window window, string text, Scrollback.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             bool logging = WriteLog;
 

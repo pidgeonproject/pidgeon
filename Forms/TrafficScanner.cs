@@ -17,14 +17,18 @@
 
 using System;
 
-namespace Client.Graphics
+namespace Client.Forms
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class PidgeonList : Gtk.Bin
+	public partial class TrafficScanner : Gtk.Window
 	{
-		public PidgeonList ()
+		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
+		}
+		
+		public void Clean()
+		{
+			
 		}
 	}
 }

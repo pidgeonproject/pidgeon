@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+﻿﻿/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -113,7 +113,7 @@ namespace Client
         /// <summary>
         /// System window
         /// </summary>
-        public Window SystemWindow = null;
+        public Graphics.Window SystemWindow = null;
         /// <summary>
         /// Host name of server
         /// </summary>
@@ -177,11 +177,11 @@ namespace Client
         /// <summary>
         /// Pointer to channel window
         /// </summary>
-        private Channels wChannelList = null;
+        private Forms.Channels wChannelList = null;
         /// <summary>
         /// Private windows
         /// </summary>
-        public Dictionary<User, Window> PrivateWins = new Dictionary<User, Window>();
+        public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
         /// <summary>
         /// Window ID of this network system window
         /// </summary>

@@ -36,11 +36,11 @@ namespace Client
         /// <summary>
         /// Displayed window
         /// </summary>
-        public Window Current = null;
+        public Graphics.Window Current = null;
         /// <summary>
         /// Windows
         /// </summary>
-        public Dictionary<string, Window> Windows = new Dictionary<string, Window>();
+        public Dictionary<string, Graphics.Window> Windows = new Dictionary<string, Window>();
         /// <summary>
         /// Whether this server is connected or not
         /// </summary>
@@ -72,7 +72,7 @@ namespace Client
         /// <summary>
         /// Root window
         /// </summary>
-        public Window SystemWindow
+        public Graphics.Window SystemWindow
         {
             get
             {
@@ -95,7 +95,7 @@ namespace Client
         /// <param name="network">Network the window belongs to</param>
         /// <param name="writable">If true user will be able to send text in window</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
-        public virtual Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
+        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
         {
             Main._WindowRequest request = new Main._WindowRequest();
             if (id == null)

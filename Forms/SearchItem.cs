@@ -17,12 +17,12 @@
 
 using System;
 
-namespace Client.Graphics
+namespace Client.Forms
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class PidgeonList : Gtk.Bin
+	public partial class SearchItem : Gtk.Window
 	{
-		public PidgeonList ()
+		public SearchItem () : 
+				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
 		}

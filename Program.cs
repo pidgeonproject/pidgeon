@@ -29,6 +29,25 @@ namespace Client
         [STAThread]
         private static void Main(string[] parameters)
         {
+			try
+			{
+				Application.Init ();
+				Core.startup = parameters;
+                if (Core.Load())
+                {
+                    Core.network = null;
+					Core._Main = new Core._Main();
+					Core._Main.Show ();
+					Application.Run ();
+                }
+				
+			}
+			catch (Exception fail)
+			{
+				Core.handleException(fail, true);
+			}
+		}
+			/*
             AppDomain.CurrentDomain.UnhandledException
                 += delegate(object sender, UnhandledExceptionEventArgs args)
                 {
@@ -52,6 +71,6 @@ namespace Client
             {
                 Application.Exit();
             }
-        }
+            */
     }
 }

@@ -109,7 +109,7 @@ namespace Client
         /// Number of lines that were rendered
         /// </summary>
         private int RenderedLineTotalCount = 0;
-        private Graphics drawingGraphics = null;
+        private System.Drawing.Graphics drawingGraphics = null;
         public Scrollback scrollback = null;
         private List<Line> LineDB = new List<Line>();
         private bool Rendering = false;

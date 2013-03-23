@@ -42,7 +42,7 @@ namespace Client
         /// <summary>
         /// Owner window
         /// </summary>
-        public Window owner = null;
+        public Graphics.Window owner = null;
         private List<ContentLine> UndrawnLines = new List<ContentLine>();
         private string Link = "";
         public bool simple = false;
@@ -194,7 +194,7 @@ namespace Client
             ReloadWaiting = true;
         }
 
-        public Scrollback(Window _ParentWindow)
+        public Scrollback(Graphics.Window _ParentWindow)
         {
             this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             this.owner = _ParentWindow;

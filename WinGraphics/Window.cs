@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -15,14 +15,21 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-using System;
 
-namespace Client.Graphics
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using System.Linq;
+using System.Windows.Forms;
+
+namespace Client
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class Window : Gtk.Bin
-	{
-		/// <summary>
+    public partial class Window : UserControl
+    {
+        /// <summary>
         /// If true the windows is being made
         /// </summary>
         public bool Making = true;
@@ -43,7 +50,7 @@ namespace Client.Graphics
         /// </summary>
         public bool Locked = false;
         public int locktime = 0;
-		//public TreeNode treeNode = null;
+        public TreeNode treeNode = null;
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
         /// </summary>
@@ -55,28 +62,22 @@ namespace Client.Graphics
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;
-		public Graphics.TextBox textbox = null;
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-		
-		public Scrollback scrollback = null;
 
-                                                                 
-		public Window ()
-		{
-			this.Build ();
-			this.scrollback = new Client.Scrollback(this);
+        public Window()
+        {
+            this.scrollback = new Client.Scrollback(this);
             this.textbox = new TextBox();
             textbox.parent = this;
             if (textbox.history == null)
             {
                 textbox.history = new List<string>();
             }
-		}
-		
-		/*
-		public void Init()
+        }
+
+        public void Init()
         {
             InitializeComponent();
             kbToolStripMenuItem.Enabled = false;
@@ -845,7 +846,5 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		*/
-	}
+    }
 }
-

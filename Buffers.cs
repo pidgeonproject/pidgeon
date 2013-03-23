@@ -25,7 +25,7 @@ namespace Client
 {
     class Buffers
     {
-        static public RectangleF MeasureString(Graphics graphics, string text, Font font, StringFormat format)
+        static public RectangleF MeasureString(System.Drawing.Graphics graphics, string text, Font font, StringFormat format)
         {
             System.Drawing.RectangleF rect = new System.Drawing.RectangleF(0, 0, 10000, 10000);
             CharacterRange[] ranges = { new System.Drawing.CharacterRange(0, text.Length) };

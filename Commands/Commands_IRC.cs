@@ -44,10 +44,10 @@ namespace Client
                     Channel curr = Core.network.getChannel(channel);
                     if (curr != null)
                     {
-                        Window window = curr.retrieveWindow();
+                        Graphics.Window window = curr.retrieveWindow();
                         if (window != null)
                         {
-                            Core.network._Protocol.ShowChat(Core.network.window + window.name);
+                            Core.network._Protocol.ShowChat(Core.network.SystemWindow + window.name);
                         }
                     }
                     Core.network._Protocol.Join(channel);
@@ -106,7 +106,7 @@ namespace Client
                     Channel curr = Core.network.RenderedChannel;
                     if (curr != null)
                     {
-                        Window window = curr.retrieveWindow();
+                        Graphics.Window window = curr.retrieveWindow();
                         if (window != null)
                         {
                             Core.network._Protocol.Message2(message, curr.Name);

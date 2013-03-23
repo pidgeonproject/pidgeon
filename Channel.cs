@@ -116,7 +116,7 @@ namespace Client
         /// Window this channel is rendered to, if any
         /// </summary>
         [NonSerialized]
-        private Window Chat = null;
+        private Graphics.Window Chat = null;
         /// <summary>
         /// If channel output is temporarily hidden
         /// </summary>
@@ -506,7 +506,7 @@ namespace Client
         /// Retrieve window
         /// </summary>
         /// <returns></returns>
-        public Window retrieveWindow()
+        public Graphics.Window retrieveWindow()
         {
             if (Chat == null)
             {

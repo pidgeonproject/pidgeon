@@ -16,13 +16,14 @@
  ***************************************************************************/
 
 using System;
+using Gtk;
 
-namespace Client.Graphics
+namespace Client.Forms
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class PidgeonList : Gtk.Bin
+	public partial class Connection : Gtk.Window
 	{
-		public PidgeonList ()
+		public Connection () : 
+				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
 		}

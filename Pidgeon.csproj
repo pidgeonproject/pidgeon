@@ -63,6 +63,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -71,10 +72,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
-    <Compile Include="Main.cs" />
-    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />
     <Compile Include="Commands\Commands_Services.cs" />
@@ -124,14 +121,30 @@
     <Compile Include="SBABOX\SBABox.cs" />
     <Compile Include="Forms\Main.cs" />
     <Compile Include="gtk-gui\Client.Forms.Main.cs" />
-    <Compile Include="Graphics\ListViewDB.cs" />
-    <Compile Include="Graphics\PidgeonList.Designer.cs" />
-    <Compile Include="Graphics\PidgeonList.cs" />
-    <Compile Include="Graphics\TextBox.Designer.cs" />
-    <Compile Include="Graphics\TextBox.cs" />
-    <Compile Include="Graphics\Window.Designer.cs" />
-    <Compile Include="Graphics\Window.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Forms\Preferences.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Preferences.cs" />
+    <Compile Include="Forms\Channels.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Channels.cs" />
+    <Compile Include="Forms\Notification.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Notification.cs" />
+    <Compile Include="Forms\TrafficScanner.cs" />
+    <Compile Include="gtk-gui\Client.Forms.TrafficScanner.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="Graphics\Window.cs" />
+    <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
+    <Compile Include="Graphics\PidgeonList.cs" />
+    <Compile Include="gtk-gui\Client.Graphics.PidgeonList.cs" />
+    <Compile Include="Forms\Connection.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Connection.cs" />
+    <Compile Include="Forms\SearchItem.cs" />
+    <Compile Include="gtk-gui\Client.Forms.SearchItem.cs" />
+    <Compile Include="Graphics\TextBox.cs" />
+    <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
+    <Compile Include="Forms\Channel_Info.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Channel_Info.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -165,14 +178,22 @@
     <None Include="Resources\regular.bmp" />
     <None Include="SBABOX\SBABox.resources" />
     <None Include="SBABOX\SBABox.resx" />
-    <None Include="Graphics\PidgeonList.resources" />
-    <None Include="Graphics\PidgeonList.resx" />
-    <None Include="Graphics\TextBox.resources" />
-    <None Include="Graphics\TextBox.resx" />
-    <None Include="Graphics\Window.resources" />
-    <None Include="Graphics\Window.resx" />
+    <None Include="Properties\Resources.resources" />
+    <None Include="Properties\Resources.resx" />
+    <None Include="Properties\Settings.settings" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\" />
+    <Folder Include="Graphics\" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy FileWidth="120" TabWidth="4" EolMarker="Windows" inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

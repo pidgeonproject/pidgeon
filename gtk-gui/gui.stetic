@@ -8,15 +8,6 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/Pidgeon.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="MainWindow" design-size="400 300">
-    <property name="MemberName" />
-    <property name="Title" translatable="yes">MainWindow</property>
-    <property name="WindowPosition">CenterOnParent</property>
-    <signal name="DeleteEvent" handler="OnDeleteEvent" />
-    <child>
-      <placeholder />
-    </child>
-  </widget>
   <widget class="Gtk.Window" id="Client.Forms.Main" design-size="884 462">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Main</property>
@@ -28,6 +19,124 @@
   <widget class="Gtk.Window" id="Client.Forms.Main" design-size="400 300">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Main</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Preferences" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Preferences</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Channels" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Channels</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Channels" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Channels</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Notification" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Notification</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.TrafficScanner" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">TrafficScanner</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.PidgeonList" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.PidgeonList" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Connection" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Connection</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.SearchItem" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">SearchItem</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.SearchItem" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">SearchItem</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.TextBox" design-size="630 106">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Entry" id="richTextBox">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="IsEditable">True</property>
+            <property name="InvisibleChar">•</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Window" id="Client.Forms.Channel_Info" design-size="400 300">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">Channel_Info</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
       <placeholder />

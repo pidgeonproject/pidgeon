@@ -32,7 +32,7 @@ namespace Client
         /// <param name="X">carret X</param>
         /// <param name="Y">carret Y</param>
         /// <param name="line">line</param>
-        private void RedrawLine(ref Graphics graphics, ref float X, ref float Y, Line line)
+        private void RedrawLine(ref System.Drawing.Graphics graphics, ref float X, ref float Y, Line line)
         {
             bool wrappingnow = false;
             // we increase the number of lines that are rendered - we do it now because this line will be either renedered or whole text won't be rendered
