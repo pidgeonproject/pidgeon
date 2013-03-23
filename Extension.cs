@@ -178,7 +178,7 @@ namespace Client
             return;
         }
 
-        public virtual void Hook_Initialise(Main main)
+        public virtual void Hook_Initialise(Client.Forms.Main main)
         {
             return;
         }

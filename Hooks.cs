@@ -54,7 +54,7 @@ namespace Client
                 return true;
             }
 
-            public static void Initialise(Main main)
+            public static void Initialise(Client.Forms.Main main)
             {
                 foreach (Extension extension in Core.Extensions)
                 {

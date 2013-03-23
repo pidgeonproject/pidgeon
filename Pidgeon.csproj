@@ -1,494 +1,178 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{3F59B112-7FF3-4DEA-9934-8A1FDBFA1C15}</ProjectGuid>
+    <ProjectGuid>{6EE4F770-4A6F-4101-AFE7-0F4096F505F3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Pidgeon</AssemblyName>
-    <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>57C9C028C90A0CED594C5210571D0C38D39D49D4</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>Pidgeon_TemporaryKey.pfx</ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pidgeon2|x86'">
-    <OutputPath>bin\x86\Pidgeon2\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
     <Optimize>false</Optimize>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRuleSets>false</CodeAnalysisIgnoreBuiltInRuleSets>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Pidgeon2|x64'">
-    <OutputPath>bin\x64\Pidgeon2\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
-    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>Resources\Pigeon_clip_art_hight.ico</ApplicationIcon>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Data" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>glade-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <SpecificVersion>False</SpecificVersion>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="Mono.Posix" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffers.cs" />
-    <Compile Include="Channel.cs" />
+    <EmbeddedResource Include="gtk-gui\gui.stetic">
+      <LogicalName>gui.stetic</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="gtk-gui\MainWindow.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />
     <Compile Include="Commands\Commands_Services.cs" />
     <Compile Include="Commands\Commands_System.cs" />
+    <Compile Include="Scrollback\LineLogs.cs" />
+    <Compile Include="Scrollback\Menu.cs" />
+    <Compile Include="Scrollback\Parser.cs" />
+    <Compile Include="Scrollback\ProcessingLine.cs" />
+    <Compile Include="Scrollback\Scrollback.Designer.cs" />
+    <Compile Include="Scrollback\Scrollback.cs" />
+    <Compile Include="Buffers.cs" />
+    <Compile Include="Channel.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Extension.cs" />
+    <Compile Include="Hooks.cs" />
+    <Compile Include="Ignoring.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="Network.cs" />
+    <Compile Include="NetworkData.cs" />
+    <Compile Include="NetworkMode.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Protocol.cs" />
+    <Compile Include="RevisionInfo.cs" />
+    <Compile Include="ScriptingCore.cs" />
+    <Compile Include="SkinCl.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Core\Config_Core.cs" />
+    <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Core_IO.cs" />
     <Compile Include="Core\Core_Modules.cs" />
-    <Compile Include="Extension.cs" />
-    <Compile Include="Forms\Channels.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Channels.Designer.cs">
-      <DependentUpon>Channels.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Configuration.cs" />
-    <Compile Include="Core\Core.cs" />
-    <Compile Include="Forms\Connection.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Connection.Designer.cs">
-      <DependentUpon>Connection.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Help.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Help.Designer.cs">
-      <DependentUpon>Help.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Logs.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Logs.Designer.cs">
-      <DependentUpon>Logs.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Main.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\MicroChat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\MicroChat.Designer.cs">
-      <DependentUpon>MicroChat.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\NetworkDB.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\NetworkDB.Designer.cs">
-      <DependentUpon>NetworkDB.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Notification.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Notification.Designer.cs">
-      <DependentUpon>Notification.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ScriptEdit.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ScriptEdit.Designer.cs">
-      <DependentUpon>ScriptEdit.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SearchItem.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SearchItem.Designer.cs">
-      <DependentUpon>SearchItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SettingsEd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SettingsEd.Designer.cs">
-      <DependentUpon>SettingsEd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\ShortcutBox.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\ShortcutBox.Designer.cs">
-      <DependentUpon>ShortcutBox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\SkinEd.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\SkinEd.Designer.cs">
-      <DependentUpon>SkinEd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Ignoring.cs" />
-    <Compile Include="NetworkData.cs" />
-    <Compile Include="Protocols\irc\ChannelIRC.cs" />
-    <Compile Include="Protocols\irc\IRC.cs" />
-    <Compile Include="Graphics\ListViewDB.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Protocols\irc\NetworkIRC.cs" />
-    <Compile Include="NetworkMode.cs" />
+    <Compile Include="Protocols\ProtocolIrc.cs" />
+    <Compile Include="Protocols\ProtocolQuassel.cs" />
     <Compile Include="Protocols\ProtocolXmpp.cs" />
     <Compile Include="Protocols\Qt.cs" />
     <Compile Include="Protocols\Services\Buffer.cs" />
     <Compile Include="Protocols\Services\Datagram.cs" />
-    <Compile Include="Protocols\Services\ResponsesSv.cs" />
-    <Compile Include="RevisionInfo.cs" />
-    <Compile Include="SBABOX\Events.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SBABOX\Line.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SBABOX\Link.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SBABOX\Rendering.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SBABOX\SBABox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="SBABOX\SBABox.Designer.cs">
-      <DependentUpon>SBABox.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\TrafficScanner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\TrafficScanner.Designer.cs">
-      <DependentUpon>TrafficScanner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Warning.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Warning.Designer.cs">
-      <DependentUpon>Warning.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Hooks.cs" />
-    <Compile Include="Graphics\PidgeonList.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Graphics\PidgeonList.Designer.cs">
-      <DependentUpon>PidgeonList.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Recovery.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Recovery.Designer.cs">
-      <DependentUpon>Recovery.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Channel_Info.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Channel_Info.Designer.cs">
-      <DependentUpon>Channel_Info.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Updater.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Updater.Designer.cs">
-      <DependentUpon>Updater.cs</DependentUpon>
-    </Compile>
     <Compile Include="Protocols\Services\ProtocolSv.cs" />
-    <Compile Include="ScriptingCore.cs" />
-    <Compile Include="Scrollback\LineLogs.cs" />
-    <Compile Include="Scrollback\Menu.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Scrollback\Parser.cs" />
-    <Compile Include="Scrollback\ProcessingLine.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Timer.cs" />
-    <Compile Include="Graphics\Window.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Graphics\Window.Designer.cs">
-      <DependentUpon>Window.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Messages.cs" />
-    <Compile Include="Network.cs" />
-    <Compile Include="Forms\Preferences.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Forms\Preferences.Designer.cs">
-      <DependentUpon>Preferences.cs</DependentUpon>
-    </Compile>
-    <Compile Include="ListViewColumnSorter.cs" />
-    <Compile Include="Program.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Protocol.cs" />
-    <Compile Include="Protocols\ProtocolIrc.cs" />
-    <Compile Include="Protocols\ProtocolQuassel.cs" />
-    <Compile Include="Scrollback\Scrollback.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Scrollback\Scrollback.Designer.cs">
-      <DependentUpon>Scrollback.cs</DependentUpon>
-    </Compile>
-    <Compile Include="SkinCl.cs" />
-    <Compile Include="Graphics\TextBox.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Graphics\TextBox.Designer.cs">
-      <DependentUpon>TextBox.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Protocols\Services\ResponsesSv.cs" />
+    <Compile Include="Protocols\irc\ChannelIRC.cs" />
+    <Compile Include="Protocols\irc\IRC.cs" />
+    <Compile Include="Protocols\irc\NetworkIRC.cs" />
+    <Compile Include="SBABOX\Events.cs" />
+    <Compile Include="SBABOX\Line.cs" />
+    <Compile Include="SBABOX\Link.cs" />
+    <Compile Include="SBABOX\Rendering.cs" />
+    <Compile Include="SBABOX\SBABox.Designer.cs" />
+    <Compile Include="SBABOX\SBABox.cs" />
+    <Compile Include="Forms\Main.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Main.cs" />
+    <Compile Include="Graphics\ListViewDB.cs" />
+    <Compile Include="Graphics\PidgeonList.Designer.cs" />
+    <Compile Include="Graphics\PidgeonList.cs" />
+    <Compile Include="Graphics\TextBox.Designer.cs" />
+    <Compile Include="Graphics\TextBox.cs" />
+    <Compile Include="Graphics\Window.Designer.cs" />
+    <Compile Include="Graphics\Window.cs" />
     <Compile Include="User.cs" />
-    <EmbeddedResource Include="Forms\Channels.resx">
-      <DependentUpon>Channels.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Channel_Info.resx">
-      <DependentUpon>Channel_Info.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Connection.resx">
-      <DependentUpon>Connection.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Help.resx">
-      <DependentUpon>Help.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Logs.resx">
-      <DependentUpon>Logs.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MicroChat.resx">
-      <DependentUpon>MicroChat.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\NetworkDB.resx">
-      <DependentUpon>NetworkDB.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Notification.resx">
-      <DependentUpon>Notification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Preferences.resx">
-      <DependentUpon>Preferences.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ScriptEdit.resx">
-      <DependentUpon>ScriptEdit.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SearchItem.resx">
-      <DependentUpon>SearchItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingsEd.resx">
-      <DependentUpon>SettingsEd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ShortcutBox.resx">
-      <DependentUpon>ShortcutBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SkinEd.resx">
-      <DependentUpon>SkinEd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SBABOX\SBABox.resx">
-      <DependentUpon>SBABox.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\TrafficScanner.resx">
-      <DependentUpon>TrafficScanner.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Updater.resx">
-      <DependentUpon>Updater.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Warning.resx">
-      <DependentUpon>Warning.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\PidgeonList.resx">
-      <DependentUpon>PidgeonList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Recovery.resx">
-      <DependentUpon>Recovery.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\Window.resx">
-      <DependentUpon>Window.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
-    <EmbeddedResource Include="Scrollback\Scrollback.resx">
-      <DependentUpon>Scrollback.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Graphics\TextBox.resx">
-      <DependentUpon>TextBox.cs</DependentUpon>
-    </EmbeddedResource>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Settings.settings</DependentUpon>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
   </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Content Include="Languages\cs_czech.txt" />
-    <Content Include="Languages\en_english.txt" />
-    <EmbeddedResource Include="version.txt" />
-    <None Include="Resources\icon.png" />
-    <Content Include="ManualPages\Connect.txt" />
-    <Content Include="ManualPages\Oper.txt" />
-    <Content Include="ManualPages\PidgeonMan.txt" />
-    <Content Include="ManualPages\PidgeonModule.txt" />
-    <Content Include="ManualPages\PidgeonUptime.txt" />
-    <Content Include="ManualPages\Server.txt" />
-    <None Include="Resources\darknetwork.png" />
-    <Content Include="ManualPages\ServicesClear.txt" />
-    <Content Include="Resources\Arrow.png" />
-    <Content Include="Resources\At.png" />
-    <Content Include="Resources\Exclamation mark.png" />
-    <Content Include="Resources\Hash.png" />
-    <Content Include="Resources\Letter S.png" />
-    <Content Include="Resources\Pigeon_clip_art_hight.ico" />
-    <Content Include="Resources\Pigeon_clip_art_hight.png" />
-    <Content Include="tcl84.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\Image2.png" />
-    <None Include="Resources\Image2.bmp" />
+    <None Include="Scrollback\Scrollback.resources" />
+    <None Include="Scrollback\Scrollback.resx" />
+    <None Include="Languages\cs_czech.txt" />
+    <None Include="Languages\en_english.txt" />
+    <None Include="ManualPages\Connect.txt" />
+    <None Include="ManualPages\Oper.txt" />
+    <None Include="ManualPages\PidgeonMan.txt" />
+    <None Include="ManualPages\PidgeonModule.txt" />
+    <None Include="ManualPages\PidgeonUptime.txt" />
+    <None Include="ManualPages\Server.txt" />
+    <None Include="ManualPages\ServicesClear.txt" />
     <None Include="Resources\50px-IRC_icon.png" />
     <None Include="Resources\Image1.bmp" />
-    <None Include="Resources\irc_channel.ico" />
-    <None Include="Resources\regular.bmp" />
     <None Include="Resources\Image1.jpg" />
+    <None Include="Resources\Image2 %281%29.bmp" />
+    <None Include="Resources\Image2.bmp" />
+    <None Include="Resources\Image2.png" />
+    <None Include="Resources\Letter S.png" />
+    <None Include="Resources\Pigeon_clip_art_hight.png" />
+    <None Include="Resources\arrow.png" />
+    <None Include="Resources\at.png" />
+    <None Include="Resources\darknetwork.png" />
+    <None Include="Resources\exclamation mark.png" />
+    <None Include="Resources\hash.png" />
+    <None Include="Resources\icon.png" />
+    <None Include="Resources\irc_channel.ico" />
+    <None Include="Resources\pigeon_clip_art_hight.ico" />
+    <None Include="Resources\regular.bmp" />
+    <None Include="SBABOX\SBABox.resources" />
+    <None Include="SBABOX\SBABox.resx" />
+    <None Include="Graphics\PidgeonList.resources" />
+    <None Include="Graphics\PidgeonList.resx" />
+    <None Include="Graphics\TextBox.resources" />
+    <None Include="Graphics\TextBox.resx" />
+    <None Include="Graphics\Window.resources" />
+    <None Include="Graphics\Window.resx" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Service References\" />
+    <Folder Include="Forms\" />
   </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>
