@@ -74,6 +74,7 @@ namespace Client
                         try
                         {
                             Save();
+							System.Threading.Thread.Sleep(2000);
                         }
                         catch (ThreadAbortException)
                         {
