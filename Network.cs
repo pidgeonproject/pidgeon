@@ -204,9 +204,10 @@ namespace Client
         {
             try
             {
-                if (wChannelList == null || wChannelList.IsDisposed)
+                if (wChannelList == null)
                 {
-                    wChannelList = new Channels(this);
+                    wChannelList = new Forms.Channels();
+					wChannelList.network = this;
                 }
 
                 wChannelList.Show();

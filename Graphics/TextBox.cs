@@ -16,12 +16,26 @@
  ***************************************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using Gtk;
 
 namespace Client.Graphics
 {
 	[System.ComponentModel.ToolboxItem(true)]
 	public partial class TextBox : Gtk.Bin
 	{
+		public List<string> history = null;
+        public int position = 0;
+        public string prevtext = "";
+        public string original = "";
+        public Window parent = null;
+        public bool restore = false;
+
 		public Gtk.Entry richTextBox1
 		{
 			get
@@ -35,9 +49,9 @@ namespace Client.Graphics
 			this.Build ();
 		}
 		
-		public void Focus()
+		public void setFocus()
 		{
-			
+			this.GrabFocus ();
 		}
 	}
 }

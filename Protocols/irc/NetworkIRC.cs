@@ -266,7 +266,7 @@ namespace Client
                 channel = _Network.getChannel(chan);
                 if (channel != null)
                 {
-                    Window window;
+                    Graphics.Window window;
                     window = channel.retrieveWindow();
                     if (window != null)
                     {
@@ -358,7 +358,7 @@ namespace Client
                     User target = item.userFromName(user);
                     if (target != null)
                     {
-                        Window window = item.retrieveWindow();
+                        Graphics.Window window = item.retrieveWindow();
                         if (window != null && window.scrollback != null)
                         {
                             WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,

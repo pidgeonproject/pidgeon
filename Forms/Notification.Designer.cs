@@ -16,26 +16,21 @@
  ***************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Channels : Gtk.Window
+	public partial class Notification : Gtk.Window
 	{
-		public Network network = null;
-        private int channels = 0;
-        //private ListViewColumnSorter lvwColumnSorter;
-        public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
-
-        public Channels() : base(Gtk.WindowType.Toplevel)
-        {
-			//this.Build ();
-        }
+		/// <summary>
+		/// Initializes the component.
+		/// </summary>
+		public void InitializeComponent ()
+		{
+			this.Name = "Pidgeon";
+			this.DefaultSize = new Gdk.Size(350, 153);
+			this.Opacity = 0.6;
+		}
 	}
 }
 

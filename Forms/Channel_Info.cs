@@ -16,17 +16,39 @@
  ***************************************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
+using System.Linq;
 using Gtk;
 
 namespace Client.Forms
 {
 	public partial class Channel_Info : Gtk.Window
 	{
-		public Channel_Info () : 
-				base(Gtk.WindowType.Toplevel)
+		public Channel_Info () : base(Gtk.WindowType.Toplevel)
 		{
-			this.Build ();
+			//this.Build ();
 		}
+		
+		public Channel channel = null;
+        public List<char> cm = null;
+
+        public static string convertUNIX(string time)
+        {
+            try
+            {
+                double unixtimestmp = double.Parse(time);
+                return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
+            }
+            catch (Exception)
+            {
+                return "Unable to read: " + time;
+            }
+        }
+
 	}
 }
 

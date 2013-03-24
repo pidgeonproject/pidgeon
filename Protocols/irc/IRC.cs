@@ -118,7 +118,7 @@ namespace Client
                             Channel c = _Network.getChannel(channel);
                             if (c != null)
                             {
-                                Window Chat = c.retrieveWindow();
+                                Graphics.Window Chat = c.retrieveWindow();
                                 if (c != null)
                                 {
                                     if (c.ChannelWork)
@@ -278,7 +278,7 @@ namespace Client
                                     Channel channel = _Network.getChannel(parameters);
                                     if (channel != null)
                                     {
-                                        Window window;
+                                        Graphics.Window window;
                                         window = channel.retrieveWindow();
                                         if (window != null)
                                         {

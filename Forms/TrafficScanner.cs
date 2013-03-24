@@ -16,6 +16,12 @@
  ***************************************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using Gtk;
 
 namespace Client.Forms
 {
@@ -23,10 +29,15 @@ namespace Client.Forms
 	{
 		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
-			this.Build ();
+			//this.Build ();
 		}
 		
 		public void Clean()
+		{
+			
+		}
+		
+		public void insert(string Server, string Text)
 		{
 			
 		}

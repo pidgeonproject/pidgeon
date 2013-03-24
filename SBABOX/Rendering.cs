@@ -343,7 +343,7 @@ namespace Client
                     float X = 0 - currentX;
                     float Y = 0 - currentY;
 
-                    Graphics graphics = null;
+                    System.Drawing.Graphics graphics = null;
                     if (drawingGraphics == null)
                     {
                         Rendering = false;

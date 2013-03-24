@@ -16,10 +16,17 @@
  ***************************************************************************/
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Text;
+using Gtk;
+
+
 
 namespace Client.Graphics
 {
-	[System.ComponentModel.ToolboxItem(true)]
 	public partial class Window : Gtk.Bin
 	{
 		/// <summary>
@@ -59,6 +66,7 @@ namespace Client.Graphics
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
+		public Gtk.TreeNode treeNode = null;
 		
 		public Scrollback scrollback = null;
 
@@ -75,34 +83,33 @@ namespace Client.Graphics
             }
 		}
 		
-		/*
 		public void Init()
         {
-            InitializeComponent();
-            kbToolStripMenuItem.Enabled = false;
-            kickrToolStripMenuItem.Enabled = false;
-            listView.View = View.Details;
-            listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
-            listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            listView.ForeColor = Configuration.CurrentSkin.fontcolor;
-            listViewd.View = View.Details;
-            listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
-            listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
-            listView.Visible = false;
-            listViewd.Columns[0].Width = listViewd.Width;
-            listView.Columns[0].Width = listViewd.Width;
+            Initialize();
+            //kbToolStripMenuIm.Enabled = false;
+            //kickrToolStripMenuItem.Enabled = false;
+            //listView.View = View.Details;
+            //listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
+            //listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            //listView.ForeColor = Configuration.CurrentSkin.fontcolor;
+            //listViewd.View = View.Details;
+            //listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
+            //listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            //listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
+            //listView.Visible = false;
+            //listViewd.Columns[0].Width = listViewd.Width;
+            //listView.Columns[0].Width = listViewd.Width;
         }
 
         public void Create()
         {
-            textbox.Init();
-            scrollback.Create();
-            scrollback.channelToolStripMenuItem.Visible = isChannel;
-            scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
+            //textbox.Init();
+            //scrollback.Create();
+            //scrollback.channelToolStripMenuItem.Visible = isChannel;
+            //scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
             if (scrollback.owner == null || scrollback.owner._Network == null)
             {
-                scrollback.listAllChannelsToolStripMenuItem.Visible = false;
+                //scrollback.listAllChannelsToolStripMenuItem.Visible = false;
             }
             Redraw();
         }
@@ -110,26 +117,28 @@ namespace Client.Graphics
         public bool Redraw()
         {
             ignoreChange = true;
-            if (xContainer1 != null)
+            //if (xContainer1 != null)
             {
-                if (this.xContainer1.SplitterDistance != Configuration.Window.x1)
+            //    if (this.xContainer1.SplitterDistance != Configuration.Window.x1)
                 {
-                    xContainer1.SplitterDistance = Configuration.Window.x1;
+            //        xContainer1.SplitterDistance = Configuration.Window.x1;
                 }
-                if (this.xContainer4.SplitterDistance != Configuration.Window.x4)
+            //    if (this.xContainer4.SplitterDistance != Configuration.Window.x4)
                 {
-                    xContainer4.SplitterDistance = Configuration.Window.x4;
+            //        xContainer4.SplitterDistance = Configuration.Window.x4;
                 }
             }
-            if (listViewd != null && listViewd.Columns.Count > 0)
+            //if (listViewd != null && listViewd.Columns.Count > 0)
             {
-                listViewd.Columns[0].Width = listViewd.Width;
-                listView.Columns[0].Width = listView.Width;
+            //    listViewd.Columns[0].Width = listViewd.Width;
+            //    listView.Columns[0].Width = listView.Width;
             }
             ignoreChange = false;
             return true;
         }
-
+		
+		/*
+		
         public void Changed(object sender, SplitterEventArgs dt)
         {
             try

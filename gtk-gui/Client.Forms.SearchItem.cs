@@ -9,7 +9,7 @@ namespace Client.Forms
 			global::Stetic.Gui.Initialize (this);
 			// Widget Client.Forms.SearchItem
 			this.Name = "Client.Forms.SearchItem";
-			this.Title = global::Mono.Unix.Catalog.GetString ("SearchItem");
+			this.Title = "SearchItem";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

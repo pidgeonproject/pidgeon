@@ -9,7 +9,7 @@ namespace Client.Forms
 			global::Stetic.Gui.Initialize (this);
 			// Widget Client.Forms.Preferences
 			this.Name = "Client.Forms.Preferences";
-			this.Title = global::Mono.Unix.Catalog.GetString ("Preferences");
+			this.Title = "Preferences";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

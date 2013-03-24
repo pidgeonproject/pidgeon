@@ -266,7 +266,7 @@ namespace Client
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;
-                    System.Windows.Forms.ListView listView = null;
+                    Gtk.TreeView listView = null;
                     retrieveWindow();
                     List<User> owners = new List<User>();
                     List<User> admins = new List<User>();
@@ -281,7 +281,7 @@ namespace Client
                         if (Chat.Locked)
                         {
                             Redraw = true;
-                            PidgeonList.Updated = true;
+                            Graphics.PidgeonList.Updated = true;
                             UserListRefreshWait = true;
                             return;
                         }
@@ -297,7 +297,7 @@ namespace Client
                         {
                             Chat.listView.Visible = true;
                             Redraw = true;
-                            PidgeonList.Updated = true;
+                            Graphics.PidgeonList.Updated = true;
                             return;
                         }
                         lock (UserList)
@@ -354,7 +354,7 @@ namespace Client
                             }
                         }
 
-                        listView.Items.Clear();
+                        //listView.Items.Clear();
 
                         owners.Sort();
                         admins.Sort();
@@ -367,45 +367,45 @@ namespace Client
 
                         foreach (User user in owners)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
                             i++;
                         }
                         foreach (User user in admins)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                             i++;
                         }
                         foreach (User user in oper)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
                             i++;
                         }
                         foreach (User user in halfop)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
                             i++;
                         }
                         foreach (User user in vs)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
                             i++;
                         }
 
                         foreach (User user in users)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
+                            //listView.Items.Add(uchr(user) + user.Nick);
+                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
+                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
                             i++;
                         }
                         if (Chat.listViewd.Visible == true)
@@ -423,7 +423,7 @@ namespace Client
                 }
 
                 Redraw = true;
-                PidgeonList.Updated = true;
+                Graphics.PidgeonList.Updated = true;
                 return;
             }
             catch (Exception f)

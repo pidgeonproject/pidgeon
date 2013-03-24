@@ -34,7 +34,7 @@ namespace Client
                 string message_text = curr.InnerText;
                 string message_target = curr.Attributes[3].Value;
                 string MQID = curr.Attributes[4].Value;
-                Window message_window = null;
+                Graphics.Window message_window = null;
                 Network mn = protocol.retrieveNetwork(curr.Attributes[1].Value);
                 if (Configuration.Services.UsingCache)
                 { 
@@ -443,10 +443,10 @@ namespace Client
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
                 Network remove = null;
-                System.Windows.Forms.TreeNode item = null;
+                Gtk.TreeNode item = null;
                 lock (Core._Main.ChannelList.ServerList)
                 {
-                    foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.ServerList)
+                    foreach (KeyValuePair<Network, Gtk.TreeNode> n in Core._Main.ChannelList.ServerList)
                     {
                         if (n.Key.ServerName == curr.InnerText)
                         {
@@ -495,7 +495,7 @@ namespace Client
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
                                                 if (ID != null && protocol.sBuffer.networkInfo.ContainsKey(ID))
                                                 { 
-                                                    Window window = xx.retrieveWindow();
+                                                    Graphics.Window window = xx.retrieveWindow();
                                                     if (xx != null)
                                                     {
                                                         protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.name);

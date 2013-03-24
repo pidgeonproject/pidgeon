@@ -34,7 +34,7 @@ namespace Client
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
-                    Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
                         channel.ChannelMode.ChangeMode(code[4]);
@@ -98,7 +98,7 @@ namespace Client
                 Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
-                    Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
                         while (curr.scrollback == null)
@@ -148,7 +148,7 @@ namespace Client
                 {
                     channel.TopicDate = int.Parse(time);
                     channel.TopicUser = user;
-                    Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.retrieveWindow();
                     if (curr != null)
                     {
                         WindowText(curr, "Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
@@ -168,7 +168,7 @@ namespace Client
             Channel channel = _Network.getChannel(parameters.Substring(0, parameters.IndexOf(" ")));
             if (channel != null)
             {
-                Window window;
+                Graphics.Window window;
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
@@ -210,7 +210,7 @@ namespace Client
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
-                Window window;
+                Graphics.Window window;
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
@@ -273,7 +273,7 @@ namespace Client
             if (!Hooks._Network.BeforePart(_Network, channel)) { return true; }
             if (channel != null)
             {
-                Window window;
+                Graphics.Window window;
                 window = channel.retrieveWindow();
                 User delete = null;
                 if (window != null)
@@ -323,7 +323,7 @@ namespace Client
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
-                Window window;
+                Graphics.Window window;
                 channel.Topic = value;
                 window = channel.retrieveWindow();
                 if (window != null)
@@ -357,7 +357,7 @@ namespace Client
                                     curr.Nick = _new;
                                     item.redrawUsers();
                                 }
-                                Window window = item.retrieveWindow();
+                                Graphics.Window window = item.retrieveWindow();
                                 if (window != null)
                                 {
                                     WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
@@ -384,7 +384,7 @@ namespace Client
                     Channel channel = _Network.getChannel(chan);
                     if (channel != null)
                     {
-                        Window window;
+                        Graphics.Window window;
                         window = channel.retrieveWindow();
                         string change = parameters.Substring(parameters.IndexOf(" "));
                         if (window != null)

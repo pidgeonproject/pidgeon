@@ -23,19 +23,14 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Client.Graphics
 {
-	public partial class Channels : Gtk.Window
+	public partial class PidgeonList : Gtk.Bin
 	{
-		public Network network = null;
-        private int channels = 0;
-        //private ListViewColumnSorter lvwColumnSorter;
-        public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
-
-        public Channels() : base(Gtk.WindowType.Toplevel)
-        {
-			//this.Build ();
-        }
+		public void Initialize ()
+		{
+			
+		}
 	}
 }
 

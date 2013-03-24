@@ -492,7 +492,7 @@ namespace Client.Services
                             {
                                 foreach (Channel xx in network.Channels)
                                 {
-                                    Client.Window window = xx.retrieveWindow();
+                                    Graphics.Window window = xx.retrieveWindow();
                                     if (window != null)
                                     {
                                         networkInfo[uid]._windows.Add(new Buffer.Window(window));
@@ -517,7 +517,7 @@ namespace Client.Services
                                     networkInfo[uid]._channels.Add(info);
                                 }
 
-                                foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
+                                foreach (KeyValuePair<User, Graphics.Window> wn in network.PrivateWins)
                                 {
                                     Buffer.Window window = new Buffer.Window(wn.Value);
                                     if (!networkInfo[uid].PrivateWins.Contains(window.Name))

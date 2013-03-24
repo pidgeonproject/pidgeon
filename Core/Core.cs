@@ -253,7 +253,7 @@ namespace Client
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
                 messages.Read();
-                trafficscanner = new TrafficScanner();
+                trafficscanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
                     LoadSkin();
@@ -264,7 +264,7 @@ namespace Client
                         Directory.CreateDirectory(PermanentTemp);
                     }
                     DebugLog("Running updater");
-                    ThUp = new Thread(Updater.Run);
+                    ThUp = new Thread(Forms.Updater.Run);
                     ThUp.Name = "pidgeon service";
                     ThUp.Start();
                     SystemThreads.Add(ThUp);
@@ -275,8 +275,8 @@ namespace Client
                     Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
-                    MicroChat.mc = new MicroChat();
-                    notification = new Notification();
+                    Forms.MicroChat.mc = new Forms.MicroChat();
+                    notification = new Forms.Notification();
                     DebugLog("Loading scripting core");
                     ScriptingCore.Load();
                     DebugLog("Loading extensions");
@@ -299,11 +299,11 @@ namespace Client
                     Hooks._Sys.AfterCore();
                     return true;
                 }
-                Updater _finalisingupdater = new Updater();
-                _finalisingupdater.update.Visible = false;
+                Forms.Updater _finalisingupdater = new Forms.Updater();
+                //_finalisingupdater.update.Visible = false;
                 _finalisingupdater.finalize = true;
-                _finalisingupdater.lStatus.Text = messages.get("update2");
-                System.Windows.Forms.Application.Run(_finalisingupdater);
+                //_finalisingupdater.lStatus.Text = messages.get("update2");
+                //System.Windows.Forms.Application.Run(_finalisingupdater);
             }
             catch (Exception panic)
             {
@@ -374,8 +374,8 @@ namespace Client
         /// </summary>
         public static void Recover()
         {
-            Recovery x = new Recovery();
-            System.Windows.Forms.Application.Run(x);
+            Forms.Recovery x = new Forms.Recovery();
+            //System.Windows.Forms.Application.Run(x);
         }
 
         public static void killThread(Thread name)
@@ -567,37 +567,42 @@ namespace Client
                 if (notification_waiting)
                 {
                     bool Focus = false;
-                    notification.text.Text = notification_data;
-                    notification.label1.Text = notification_caption;
+                    //notification.text.Text = notification_data;
+                    //notification.label1.Text = notification_caption;
                     notification_waiting = false;
                     if (Core._Main.Chat != null)
                     {
-                        if (Core._Main.Chat.textbox.richTextBox1.Focused)
+                        if (Core._Main.Chat.textbox.richTextBox1.IsFocus)
                         {
                             Focus = true;
                         }
                     }
                     if (!notification.Visible)
                     {
-                        if (notification.Width < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && notification.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
+                        /* 
+                         * 
+                         * fixme
+                         * 
+                        if (notification.DefaultWidth < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && notification.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
                         {
                             notification.Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - notification.Height;
                             notification.Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - notification.Width;
                         }
+                        */
                         notification.Show();
                         if (Focus)
                         {
-                            Core._Main.Focus();
+                            Core._Main.setFocus();
                             if (Core._Main.Chat != null)
                             {
-                                Core._Main.Chat.textbox.Focus();
+                                Core._Main.Chat.textbox.setFocus();
                             }
                         }
                     }
                 }
             }
         }
-
+		
         /// <summary>
         /// Show a notice box, if started from non kernel thread, then it's finalized in that
         /// </summary>
@@ -670,10 +675,10 @@ namespace Client
                 string[] text = script.Split('\n');
                 foreach (string line in text)
                 {
-                    edit.textBox1.AppendText(line + Environment.NewLine);
+                    //edit.textBox1.AppendText(line + Environment.NewLine);
                 }
-                edit.network = target;
-                edit.Show();
+                //edit.network = target;
+                //edit.Show();
             }
             catch (Exception fail)
             {

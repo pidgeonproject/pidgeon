@@ -264,7 +264,7 @@ namespace Client
                         System.Threading.Thread.Sleep(100);
                     }
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.insert(Server, " >> " + text);
+                    //Core.trafficscanner.insert(Server, " >> " + text);
                     ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
                     processor.Result();
                     pong = processor.pong;
@@ -313,7 +313,7 @@ namespace Client
         {
             try
             {
-                _StreamWriter.WriteLine(ms); 
+                _StreamWriter.WriteLine(ms);
                 Core.trafficscanner.insert(Server, " << " + ms);
                 _StreamWriter.Flush();
             }

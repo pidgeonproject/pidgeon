@@ -200,7 +200,7 @@ namespace Client
                             if (owner.isChannel)
                             {
                                 owner.textbox.richTextBox1.AppendText(nick + ": ");
-                                owner.textbox.Focus();
+                                owner.textbox.setFocus();
                             }
                         }
                         return;
@@ -218,7 +218,7 @@ namespace Client
                             if (owner.isChannel)
                             {
                                 owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.Focus();
+                                owner.textbox.setFocus();
                             }
                         }
                         return;
@@ -231,7 +231,7 @@ namespace Client
                             if (owner.isChannel)
                             {
                                 owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.Focus();
+                                owner.textbox.setFocus();
                             }
                         }
                         return;
@@ -244,7 +244,7 @@ namespace Client
                             if (owner.isChannel)
                             {
                                 owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.Focus();
+                                owner.textbox.setFocus();
                             }
                         }
                         return;
@@ -266,7 +266,7 @@ namespace Client
                 {
                     if (Core.network.RenderedChannel != null)
                     {
-                        Channel_Info info = new Channel_Info();
+                        Forms.Channel_Info info = new Forms.Channel_Info();
                         info.channel = Core.network.RenderedChannel;
                         info.Show();
                     }

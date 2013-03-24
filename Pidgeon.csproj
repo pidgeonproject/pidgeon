@@ -9,6 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Pidgeon</AssemblyName>
+    <StartupObject>Client.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -69,6 +70,16 @@
     <EmbeddedResource Include="gtk-gui\gui.stetic">
       <LogicalName>gui.stetic</LogicalName>
     </EmbeddedResource>
+    <EmbeddedResource Include="ManualPages\Connect.txt" />
+    <EmbeddedResource Include="ManualPages\Oper.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonMan.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonModule.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonUptime.txt" />
+    <EmbeddedResource Include="ManualPages\Server.txt" />
+    <EmbeddedResource Include="ManualPages\ServicesClear.txt" />
+    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Languages\en_english.txt" />
+    <EmbeddedResource Include="Languages\cs_czech.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -125,9 +136,7 @@
     <Compile Include="Forms\Preferences.cs" />
     <Compile Include="gtk-gui\Client.Forms.Preferences.cs" />
     <Compile Include="Forms\Channels.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Channels.cs" />
     <Compile Include="Forms\Notification.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Notification.cs" />
     <Compile Include="Forms\TrafficScanner.cs" />
     <Compile Include="gtk-gui\Client.Forms.TrafficScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,21 +153,21 @@
     <Compile Include="Graphics\TextBox.cs" />
     <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
     <Compile Include="Forms\Channel_Info.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Channel_Info.cs" />
+    <Compile Include="Forms\MicroChat.cs" />
+    <Compile Include="Graphics\Window.Designer.cs" />
+    <Compile Include="Graphics\PidgeonList.Designer.cs" />
+    <Compile Include="Forms\Updater.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Updater.cs" />
+    <Compile Include="Forms\Recovery.cs" />
+    <Compile Include="Forms\ScriptEdit.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Recovery.cs" />
+    <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
+    <Compile Include="Graphics\TextBox.Designer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <None Include="Scrollback\Scrollback.resources" />
     <None Include="Scrollback\Scrollback.resx" />
-    <None Include="Languages\cs_czech.txt" />
-    <None Include="Languages\en_english.txt" />
-    <None Include="ManualPages\Connect.txt" />
-    <None Include="ManualPages\Oper.txt" />
-    <None Include="ManualPages\PidgeonMan.txt" />
-    <None Include="ManualPages\PidgeonModule.txt" />
-    <None Include="ManualPages\PidgeonUptime.txt" />
-    <None Include="ManualPages\Server.txt" />
-    <None Include="ManualPages\ServicesClear.txt" />
     <None Include="Resources\50px-IRC_icon.png" />
     <None Include="Resources\Image1.bmp" />
     <None Include="Resources\Image1.jpg" />
@@ -178,9 +187,8 @@
     <None Include="Resources\regular.bmp" />
     <None Include="SBABOX\SBABox.resources" />
     <None Include="SBABOX\SBABox.resx" />
-    <None Include="Properties\Resources.resources" />
-    <None Include="Properties\Resources.resx" />
     <None Include="Properties\Settings.settings" />
+    <None Include="Properties\Resources.resources" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Forms\" />
@@ -193,6 +201,7 @@
           <TextStylePolicy FileWidth="120" TabWidth="4" EolMarker="Windows" inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
+        <GtkDesignInfo generateGettext="false" />
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>

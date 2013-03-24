@@ -17,7 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using Gtk;
 
 namespace Client
 {
@@ -36,7 +36,7 @@ namespace Client
                 if (Core.Load())
                 {
                     Core.network = null;
-					Core._Main = new Core._Main();
+					Core._Main = new Forms.Main();
 					Core._Main.Show ();
 					Application.Run ();
                 }

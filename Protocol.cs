@@ -40,7 +40,7 @@ namespace Client
         /// <summary>
         /// Windows
         /// </summary>
-        public Dictionary<string, Graphics.Window> Windows = new Dictionary<string, Window>();
+        public Dictionary<string, Graphics.Window> Windows = new Dictionary<string, Graphics.Window>();
         /// <summary>
         /// Whether this server is connected or not
         /// </summary>
@@ -97,7 +97,7 @@ namespace Client
         /// <param name="channelw">If true a window will be flagged as channel</param>
         public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
         {
-            Main._WindowRequest request = new Main._WindowRequest();
+            Forms.Main._WindowRequest request = new Forms.Main._WindowRequest();
             if (id == null)
             {
                 id = name;
@@ -105,7 +105,7 @@ namespace Client
             request.owner = this;
             request.name = name;
             request.writable = writable;
-            request.window = new Window();
+            request.window = new Graphics.Window();
             request.focus = focus;
             request.window._Network = network;
             request.window.name = name;
@@ -128,7 +128,7 @@ namespace Client
             {
                 // Create a request to create this window
                 Core._Main.WindowRequests.Add(request);
-                PidgeonList.Updated = true;
+                Graphics.PidgeonList.Updated = true;
             }
             return request.window;
         }
@@ -144,9 +144,9 @@ namespace Client
             {
                 Current = Windows[name];
                 Current.scrollback.Display();
-                Current.BringToFront();
+                //Current.BringToFront();
                 Current.Visible = true;
-                Current.Redraw();
+                //Current.Redraw();
                 if (Current.isChannel)
                 {
                     if (Core.network != null)
@@ -154,10 +154,10 @@ namespace Client
                         Core.network.RenderedChannel = Core.network.getChannel(Current.name);
                     }
                 }
-                Core._Main.toolStripStatusChannel.Text = name;
+                //Core._Main.toolStripStatusChannel.Text = name;
                 if (Current.Making == false)
                 {
-                    Current.textbox.Focus();
+                    Current.textbox.setFocus();
                 }
                 if (Current != Core._Main.Chat)
                 {

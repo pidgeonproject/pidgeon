@@ -219,7 +219,7 @@ namespace Client
                 }
                 if (scrollback.owner != null)
                 {
-                    scrollback.owner.textbox.richTextBox1.Focus();
+                    scrollback.owner.textbox.setFocus();
                 }
             }
             catch (Exception fail)

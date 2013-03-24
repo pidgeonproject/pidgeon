@@ -286,7 +286,7 @@ namespace Client
 
             if (owner != null && owner.MicroBox)
             {
-                MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
+                Forms.MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
             }
 
             bool Matched = false;
@@ -301,7 +301,7 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.treeNode != null)
+            /* if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.treeNode != null)
             {
                 switch (InputStyle)
                 {
@@ -337,6 +337,7 @@ namespace Client
                     owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
                 }
             }
+            */
 
             DateTime time = DateTime.Now;
 

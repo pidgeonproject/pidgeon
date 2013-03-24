@@ -9,7 +9,7 @@ namespace Client.Forms
 			global::Stetic.Gui.Initialize (this);
 			// Widget Client.Forms.Connection
 			this.Name = "Client.Forms.Connection";
-			this.Title = global::Mono.Unix.Catalog.GetString ("Connection");
+			this.Title = "Connection";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
