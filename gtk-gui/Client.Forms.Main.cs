@@ -154,6 +154,10 @@ namespace Client.Forms
 			this.DefaultWidth = 884;
 			this.DefaultHeight = 462;
 			this.Show ();
+			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.Unshow);
+			this.ShutDownAction.Activated += new global::System.EventHandler (this.shutDownToolStripMenuItem_Click);
+			this.AboutAction.Activated += new global::System.EventHandler (this.aboutToolStripMenuItem_Click);
+			this.PreferencesAction.Activated += new global::System.EventHandler (this.preferencesToolStripMenuItem_Click);
 		}
 	}
 }

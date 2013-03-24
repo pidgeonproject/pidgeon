@@ -4,7 +4,8 @@ namespace Client.Graphics
 {
 	public partial class TextBox
 	{
-		private global::Gtk.Fixed fixed1;
+		private global::Gtk.VBox vbox5;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		private global::Gtk.Entry richTextBox;
 		
 		protected virtual void Build ()
@@ -14,17 +15,28 @@ namespace Client.Graphics
 			global::Stetic.BinContainer.Attach (this);
 			this.Name = "Client.Graphics.TextBox";
 			// Container child Client.Graphics.TextBox.Gtk.Container+ContainerChild
-			this.fixed1 = new global::Gtk.Fixed ();
-			this.fixed1.Name = "fixed1";
-			this.fixed1.HasWindow = false;
-			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.vbox5 = new global::Gtk.VBox ();
+			this.vbox5.Name = "vbox5";
+			this.vbox5.Spacing = 6;
+			// Container child vbox5.Gtk.Box+BoxChild
+			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			global::Gtk.Viewport w1 = new global::Gtk.Viewport ();
+			w1.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child GtkViewport.Gtk.Container+ContainerChild
 			this.richTextBox = new global::Gtk.Entry ();
 			this.richTextBox.CanFocus = true;
 			this.richTextBox.Name = "richTextBox";
 			this.richTextBox.IsEditable = true;
 			this.richTextBox.InvisibleChar = '•';
-			this.fixed1.Add (this.richTextBox);
-			this.Add (this.fixed1);
+			w1.Add (this.richTextBox);
+			this.GtkScrolledWindow.Add (w1);
+			this.vbox5.Add (this.GtkScrolledWindow);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox5 [this.GtkScrolledWindow]));
+			w4.Position = 0;
+			this.Add (this.vbox5);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}

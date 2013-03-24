@@ -285,17 +285,17 @@ namespace Client
                             UserListRefreshWait = true;
                             return;
                         }
-                        if (Chat.listView.Visible)
+                        //if (Chat.listView.Visible)
                         {
-                            listView = Chat.listViewd;
+                        //    listView = Chat.listViewd;
                         }
-                        if (Chat.listViewd.Visible)
+                        //if (Chat.listViewd.Visible)
                         {
-                            listView = Chat.listView;
+                        //    listView = Chat.listView;
                         }
-                        if (listView == null)
+                        //if (listView == null)
                         {
-                            Chat.listView.Visible = true;
+                        //    Chat.listView.Visible = true;
                             Redraw = true;
                             Graphics.PidgeonList.Updated = true;
                             return;
@@ -408,15 +408,15 @@ namespace Client
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
                             i++;
                         }
-                        if (Chat.listViewd.Visible == true)
+                        //if (Chat.listViewd.Visible == true)
                         {
-                            Chat.listViewd.Visible = false;
-                            Chat.listView.Visible = true;
+                        //    Chat.listViewd.Visible = false;
+                        //    Chat.listView.Visible = true;
                         }
-                        else
+                        //else
                         {
-                            Chat.listView.Visible = false;
-                            Chat.listViewd.Visible = true;
+                        //    Chat.listView.Visible = false;
+                        //    Chat.listViewd.Visible = true;
                         }
                     }
                     return;

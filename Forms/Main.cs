@@ -40,7 +40,35 @@ namespace Client.Forms
         public bool DisplayingProgress = false;
         public int ProgressMax = 0;
 		public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
+		public int Height
+		{
+			get
+			{
+				int height;
+				int width;
+				GetSize(out width, out height);
+				return height;
+			}
+			set
+			{
+				this.SetSizeRequest (Width, value);
+			}
+		}
 		
+		public int Width
+		{
+			get
+			{
+				int height;
+				int width;
+				GetSize(out width, out height);
+				return width;
+			}
+			set
+			{
+				this.SetSizeRequest (value, Height);
+			}
+		}	
 
         public class _WindowRequest
         {
@@ -64,6 +92,74 @@ namespace Client.Forms
 				Core.handleException(fail);
 			}
 		}
+		
+		public void _Load()
+        {
+            try
+            {
+                messages.Localize(this);
+                //skinEdToolStripMenuItem.Enabled = false;
+                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+                {
+                    //this.Icon = (System.Drawing.Icon)Client.Properties.Resources.Pigeon_clip_art_hight1;
+                }
+				setText("");
+                if (Configuration.Window.Window_Maximized)
+                {
+                    this.Maximize();
+                }
+                if (Configuration.Window.x4 == 0)
+                {
+                    Configuration.Window.window_size = 80;
+                    Configuration.Window.x1 = Height - 80;
+                    Configuration.Window.x4 = 600;
+                    if (Width > 200)
+                    {
+                        Configuration.Window.x4 = this.Width - 200;
+                    }
+                }
+                //sX.SplitterDistance = Configuration.Window.window_size;
+                //ChannelList = new PidgeonList();
+                //toolStripProgressBar1.Visible = false;
+                //ChannelList.Visible = true;
+                //ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
+                //ChannelList.Dock = DockStyle.Fill;
+                //ChannelList.CreateControl();
+                //sX.Panel1.Controls.Add(ChannelList);
+                //main = new Client.Graphics.Window();
+                //CreateChat(main, null);
+                //main.name = "Pidgeon";
+                //preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
+                //toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
+                //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
+                Chat = main;
+                //main.Redraw();
+                //Chat.Making = false;
+                if (Configuration.Kernel.Debugging)
+                {
+                //    Core.PrintRing(Chat, false);
+                }
+                //Chat.scrollback.InsertText("Welcome to pidgeon client " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Scrollback.MessageStyle.System, false, 0, true);
+                if (Core.Extensions.Count > 0)
+                {
+                    foreach (Extension nn in Core.Extensions)
+                    {
+                    //    Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Scrollback.MessageStyle.System, false, 0, true);
+                    }
+                }
+                done = true;
+
+                foreach (string text in Core.Parameters)
+                {
+                    Core.ParseLink(text);
+                }
+                Hooks._Sys.Initialise(this);
+            }
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
+        }
 		
 		public void Changed(object sender, EventArgs dt)
         {
@@ -268,8 +364,6 @@ namespace Client.Forms
             return 2;
         }
 		
-		/*
-		
         private void shutDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -281,12 +375,13 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		
+		
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (fPrefs == null || fPrefs.IsDisposed)
+                if (fPrefs == null)
                 {
                     fPrefs = new Preferences();
                 }
@@ -297,7 +392,8 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		
+		/*
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -309,35 +405,42 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
-        public void Unshow(object main, FormClosingEventArgs closing)
+		 */
+		
+        public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try
             {
                 if (Core.IgnoreErrors)
                 {
                     Core.DebugLog("Closing main");
-                    closing.Cancel = false;
                     return;
                 }
-                if (MessageBox.Show(messages.get("pidgeon-shut", Core.SelectedLanguage), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
-                {
-                    closing.Cancel = true;
+				MessageDialog message = new MessageDialog(null, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
+				message.Title = "Shut down?";
+				message.Run();
+				ResponseType result = (ResponseType)message.Run ();	
+				if (result == ResponseType.No)
+				{
+  	  				message.Destroy();
+					closing.RetVal = true;
                     return;
                 }
                 Core.Quit();
+				return;
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-
+		
+		
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                Help _Help = new Help();
+                Forms.Help _Help = new Help();
                 _Help.Show();
             }
             catch (Exception fail)
@@ -345,7 +448,9 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		
+		/*
+		
         private void newConnectionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             try

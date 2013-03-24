@@ -150,19 +150,18 @@
     <Compile Include="gtk-gui\Client.Forms.Connection.cs" />
     <Compile Include="Forms\SearchItem.cs" />
     <Compile Include="gtk-gui\Client.Forms.SearchItem.cs" />
-    <Compile Include="Graphics\TextBox.cs" />
-    <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
     <Compile Include="Forms\Channel_Info.cs" />
     <Compile Include="Forms\MicroChat.cs" />
-    <Compile Include="Graphics\Window.Designer.cs" />
-    <Compile Include="Graphics\PidgeonList.Designer.cs" />
     <Compile Include="Forms\Updater.cs" />
     <Compile Include="gtk-gui\Client.Forms.Updater.cs" />
     <Compile Include="Forms\Recovery.cs" />
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="gtk-gui\Client.Forms.Recovery.cs" />
     <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
-    <Compile Include="Graphics\TextBox.Designer.cs" />
+    <Compile Include="Graphics\TextBox.cs" />
+    <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
+    <Compile Include="Forms\Help.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Help.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

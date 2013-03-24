@@ -85,7 +85,7 @@ namespace Client.Graphics
 		
 		public void Init()
         {
-            Initialize();
+            //Initialize();
             //kbToolStripMenuIm.Enabled = false;
             //kickrToolStripMenuItem.Enabled = false;
             //listView.View = View.Details;
