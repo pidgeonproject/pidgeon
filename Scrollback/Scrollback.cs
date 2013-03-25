@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace Client
 {
-    public partial class Scrollback : UserControl
+    public partial class Scrollback
     {
         /// <summary>
         /// Maximal size of text
@@ -115,11 +115,6 @@ namespace Client
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
         public bool WindowVisible()
         {
             if (this.Visible == false)
@@ -166,21 +161,21 @@ namespace Client
                 if (simple)
                 {
                     simple = false;
-                    RT.Visible = true;
-                    simpleview.Visible = false;
-                    toggleAdvancedLayoutToolStripMenuItem.Checked = true;
-                    toggleSimpleLayoutToolStripMenuItem.Checked = false;
-                    RT.RedrawText();
+                    //RT.Visible = true;
+                    //simpleview.Visible = false;
+                    //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
+                    //toggleSimpleLayoutToolStripMenuItem.Checked = false;
+                    //RT.RedrawText();
                     return;
                 }
                 Reload(true, true);
                 return;
             }
-            toggleAdvancedLayoutToolStripMenuItem.Checked = false;
-            toggleSimpleLayoutToolStripMenuItem.Checked = true;
+            //toggleAdvancedLayoutToolStripMenuItem.Checked = false;
+            //toggleSimpleLayoutToolStripMenuItem.Checked = true;
             simple = true;
-            simpleview.Visible = true;
-            RT.Visible = false;
+            //simpleview.Visible = true;
+            //RT.Visible = false;
             Reload(true, true);
         }
 
@@ -189,14 +184,14 @@ namespace Client
         /// </summary>
         public Scrollback()
         {
-            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
 
             ReloadWaiting = true;
         }
 
         public Scrollback(Graphics.Window _ParentWindow)
         {
-            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
+            //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             this.owner = _ParentWindow;
 
             ReloadWaiting = true;
@@ -204,21 +199,21 @@ namespace Client
 
         public void Create()
         {
-            InitializeComponent();
-            simpleview.Visible = false;
-            toggleAdvancedLayoutToolStripMenuItem.Checked = true;
+			this.Build ();
+            //simpleview.Visible = false;
+            //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }
 
         private void Scrollback_Load(object sender, EventArgs e)
         {
             try
             {
-                RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
-                RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                RT.Font = Configuration.CurrentSkin.SBABOX;
-                simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
-                RT.scrollback = this;
+                //RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
+                //RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                //RT.Font = Configuration.CurrentSkin.SBABOX;
+                //simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
+                //simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
+                //RT.scrollback = this;
                 HideLn();
                 lastDate = DateTime.MinValue;
             }
@@ -232,29 +227,29 @@ namespace Client
         {
             lock (ContentLines)
             {
-                simpleview.Text = "";
+                //simpleview.Text = "";
                 StringBuilder everything = new StringBuilder("");
                 foreach (ContentLine _line in ContentLines)
                 {
                     everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-                simpleview.AppendText(everything.ToString());
+                //simpleview.AppendText(everything.ToString());
                 if (ScrollingEnabled)
                 {
-                    simpleview.ScrollToCaret();
+                //    simpleview.ScrollToCaret();
                 }
             }
         }
 
         public void HideLn()
         {
-            mode1b2ToolStripMenuItem.Visible = false;
-            toolStripMenuItem1.Visible = false;
-            openLinkInBrowserToolStripMenuItem.Visible = false;
-            joinToolStripMenuItem.Visible = false;
-            mode1e2ToolStripMenuItem.Visible = false;
-            mode1I2ToolStripMenuItem.Visible = false;
-            mode1q2ToolStripMenuItem.Visible = false;
+            //mode1b2ToolStripMenuItem.Visible = false;
+            //toolStripMenuItem1.Visible = false;
+            //openLinkInBrowserToolStripMenuItem.Visible = false;
+            //joinToolStripMenuItem.Visible = false;
+            //mode1e2ToolStripMenuItem.Visible = false;
+            //mode1I2ToolStripMenuItem.Visible = false;
+            //mode1q2ToolStripMenuItem.Visible = false;
         }
 
         public bool IncreaseOffset()
@@ -285,7 +280,7 @@ namespace Client
         {
             try
             {
-                if (RT != null && WindowVisible())
+                /*if (RT != null && WindowVisible())
                 {
                     lock (UndrawnLines)
                     {
@@ -318,10 +313,11 @@ namespace Client
                         timer2.Enabled = true;
                     }
                 }
+                */
             }
             catch (Exception fail)
             {
-                timer2.Enabled = true;
+                //timer2.Enabled = true;
                 Core.handleException(fail);
             }
         }

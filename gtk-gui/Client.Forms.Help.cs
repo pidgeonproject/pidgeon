@@ -5,18 +5,18 @@ namespace Client.Forms
 	public partial class Help
 	{
 		private global::Gtk.Fixed fixed1;
-		private global::Gtk.Label label1;
 		private global::Gtk.Label label2;
 		private global::Gtk.Label label3;
 		private global::Gtk.Label label4;
 		private global::Gtk.Label label5;
 		private global::Gtk.Image image2;
+		private global::Gtk.Label label1;
 		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget Client.Forms.Help
-			this.WidthRequest = 460;
+			this.WidthRequest = 520;
 			this.HeightRequest = 600;
 			this.Name = "Client.Forms.Help";
 			this.Title = "Help";
@@ -29,40 +29,32 @@ namespace Client.Forms
 			this.fixed1.Name = "fixed1";
 			this.fixed1.HasWindow = false;
 			// Container child fixed1.Gtk.Fixed+FixedChild
-			this.label1 = new global::Gtk.Label ();
-			this.label1.Name = "label1";
-			this.label1.LabelProp = "Pidgeon";
-			this.fixed1.Add (this.label1);
-			global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
-			w1.X = 182;
-			w1.Y = 26;
-			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.label2 = new global::Gtk.Label ();
 			this.label2.Name = "label2";
 			this.label2.LabelProp = "Made by: Petr Bena";
 			this.fixed1.Add (this.label2);
-			global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label2]));
-			w2.X = 20;
-			w2.Y = 61;
+			global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label2]));
+			w1.X = 20;
+			w1.Y = 61;
 			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.label3 = new global::Gtk.Label ();
 			this.label3.Name = "label3";
 			this.label3.LabelProp = "http://pidgeonclient.org/wiki/";
 			this.label3.UseUnderline = true;
 			this.fixed1.Add (this.label3);
-			global::Gtk.Fixed.FixedChild w3 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label3]));
-			w3.X = 20;
-			w3.Y = 87;
+			global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label3]));
+			w2.X = 20;
+			w2.Y = 87;
 			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.label4 = new global::Gtk.Label ();
 			this.label4.Name = "label4";
 			this.fixed1.Add (this.label4);
-			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label4]));
-			w4.X = 20;
-			w4.Y = 127;
+			global::Gtk.Fixed.FixedChild w3 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label4]));
+			w3.X = 20;
+			w3.Y = 127;
 			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.label5 = new global::Gtk.Label ();
-			this.label5.WidthRequest = 460;
+			this.label5.WidthRequest = 480;
 			this.label5.Name = "label5";
 			this.label5.LabelProp = @"About:
 
@@ -80,22 +72,30 @@ This program is distributed in the hope that it will be useful, but WITHOUT ANY 
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.";
 			this.label5.Wrap = true;
 			this.fixed1.Add (this.label5);
-			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label5]));
-			w5.X = 20;
-			w5.Y = 167;
+			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label5]));
+			w4.X = 20;
+			w4.Y = 167;
 			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.image2 = new global::Gtk.Image ();
 			this.image2.Name = "image2";
 			this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.Pigeon_clip_art_hight_mini.png");
 			this.fixed1.Add (this.image2);
-			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
-			w6.X = 331;
-			w6.Y = 53;
+			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
+			w5.X = 342;
+			w5.Y = 47;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label1 = new global::Gtk.Label ();
+			this.label1.Name = "label1";
+			this.label1.LabelProp = "Pidgeon";
+			this.fixed1.Add (this.label1);
+			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
+			w6.X = 248;
+			w6.Y = 17;
 			this.Add (this.fixed1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 516;
+			this.DefaultWidth = 579;
 			this.DefaultHeight = 600;
 			this.Show ();
 		}

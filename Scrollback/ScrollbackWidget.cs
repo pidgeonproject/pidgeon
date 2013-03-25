@@ -16,32 +16,13 @@
  ***************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using Gtk;
 
-namespace Client.Forms
+namespace Client
 {
-	public partial class Updater : Gtk.Window
-	{
-		public static string info = "";
-        public bool finalize = false;
-        public static string temporarydir = "";
-		
-		public Updater () : base(Gtk.WindowType.Toplevel)
+		[System.ComponentModel.ToolboxItem(true)]
+		public partial class Scrollback : Gtk.Bin
 		{
-			this.Build ();
-			
+				
 		}
-		
-		public static void Run()
-		{
-			
-		}
-	}
 }
 

@@ -99,7 +99,6 @@
     <Compile Include="Scrollback\Menu.cs" />
     <Compile Include="Scrollback\Parser.cs" />
     <Compile Include="Scrollback\ProcessingLine.cs" />
-    <Compile Include="Scrollback\Scrollback.Designer.cs" />
     <Compile Include="Scrollback\Scrollback.cs" />
     <Compile Include="Buffers.cs" />
     <Compile Include="Channel.cs" />
@@ -170,6 +169,8 @@
     <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
     <Compile Include="Forms\Help.cs" />
     <Compile Include="gtk-gui\Client.Forms.Help.cs" />
+    <Compile Include="Scrollback\ScrollbackWidget.cs" />
+    <Compile Include="gtk-gui\Client.Scrollback.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

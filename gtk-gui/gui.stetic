@@ -136,7 +136,7 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar2">
             <property name="MemberName" />
-            <node name="menubar2" type="Menubar">
+            <node name="__gtksharp_82_Stetic_Editor_ActionMenuBar" type="Menubar">
               <node type="Menu" action="FileAction">
                 <node type="Menuitem" action="OpenNewConnectionAction1" />
                 <node type="Separator" />
@@ -181,7 +181,7 @@
           <widget class="Gtk.HPaned" id="hpaned1">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="Position">1</property>
+            <property name="Position">279</property>
             <child>
               <widget class="Client.Graphics.PidgeonList" id="pidgeonlist1">
                 <property name="MemberName" />
@@ -290,20 +290,73 @@
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
-      <placeholder />
+      <widget class="Gtk.VPaned" id="vpaned1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="Position">301</property>
+        <child>
+          <widget class="Gtk.HPaned" id="hpaned1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Position">344</property>
+            <child>
+              <widget class="Client.Scrollback" id="scrollback1">
+                <property name="MemberName" />
+                <property name="Events">ButtonPressMask</property>
+              </widget>
+              <packing>
+                <property name="Resize">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="treeview2">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Resize">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Client.Graphics.TextBox" id="textbox1">
+            <property name="MemberName" />
+            <property name="Events">ButtonPressMask</property>
+          </widget>
+        </child>
+      </widget>
     </child>
   </widget>
   <widget class="Gtk.Bin" id="Client.Graphics.PidgeonList" design-size="300 300">
     <property name="MemberName" />
     <property name="Visible">False</property>
     <child>
-      <placeholder />
+      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+        <property name="MemberName" />
+        <property name="ShadowType">In</property>
+        <child>
+          <widget class="Gtk.TreeView" id="treeview1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShowScrollbars">True</property>
+          </widget>
+        </child>
+      </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Connection" design-size="400 300">
+  <widget class="Gtk.Window" id="Client.Forms.Connection" design-size="833 362">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Connection</property>
-    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Icon">resource:Client.Resources.pigeon_clip_art_hight.ico</property>
+    <property name="WindowPosition">Center</property>
     <child>
       <placeholder />
     </child>
@@ -383,9 +436,9 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="516 600">
+  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="579 600">
     <property name="MemberName" />
-    <property name="WidthRequest">460</property>
+    <property name="WidthRequest">520</property>
     <property name="HeightRequest">600</property>
     <property name="Title" translatable="yes">Help</property>
     <property name="Icon">resource:Client.Resources.pigeon_clip_art_hight.ico</property>
@@ -396,16 +449,6 @@
       <widget class="Gtk.Fixed" id="fixed1">
         <property name="MemberName" />
         <property name="HasWindow">False</property>
-        <child>
-          <widget class="Gtk.Label" id="label1">
-            <property name="MemberName" />
-            <property name="LabelProp" translatable="yes">Pidgeon</property>
-          </widget>
-          <packing>
-            <property name="X">182</property>
-            <property name="Y">26</property>
-          </packing>
-        </child>
         <child>
           <widget class="Gtk.Label" id="label2">
             <property name="MemberName" />
@@ -439,7 +482,7 @@
         <child>
           <widget class="Gtk.Label" id="label5">
             <property name="MemberName" />
-            <property name="WidthRequest">460</property>
+            <property name="WidthRequest">480</property>
             <property name="LabelProp">About:
 
 The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
@@ -467,11 +510,60 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
             <property name="Pixbuf">resource:Client.Resources.Pigeon_clip_art_hight_mini.png</property>
           </widget>
           <packing>
-            <property name="X">331</property>
-            <property name="Y">53</property>
+            <property name="X">342</property>
+            <property name="Y">47</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Pidgeon</property>
+          </widget>
+          <packing>
+            <property name="X">248</property>
+            <property name="Y">17</property>
           </packing>
         </child>
       </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Scrollback" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+        <property name="MemberName" />
+        <property name="ShadowType">In</property>
+        <child>
+          <widget class="Gtk.TextView" id="simpleview">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="ShowScrollbars">True</property>
+            <property name="Text" translatable="yes" />
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Scrollback" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Scrollback" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Scrollback" design-size="300 300">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <placeholder />
     </child>
   </widget>
 </stetic-interface>

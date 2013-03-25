@@ -89,11 +89,13 @@ namespace Client
             }
         }
 
+
         public void ViewLn(string content, ViewType type, string name = "")
         {
             if (owner != null)
             {
-                toolStripMenuItem1.Visible = true;
+				/*
+                //toolStripMenuItem1.Visible = true;
                 Link = content;
                 if (type == ViewType.Channel)
                 {
@@ -157,6 +159,7 @@ namespace Client
                     joinToolStripMenuItem.Visible = false;
                     toolStripMenuItem2.Visible = false;
                 }
+                */
             }
         }
 
@@ -302,8 +305,8 @@ namespace Client
         {
             try
             {
-                scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
-                ScrollingEnabled = scrollToolStripMenuItem.Checked;
+                //scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
+                //ScrollingEnabled = scrollToolStripMenuItem.Checked;
                 if (ScrollingEnabled)
                 {
                     Reload();
@@ -384,7 +387,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
+                    //owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -399,7 +402,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
+                    //owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -414,7 +417,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
+                    //owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -429,7 +432,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
+                    //owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -474,7 +477,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    Parser.parse(whoisToolStripMenuItem.Text);
+                    //Parser.parse(whoisToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -489,7 +492,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    Parser.parse(whowasToolStripMenuItem.Text);
+                    //Parser.parse(whowasToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -506,12 +509,12 @@ namespace Client
                 {
                     if (Configuration.irc.ConfirmAll)
                     {
-                        if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
+                        //if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
                         {
                             return;
                         }
                     }
-                    Parser.parse(kickToolStripMenuItem.Text);
+                    //Parser.parse(kickToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -527,14 +530,14 @@ namespace Client
                 string text = null;
                 if (simple)
                 {
-                    text = simpleview.Text;
+                    //text = simpleview.Text;
                     Clipboard.SetText(text);
                     return;
                 }
-                text = RT.Text;
+                //text = RT.Text;
                 if (text != null)
                 {
-                    Clipboard.SetText(RT.Text);
+                    //Clipboard.SetText(RT.Text);
                 }
             }
             catch (Exception fail)

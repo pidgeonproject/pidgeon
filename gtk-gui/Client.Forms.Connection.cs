@@ -10,12 +10,13 @@ namespace Client.Forms
 			// Widget Client.Forms.Connection
 			this.Name = "Client.Forms.Connection";
 			this.Title = "Connection";
-			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.pigeon_clip_art_hight.ico");
+			this.WindowPosition = ((global::Gtk.WindowPosition)(1));
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 400;
-			this.DefaultHeight = 300;
+			this.DefaultWidth = 833;
+			this.DefaultHeight = 362;
 			this.Show ();
 		}
 	}
