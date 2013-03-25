@@ -8,7 +8,7 @@ namespace Client.Graphics
 		private global::Gtk.HPaned hpaned1;
 		private global::Client.Scrollback scrollback1;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-		private global::Gtk.TreeView treeview2;
+		private global::Gtk.TreeView listView;
 		private global::Client.Graphics.TextBox textbox1;
 		
 		protected virtual void Build ()
@@ -39,10 +39,10 @@ namespace Client.Graphics
 			this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
 			this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
 			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-			this.treeview2 = new global::Gtk.TreeView ();
-			this.treeview2.CanFocus = true;
-			this.treeview2.Name = "treeview2";
-			this.GtkScrolledWindow1.Add (this.treeview2);
+			this.listView = new global::Gtk.TreeView ();
+			this.listView.CanFocus = true;
+			this.listView.Name = "treeview2";
+			this.GtkScrolledWindow1.Add (this.listView);
 			this.hpaned1.Add (this.GtkScrolledWindow1);
 			this.vpaned1.Add (this.hpaned1);
 			global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.vpaned1 [this.hpaned1]));

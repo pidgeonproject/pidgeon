@@ -40,6 +40,13 @@ namespace Client.Forms
         public bool DisplayingProgress = false;
         public int ProgressMax = 0;
 		public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
+        public global::Gtk.HPaned hPaned
+        {
+            get
+            {
+                return hpaned1;
+            }
+        }
 
 		public int Height
 		{
