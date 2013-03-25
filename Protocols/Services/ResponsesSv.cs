@@ -443,10 +443,10 @@ namespace Client
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
                 Network remove = null;
-                Gtk.TreeNode item = null;
+                Gtk.TreeIter item;
                 lock (Core._Main.ChannelList.ServerList)
                 {
-                    foreach (KeyValuePair<Network, Gtk.TreeNode> n in Core._Main.ChannelList.ServerList)
+                    foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)
                     {
                         if (n.Key.ServerName == curr.InnerText)
                         {
@@ -461,14 +461,14 @@ namespace Client
                         Core._Main.ChannelList.ServerList.Remove(remove);
                     }
                 }
-                if (item != null)
-                {
-                    Core._Main.ChannelList.RemoveAll(item);
-                }
-                else
-                {
-                    Core.DebugLog("Unable to remove " + curr.InnerText);
-                }
+                //if (item != null)
+                //{
+                    //Core._Main.ChannelList.RemoveAll(item);
+                //}
+                //else
+                //{
+                //    Core.DebugLog("Unable to remove " + curr.InnerText);
+                //}
             }
 
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)

@@ -153,7 +153,7 @@ namespace Client
         /// <summary>
         /// Tree node
         /// </summary>
-        public System.Windows.Forms.TreeNode TreeNode = null;
+        public Gtk.TreeIter TreeNode;
         /// <summary>
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>
@@ -199,27 +199,24 @@ namespace Client
         /// </summary>
         public void UpdateInfo()
         {
-            if (TreeNode != null)
+            string text = "";
+            string trimmed = Topic;
+            if (trimmed.Length > 160)
             {
-                string text = "";
-                string trimmed = Topic;
-                if (trimmed.Length > 160)
+                if (trimmed.Contains(" "))
                 {
-                    if (trimmed.Contains(" "))
-                    {
-                        int space = 0;
-                        space = 160 + trimmed.Substring(160).IndexOf(" ");
-                        trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
-                    }
+                    int space = 0;
+                    space = 160 + trimmed.Substring(160).IndexOf(" ");
+                    trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
                 }
-                if (!ChannelWork)
-                {
-                    text = "[PARTED CHAN] ";
-
-                }
-                text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
-                TreeNode.ToolTipText = text;
             }
+            if (!ChannelWork)
+            {
+                text = "[PARTED CHAN] ";
+
+            }
+            text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
+            //TreeNode.ToolTipText = text;
         }
 
         /// <summary>
@@ -287,15 +284,15 @@ namespace Client
                         }
                         //if (Chat.listView.Visible)
                         {
-                        //    listView = Chat.listViewd;
+                            //    listView = Chat.listViewd;
                         }
                         //if (Chat.listViewd.Visible)
                         {
-                        //    listView = Chat.listView;
+                            //    listView = Chat.listView;
                         }
                         //if (listView == null)
                         {
-                        //    Chat.listView.Visible = true;
+                            //    Chat.listView.Visible = true;
                             Redraw = true;
                             Graphics.PidgeonList.Updated = true;
                             return;
@@ -410,13 +407,13 @@ namespace Client
                         }
                         //if (Chat.listViewd.Visible == true)
                         {
-                        //    Chat.listViewd.Visible = false;
-                        //    Chat.listView.Visible = true;
+                            //    Chat.listViewd.Visible = false;
+                            //    Chat.listView.Visible = true;
                         }
                         //else
                         {
-                        //    Chat.listView.Visible = false;
-                        //    Chat.listViewd.Visible = true;
+                            //    Chat.listView.Visible = false;
+                            //    Chat.listViewd.Visible = true;
                         }
                     }
                     return;
@@ -459,7 +456,7 @@ namespace Client
 
         public void InsertBan(string ban, string user)
         {
-            
+
         }
 
         public bool RemoveBan(string ban)
@@ -475,7 +472,7 @@ namespace Client
                         break;
                     }
                 }
-            
+
                 if (br != null)
                 {
                     Bans.Remove(br);

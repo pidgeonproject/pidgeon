@@ -31,24 +31,57 @@ namespace Client.Graphics
 		/// <summary>
         /// List of services which are currently in sidebar
         /// </summary>
-        public Dictionary<ProtocolSv, TreeNode> ServiceList = new Dictionary<ProtocolSv, TreeNode>();
+        public Dictionary<ProtocolSv, TreeIter> ServiceList = new Dictionary<ProtocolSv, TreeIter>();
         /// <summary>
         /// List of servers which are currently in sidebar
         /// </summary>
-        public Dictionary<Network, TreeNode> ServerList = new Dictionary<Network, TreeNode>();
+        public Dictionary<Network, TreeIter> ServerList = new Dictionary<Network, TreeIter>();
         /// <summary>
         /// List of channels which are currently in sidebar
         /// </summary>
-        public Dictionary<Channel, TreeNode> ChannelList = new Dictionary<Channel, TreeNode>();
-        public Dictionary<User, TreeNode> UserList = new Dictionary<User, TreeNode>();
+        public Dictionary<Channel, TreeIter> ChannelList = new Dictionary<Channel, TreeIter>();
+        public Dictionary<User, TreeIter> UserList = new Dictionary<User, TreeIter>();
         private LinkedList<User> queueUsers = new LinkedList<User>();
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
-		
+        private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        private global::Gtk.TreeView tv;
+        private Gtk.TreeStore Values = new TreeStore(typeof(string), typeof(object), typeof(Type));
+
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            // Widget Client.Graphics.PidgeonList
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.Graphics.PidgeonList";
+            // Container child Client.Graphics.PidgeonList.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.tv = new global::Gtk.TreeView();
+            this.tv.CanFocus = true;
+            this.tv.Name = "treeview1";
+            this.GtkScrolledWindow.Add(this.tv);
+            this.Add(this.GtkScrolledWindow);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.Hide();
+        }
+
 		public PidgeonList ()
 		{
-			this.Build ();
+            try
+            {
+                this.Build();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
 		}
 		
 		/// <summary>
@@ -86,39 +119,33 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(user._Network))
                 {
-                    //this.SuspendLayout();
-                    //TreeNode text = new TreeNode();
                     //text.ImageIndex = 4;
-                    //ServerList[user._Network].Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, Type.User);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
                     //text.Text = user.Nick;
 
                     lock (UserList)
                     {
-                    //    UserList.Add(user, text);
+                        UserList.Add(user, text);
                     }
+
                     //ServerList[user._Network].Expand();
-                    //if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
+                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
                     {
-                    //    user._Network._Protocol.Windows[user._Network.window + user.Nick].treeNode = text;
+                        user._Network._Protocol.Windows[user._Network.window + user.Nick].treeNode = text;
                     }
                     Updated = true;
-                    //this.ResumeLayout();
                 }
             }
         }
 
         public void insertSv(ProtocolSv service)
         {
-            //this.SuspendLayout();
-            //TreeNode text = new TreeNode();
-            //text.Text = service.Server;
+            TreeIter text = Values.AppendValues(service.Server, service, Type.Services);
             lock (ServiceList)
             {
-            //    ServiceList.Add(service, text);
+                ServiceList.Add(service, text);
             }
-            //service.Windows["!root"].treeNode = text;
-            //this.items.Nodes.Add(text);
-            //this.ResumeLayout();
+            service.Windows["!root"].treeNode = text;
         }
 
         private void insertChan(Channel channel)
@@ -127,23 +154,20 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    //this.SuspendLayout();
-                    //TreeNode text = new TreeNode();
-                    //text.Text = channel.Name;
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, Type.Channel);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+
                     //ServerList[channel._Network].Expand();
-                    //ServerList[channel._Network].Nodes.Insert(0, text);
                     lock (ChannelList)
                     {
-                    //    ChannelList.Add(channel, text);
+                        ChannelList.Add(channel, text);
                     }
-                    //channel.TreeNode = text;
+                    channel.TreeNode = text;
                     //text.ImageIndex = 6;
                     Graphics.Window xx = channel.retrieveWindow();
                     if (xx != null)
                     {
-                    //    xx.treeNode = text;
+                        xx.treeNode = text;
                     }
-                    //this.ResumeLayout();
                 }
             }
         }
@@ -152,29 +176,22 @@ namespace Client.Graphics
         {
             if (network.ParentSv == null)
             {
-                //this.SuspendLayout();
-                //TreeNode text = new TreeNode();
-                //text.Text = network.ServerName;
+                TreeIter text = Values.AppendValues(network.ServerName, network, Type.Server); 
                 lock (ServerList)
                 {
-                //    ServerList.Add(network, text);
+                    ServerList.Add(network, text);
                 }
                 //text.Expand();
-                //network.SystemWindow.treeNode = text;
-                //this.items.Nodes.Add(text);
+                network.SystemWindow.treeNode = text;
                 return;
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                //this.SuspendLayout();
-                //TreeNode text = new TreeNode();
-                //text.Text = network.ServerName;
-                //network.SystemWindow.treeNode = text;
-                //ServiceList[network.ParentSv].Nodes.Add(text);
-                //ServerList.Add(network, text);
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, Type.Server); 
+                network.SystemWindow.treeNode = text;
+                ServerList.Add(network, text);
                 //ServiceList[network.ParentSv].Expand();
             }
-            //this.ResumeLayout();
         }
 
         /// <summary>
@@ -678,6 +695,15 @@ namespace Client.Graphics
             {
                 Core.handleException(fail);
             }
+        }
+
+        enum Type
+        {
+            Server,
+            Services,
+            System,
+            Channel,
+            User,
         }
 	}
 }

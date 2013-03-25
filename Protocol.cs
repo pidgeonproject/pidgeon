@@ -142,11 +142,13 @@ namespace Client
         {
             if (Windows.ContainsKey(name))
             {
+                Core._Main.hPaned.Remove(Core._Main.Chat);
                 Current = Windows[name];
                 Current.scrollback._Display();
+                Core._Main.hPaned.Add2(Current);
                 //Current.BringToFront();
                 Current.Visible = true;
-                //Current.Redraw();
+                Current.Redraw();
                 if (Current.isChannel)
                 {
                     if (Core.network != null)

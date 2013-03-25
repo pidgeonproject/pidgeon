@@ -51,7 +51,7 @@ namespace Client.Graphics
         /// </summary>
         public bool Locked = false;
         public int locktime = 0;
-		//public TreeNode treeNode = null;
+        public TreeIter treeNode;
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
         /// </summary>
@@ -67,9 +67,8 @@ namespace Client.Graphics
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-		public Gtk.TreeNode treeNode = null;
-		
 		public Scrollback scrollback = null;
+        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string));
 
                                                                  
 		public Window ()
@@ -90,17 +89,15 @@ namespace Client.Graphics
             //Initialize();
             //kbToolStripMenuIm.Enabled = false;
             //kickrToolStripMenuItem.Enabled = false;
-            //listView.View = View.Details;
-            //listView.Columns.Add(messages.get("list", Core.SelectedLanguage));
+            Gtk.TreeViewColumn column1 = new TreeViewColumn();
+            column1.Title = (messages.get("list", Core.SelectedLanguage));
+            listView.AppendColumn(column1);
+            listView.Model = UserList;
+            Gtk.CellRendererText renderer = new CellRendererText();
+            column1.PackStart(renderer, true);
+            column1.AddAttribute(renderer, "text", 0);
             //listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
             //listView.ForeColor = Configuration.CurrentSkin.fontcolor;
-            //listViewd.View = View.Details;
-            //listViewd.Columns.Add(messages.get("list", Core.SelectedLanguage));
-            //listViewd.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            //listViewd.ForeColor = Configuration.CurrentSkin.fontcolor;
-            //listView.Visible = false;
-            //listViewd.Columns[0].Width = listViewd.Width;
-            //listView.Columns[0].Width = listViewd.Width;
         }
 
         public void Create()
@@ -131,10 +128,10 @@ namespace Client.Graphics
             }
 
             //if (listViewd != null && listViewd.Columns.Count > 0)
-            {
+            //{
             //    listViewd.Columns[0].Width = listViewd.Width;
             //    listView.Columns[0].Width = listView.Width;
-            }
+            //}
             ignoreChange = false;
             return true;
         }
