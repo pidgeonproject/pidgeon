@@ -416,11 +416,11 @@ namespace Client.Forms
                     Core.DebugLog("Closing main");
                     return;
                 }
-				MessageDialog message = new MessageDialog(null, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
+				MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
+				message.WindowPosition = WindowPosition.Center;
 				message.Title = "Shut down?";
-				message.Run();
 				ResponseType result = (ResponseType)message.Run ();	
-				if (result == ResponseType.No)
+				if (result != ResponseType.Yes)
 				{
   	  				message.Destroy();
 					closing.RetVal = true;

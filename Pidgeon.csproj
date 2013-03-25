@@ -35,36 +35,28 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>glib-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>glade-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
-      <SpecificVersion>False</SpecificVersion>
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <Reference Include="Mono.Posix" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Data" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web" />
+    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -80,6 +72,15 @@
     <EmbeddedResource Include="Properties\Resources.resx" />
     <EmbeddedResource Include="Languages\en_english.txt" />
     <EmbeddedResource Include="Languages\cs_czech.txt" />
+    <EmbeddedResource Include="Resources\arrow.png" />
+    <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\at.png" />
+    <EmbeddedResource Include="Resources\darknetwork.png" />
+    <EmbeddedResource Include="Resources\exclamation mark.png" />
+    <EmbeddedResource Include="Resources\hash.png" />
+    <EmbeddedResource Include="Resources\Pigeon_clip_art_hight.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -174,15 +175,8 @@
     <None Include="Resources\Image2.bmp" />
     <None Include="Resources\Image2.png" />
     <None Include="Resources\Letter S.png" />
-    <None Include="Resources\Pigeon_clip_art_hight.png" />
-    <None Include="Resources\arrow.png" />
-    <None Include="Resources\at.png" />
-    <None Include="Resources\darknetwork.png" />
-    <None Include="Resources\exclamation mark.png" />
-    <None Include="Resources\hash.png" />
     <None Include="Resources\icon.png" />
     <None Include="Resources\irc_channel.ico" />
-    <None Include="Resources\pigeon_clip_art_hight.ico" />
     <None Include="Resources\regular.bmp" />
     <None Include="SBABOX\SBABox.resources" />
     <None Include="SBABOX\SBABox.resx" />
@@ -200,7 +194,7 @@
           <TextStylePolicy FileWidth="120" TabWidth="4" EolMarker="Windows" inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
-        <GtkDesignInfo generateGettext="false" />
+        <GtkDesignInfo generateGettext="False" />
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>

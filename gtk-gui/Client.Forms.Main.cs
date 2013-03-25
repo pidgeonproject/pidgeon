@@ -109,13 +109,14 @@ namespace Client.Forms
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "Client.Forms.Main";
 			this.Title = "Pidgeon Client";
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.pigeon_clip_art_hight.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child Client.Forms.Main.Gtk.Container+ContainerChild
 			this.vbox3 = new global::Gtk.VBox ();
 			this.vbox3.Name = "vbox3";
 			this.vbox3.Spacing = 6;
 			// Container child vbox3.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MIscAction' action='MIscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='HelpAction1' action='HelpAction1'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString (@"<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MIscAction' action='MIscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='HelpAction1' action='HelpAction1'/></menu></menubar></ui>");
 			this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 			this.menubar2.Name = "menubar2";
 			this.vbox3.Add (this.menubar2);
@@ -127,7 +128,7 @@ namespace Client.Forms
 			this.hpaned1 = new global::Gtk.HPaned ();
 			this.hpaned1.CanFocus = true;
 			this.hpaned1.Name = "hpaned1";
-			this.hpaned1.Position = 337;
+			this.hpaned1.Position = 1;
 			// Container child hpaned1.Gtk.Paned+PanedChild
 			this.pidgeonlist1 = new global::Client.Graphics.PidgeonList ();
 			this.pidgeonlist1.Events = ((global::Gdk.EventMask)(256));
@@ -151,8 +152,8 @@ namespace Client.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 884;
-			this.DefaultHeight = 462;
+			this.DefaultWidth = 1018;
+			this.DefaultHeight = 600;
 			this.Show ();
 			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.Unshow);
 			this.ShutDownAction.Activated += new global::System.EventHandler (this.shutDownToolStripMenuItem_Click);

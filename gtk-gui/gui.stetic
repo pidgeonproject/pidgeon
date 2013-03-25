@@ -8,7 +8,7 @@
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
     <widget-library name="../bin/Debug/Pidgeon.exe" internal="true" />
   </import>
-  <widget class="Gtk.Window" id="Client.Forms.Main" design-size="884 462">
+  <widget class="Gtk.Window" id="Client.Forms.Main" design-size="1018 600">
     <action-group name="Default">
       <action id="FileAction">
         <property name="Type">Action</property>
@@ -126,6 +126,7 @@
     </action-group>
     <property name="MemberName" />
     <property name="Title" translatable="yes">Pidgeon Client</property>
+    <property name="Icon">resource:Client.Resources.pigeon_clip_art_hight.ico</property>
     <property name="WindowPosition">CenterOnParent</property>
     <signal name="DeleteEvent" handler="Unshow" />
     <child>
@@ -135,7 +136,7 @@
         <child>
           <widget class="Gtk.MenuBar" id="menubar2">
             <property name="MemberName" />
-            <node name="__gtksharp_82_Stetic_Editor_ActionMenuBar" type="Menubar">
+            <node name="menubar2" type="Menubar">
               <node type="Menu" action="FileAction">
                 <node type="Menuitem" action="OpenNewConnectionAction1" />
                 <node type="Separator" />
@@ -180,7 +181,7 @@
           <widget class="Gtk.HPaned" id="hpaned1">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="Position">337</property>
+            <property name="Position">1</property>
             <child>
               <widget class="Client.Graphics.PidgeonList" id="pidgeonlist1">
                 <property name="MemberName" />
@@ -382,12 +383,30 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="400 300">
+  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="516 600">
     <property name="MemberName" />
+    <property name="WidthRequest">460</property>
+    <property name="HeightRequest">600</property>
     <property name="Title" translatable="yes">Help</property>
-    <property name="WindowPosition">CenterOnParent</property>
+    <property name="Icon">resource:Client.Resources.pigeon_clip_art_hight.ico</property>
+    <property name="WindowPosition">Center</property>
+    <property name="Resizable">False</property>
+    <property name="AllowGrow">False</property>
     <child>
-      <placeholder />
+      <widget class="Gtk.Fixed" id="fixed1">
+        <property name="MemberName" />
+        <property name="HasWindow">False</property>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Pidgeon</property>
+          </widget>
+          <packing>
+            <property name="X">216</property>
+            <property name="Y">28</property>
+          </packing>
+        </child>
+      </widget>
     </child>
   </widget>
 </stetic-interface>
