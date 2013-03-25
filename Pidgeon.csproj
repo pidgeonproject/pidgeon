@@ -170,7 +170,7 @@
     <Compile Include="Forms\Help.cs" />
     <Compile Include="gtk-gui\Client.Forms.Help.cs" />
     <Compile Include="Scrollback\ScrollbackWidget.cs" />
-    <Compile Include="gtk-gui\Client.Scrollback.cs" />
+    <Compile Include="gtk-gui\Client.ScrollbackWidget.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

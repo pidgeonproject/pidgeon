@@ -14,8 +14,8 @@ namespace Client.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 400;
-			this.DefaultHeight = 300;
+			this.DefaultWidth = 838;
+			this.DefaultHeight = 473;
 			this.Show ();
 		}
 	}

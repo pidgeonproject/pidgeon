@@ -117,13 +117,13 @@ namespace Client
 
         public bool WindowVisible()
         {
-            if (this.Visible == false)
+            //if (this.Visible == false)
             {
                 return false;
             }
-            if (owner != null)
+            //if (owner != null)
             {
-                if (owner.Visible != true)
+            //    if (owner.Visible != true)
                 {
                     return false;
                 }
@@ -199,7 +199,6 @@ namespace Client
 
         public void Create()
         {
-			this.Build ();
             //simpleview.Visible = false;
             //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }

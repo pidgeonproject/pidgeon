@@ -126,9 +126,14 @@ namespace Client.Forms
                 //ChannelList.Dock = DockStyle.Fill;
                 //ChannelList.CreateControl();
                 //sX.Panel1.Controls.Add(ChannelList);
-                //main = new Client.Graphics.Window();
-                //CreateChat(main, null);
-                //main.name = "Pidgeon";
+                main = new Client.Graphics.Window();
+				main.Events = ((global::Gdk.EventMask)(256));
+				//this.window1 = new global::Client.Graphics.Window ();
+				//this.window1
+				//this.window1.Name = "window1";
+				//this.hpaned1.Add2 (this.window1);
+                CreateChat(main, null);
+                main.name = "Pidgeon";
                 //preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
                 //toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
                 //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
@@ -181,17 +186,13 @@ namespace Client.Forms
             Chat.Create();
             Chat.Visible = Focus;
             Chat._Protocol = WindowOwner;
-            //Chat.Dock = DockStyle.Fill;
-            //Chat.Location = new System.Drawing.Point(0, 0);
-            //Chat.CreateControl();
             if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-            //lock (Core._Main.sX.Panel2.Controls)
-            {
-            //    Core._Main.sX.Panel2.Controls.Add(Chat);
-            }
+			this.hpaned1.Add2 (Chat);
+			//Chat.Dock = DockStyle.Fill;
+			//Chat.Location = new System.Drawing.Point(0, 0);
         }
 
         /// <summary>

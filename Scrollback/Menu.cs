@@ -202,7 +202,7 @@ namespace Client
                         {
                             if (owner.isChannel)
                             {
-                                owner.textbox.richTextBox1.AppendText(nick + ": ");
+                                //owner.textbox.richTextBox1.AppendText(nick + ": ");
                                 owner.textbox.setFocus();
                             }
                         }
@@ -220,7 +220,7 @@ namespace Client
                         {
                             if (owner.isChannel)
                             {
-                                owner.textbox.richTextBox1.AppendText(nick);
+                                //owner.textbox.richTextBox1.AppendText(nick);
                                 owner.textbox.setFocus();
                             }
                         }
@@ -233,7 +233,7 @@ namespace Client
                         {
                             if (owner.isChannel)
                             {
-                                owner.textbox.richTextBox1.AppendText(nick);
+                                //owner.textbox.richTextBox1.AppendText(nick);
                                 owner.textbox.setFocus();
                             }
                         }
@@ -246,7 +246,7 @@ namespace Client
                         {
                             if (owner.isChannel)
                             {
-                                owner.textbox.richTextBox1.AppendText(nick);
+                                //owner.textbox.richTextBox1.AppendText(nick);
                                 owner.textbox.setFocus();
                             }
                         }

@@ -27,6 +27,7 @@ using Gtk;
 
 namespace Client.Graphics
 {
+	[System.ComponentModel.ToolboxItem(true)]
 	public partial class Window : Gtk.Bin
 	{
 		/// <summary>

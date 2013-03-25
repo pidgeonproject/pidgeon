@@ -128,7 +128,7 @@ namespace Client.Forms
 			this.hpaned1 = new global::Gtk.HPaned ();
 			this.hpaned1.CanFocus = true;
 			this.hpaned1.Name = "hpaned1";
-			this.hpaned1.Position = 279;
+			this.hpaned1.Position = 183;
 			// Container child hpaned1.Gtk.Paned+PanedChild
 			this.pidgeonlist1 = new global::Client.Graphics.PidgeonList ();
 			this.pidgeonlist1.Events = ((global::Gdk.EventMask)(256));

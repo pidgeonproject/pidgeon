@@ -33,9 +33,9 @@ namespace Client
     {
         public void Display()
         {
-            if (!this.Visible)
+            //if (!this.Visible)
             {
-                this.Visible = true;
+            //    this.Visible = true;
             }
         }
 

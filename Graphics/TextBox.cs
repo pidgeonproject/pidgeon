@@ -36,7 +36,7 @@ namespace Client.Graphics
         public Window parent = null;
         public bool restore = false;
 
-		public Gtk.Entry richTextBox1
+		public Gtk.TextView richTextBox1
 		{
 			get
 			{
