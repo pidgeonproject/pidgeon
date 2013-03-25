@@ -6,6 +6,11 @@ namespace Client.Forms
 	{
 		private global::Gtk.Fixed fixed1;
 		private global::Gtk.Label label1;
+		private global::Gtk.Label label2;
+		private global::Gtk.Label label3;
+		private global::Gtk.Label label4;
+		private global::Gtk.Label label5;
+		private global::Gtk.Image image2;
 		
 		protected virtual void Build ()
 		{
@@ -29,8 +34,63 @@ namespace Client.Forms
 			this.label1.LabelProp = "Pidgeon";
 			this.fixed1.Add (this.label1);
 			global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
-			w1.X = 216;
-			w1.Y = 28;
+			w1.X = 182;
+			w1.Y = 26;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label2 = new global::Gtk.Label ();
+			this.label2.Name = "label2";
+			this.label2.LabelProp = "Made by: Petr Bena";
+			this.fixed1.Add (this.label2);
+			global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label2]));
+			w2.X = 20;
+			w2.Y = 61;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label3 = new global::Gtk.Label ();
+			this.label3.Name = "label3";
+			this.label3.LabelProp = "http://pidgeonclient.org/wiki/";
+			this.label3.UseUnderline = true;
+			this.fixed1.Add (this.label3);
+			global::Gtk.Fixed.FixedChild w3 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label3]));
+			w3.X = 20;
+			w3.Y = 87;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label4 = new global::Gtk.Label ();
+			this.label4.Name = "label4";
+			this.fixed1.Add (this.label4);
+			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label4]));
+			w4.X = 20;
+			w4.Y = 127;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.label5 = new global::Gtk.Label ();
+			this.label5.WidthRequest = 460;
+			this.label5.Name = "label5";
+			this.label5.LabelProp = @"About:
+
+The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
+
+That means:
+Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website
+
+License:
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
+                                                                         
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
+
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.";
+			this.label5.Wrap = true;
+			this.fixed1.Add (this.label5);
+			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label5]));
+			w5.X = 20;
+			w5.Y = 167;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.image2 = new global::Gtk.Image ();
+			this.image2.Name = "image2";
+			this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.Pigeon_clip_art_hight_mini.png");
+			this.fixed1.Add (this.image2);
+			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
+			w6.X = 331;
+			w6.Y = 53;
 			this.Add (this.fixed1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

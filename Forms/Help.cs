@@ -6,8 +6,16 @@ namespace Client.Forms
 	{
 		public Help () : base(Gtk.WindowType.Toplevel)
 		{
-			this.Build ();
-			this.label1.Markup = "<span size='18000'>Pidgeon</span>";
+			try
+			{
+				this.Build ();
+				messages.Localize (this);
+				this.label1.Markup = "<span size='18000'>Pidgeon</span>";
+				this.label4.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
+			} catch (Exception fail)
+			{
+				Core.handleException(fail);
+			}
 		}
 	}
 }

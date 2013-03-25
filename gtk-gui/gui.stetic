@@ -402,8 +402,73 @@
             <property name="LabelProp" translatable="yes">Pidgeon</property>
           </widget>
           <packing>
-            <property name="X">216</property>
-            <property name="Y">28</property>
+            <property name="X">182</property>
+            <property name="Y">26</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label2">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Made by: Petr Bena</property>
+          </widget>
+          <packing>
+            <property name="X">20</property>
+            <property name="Y">61</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label3">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">http://pidgeonclient.org/wiki/</property>
+            <property name="UseUnderline">True</property>
+          </widget>
+          <packing>
+            <property name="X">20</property>
+            <property name="Y">87</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label4">
+            <property name="MemberName" />
+          </widget>
+          <packing>
+            <property name="X">20</property>
+            <property name="Y">127</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Label" id="label5">
+            <property name="MemberName" />
+            <property name="WidthRequest">460</property>
+            <property name="LabelProp">About:
+
+The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
+
+That means:
+Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website
+
+License:
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
+                                                                         
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
+
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</property>
+            <property name="Wrap">True</property>
+          </widget>
+          <packing>
+            <property name="X">20</property>
+            <property name="Y">167</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.Image" id="image2">
+            <property name="MemberName" />
+            <property name="Pixbuf">resource:Client.Resources.Pigeon_clip_art_hight_mini.png</property>
+          </widget>
+          <packing>
+            <property name="X">331</property>
+            <property name="Y">53</property>
           </packing>
         </child>
       </widget>

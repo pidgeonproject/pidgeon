@@ -22,6 +22,11 @@
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="update.cmd" workingdir="${ProjectDir}" externalConsole="True" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <DebugType>none</DebugType>
@@ -81,6 +86,8 @@
     <EmbeddedResource Include="Resources\exclamation mark.png" />
     <EmbeddedResource Include="Resources\hash.png" />
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight.png" />
+    <EmbeddedResource Include="Resources\Pigeon_clip_art_hight_mini.png" />
+    <EmbeddedResource Include="version.txt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
