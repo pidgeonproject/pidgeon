@@ -25,6 +25,8 @@ namespace Client
 {
     public partial class SBABox
     {
+		Font _Font = null;
+
         /// <summary>
         /// Redraw line
         /// </summary>
@@ -57,7 +59,7 @@ namespace Client
                         extraline.insertData(part);
                         continue;
                     }
-                    int padding = (int)Font.Size + spacing;
+                    int padding = (int)_Font.Size + spacing;
                     if ((Y + padding) > 0 && (Y - padding < this.Height))
                     {
                         RedrawLine = true;
@@ -140,7 +142,7 @@ namespace Client
                             if (Wrap && !(line.Buffer.Valid && !partInfo.Oversized))
                             {
                                 bool isOversized;
-                                int width = this.Width - vScrollBar1.Width - 20;
+								int width = 0; //this.Width - vScrollBar1.Width - 20;
                                 if (!line.Buffer.Valid)
                                 {
                                     isOversized = (X + stringWidth) > width;
@@ -193,7 +195,7 @@ namespace Client
                                             }
                                             if (graphics.MeasureString(trimmed + value, font, new Point(0, 0), format).Width + X > width)
                                             {
-                                                if (trimmed != "" || graphics.MeasureString(value, font, new Point(0, 0), format).Width < pt.Width)
+                                                if (trimmed != "" || graphics.MeasureString(value, font, new Point(0, 0), format).Width < this.Width)
                                                 {
                                                     break;
                                                 }
@@ -290,7 +292,7 @@ namespace Client
                             X = X + stringWidth;
                             if (!Wrap && RedrawLine)
                             {
-                                if ((int)(X + stringWidth) > hsBar.Maximum)
+                                if ((double)(X + stringWidth) > hsBar.Adjustment.Upper)
                                 {
                                     lock (hsBar)
                                     {
@@ -298,7 +300,7 @@ namespace Client
                                         {
                                             hsBar.Value = (int)(X + stringWidth);
                                         }
-                                        hsBar.Maximum = (int)(X + stringWidth);
+                                        hsBar.SetRange (0, (double)(X + stringWidth));
                                     }
                                 }
                             }
@@ -308,7 +310,7 @@ namespace Client
             }
             if (wrappingnow)
             {
-                Y = Y + Font.Size + spacing;
+                Y = Y + _Font.Size + spacing;
                 X = 0 - currentX;
                 RedrawLine(ref graphics, ref X, ref Y, extraline);
             }
@@ -358,7 +360,7 @@ namespace Client
                         graphics.Clear(BackColor);
                     }
 
-                    GlobalFont = new Font(this.Font, FontStyle.Regular);
+                    GlobalFont = new Font(_Font, FontStyle.Regular);
 
                     lock (LineDB)
                     {
@@ -367,13 +369,13 @@ namespace Client
                             X = 0 - currentX;
                             RecursiveMax = 0;
                             RedrawLine(ref graphics, ref X, ref Y, text);
-                            Y = Y + Font.Size + spacing;
+                            Y = Y + _Font.Size + spacing;
                         }
                     }
 
                     UpdateBars();
 
-                    pt.Invalidate();
+                    //pt.Invalidate();
                     Rendering = false;
                 }
             }

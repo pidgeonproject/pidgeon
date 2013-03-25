@@ -275,8 +275,8 @@ namespace Client
                     Thread_logs.Start();
                     //DebugLog("Loading commands");
                     //Commands.Initialise();
-                    //Forms.MicroChat.mc = new Forms.MicroChat();
-                    //notification = new Forms.Notification();
+                    Forms.MicroChat.mc = new Forms.MicroChat();
+                    notification = new Forms.Notification();
                     //DebugLog("Loading scripting core");
                     //ScriptingCore.Load();
                     DebugLog("Loading extensions");
@@ -374,8 +374,8 @@ namespace Client
         /// </summary>
         public static void Recover()
         {
-            Forms.Recovery x = new Forms.Recovery();
-            //System.Windows.Forms.Application.Run(x);
+            Client.Recovery x = new Client.Recovery();
+            System.Windows.Forms.Application.Run(x);
         }
 
         public static void killThread(Thread name)

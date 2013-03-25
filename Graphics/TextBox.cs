@@ -48,7 +48,16 @@ namespace Client.Graphics
 		{
 			this.Build ();
 		}
-		
+
+		/// <summary>
+		/// Deprecated
+		/// </summary>
+		[Obsolete]
+		public void Init()
+		{
+
+		}
+
 		public void setFocus()
 		{
 			this.GrabFocus ();

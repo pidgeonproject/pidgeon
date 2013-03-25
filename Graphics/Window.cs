@@ -104,8 +104,8 @@ namespace Client.Graphics
 
         public void Create()
         {
-            //textbox.Init();
-            //scrollback.Create();
+            textbox.Init();
+            scrollback.Create();
             //scrollback.channelToolStripMenuItem.Visible = isChannel;
             //scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
             if (scrollback.owner == null || scrollback.owner._Network == null)
@@ -118,17 +118,18 @@ namespace Client.Graphics
         public bool Redraw()
         {
             ignoreChange = true;
-            //if (xContainer1 != null)
+            if (hpaned1 != null)
             {
-            //    if (this.xContainer1.SplitterDistance != Configuration.Window.x1)
+                if (this.hpaned1.Position != Configuration.Window.x1)
                 {
-            //        xContainer1.SplitterDistance = Configuration.Window.x1;
+                    hpaned1.Position = Configuration.Window.x1;
                 }
-            //    if (this.xContainer4.SplitterDistance != Configuration.Window.x4)
+                if (this.vpaned1.Position != Configuration.Window.x4)
                 {
-            //        xContainer4.SplitterDistance = Configuration.Window.x4;
+                    vpaned1.Position  = Configuration.Window.x4;
                 }
             }
+
             //if (listViewd != null && listViewd.Columns.Count > 0)
             {
             //    listViewd.Columns[0].Width = listViewd.Width;

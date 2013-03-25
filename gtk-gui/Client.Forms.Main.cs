@@ -8,7 +8,7 @@ namespace Client.Forms
 		private global::Gtk.Action FileAction;
 		private global::Gtk.Action ShutDownAction;
 		private global::Gtk.Action ToolsAction;
-		private global::Gtk.Action MIscAction;
+		private global::Gtk.Action MiscAction;
 		private global::Gtk.Action ShowAction;
 		private global::Gtk.Action UserAction;
 		private global::Gtk.Action HelpAction;
@@ -31,7 +31,11 @@ namespace Client.Forms
 		private global::Gtk.MenuBar menubar2;
 		private global::Gtk.HPaned hpaned1;
 		private global::Client.Graphics.PidgeonList pidgeonlist1;
-		private global::Gtk.Statusbar statusbar3;
+		private global::Gtk.Statusbar toolStrip;
+		private global::Gtk.Label toolStripStatusNetwork;
+		private global::Gtk.Label toolStripStatusChannel;
+		private global::Gtk.Label toolStripInfo;
+		private global::Gtk.ProgressBar toolStripProgressBar1;
 		
 		protected virtual void Build ()
 		{
@@ -48,9 +52,9 @@ namespace Client.Forms
 			this.ToolsAction = new global::Gtk.Action ("ToolsAction", "Tools", null, null);
 			this.ToolsAction.ShortLabel = "Tools";
 			w1.Add (this.ToolsAction, null);
-			this.MIscAction = new global::Gtk.Action ("MIscAction", "MIsc", null, null);
-			this.MIscAction.ShortLabel = "MIsc";
-			w1.Add (this.MIscAction, null);
+			this.MiscAction = new global::Gtk.Action ("MiscAction", "Misc", null, null);
+			this.MiscAction.ShortLabel = "Misc";
+			w1.Add (this.MiscAction, null);
 			this.ShowAction = new global::Gtk.Action ("ShowAction", "Show", null, null);
 			this.ShowAction.ShortLabel = "Show";
 			w1.Add (this.ShowAction, null);
@@ -116,7 +120,7 @@ namespace Client.Forms
 			this.vbox3.Name = "vbox3";
 			this.vbox3.Spacing = 6;
 			// Container child vbox3.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString (@"<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MIscAction' action='MIscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='HelpAction1' action='HelpAction1'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString (@"<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MiscAction' action='MiscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='HelpAction1' action='HelpAction1'/></menu></menubar></ui>");
 			this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 			this.menubar2.Name = "menubar2";
 			this.vbox3.Add (this.menubar2);
@@ -140,14 +144,44 @@ namespace Client.Forms
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.hpaned1]));
 			w4.Position = 1;
 			// Container child vbox3.Gtk.Box+BoxChild
-			this.statusbar3 = new global::Gtk.Statusbar ();
-			this.statusbar3.Name = "statusbar3";
-			this.statusbar3.Spacing = 6;
-			this.vbox3.Add (this.statusbar3);
-			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.statusbar3]));
-			w5.Position = 2;
+			this.toolStrip = new global::Gtk.Statusbar ();
+			this.toolStrip.Name = "toolStrip";
+			this.toolStrip.Spacing = 6;
+			// Container child toolStrip.Gtk.Box+BoxChild
+			this.toolStripStatusNetwork = new global::Gtk.Label ();
+			this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";
+			this.toolStrip.Add (this.toolStripStatusNetwork);
+			global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.toolStrip [this.toolStripStatusNetwork]));
+			w5.Position = 0;
 			w5.Expand = false;
 			w5.Fill = false;
+			// Container child toolStrip.Gtk.Box+BoxChild
+			this.toolStripStatusChannel = new global::Gtk.Label ();
+			this.toolStripStatusChannel.Name = "toolStripStatusChannel";
+			this.toolStrip.Add (this.toolStripStatusChannel);
+			global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.toolStrip [this.toolStripStatusChannel]));
+			w6.Position = 1;
+			w6.Expand = false;
+			w6.Fill = false;
+			// Container child toolStrip.Gtk.Box+BoxChild
+			this.toolStripInfo = new global::Gtk.Label ();
+			this.toolStripInfo.Name = "toolStripInfo";
+			this.toolStrip.Add (this.toolStripInfo);
+			global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.toolStrip [this.toolStripInfo]));
+			w7.Position = 3;
+			w7.Expand = false;
+			w7.Fill = false;
+			// Container child toolStrip.Gtk.Box+BoxChild
+			this.toolStripProgressBar1 = new global::Gtk.ProgressBar ();
+			this.toolStripProgressBar1.Name = "toolStripProgressBar1";
+			this.toolStrip.Add (this.toolStripProgressBar1);
+			global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.toolStrip [this.toolStripProgressBar1]));
+			w8.Position = 4;
+			this.vbox3.Add (this.toolStrip);
+			global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox3 [this.toolStrip]));
+			w9.Position = 2;
+			w9.Expand = false;
+			w9.Fill = false;
 			this.Add (this.vbox3);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

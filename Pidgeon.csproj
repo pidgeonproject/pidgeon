@@ -135,7 +135,6 @@
     <Compile Include="SBABOX\Line.cs" />
     <Compile Include="SBABOX\Link.cs" />
     <Compile Include="SBABOX\Rendering.cs" />
-    <Compile Include="SBABOX\SBABox.Designer.cs" />
     <Compile Include="SBABOX\SBABox.cs" />
     <Compile Include="Forms\Main.cs" />
     <Compile Include="gtk-gui\Client.Forms.Main.cs" />
@@ -161,9 +160,7 @@
     <Compile Include="Forms\MicroChat.cs" />
     <Compile Include="Forms\Updater.cs" />
     <Compile Include="gtk-gui\Client.Forms.Updater.cs" />
-    <Compile Include="Forms\Recovery.cs" />
     <Compile Include="Forms\ScriptEdit.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Recovery.cs" />
     <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />
     <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
@@ -171,6 +168,9 @@
     <Compile Include="gtk-gui\Client.Forms.Help.cs" />
     <Compile Include="Scrollback\ScrollbackWidget.cs" />
     <Compile Include="gtk-gui\Client.ScrollbackWidget.cs" />
+    <Compile Include="WinForms\Recovery.cs" />
+    <Compile Include="WinForms\Recovery.Designer.cs" />
+    <Compile Include="gtk-gui\Client.Scrollback.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

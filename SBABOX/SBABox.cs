@@ -17,17 +17,18 @@
 
 
 using System;
+using Gtk;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class SBABox : UserControl
+	[System.ComponentModel.ToolboxItem(true)]
+	public partial class SBABox : Gtk.Bin
     {
         public class ContentText
         {
@@ -119,6 +120,38 @@ namespace Client
         /// </summary>
         private List<Link> LinkInfo = new List<Link>();
         private int spacing = 2;
+		private Color foreColor = Color.Black;
+		private Color backColor = Color.White;
+		private global::Gtk.VBox vbox1;
+		private global::Gtk.HBox hbox1;
+		private global::Gtk.DrawingArea pt;
+		private global::Gtk.VScrollbar vScrollBar1;
+		private global::Gtk.HScrollbar hsBar;
+		
+		public int Height
+		{
+			get
+			{
+				return this.SizeRequest ().Height;
+			}
+			set
+			{
+				this.SetSizeRequest (Width, value);
+			}
+		}
+		
+		public int Width
+		{
+			get
+			{
+				return this.SizeRequest ().Width;
+			}
+			set
+			{
+				this.SetSizeRequest (value, Height);
+			}
+		}	
+
         /// <summary>
         /// Spacing
         /// </summary>
@@ -140,37 +173,91 @@ namespace Client
         /// <summary>
         /// Color of text
         /// </summary>
-        public override Color ForeColor
+        public Color ForeColor
         {
             get
             {
-                return base.ForeColor;
+                return foreColor;
             }
             set
             {
-                base.ForeColor = value;
+                foreColor = value;
                 Redraw();
             }
         }
 
-        public override Color BackColor
+        public Color BackColor
         {
             get
             {
-                return base.BackColor;
+                return backColor;
             }
             set
             {
-                base.BackColor = value;
-                pt.BackColor = value;
+				backColor = value;
+                //pt.BackColor = value;
                 Redraw();
             }
         }
+
+		protected virtual void Build ()
+		{
+			global::Stetic.Gui.Initialize (this);
+			// Widget Client.SBABoxWidget
+			global::Stetic.BinContainer.Attach (this);
+			this.Name = "Client.SBABoxWidget";
+			// Container child Client.SBABoxWidget.Gtk.Container+ContainerChild
+			this.vbox1 = new global::Gtk.VBox ();
+			this.vbox1.Name = "vbox1";
+			this.vbox1.Spacing = 6;
+			// Container child vbox1.Gtk.Box+BoxChild
+			this.hbox1 = new global::Gtk.HBox ();
+			this.hbox1.Name = "hbox1";
+			this.hbox1.Spacing = 6;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.pt = new global::Gtk.DrawingArea ();
+			this.pt.Name = "pt";
+			this.hbox1.Add (this.pt);
+			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.pt]));
+			w1.Position = 0;
+			// Container child hbox1.Gtk.Box+BoxChild
+			this.vScrollBar1 = new global::Gtk.VScrollbar (null);
+			this.vScrollBar1.Name = "vScrollBar1";
+			this.vScrollBar1.Adjustment.Upper = 100D;
+			this.vScrollBar1.Adjustment.PageIncrement = 10D;
+			this.vScrollBar1.Adjustment.PageSize = 10D;
+			this.vScrollBar1.Adjustment.StepIncrement = 1D;
+			this.hbox1.Add (this.vScrollBar1);
+			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.vScrollBar1]));
+			w2.Position = 1;
+			w2.Expand = false;
+			w2.Fill = false;
+			this.vbox1.Add (this.hbox1);
+			global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
+			w3.Position = 0;
+			// Container child vbox1.Gtk.Box+BoxChild
+			this.hsBar = new global::Gtk.HScrollbar (null);
+			this.hsBar.Name = "hsBar";
+			this.hsBar.Adjustment.Upper = 100D;
+			this.hsBar.Adjustment.PageIncrement = 10D;
+			this.hsBar.Adjustment.PageSize = 10D;
+			this.hsBar.Adjustment.StepIncrement = 1D;
+			this.vbox1.Add (this.hsBar);
+			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hsBar]));
+			w4.Position = 1;
+			w4.Expand = false;
+			w4.Fill = false;
+			this.Add (this.vbox1);
+			if ((this.Child != null)) {
+				this.Child.ShowAll ();
+			}
+			this.Hide ();
+		}
 
         /// <summary>
         /// Return a text with no formatting, this can be used in case you want to copy content of this box
         /// </summary>
-        public override string Text
+        public string Text
         {
             get
             {
@@ -198,7 +285,7 @@ namespace Client
             {
                 //Lock();
                 RedrawText();
-                pt.Refresh();
+                //pt.Refresh();
             }
         }
 
@@ -251,11 +338,11 @@ namespace Client
         /// </summary>
         private void UpdateBars()
         {
-            scrollValue = RenderedLineTotalCount - (int)((float)pt.Height / (Font.Size + spacing));
+            scrollValue = RenderedLineTotalCount - (int)((float)pt.SizeRequest ().Height / (_Font.Size + spacing));
 
             if (scrollValue < 0)
             {
-                vScrollBar1.Enabled = false;
+                vScrollBar1.Sensitive = false;
             }
 
             if (scrollValue > 0)
@@ -268,14 +355,14 @@ namespace Client
                         {
                             vScrollBar1.Value = scrollValue;
                         }
-                        vScrollBar1.Maximum = scrollValue;
-                        vScrollBar1.Enabled = true;
+                        vScrollBar1.Adjustment.Upper = scrollValue;
+                        vScrollBar1.Sensitive = true;
                     }
                     catch (ArgumentOutOfRangeException)
                     {
-                        if (vScrollBar1.Maximum > 0)
+                        if (vScrollBar1.Adjustment.Upper > 0)
                         {
-                            vScrollBar1.Value = vScrollBar1.Maximum - 1;
+                            vScrollBar1.Value = vScrollBar1.Adjustment.Upper - 1;
                         }
                         else
                         {
@@ -306,10 +393,10 @@ namespace Client
 
         public SBABox()
         {
-            InitializeComponent();
+			Build ();
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             try
             {
@@ -318,9 +405,6 @@ namespace Client
                     isDisposing = true;
                     if (disposing)
                     {
-                        if (components != null)
-                            components.Dispose();
-
                         // We must dispose of backbufferGraphics before we dispose of backbufferContext or we will get an exception.
                         if (backbufferGraphics != null)
                         {
@@ -339,7 +423,7 @@ namespace Client
                         }
                     }
                 }
-                base.Dispose(disposing);
+                base.Dispose();
             }
             catch (Exception fail)
             {
@@ -358,7 +442,7 @@ namespace Client
 
                 // We recreate the buffer with a width and height of the control. The "+ 1"
                 // guarantees we never have a buffer with a width or height of 0.
-                backbufferContext.MaximumBuffer = new Size(pt.Width + 1, pt.Height + 1);
+                backbufferContext.MaximumBuffer = new Size(pt.SizeRequest ().Width + 1, pt.SizeRequest ().Height + 1);
 
                 // Dispose of old backbufferGraphics (if one has been created already)
 
@@ -371,8 +455,8 @@ namespace Client
                 }
 
                 // Create new backbufferGrpahics that matches the current size of buffer.
-                backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
-                new Rectangle(0, 0, Math.Max(pt.Width, 1), Math.Max(pt.Height, 1)));
+                //backbufferGraphics = backbufferContext.Allocate(pt.CreateGraphics(),
+                new Rectangle(0, 0, Math.Max(pt.SizeRequest ().Width, 1), Math.Max(pt.SizeRequest ().Height, 1));
 
                 // Assign the Graphics object on backbufferGraphics to "drawingGraphics" for easy reference elsewhere.
                 drawingGraphics = backbufferGraphics.Graphics;
@@ -380,7 +464,7 @@ namespace Client
                 // This is a good place to assign drawingGraphics.SmoothingMode if you want a better anti-aliasing technique.
 
                 // Invalidate the control so a repaint gets called somewhere down the line.
-                pt.Invalidate();
+                //pt.Invalidate();
             }
             catch (Exception fail)
             {
@@ -416,23 +500,28 @@ namespace Client
         {
             lock (vScrollBar1)
             {
-                if (vScrollBar1.Maximum > 1)
+                if (vScrollBar1.Adjustment.Upper > 1)
                 {
-                    int previous = 0;
-                    while (previous < vScrollBar1.Maximum)
+                    double previous = 0;
+					while (previous < vScrollBar1.Adjustment.Upper)
                     {
-                        previous = vScrollBar1.Maximum;
-                        ScrolltoX(vScrollBar1.Maximum);
-                        vScrollBar1.Value = vScrollBar1.Maximum;
+						previous = vScrollBar1.Adjustment.Upper;
+						ScrolltoX(vScrollBar1.Adjustment.Upper);
+						vScrollBar1.Value = vScrollBar1.Adjustment.Upper;
                         Redraw();
                     }
                 }
             }
         }
 
+		private void ScrolltoX(double x)
+		{
+			currentY = ((int)_Font.Size + spacing) * Convert.ToInt32 (x);
+		}
+
         private void ScrolltoX(int x)
         {
-            currentY = ((int)Font.Size + spacing) * x;
+			currentY = ((int)_Font.Size + spacing) * Convert.ToInt32 (x);
         }
 
         /// <summary>
@@ -452,10 +541,10 @@ namespace Client
             {
                 backbufferContext = BufferedGraphicsManager.Current;
                 initializationComplete = true;
-                vScrollBar1.Minimum = 0;
+                vScrollBar1.Adjustment.Lower = 0;
                 vScrollBar1.Value = 0;
-                vScrollBar1.Maximum = 0;
-                vScrollBar1.Enabled = false;
+                vScrollBar1.Adjustment.Upper = 0;
+                vScrollBar1.Sensitive = false;
                 if (Wrap)
                 {
                     hsBar.Visible = false;
@@ -463,10 +552,10 @@ namespace Client
 
                 RecreateBuffers();
 
-                this.SetStyle(
-                ControlStyles.UserPaint |
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer, true);
+                //this.SetStyle(
+                //ControlStyles.UserPaint |
+                //ControlStyles.AllPaintingInWmPaint |
+                //ControlStyles.DoubleBuffer, true);
 
                 Redraw();
             }

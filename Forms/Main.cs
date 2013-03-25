@@ -84,6 +84,7 @@ namespace Client.Forms
 		{
 			try
 			{
+				Core._Main = this;
 				this.Build ();
 				_Load();
 			}
@@ -98,11 +99,7 @@ namespace Client.Forms
             try
             {
                 messages.Localize(this);
-                //skinEdToolStripMenuItem.Enabled = false;
-                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-                {
-                    //this.Icon = (System.Drawing.Icon)Client.Properties.Resources.Pigeon_clip_art_hight1;
-                }
+				SkinEditorAction.Sensitive = false;
 				setText("");
                 if (Configuration.Window.Window_Maximized)
                 {
@@ -118,135 +115,16 @@ namespace Client.Forms
                         Configuration.Window.x4 = this.Width - 200;
                     }
                 }
-                //sX.SplitterDistance = Configuration.Window.window_size;
-                //ChannelList = new PidgeonList();
-                //toolStripProgressBar1.Visible = false;
-                //ChannelList.Visible = true;
-                //ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
-                //ChannelList.Dock = DockStyle.Fill;
-                //ChannelList.CreateControl();
-                //sX.Panel1.Controls.Add(ChannelList);
-                main = new Client.Graphics.Window();
-				main.Events = ((global::Gdk.EventMask)(256));
-				//this.window1 = new global::Client.Graphics.Window ();
-				//this.window1
-				//this.window1.Name = "window1";
-				//this.hpaned1.Add2 (this.window1);
-                CreateChat(main, null);
-                main.name = "Pidgeon";
-                //preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
-                //toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
-                //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
-                Chat = main;
-                //main.Redraw();
-                //Chat.Making = false;
-                if (Configuration.Kernel.Debugging)
-                {
-                //    Core.PrintRing(Chat, false);
-                }
-                //Chat.scrollback.InsertText("Welcome to pidgeon client " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Scrollback.MessageStyle.System, false, 0, true);
-                if (Core.Extensions.Count > 0)
-                {
-                    foreach (Extension nn in Core.Extensions)
-                    {
-                    //    Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Scrollback.MessageStyle.System, false, 0, true);
-                    }
-                }
-                done = true;
-
-                foreach (string text in Core.Parameters)
-                {
-                    Core.ParseLink(text);
-                }
-                Hooks._Sys.Initialise(this);
-            }
-            catch (Exception f)
-            {
-                Core.handleException(f);
-            }
-        }
-		
-		public void Changed(object sender, EventArgs dt)
-        {
-            if (done)
-            {
-                //Configuration.Window.window_size = sX.SplitterDistance;
-            }
-        }
-
-        /// <summary>
-        /// Create a new chat
-        /// </summary>
-        /// <param name="Chat"></param>
-        /// <param name="WindowOwner"></param>
-        /// <param name="Focus"></param>
-        public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
-        {
-            Chat.Init();
-            Chat.Create();
-            Chat.Visible = Focus;
-            Chat._Protocol = WindowOwner;
-            if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
-            {
-                Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
-            }
-			this.hpaned1.Add2 (Chat);
-			//Chat.Dock = DockStyle.Fill;
-			//Chat.Location = new System.Drawing.Point(0, 0);
-        }
-
-        /// <summary>
-        /// Status line text (this method is thread safe)
-        /// </summary>
-        /// <param name="text"></param>
-        public void Status(string text = null)
-        {
-            if (text != null)
-            {
-                StatusBox = text;
-            }
-            UpdatedStatus = true;
-        }
-		
-		/*
-        public void _Load()
-        {
-            try
-            {
-                messages.Localize(this);
-                skinEdToolStripMenuItem.Enabled = false;
-                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
-                {
-                    this.Icon = (System.Drawing.Icon)Client.Properties.Resources.Pigeon_clip_art_hight1;
-                }
-                if (Configuration.Window.Window_Maximized)
-                {
-                    this.WindowState = FormWindowState.Maximized;
-                }
-                if (Configuration.Window.x4 == 0)
-                {
-                    Configuration.Window.window_size = 80;
-                    Configuration.Window.x1 = Height - 80;
-                    Configuration.Window.x4 = 600;
-                    if (Width > 200)
-                    {
-                        Configuration.Window.x4 = this.Width - 200;
-                    }
-                }
-                sX.SplitterDistance = Configuration.Window.window_size;
-                ChannelList = new PidgeonList();
+				hpaned1.Position = Configuration.Window.window_size;
+				ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;
                 ChannelList.Visible = true;
-                ChannelList.Size = new System.Drawing.Size(Width, Height - 60);
-                ChannelList.Dock = DockStyle.Fill;
-                ChannelList.CreateControl();
-                sX.Panel1.Controls.Add(ChannelList);
-                main = new Window();
+                main = new Client.Graphics.Window();
+				main.Events = ((global::Gdk.EventMask)(256));
+				UserAction.Visible = false;
                 CreateChat(main, null);
                 main.name = "Pidgeon";
-                preferencesToolStripMenuItem.Text = messages.get("window-menu-conf", Core.SelectedLanguage);
-                toolStripStatusNetwork.ToolTipText = "windows / channels / pm";
-                //checkForAnUpdateToolStripMenuItem.Text = messages.get("check-u", Core.SelectedLanguage);
+				toolStrip.TooltipText = "windows / channels / pm";
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
@@ -254,7 +132,7 @@ namespace Client.Forms
                 {
                     Core.PrintRing(Chat, false);
                 }
-                Chat.scrollback.InsertText("Welcome to pidgeon client " + Application.ProductVersion, Scrollback.MessageStyle.System, false, 0, true);
+                Chat.scrollback.InsertText("Welcome to pidgeon client " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Scrollback.MessageStyle.System, false, 0, true);
                 if (Core.Extensions.Count > 0)
                 {
                     foreach (Extension nn in Core.Extensions)
@@ -275,6 +153,48 @@ namespace Client.Forms
                 Core.handleException(f);
             }
         }
+		
+		public void Changed(object sender, EventArgs dt)
+        {
+            if (done)
+            {
+                Configuration.Window.window_size = hpaned1.Position;
+            }
+        }
+
+        /// <summary>
+        /// Create a new chat
+        /// </summary>
+        /// <param name="Chat"></param>
+        /// <param name="WindowOwner"></param>
+        /// <param name="Focus"></param>
+        public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
+        {
+            Chat.Init();
+            Chat.Create();
+            Chat.Visible = Focus;
+            Chat._Protocol = WindowOwner;
+            if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
+            {
+                Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
+            }
+			this.hpaned1.Add2 (Chat);
+        }
+
+        /// <summary>
+        /// Status line text (this method is thread safe)
+        /// </summary>
+        /// <param name="text"></param>
+        public void Status(string text = null)
+        {
+            if (text != null)
+            {
+                StatusBox = text;
+            }
+            UpdatedStatus = true;
+        }
+		
+		/*
 
         protected override bool IsInputKey(Keys keyData)
         {
@@ -307,10 +227,10 @@ namespace Client.Forms
 */
         public void UpdateStatus()
         {
-            //this.toolStripInfo.Text = StatusBox;
+            this.toolStripInfo.Text = StatusBox;
             if (Core.network != null)
             {
-                //toolStripStatusNetwork.Text = Core.network.ServerName + "    w/c/p " + Core.network._Protocol.Windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
+                toolStripStatusNetwork.Text = Core.network.ServerName + "    w/c/p " + Core.network._Protocol.Windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
                 if (Core.network.RenderedChannel != null)
                 {
                     string info = "";
@@ -342,12 +262,12 @@ namespace Client.Forms
                         info += "??";
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
-                    //toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)
                         {
-                         //   toolStripStatusChannel.Text += " messages: " + Chat.scrollback.Lines.ToString();
+                            toolStripStatusChannel.Text += " messages: " + Chat.scrollback.Lines.ToString();
                         }
                     }
                 }

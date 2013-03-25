@@ -84,10 +84,10 @@ namespace Client
                 {
                     if (getLink(e.X, e.Y) == null)
                     {
-                        pt.Cursor = System.Windows.Forms.Cursors.Default;
+                        //pt.Cursor = System.Windows.Forms.Cursors.Default;
                         return;
                     }
-                    pt.Cursor = System.Windows.Forms.Cursors.Hand;
+                    //pt.Cursor = System.Windows.Forms.Cursors.Hand;
                     return;
                 }
             }

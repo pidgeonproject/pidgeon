@@ -21,6 +21,7 @@ namespace Client
 			this.simpleview = new global::Gtk.TextView ();
 			this.simpleview.CanFocus = true;
 			this.simpleview.Name = "simpleview";
+			this.simpleview.Editable = false;
 			this.GtkScrolledWindow.Add (this.simpleview);
 			this.Add (this.GtkScrolledWindow);
 			if ((this.Child != null)) {

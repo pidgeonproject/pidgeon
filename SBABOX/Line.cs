@@ -247,7 +247,7 @@ namespace Client
                 if (LineDB.Count > index + 1)
                 {
                     LineDB.RemoveAt(index);
-                    lock (vScrollBar1)
+                    /*lock (vScrollBar1)
                     {
                         if (vScrollBar1.Maximum > 2)
                         {
@@ -257,7 +257,7 @@ namespace Client
                             }
                             vScrollBar1.Maximum--;
                         }
-                    }
+                    }*/
                 }
             }
             if (redraw)

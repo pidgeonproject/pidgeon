@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace Client
 {
-    public partial class Scrollback
+	public partial class Scrollback : Gtk.Bin
     {
         /// <summary>
         /// Maximal size of text
@@ -117,13 +117,13 @@ namespace Client
 
         public bool WindowVisible()
         {
-            //if (this.Visible == false)
+            if (this.Visible == false)
             {
                 return false;
             }
-            //if (owner != null)
+            if (owner != null)
             {
-            //    if (owner.Visible != true)
+                if (owner.Visible != true)
                 {
                     return false;
                 }

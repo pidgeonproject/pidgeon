@@ -21,6 +21,7 @@ namespace Client.Graphics
 			this.richTextBox = new global::Gtk.TextView ();
 			this.richTextBox.CanFocus = true;
 			this.richTextBox.Name = "richTextBox";
+			this.richTextBox.AcceptsTab = false;
 			this.GtkScrolledWindow.Add (this.richTextBox);
 			this.Add (this.GtkScrolledWindow);
 			if ((this.Child != null)) {

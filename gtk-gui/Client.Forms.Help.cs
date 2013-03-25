@@ -89,8 +89,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
 			this.label1.LabelProp = "Pidgeon";
 			this.fixed1.Add (this.label1);
 			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
-			w6.X = 248;
-			w6.Y = 17;
+			w6.X = 220;
+			w6.Y = 14;
 			this.Add (this.fixed1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();

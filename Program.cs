@@ -42,35 +42,14 @@ namespace Client
                 }
 				
 			}
+			catch (System.Threading.ThreadAbortException)
+			{
+				Application.Quit();
+			}
 			catch (Exception fail)
 			{
 				Core.handleException(fail, true);
 			}
 		}
-			/*
-            AppDomain.CurrentDomain.UnhandledException
-                += delegate(object sender, UnhandledExceptionEventArgs args)
-                {
-                    Exception exception = (Exception)args.ExceptionObject;
-                    Core.handleException(exception, true);
-                    Environment.Exit(1);
-                };
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            try
-            {
-                Core.startup = parameters;
-                if (Core.Load())
-                {
-                    Core._Main = new Main();
-                    Core.network = null;
-                    Application.Run(Core._Main);
-                }
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
-                Application.Exit();
-            }
-            */
     }
 }

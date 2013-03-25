@@ -27,8 +27,9 @@ using System.Windows.Forms;
 
 namespace Client
 {
-    public partial class SBABox : UserControl
+	public partial class SBABox
     {
+		/*
         private void vScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
             try
@@ -227,5 +228,6 @@ namespace Client
                 Core.handleException(fail);
             }
         }
+        */
     }
 }
