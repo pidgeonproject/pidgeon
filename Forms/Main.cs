@@ -40,6 +40,7 @@ namespace Client.Forms
         public bool DisplayingProgress = false;
         public int ProgressMax = 0;
 		public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
+
 		public int Height
 		{
 			get
@@ -115,7 +116,7 @@ namespace Client.Forms
                         Configuration.Window.x4 = this.Width - 200;
                     }
                 }
-				hpaned1.Position = Configuration.Window.window_size;
+                hpaned1.Position = Configuration.Window.window_size;
 				ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;
                 ChannelList.Visible = true;
@@ -132,7 +133,9 @@ namespace Client.Forms
                 {
                     Core.PrintRing(Chat, false);
                 }
+
                 Chat.scrollback.InsertText("Welcome to pidgeon client " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Scrollback.MessageStyle.System, false, 0, true);
+
                 if (Core.Extensions.Count > 0)
                 {
                     foreach (Extension nn in Core.Extensions)
@@ -177,6 +180,10 @@ namespace Client.Forms
             if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
+            }
+            if (Focus)
+            {
+                Chat.Visible = true;
             }
 			this.hpaned1.Add2 (Chat);
         }
@@ -313,8 +320,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
-		/*
+
         private void contentsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -326,7 +332,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		 */
 		
         public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {

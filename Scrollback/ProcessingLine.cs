@@ -26,16 +26,15 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 
-
 namespace Client
 {
     public partial class Scrollback
     {
-        public void Display()
+        public void _Display()
         {
-            //if (!this.Visible)
+            if (!this.Visible)
             {
-            //    this.Visible = true;
+                this.Visible = true;
             }
         }
 
@@ -48,10 +47,10 @@ namespace Client
                     Changed = true;
                     return;
                 }
-                //lock (simpleview.Lines)
-                {
-                    //simpleview.AppendText(Configuration.Scrollback.format_date.Replace("$1", line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(line.text) + Environment.NewLine);
-                }
+				simpleview.Buffer.Text += Configuration.Scrollback.format_date.Replace("$1",
+				                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+										  Core.RemoveSpecial(line.text) + Environment.NewLine;
+                Changed = false;
                 return;
             }
             lock (ContentLines)

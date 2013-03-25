@@ -6,7 +6,7 @@ namespace Client.Graphics
 	{
 		private global::Gtk.VPaned vpaned1;
 		private global::Gtk.HPaned hpaned1;
-		private global::Client.ScrollbackWidget scrollbackwidget1;
+		private global::Client.Scrollback scrollback1;
 		private global::Gtk.ScrolledWindow GtkScrolledWindow1;
 		private global::Gtk.TreeView treeview2;
 		private global::Client.Graphics.TextBox textbox1;
@@ -28,11 +28,11 @@ namespace Client.Graphics
 			this.hpaned1.Name = "hpaned1";
 			this.hpaned1.Position = 333;
 			// Container child hpaned1.Gtk.Paned+PanedChild
-			this.scrollbackwidget1 = new global::Client.ScrollbackWidget ();
-			this.scrollbackwidget1.Events = ((global::Gdk.EventMask)(256));
-			this.scrollbackwidget1.Name = "scrollbackwidget1";
-			this.hpaned1.Add (this.scrollbackwidget1);
-			global::Gtk.Paned.PanedChild w1 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.scrollbackwidget1]));
+			this.scrollback1 = new global::Client.Scrollback ();
+			this.scrollback1.Events = ((global::Gdk.EventMask)(256));
+			this.scrollback1.Name = "scrollback1";
+			this.hpaned1.Add (this.scrollback1);
+			global::Gtk.Paned.PanedChild w1 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.scrollback1]));
 			w1.Resize = false;
 			// Container child hpaned1.Gtk.Paned+PanedChild
 			this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();

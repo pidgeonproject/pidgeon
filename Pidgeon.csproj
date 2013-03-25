@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -166,16 +166,14 @@
     <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
     <Compile Include="Forms\Help.cs" />
     <Compile Include="gtk-gui\Client.Forms.Help.cs" />
-    <Compile Include="Scrollback\ScrollbackWidget.cs" />
-    <Compile Include="gtk-gui\Client.ScrollbackWidget.cs" />
-    <Compile Include="WinForms\Recovery.cs" />
+    <Compile Include="WinForms\Recovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="WinForms\Recovery.Designer.cs" />
     <Compile Include="gtk-gui\Client.Scrollback.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="Scrollback\Scrollback.resources" />
-    <None Include="Scrollback\Scrollback.resx" />
     <None Include="Resources\50px-IRC_icon.png" />
     <None Include="Resources\Image1.bmp" />
     <None Include="Resources\Image1.jpg" />
@@ -186,15 +184,10 @@
     <None Include="Resources\icon.png" />
     <None Include="Resources\irc_channel.ico" />
     <None Include="Resources\regular.bmp" />
-    <None Include="SBABOX\SBABox.resources" />
-    <None Include="SBABOX\SBABox.resx" />
     <None Include="Properties\Settings.settings" />
     <None Include="Properties\Resources.resources" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\" />
-    <Folder Include="Graphics\" />
-  </ItemGroup>
+  <ItemGroup />
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>

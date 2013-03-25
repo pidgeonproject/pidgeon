@@ -75,7 +75,7 @@ namespace Client.Graphics
 		public Window ()
 		{
 			this.Build ();
-			this.scrollback = new Client.Scrollback(this);
+            this.scrollback = scrollback1;
             this.textbox = new TextBox();
             textbox.parent = this;
             if (textbox.history == null)
@@ -104,7 +104,6 @@ namespace Client.Graphics
 
         public void Create()
         {
-            textbox.Init();
             scrollback.Create();
             //scrollback.channelToolStripMenuItem.Visible = isChannel;
             //scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;

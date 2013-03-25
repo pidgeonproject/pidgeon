@@ -273,8 +273,8 @@ namespace Client
                     Thread_logs.Name = "Logs";
                     SystemThreads.Add(Thread_logs);
                     Thread_logs.Start();
-                    //DebugLog("Loading commands");
-                    //Commands.Initialise();
+                    DebugLog("Loading commands");
+                    Commands.Initialise();
                     Forms.MicroChat.mc = new Forms.MicroChat();
                     notification = new Forms.Notification();
                     //DebugLog("Loading scripting core");

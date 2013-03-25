@@ -143,7 +143,7 @@ namespace Client
             if (Windows.ContainsKey(name))
             {
                 Current = Windows[name];
-                Current.scrollback.Display();
+                Current.scrollback._Display();
                 //Current.BringToFront();
                 Current.Visible = true;
                 //Current.Redraw();
