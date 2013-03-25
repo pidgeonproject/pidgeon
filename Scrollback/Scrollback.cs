@@ -257,8 +257,7 @@ namespace Client
 				simpleview.Buffer.Text = everything.ToString();
                 if (ScrollingEnabled)
                 {
-					Gtk.TextIter iter = simpleview.Buffer.GetIterAtLine (simpleview.Buffer.LineCount);
-					simpleview.ScrollToIter(iter, 0, false, 0, 0);
+					simpleview.ScrollToIter(simpleview.Buffer.EndIter, 0, false, 0, 0);
                 }
             }
         }
@@ -302,6 +301,10 @@ namespace Client
         {
             try
             {
+                if (owner != null)
+                {
+                    owner.Changed(null, null);
+                }
                 if (WindowVisible())
                 {
                     lock (UndrawnLines)

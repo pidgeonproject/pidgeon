@@ -76,6 +76,7 @@ namespace Client.Graphics
 		{
 			this.Build ();
             this.scrollback = scrollback1;
+            scrollback.owner = this;
             this.textbox = new TextBox();
             textbox.parent = this;
             if (textbox.history == null)
@@ -138,18 +139,16 @@ namespace Client.Graphics
             return true;
         }
 		
-		/*
-		
-        public void Changed(object sender, SplitterEventArgs dt)
+        public void Changed(object sender, EventArgs dt)
         {
             try
             {
                 if (Making == false && ignoreChange == false)
                 {
-                    Configuration.Window.x1 = xContainer1.SplitterDistance;
-                    Configuration.Window.x4 = xContainer4.SplitterDistance;
-                    listViewd.Columns[0].Width = listViewd.Width;
-                    listView.Columns[0].Width = listView.Width;
+                    Configuration.Window.x1 = hpaned1.Position;
+                    Configuration.Window.x4 = vpaned1.Position;
+                    //listViewd.Columns[0].Width = listViewd.Width;
+                    //listView.Columns[0].Width = listView.Width;
                 }
             }
             catch (Exception fail)
@@ -157,6 +156,8 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
+
+        /*
 
         /// <summary>
         /// this is a hack
