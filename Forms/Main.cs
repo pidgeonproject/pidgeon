@@ -373,14 +373,12 @@ namespace Client.Forms
             }
         }
 		
-		/*
-		
         private void newConnectionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             try
             {
-                if (fConnection == null || fConnection.IsDisposed)
-                    fConnection = new Connection();
+                if (fConnection == null)
+                    fConnection = new Forms.Connection();
 
 
                 fConnection.Show();
@@ -391,7 +389,7 @@ namespace Client.Forms
             }
         }
 
-        private void updater_Tick(object sender, EventArgs e)
+        private bool updater_Tick()
         {
             try
             {
@@ -410,38 +408,40 @@ namespace Client.Forms
 
                 if (DisplayingProgress)
                 {
-                    if (updater.Interval != 10)
+                    //if (updater.Interval != 10)
                     {
-                        updater.Interval = 10;
+                    //    updater.Interval = 10;
                     }
                 }
                 else
                 {
-                    if (updater.Interval != 200)
+                    //if (updater.Interval != 200)
                     {
-                        updater.Interval = 200;
+                    //    updater.Interval = 200;
                     }
                 }
 
-                if (toolStripProgressBar1.Maximum != ProgressMax)
+                //if (toolStripProgressBar1.Maximum != ProgressMax)
                 {
-                    if (toolStripProgressBar1.Value > ProgressMax)
+                 //   if (toolStripProgressBar1.Value > ProgressMax)
                     {
-                        toolStripProgressBar1.Value = ProgressMax;
+                 //       toolStripProgressBar1.Value = ProgressMax;
                     }
-                    toolStripProgressBar1.Maximum = ProgressMax;
+                 //   toolStripProgressBar1.Maximum = ProgressMax;
                 }
-                if (toolStripProgressBar1.Value != progress)
+                //if (toolStripProgressBar1.Value != progress)
                 {
-                    toolStripProgressBar1.Value = progress;
+                //    toolStripProgressBar1.Value = progress;
                 }
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
+			return false;
         }
-
+		
+		/*
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             try

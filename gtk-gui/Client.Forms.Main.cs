@@ -13,7 +13,7 @@ namespace Client.Forms
 		private global::Gtk.Action UserAction;
 		private global::Gtk.Action HelpAction;
 		private global::Gtk.Action AboutAction;
-		private global::Gtk.Action HelpAction1;
+		private global::Gtk.Action ContentsAction;
 		private global::Gtk.Action RootAction;
 		private global::Gtk.Action SearchAction;
 		private global::Gtk.Action SwitchToAdvancedLayoutAction;
@@ -67,9 +67,9 @@ namespace Client.Forms
 			this.AboutAction = new global::Gtk.Action ("AboutAction", "About", null, null);
 			this.AboutAction.ShortLabel = "About";
 			w1.Add (this.AboutAction, null);
-			this.HelpAction1 = new global::Gtk.Action ("HelpAction1", "Help", null, null);
-			this.HelpAction1.ShortLabel = "Help";
-			w1.Add (this.HelpAction1, null);
+			this.ContentsAction = new global::Gtk.Action ("ContentsAction", "Contents", null, null);
+			this.ContentsAction.ShortLabel = "Help";
+			w1.Add (this.ContentsAction, "F1");
 			this.RootAction = new global::Gtk.Action ("RootAction", "Root", null, null);
 			this.RootAction.ShortLabel = "Root";
 			w1.Add (this.RootAction, null);
@@ -87,7 +87,7 @@ namespace Client.Forms
 			w1.Add (this.OpenNewConnectionAction, null);
 			this.OpenNewConnectionAction1 = new global::Gtk.Action ("OpenNewConnectionAction1", "Open new connection", null, null);
 			this.OpenNewConnectionAction1.ShortLabel = "Open new connection";
-			w1.Add (this.OpenNewConnectionAction1, null);
+			w1.Add (this.OpenNewConnectionAction1, "<Alt>n");
 			this.FavoriteNetworksAction = new global::Gtk.Action ("FavoriteNetworksAction", "Favorite networks", null, null);
 			this.FavoriteNetworksAction.ShortLabel = "Favorite networks";
 			w1.Add (this.FavoriteNetworksAction, null);
@@ -120,7 +120,7 @@ namespace Client.Forms
 			this.vbox3.Name = "vbox3";
 			this.vbox3.Spacing = 6;
 			// Container child vbox3.Gtk.Box+BoxChild
-			this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MiscAction' action='MiscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='HelpAction1' action='HelpAction1'/></menu></menubar></ui>");
+			this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MiscAction' action='MiscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='UserAction' action='UserAction'/><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='ContentsAction' action='ContentsAction'/></menu></menubar></ui>");
 			this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
 			this.menubar2.Name = "menubar2";
 			this.vbox3.Add (this.menubar2);
@@ -192,6 +192,7 @@ namespace Client.Forms
 			this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.Unshow);
 			this.ShutDownAction.Activated += new global::System.EventHandler (this.shutDownToolStripMenuItem_Click);
 			this.AboutAction.Activated += new global::System.EventHandler (this.aboutToolStripMenuItem_Click);
+			this.OpenNewConnectionAction1.Activated += new global::System.EventHandler (this.newConnectionToolStripMenuItem_Click_1);
 			this.PreferencesAction.Activated += new global::System.EventHandler (this.preferencesToolStripMenuItem_Click);
 		}
 	}
