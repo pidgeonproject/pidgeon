@@ -25,10 +25,10 @@ using Gtk;
 
 namespace Client.Graphics
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class PidgeonList : Gtk.Bin
-	{
-		/// <summary>
+    [System.ComponentModel.ToolboxItem(true)]
+    public partial class PidgeonList : Gtk.Bin
+    {
+        /// <summary>
         /// List of services which are currently in sidebar
         /// </summary>
         public Dictionary<ProtocolSv, TreeIter> ServiceList = new Dictionary<ProtocolSv, TreeIter>();
@@ -47,23 +47,31 @@ namespace Client.Graphics
         public static bool Updated = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
-        private Gtk.TreeStore Values = new TreeStore(typeof(string), typeof(object), typeof(Type));
+        private Gtk.TreeStore Values = new TreeStore(typeof(string), typeof(object), typeof(ItemType));
+        private GLib.TimeoutHandler timer;
 
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
-            // Widget Client.Graphics.PidgeonList
             global::Stetic.BinContainer.Attach(this);
             this.Name = "Client.Graphics.PidgeonList";
-            // Container child Client.Graphics.PidgeonList.Gtk.Container+ContainerChild
             this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.tv = new global::Gtk.TreeView();
             this.tv.CanFocus = true;
             this.tv.Name = "treeview1";
+            Gtk.TreeViewColumn Column = new TreeViewColumn();
+            Gtk.CellRendererText Item = new Gtk.CellRendererText();
+            Column.Title = messages.get("list-active-conn", messages.Language);
+            Column.PackStart(Item, true);
+            tv.AppendColumn(Column);
+            Column.AddAttribute(Item, "text", 0);
+            this.tv.Model = Values;
             this.GtkScrolledWindow.Add(this.tv);
+            timer = new GLib.TimeoutHandler(timer01_Tick);
+            GLib.Timeout.Add(200, timer);
+
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
             {
@@ -72,8 +80,8 @@ namespace Client.Graphics
             this.Hide();
         }
 
-		public PidgeonList ()
-		{
+        public PidgeonList()
+        {
             try
             {
                 this.Build();
@@ -82,9 +90,9 @@ namespace Client.Graphics
             {
                 Core.handleException(fail);
             }
-		}
-		
-		/// <summary>
+        }
+
+        /// <summary>
         /// Insert a channel to list
         /// </summary>
         /// <param name="channel"></param>
@@ -120,7 +128,7 @@ namespace Client.Graphics
                 if (ServerList.ContainsKey(user._Network))
                 {
                     //text.ImageIndex = 4;
-                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, Type.User);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
                     //text.Text = user.Nick;
 
                     lock (UserList)
@@ -140,7 +148,7 @@ namespace Client.Graphics
 
         public void insertSv(ProtocolSv service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, Type.Services);
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services);
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
@@ -154,7 +162,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, Type.Channel);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
 
                     //ServerList[channel._Network].Expand();
                     lock (ChannelList)
@@ -176,7 +184,7 @@ namespace Client.Graphics
         {
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, Type.Server); 
+                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -187,7 +195,7 @@ namespace Client.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, Type.Server); 
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server);
                 network.SystemWindow.treeNode = text;
                 ServerList.Add(network, text);
                 //ServiceList[network.ParentSv].Expand();
@@ -208,9 +216,8 @@ namespace Client.Graphics
                 Updated = true;
             }
         }
-		
-		/*
-		private void timer2_Tick(object sender, EventArgs e)
+
+        private bool timer01_Tick()
         {
             try
             {
@@ -222,7 +229,7 @@ namespace Client.Graphics
                 // there is no update needed so skip
                 if (!Updated)
                 {
-                    return;
+                    return true;
                 }
 
                 Updated = false;
@@ -266,7 +273,7 @@ namespace Client.Graphics
 
                 lock (Core._Main.WindowRequests)
                 {
-                    foreach (Main._WindowRequest item in Core._Main.WindowRequests)
+                    foreach (Forms.Main._WindowRequest item in Core._Main.WindowRequests)
                     {
                         Core._Main.CreateChat(item.window, item.owner, item.focus);
                         if (item.owner != null && item.focus)
@@ -301,8 +308,10 @@ namespace Client.Graphics
             {
                 Core.handleException(fail);
             }
+            return true;
         }
 
+        /*
         public void RedrawMenu()
         {
             partToolStripMenuItem.Visible = false;
@@ -448,65 +457,59 @@ namespace Client.Graphics
             {
                 //if (node.Nodes.Count > 0)
                 {
-                //    RemoveAll(node.Nodes, Item);
+                    //    RemoveAll(node.Nodes, Item);
                 }
             }
         }
 
-		
-		/*
-        public void RemoveItem(TreeNode Item)
+        public void RemoveItem(object Item, ItemType type)
         {
-            lock (ServiceList)
+            switch (type)
             {
-                if (ServiceList.ContainsValue(Item))
-                {
-                    ProtocolSv network = null;
-                    foreach (var curr in ServiceList)
+                case ItemType.Services:
+                    ProtocolSv service = (ProtocolSv)Item;
+                    service.Exit();
+                    lock (ServiceList)
                     {
-                        if (curr.Value == Item)
+                        if (ServiceList.ContainsKey(service))
                         {
-                            network = curr.Key;
-                            network.Exit();
-                        }
-                        lock (Item.Nodes)
-                        {
-                            foreach (TreeNode node in Item.Nodes)
+                            lock (Values)
                             {
-                                RemoveItem(node);
+                                TreeIter iter = ServiceList[service];
+                                Values.Remove(ref iter);
                             }
-                            if (items.Nodes.Contains(items.SelectedNode))
-                            {
-                                items.Nodes.Remove(items.SelectedNode);
-                            }
+                            ServiceList.Remove(service);
                         }
                     }
-                }
-            }
-
-            lock (ServerList)
-            {
-                if (ServerList.ContainsValue(Item))
-                {
-                    Network network = null;
-                    foreach (var cu in ServerList)
+                    break;
+                case ItemType.Server:
+                    Network network = (Network)Item;
+                    if (network.Connected)
                     {
-                        if (cu.Value == Item)
-                        {
-                            network = cu.Key;
-                            if (cu.Key.Connected)
-                            {
-                                Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Scrollback.MessageStyle.System, false, 0, true);
-                                return;
-                            }
+                        Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Scrollback.MessageStyle.System, false, 0, true);
+                        return;
+                    }
 
+                    lock (Core.Connections)
+                    {
+                        if (Core.Connections.Contains(network._Protocol))
+                        {
+                            Core.Connections.Remove(network._Protocol);
                         }
                     }
-                    if (network != null)
+
+                    lock (ServerList)
                     {
-                        Core.Connections.Remove(network._Protocol);
-                        ServerList.Remove(network);
-                        foreach (TreeNode item in items.SelectedNode.Nodes)
+                        if (ServerList.ContainsKey(network))
+                        {
+                            TreeIter iter = ServerList[network];
+                            Values.Remove(ref iter);
+                            ServerList.Remove(network);
+                        }
+                    }
+
+                    /*
+                     foreach (TreeNode item in items.SelectedNode.Nodes)
                         {
                             RemoveItem(item);
                         }
@@ -517,70 +520,72 @@ namespace Client.Graphics
                                 items.Nodes.Remove(Item);
                             }
                         }
-                    }
-                }
-            }
+                     
+                     */
+                    break;
+                case ItemType.User:
+                    User user = (User)Item;
 
-            lock (UserList)
-            {
-                if (UserList.ContainsValue(Item))
-                {
-                    User curr = null;
-                    foreach (var cu in UserList)
+                    lock (user._Network.PrivateChat)
                     {
-                        if (cu.Value == Item)
+                        if (user._Network.PrivateChat.Contains(user))
                         {
-                            lock (cu.Key._Network.PrivateChat)
+                            lock (user._Network.PrivateWins)
                             {
-                                if (cu.Key._Network.PrivateChat.Contains(cu.Key))
+                                if (user._Network.PrivateWins.ContainsKey(user))
                                 {
-                                    lock (cu.Key._Network.PrivateWins)
-                                    {
-                                        if (cu.Key._Network.PrivateWins.ContainsKey(cu.Key))
-                                        {
-                                            cu.Key._Network.PrivateWins.Remove(cu.Key);
-                                        }
-                                        else
-                                        {
-                                            Core.DebugLog("There was no private window handle for " + cu.Key.Nick);
-                                        }
-                                    }
-                                    cu.Key._Network.PrivateChat.Remove(cu.Key);
+                                    user._Network.PrivateWins.Remove(user);
+                                }
+                                else
+                                {
+                                    Core.DebugLog("There was no private window handle for " + user.Nick);
                                 }
                             }
-                            curr = cu.Key;
-                            break;
+                            user._Network.PrivateChat.Remove(user);
                         }
                     }
-                    if (curr != null)
+                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
                     {
-                        lock (items.Nodes)
+                        lock (user._Network._Protocol.Windows)
                         {
-                            if (items.Nodes.Contains(Item))
-                            {
-                                items.Nodes.Remove(Item);
-                            }
-                        }
-                        if (curr._Network._Protocol.Windows.ContainsKey(curr._Network.window + curr.Nick))
-                        {
-                            lock (curr._Network._Protocol.Windows)
-                            {
-                                curr._Network._Protocol.Windows[curr._Network.window + curr.Nick].Visible = false;
-                                curr._Network._Protocol.Windows[curr._Network.window + curr.Nick].Dispose();
-                            }
-                        }
-                        lock (UserList)
-                        {
-                            if (UserList.ContainsKey(curr))
-                            {
-                                UserList.Remove(curr);
-                            }
+                            user._Network._Protocol.Windows[user._Network.window + user.Nick].Visible = false;
+                            user._Network._Protocol.Windows[user._Network.window + user.Nick].Dispose();
                         }
                     }
-                }
+                    lock (UserList)
+                    {
+                        if (UserList.ContainsKey(user))
+                        {
+                            TreeIter iter = UserList[user];
+                            Values.Remove(ref iter);
+                            UserList.Remove(user);
+                        }
+                    }
+                    break;
+                case ItemType.Channel:
+                    Channel channel = (Channel)Item;
+
+                    lock (channel._Network.Channels)
+                    {
+                        if (channel._Network.Channels.Contains(channel))
+                        {
+                            channel._Network.Channels.Remove(channel);
+                        }
+                    }
+                    //RemoveAll(Item);
+                    lock (ChannelList)
+                    {
+                        if (ChannelList.ContainsKey(channel))
+                        {
+                            TreeIter iter = ChannelList[channel];
+                            Values.Remove(ref iter);
+                            ChannelList.Remove(channel);
+                        }
+                    }
+                    break;
             }
 
-            lock (ChannelList)
+            /*lock (ChannelList)
             {
                 if (ChannelList.ContainsValue(Item))
                 {
@@ -635,6 +640,8 @@ namespace Client.Graphics
                     }
                 }
             }
+             
+
             lock (items.Nodes)
             {
                 if (items.Nodes.Contains(Item))
@@ -642,8 +649,10 @@ namespace Client.Graphics
                     items.Nodes.Remove(Item);
                 }
             }
+             */
         }
 
+        /*
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -678,12 +687,12 @@ namespace Client.Graphics
                 {
                     foreach (var cu in ChannelList)
                     {
-                //        if (cu.Value == items.SelectedNode)
+                        //        if (cu.Value == items.SelectedNode)
                         {
-                //            if (cu.Key.ChannelWork)
+                            //            if (cu.Key.ChannelWork)
                             {
-                //                cu.Key._Network._Protocol.Part(cu.Key.Name);
-                //                cu.Key.ChannelWork = false;
+                                //                cu.Key._Network._Protocol.Part(cu.Key.Name);
+                                //                cu.Key.ChannelWork = false;
                                 return;
                             }
                             return;
@@ -697,7 +706,7 @@ namespace Client.Graphics
             }
         }
 
-        enum Type
+        public enum ItemType
         {
             Server,
             Services,
@@ -705,6 +714,6 @@ namespace Client.Graphics
             Channel,
             User,
         }
-	}
+    }
 }
 

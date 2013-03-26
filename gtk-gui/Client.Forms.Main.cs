@@ -96,7 +96,7 @@ namespace Client.Forms
 			w1.Add (this.PreferencesAction, null);
 			this.PacketViewerAction = new global::Gtk.Action ("PacketViewerAction", "Packet viewer", null, null);
 			this.PacketViewerAction.ShortLabel = "Packet viewer";
-			w1.Add (this.PacketViewerAction, null);
+            w1.Add(this.PacketViewerAction, null);
 			this.SkinEditorAction = new global::Gtk.Action ("SkinEditorAction", "Skin editor", null, null);
 			this.SkinEditorAction.ShortLabel = "Skin editor";
 			w1.Add (this.SkinEditorAction, null);

@@ -162,7 +162,6 @@
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />
-    <Compile Include="gtk-gui\Client.Graphics.TextBox.cs" />
     <Compile Include="Forms\Help.cs" />
     <Compile Include="gtk-gui\Client.Forms.Help.cs" />
     <Compile Include="WinForms\Recovery.cs">

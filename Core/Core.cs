@@ -211,9 +211,9 @@ namespace Client
             public bool control;
             public bool alt;
             public bool shift;
-            public System.Windows.Forms.Keys keys;
+            public Gdk.Key keys;
             public string data;
-            public Shortcut(System.Windows.Forms.Keys Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
+            public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
             {
                 control = Control;
                 shift = Shift;
@@ -691,98 +691,98 @@ namespace Client
         /// </summary>
         /// <param name="Key">Key</param>
         /// <returns></returns>
-        public static System.Windows.Forms.Keys parseKey(string Key)
+        public static Gdk.Key parseKey(string Key)
         {
             switch (Key.ToLower())
             {
                 case "a":
-                    return System.Windows.Forms.Keys.A;
+                    return Gdk.Key.A;
                 case "b":
-                    return System.Windows.Forms.Keys.B;
+                    return Gdk.Key.B;
                 case "c":
-                    return System.Windows.Forms.Keys.C;
+                    return Gdk.Key.C;
                 case "d":
-                    return System.Windows.Forms.Keys.D;
+                    return Gdk.Key.D;
                 case "e":
-                    return System.Windows.Forms.Keys.E;
+                    return Gdk.Key.E;
                 case "f":
-                    return System.Windows.Forms.Keys.F;
+                    return Gdk.Key.F;
                 case "g":
-                    return System.Windows.Forms.Keys.G;
+                    return Gdk.Key.G;
                 case "h":
-                    return System.Windows.Forms.Keys.H;
+                    return Gdk.Key.H;
                 case "i":
-                    return System.Windows.Forms.Keys.I;
+                    return Gdk.Key.I;
                 case "j":
-                    return System.Windows.Forms.Keys.J;
+                    return Gdk.Key.J;
                 case "k":
-                    return System.Windows.Forms.Keys.K;
+                    return Gdk.Key.K;
                 case "l":
-                    return System.Windows.Forms.Keys.L;
+                    return Gdk.Key.L;
                 case "m":
-                    return System.Windows.Forms.Keys.M;
+                    return Gdk.Key.M;
                 case "n":
-                    return System.Windows.Forms.Keys.N;
+                    return Gdk.Key.N;
                 case "o":
-                    return System.Windows.Forms.Keys.O;
+                    return Gdk.Key.O;
                 case "p":
-                    return System.Windows.Forms.Keys.P;
+                    return Gdk.Key.P;
                 case "q":
-                    return System.Windows.Forms.Keys.Q;
+                    return Gdk.Key.Q;
                 case "r":
-                    return System.Windows.Forms.Keys.R;
+                    return Gdk.Key.R;
                 case "s":
-                    return System.Windows.Forms.Keys.S;
+                    return Gdk.Key.S;
                 case "t":
-                    return System.Windows.Forms.Keys.T;
+                    return Gdk.Key.T;
                 case "u":
-                    return System.Windows.Forms.Keys.U;
+                    return Gdk.Key.U;
                 case "v":
-                    return System.Windows.Forms.Keys.V;
+                    return Gdk.Key.V;
                 case "x":
-                    return System.Windows.Forms.Keys.X;
+                    return Gdk.Key.X;
                 case "w":
-                    return System.Windows.Forms.Keys.W;
+                    return Gdk.Key.W;
                 case "y":
-                    return System.Windows.Forms.Keys.Y;
+                    return Gdk.Key.Y;
                 case "z":
-                    return System.Windows.Forms.Keys.Z;
+                    return Gdk.Key.Z;
                 case "1":
-                    return System.Windows.Forms.Keys.D1;
+                    return Gdk.Key.Key_1;
                 case "2":
-                    return System.Windows.Forms.Keys.D2;
+                    return Gdk.Key.Key_2;
                 case "3":
-                    return System.Windows.Forms.Keys.D3;
+                    return Gdk.Key.Key_3;
                 case "4":
-                    return System.Windows.Forms.Keys.D4;
+                    return Gdk.Key.Key_4;
                 case "5":
-                    return System.Windows.Forms.Keys.D5;
+                    return Gdk.Key.Key_5;
                 case "6":
-                    return System.Windows.Forms.Keys.D6;
+                    return Gdk.Key.Key_6;
                 case "7":
-                    return System.Windows.Forms.Keys.D7;
+                    return Gdk.Key.Key_7;
                 case "8":
-                    return System.Windows.Forms.Keys.D8;
+                    return Gdk.Key.Key_8;
                 case "9":
-                    return System.Windows.Forms.Keys.D9;
+                    return Gdk.Key.Key_9;
                 case "0":
-                    return System.Windows.Forms.Keys.D0;
+                    return Gdk.Key.Key_0;
                 case "f1":
-                    return System.Windows.Forms.Keys.F1;
+                    return Gdk.Key.F1;
                 case "f2":
-                    return System.Windows.Forms.Keys.F2;
+                    return Gdk.Key.F2;
                 case "f3":
-                    return System.Windows.Forms.Keys.F3;
+                    return Gdk.Key.F3;
                 case "home":
-                    return System.Windows.Forms.Keys.Home;
+                    return Gdk.Key.Home;
                 case "end":
-                    return System.Windows.Forms.Keys.End;
+                    return Gdk.Key.End;
                 case "pageup":
-                    return System.Windows.Forms.Keys.PageUp;
+                    return Gdk.Key.Page_Up;
                 case "delete":
-                    return System.Windows.Forms.Keys.Delete;
+                    return Gdk.Key.Delete;
             }
-            return System.Windows.Forms.Keys.A;
+            return Gdk.Key.A;
         }
 
         public static bool LoadSkin()

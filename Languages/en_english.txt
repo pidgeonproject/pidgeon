@@ -23,6 +23,7 @@ connection=Open the new connection;
 connection.1=Please fill in following data;
 server=Server;
 list=Users;
+list-active-conn=Open connections;
 port=Port;
 bconnect=Connect to selected server;
 bclose=Quit;

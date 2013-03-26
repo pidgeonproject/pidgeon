@@ -188,10 +188,6 @@ namespace Client.Forms
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-            if (Focus)
-            {
-                Chat.Visible = true;
-            }
 			this.hpaned1.Add2 (Chat);
         }
 
@@ -207,24 +203,16 @@ namespace Client.Forms
             }
             UpdatedStatus = true;
         }
-		
-		/*
 
-        protected override bool IsInputKey(Keys keyData)
-        {
-            if (keyData == Keys.Tab)
-                return true;
-            return base.IsInputKey(keyData);
-        }
-
-        public static bool ShortcutHandle(Object sender, KeyEventArgs e)
+        public static bool ShortcutHandle(object sender, KeyPressEventArgs e)
         {
             bool rt = false;
             try
             {
                 foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
                 {
-                    if (shortcut.control == e.Control && shortcut.keys == e.KeyCode && shortcut.alt == e.Alt)
+                    if (shortcut.control == (e.Event.State == Gdk.ModifierType.ControlMask) 
+                        && shortcut.keys == e.Event.Key) //&& shortcut.alt == )
                     {
                         Parser.parse(shortcut.data);
                         rt = true;
@@ -237,8 +225,7 @@ namespace Client.Forms
             }
             return rt;
         }
-
-*/
+         
         public void UpdateStatus()
         {
             this.toolStripInfo.Text = StatusBox;
@@ -367,8 +354,12 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
-		
+
+        public void Test(object sender, EventArgs e)
+        { 
+            
+        }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

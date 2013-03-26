@@ -24,7 +24,6 @@ using System.Text;
 using Gtk;
 
 
-
 namespace Client.Graphics
 {
 	[System.ComponentModel.ToolboxItem(true)]
