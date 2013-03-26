@@ -64,6 +64,7 @@ namespace Client.Forms
 			{
 				Core._Main = this;
 				this.Build ();
+                this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
 				_Load();
 			}
 			catch (Exception fail)
@@ -158,7 +159,7 @@ namespace Client.Forms
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-			this.hpaned1.Add2 (Chat);
+			SwitchWindow(Chat);
         }
 
         /// <summary>
@@ -465,6 +466,13 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
+        */
+
+        public void SwitchWindow(Graphics.Window window)
+        {
+            hpaned1.Remove(hpaned1.Child2);
+            hpaned1.Add2(window);
+        }
 
         private void rootToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -473,14 +481,14 @@ namespace Client.Forms
                 if (Core.network != null)
                 {
                     Core.network.RenderedChannel = null;
-                    main.Visible = true;
-                    Core.network._Protocol.Current.Visible = false;
+                    //Core.network._Protocol.Current.Visible = false;
                     Core.network._Protocol.Current = main;
+                    SwitchWindow(main);
                     return;
                 }
                 main.Visible = true;
-                main.BringToFront();
-                main.scrollback.Display();
+                SwitchWindow(main);
+                main.scrollback._Display();
             }
             catch (Exception fail)
             {
@@ -488,6 +496,7 @@ namespace Client.Forms
             }
         }
 
+        /*
         protected void Wheeled(object sender, MouseEventArgs md)
         {
             try

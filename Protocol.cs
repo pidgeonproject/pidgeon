@@ -145,9 +145,7 @@ namespace Client
                 Core._Main.hPaned.Remove(Core._Main.Chat);
                 Current = Windows[name];
                 Current.scrollback._Display();
-                Core._Main.hPaned.Add2(Current);
-                //Current.BringToFront();
-                Current.Visible = true;
+                Core._Main.SwitchWindow(Current);
                 Current.Redraw();
                 if (Current.isChannel)
                 {
@@ -160,13 +158,6 @@ namespace Client
                 if (Current.Making == false)
                 {
                     Current.textbox.setFocus();
-                }
-                if (Current != Core._Main.Chat)
-                {
-                    if (Core._Main.Chat != null)
-                    {
-                        Core._Main.Chat.Visible = false;
-                    }
                 }
                 Core._Main.Chat = Windows[name];
                 Current.Making = false;
