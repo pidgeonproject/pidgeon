@@ -41,7 +41,7 @@ namespace Client.Graphics
 			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
 			this.listView = new global::Gtk.TreeView ();
 			this.listView.CanFocus = true;
-			this.listView.Name = "treeview2";
+			this.listView.Name = "listView";
 			this.GtkScrolledWindow1.Add (this.listView);
 			this.hpaned1.Add (this.GtkScrolledWindow1);
 			this.vpaned1.Add (this.hpaned1);

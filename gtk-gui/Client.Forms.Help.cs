@@ -8,9 +8,10 @@ namespace Client.Forms
 		private global::Gtk.Label label2;
 		private global::Gtk.Label label3;
 		private global::Gtk.Label label4;
-		private global::Gtk.Label label5;
 		private global::Gtk.Image image2;
 		private global::Gtk.Label label1;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow;
+		private global::Gtk.TextView textview1;
 		
 		protected virtual void Build ()
 		{
@@ -53,50 +54,45 @@ namespace Client.Forms
 			w3.X = 20;
 			w3.Y = 127;
 			// Container child fixed1.Gtk.Fixed+FixedChild
-			this.label5 = new global::Gtk.Label ();
-			this.label5.WidthRequest = 480;
-			this.label5.Name = "label5";
-			this.label5.LabelProp = @"About:
-
-The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
-
-That means:
-Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website
-
-License:
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
-                                                                         
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
-
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.";
-			this.label5.Wrap = true;
-			this.fixed1.Add (this.label5);
-			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label5]));
-			w4.X = 20;
-			w4.Y = 167;
-			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.image2 = new global::Gtk.Image ();
 			this.image2.Name = "image2";
 			this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.Pigeon_clip_art_hight_mini.png");
 			this.fixed1.Add (this.image2);
-			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
-			w5.X = 342;
-			w5.Y = 47;
+			global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.image2]));
+			w4.X = 342;
+			w4.Y = 47;
 			// Container child fixed1.Gtk.Fixed+FixedChild
 			this.label1 = new global::Gtk.Label ();
 			this.label1.Name = "label1";
 			this.label1.LabelProp = "Pidgeon";
 			this.fixed1.Add (this.label1);
-			global::Gtk.Fixed.FixedChild w6 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
-			w6.X = 220;
-			w6.Y = 14;
+			global::Gtk.Fixed.FixedChild w5 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label1]));
+			w5.X = 220;
+			w5.Y = 14;
+			// Container child fixed1.Gtk.Fixed+FixedChild
+			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.textview1 = new global::Gtk.TextView ();
+			this.textview1.Buffer.Text = "About:\n\nThe pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.\n\nThat means:\nEveryone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website\n\nLicense:\n\nThis program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.\n                                                                         \nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        \n\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.";
+			this.textview1.WidthRequest = 500;
+			this.textview1.HeightRequest = 400;
+			this.textview1.CanFocus = true;
+			this.textview1.Name = "textview1";
+			this.textview1.Editable = false;
+			this.textview1.WrapMode = ((global::Gtk.WrapMode)(2));
+			this.GtkScrolledWindow.Add (this.textview1);
+			this.fixed1.Add (this.GtkScrolledWindow);
+			global::Gtk.Fixed.FixedChild w7 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.GtkScrolledWindow]));
+			w7.X = 8;
+			w7.Y = 171;
 			this.Add (this.fixed1);
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 579;
-			this.DefaultHeight = 600;
+			this.DefaultHeight = 629;
 			this.Show ();
 		}
 	}

@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Release/Pidgeon.exe" internal="true" />
+    <widget-library name="../bin/Debug/Pidgeon.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="Client.Forms.Main" design-size="1018 600">
     <action-group name="Default">
@@ -352,7 +352,7 @@
                 <property name="MemberName" />
                 <property name="ShadowType">In</property>
                 <child>
-                  <widget class="Gtk.TreeView" id="treeview2">
+                  <widget class="Gtk.TreeView" id="listView">
                     <property name="MemberName" />
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
@@ -369,23 +369,6 @@
           <widget class="Client.Graphics.TextBox" id="textbox1">
             <property name="MemberName" />
             <property name="Events">ButtonPressMask</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="Gtk.Bin" id="Client.Graphics.PidgeonList" design-size="300 300">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
-        <property name="MemberName" />
-        <property name="ShadowType">In</property>
-        <child>
-          <widget class="Gtk.TreeView" id="treeview1">
-            <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="ShowScrollbars">True</property>
           </widget>
         </child>
       </widget>
@@ -432,26 +415,7 @@
       <placeholder />
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="Client.Graphics.TextBox" design-size="300 300">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
-        <property name="MemberName" />
-        <property name="ShadowType">In</property>
-        <child>
-          <widget class="Gtk.TextView" id="richTextBox">
-            <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="ShowScrollbars">True</property>
-            <property name="AcceptsTab">False</property>
-            <property name="Text" translatable="yes" />
-          </widget>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="579 600">
+  <widget class="Gtk.Window" id="Client.Forms.Help" design-size="579 629">
     <property name="MemberName" />
     <property name="WidthRequest">520</property>
     <property name="HeightRequest">600</property>
@@ -495,31 +459,6 @@
           </packing>
         </child>
         <child>
-          <widget class="Gtk.Label" id="label5">
-            <property name="MemberName" />
-            <property name="WidthRequest">480</property>
-            <property name="LabelProp">About:
-
-The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
-
-That means:
-Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website
-
-License:
-
-This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
-                                                                         
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
-
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</property>
-            <property name="Wrap">True</property>
-          </widget>
-          <packing>
-            <property name="X">20</property>
-            <property name="Y">167</property>
-          </packing>
-        </child>
-        <child>
           <widget class="Gtk.Image" id="image2">
             <property name="MemberName" />
             <property name="Pixbuf">resource:Client.Resources.Pigeon_clip_art_hight_mini.png</property>
@@ -539,23 +478,61 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
             <property name="Y">14</property>
           </packing>
         </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="Gtk.Bin" id="Client.Scrollback" design-size="300 300">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
-        <property name="MemberName" />
-        <property name="ShadowType">In</property>
         <child>
-          <widget class="Gtk.TextView" id="simpleview">
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <placeholder />
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
             <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="ShowScrollbars">True</property>
-            <property name="Text" translatable="yes" />
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="textview1">
+                <property name="MemberName" />
+                <property name="WidthRequest">500</property>
+                <property name="HeightRequest">400</property>
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Editable">False</property>
+                <property name="Text">About:
+
+The pidgeon project was established as an open source which anyone can edit or improve, or even suggest new features to. The source code is located at gitorious (link is available on wiki), but in order to submit patches, you don't need to be a member of the project.
+
+That means:
+Everyone who wants to contribute to this project, is welcome and definitely should be able to do that, there is no need to request any permissions to modify the core sources or to develop plugins. If you like this project and you want to contribute to make pidgeon even better, please see our website
+
+License:
+
+This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or  (at your option) version 3.
+                                                                         
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of        
+
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.</property>
+                <property name="WrapMode">Word</property>
+              </widget>
+            </child>
           </widget>
+          <packing>
+            <property name="X">8</property>
+            <property name="Y">171</property>
+          </packing>
         </child>
       </widget>
     </child>
