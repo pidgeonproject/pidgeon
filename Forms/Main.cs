@@ -25,7 +25,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Main : Gtk.Window
+	public partial class Main : Client.GTK.PidgeonForm
 	{
 		private string StatusBox = "";
         public Graphics.Window main = null;
@@ -48,36 +48,6 @@ namespace Client.Forms
             }
         }
 
-		public int Height
-		{
-			get
-			{
-				int height;
-				int width;
-				GetSize(out width, out height);
-				return height;
-			}
-			set
-			{
-				this.SetSizeRequest (Width, value);
-			}
-		}
-		
-		public int Width
-		{
-			get
-			{
-				int height;
-				int width;
-				GetSize(out width, out height);
-				return width;
-			}
-			set
-			{
-				this.SetSizeRequest (value, Height);
-			}
-		}	
-
         public class _WindowRequest
         {
             public Graphics.Window window;
@@ -88,7 +58,7 @@ namespace Client.Forms
         }
 
 		
-		public Main () : base(Gtk.WindowType.Toplevel)
+		public Main ()
 		{
 			try
 			{

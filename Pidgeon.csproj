@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -102,6 +102,8 @@
     <Compile Include="Commands\Commands_IRC.cs" />
     <Compile Include="Commands\Commands_Services.cs" />
     <Compile Include="Commands\Commands_System.cs" />
+    <Compile Include="GTK\MessageBox.cs" />
+    <Compile Include="GTK\PidgeonForm.cs" />
     <Compile Include="Scrollback\LineLogs.cs" />
     <Compile Include="Scrollback\Menu.cs" />
     <Compile Include="Scrollback\Parser.cs" />
