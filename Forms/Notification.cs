@@ -27,10 +27,14 @@ namespace Client.Forms
 {
 	public partial class Notification : Gtk.Window
 	{
-		public Notification () : 
-				base(Gtk.WindowType.Toplevel)
+		public void Build()
 		{
-			//this.Build ();
+			
+		}
+		
+		public Notification () : base(Gtk.WindowType.Toplevel)
+		{
+			this.Build ();
 		}
 	}
 }

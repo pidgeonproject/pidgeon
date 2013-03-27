@@ -70,6 +70,12 @@ namespace Client.Graphics
             }
         }
 
+		public void InitStyle()
+		{
+			richTextBox.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+			richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+		}
+		
         public TextBox()
         {
             
@@ -254,6 +260,7 @@ namespace Client.Graphics
         public void Init()
         {
             this.Build();
+			this.InitStyle();
             richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
             richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
             if (history == null)

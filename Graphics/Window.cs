@@ -138,7 +138,18 @@ namespace Client.Graphics
                 return textbox1;
             }
         }
-                                                       
+                       
+		public void InitStyle()
+		{
+			
+			scrollback.simpleview.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+			scrollback.simpleview.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+			
+			listView.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+			listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+			
+		}
+		
 		public Window ()
 		{
             this.scrollback1 = new global::Client.Scrollback();
@@ -156,6 +167,7 @@ namespace Client.Graphics
             this.scrollback.Create();
             this.textbox.Init();
             this.Build();
+			this.InitStyle();
             //kbToolStripMenuIm.Enabled = false;
             //kickrToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();

@@ -28,6 +28,14 @@ namespace Client.Forms
 	public partial class ScriptEdit : Gtk.Window
 	{
 		public Network network = null;
+		
+		public TextView textBox1
+		{
+			get
+			{
+				return textview1;
+			}
+		}
 
         private void button2_Click(object sender, EventArgs e)
         {

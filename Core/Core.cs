@@ -510,8 +510,6 @@ namespace Client
                     return true;
                 }
 
-                string[] values = command.Split(' ');
-
                 // if not we can try to pass it to server
                 if (Core._Main.Chat._Protocol != null)
                 {
@@ -675,10 +673,10 @@ namespace Client
                 string[] text = script.Split('\n');
                 foreach (string line in text)
                 {
-                    //edit.textBox1.AppendText(line + Environment.NewLine);
+                    edit.textBox1.Buffer.Text += (line + Environment.NewLine);
                 }
-                //edit.network = target;
-                //edit.Show();
+                edit.network = target;
+                edit.Show();
             }
             catch (Exception fail)
             {

@@ -88,7 +88,8 @@ namespace Client.Graphics
 
 		public void InitStyle()
 		{
-			
+			tv.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+			tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
 		}
 		
         public PidgeonList()

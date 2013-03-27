@@ -441,7 +441,6 @@ namespace Client.Forms
             }
         }
 		
-		/*
         private void attachToMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -471,7 +470,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-        */
 
         public void SwitchWindow(Graphics.Window window)
         {
