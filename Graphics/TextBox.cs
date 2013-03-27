@@ -36,7 +36,7 @@ namespace Client.Graphics
         public Window parent = null;
         public bool restore = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
-        private global::Gtk.TextView richTextBox;
+        public global::Gtk.TextView richTextBox;
 
         protected virtual void Build()
         {

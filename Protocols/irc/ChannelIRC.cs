@@ -29,8 +29,6 @@ namespace Client
         {
             if (code.Length > 3)
             {
-                string name = code[2];
-                string topic = _value;
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {

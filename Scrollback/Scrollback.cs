@@ -54,7 +54,7 @@ namespace Client
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		public global::Gtk.TextView simpleview;
 		private GLib.TimeoutHandler timer2;
-        public RichTBox RT = null;
+        //public RichTBox RT = null;
 
         new public List<ContentLine> Data
         {
@@ -105,7 +105,7 @@ namespace Client
 			this.simpleview.Editable = false;
             this.simpleview.DoubleBuffered = true;
 			this.GtkScrolledWindow.Add (this.simpleview);
-            this.RT = new RichTBox();
+            //this.RT = new RichTBox();
 			timer2 = new GLib.TimeoutHandler(timer2_Tick);
 			GLib.Timeout.Add(200, timer2);
 			this.Add (this.GtkScrolledWindow);
@@ -147,7 +147,7 @@ namespace Client
                 if (simple)
                 {
                     simple = false;
-                    RT.Visible = true;
+                    //RT.Visible = true;
                     //simpleview.Visible = false;
                     //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     //toggleSimpleLayoutToolStripMenuItem.Checked = false;
@@ -161,7 +161,7 @@ namespace Client
             //toggleSimpleLayoutToolStripMenuItem.Checked = true;
             simple = true;
             //simpleview.Visible = true;
-            RT.Visible = false;
+            //RT.Visible = false;
             Reload(true, true);
         }
 

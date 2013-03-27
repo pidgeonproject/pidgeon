@@ -443,7 +443,6 @@ namespace Client
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
                 Network remove = null;
-                Gtk.TreeIter item;
                 lock (Core._Main.ChannelList.ServerList)
                 {
                     foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)

@@ -32,7 +32,7 @@ namespace Client
     public partial class Scrollback
     {
         public enum ViewType
-        { 
+        {
             Channel,
             User,
             Link
@@ -200,7 +200,6 @@ namespace Client
 
         public void Click_L(string http)
         {
-            {
                 if (http.StartsWith("https://"))
                 {
                     try
@@ -237,7 +236,7 @@ namespace Client
                         {
                             if (owner.isChannel)
                             {
-                                //owner.textbox.richTextBox1.AppendText(nick + ": ");
+                                owner.textbox.richTextBox.Buffer.Text += nick + ": ";
                                 owner.textbox.setFocus();
                             }
                         }
@@ -293,7 +292,6 @@ namespace Client
                         return;
                     }
                 }
-            }
         }
 
         private void channelToolStripMenuItem_Click(object sender, EventArgs e)
