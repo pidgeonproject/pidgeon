@@ -142,9 +142,7 @@ namespace Client
         {
             if (Windows.ContainsKey(name))
             {
-                Core._Main.hPaned.Remove(Core._Main.Chat);
                 Current = Windows[name];
-                Current.scrollback._Display();
                 Core._Main.SwitchWindow(Current);
                 Current.Redraw();
                 if (Current.isChannel)
@@ -154,7 +152,7 @@ namespace Client
                         Core.network.RenderedChannel = Core.network.getChannel(Current.name);
                     }
                 }
-                //Core._Main.toolStripStatusChannel.Text = name;
+                Core._Main.setChannel(name);
                 if (Current.Making == false)
                 {
                     Current.textbox.setFocus();
@@ -319,7 +317,7 @@ namespace Client
                     Core._Main.main.Visible = true;
                     if (Core._Main.main != SystemWindow)
                     {
-                        SystemWindow.Visible = false;
+                        Core._Main.rootToolStripMenuItem_Click(null, null);
                     }
                     SystemWindow.Dispose();
                     Core._Main.Chat = Core._Main.main;

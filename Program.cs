@@ -29,27 +29,30 @@ namespace Client
         [STAThread]
         private static void Main(string[] parameters)
         {
-			try
-			{
-				Application.Init ();
-				Core.startup = parameters;
+            try
+            {
+                Application.Init();
+                Core.startup = parameters;
                 if (Core.Load())
                 {
                     Core.network = null;
-					Core._Main = new Forms.Main();
-					Core._Main.Show ();
-					Application.Run ();
+                    Core._Main = new Forms.Main();
+                    Core._Main.Show();
+                    Application.Run();
                 }
-				
-			}
-			catch (System.Threading.ThreadAbortException)
-			{
-				Application.Quit();
-			}
-			catch (Exception fail)
-			{
-				Core.handleException(fail, true);
-			}
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                Application.Quit();
+            }
+            catch (AccessViolationException fail)
+            {
+                Core.handleException(fail, true);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail, true);
+            }
 		}
     }
 }

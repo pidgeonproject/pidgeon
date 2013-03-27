@@ -43,6 +43,7 @@ namespace Client.Graphics
         public Dictionary<User, TreeIter> UserList = new Dictionary<User, TreeIter>();
         private LinkedList<User> queueUsers = new LinkedList<User>();
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
+        public List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
@@ -71,8 +72,10 @@ namespace Client.Graphics
             this.GtkScrolledWindow.Add(this.tv);
             timer = new GLib.TimeoutHandler(timer01_Tick);
             GLib.Timeout.Add(200, timer);
+            this.tv.RowActivated += new RowActivatedHandler(items_AfterSelect);
 
             this.Add(this.GtkScrolledWindow);
+            this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -119,6 +122,7 @@ namespace Client.Graphics
             {
                 queueUsers.AddLast(user);
             }
+            Updated = true;
         }
 
         private void _insertUser(User user)
@@ -146,7 +150,7 @@ namespace Client.Graphics
             }
         }
 
-        public void insertSv(ProtocolSv service)
+        private void insertService(ProtocolSv service)
         {
             TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services);
             lock (ServiceList)
@@ -154,6 +158,15 @@ namespace Client.Graphics
                 ServiceList.Add(service, text);
             }
             service.Windows["!root"].treeNode = text;
+        }
+
+        public void insertSv(ProtocolSv service)
+        {
+            lock (queueProtocol)
+            {
+                queueProtocol.Add(service);
+            }
+            Updated = true;
         }
 
         private void insertChan(Channel channel)
@@ -252,6 +265,15 @@ namespace Client.Graphics
                     queueChannels.Clear();
                 }
 
+                lock (queueProtocol)
+                {
+                    foreach (ProtocolSv item in queueProtocol)
+                    {
+                        insertService(item);
+                    }
+                    queueProtocol.Clear();
+                }
+
                 List<Channel> _channels = new List<Channel>();
                 lock (ChannelList)
                 {
@@ -317,94 +339,65 @@ namespace Client.Graphics
             partToolStripMenuItem.Visible = false;
             joinToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
+        }*/
+
+        private void items_AfterSelect2(object sender, EventArgs e)
+        {
+            items_AfterSelect(sender, null);
         }
 
-        private void items_AfterSelect(object sender, TreeViewEventArgs e)
+        private void items_AfterSelect(object sender, RowActivatedArgs e)
         {
             try
             {
-                RedrawMenu();
-                items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
+                //RedrawMenu();
+                //items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
+                TreeIter iter;
+                TreePath[] path = tv.Selection.GetSelectedRows();
+                tv.Model.GetIter(out iter, path[0]);
 
-                lock (ServiceList)
+                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                switch (type)
                 {
-                    if (ServiceList.ContainsValue(e.Node))
-                    {
-                        foreach (var sv in ServiceList)
+                    case ItemType.Channel:
+                        Channel chan = (Channel)tv.Model.GetValue(iter, 1);
+                        Core.network = chan._Network;
+                        //partToolStripMenuItem.Visible = true;
+                        //closeToolStripMenuItem.Visible = true;
+                        chan._Network.RenderedChannel = chan;
+                        chan._Network._Protocol.ShowChat(chan._Network.window + chan.Name);
+                        Core._Main.UpdateStatus();
+                        break;
+                    case ItemType.Server:
+                        Network server = (Network)tv.Model.GetValue(iter, 1);
+                        if (server.ParentSv == null)
                         {
-                            if (sv.Value == e.Node)
-                            {
-                                sv.Key.ShowChat("!root");
-                                Core.network = null;
-                                disconnectToolStripMenuItem.Visible = true;
-                                Core._Main.UpdateStatus();
-                                return;
-                            }
+                            server._Protocol.ShowChat("!system");
                         }
-                    }
-                }
-
-                lock (ServerList)
-                {
-                    if (ServerList.ContainsValue(e.Node))
-                    {
-                        foreach (var cu in ServerList)
+                        else
                         {
-                            if (cu.Value == e.Node)
-                            {
-                                if (cu.Key.ParentSv == null)
-                                {
-                                    cu.Key._Protocol.ShowChat("!system");
-                                }
-                                else
-                                {
-                                    cu.Key.ParentSv.ShowChat("!" + cu.Key.window);
-                                }
-                                Core.network = cu.Key;
-                                disconnectToolStripMenuItem.Visible = true;
-                                Core._Main.UpdateStatus();
-                                return;
-                            }
+                            server.ParentSv.ShowChat("!" + server.window);
                         }
-                    }
-                }
-
-                lock (UserList)
-                {
-                    if (UserList.ContainsValue(e.Node))
-                    {
-                        foreach (var cu in UserList)
-                        {
-                            if (cu.Value == e.Node)
-                            {
-                                Core.network = cu.Key._Network;
-                                cu.Key._Network._Protocol.ShowChat(cu.Key._Network.window + cu.Key.Nick);
-                                closeToolStripMenuItem.Visible = true;
-                                Core._Main.UpdateStatus();
-                                return;
-                            }
-                        }
-                    }
-                }
-
-                lock (ChannelList)
-                {
-                    if (ChannelList.ContainsValue(e.Node))
-                    {
-                        foreach (var cu in ChannelList)
-                        {
-                            if (cu.Value == e.Node)
-                            {
-                                Core.network = cu.Key._Network;
-                                partToolStripMenuItem.Visible = true;
-                                closeToolStripMenuItem.Visible = true;
-                                cu.Key._Network.RenderedChannel = cu.Key;
-                                cu.Key._Network._Protocol.ShowChat(cu.Key._Network.window + cu.Key.Name);
-                                Core._Main.UpdateStatus();
-                                return;
-                            }
-                        }
-                    }
+                        Core.network = server;
+                        //disconnectToolStripMenuItem.Visible = true;
+                        Core._Main.UpdateStatus();
+                        break;
+                    case ItemType.Services:
+                        ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
+                        protocol.ShowChat("!root");
+                        Core.network = null;
+                        // disconnectToolStripMenuItem.Visible = true;
+                        Core._Main.UpdateStatus();
+                        break;
+                    case ItemType.System:
+                        break;
+                    case ItemType.User:
+                        User us = (User)tv.Model.GetValue(iter, 1); ;
+                        Core.network = us._Network;
+                        us._Network._Protocol.ShowChat(us._Network.window + us.Nick);
+                        //closeToolStripMenuItem.Visible = true;
+                        Core._Main.UpdateStatus();
+                        break;
                 }
             }
             catch (Exception f)
@@ -413,6 +406,7 @@ namespace Client.Graphics
             }
         }
 
+        /*
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

@@ -30,7 +30,7 @@ namespace Client.Forms
 		public SearchItem () : 
 				base(Gtk.WindowType.Toplevel)
 		{
-			//this.Build ();
+			this.Build ();
 		}
 	}
 }

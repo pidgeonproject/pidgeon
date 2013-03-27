@@ -72,10 +72,7 @@ namespace Client.Graphics
 
         public TextBox()
         {
-            this.Build();
-            history = new List<string>();
-            richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
-            richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
+            
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -254,13 +251,15 @@ namespace Client.Graphics
             }
         }
 
-        /// <summary>
-        /// Deprecated
-        /// </summary>
-        [Obsolete]
         public void Init()
         {
-
+            this.Build();
+            richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
+            richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
+            if (history == null)
+            {
+                history = new List<string>();
+            }
         }
 
         public void setFocus()

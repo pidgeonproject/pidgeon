@@ -362,6 +362,7 @@ namespace Client
         /// <param name="_priority"></param>
         /// <param name="pmsg"></param>
         /// <returns></returns>
+        [Obsolete]
         public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             Core.DebugLog("Warning, this function is deprecated: ProtocolSv.Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) " + Environment.StackTrace);

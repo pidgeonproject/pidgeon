@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Gtk;
 
 namespace Client
 {
@@ -11,7 +12,7 @@ namespace Client
         {
             Name = "Input tab completion for the pidgeon";
             Description = "This plugin enable you to use tab completion like in terminal";
-            Version = "1.0.20";
+            Version = "1.0.60";
             base.Initialise();
         }
 

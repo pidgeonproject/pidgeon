@@ -27,8 +27,7 @@ namespace Client.Forms
 {
 	public partial class ScriptEdit : Gtk.Window
 	{
-		public ScriptEdit () : 
-				base(Gtk.WindowType.Toplevel)
+		public ScriptEdit () : base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
 		}

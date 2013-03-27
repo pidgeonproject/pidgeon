@@ -37,6 +37,8 @@ namespace Client.Forms
             combobox1.AddAttribute(cell, "text", 0);
             ListStore store = new ListStore(typeof(string));
             combobox1.Model = store;
+            ListStore store2 = new ListStore(typeof(string));
+            comboboxentry1.Model = store2;
             TreeIter iter = store.AppendValues("irc");
             store.AppendValues("quassel");
             store.AppendValues("pidgeon services");
@@ -52,7 +54,8 @@ namespace Client.Forms
             }
             if (Configuration.UserData.LastHost != "")
             {
-                this.comboboxentry1.AppendText (Configuration.UserData.LastHost);
+                TreeIter iter2 = store2.AppendValues(Configuration.UserData.LastHost);
+                this.comboboxentry1.SetActiveIter(iter2);
             }
             this.Title = messages.get("connection", Core.SelectedLanguage);
 		}

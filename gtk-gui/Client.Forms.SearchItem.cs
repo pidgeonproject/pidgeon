@@ -12,11 +12,11 @@ namespace Client.Forms
 			this.Title = "SearchItem";
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			if ((this.Child != null)) {
-				this.Child.ShowAll ();
+				this.Child.ShowAll();
 			}
 			this.DefaultWidth = 400;
 			this.DefaultHeight = 300;
-			this.Show ();
+			this.Hide();
 		}
 	}
 }

@@ -260,6 +260,7 @@ namespace Client
         {
             try
             {
+                return;
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;

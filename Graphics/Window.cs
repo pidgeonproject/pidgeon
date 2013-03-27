@@ -62,30 +62,43 @@ namespace Client.Graphics
         private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;
-		public Graphics.TextBox textbox = null;
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-		public Scrollback scrollback = null;
         public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string));
-
-                                                                 
+        public bool isInitialised = false;
+        public Scrollback scrollback
+        {
+            get
+            {
+                return scrollback1;
+            }
+        }
+        public Graphics.TextBox textbox
+        {
+            get
+            {
+                return textbox1;
+            }
+        }
+                                                       
 		public Window ()
 		{
-			this.Build ();
-            this.scrollback = scrollback1;
-            scrollback.owner = this;
-            this.textbox = new TextBox();
-            textbox.parent = this;
-            if (textbox.history == null)
+            this.scrollback1 = new global::Client.Scrollback();
+            this.textbox1 = new global::Client.Graphics.TextBox();
+            textbox1.parent = this;
+            if (textbox1.history == null)
             {
-                textbox.history = new List<string>();
+                textbox1.history = new List<string>();
             }
 		}
 		
 		public void Init()
         {
-            //Initialize();
+            scrollback.owner = this;
+            //this.scrollback.Create();
+            this.textbox.Init();
+            this.Build();
             //kbToolStripMenuIm.Enabled = false;
             //kickrToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
@@ -95,13 +108,16 @@ namespace Client.Graphics
             Gtk.CellRendererText renderer = new CellRendererText();
             column1.PackStart(renderer, true);
             column1.AddAttribute(renderer, "text", 0);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
             //listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
             //listView.ForeColor = Configuration.CurrentSkin.fontcolor;
         }
 
         public void Create()
         {
-            scrollback.Create();
             //scrollback.channelToolStripMenuItem.Visible = isChannel;
             //scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
             if (scrollback.owner == null || scrollback.owner._Network == null)
@@ -109,6 +125,7 @@ namespace Client.Graphics
                 //scrollback.listAllChannelsToolStripMenuItem.Visible = false;
             }
             Redraw();
+            isInitialised = true;
         }
 
         public bool Redraw()
@@ -125,12 +142,6 @@ namespace Client.Graphics
                     vpaned1.Position  = Configuration.Window.x4;
                 }
             }
-
-            //if (listViewd != null && listViewd.Columns.Count > 0)
-            //{
-            //    listViewd.Columns[0].Width = listViewd.Width;
-            //    listView.Columns[0].Width = listView.Width;
-            //}
             ignoreChange = false;
             return true;
         }
@@ -143,8 +154,6 @@ namespace Client.Graphics
                 {
                     Configuration.Window.x1 = hpaned1.Position;
                     Configuration.Window.x4 = vpaned1.Position;
-                    //listViewd.Columns[0].Width = listViewd.Width;
-                    //listView.Columns[0].Width = listView.Width;
                 }
             }
             catch (Exception fail)
@@ -155,21 +164,6 @@ namespace Client.Graphics
 
         /*
 
-        /// <summary>
-        /// this is a hack
-        /// </summary>
-        /// <param name="keyData"></param>
-        /// <returns></returns>
-        protected override bool IsInputKey(Keys keyData)
-        {
-            if (keyData == Keys.Tab)
-            {
-                return true;
-            }
-
-            // this way we override the keycode
-            return base.IsInputKey(keyData);
-        }
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {

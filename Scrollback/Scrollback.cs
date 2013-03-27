@@ -208,7 +208,6 @@ namespace Client
         public Scrollback()
         {
             //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
-			Build ();
             ReloadWaiting = true;
         }
 
@@ -216,13 +215,13 @@ namespace Client
         {
             //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             this.owner = _ParentWindow;
-            Build();
 
             ReloadWaiting = true;
         }
 
         public void Create()
         {
+            Build();
             //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
         }
 

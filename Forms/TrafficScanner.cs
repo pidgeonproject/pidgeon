@@ -29,7 +29,7 @@ namespace Client.Forms
 	{
 		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
-			//this.Build ();
+			this.Build ();
 		}
 		
 		public void Clean()

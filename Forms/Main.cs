@@ -36,10 +36,11 @@ namespace Client.Forms
         private bool UpdatedStatus = true;
         SearchItem searchbox = new SearchItem();
         bool done = false;
-        public int progress = 0;
+        public double progress = 0;
         public bool DisplayingProgress = false;
-        public int ProgressMax = 0;
+        public double ProgressMax = 0;
 		public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
+        private GLib.TimeoutHandler timer;
         public global::Gtk.HPaned hPaned
         {
             get
@@ -64,6 +65,8 @@ namespace Client.Forms
 			{
 				Core._Main = this;
 				this.Build ();
+                timer = new GLib.TimeoutHandler(updater_Tick);
+                GLib.Timeout.Add(200, timer);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
 				_Load();
 			}
@@ -326,11 +329,6 @@ namespace Client.Forms
             }
         }
 
-        public void Test(object sender, EventArgs e)
-        { 
-            
-        }
-
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -377,39 +375,32 @@ namespace Client.Forms
                     toolStripProgressBar1.Visible = DisplayingProgress;
                 }
 
-                if (DisplayingProgress)
+                if (hpaned1.Position != Configuration.Window.window_size)
                 {
-                    //if (updater.Interval != 10)
+                    if (done)
                     {
-                    //    updater.Interval = 10;
-                    }
-                }
-                else
-                {
-                    //if (updater.Interval != 200)
-                    {
-                    //    updater.Interval = 200;
+                        Configuration.Window.window_size = hpaned1.Position;
                     }
                 }
 
-                //if (toolStripProgressBar1.Maximum != ProgressMax)
+                if (this.toolStripProgressBar1.Adjustment.Upper != ProgressMax)
                 {
-                 //   if (toolStripProgressBar1.Value > ProgressMax)
+                    if (toolStripProgressBar1.Adjustment.Value > ProgressMax)
                     {
-                 //       toolStripProgressBar1.Value = ProgressMax;
+                        toolStripProgressBar1.Adjustment.Value = ProgressMax;
                     }
-                 //   toolStripProgressBar1.Maximum = ProgressMax;
+                    toolStripProgressBar1.Adjustment.Upper = ProgressMax;
                 }
-                //if (toolStripProgressBar1.Value != progress)
+                if (toolStripProgressBar1.Adjustment.Value != progress)
                 {
-                //    toolStripProgressBar1.Value = progress;
+                    toolStripProgressBar1.Adjustment.Value = progress;
                 }
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
-			return false;
+			return true;
         }
 		
 		/*
@@ -470,25 +461,31 @@ namespace Client.Forms
 
         public void SwitchWindow(Graphics.Window window)
         {
-            hpaned1.Remove(hpaned1.Child2);
+            if (hpaned1.Child2 != null)
+            {
+                hpaned1.Remove(hpaned1.Child2);
+            }
             hpaned1.Add2(window);
         }
 
-        private void rootToolStripMenuItem_Click(object sender, EventArgs e)
+        public void setChannel(string channel)
+        {
+            toolStripStatusChannel.Text = channel;
+        }
+
+        public void rootToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 if (Core.network != null)
                 {
                     Core.network.RenderedChannel = null;
-                    //Core.network._Protocol.Current.Visible = false;
                     Core.network._Protocol.Current = main;
                     SwitchWindow(main);
                     return;
                 }
                 main.Visible = true;
                 SwitchWindow(main);
-                main.scrollback._Display();
             }
             catch (Exception fail)
             {
