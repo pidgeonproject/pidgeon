@@ -54,8 +54,9 @@ namespace Client
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
 		public global::Gtk.TextView simpleview;
 		private GLib.TimeoutHandler timer2;
+        public RichTBox RT = null;
 
-        public List<ContentLine> Data
+        new public List<ContentLine> Data
         {
             get
             {
@@ -102,7 +103,9 @@ namespace Client
             this.Visible = true;
 			this.simpleview.Name = "simpleview";
 			this.simpleview.Editable = false;
+            this.simpleview.DoubleBuffered = true;
 			this.GtkScrolledWindow.Add (this.simpleview);
+            this.RT = new RichTBox();
 			timer2 = new GLib.TimeoutHandler(timer2_Tick);
 			GLib.Timeout.Add(200, timer2);
 			this.Add (this.GtkScrolledWindow);
@@ -142,7 +145,7 @@ namespace Client
                 if (simple)
                 {
                     simple = false;
-                    //RT.Visible = true;
+                    RT.Visible = true;
                     //simpleview.Visible = false;
                     //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     //toggleSimpleLayoutToolStripMenuItem.Checked = false;
@@ -156,7 +159,7 @@ namespace Client
             //toggleSimpleLayoutToolStripMenuItem.Checked = true;
             simple = true;
             //simpleview.Visible = true;
-            //RT.Visible = false;
+            RT.Visible = false;
             Reload(true, true);
         }
 
@@ -212,9 +215,10 @@ namespace Client
                     everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
 				simpleview.Buffer.Text = everything.ToString();
+                simpleview.Realize();
                 if (ScrollingEnabled)
                 {
-					simpleview.ScrollToIter(simpleview.Buffer.EndIter, 0, false, 0, 0);
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
                 }
             }
         }
@@ -260,6 +264,10 @@ namespace Client
             {
                 if (WindowVisible())
                 {
+                    if (ScrollingEnabled)
+                    {
+                        simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                    }
                     if (owner != null)
                     {
                         owner.Changed(null, null);

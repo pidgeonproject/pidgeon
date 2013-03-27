@@ -104,6 +104,7 @@
     <Compile Include="Commands\Commands_System.cs" />
     <Compile Include="GTK\MessageBox.cs" />
     <Compile Include="GTK\PidgeonForm.cs" />
+    <Compile Include="RichTBox\RichTBox_Core.cs" />
     <Compile Include="Scrollback\LineLogs.cs" />
     <Compile Include="Scrollback\Menu.cs" />
     <Compile Include="Scrollback\Parser.cs" />

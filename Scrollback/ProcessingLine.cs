@@ -39,9 +39,14 @@ namespace Client
                     Changed = true;
                     return;
                 }
-				simpleview.Buffer.Text += Configuration.Scrollback.format_date.Replace("$1",
+                Gtk.TextIter iter = simpleview.Buffer.EndIter;
+                simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
 				                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-										  Core.RemoveSpecial(line.text) + Environment.NewLine;
+										  Core.RemoveSpecial(line.text) + Environment.NewLine);
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
                 Changed = false;
                 return;
             }
