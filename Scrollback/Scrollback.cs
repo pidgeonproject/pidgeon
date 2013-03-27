@@ -285,10 +285,6 @@ namespace Client
                     {
                         simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
                     }
-                    if (owner != null)
-                    {
-                        owner.Changed(null, null);
-                    }
                     lock (UndrawnLines)
                     {
                         if (!ReloadWaiting)

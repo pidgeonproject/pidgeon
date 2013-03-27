@@ -35,10 +35,11 @@ namespace Client.Forms
 			try
 			{
 				this.Build ();
+				this.timer = new GLib.TimeoutHandler(Tick);
+				GLib.Timeout.Add (1000, timer);
 				this.DeleteEvent += new DeleteEventHandler(Unshow);
 				textview2.Buffer.Text = "";
 				textview2.WrapMode = WrapMode.Char;
-				this.timer = new GLib.TimeoutHandler(Tick);
 				this.Hide ();
 			} catch (Exception fail)
 			{

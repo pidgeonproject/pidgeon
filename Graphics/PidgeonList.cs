@@ -86,11 +86,17 @@ namespace Client.Graphics
             this.Hide();
         }
 
+		public void InitStyle()
+		{
+			
+		}
+		
         public PidgeonList()
         {
             try
             {
                 this.Build();
+				this.InitStyle();
             }
             catch (Exception fail)
             {
