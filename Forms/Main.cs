@@ -416,7 +416,7 @@ namespace Client.Forms
 			return true;
         }
 		
-		/*
+		
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             try
@@ -440,7 +440,8 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		
+		/*
         private void attachToMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -553,7 +554,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		 */
         private void switchToAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -568,7 +569,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		/*
         private void configurationFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

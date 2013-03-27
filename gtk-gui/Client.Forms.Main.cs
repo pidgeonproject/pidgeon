@@ -60,6 +60,7 @@ namespace Client.Forms
 			w1.Add (this.ShowAction, null);
 			this.UserAction = new global::Gtk.Action ("UserAction", "User", null, null);
 			this.UserAction.ShortLabel = "User";
+			this.UserAction.Visible = false;
 			w1.Add (this.UserAction, null);
 			this.HelpAction = new global::Gtk.Action ("HelpAction", "Help", null, null);
 			this.HelpAction.ShortLabel = "Help";
@@ -75,7 +76,7 @@ namespace Client.Forms
 			w1.Add (this.RootAction, null);
 			this.SearchAction = new global::Gtk.Action ("SearchAction", "Search", null, null);
 			this.SearchAction.ShortLabel = "Search";
-			w1.Add (this.SearchAction, null);
+			w1.Add (this.SearchAction, "<Primary>f");
 			this.SwitchToAdvancedLayoutAction = new global::Gtk.Action ("SwitchToAdvancedLayoutAction", "Switch to advanced layout", null, null);
 			this.SwitchToAdvancedLayoutAction.ShortLabel = "Switch to advanced layout";
 			w1.Add (this.SwitchToAdvancedLayoutAction, null);
@@ -90,13 +91,13 @@ namespace Client.Forms
 			w1.Add (this.OpenNewConnectionAction1, "<Alt>n");
 			this.FavoriteNetworksAction = new global::Gtk.Action ("FavoriteNetworksAction", "Favorite networks", null, null);
 			this.FavoriteNetworksAction.ShortLabel = "Favorite networks";
-			w1.Add (this.FavoriteNetworksAction, null);
+			w1.Add (this.FavoriteNetworksAction, "<Alt>f");
 			this.PreferencesAction = new global::Gtk.Action ("PreferencesAction", "Preferences", null, null);
 			this.PreferencesAction.ShortLabel = "Preferences";
-			w1.Add (this.PreferencesAction, null);
+			w1.Add (this.PreferencesAction, "<Alt>p");
 			this.PacketViewerAction = new global::Gtk.Action ("PacketViewerAction", "Packet viewer", null, null);
 			this.PacketViewerAction.ShortLabel = "Packet viewer";
-			w1.Add (this.PacketViewerAction, null);
+			w1.Add (this.PacketViewerAction, "<Primary><Alt>p");
 			this.SkinEditorAction = new global::Gtk.Action ("SkinEditorAction", "Skin editor", null, null);
 			this.SkinEditorAction.ShortLabel = "Skin editor";
 			w1.Add (this.SkinEditorAction, null);
@@ -105,10 +106,10 @@ namespace Client.Forms
 			w1.Add (this.SmallChatAction, null);
 			this.AttachToMicroChatAction = new global::Gtk.Action ("AttachToMicroChatAction", "Attach to micro chat", null, null);
 			this.AttachToMicroChatAction.ShortLabel = "Attach to micro chat";
-			w1.Add (this.AttachToMicroChatAction, null);
+			w1.Add (this.AttachToMicroChatAction, "<Alt>m");
 			this.DetachFromMicroChatAction = new global::Gtk.Action ("DetachFromMicroChatAction", "Detach from micro chat", null, null);
 			this.DetachFromMicroChatAction.ShortLabel = "Detach from micro chat";
-			w1.Add (this.DetachFromMicroChatAction, null);
+			w1.Add (this.DetachFromMicroChatAction, "<Alt>d");
 			this.UIManager.InsertActionGroup (w1, 0);
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "Client.Forms.Main";
@@ -194,6 +195,8 @@ namespace Client.Forms
 			this.AboutAction.Activated += new global::System.EventHandler (this.aboutToolStripMenuItem_Click);
 			this.OpenNewConnectionAction1.Activated += new global::System.EventHandler (this.newConnectionToolStripMenuItem_Click_1);
 			this.PreferencesAction.Activated += new global::System.EventHandler (this.preferencesToolStripMenuItem_Click);
+			this.PacketViewerAction.Activated += new global::System.EventHandler (this.toolStripMenuItem3_Click);
+			this.SmallChatAction.Activated += new global::System.EventHandler (this.taskbarBoxToolStripMenuItem_Click);
 		}
 	}
 }

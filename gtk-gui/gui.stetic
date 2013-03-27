@@ -40,6 +40,7 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">User</property>
         <property name="ShortLabel" translatable="yes">User</property>
+        <property name="Visible">False</property>
       </action>
       <action id="HelpAction">
         <property name="Type">Action</property>
@@ -65,6 +66,7 @@
       </action>
       <action id="SearchAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Primary&gt;f</property>
         <property name="Label" translatable="yes">Search</property>
         <property name="ShortLabel" translatable="yes">Search</property>
       </action>
@@ -92,19 +94,23 @@
       </action>
       <action id="FavoriteNetworksAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Alt&gt;f</property>
         <property name="Label" translatable="yes">Favorite networks</property>
         <property name="ShortLabel" translatable="yes">Favorite networks</property>
       </action>
       <action id="PreferencesAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Alt&gt;p</property>
         <property name="Label" translatable="yes">Preferences</property>
         <property name="ShortLabel" translatable="yes">Preferences</property>
         <signal name="Activated" handler="preferencesToolStripMenuItem_Click" />
       </action>
       <action id="PacketViewerAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Primary&gt;&lt;Alt&gt;p</property>
         <property name="Label" translatable="yes">Packet viewer</property>
         <property name="ShortLabel" translatable="yes">Packet viewer</property>
+        <signal name="Activated" handler="toolStripMenuItem3_Click" />
       </action>
       <action id="SkinEditorAction">
         <property name="Type">Action</property>
@@ -115,14 +121,17 @@
         <property name="Type">Action</property>
         <property name="Label" translatable="yes">Small chat</property>
         <property name="ShortLabel" translatable="yes">Small chat</property>
+        <signal name="Activated" handler="taskbarBoxToolStripMenuItem_Click" />
       </action>
       <action id="AttachToMicroChatAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Alt&gt;m</property>
         <property name="Label" translatable="yes">Attach to micro chat</property>
         <property name="ShortLabel" translatable="yes">Attach to micro chat</property>
       </action>
       <action id="DetachFromMicroChatAction">
         <property name="Type">Action</property>
+        <property name="Accelerator">&lt;Alt&gt;d</property>
         <property name="Label" translatable="yes">Detach from micro chat</property>
         <property name="ShortLabel" translatable="yes">Detach from micro chat</property>
       </action>
@@ -320,58 +329,21 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.TrafficScanner" design-size="400 300">
+  <widget class="Gtk.Window" id="Client.Forms.TrafficScanner" design-size="579 395">
     <property name="MemberName" />
     <property name="Title" translatable="yes">TrafficScanner</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
-      <placeholder />
-    </child>
-  </widget>
-  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.VPaned" id="vpaned1">
+      <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
         <property name="MemberName" />
-        <property name="CanFocus">True</property>
-        <property name="Position">319</property>
+        <property name="ShadowType">In</property>
         <child>
-          <widget class="Gtk.HPaned" id="hpaned1">
+          <widget class="Gtk.TextView" id="textview2">
             <property name="MemberName" />
             <property name="CanFocus">True</property>
-            <property name="Position">333</property>
-            <child>
-              <widget class="Client.Scrollback" id="scrollback1">
-                <property name="MemberName" />
-                <property name="Events">ButtonPressMask</property>
-              </widget>
-              <packing>
-                <property name="Resize">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
-                <property name="MemberName" />
-                <property name="ShadowType">In</property>
-                <child>
-                  <widget class="Gtk.TreeView" id="listView">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                  </widget>
-                </child>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Resize">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Client.Graphics.TextBox" id="textbox1">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
+            <property name="ShowScrollbars">True</property>
+            <property name="Editable">False</property>
+            <property name="Text" translatable="yes" />
           </widget>
         </child>
       </widget>
@@ -775,12 +747,93 @@
       <placeholder />
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.ScriptEdit" design-size="400 300">
+  <widget class="Gtk.Window" id="Client.Forms.ScriptEdit" design-size="737 432">
     <property name="MemberName" />
     <property name="Title" translatable="yes">ScriptEdit</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
-      <placeholder />
+      <widget class="Gtk.VBox" id="vbox1">
+        <property name="MemberName" />
+        <property name="Spacing">6</property>
+        <child>
+          <widget class="Gtk.Label" id="label1">
+            <property name="MemberName" />
+            <property name="LabelProp" translatable="yes">Do you really want to execute following commands?
+
+Lines prefixed with following symbols are:
+# - comment
+/ - will be launched as pidgeon command
+
+Other lines will be delivered as raw command to server</property>
+          </widget>
+          <packing>
+            <property name="Position">0</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow">
+            <property name="MemberName" />
+            <property name="ShadowType">In</property>
+            <child>
+              <widget class="Gtk.TextView" id="textview1">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="ShowScrollbars">True</property>
+                <property name="Text" translatable="yes" />
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">1</property>
+            <property name="AutoSize">True</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Gtk.HBox" id="hbox1">
+            <property name="MemberName" />
+            <property name="Spacing">6</property>
+            <child>
+              <widget class="Gtk.Button" id="button2">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Execute</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="Position">0</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.Button" id="button1">
+                <property name="MemberName" />
+                <property name="CanFocus">True</property>
+                <property name="Type">TextOnly</property>
+                <property name="Label" translatable="yes">Abort</property>
+                <property name="UseUnderline">True</property>
+              </widget>
+              <packing>
+                <property name="Position">1</property>
+                <property name="AutoSize">True</property>
+                <property name="Expand">False</property>
+                <property name="Fill">False</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="Position">2</property>
+            <property name="AutoSize">True</property>
+            <property name="Expand">False</property>
+            <property name="Fill">False</property>
+          </packing>
+        </child>
+      </widget>
     </child>
   </widget>
   <widget class="Gtk.Window" id="Client.Forms.Help" design-size="579 629">
@@ -901,6 +954,55 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
             <property name="X">8</property>
             <property name="Y">171</property>
           </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.VPaned" id="vpaned1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="Position">319</property>
+        <child>
+          <widget class="Gtk.HPaned" id="hpaned1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Position">333</property>
+            <child>
+              <widget class="Client.Scrollback" id="scrollback1">
+                <property name="MemberName" />
+                <property name="Events">ButtonPressMask</property>
+              </widget>
+              <packing>
+                <property name="Resize">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="listView">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Resize">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Client.Graphics.TextBox" id="textbox1">
+            <property name="MemberName" />
+            <property name="Events">ButtonPressMask</property>
+          </widget>
         </child>
       </widget>
     </child>

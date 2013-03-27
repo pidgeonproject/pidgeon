@@ -27,9 +27,48 @@ namespace Client.Forms
 {
 	public partial class ScriptEdit : Gtk.Window
 	{
+		public Network network = null;
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Hide ();
+			this.Destroy ();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+				string[] values = textview1.Buffer.Text.Split ('\n');
+                foreach (string text in values)
+                {
+                    if (text != "")
+                    {
+                        if (text.StartsWith("#"))
+                        {
+                            continue;
+                        }
+                        if (text.StartsWith(Configuration.CommandPrefix))
+                        {
+                            Core.ProcessCommand(text);
+                            continue;
+                        }
+                        network.Transfer(text, Configuration.Priority.High);
+                    }
+                }
+                Hide();
+				this.Destroy();
+            }
+            catch(Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+		
 		public ScriptEdit () : base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
+			messages.Localize(this);
 		}
 	}
 }

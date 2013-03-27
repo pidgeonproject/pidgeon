@@ -29,17 +29,34 @@ namespace Client.Forms
 	{
 		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
-			this.Build ();
+			try
+			{
+				this.Build ();
+				this.DeleteEvent += new DeleteEventHandler(Unshow);
+				textview2.Buffer.Text = "";
+				textview2.WrapMode = WrapMode.Char;
+				this.Hide ();
+			} catch (Exception fail)
+			{
+				Core.handleException(fail);
+			}
 		}
 		
 		public void Clean()
 		{
-			
+			textview2.Buffer.Text = "";
+		}
+		
+		public void Unshow(object main, Gtk.DeleteEventArgs closing)
+        {
+			Hide();
+			closing.RetVal = true;
 		}
 		
 		public void insert(string Server, string Text)
 		{
-			
+			TextIter iter = textview2.Buffer.EndIter;
+			textview2.Buffer.Insert(ref iter, Server + " " + Text + Environment.NewLine);
 		}
 	}
 }

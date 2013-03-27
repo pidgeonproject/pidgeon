@@ -159,7 +159,6 @@
     <Compile Include="Properties\Resources.Designer.cs" />
     <Compile Include="Properties\Settings.Designer.cs" />
     <Compile Include="Graphics\Window.cs" />
-    <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
     <Compile Include="Graphics\PidgeonList.cs" />
     <Compile Include="Forms\Connection.cs" />
     <Compile Include="gtk-gui\Client.Forms.Connection.cs" />

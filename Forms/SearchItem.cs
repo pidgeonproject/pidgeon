@@ -31,6 +31,7 @@ namespace Client.Forms
 				base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
+			this.Hide();
 		}
 	}
 }
