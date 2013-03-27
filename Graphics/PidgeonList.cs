@@ -50,6 +50,9 @@ namespace Client.Graphics
         private global::Gtk.TreeView tv;
         private Gtk.TreeStore Values = new TreeStore(typeof(string), typeof(object), typeof(ItemType));
         private GLib.TimeoutHandler timer;
+		public bool partToolStripMenuItem_Visible = false;
+        public bool joinToolStripMenuItem_Visible = false;
+        public bool disconnectToolStripMenuItem_Visible = false;
 
         protected virtual void Build()
         {
@@ -333,13 +336,12 @@ namespace Client.Graphics
             return true;
         }
 
-        /*
         public void RedrawMenu()
         {
-            partToolStripMenuItem.Visible = false;
-            joinToolStripMenuItem.Visible = false;
-            disconnectToolStripMenuItem.Visible = false;
-        }*/
+            partToolStripMenuItem_Visible = false;
+            joinToolStripMenuItem_Visible = false;
+            disconnectToolStripMenuItem_Visible = false;
+        }
 
         private void items_AfterSelect2(object sender, EventArgs e)
         {
@@ -350,7 +352,7 @@ namespace Client.Graphics
         {
             try
             {
-                //RedrawMenu();
+                RedrawMenu();
                 //items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
                 TreeIter iter;
                 TreePath[] path = tv.Selection.GetSelectedRows();

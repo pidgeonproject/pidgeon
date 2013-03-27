@@ -27,6 +27,9 @@ namespace Client.Forms
 {
 	public partial class TrafficScanner : Gtk.Window
 	{
+		private List<string> traf = new List<string>();
+		public GLib.TimeoutHandler timer;
+		private bool Enabled = true;
 		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
 			try
@@ -35,6 +38,7 @@ namespace Client.Forms
 				this.DeleteEvent += new DeleteEventHandler(Unshow);
 				textview2.Buffer.Text = "";
 				textview2.WrapMode = WrapMode.Char;
+				this.timer = new GLib.TimeoutHandler(Tick);
 				this.Hide ();
 			} catch (Exception fail)
 			{
@@ -53,10 +57,42 @@ namespace Client.Forms
 			closing.RetVal = true;
 		}
 		
+		public bool Tick()
+		{
+			if (!Enabled)
+			{
+				return true;
+			}
+			if (!this.Visible)
+			{
+				return true;
+			}
+			StringBuilder text = new StringBuilder("");
+			lock (traf)
+			{
+				if (traf.Count > 800)
+				{
+					Client.GTK.MessageBox message = new Client.GTK.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
+					if (message.result == ResponseType.No)
+					{
+						Enabled = false;
+						return true;
+					}
+				}
+				foreach (string xx in traf)
+				{
+					text.Append(xx + Environment.NewLine);
+				}
+				traf.Clear();
+			}
+			TextIter iter = textview2.Buffer.EndIter;
+			textview2.Buffer.Insert(ref iter, text.ToString());
+			return true;
+		}
+		
 		public void insert(string Server, string Text)
 		{
-			TextIter iter = textview2.Buffer.EndIter;
-			textview2.Buffer.Insert(ref iter, Server + " " + Text + Environment.NewLine);
+			traf.Add(Server + " " + Text);
 		}
 	}
 }

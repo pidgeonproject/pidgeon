@@ -113,10 +113,25 @@ namespace Client
 				this.Child.ShowAll ();
 			}
             this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu);
+			//this.simpleview. += new EventHandler(simpleviewFinished);
             
 			this.Hide ();
 		}
-
+		
+		private void simpleviewFinished(object o, EventArgs r)
+		{
+			try
+			{
+				if (ScrollingEnabled)
+	            {
+	            	simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+	            }
+			}catch (Exception fail)
+			{
+				Core.handleException(fail);
+			}
+		}
+		
         /// <summary>
         /// Change the text to specified list
         /// </summary>
