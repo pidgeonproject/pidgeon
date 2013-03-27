@@ -89,6 +89,41 @@ namespace Client
             }
         }
 
+        [GLib.ConnectBefore]
+        public static void CreateMenu(object o, Gtk.PopulatePopupArgs e)
+        {
+            Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+            separator1.Show();
+            e.Menu.Append(separator1);
+            e.Menu.Append(new Gtk.SeparatorMenuItem());
+            Gtk.MenuItem clean = new Gtk.MenuItem("Clean");
+            clean.Show();
+            e.Menu.Append(clean);
+            Gtk.MenuItem scroll = new Gtk.MenuItem("Scroll");
+            scroll.Show();
+            e.Menu.Append(scroll);
+            Gtk.MenuItem refresh = new Gtk.MenuItem("Refresh");
+            refresh.Show();
+            e.Menu.Append(refresh);
+            Gtk.MenuItem taly = new Gtk.MenuItem("Toggle advanced layout");
+            taly.Show();
+            e.Menu.Append(taly);
+            Gtk.MenuItem tsly = new Gtk.MenuItem("Toggle simple layout");
+            tsly.Show();
+            e.Menu.Append(tsly);
+            Gtk.SeparatorMenuItem separator2 = new Gtk.SeparatorMenuItem();
+            separator2.Show();
+            e.Menu.Append(separator2);
+            Gtk.MenuItem channel = new Gtk.MenuItem("Channel");
+            channel.Show();
+            e.Menu.Append(channel);
+            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
+            list.Show();
+            e.Menu.Append(list);
+            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
+            retrieve.Show();
+            e.Menu.Append(retrieve);
+        }
 
         public void ViewLn(string content, ViewType type, string name = "")
         {

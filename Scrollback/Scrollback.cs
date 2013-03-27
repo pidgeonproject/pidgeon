@@ -112,6 +112,8 @@ namespace Client
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
+            this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu);
+            
 			this.Hide ();
 		}
 
