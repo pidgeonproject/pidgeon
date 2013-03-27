@@ -123,6 +123,7 @@
     <Compile Include="Protocol.cs" />
     <Compile Include="RevisionInfo.cs" />
     <Compile Include="ScriptingCore.cs" />
+    <Compile Include="Scrollback\ScrollbackLine.cs" />
     <Compile Include="SkinCl.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Core\Config_Core.cs" />

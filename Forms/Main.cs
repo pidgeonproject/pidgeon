@@ -67,6 +67,7 @@ namespace Client.Forms
 				this.Build ();
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
+                this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
 				_Load();
 			}
@@ -115,13 +116,13 @@ namespace Client.Forms
                     Core.PrintRing(Chat, false);
                 }
 
-                Chat.scrollback.InsertText("Welcome to pidgeon client " +  System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Scrollback.MessageStyle.System, false, 0, true);
+                Chat.scrollback.InsertText("Welcome to pidgeon client " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Client.ContentLine.MessageStyle.System, false, 0, true);
 
                 if (Core.Extensions.Count > 0)
                 {
                     foreach (Extension nn in Core.Extensions)
                     {
-                        Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Scrollback.MessageStyle.System, false, 0, true);
+                        Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Client.ContentLine.MessageStyle.System, false, 0, true);
                     }
                 }
                 done = true;
@@ -154,15 +155,22 @@ namespace Client.Forms
         /// <param name="Focus"></param>
         public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
         {
+            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+            {
+                throw new Exception("You can't control other windows from non kernel thread");
+            }
             Chat.Init();
             Chat.Create();
-            Chat.Visible = Focus;
+            Chat.Visible = true;
             Chat._Protocol = WindowOwner;
             if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {
                 Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
             }
-			SwitchWindow(Chat);
+            if (Focus)
+            {
+                SwitchWindow(Chat);
+            }
         }
 
         /// <summary>
@@ -202,6 +210,10 @@ namespace Client.Forms
          
         public void UpdateStatus()
         {
+            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+            {
+                throw new Exception("You can't control other windows from non kernel thread");
+            }
             this.toolStripInfo.Text = StatusBox;
             if (Core.network != null)
             {
@@ -347,8 +359,9 @@ namespace Client.Forms
             try
             {
                 if (fConnection == null)
+                {
                     fConnection = new Forms.Connection();
-
+                }
 
                 fConnection.Show();
             }
@@ -461,11 +474,16 @@ namespace Client.Forms
 
         public void SwitchWindow(Graphics.Window window)
         {
+            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+            {
+                throw new Exception("You can't control other windows from non kernel thread");
+            }
             if (hpaned1.Child2 != null)
             {
                 hpaned1.Remove(hpaned1.Child2);
             }
             hpaned1.Add2(window);
+            Chat = window;
         }
 
         public void setChannel(string channel)

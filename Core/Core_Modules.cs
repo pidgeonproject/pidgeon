@@ -98,7 +98,7 @@ namespace Client
                         Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
                         if (Core._Main != null)
                         {
-                            Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Scrollback.MessageStyle.System, false);
+                            Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
                         }
                         return true;
                     }
@@ -133,7 +133,7 @@ namespace Client
                     plugin.Load();
                     if (Core._Main != null)
                     {
-                        Core._Main.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Scrollback.MessageStyle.System, false);
+                        Core._Main.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
                     }
                     return true;
                 }

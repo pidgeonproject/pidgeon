@@ -32,7 +32,7 @@ namespace Client.Services
             public bool isChannel = false;
             public bool isPM = false;
             public List<string> history = new List<string>();
-            public List<Scrollback.ContentLine> lines = null;
+            public List<Client.ContentLine> lines = null;
             public string Name = null;
             public string topic = null;
             public bool Changed = true;
@@ -46,7 +46,7 @@ namespace Client.Services
             {
                 Name = owner.name;
                 isChannel = owner.isChannel;
-                lines = new List<Scrollback.ContentLine>();
+                lines = new List<Client.ContentLine>();
                 if (owner.textbox != null)
                 {
                     history.AddRange(owner.textbox.history);
@@ -167,8 +167,8 @@ namespace Client.Services
             public List<Network.ChannelData> ChannelList = new List<Network.ChannelData>();
 
             public List<Description> Descriptions = new List<Description>();
-            public List<Buffer.Window> _windows = new List<Window>();
-            public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
+            public List<Buffer.Window> _windows = new List<Buffer.Window>();
+            public List<Buffer.ChannelInfo> _channels = new List<Buffer.ChannelInfo>();
             public List<string> PrivateWins = new List<string>();
 
             [Serializable]
@@ -586,12 +586,12 @@ namespace Client.Services
         {
             if (Core._Main.Chat != null)
             {
-                Core._Main.Chat.scrollback.InsertText("Information about cache:", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Information about cache:", Client.ContentLine.MessageStyle.System, false);
                 lock (networkInfo)
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Scrollback.MessageStyle.System, false);
+                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Client.ContentLine.MessageStyle.System, false);
                     }
                 }
             }

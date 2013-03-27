@@ -460,14 +460,14 @@ namespace Client
         {
             try
             {
-                System.Diagnostics.Debug.Print(data);
+                //System.Diagnostics.Debug.Print(data);
                 if (Configuration.Kernel.Debugging)
                 {
                     if (Core._Main != null && !Core.blocked)
                     {
                         if (Core._Main.main != null)
                         {
-                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Scrollback.MessageStyle.System, false);
+                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
                         }
                     }
                 }
@@ -485,7 +485,7 @@ namespace Client
             {
                 foreach (string item in Ring)
                 {
-                    window.scrollback.InsertText(item, Scrollback.MessageStyle.System, write, 0, true);
+                    window.scrollback.InsertText(item, Client.ContentLine.MessageStyle.System, write, 0, true);
                 }
             }
         }
@@ -521,7 +521,7 @@ namespace Client
                         return false;
                     }
                 }
-                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Scrollback.MessageStyle.System);
+                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
                 return false;
             }
             catch (Exception f)

@@ -52,8 +52,8 @@ namespace Client
 
         public class Cache
         {
-            public int size = 0;
-            public int current = 0;
+            public double size = 0;
+            public double current = 0;
         }
 
         public enum Status
@@ -97,7 +97,7 @@ namespace Client
             try
             {
                 Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Scrollback.MessageStyle.System);
+                Client.ContentLine.MessageStyle.System);
 
                 sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -143,7 +143,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -168,7 +168,7 @@ namespace Client
             {
                 if (Connected)
                 {
-                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                 }
             }
             catch (System.Threading.ThreadAbortException)
@@ -349,7 +349,7 @@ namespace Client
 
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Scrollback.MessageStyle.Action);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -408,7 +408,7 @@ namespace Client
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
-                Windows["!root"].scrollback.InsertText("Connecting to " + server, Scrollback.MessageStyle.User, true);
+                Windows["!root"].scrollback.InsertText("Connecting to " + server, Client.ContentLine.MessageStyle.User, true);
                 Datagram request = new Datagram("CONNECT", server);
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
@@ -453,7 +453,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    Windows["!root"].scrollback.InsertText(er.Message, Scrollback.MessageStyle.User);
+                    Windows["!root"].scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
                     Exit();
                 }
                 catch (Exception f)

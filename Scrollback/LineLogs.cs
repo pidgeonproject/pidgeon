@@ -57,7 +57,7 @@ namespace Client
             return name;
         }
 
-        public static void Log(string text, Client.Scrollback.MessageStyle InputStyle, Graphics.Window owner, string directory)
+        public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory)
         {
             try
             {

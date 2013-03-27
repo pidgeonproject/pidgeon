@@ -248,7 +248,7 @@ namespace Client
                     if (Configuration.irc.DisplayCtcp)
                     {
                         WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + message,
-                            Scrollback.MessageStyle.Message, true, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
                     return true;
@@ -273,12 +273,12 @@ namespace Client
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
-                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action,
+                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
                         channel.retrieveWindow().scrollback.InsertText(_Protocol.PRIVMSG(user.Nick, message),
-                            Scrollback.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
                     }
                     channel.UpdateInfo();
                     return true;
@@ -295,7 +295,7 @@ namespace Client
                         _Network.Private(chan);
                     }
                     _Protocol.Windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
-                        Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
+                        Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                 }
                 return true;
             }
@@ -308,7 +308,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 string message = value;
-                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -336,7 +336,7 @@ namespace Client
                 {
                     return false;
                 }
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -363,7 +363,7 @@ namespace Client
                         {
                             WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                 new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                                Scrollback.MessageStyle.Join,
+                                Client.ContentLine.MessageStyle.Join,
                                 !item.temporary_hide, date, !updated_text);
                         }
                         if (updated_text)

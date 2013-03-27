@@ -206,7 +206,7 @@ namespace Client
         {
             Messages.protocol = this;
             Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Scrollback.MessageStyle.System);
+                Client.ContentLine.MessageStyle.System);
             try
             {
                 if (!SSL)
@@ -247,7 +247,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -276,7 +276,7 @@ namespace Client
             }
             catch (System.IO.IOException)
             {
-                SystemWindow.scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
+                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
                 Core._Main.Status("Disconnected from server " + Server);
                 Exit();
             }
@@ -333,7 +333,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+                Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
@@ -348,7 +348,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -387,7 +387,7 @@ namespace Client
             {
                 main.Abort();
             }
-            SystemWindow.scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
+            SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {
                 Core.network = null;

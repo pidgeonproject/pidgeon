@@ -260,11 +260,9 @@ namespace Client
         {
             try
             {
-                return;
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;
-                    Gtk.TreeView listView = null;
                     retrieveWindow();
                     List<User> owners = new List<User>();
                     List<User> admins = new List<User>();
@@ -274,28 +272,13 @@ namespace Client
                     List<User> users = new List<User>();
                     bool Inserted;
                     Core._Main.UpdateStatus();
-                    if (Chat != null)
+                    if (Chat != null && Chat.isInitialised)
                     {
                         if (Chat.Locked)
                         {
                             Redraw = true;
                             Graphics.PidgeonList.Updated = true;
                             UserListRefreshWait = true;
-                            return;
-                        }
-                        //if (Chat.listView.Visible)
-                        {
-                            //    listView = Chat.listViewd;
-                        }
-                        //if (Chat.listViewd.Visible)
-                        {
-                            //    listView = Chat.listView;
-                        }
-                        //if (listView == null)
-                        {
-                            //    Chat.listView.Visible = true;
-                            Redraw = true;
-                            Graphics.PidgeonList.Updated = true;
                             return;
                         }
                         lock (UserList)
@@ -361,60 +344,87 @@ namespace Client
                         vs.Sort();
                         users.Sort();
 
-                        int i = 0;
+                        Dictionary<User, Gtk.TreeIter> CurrentUsers = new Dictionary<User, Gtk.TreeIter>();
+                        Gtk.TreeIter iter;
+                        if (Chat.UserList.GetIterFirst(out iter))
+                        {
+                            while (true)
+                            {
+                                User user = (User)Chat.UserList.GetValue(iter, 1);
+                                CurrentUsers.Add(user, iter);
+                                if (!Chat.UserList.IterNext(ref iter))
+                                {
+                                    break;
+                                }
+                            }
+                        }
 
                         foreach (User user in owners)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
-                            i++;
                         }
+
                         foreach (User user in admins)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
-                            i++;
                         }
                         foreach (User user in oper)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
-                            i++;
                         }
                         foreach (User user in halfop)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
-                            i++;
                         }
                         foreach (User user in vs)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
-                            i++;
                         }
 
                         foreach (User user in users)
                         {
-                            //listView.Items.Add(uchr(user) + user.Nick);
+                            if (!CurrentUsers.ContainsKey(user))
+                            {
+                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                            }
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
-                            i++;
                         }
-                        //if (Chat.listViewd.Visible == true)
+
+                        // check for all users who are in list but not in a channel
+                        foreach (User user in CurrentUsers.Keys)
                         {
-                            //    Chat.listViewd.Visible = false;
-                            //    Chat.listView.Visible = true;
-                        }
-                        //else
-                        {
-                            //    Chat.listView.Visible = false;
-                            //    Chat.listViewd.Visible = true;
+                            if (!this.UserList.Contains(user))
+                            { 
+                                // this user is no longer in channel so we need to remove them from the list
+                                Gtk.TreeIter iter2 = CurrentUsers[user];
+                                Chat.UserList.Remove(ref iter2);
+                            }
                         }
                     }
                     return;

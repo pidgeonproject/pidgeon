@@ -30,15 +30,6 @@ namespace Client
 {
     public partial class Scrollback
     {
-        [Obsolete]
-        public void _Display()
-        {
-            //if (!this.Visible)
-            //{
-            //    this.Visible = true;
-            //}
-        }
-
         private void InsertLineToText(ContentLine line, bool Draw = true)
         {
             if (simple)
@@ -80,23 +71,23 @@ namespace Client
             Color color = Configuration.CurrentSkin.fontcolor;
             switch (_c.style)
             {
-                case MessageStyle.Action:
+                case Client.ContentLine.MessageStyle.Action:
                     color = Configuration.CurrentSkin.miscelancscolor;
                     break;
-                case MessageStyle.Kick:
+                case Client.ContentLine.MessageStyle.Kick:
                     color = Configuration.CurrentSkin.kickcolor;
                     break;
-                case MessageStyle.System:
+                case Client.ContentLine.MessageStyle.System:
                     color = Configuration.CurrentSkin.miscelancscolor;
                     break;
-                case MessageStyle.Channel:
+                case Client.ContentLine.MessageStyle.Channel:
                     color = Configuration.CurrentSkin.colortalk;
                     break;
-                case MessageStyle.User:
+                case Client.ContentLine.MessageStyle.User:
                     color = Configuration.CurrentSkin.changenickcolor;
                     break;
-                case MessageStyle.Join:
-                case MessageStyle.Part:
+                case Client.ContentLine.MessageStyle.Join:
+                case Client.ContentLine.MessageStyle.Part:
                     color = Configuration.CurrentSkin.joincolor;
                     break;
             }
@@ -244,7 +235,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, false);
         }
@@ -258,7 +249,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertTextAndIgnoreUpdate(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertTextAndIgnoreUpdate(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, true);
         }
@@ -272,7 +263,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        private bool insertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))

@@ -132,15 +132,14 @@ namespace Client.Graphics
                 if (ServerList.ContainsKey(user._Network))
                 {
                     //text.ImageIndex = 4;
-                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
-                    //text.Text = user.Nick;
+                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User);
+                    TreePath path = tv.Model.GetPath(ServerList[user._Network]);
+                    tv.ExpandRow(path, true);
 
                     lock (UserList)
                     {
                         UserList.Add(user, text);
                     }
-
-                    //ServerList[user._Network].Expand();
                     if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
                     {
                         user._Network._Protocol.Windows[user._Network.window + user.Nick].treeNode = text;
@@ -175,9 +174,10 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel);   //Nodes.Insert(ServerList[user._Network].Nodes.Count, text);
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel);
+                    TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
+                    tv.ExpandRow(path, true);
 
-                    //ServerList[channel._Network].Expand();
                     lock (ChannelList)
                     {
                         ChannelList.Add(channel, text);
@@ -202,16 +202,16 @@ namespace Client.Graphics
                 {
                     ServerList.Add(network, text);
                 }
-                //text.Expand();
                 network.SystemWindow.treeNode = text;
                 return;
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
                 TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server);
+                TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
+                tv.ExpandRow(path, true);
                 network.SystemWindow.treeNode = text;
                 ServerList.Add(network, text);
-                //ServiceList[network.ParentSv].Expand();
             }
         }
 
@@ -480,7 +480,7 @@ namespace Client.Graphics
                     Network network = (Network)Item;
                     if (network.Connected)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Scrollback.MessageStyle.System, false, 0, true);
+                        Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Client.ContentLine.MessageStyle.System, false, 0, true);
                         return;
                     }
 

@@ -65,7 +65,7 @@ namespace Client.Graphics
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string));
+        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User));
         public bool isInitialised = false;
         public Scrollback scrollback
         {
@@ -95,8 +95,8 @@ namespace Client.Graphics
 		
 		public void Init()
         {
-            scrollback.owner = this;
-            //this.scrollback.Create();
+            this.scrollback.owner = this;
+            this.scrollback.Create();
             this.textbox.Init();
             this.Build();
             //kbToolStripMenuIm.Enabled = false;
@@ -108,10 +108,6 @@ namespace Client.Graphics
             Gtk.CellRendererText renderer = new CellRendererText();
             column1.PackStart(renderer, true);
             column1.AddAttribute(renderer, "text", 0);
-            if ((this.Child != null))
-            {
-                this.Child.ShowAll();
-            }
             //listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
             //listView.ForeColor = Configuration.CurrentSkin.fontcolor;
         }

@@ -777,7 +777,7 @@ namespace Client
             }
             if (Core.network == null)
             {
-                Core._Main.Chat.scrollback.InsertText("Not connected", Client.Scrollback.MessageStyle.User);
+                Core._Main.Chat.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);
                 return 2;
             }
             if (Core.network.Connected)

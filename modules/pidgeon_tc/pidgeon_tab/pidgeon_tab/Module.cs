@@ -91,7 +91,7 @@ namespace Client
                     }
                     if (Results.Count > 1)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                         string part = "";
                         int curr = 0;
                         bool match = true;
@@ -167,7 +167,7 @@ namespace Client
                             }
                             if (Results.Count > 1)
                             {
-                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                                 string part = "";
                                 int curr = 0;
                                 bool match = true;
@@ -248,7 +248,7 @@ namespace Client
 
                 if (Results2.Count > 1)
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System);
                     string part = "";
                     int curr = 0;
                     char orig = ' ';

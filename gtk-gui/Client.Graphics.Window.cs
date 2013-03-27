@@ -29,7 +29,6 @@ namespace Client.Graphics
 			this.hpaned1.Position = 333;
 			// Container child hpaned1.Gtk.Paned+PanedChild
             //this.scrollback1 = new global::Client.Scrollback();
-            this.scrollback1.Create();
             this.scrollback1.Events = ((global::Gdk.EventMask)(256));
             this.scrollback1.Name = "scrollback1";
             this.hpaned1.Add1(this.scrollback1);
