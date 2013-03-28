@@ -264,7 +264,7 @@ namespace Client
                         Directory.CreateDirectory(PermanentTemp);
                     }
                     DebugLog("Running updater");
-                    ThUp = new Thread(Forms.Updater.Run);
+                    ThUp = new Thread(Updater.Run);
                     ThUp.Name = "pidgeon service";
                     ThUp.Start();
                     SystemThreads.Add(ThUp);
@@ -299,11 +299,11 @@ namespace Client
                     Hooks._Sys.AfterCore();
                     return true;
                 }
-                Forms.Updater _finalisingupdater = new Forms.Updater();
-                //_finalisingupdater.update.Visible = false;
+                Updater _finalisingupdater = new Updater();
+                _finalisingupdater.update.Visible = false;
                 _finalisingupdater.finalize = true;
-                //_finalisingupdater.lStatus.Text = messages.get("update2");
-                //System.Windows.Forms.Application.Run(_finalisingupdater);
+                _finalisingupdater.lStatus.Text = messages.get("update2");
+                System.Windows.Forms.Application.Run(_finalisingupdater);
             }
             catch (Exception panic)
             {
