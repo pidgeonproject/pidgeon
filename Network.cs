@@ -199,7 +199,29 @@ namespace Client
                 }
             }
         }
-
+		
+		/// <summary>
+		/// Removes the char from user.
+		/// </summary>
+		/// <returns>
+		/// The username without char.
+		/// </returns>
+		/// <param name='username'>
+		/// Username.
+		/// </param>
+		public string RemoveCharFromUser(string username)
+		{
+			foreach (char xx in UChars)
+			{
+				if (username.Contains(xx.ToString ()))
+				{
+					username = username.Replace (xx.ToString(), "");
+				}
+			}
+			
+			return username;
+		}
+		
         public void DisplayChannelWindow()
         {
             try

@@ -348,7 +348,10 @@ namespace Client
                                 users.Add(nick);
                             }
                         }
-
+						
+						Chat.UserList.Clear();
+						
+						
                         owners.Sort();
                         admins.Sort();
                         halfop.Sort();
@@ -388,8 +391,7 @@ namespace Client
                             if (!CurrentUsers.ContainsKey(user))
                             {
                                 xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
-
+							}
                             user.Status = User.ChannelStatus.Admin;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                         }
@@ -441,9 +443,13 @@ namespace Client
                                 Chat.UserList.Remove(ref iter2);
                             } else 
 							{
-								if (info.Value.username != info.Key.Nick)
+								if (info.Value.hn != info.Key.ToString ())
 								{
-									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 0, info.Key.Nick);
+									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 2, info.Key.ToString());
+								}
+								if (_Network.RemoveCharFromUser (info.Value.username) != info.Key.Nick)
+								{
+									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 0, uchr(info.Key) + info.Key.Nick);
 								}
 							}
                         }
