@@ -37,7 +37,7 @@ namespace Client.Forms
             this.ButtonPressEvent += new Gtk.ButtonPressEventHandler(_Remove);
             this.AllowGrow = false;
             this.AllowShrink = false;
-            this.SetSizeRequest(400, 200);
+            this.SetSizeRequest(400, 160);
             this.DeleteEvent += new Gtk.DeleteEventHandler(Unshow);
 		}
 

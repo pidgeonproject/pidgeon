@@ -24,8 +24,6 @@ using System.IO;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Linq;
-
 
 namespace Client
 {
@@ -196,6 +194,7 @@ namespace Client
             e.Menu.Append(list);
             Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
             retrieve.Show();
+			retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
             e.Menu.Append(retrieve);
             CreatingMenu = false;
         }
@@ -327,7 +326,7 @@ namespace Client
         {
             if (e.Event.Button == 3)
             {
-                if (SelectedLink != null)
+                if (SelectedLink != null && SelectedUser != null)
                 {
                     Click_R(SelectedUser, SelectedLink);
                 }

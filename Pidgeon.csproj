@@ -181,6 +181,7 @@
     <Compile Include="WinForms\Recovery.Designer.cs" />
     <Compile Include="Forms\Notification.cs" />
     <Compile Include="gtk-gui\Client.Forms.Notification.cs" />
+    <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

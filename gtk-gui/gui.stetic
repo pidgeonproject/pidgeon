@@ -1418,9 +1418,10 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Notification" design-size="464 234">
+  <widget class="Gtk.Window" id="Client.Forms.Notification" design-size="464 191">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Notification</property>
+    <property name="TypeHint">Splashscreen</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
       <widget class="Gtk.VBox" id="vbox1">
@@ -1474,6 +1475,55 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.VPaned" id="vpaned1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="Position">319</property>
+        <child>
+          <widget class="Gtk.HPaned" id="hpaned1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Position">333</property>
+            <child>
+              <widget class="Client.Scrollback" id="scrollback1">
+                <property name="MemberName" />
+                <property name="Events">ButtonPressMask</property>
+              </widget>
+              <packing>
+                <property name="Resize">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="listView">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Resize">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Client.Graphics.TextBox" id="textbox1">
+            <property name="MemberName" />
+            <property name="Events">ButtonPressMask</property>
+          </widget>
         </child>
       </widget>
     </child>

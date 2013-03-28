@@ -16,6 +16,7 @@ namespace Client.Forms
 			// Widget Client.Forms.Notification
 			this.Name = "Client.Forms.Notification";
 			this.Title = "Notification";
+			this.TypeHint = ((global::Gdk.WindowTypeHint)(4));
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child Client.Forms.Notification.Gtk.Container+ContainerChild
 			this.vbox1 = new global::Gtk.VBox ();
@@ -63,7 +64,8 @@ namespace Client.Forms
 				this.Child.ShowAll ();
 			}
 			this.DefaultWidth = 464;
-			this.DefaultHeight = 234;
+			this.DefaultHeight = 191;
+			this.Show ();
 		}
 	}
 }

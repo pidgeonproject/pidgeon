@@ -74,7 +74,7 @@ namespace Client
                     }
 
                     format.Data.Add("link", text.Link);
-                    format.Data.Add("name", text.Text);
+                    format.Data.Add("identifier", text.Text);
                     format.Font = Configuration.CurrentSkin.localfont;
                     format.ForegroundGdk = Core.fromColor(text.TextColor);
                     richTextBox.Buffer.TagTable.Add(format);
@@ -89,15 +89,12 @@ namespace Client
         {
             try
             {
-                if (e.Event.Type == Gdk.EventType.ButtonPress)
+                if (e.Event.Type == Gdk.EventType.MotionNotify)
                 {
-                    if (scrollback != null)
+					if (scrollback != null)
                     {
                         scrollback.SelectedLink = null;
                     }
-                }
-                if (e.Event.Type == Gdk.EventType.MotionNotify)
-                {
                     if (Configuration.ChangingMouse)
                     {
                         textView.GetWindow(TextWindowType.Text).Cursor = new Gdk.Cursor(Gdk.CursorType.Arrow);
@@ -109,12 +106,12 @@ namespace Client
                 Core.handleException(fail);
             }
         }
-
+		
         public void LinkHandler(object sender, TextEventArgs e)
         {
             try
             {
-                string user = (string)((TextTag)sender).Data["name"];
+                string user = (string)((TextTag)sender).Data["identifier"];
                 string link = (string)((TextTag)sender).Data["link"];
                 if (e.Event.Type == Gdk.EventType.ButtonPress)
                 {
