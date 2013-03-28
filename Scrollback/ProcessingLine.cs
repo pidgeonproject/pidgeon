@@ -57,10 +57,9 @@ namespace Client
                     RT.RemoveLine(0);
                 }
             }
-            //RT.InsertLine(CreateLine(line));
+            RT.InsertLine(CreateLine(line));
             if (Draw)
             {
-                RT.RedrawText();
                 if (ScrollingEnabled)
                 {
                     RT.ScrollToBottom();
@@ -70,7 +69,7 @@ namespace Client
             Changed = false;
         }
 
-        private SBABox.Line CreateLine(ContentLine Line)
+        private Client.RichTBox.Line CreateLine(ContentLine Line)
         {
             ContentLine _c = Line;
             Color color = Configuration.CurrentSkin.fontcolor;
@@ -106,13 +105,13 @@ namespace Client
             {
                 stamp = Configuration.Scrollback.format_date.Replace("$1", _c.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
-            //SBABox.Line text = Parser.FormatLine(_c.text, RT, color);
-            //SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
-            //SBABox.Line line = new SBABox.Line(RT);
-            //line.insertData(content);
-            //line.Merge(text);
-            //return line;
-			return null;
+
+            Client.RichTBox.Line text = Parser.FormatLine(_c.text, RT, color);
+            Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, RT, color);
+            Client.RichTBox.Line line = new Client.RichTBox.Line(RT);
+            line.insertData(content);
+            line.Merge(text);
+            return line;
         }
 
         public bool Reload(bool fast = false, bool enforce = false)
@@ -145,7 +144,7 @@ namespace Client
                     min = ContentLines.Count - scrollback_max;
                 }
 
-                //RT.RemoveText();
+                RT.RemoveText();
 
                 if (ContentLines.Count > 0)
                 {
@@ -155,17 +154,17 @@ namespace Client
                         int current = min;
                         while (current < max)
                         {
-                            //RT.InsertLine(CreateLine(ContentLines[current]));
+                            RT.InsertLine(CreateLine(ContentLines[current]));
                             current++;
                         }
                         lastDate = ContentLines[current - 1].time;
                     }
                 }
 
-                //RT.RedrawText();
+                RT.RedrawText();
                 if (ScrollingEnabled)
                 {
-                    //RT.ScrollToBottom();
+                    RT.ScrollToBottom();
                 }
                 return true;
             }

@@ -40,9 +40,59 @@ namespace Client
             }
         }
 
+        private void DrawLine(Line line)
+        { 
+            Gtk.TextIter iter = richTextBox.Buffer.EndIter;
+            lock (line.text)
+            {
+                foreach (ContentText text in line.text)
+                {
+                    TextTag format = new TextTag(null);
+                    
+                    if (text.Bold)
+                    {
+                        format.Weight = Pango.Weight.Bold;
+                    }
+
+                    if (text.Underline)
+                    {
+                        format.Underline = Pango.Underline.Single;
+                    }
+
+                    if (text.Italic)
+                    { 
+                        
+                    }
+
+                    format.Font = Configuration.CurrentSkin.localfont;
+                    format.ForegroundGdk = Core.fromColor(text.TextColor);
+                    richTextBox.Buffer.TagTable.Add(format);
+                    richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
+                    iter = richTextBox.Buffer.EndIter;
+                }
+            }
+            richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
+        }
+
+        public void RemoveText()
+        {
+            lock (Lines)
+            {
+                Lines.Clear();
+            }
+            richTextBox.Buffer.Text = "";
+        }
+
         private void Redraw()
         {
-
+            richTextBox.Buffer.Text = "";
+            lock (Lines)
+            {
+                foreach (Line curr in Lines)
+                {
+                    DrawLine(curr);
+                }
+            }
         }
     }
 }

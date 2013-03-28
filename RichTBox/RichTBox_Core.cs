@@ -102,6 +102,7 @@ namespace Client
             this.richTextBox.Editable = false;
             this.richTextBox.Name = "richTextBox";
             this.richTextBox.AcceptsTab = true;
+            richTextBox.WrapMode = WrapMode.Word;
             this.GtkScrolledWindow.Add(this.richTextBox);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
@@ -120,10 +121,15 @@ namespace Client
 
         public void InsertLine(Line line)
         {
+            if (line == null)
+            {
+                throw new Exception("You can't insert null to text box");
+            }
             lock (Lines)
             {
                 Lines.Add(line);
             }
+            DrawLine(line);
         }
 
         [Obsolete]

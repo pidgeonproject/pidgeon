@@ -277,7 +277,14 @@ namespace Client
                 {
                     if (ScrollingEnabled)
                     {
-                        simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                        if (simple)
+                        {
+                            simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                        }
+                        if (!simple)
+                        {
+                            RT.ScrollToBottom();
+                        }
                     }
                     lock (UndrawnLines)
                     {
