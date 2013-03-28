@@ -165,6 +165,7 @@ namespace Client.Graphics
             this.listView = new global::Gtk.TreeView();
             this.listView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             this.listView.CanFocus = true;
+			this.listView.ButtonPressEvent += new ButtonPressEventHandler(Ignore);
             this.listView.PopupMenu += new PopupMenuHandler(Menu);
             this.listView.Name = "listView";
             this.listView.Selection.Mode = SelectionMode.Multiple;
@@ -240,7 +241,16 @@ namespace Client.Graphics
                 textbox1.history = new List<string>();
             }
         }
-
+		
+		[GLib.ConnectBefore]
+		private void Ignore(object sender, Gtk.ButtonPressEventArgs e)
+		{
+			if (e.Event.Button == 3)
+			{
+				e.RetVal = true;
+			}
+		}
+		
         public void Init()
         {
             this.scrollback.owner = this;
