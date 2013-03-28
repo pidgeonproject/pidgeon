@@ -146,11 +146,6 @@
     <Compile Include="Protocols\irc\ChannelIRC.cs" />
     <Compile Include="Protocols\irc\IRC.cs" />
     <Compile Include="Protocols\irc\NetworkIRC.cs" />
-    <Compile Include="SBABOX\Events.cs" />
-    <Compile Include="SBABOX\Line.cs" />
-    <Compile Include="SBABOX\Link.cs" />
-    <Compile Include="SBABOX\Rendering.cs" />
-    <Compile Include="SBABOX\SBABox.cs" />
     <Compile Include="Forms\Main.cs" />
     <Compile Include="gtk-gui\Client.Forms.Main.cs" />
     <Compile Include="User.cs" />

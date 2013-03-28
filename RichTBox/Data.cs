@@ -64,6 +64,17 @@ namespace Client
                         
                     }
 
+                    if (text.Link != null)
+                    {
+                        format.TextEvent += new TextEventHandler(LinkHandler);
+                    }
+                    else
+                    {
+                        format.TextEvent += new TextEventHandler(LinkRm);
+                    }
+
+                    format.Data.Add("link", text.Link);
+                    format.Data.Add("name", text.Text);
                     format.Font = Configuration.CurrentSkin.localfont;
                     format.ForegroundGdk = Core.fromColor(text.TextColor);
                     richTextBox.Buffer.TagTable.Add(format);
@@ -72,6 +83,60 @@ namespace Client
                 }
             }
             richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
+        }
+
+        public void LinkRm(object sender, TextEventArgs e)
+        {
+            try
+            {
+                if (e.Event.Type == Gdk.EventType.ButtonPress)
+                {
+                    if (scrollback != null)
+                    {
+                        scrollback.SelectedLink = null;
+                    }
+                }
+                if (e.Event.Type == Gdk.EventType.MotionNotify)
+                {
+                    if (Configuration.ChangingMouse)
+                    {
+                        textView.GetWindow(TextWindowType.Text).Cursor = new Gdk.Cursor(Gdk.CursorType.Arrow);
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public void LinkHandler(object sender, TextEventArgs e)
+        {
+            try
+            {
+                string user = (string)((TextTag)sender).Data["name"];
+                string link = (string)((TextTag)sender).Data["link"];
+                if (e.Event.Type == Gdk.EventType.ButtonPress)
+                {
+                    if (scrollback != null)
+                    {
+                        scrollback.SelectedLink = link;
+                        scrollback.SelectedUser = user;
+                    }
+                }
+
+                if (e.Event.Type == Gdk.EventType.MotionNotify)
+                {
+                    if (Configuration.ChangingMouse)
+                    {
+                        textView.GetWindow(TextWindowType.Text).Cursor = new Gdk.Cursor(Gdk.CursorType.Hand1);
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void RemoveText()

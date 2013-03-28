@@ -107,7 +107,7 @@ namespace Client.Forms
 				UserAction.Visible = false;
                 CreateChat(main, null);
                 main.name = "Pidgeon";
-				toolStrip.TooltipText = "windows / channels / pm";
+                toolStripStatusChannel.TooltipText = "windows / channels / pm";
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;

@@ -51,6 +51,8 @@ namespace Client
         public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
 
+        public string SelectedUser = null;
+
         private bool CreatingMenu = false;
 
         public enum ViewType
@@ -98,17 +100,20 @@ namespace Client
             {
                 Gtk.MenuItem whois = new Gtk.MenuItem(whoisToolStripMenuItem.Text);
                 whois.Show();
+                whois.Activated += new EventHandler(whoisToolStripMenuItem_Click);
                 e.Menu.Append(whois);
 
 
                 Gtk.MenuItem whowas = new Gtk.MenuItem(whowasToolStripMenuItem.Text);
                 whowas.Show();
+                whowas.Activated += new EventHandler(whowasToolStripMenuItem_Click);
                 e.Menu.Append(whowas);
 
                 if (kickToolStripMenuItem.Visible)
                 {
                     Gtk.MenuItem ku = new Gtk.MenuItem(kickToolStripMenuItem.Text);
                     ku.Show();
+                    ku.Activated += new EventHandler(kickToolStripMenuItem_Click);
                     e.Menu.Append(ku);
                 }
 
@@ -117,10 +122,37 @@ namespace Client
                 e.Menu.Append(separator3);
             }
 
+            if (mode1b2ToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem mode1 = new Gtk.MenuItem(mode1b2ToolStripMenuItem.Text);
+                mode1.Show();
+                mode1.Activated += new EventHandler(mode1b2ToolStripMenuItem_Click);
+                e.Menu.Append(mode1);
+
+                Gtk.MenuItem mode2 = new Gtk.MenuItem(mode1e2ToolStripMenuItem.Text);
+                mode2.Show();
+                mode2.Activated += new EventHandler(mode1e2ToolStripMenuItem_Click);
+                e.Menu.Append(mode2);
+
+                Gtk.MenuItem mode3 = new Gtk.MenuItem(mode1I2ToolStripMenuItem.Text);
+                mode3.Show();
+                mode3.Activated += new EventHandler(mode1I2ToolStripMenuItem_Click);
+                e.Menu.Append(mode3);
+
+                Gtk.MenuItem mode4 = new Gtk.MenuItem(mode1q2ToolStripMenuItem.Text);
+                mode4.Show();
+                mode4.Activated += new EventHandler(mode1q2ToolStripMenuItem_Click);
+                e.Menu.Append(mode4);
+
+                Gtk.SeparatorMenuItem separator4 = new Gtk.SeparatorMenuItem();
+                separator4.Show();
+                e.Menu.Append(separator4);
+            }
 
             Gtk.MenuItem clean = new Gtk.MenuItem("Clean");
             clean.Show();
             e.Menu.Append(clean);
+            clean.Activated += new EventHandler(mrhToolStripMenuItem_Click);
             Gtk.CheckMenuItem scroll = new Gtk.CheckMenuItem(scrollToolStripMenuItem.Text);
             if (scrollToolStripMenuItem.Checked)
             {
@@ -160,6 +192,7 @@ namespace Client
             }
             Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
             list.Show();
+            list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
             e.Menu.Append(list);
             Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
             retrieve.Show();
@@ -289,6 +322,25 @@ namespace Client
             }
         }
 
+        [GLib.ConnectBefore]
+        private void Click(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                if (SelectedLink != null)
+                {
+                    Click_R(SelectedUser, SelectedLink);
+                }
+            }
+            if (e.Event.Button == 1)
+            {
+                if (SelectedLink != null)
+                {
+                    Click_L(SelectedLink);
+                }
+            }
+        }
+
         public void Click_L(string http)
         {
             if (http.StartsWith("https://"))
@@ -325,7 +377,7 @@ namespace Client
                     string nick = command.Substring(6);
                     if (owner != null && owner._Network != null)
                     {
-                        if (owner.isChannel)
+                        if (owner.isChannel || owner.isPM)
                         {
                             owner.textbox.richTextBox.Buffer.Text += nick + ": ";
                             owner.textbox.setFocus();
@@ -409,7 +461,7 @@ namespace Client
         {
             try
             {
-                if (MessageBox.Show("Do you really want to clear this window", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                if ((GTK.MessageBox.Show(null, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "Do you really want to clear this window", "Warning").result == Gtk.ResponseType.Yes))
                 {
                     lock (ContentLines)
                     {

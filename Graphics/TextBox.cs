@@ -207,22 +207,12 @@ namespace Client.Graphics
                     case Gdk.Key.b | Gdk.Key.Control_L:
                     case Gdk.Key.B | Gdk.Key.Control_R:
                         richTextBox1.Buffer.Text += (((char)002).ToString());
-                        //e.SuppressKeyPress = true;
-
-                        //if (richTextBox1.SelectionFont.Bold)
-                        {
-                            //    richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Regular);
-                            //    return;
-                        }
-                        //richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Bold);
+                        e.RetVal = true;
                         return;
-                        //case Keys.K:
-                        //    if (e.Control)
-                        //    {
-                        //        richTextBox1.AppendText(((char)003).ToString());
-                        //        e.SuppressKeyPress = true;
-                        //    }
-                        break;
+                    case Gdk.Key.K | Gdk.Key.Control_L:
+                        richTextBox1.Buffer.Text += (((char)003).ToString());
+                        e.RetVal = true;
+                        return;
                     case Gdk.Key.Up:
                         if (position < 1)
                         {
@@ -243,9 +233,7 @@ namespace Client.Graphics
                         richTextBox1.Buffer.Text = data;
                         restore = true;
                         richTextBox1.Buffer.Text = prevtext;
-                        //richTextBox1.Buffer.CursorPosition = caret;
                         TextIter position2 = richTextBox.Buffer.GetIterAtOffset(caret);
-                        //position2. = caret;
                         richTextBox.Buffer.PlaceCursor(position2);
                         e.RetVal = true;
                         break;
@@ -271,7 +259,7 @@ namespace Client.Graphics
 
         public void setFocus()
         {
-            this.GrabFocus();
+            this.richTextBox.GrabFocus();
         }
     }
 }

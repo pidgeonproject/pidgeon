@@ -55,6 +55,7 @@ namespace Client
         public global::Gtk.TextView simpleview;
         private GLib.TimeoutHandler timer2;
         public RichTBox RT = null;
+        public string SelectedLink = null;
 
         new public List<ContentLine> Data
         {
@@ -108,6 +109,7 @@ namespace Client
             this.RT = new RichTBox();
             this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
             this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
+            this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
             timer2 = new GLib.TimeoutHandler(timer2_Tick);
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);
@@ -171,7 +173,6 @@ namespace Client
                     this.Add(RT);
                     toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     toggleSimpleLayoutToolStripMenuItem.Checked = false;
-                    //RT.RedrawText();
                     return;
                 }
                 Reload(true, true);
@@ -225,8 +226,8 @@ namespace Client
                 {
                     everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-                simpleview.Buffer.Text = everything.ToString();
-                simpleview.Realize();
+                simpleview.Buffer.Text = "";
+                simpleview.Buffer.InsertAtCursor(everything.ToString());
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
