@@ -54,16 +54,16 @@ namespace Client
             {
                 if (ContentLines.Count > scrollback_max)
                 {
-                    //RT.RemoveLine(0);
+                    RT.RemoveLine(0);
                 }
             }
             //RT.InsertLine(CreateLine(line));
             if (Draw)
             {
-                //RT.RedrawText();
+                RT.RedrawText();
                 if (ScrollingEnabled)
                 {
-                    //RT.ScrollToBottom();
+                    RT.ScrollToBottom();
                 }
             }
 

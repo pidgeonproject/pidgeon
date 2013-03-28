@@ -27,8 +27,8 @@ using System.Windows.Forms;
 
 namespace Client
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class Scrollback : Gtk.Bin
+    [System.ComponentModel.ToolboxItem(true)]
+    public partial class Scrollback : Gtk.Bin
     {
         /// <summary>
         /// Maximal size of text
@@ -51,10 +51,10 @@ namespace Client
         private bool Changed = false;
         private string LogfilePath = null;
         public bool SortNeeded = false;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow;
-		public global::Gtk.TextView simpleview;
-		private GLib.TimeoutHandler timer2;
-        //public RichTBox RT = null;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        public global::Gtk.TextView simpleview;
+        private GLib.TimeoutHandler timer2;
+        public RichTBox RT = null;
 
         new public List<ContentLine> Data
         {
@@ -89,49 +89,51 @@ namespace Client
             return true;
         }
 
-		protected virtual void Build ()
-		{
-			global::Stetic.Gui.Initialize (this);
-			global::Stetic.BinContainer.Attach (this);
-			this.Name = "Client.ScrollbackWidget";
-			this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-			this.simpleview = new global::Gtk.TextView ();
-			this.simpleview.CanFocus = true;
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.ScrollbackWidget";
+            this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+            this.simpleview = new global::Gtk.TextView();
+            this.simpleview.CanFocus = true;
             this.simpleview.WrapMode = Gtk.WrapMode.Word;
             this.Visible = true;
-			this.simpleview.Name = "simpleview";
-			this.simpleview.Editable = false;
+            this.simpleview.Name = "simpleview";
+            this.simpleview.Editable = false;
             this.simpleview.DoubleBuffered = true;
-			this.GtkScrolledWindow.Add (this.simpleview);
-            //this.RT = new RichTBox();
-			timer2 = new GLib.TimeoutHandler(timer2_Tick);
-			GLib.Timeout.Add(200, timer2);
-			this.Add (this.GtkScrolledWindow);
-			if ((this.Child != null)) {
-				this.Child.ShowAll ();
-			}
-            this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu);
-			//this.simpleview. += new EventHandler(simpleviewFinished);
-            
-			this.Hide ();
-		}
-		
-		private void simpleviewFinished(object o, EventArgs r)
-		{
-			try
-			{
-				if (ScrollingEnabled)
-	            {
-	            	simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-	            }
-			}catch (Exception fail)
-			{
-				Core.handleException(fail);
-			}
-		}
-		
+            this.GtkScrolledWindow.Add(this.simpleview);
+            this.RT = new RichTBox();
+            this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
+            this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
+            timer2 = new GLib.TimeoutHandler(timer2_Tick);
+            GLib.Timeout.Add(200, timer2);
+            this.Add(this.GtkScrolledWindow);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+
+            this.Hide();
+        }
+
+        private void simpleviewFinished(object o, EventArgs r)
+        {
+            try
+            {
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         /// <summary>
         /// Change the text to specified list
         /// </summary>
@@ -162,21 +164,30 @@ namespace Client
                 if (simple)
                 {
                     simple = false;
-                    //RT.Visible = true;
-                    //simpleview.Visible = false;
-                    //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
-                    //toggleSimpleLayoutToolStripMenuItem.Checked = false;
+                    if (this.Child != null)
+                    {
+                        this.Remove(this.Child);
+                    }
+                    this.Add(RT);
+                    toggleAdvancedLayoutToolStripMenuItem.Checked = true;
+                    toggleSimpleLayoutToolStripMenuItem.Checked = false;
                     //RT.RedrawText();
                     return;
                 }
                 Reload(true, true);
                 return;
             }
-            //toggleAdvancedLayoutToolStripMenuItem.Checked = false;
-            //toggleSimpleLayoutToolStripMenuItem.Checked = true;
+            toggleAdvancedLayoutToolStripMenuItem.Checked = false;
+            toggleSimpleLayoutToolStripMenuItem.Checked = true;
             simple = true;
-            //simpleview.Visible = true;
-            //RT.Visible = false;
+            if (this.Child != null)
+            {
+                this.Remove(this.Child);
+            }
+            this.Add(GtkScrolledWindow);
+
+            this.ShowAll();
+
             Reload(true, true);
         }
 
@@ -185,13 +196,11 @@ namespace Client
         /// </summary>
         public Scrollback()
         {
-            //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             ReloadWaiting = true;
         }
 
         public Scrollback(Graphics.Window _ParentWindow)
         {
-            //this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             this.owner = _ParentWindow;
 
             ReloadWaiting = true;
@@ -200,26 +209,11 @@ namespace Client
         public void Create()
         {
             Build();
-            //toggleAdvancedLayoutToolStripMenuItem.Checked = true;
-        }
-
-        private void Scrollback_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                //RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
-                //RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                //RT.Font = Configuration.CurrentSkin.SBABOX;
-                //simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                //simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
-                //RT.scrollback = this;
-                HideLn();
-                lastDate = DateTime.MinValue;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            RT.scrollback = this;
+            scrollToolStripMenuItem.Checked = true;
+            HideLn();
+            lastDate = DateTime.MinValue;
+            Switch(true);
         }
 
         public void ReloadSimple()
@@ -231,7 +225,7 @@ namespace Client
                 {
                     everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-				simpleview.Buffer.Text = everything.ToString();
+                simpleview.Buffer.Text = everything.ToString();
                 simpleview.Realize();
                 if (ScrollingEnabled)
                 {
@@ -242,13 +236,13 @@ namespace Client
 
         public void HideLn()
         {
-            //mode1b2ToolStripMenuItem.Visible = false;
-            //toolStripMenuItem1.Visible = false;
-            //openLinkInBrowserToolStripMenuItem.Visible = false;
-            //joinToolStripMenuItem.Visible = false;
-            //mode1e2ToolStripMenuItem.Visible = false;
-            //mode1I2ToolStripMenuItem.Visible = false;
-            //mode1q2ToolStripMenuItem.Visible = false;
+            mode1b2ToolStripMenuItem.Visible = false;
+            toolStripMenuItem1.Visible = false;
+            openLinkInBrowserToolStripMenuItem.Visible = false;
+            joinToolStripMenuItem.Visible = false;
+            mode1e2ToolStripMenuItem.Visible = false;
+            mode1I2ToolStripMenuItem.Visible = false;
+            mode1q2ToolStripMenuItem.Visible = false;
         }
 
         public bool IncreaseOffset()
@@ -312,7 +306,7 @@ namespace Client
             {
                 Core.handleException(fail);
             }
-			return true;
+            return true;
         }
     }
 }

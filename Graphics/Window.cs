@@ -26,10 +26,10 @@ using Gtk;
 
 namespace Client.Graphics
 {
-	[System.ComponentModel.ToolboxItem(true)]
-	public partial class Window : Gtk.Bin
-	{
-		/// <summary>
+    [System.ComponentModel.ToolboxItem(true)]
+    public partial class Window : Gtk.Bin
+    {
+        /// <summary>
         /// If true the windows is being made
         /// </summary>
         public bool Making = true;
@@ -59,7 +59,6 @@ namespace Client.Graphics
         /// In case this is true, we are in micro chat
         /// </summary>
         public bool MicroBox = false;
-        private System.Windows.Forms.ListView.SelectedListViewItemCollection SelectedUser = null;
         public bool isPM = false;
         public Network _Network = null;
         public bool Resizing = false;
@@ -69,8 +68,7 @@ namespace Client.Graphics
         public bool isInitialised = false;
 
         // menu
-        public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu kbToolStripMenuIm = new GTK.Menu();
+        public GTK.Menu kbToolStripMenuIm = new GTK.Menu("Kick + ban <reason>");
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
         public GTK.Menu kickrToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
@@ -84,75 +82,42 @@ namespace Client.Graphics
         public GTK.Menu oToolStripMenuItem1 = new GTK.Menu(messages.get("give-o", Core.SelectedLanguage));
         public GTK.Menu aToolStripMenuItem1 = new GTK.Menu(messages.get("give-a", Core.SelectedLanguage));
         public GTK.Menu qToolStripMenuItem1 = new GTK.Menu(messages.get("give-q", Core.SelectedLanguage));
-        public GTK.Menu banToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu banToolStripMenuItem = new GTK.Menu("Ban");
+        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu("Whois");
         public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
         public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
         public GTK.Menu toolStripMenuItem3 = new GTK.Menu();
         public GTK.Menu ctToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu refreshToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu kickToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu synchroToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
+        public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu("Kick + Ban");
+        public GTK.Menu kickToolStripMenuItem = new GTK.Menu("Kick");
+        public GTK.Menu synchroToolStripMenuItem = new GTK.Menu("Reload");
 
         // window
-		private global::Gtk.VPaned vpaned1;
-		private global::Gtk.HPaned hpaned1;
-		private global::Client.Scrollback scrollback1;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-		private global::Gtk.TreeView listView;
-		private global::Client.Graphics.TextBox textbox1;
-		
-		protected virtual void Build ()
-		{
-			global::Stetic.Gui.Initialize (this);
-			// Widget Client.Graphics.Window
-			global::Stetic.BinContainer.Attach (this);
-			this.Name = "Client.Graphics.Window";
-			// Container child Client.Graphics.Window.Gtk.Container+ContainerChild
-			this.vpaned1 = new global::Gtk.VPaned ();
-			this.vpaned1.CanFocus = true;
-			this.vpaned1.Name = "vpaned1";
-			this.vpaned1.Position = 319;
-			// Container child vpaned1.Gtk.Paned+PanedChild
-			this.hpaned1 = new global::Gtk.HPaned ();
-			this.hpaned1.CanFocus = true;
-			this.hpaned1.Name = "hpaned1";
-			this.hpaned1.Position = 333;
-			// Container child hpaned1.Gtk.Paned+PanedChild
-			this.scrollback1.Events = ((global::Gdk.EventMask)(256));
-			this.scrollback1.Name = "scrollback1";
-			this.hpaned1.Add (this.scrollback1);
-			global::Gtk.Paned.PanedChild w1 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.scrollback1]));
-			w1.Resize = false;
-			// Container child hpaned1.Gtk.Paned+PanedChild
-			this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
-			this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-			this.listView = new global::Gtk.TreeView ();
-            this.listView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
-			this.listView.CanFocus = true;
-            this.listView.PopupMenu += new PopupMenuHandler(Menu);
-			this.listView.Name = "listView";
-			this.GtkScrolledWindow1.Add (this.listView);
-			this.hpaned1.Add (this.GtkScrolledWindow1);
-			this.vpaned1.Add (this.hpaned1);
-			global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.vpaned1 [this.hpaned1]));
-			w4.Resize = false;
-			// Container child vpaned1.Gtk.Paned+PanedChild
-			this.textbox1.Events = ((global::Gdk.EventMask)(256));
-			this.textbox1.Name = "textbox1";
-			this.vpaned1.Add (this.textbox1);
-			this.vpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
-			this.hpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
-			this.Add (this.vpaned1);
-			if ((this.Child != null)) {
-				this.Child.ShowAll ();
-			}
-			this.Hide ();
-		}
-		
+        private global::Gtk.VPaned vpaned1;
+        private global::Gtk.HPaned hpaned1;
+        private global::Client.Scrollback scrollback1;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow1;
+        private global::Gtk.TreeView listView;
+        private global::Client.Graphics.TextBox textbox1;
+
+        public List<User> SelectedUsers
+        {
+            get
+            {
+                List<User> ul = new List<User>();
+                TreeIter iter;
+                TreePath[] path = this.listView.Selection.GetSelectedRows();
+                foreach (TreePath tree in path)
+                {
+                    this.listView.Model.GetIter(out iter, tree);
+                    User user = (User)this.listView.Model.GetValue(iter, 1);
+                    ul.Add(user);
+                }
+                return ul;
+            }
+        }
+
         public Scrollback scrollback
         {
             get
@@ -160,6 +125,7 @@ namespace Client.Graphics
                 return scrollback1;
             }
         }
+
         public Graphics.TextBox textbox
         {
             get
@@ -167,20 +133,72 @@ namespace Client.Graphics
                 return textbox1;
             }
         }
-                       
-		public void InitStyle()
-		{
-			
-			scrollback.simpleview.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-			scrollback.simpleview.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-			
-			listView.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-			listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-			
-		}
-		
-		public Window ()
-		{
+
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            // Widget Client.Graphics.Window
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.Graphics.Window";
+            // Container child Client.Graphics.Window.Gtk.Container+ContainerChild
+            this.vpaned1 = new global::Gtk.VPaned();
+            this.vpaned1.CanFocus = true;
+            this.vpaned1.Name = "vpaned1";
+            this.vpaned1.Position = 319;
+            // Container child vpaned1.Gtk.Paned+PanedChild
+            this.hpaned1 = new global::Gtk.HPaned();
+            this.hpaned1.CanFocus = true;
+            this.hpaned1.Name = "hpaned1";
+            this.hpaned1.Position = 333;
+            // Container child hpaned1.Gtk.Paned+PanedChild
+            this.scrollback1.Events = ((global::Gdk.EventMask)(256));
+            this.scrollback1.Name = "scrollback1";
+            this.hpaned1.Add(this.scrollback1);
+            global::Gtk.Paned.PanedChild w1 = ((global::Gtk.Paned.PanedChild)(this.hpaned1[this.scrollback1]));
+            w1.Resize = false;
+            // Container child hpaned1.Gtk.Paned+PanedChild
+            this.GtkScrolledWindow1 = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
+            this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
+            this.listView = new global::Gtk.TreeView();
+            this.listView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
+            this.listView.CanFocus = true;
+            this.listView.PopupMenu += new PopupMenuHandler(Menu);
+            this.listView.Name = "listView";
+            this.listView.Selection.Mode = SelectionMode.Multiple;
+            this.GtkScrolledWindow1.Add(this.listView);
+            this.hpaned1.Add(this.GtkScrolledWindow1);
+            this.vpaned1.Add(this.hpaned1);
+            global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.vpaned1[this.hpaned1]));
+            w4.Resize = false;
+            // Container child vpaned1.Gtk.Paned+PanedChild
+            this.textbox1.Events = ((global::Gdk.EventMask)(256));
+            this.textbox1.Name = "textbox1";
+            this.vpaned1.Add(this.textbox1);
+            this.vpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
+            this.hpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
+            this.Add(this.vpaned1);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.Hide();
+        }
+
+
+
+        public void InitStyle()
+        {
+            scrollback.simpleview.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            scrollback.simpleview.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+
+            listView.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+        }
+
+        public Window()
+        {
             this.scrollback1 = new global::Client.Scrollback();
             this.textbox1 = new global::Client.Graphics.TextBox();
             textbox1.parent = this;
@@ -188,15 +206,15 @@ namespace Client.Graphics
             {
                 textbox1.history = new List<string>();
             }
-		}
-		
-		public void Init()
+        }
+
+        public void Init()
         {
             this.scrollback.owner = this;
             this.scrollback.Create();
             this.textbox.Init();
             this.Build();
-			this.InitStyle();
+            this.InitStyle();
             kbToolStripMenuIm.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
@@ -251,13 +269,13 @@ namespace Client.Graphics
                 }
                 if (this.vpaned1.Position != Configuration.Window.x4)
                 {
-                    vpaned1.Position  = Configuration.Window.x4;
+                    vpaned1.Position = Configuration.Window.x4;
                 }
             }
             ignoreChange = false;
             return true;
         }
-		
+
         public void Changed(object sender, GLib.NotifyArgs dt)
         {
             try
@@ -288,17 +306,27 @@ namespace Client.Graphics
             try
             {
                 Gtk.Menu menu = new Menu();
-                Gtk.MenuItem whois = new MenuItem("Whois");
-                menu.Append(whois);
-                Gtk.MenuItem change = new MenuItem("Change mode");
+                if (whoisToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem whois = new MenuItem("Whois");
+                    whois.Sensitive = whoisToolStripMenuItem.Enabled;
+                    whois.Activated += new EventHandler(whoisToolStripMenuItem_Click);
+                    menu.Append(whois);
+                }
+                if (modeToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem change = new MenuItem("Change mode");
+                    change.Sensitive = modeToolStripMenuItem.Enabled;
+                    menu.Append(change);
+                }
                 Gtk.MenuItem CTCP = new MenuItem("CTCP");
-                menu.Append(change);
+
                 menu.ShowAll();
                 menu.Popup();
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);            
+                Core.handleException(fail);
             }
         }
 
@@ -311,53 +339,42 @@ namespace Client.Graphics
                     string script = "";
                     if (isChannel)
                     {
-                        if (SelectedUser != null)
+                        foreach (User user in SelectedUsers)
                         {
-                            foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                            string current_ban = "";
+                            Channel _channel = getChannel();
+                            if (_channel != null)
                             {
-                                string current_ban = "";
-                                Channel _channel = getChannel();
-                                if (_channel != null)
+                                switch (Configuration.irc.DefaultBans)
                                 {
-                                    User target = _channel.userFromName(Decode(user.Text));
-                                    if (target != null)
-                                    {
-                                        switch (Configuration.irc.DefaultBans)
+                                    case Configuration.TypeOfBan.Host:
+                                        if (user.Host != "")
                                         {
-                                            case Configuration.TypeOfBan.Host:
-                                                if (target.Host != "")
-                                                {
-                                                    current_ban = "MODE " + name + " +b *!*@" + target.Host;
-                                                    script += current_ban + Environment.NewLine;
-                                                }
-                                                else
-                                                {
-                                                    script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
-                                                }
-                                                break;
+                                            current_ban = "MODE " + name + " +b *!*@" + user.Host;
+                                            script += current_ban + Environment.NewLine;
                                         }
-                                    }
-                                    else
-                                    {
-                                        script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
-                                    }
-                                }
-                                else
-                                {
-                                    script += "# can't find a channel for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
-                                }
-                                string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
-                                script += current_kick + Environment.NewLine;
-                                if (!Configuration.irc.ConfirmAll)
-                                {
-                                    _channel._Network.Transfer(current_ban, Configuration.Priority.High);
-                                    _channel._Network.Transfer(current_kick, Configuration.Priority.High);
+                                        else
+                                        {
+                                            script += "# can't find hostname for " + user.Nick + " skipping this ban" + Environment.NewLine;
+                                        }
+                                        break;
                                 }
                             }
-                            if (Configuration.irc.ConfirmAll)
+                            else
                             {
-                                Core.ProcessScript(script, _Network);
+                                script += "# can't find a channel for " + user.Nick + " skipping this ban" + Environment.NewLine;
                             }
+                            string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                            script += current_kick + Environment.NewLine;
+                            if (!Configuration.irc.ConfirmAll)
+                            {
+                                _channel._Network.Transfer(current_ban, Configuration.Priority.High);
+                                _channel._Network.Transfer(current_kick, Configuration.Priority.High);
+                            }
+                        }
+                        if (Configuration.irc.ConfirmAll)
+                        {
+                            Core.ProcessScript(script, _Network);
                         }
                     }
                 }
@@ -372,24 +389,21 @@ namespace Client.Graphics
         {
             if (isChannel)
             {
-                if (SelectedUser != null)
+                foreach (User user in SelectedUsers)
                 {
-                    foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                    Channel _channel = getChannel();
+                    if (_channel != null)
                     {
-                        Channel _channel = getChannel();
-                        if (_channel != null)
+                        if (Configuration.irc.DisplayCtcp)
                         {
-                            if (Configuration.irc.DisplayCtcp)
-                            {
-                                _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, ContentLine.MessageStyle.User);
-                            }
-                            _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
+                            _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
                         }
+                        _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                     }
                 }
+
             }
         }
-        /*
 
         private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -397,15 +411,9 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
-                        {
-                            if (user.Text != "")
-                            {
-                                Core.network.Transfer("WHOIS " + Decode(user.Text));
-                            }
-                        }
+                        Core.network.Transfer("WHOIS " + user.Nick);
                     }
                 }
             }
@@ -414,18 +422,6 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-        */
-        public string Decode(string user)
-        {
-            foreach (char item in _Network.UChars)
-            {
-                if (user.Contains(item.ToString()))
-                {
-                    user = user.Replace(item.ToString(), "");
-                }
-            }
-            return user;
-        }
 
         bool Mode(string mode)
         {
@@ -433,15 +429,9 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        //foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
-                        {
-                        //    if (user.Text != "")
-                            {
-                        //        Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
-                            }
-                        }
+                        Core.network.Transfer("MODE " + name + " " + mode + " " + user.Nick);
                     }
                 }
             }
@@ -488,21 +478,18 @@ namespace Client.Graphics
                 string script = "";
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                        script += current_kick + Environment.NewLine;
+                        if (!Configuration.irc.ConfirmAll)
                         {
-                            string current_kick = "KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason;
-                            script += current_kick + Environment.NewLine;
-                            if (!Configuration.irc.ConfirmAll)
-                            {
-                                _Network.Transfer(current_kick, Configuration.Priority.High);
-                            }
+                            _Network.Transfer(current_kick, Configuration.Priority.High);
                         }
-                        if (Configuration.irc.ConfirmAll)
-                        {
-                            Core.ProcessScript(script, _Network);
-                        }
+                    }
+                    if (Configuration.irc.ConfirmAll)
+                    {
+                        Core.ProcessScript(script, _Network);
                     }
                 }
             }
@@ -544,50 +531,39 @@ namespace Client.Graphics
                 if (isChannel)
                 {
                     string script = "";
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        string mode = "";
+                        Channel _channel = getChannel();
+                        if (_channel != null)
                         {
-                            string mode = "";
-                            Channel _channel = getChannel();
-                            if (_channel != null)
+                            switch (Configuration.irc.DefaultBans)
                             {
-                                User target = _channel.userFromName(Decode(user.Text));
-                                if (target != null)
-                                {
-                                    switch (Configuration.irc.DefaultBans)
+                                case Configuration.TypeOfBan.Host:
+                                    if (user.Host != "")
                                     {
-                                        case Configuration.TypeOfBan.Host:
-                                            if (target.Host != "")
-                                            {
-                                                mode = "MODE " + name + " +b *!*@" + target.Host;
-                                                script += mode + Environment.NewLine;
-                                            }
-                                            else
-                                            {
-                                                script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
-                                            }
-                                            break;
+                                        mode = "MODE " + name + " +b *!*@" + user.Host;
+                                        script += mode + Environment.NewLine;
                                     }
-                                    if (!Configuration.irc.ConfirmAll)
+                                    else
                                     {
-                                        Core.network.Transfer(mode, Configuration.Priority.High);
+                                        script += "# can't find hostname for " + user.Nick + " skipping this ban" + Environment.NewLine;
                                     }
-                                }
-                                else
-                                {
-                                    script += "# can't find hostname for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
-                                }
+                                    break;
                             }
-                            else
+                            if (!Configuration.irc.ConfirmAll)
                             {
-                                script += "# can't find a channel for " + Decode(user.Text) + " skipping this ban" + Environment.NewLine;
+                                Core.network.Transfer(mode, Configuration.Priority.High);
                             }
                         }
-                        if (Configuration.irc.ConfirmAll)
+                        else
                         {
-                            Core.ProcessScript(script, _Network);
+                            script += "# can't find a channel for " + user.Nick + " skipping this ban" + Environment.NewLine;
                         }
+                    }
+                    if (Configuration.irc.ConfirmAll)
+                    {
+                        Core.ProcessScript(script, _Network);
                     }
                 }
             }
@@ -603,12 +579,9 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
-                        {
-                            Core.network.Transfer("KICK " + name + " " + Decode(user.Text) + " :" + Configuration.irc.DefaultReason);
-                        }
+                        Core.network.Transfer("KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
                     }
                 }
             }
@@ -624,12 +597,9 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
-                        {
-                            string reason = Configuration.irc.DefaultReason;
-                        }
+                        string reason = Configuration.irc.DefaultReason;
                     }
                 }
             }
@@ -638,8 +608,6 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
-        /*
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -670,10 +638,7 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
-                    {
-                        SendCtcp("VERSION");
-                    }
+                    SendCtcp("VERSION");
                 }
             }
             catch (Exception fail)
@@ -688,10 +653,7 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
-                    {
-                        SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
-                    }
+                    SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
                 }
             }
             catch (Exception fail)
@@ -699,7 +661,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-        */
+
         public Channel getChannel()
         {
             if (channel != null)
@@ -727,10 +689,7 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
-                    {
-                        SendCtcp("PAGE");
-                    }
+                    SendCtcp("PAGE");
                 }
             }
             catch (Exception fail)
@@ -739,133 +698,14 @@ namespace Client.Graphics
             }
         }
 
-        /*
         private void tIMEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
-                    {
-                        SendCtcp("TIME");
-                    }
+                    SendCtcp("TIME");
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            try
-            {
-                lock (Core._Main.sX.Panel2.Controls)
-                {
-                    if (Core._Main.sX.Panel2.Controls.Contains(this))
-                    {
-                        Core._Main.sX.Panel2.Controls.Remove(this);
-                    }
-                }
-                if (_Protocol != null)
-                {
-                    lock (_Protocol.Windows)
-                    {
-                        if (_Network != null)
-                        {
-                            if (_Protocol.Windows.ContainsKey(_Network.window + name))
-                            {
-                                _Protocol.Windows.Remove(_Network.window + name);
-                            }
-                        }
-                        if (_Protocol.Windows.ContainsKey(name))
-                        {
-                            _Protocol.Windows.Remove(name);
-                        }
-                    }
-                }
-                base.Dispose(disposing);
-            }
-            catch (Exception df)
-            {
-                Core.handleException(df);
-            }
-        }
-
-        private void listViewd_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                SelectedUser = listViewd.SelectedItems;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void listView_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
-        {
-            try
-            {
-                if (!Resizing)
-                {
-                    Resizing = true;
-                    listViewd.Columns[0].Width = listView.Columns[0].Width;
-                }
-                else
-                {
-                    Resizing = false;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void listViewd_ColumnsChanged(object sender, ColumnWidthChangedEventArgs e)
-        {
-            try
-            {
-                if (!Resizing)
-                {
-                    Resizing = true;
-                    listView.Columns[0].Width = listViewd.Columns[0].Width;
-                }
-                else
-                {
-                    Resizing = false;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void listWork(object sender, EventArgs e)
-        {
-            try
-            {
-                Locked = true;
-                lockwork.Stop();
-                lockwork.Enabled = true;
-                lockwork.Start();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void listView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                SelectedUser = listView.SelectedItems;
             }
             catch (Exception fail)
             {
@@ -879,19 +719,16 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    if (SelectedUser != null)
+                    foreach (User user in SelectedUsers)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        string nickname = user.Nick;
+                        if (nickname != "")
                         {
-                            string nickname = Decode(user.Text);
-                            if (nickname != "")
+                            if (!Core.network._Protocol.Windows.ContainsKey(_Network.window + nickname))
                             {
-                                if (!Core.network._Protocol.Windows.ContainsKey(_Network.window + nickname))
-                                {
-                                    _Network.Private(nickname);
-                                }
-                                _Network._Protocol.ShowChat(_Network.window + nickname);
+                                _Network.Private(nickname);
                             }
+                            _Network._Protocol.ShowChat(_Network.window + nickname);
                         }
                     }
                 }
@@ -921,28 +758,6 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
-        private void lo_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                Locked = false;
-                lockwork.Enabled = false;
-                if (isChannel)
-                {
-                    Channel channel = getChannel();
-                    if (channel != null && channel.UserListRefreshWait)
-                    {
-                        channel.redrawUsers();
-                    }
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-		*/
-	}
+    }
 }
 

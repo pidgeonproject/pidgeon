@@ -31,16 +31,140 @@ namespace Client
 {
     public partial class Scrollback
     {
+        public GTK.Menu toggleAdvancedLayoutToolStripMenuItem = new GTK.Menu("Toggle advanced layout");
+        public GTK.Menu toggleSimpleLayoutToolStripMenuItem = new GTK.Menu("Toggle simple view");
         public GTK.Menu banToolStripMenuItem = new GTK.Menu();
         public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu();
         public GTK.Menu retrieveTopicToolStripMenuItem = new GTK.Menu();
         public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu mode1b2ToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu mode1e2ToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu mode1I2ToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu mode1q2ToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu kickToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu whowasToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
+        public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
+        public GTK.Menu scrollToolStripMenuItem = new GTK.Menu("Scroll");
+        public GTK.Menu openLinkInBrowserToolStripMenuItem = new GTK.Menu("Open link in a new browser");
+        public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
+        public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
+
+        private bool CreatingMenu = false;
 
         public enum ViewType
         {
             Channel,
             User,
             Link
+        }
+
+        [GLib.ConnectBefore]
+        public void CreateMenu_rt(object o, Gtk.PopulatePopupArgs e)
+        {
+            try
+            {
+                CreateMenu(o, e);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        {
+            try
+            {
+                CreateMenu(o, e);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public void CreateMenu(object o, Gtk.PopulatePopupArgs e)
+        {
+            CreatingMenu = true;
+            Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+            separator1.Show();
+            e.Menu.Append(separator1);
+            e.Menu.Append(new Gtk.SeparatorMenuItem());
+            // whois items
+            if (whoisToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem whois = new Gtk.MenuItem(whoisToolStripMenuItem.Text);
+                whois.Show();
+                e.Menu.Append(whois);
+
+
+                Gtk.MenuItem whowas = new Gtk.MenuItem(whowasToolStripMenuItem.Text);
+                whowas.Show();
+                e.Menu.Append(whowas);
+
+                if (kickToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem ku = new Gtk.MenuItem(kickToolStripMenuItem.Text);
+                    ku.Show();
+                    e.Menu.Append(ku);
+                }
+
+                Gtk.SeparatorMenuItem separator3 = new Gtk.SeparatorMenuItem();
+                separator3.Show();
+                e.Menu.Append(separator3);
+            }
+
+
+            Gtk.MenuItem clean = new Gtk.MenuItem("Clean");
+            clean.Show();
+            e.Menu.Append(clean);
+            Gtk.CheckMenuItem scroll = new Gtk.CheckMenuItem(scrollToolStripMenuItem.Text);
+            if (scrollToolStripMenuItem.Checked)
+            {
+                scroll.Active = true;
+            }
+            scroll.Show();
+            scroll.Activated += new EventHandler(scrollToolStripMenuItem_Click);
+            e.Menu.Append(scroll);
+            Gtk.MenuItem refresh = new Gtk.MenuItem("Refresh");
+            refresh.Show();
+            e.Menu.Append(refresh);
+            Gtk.CheckMenuItem taly = new Gtk.CheckMenuItem(toggleAdvancedLayoutToolStripMenuItem.Text);
+            taly.Activated += new EventHandler(toggleAdvancedLayoutToolStripMenuItem_Click);
+            if (toggleAdvancedLayoutToolStripMenuItem.Checked)
+            {
+                taly.Active = true;
+            }
+            taly.Show();
+            e.Menu.Append(taly);
+            Gtk.CheckMenuItem tsly = new Gtk.CheckMenuItem("Toggle simple layout");
+            tsly.Activated += new EventHandler(toggleSimpleLayoutToolStripMenuItem_Click);
+            if (toggleSimpleLayoutToolStripMenuItem.Checked)
+            {
+                tsly.Active = true;
+            }
+            tsly.Show();
+            e.Menu.Append(tsly);
+            Gtk.SeparatorMenuItem separator2 = new Gtk.SeparatorMenuItem();
+            separator2.Show();
+            e.Menu.Append(separator2);
+            if (channelToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem channel = new Gtk.MenuItem("Channel");
+                channel.Show();
+                e.Menu.Append(channel);
+                channel.Activated += new EventHandler(channelToolStripMenuItem_Click);
+            }
+            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
+            list.Show();
+            e.Menu.Append(list);
+            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
+            retrieve.Show();
+            e.Menu.Append(retrieve);
+            CreatingMenu = false;
         }
 
         public void Click_R(string adds, string data)
@@ -94,47 +218,10 @@ namespace Client
             }
         }
 
-        [GLib.ConnectBefore]
-        public static void CreateMenu(object o, Gtk.PopulatePopupArgs e)
-        {
-            Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
-            separator1.Show();
-            e.Menu.Append(separator1);
-            e.Menu.Append(new Gtk.SeparatorMenuItem());
-            Gtk.MenuItem clean = new Gtk.MenuItem("Clean");
-            clean.Show();
-            e.Menu.Append(clean);
-            Gtk.MenuItem scroll = new Gtk.MenuItem("Scroll");
-            scroll.Show();
-            e.Menu.Append(scroll);
-            Gtk.MenuItem refresh = new Gtk.MenuItem("Refresh");
-            refresh.Show();
-            e.Menu.Append(refresh);
-            Gtk.MenuItem taly = new Gtk.MenuItem("Toggle advanced layout");
-            taly.Show();
-            e.Menu.Append(taly);
-            Gtk.MenuItem tsly = new Gtk.MenuItem("Toggle simple layout");
-            tsly.Show();
-            e.Menu.Append(tsly);
-            Gtk.SeparatorMenuItem separator2 = new Gtk.SeparatorMenuItem();
-            separator2.Show();
-            e.Menu.Append(separator2);
-            Gtk.MenuItem channel = new Gtk.MenuItem("Channel");
-            channel.Show();
-            e.Menu.Append(channel);
-            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
-            list.Show();
-            e.Menu.Append(list);
-            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
-            retrieve.Show();
-            e.Menu.Append(retrieve);
-        }
-
         public void ViewLn(string content, ViewType type, string name = "")
         {
             if (owner != null)
             {
-				/*
                 //toolStripMenuItem1.Visible = true;
                 Link = content;
                 if (type == ViewType.Channel)
@@ -199,104 +286,103 @@ namespace Client
                     joinToolStripMenuItem.Visible = false;
                     toolStripMenuItem2.Visible = false;
                 }
-                */
             }
         }
 
         public void Click_L(string http)
         {
-                if (http.StartsWith("https://"))
+            if (http.StartsWith("https://"))
+            {
+                try
                 {
-                    try
-                    {
-                        System.Diagnostics.Process.Start(http);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    }
+                    System.Diagnostics.Process.Start(http);
                 }
-                if (http.StartsWith("http://"))
+                catch (Exception)
                 {
-                    try
-                    {
-                        System.Diagnostics.Process.Start(http);
-                    }
-                    catch (Exception)
-                    {
-                        MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                    }
+                    MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
-                if (http.StartsWith("pidgeon://"))
+            }
+            if (http.StartsWith("http://"))
+            {
+                try
                 {
-                    string command = http.Substring("pidgeon://".Length);
-                    if (command.EndsWith("/"))
-                    {
-                        command = command.Substring(0, command.Length - 1);
-                    }
-                    if (command.StartsWith("user/#"))
-                    {
-                        string nick = command.Substring(6);
-                        if (owner != null && owner._Network != null)
-                        {
-                            if (owner.isChannel)
-                            {
-                                owner.textbox.richTextBox.Buffer.Text += nick + ": ";
-                                owner.textbox.setFocus();
-                            }
-                        }
-                        return;
-                    }
-                    if (command.StartsWith("join/#"))
-                    {
-                        Parser.parse("/join " + command.Substring(5));
-                        return;
-                    }
-                    if (command.StartsWith("ident/#"))
-                    {
-                        string nick = command.Substring(7);
-                        if (owner != null && owner._Network != null)
-                        {
-                            if (owner.isChannel)
-                            {
-                                //owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.setFocus();
-                            }
-                        }
-                        return;
-                    }
-                    if (command.StartsWith("hostname/#"))
-                    {
-                        string nick = command.Substring(10);
-                        if (owner != null && owner._Network != null)
-                        {
-                            if (owner.isChannel)
-                            {
-                                //owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.setFocus();
-                            }
-                        }
-                        return;
-                    }
-                    if (command.StartsWith("text/#"))
-                    {
-                        string nick = command.Substring(6);
-                        if (owner != null && owner._Network != null)
-                        {
-                            if (owner.isChannel)
-                            {
-                                //owner.textbox.richTextBox1.AppendText(nick);
-                                owner.textbox.setFocus();
-                            }
-                        }
-                        return;
-                    }
-                    if (command.StartsWith("join#"))
-                    {
-                        Parser.parse("/join " + command.Substring(4));
-                        return;
-                    }
+                    System.Diagnostics.Process.Start(http);
                 }
+                catch (Exception)
+                {
+                    MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+            }
+            if (http.StartsWith("pidgeon://"))
+            {
+                string command = http.Substring("pidgeon://".Length);
+                if (command.EndsWith("/"))
+                {
+                    command = command.Substring(0, command.Length - 1);
+                }
+                if (command.StartsWith("user/#"))
+                {
+                    string nick = command.Substring(6);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                            owner.textbox.richTextBox.Buffer.Text += nick + ": ";
+                            owner.textbox.setFocus();
+                        }
+                    }
+                    return;
+                }
+                if (command.StartsWith("join/#"))
+                {
+                    Parser.parse("/join " + command.Substring(5));
+                    return;
+                }
+                if (command.StartsWith("ident/#"))
+                {
+                    string nick = command.Substring(7);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                            owner.textbox.richTextBox1.Buffer.Text += nick;
+                            owner.textbox.setFocus();
+                        }
+                    }
+                    return;
+                }
+                if (command.StartsWith("hostname/#"))
+                {
+                    string nick = command.Substring(10);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                            owner.textbox.richTextBox1.Buffer.Text += nick;
+                            owner.textbox.setFocus();
+                        }
+                    }
+                    return;
+                }
+                if (command.StartsWith("text/#"))
+                {
+                    string nick = command.Substring(6);
+                    if (owner != null && owner._Network != null)
+                    {
+                        if (owner.isChannel)
+                        {
+                            owner.textbox.richTextBox1.Buffer.Text += nick;
+                            owner.textbox.setFocus();
+                        }
+                    }
+                    return;
+                }
+                if (command.StartsWith("join#"))
+                {
+                    Parser.parse("/join " + command.Substring(4));
+                    return;
+                }
+            }
         }
 
         private void channelToolStripMenuItem_Click(object sender, EventArgs e)
@@ -343,8 +429,8 @@ namespace Client
         {
             try
             {
-                //scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
-                //ScrollingEnabled = scrollToolStripMenuItem.Checked;
+                scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
+                ScrollingEnabled = scrollToolStripMenuItem.Checked;
                 if (ScrollingEnabled)
                 {
                     Reload();
@@ -399,6 +485,10 @@ namespace Client
         {
             try
             {
+                if (CreatingMenu)
+                {
+                    return;
+                }
                 Switch(false);
             }
             catch (Exception fail)
@@ -411,6 +501,10 @@ namespace Client
         {
             try
             {
+                if (CreatingMenu)
+                {
+                    return;
+                }
                 Switch(true);
             }
             catch (Exception fail)
@@ -425,7 +519,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //owner.textbox.richTextBox1.AppendText(mode1b2ToolStripMenuItem.Text);
+                    owner.textbox.richTextBox1.Buffer.Text += mode1b2ToolStripMenuItem.Text;
                 }
             }
             catch (Exception fail)
@@ -440,7 +534,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //owner.textbox.richTextBox1.AppendText(mode1q2ToolStripMenuItem.Text);
+                    owner.textbox.richTextBox1.Buffer.Text += mode1q2ToolStripMenuItem.Text;
                 }
             }
             catch (Exception fail)
@@ -455,7 +549,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //owner.textbox.richTextBox1.AppendText(mode1I2ToolStripMenuItem.Text);
+                    owner.textbox.richTextBox1.Buffer.Text += mode1I2ToolStripMenuItem.Text;
                 }
             }
             catch (Exception fail)
@@ -470,7 +564,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //owner.textbox.richTextBox1.AppendText(mode1e2ToolStripMenuItem.Text);
+                    owner.textbox.richTextBox1.Buffer.Text += mode1e2ToolStripMenuItem.Text;
                 }
             }
             catch (Exception fail)
@@ -515,7 +609,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //Parser.parse(whoisToolStripMenuItem.Text);
+                    Parser.parse(whoisToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -530,7 +624,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    //Parser.parse(whowasToolStripMenuItem.Text);
+                    Parser.parse(whowasToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -552,7 +646,7 @@ namespace Client
                             return;
                         }
                     }
-                    //Parser.parse(kickToolStripMenuItem.Text);
+                    Parser.parse(kickToolStripMenuItem.Text);
                 }
             }
             catch (Exception fail)
@@ -568,14 +662,14 @@ namespace Client
                 string text = null;
                 if (simple)
                 {
-                    //text = simpleview.Text;
+                    text = simpleview.Buffer.Text;
                     Clipboard.SetText(text);
                     return;
                 }
-                //text = RT.Text;
+                text = RT.Text;
                 if (text != null)
                 {
-                    //Clipboard.SetText(RT.Text);
+                    Clipboard.SetText(RT.Text);
                 }
             }
             catch (Exception fail)

@@ -25,14 +25,65 @@ using Gtk;
 
 namespace Client
 {
-    [System.ComponentModel.ToolboxItem(true)]
     public partial class RichTBox : Gtk.Bin
     {
+        public Scrollback scrollback = null;
         private Font font;
         private double textSize = 2;
+        private string text = null;
+        private System.Drawing.Color foreColor;
+        private System.Drawing.Color backColor;
 
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TextView richTextBox;
+
+        public Gtk.TextView textView
+        {
+            get
+            {
+                return richTextBox;
+            }
+        }
+
+        public string Text
+        {
+            get
+            {
+                return text;
+            }
+        }
+
+        public System.Drawing.Color BackColor
+        {
+            set
+            {
+                backColor = value;
+                colors();
+            }
+            get
+            {
+                return backColor;
+            }
+        }
+
+        public System.Drawing.Color ForeColor
+        {
+            set
+            {
+                foreColor = value;
+                colors();
+            }
+            get
+            {
+                return foreColor;
+            }
+        }
+
+        private void colors()
+        {
+            richTextBox.ModifyBase(StateType.Normal, Core.fromColor(BackColor));
+            richTextBox.ModifyText(StateType.Normal, Core.fromColor(ForeColor));
+        }
 
         protected virtual void Build()
         {
@@ -63,6 +114,28 @@ namespace Client
         public RichTBox()
         {
             this.Build();
+            ForeColor = Configuration.CurrentSkin.colordefault;
+            BackColor = Configuration.CurrentSkin.backgroundcolor;
+        }
+
+        public void InsertLine(Line line)
+        {
+            lock (Lines)
+            {
+                Lines.Add(line);
+            }
+        }
+
+        [Obsolete]
+        public void RedrawText()
+        {
+            Redraw();
+        }
+
+        public void ScrollToBottom()
+        {
+            TextIter iter = richTextBox.Buffer.EndIter;
+            richTextBox.ScrollToIter(iter, 0, true, 0, 0);
         }
     }
 }

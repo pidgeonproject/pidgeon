@@ -54,6 +54,10 @@ namespace Client.Graphics
         public bool joinToolStripMenuItem_Visible = false;
         public bool disconnectToolStripMenuItem_Visible = false;
 
+        public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
+        public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
+        public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -81,6 +85,9 @@ namespace Client.Graphics
 
             this.Add(this.GtkScrolledWindow);
             this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
+            partToolStripMenuItem.Visible = true;
+            disconnectToolStripMenuItem.Visible = true;
+            closeToolStripMenuItem.Visible = true;
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -103,12 +110,24 @@ namespace Client.Graphics
             try
             {
                 Gtk.Menu menu = new Menu();
-                Gtk.MenuItem part = new MenuItem("Part");
-                menu.Append(part);
-                Gtk.MenuItem close = new MenuItem("Close");
-                Gtk.MenuItem disconnect = new MenuItem("Disconnect");
-                menu.Append(close);
-                menu.Append(disconnect);
+                if (partToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem part = new MenuItem(partToolStripMenuItem.Text);
+                    part.Sensitive = partToolStripMenuItem.Enabled;
+                    menu.Append(part);
+                }
+                if (closeToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem close = new MenuItem(closeToolStripMenuItem.Text);
+                    close.Sensitive = closeToolStripMenuItem.Enabled;
+                    menu.Append(close);
+                }
+                if (disconnectToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem disconnect = new MenuItem(disconnectToolStripMenuItem.Text);
+                    disconnect.Sensitive = disconnectToolStripMenuItem.Enabled;
+                    menu.Append(disconnect);
+                }
                 menu.ShowAll();
                 menu.Popup();
             }
@@ -403,8 +422,8 @@ namespace Client.Graphics
                     case ItemType.Channel:
                         Channel chan = (Channel)tv.Model.GetValue(iter, 1);
                         Core.network = chan._Network;
-                        //partToolStripMenuItem.Visible = true;
-                        //closeToolStripMenuItem.Visible = true;
+                        partToolStripMenuItem.Visible = true;
+                        closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
                         chan._Network._Protocol.ShowChat(chan._Network.window + chan.Name);
                         Core._Main.UpdateStatus();
@@ -420,14 +439,14 @@ namespace Client.Graphics
                             server.ParentSv.ShowChat("!" + server.window);
                         }
                         Core.network = server;
-                        //disconnectToolStripMenuItem.Visible = true;
+                        disconnectToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
                     case ItemType.Services:
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
                         protocol.ShowChat("!root");
                         Core.network = null;
-                        // disconnectToolStripMenuItem.Visible = true;
+                        disconnectToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
                     case ItemType.System:
@@ -436,7 +455,7 @@ namespace Client.Graphics
                         User us = (User)tv.Model.GetValue(iter, 1); ;
                         Core.network = us._Network;
                         us._Network._Protocol.ShowChat(us._Network.window + us.Nick);
-                        //closeToolStripMenuItem.Visible = true;
+                        closeToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
                 }

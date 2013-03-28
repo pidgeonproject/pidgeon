@@ -17,76 +17,32 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
 using System.Text;
+using Gtk;
 
-namespace Client.GTK
+namespace Client
 {
-    public class Menu
+    public partial class RichTBox : Gtk.Bin
     {
-        public bool Enabled = false;
-        public bool Checked = false;
-        public bool Visible = false;
-        public string Text;
+        private List<Line> Lines = new List<Line>();
 
-        public Menu()
-        { 
-            Text = null;
-        }
-
-        public Menu(string id)
+        public void RemoveLine(int index)
         {
-            Text = id;
-        }
-    }
-
-    public class PidgeonForm : Gtk.Window
-    {
-        public int Height
-        {
-            get
+            lock (Lines)
             {
-                int height;
-                int width;
-                this.GetSize(out width, out height);
-                return height;
-            }
-            set
-            {
-                this.SetSizeRequest(Width, value);
+                if (Lines.Count > (index - 2))
+                {
+                    Lines.RemoveAt(index);
+                }
             }
         }
 
-        public int Width
+        private void Redraw()
         {
-            get
-            {
-                int height;
-                int width;
-                this.GetSize(out width, out height);
-                return width;
-            }
-            set
-            {
-                this.SetSizeRequest(value, Height);
-            }
-        }	
 
-        public bool Enabled
-        {
-            set
-            {
-                this.Sensitive = value;
-            }
-            get
-            {
-                return this.Sensitive;
-            }
-        }
-
-        public PidgeonForm() : base(Gtk.WindowType.Toplevel)
-        {
-            
         }
     }
 }
