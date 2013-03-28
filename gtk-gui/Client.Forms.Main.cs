@@ -114,7 +114,7 @@ namespace Client.Forms
 			this.AddAccelGroup (this.UIManager.AccelGroup);
 			this.Name = "Client.Forms.Main";
 			this.Title = "Pidgeon Client";
-			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.Pigeon_clip_art_hight.png");
+			this.Icon = global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.pigeon_clip_art_hight.ico");
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child Client.Forms.Main.Gtk.Container+ContainerChild
 			this.vbox3 = new global::Gtk.VBox ();
@@ -197,6 +197,8 @@ namespace Client.Forms
 			this.PreferencesAction.Activated += new global::System.EventHandler (this.preferencesToolStripMenuItem_Click);
 			this.PacketViewerAction.Activated += new global::System.EventHandler (this.toolStripMenuItem3_Click);
 			this.SmallChatAction.Activated += new global::System.EventHandler (this.taskbarBoxToolStripMenuItem_Click);
+			this.AttachToMicroChatAction.Activated += new global::System.EventHandler (this.attachToMicroChatToolStripMenuItem_Click);
+			this.DetachFromMicroChatAction.Activated += new global::System.EventHandler (this.detachFromMicroChatToolStripMenuItem_Click);
 		}
 	}
 }

@@ -23,7 +23,6 @@ namespace Client.Forms
 			this.textview2.CanFocus = true;
 			this.textview2.Name = "textview2";
 			this.textview2.Editable = false;
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
 			this.GtkScrolledWindow.Add (this.textview2);
 			this.Add (this.GtkScrolledWindow);
 			if ((this.Child != null)) {

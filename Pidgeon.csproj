@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -39,7 +39,6 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
@@ -70,6 +69,9 @@
       <Private>False</Private>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">
@@ -96,6 +98,7 @@
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight.png" />
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight_mini.png" />
     <EmbeddedResource Include="version.txt" />
+    <EmbeddedResource Include="Resources\icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />
@@ -152,7 +155,6 @@
     <Compile Include="Forms\Preferences.cs" />
     <Compile Include="gtk-gui\Client.Forms.Preferences.cs" />
     <Compile Include="Forms\Channels.cs" />
-    <Compile Include="Forms\Notification.cs" />
     <Compile Include="Forms\TrafficScanner.cs" />
     <Compile Include="gtk-gui\Client.Forms.TrafficScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -177,6 +179,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Recovery.Designer.cs" />
+    <Compile Include="Forms\Notification.cs" />
+    <Compile Include="gtk-gui\Client.Forms.Notification.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -187,7 +191,6 @@
     <None Include="Resources\Image2.bmp" />
     <None Include="Resources\Image2.png" />
     <None Include="Resources\Letter S.png" />
-    <None Include="Resources\icon.png" />
     <None Include="Resources\irc_channel.ico" />
     <None Include="Resources\regular.bmp" />
     <None Include="Properties\Settings.settings" />
