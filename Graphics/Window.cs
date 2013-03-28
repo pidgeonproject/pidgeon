@@ -51,6 +51,7 @@ namespace Client.Graphics
         public bool Locked = false;
         public int locktime = 0;
         public TreeIter treeNode;
+        public System.Drawing.Color MenuColor;
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
         /// </summary>
@@ -186,7 +187,38 @@ namespace Client.Graphics
             this.Hide();
         }
 
-
+        private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
+        {
+            try
+            {
+                User user = (User)model.GetValue(iter, 1);
+                switch (user.Status)
+                {
+                    case User.ChannelStatus.Owner:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colorq);
+                        break;
+                    case User.ChannelStatus.Admin:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colora);
+                        break;
+                    case User.ChannelStatus.Op:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.coloro);
+                        break;
+                    case User.ChannelStatus.Voice:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colorv);
+                        break;
+                    case User.ChannelStatus.Regular:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
+                        break;
+                    case User.ChannelStatus.Halfop:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colorh);
+                        break;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
 
         public void InitStyle()
         {
@@ -201,6 +233,7 @@ namespace Client.Graphics
         {
             this.scrollback1 = new global::Client.Scrollback();
             this.textbox1 = new global::Client.Graphics.TextBox();
+            MenuColor = Configuration.CurrentSkin.colordefault;
             textbox1.parent = this;
             if (textbox1.history == null)
             {
@@ -223,6 +256,7 @@ namespace Client.Graphics
             listView.Model = UserList;
             Gtk.CellRendererText renderer = new CellRendererText();
             column1.PackStart(renderer, true);
+            column1.SetCellDataFunc(renderer, UserListRendererTool);
             column1.AddAttribute(renderer, "text", 0);
         }
 

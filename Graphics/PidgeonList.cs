@@ -73,6 +73,7 @@ namespace Client.Graphics
             Gtk.CellRendererText Item = new Gtk.CellRendererText();
             Column.Title = messages.get("list-active-conn", messages.Language);
             Column.PackStart(Item, true);
+            Column.SetCellDataFunc(Item, UserListRendererTool);
             tv.AppendColumn(Column);
             tv.PopupMenu += Menu;
             tv.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
@@ -142,6 +143,48 @@ namespace Client.Graphics
 			tv.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
 			tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
 		}
+
+        private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
+        {
+            try
+            {
+                ItemType type = (ItemType)model.GetValue(iter, 2);
+                Window window = null;
+                switch (type)
+                { 
+                    case ItemType.Server:
+                        Network nw = (Network)model.GetValue(iter, 1);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
+                        break;
+                    case ItemType.User:
+                        User user = (User)model.GetValue(iter, 1);
+                        lock (user._Network.PrivateWins)
+                        {
+                            if (user._Network.PrivateWins.ContainsKey(user))
+                            {
+                                window = user._Network.PrivateWins[user];
+                            }
+                        }
+                        if (window != null)
+                        {
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                        }
+                        break;
+                    case ItemType.Channel:
+                        Channel channel = (Channel)model.GetValue(iter, 1);
+                        window = channel.retrieveWindow();
+                        if (window != null)
+                        {
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                        }
+                        break;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
 
         public PidgeonList()
         {
@@ -415,13 +458,18 @@ namespace Client.Graphics
                 TreeIter iter;
                 TreePath[] path = tv.Selection.GetSelectedRows();
                 tv.Model.GetIter(out iter, path[0]);
-
+                Window window = null;
                 ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
                 switch (type)
                 {
                     case ItemType.Channel:
                         Channel chan = (Channel)tv.Model.GetValue(iter, 1);
                         Core.network = chan._Network;
+                        window = chan.retrieveWindow();
+                        if (window != null)
+                        {
+                            window.MenuColor = Configuration.CurrentSkin.fontcolor;
+                        }
                         partToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
@@ -438,6 +486,7 @@ namespace Client.Graphics
                         {
                             server.ParentSv.ShowChat("!" + server.window);
                         }
+                        server.SystemWindow.MenuColor = Configuration.CurrentSkin.fontcolor;
                         Core.network = server;
                         disconnectToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();

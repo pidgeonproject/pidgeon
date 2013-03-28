@@ -297,43 +297,42 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            /* if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.treeNode != null)
+             if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges)
             {
                 switch (InputStyle)
                 {
-                    case MessageStyle.Kick:
-                    case MessageStyle.System:
-                        owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                    case ContentLine.MessageStyle.Kick:
+                    case ContentLine.MessageStyle.System:
+                        owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
                         break;
-                    case MessageStyle.Message:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                    case ContentLine.MessageStyle.Message:
+                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.colortalk;
+                            owner.MenuColor = Configuration.CurrentSkin.colortalk;
                         }
                         break;
-                    case MessageStyle.Action:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk && owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                    case ContentLine.MessageStyle.Action:
+                        if (owner.MenuColor != Configuration.CurrentSkin.colortalk && owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.miscelancscolor;
+                            owner.MenuColor = Configuration.CurrentSkin.miscelancscolor;
                         }
                         break;
-                    case MessageStyle.Part:
-                    case MessageStyle.Channel:
-                    case MessageStyle.User:
-                    case MessageStyle.Join:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.miscelancscolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk)
+                    case ContentLine.MessageStyle.Part:
+                    case ContentLine.MessageStyle.Channel:
+                    case ContentLine.MessageStyle.User:
+                    case ContentLine.MessageStyle.Join:
+                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor && owner.MenuColor != Configuration.CurrentSkin.miscelancscolor && owner.MenuColor != Configuration.CurrentSkin.colortalk)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.joincolor;
+                            owner.MenuColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
                 }
 
                 if (Matched)
                 {
-                    owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                    owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
                 }
             }
-            */
 
             DateTime time = DateTime.Now;
 

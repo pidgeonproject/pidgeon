@@ -64,7 +64,6 @@ namespace Client.Forms
 			}
 			this.DefaultWidth = 464;
 			this.DefaultHeight = 234;
-			this.Show ();
 		}
 	}
 }

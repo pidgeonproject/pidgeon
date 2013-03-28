@@ -32,6 +32,7 @@ namespace Client
         public Network _Network = null;
         public string Ident = null;
         public NetworkMode ChannelMode = new NetworkMode();
+        public ChannelStatus Status = ChannelStatus.Regular;
         public string Nick = null;
         public string RealName = null;
         public List<Channel> ChannelList
@@ -109,6 +110,16 @@ namespace Client
                 return this.Nick.CompareTo((obj as User).Nick);
             }
             return 0;
+        }
+
+        public enum ChannelStatus
+        { 
+            Owner,
+            Admin,
+            Op,
+            Halfop,
+            Voice,
+            Regular,
         }
     }
 }

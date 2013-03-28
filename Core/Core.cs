@@ -565,8 +565,8 @@ namespace Client
                 if (notification_waiting)
                 {
                     bool Focus = false;
-                    //notification.text.Text = notification_data;
-                    //notification.label1.Text = notification_caption;
+                    notification.text.Text = notification_data;
+                    notification.title.Text = notification_caption;
                     notification_waiting = false;
                     if (Core._Main.Chat != null)
                     {
@@ -577,16 +577,7 @@ namespace Client
                     }
                     if (!notification.Visible)
                     {
-                        /* 
-                         * 
-                         * fixme
-                         * 
-                        if (notification.DefaultWidth < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && notification.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
-                        {
-                            notification.Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - notification.Height;
-                            notification.Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - notification.Width;
-                        }
-                        */
+                        notification.Relocate();
                         notification.Show();
                         if (Focus)
                         {

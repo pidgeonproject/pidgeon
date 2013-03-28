@@ -346,6 +346,7 @@ namespace Client
 
                         Dictionary<User, Gtk.TreeIter> CurrentUsers = new Dictionary<User, Gtk.TreeIter>();
                         Gtk.TreeIter iter;
+                        Gtk.TreeIter xx;
                         if (Chat.UserList.GetIterFirst(out iter))
                         {
                             while (true)
@@ -363,8 +364,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+                            user.Status = User.ChannelStatus.Owner;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
                         }
@@ -373,8 +375,10 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+
+                            user.Status = User.ChannelStatus.Admin;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                         }
@@ -382,8 +386,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+                            user.Status = User.ChannelStatus.Op;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
                         }
@@ -391,8 +396,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+                            user.Status = User.ChannelStatus.Halfop;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
                         }
@@ -400,8 +406,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+                            user.Status = User.ChannelStatus.Voice;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
                         }
@@ -410,8 +417,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
                             }
+                            user.Status = User.ChannelStatus.Regular;
                             //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
                         }
