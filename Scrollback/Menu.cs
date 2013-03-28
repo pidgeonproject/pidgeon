@@ -209,7 +209,7 @@ namespace Client
                 }
                 if (data.StartsWith("pidgeon://text"))
                 {
-                    ViewLn(adds, ViewType.User);
+                    ViewLn(adds, ViewType.User, adds);
                 }
                 if (data.StartsWith("pidgeon://join"))
                 {
@@ -254,7 +254,7 @@ namespace Client
         {
             if (owner != null)
             {
-                //toolStripMenuItem1.Visible = true;
+                toolStripMenuItem1.Visible = true;
                 Link = content;
                 if (type == ViewType.Channel)
                 {
@@ -293,6 +293,12 @@ namespace Client
                         whoisToolStripMenuItem.Text = "/whois " + name;
                         whowasToolStripMenuItem.Text = "/whowas " + name;
                         mode1b2ToolStripMenuItem.Visible = true;
+						if (name == "")
+						{
+							kickToolStripMenuItem.Visible = false;
+                        	whoisToolStripMenuItem.Visible = false;
+                        	whowasToolStripMenuItem.Visible = false;
+						}
                     }
                     toolStripMenuItem2.Visible = true;
                     toolStripMenuItem1.Visible = true;

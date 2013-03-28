@@ -327,7 +327,9 @@ namespace Client
                         }
                         break;
                 }
-
+				
+				Graphics.PidgeonList.Updated = true;
+				
                 if (Matched)
                 {
                     owner.MenuColor = Configuration.CurrentSkin.highlightcolor;

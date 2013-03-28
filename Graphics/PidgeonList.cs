@@ -350,7 +350,9 @@ namespace Client.Graphics
                 }
 
                 Updated = false;
-
+				
+				tv.ColumnsAutosize ();
+				
                 lock (queueNetwork)
                 {
                     foreach (Network it in queueNetwork)
