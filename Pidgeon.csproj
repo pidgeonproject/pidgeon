@@ -168,7 +168,6 @@
     <Compile Include="gtk-gui\Client.Forms.SearchItem.cs" />
     <Compile Include="Forms\Channel_Info.cs" />
     <Compile Include="Forms\MicroChat.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Updater.cs" />
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />

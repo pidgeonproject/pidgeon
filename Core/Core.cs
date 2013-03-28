@@ -460,7 +460,7 @@ namespace Client
         {
             try
             {
-                //System.Diagnostics.Debug.Print(data);
+                System.Diagnostics.Debug.Print(data);
                 if (Configuration.Kernel.Debugging)
                 {
                     if (Core._Main != null && !Core.blocked)

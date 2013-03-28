@@ -37,12 +37,7 @@ namespace Client.Forms
 			scrollback_mc = new Scrollback();
             scrollback_mc.owner = null;
             scrollback_mc.Create();
-            //scrollback_mc.contextMenuStrip1.Items.Clear();
-            //scrollback_mc.contextMenuStrip1.Items.Add(scrollback_mc.scrollToolStripMenuItem);
-            //scrollback_mc.contextMenuStrip1.Items.Add(transparencyToolStripMenuItem);
 		}
-		
-		
 	}
 }
 

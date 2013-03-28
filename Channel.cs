@@ -21,6 +21,20 @@ using System.Text;
 
 namespace Client
 {
+	public class UserData
+	{
+		public Gtk.TreeIter iter;
+		public string username;
+		public string hn;
+		
+		public UserData(string Name, Gtk.TreeIter Node, string HostName)
+		{
+			iter = Node;
+			username = Name;
+			hn = HostName;
+		}
+	}
+	
     public class ChannelParameterMode
     {
         public string Target = null;
@@ -335,8 +349,6 @@ namespace Client
                             }
                         }
 
-                        //listView.Items.Clear();
-
                         owners.Sort();
                         admins.Sort();
                         halfop.Sort();
@@ -344,15 +356,17 @@ namespace Client
                         vs.Sort();
                         users.Sort();
 
-                        Dictionary<User, Gtk.TreeIter> CurrentUsers = new Dictionary<User, Gtk.TreeIter>();
+                        Dictionary<User, UserData> CurrentUsers = new Dictionary<User, UserData>();
                         Gtk.TreeIter iter;
                         Gtk.TreeIter xx;
                         if (Chat.UserList.GetIterFirst(out iter))
                         {
                             while (true)
                             {
+								string host = (string)Chat.UserList.GetValue(iter, 2);
                                 User user = (User)Chat.UserList.GetValue(iter, 1);
-                                CurrentUsers.Add(user, iter);
+								string nick = (string)Chat.UserList.GetValue(iter, 0);
+                                CurrentUsers.Add(user, new UserData(nick, iter, host));
                                 if (!Chat.UserList.IterNext(ref iter))
                                 {
                                     break;
@@ -418,14 +432,20 @@ namespace Client
                         }
 
                         // check for all users who are in list but not in a channel
-                        foreach (User user in CurrentUsers.Keys)
+                        foreach (KeyValuePair<User, UserData> info in CurrentUsers)
                         {
-                            if (!this.UserList.Contains(user))
+                            if (!this.UserList.Contains(info.Key))
                             { 
                                 // this user is no longer in channel so we need to remove them from the list
-                                Gtk.TreeIter iter2 = CurrentUsers[user];
+                                Gtk.TreeIter iter2 = CurrentUsers[info.Key].iter;
                                 Chat.UserList.Remove(ref iter2);
-                            }
+                            } else 
+							{
+								if (info.Value.username != info.Key.Nick)
+								{
+									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 0, info.Key.Nick);
+								}
+							}
                         }
                     }
                     return;
