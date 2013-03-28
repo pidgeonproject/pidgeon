@@ -567,13 +567,13 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		/*
+		
         private void configurationFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                SettingsEd ed = new SettingsEd();
-                ed.Show(this);
+                Forms.ConfigFile ed = new Forms.ConfigFile();
+                ed.Show();
             }
             catch (Exception fail)
             {
@@ -581,6 +581,7 @@ namespace Client.Forms
             }
         }
 
+		/*
         private void skinEdToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
