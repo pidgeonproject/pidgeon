@@ -31,6 +31,11 @@ namespace Client
 {
     public partial class Scrollback
     {
+        public GTK.Menu banToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu retrieveTopicToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
+
         public enum ViewType
         {
             Channel,

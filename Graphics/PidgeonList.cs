@@ -70,6 +70,8 @@ namespace Client.Graphics
             Column.Title = messages.get("list-active-conn", messages.Language);
             Column.PackStart(Item, true);
             tv.AppendColumn(Column);
+            tv.PopupMenu += Menu;
+            tv.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             Column.AddAttribute(Item, "text", 0);
             this.tv.Model = Values;
             this.GtkScrolledWindow.Add(this.tv);
@@ -86,12 +88,42 @@ namespace Client.Graphics
             this.Hide();
         }
 
+        [GLib.ConnectBefore]
+        private void Menu2(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                Menu(sender, null);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void Menu(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                Gtk.Menu menu = new Menu();
+                Gtk.MenuItem part = new MenuItem("Part");
+                menu.Append(part);
+                Gtk.MenuItem close = new MenuItem("Close");
+                Gtk.MenuItem disconnect = new MenuItem("Disconnect");
+                menu.Append(close);
+                menu.Append(disconnect);
+                menu.ShowAll();
+                menu.Popup();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
 		public void InitStyle()
 		{
 			tv.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
 			tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
 		}
-		
+
         public PidgeonList()
         {
             try

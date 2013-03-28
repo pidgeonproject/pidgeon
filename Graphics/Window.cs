@@ -67,6 +67,35 @@ namespace Client.Graphics
         private Channel channel = null;
         public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User));
         public bool isInitialised = false;
+
+        // menu
+        public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu kbToolStripMenuIm = new GTK.Menu();
+        public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
+        public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
+        public GTK.Menu kickrToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
+        public GTK.Menu vToolStripMenuItem = new GTK.Menu(messages.get("give+v", Core.SelectedLanguage));
+        public GTK.Menu hToolStripMenuItem = new GTK.Menu(messages.get("give+h", Core.SelectedLanguage));
+        public GTK.Menu oToolStripMenuItem = new GTK.Menu(messages.get("give+o", Core.SelectedLanguage));
+        public GTK.Menu aToolStripMenuItem = new GTK.Menu(messages.get("give+a", Core.SelectedLanguage));
+        public GTK.Menu qToolStripMenuItem = new GTK.Menu(messages.get("give+q", Core.SelectedLanguage));
+        public GTK.Menu vToolStripMenuItem1 = new GTK.Menu(messages.get("give-v", Core.SelectedLanguage));
+        public GTK.Menu hToolStripMenuItem1 = new GTK.Menu(messages.get("give-h", Core.SelectedLanguage));
+        public GTK.Menu oToolStripMenuItem1 = new GTK.Menu(messages.get("give-o", Core.SelectedLanguage));
+        public GTK.Menu aToolStripMenuItem1 = new GTK.Menu(messages.get("give-a", Core.SelectedLanguage));
+        public GTK.Menu qToolStripMenuItem1 = new GTK.Menu(messages.get("give-q", Core.SelectedLanguage));
+        public GTK.Menu banToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
+        public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
+        public GTK.Menu toolStripMenuItem3 = new GTK.Menu();
+        public GTK.Menu ctToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu refreshToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu kickToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu synchroToolStripMenuItem = new GTK.Menu();
+
+        // window
 		private global::Gtk.VPaned vpaned1;
 		private global::Gtk.HPaned hpaned1;
 		private global::Client.Scrollback scrollback1;
@@ -91,7 +120,6 @@ namespace Client.Graphics
 			this.hpaned1.Name = "hpaned1";
 			this.hpaned1.Position = 333;
 			// Container child hpaned1.Gtk.Paned+PanedChild
-			//this.scrollback1 = new global::Client.Scrollback ();
 			this.scrollback1.Events = ((global::Gdk.EventMask)(256));
 			this.scrollback1.Name = "scrollback1";
 			this.hpaned1.Add (this.scrollback1);
@@ -103,7 +131,9 @@ namespace Client.Graphics
 			this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
 			// Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
 			this.listView = new global::Gtk.TreeView ();
+            this.listView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
 			this.listView.CanFocus = true;
+            this.listView.PopupMenu += new PopupMenuHandler(Menu);
 			this.listView.Name = "listView";
 			this.GtkScrolledWindow1.Add (this.listView);
 			this.hpaned1.Add (this.GtkScrolledWindow1);
@@ -111,7 +141,6 @@ namespace Client.Graphics
 			global::Gtk.Paned.PanedChild w4 = ((global::Gtk.Paned.PanedChild)(this.vpaned1 [this.hpaned1]));
 			w4.Resize = false;
 			// Container child vpaned1.Gtk.Paned+PanedChild
-			//this.textbox1 = new global::Client.Graphics.TextBox ();
 			this.textbox1.Events = ((global::Gdk.EventMask)(256));
 			this.textbox1.Name = "textbox1";
 			this.vpaned1.Add (this.textbox1);
@@ -168,8 +197,8 @@ namespace Client.Graphics
             this.textbox.Init();
             this.Build();
 			this.InitStyle();
-            //kbToolStripMenuIm.Enabled = false;
-            //kickrToolStripMenuItem.Enabled = false;
+            kbToolStripMenuIm.Enabled = false;
+            kickrToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
             column1.Title = (messages.get("list", Core.SelectedLanguage));
             listView.AppendColumn(column1);
@@ -177,17 +206,35 @@ namespace Client.Graphics
             Gtk.CellRendererText renderer = new CellRendererText();
             column1.PackStart(renderer, true);
             column1.AddAttribute(renderer, "text", 0);
-            //listView.BackColor = Configuration.CurrentSkin.backgroundcolor;
-            //listView.ForeColor = Configuration.CurrentSkin.fontcolor;
         }
 
         public void Create()
         {
-            //scrollback.channelToolStripMenuItem.Visible = isChannel;
-            //scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
+            scrollback.channelToolStripMenuItem.Visible = isChannel;
+            scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
+            if (!isChannel)
+            {
+                banToolStripMenuItem.Visible = false;
+                whoisToolStripMenuItem.Visible = false;
+                toolStripMenuItem1.Visible = false;
+                toolStripMenuItem2.Visible = false;
+                toolStripMenuItem3.Visible = false;
+                kbToolStripMenuItem.Visible = false;
+                whoisToolStripMenuItem.Visible = false;
+                ctToolStripMenuItem.Visible = false;
+                refreshToolStripMenuItem.Visible = false;
+                kickBanToolStripMenuItem.Visible = false;
+                modeToolStripMenuItem.Visible = false;
+                kickToolStripMenuItem.Visible = false;
+                kickrToolStripMenuItem.Visible = false;
+            }
+            else
+            {
+                synchroToolStripMenuItem.Visible = true;
+            }
             if (scrollback.owner == null || scrollback.owner._Network == null)
             {
-                //scrollback.listAllChannelsToolStripMenuItem.Visible = false;
+                scrollback.listAllChannelsToolStripMenuItem.Visible = false;
             }
             Redraw();
             isInitialised = true;
@@ -227,8 +274,33 @@ namespace Client.Graphics
             }
         }
 
-        /*
+        [GLib.ConnectBefore]
+        private void Menu2(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                Menu(sender, null);
+            }
+        }
 
+        private void Menu(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                Gtk.Menu menu = new Menu();
+                Gtk.MenuItem whois = new MenuItem("Whois");
+                menu.Append(whois);
+                Gtk.MenuItem change = new MenuItem("Change mode");
+                Gtk.MenuItem CTCP = new MenuItem("CTCP");
+                menu.Append(change);
+                menu.ShowAll();
+                menu.Popup();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);            
+            }
+        }
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -309,7 +381,7 @@ namespace Client.Graphics
                         {
                             if (Configuration.irc.DisplayCtcp)
                             {
-                                _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, Scrollback.MessageStyle.User);
+                                _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + Decode(user.Text) + ": " + message, ContentLine.MessageStyle.User);
                             }
                             _channel._Network.Transfer("PRIVMSG " + Decode(user.Text) + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                         }
@@ -317,51 +389,7 @@ namespace Client.Graphics
                 }
             }
         }
-
-        private void textbox_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                banToolStripMenuItem.Text = messages.get("ban", Core.SelectedLanguage);
-                modeToolStripMenuItem.Text = messages.get("mode", Core.SelectedLanguage);
-                kbToolStripMenuItem.Text = messages.get("kickban+text", Core.SelectedLanguage);
-                kickrToolStripMenuItem.Text = messages.get("kick-text", Core.SelectedLanguage);
-                vToolStripMenuItem.Text = messages.get("give+v", Core.SelectedLanguage);
-                hToolStripMenuItem.Text = messages.get("give+h", Core.SelectedLanguage);
-                oToolStripMenuItem.Text = messages.get("give+o", Core.SelectedLanguage);
-                aToolStripMenuItem.Text = messages.get("give+a", Core.SelectedLanguage);
-                qToolStripMenuItem.Text = messages.get("give+q", Core.SelectedLanguage);
-                vToolStripMenuItem1.Text = messages.get("give-v", Core.SelectedLanguage);
-                hToolStripMenuItem1.Text = messages.get("give-h", Core.SelectedLanguage);
-                oToolStripMenuItem1.Text = messages.get("give-o", Core.SelectedLanguage);
-                aToolStripMenuItem1.Text = messages.get("give-a", Core.SelectedLanguage);
-                qToolStripMenuItem1.Text = messages.get("give-q", Core.SelectedLanguage);
-                if (!isChannel)
-                {
-                    banToolStripMenuItem.Visible = false;
-                    whoisToolStripMenuItem.Visible = false;
-                    toolStripMenuItem1.Visible = false;
-                    toolStripMenuItem2.Visible = false;
-                    toolStripMenuItem3.Visible = false;
-                    kbToolStripMenuItem.Visible = false;
-                    whoisToolStripMenuItem.Visible = false;
-                    ctToolStripMenuItem.Visible = false;
-                    refreshToolStripMenuItem.Visible = false;
-                    kickBanToolStripMenuItem.Visible = false;
-                    modeToolStripMenuItem.Visible = false;
-                    kickToolStripMenuItem.Visible = false;
-                    kickrToolStripMenuItem.Visible = false;
-                }
-                else
-                {
-                    synchroToolStripMenuItem.Visible = true;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
+        /*
 
         private void whoisToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -386,12 +414,12 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
+        */
         public string Decode(string user)
         {
             foreach (char item in _Network.UChars)
             {
-                if (user.Contains(item))
+                if (user.Contains(item.ToString()))
                 {
                     user = user.Replace(item.ToString(), "");
                 }
@@ -407,11 +435,11 @@ namespace Client.Graphics
                 {
                     if (SelectedUser != null)
                     {
-                        foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
+                        //foreach (System.Windows.Forms.ListViewItem user in SelectedUser)
                         {
-                            if (user.Text != "")
+                        //    if (user.Text != "")
                             {
-                                Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
+                        //        Core.network.Transfer("MODE " + name + " " + mode + " " + Decode(user.Text));
                             }
                         }
                     }
@@ -611,6 +639,8 @@ namespace Client.Graphics
             }
         }
 
+        /*
+
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -669,7 +699,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
+        */
         public Channel getChannel()
         {
             if (channel != null)
@@ -709,6 +739,7 @@ namespace Client.Graphics
             }
         }
 
+        /*
         private void tIMEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

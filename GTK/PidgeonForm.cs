@@ -22,6 +22,23 @@ using System.Text;
 
 namespace Client.GTK
 {
+    public class Menu
+    {
+        public bool Enabled = false;
+        public bool Visible = false;
+        public string Text;
+
+        public Menu()
+        { 
+            Text = null;
+        }
+
+        public Menu(string id)
+        {
+            Text = id;
+        }
+    }
+
     public class PidgeonForm : Gtk.Window
     {
         public int Height
