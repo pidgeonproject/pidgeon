@@ -364,52 +364,46 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
                             user.Status = User.ChannelStatus.Owner;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
                         }
 
                         foreach (User user in admins)
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
 
                             user.Status = User.ChannelStatus.Admin;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                         }
                         foreach (User user in oper)
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
                             user.Status = User.ChannelStatus.Op;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
                         }
                         foreach (User user in halfop)
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
                             user.Status = User.ChannelStatus.Halfop;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
                         }
                         foreach (User user in vs)
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
                             user.Status = User.ChannelStatus.Voice;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
                         }
 
@@ -417,10 +411,9 @@ namespace Client
                         {
                             if (!CurrentUsers.ContainsKey(user))
                             {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user);
+                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             }
                             user.Status = User.ChannelStatus.Regular;
-                            //listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
                             //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
                         }
 

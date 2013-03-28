@@ -65,7 +65,7 @@ namespace Client.Graphics
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User));
+        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User), typeof(string));
         public bool isInitialised = false;
 
         // menu
@@ -251,6 +251,7 @@ namespace Client.Graphics
             kbToolStripMenuIm.Enabled = false;
             kickrToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
+			listView.TooltipColumn = 2;
             column1.Title = (messages.get("list", Core.SelectedLanguage));
             listView.AppendColumn(column1);
             listView.Model = UserList;

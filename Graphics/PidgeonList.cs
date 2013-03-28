@@ -48,7 +48,10 @@ namespace Client.Graphics
         public static bool Updated = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
-        private Gtk.TreeStore Values = new TreeStore(typeof(string), typeof(object), typeof(ItemType));
+        private Gtk.TreeStore Values = new TreeStore(typeof(string),
+		                                             typeof(object),
+		                                             typeof(ItemType),
+		                                             typeof(Window), typeof(string));
         private GLib.TimeoutHandler timer;
 		public bool partToolStripMenuItem_Visible = false;
         public bool joinToolStripMenuItem_Visible = false;
@@ -178,6 +181,9 @@ namespace Client.Graphics
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
                         }
                         break;
+					case ItemType.Services:
+						(cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
+						break;
                 }
             }
             catch (Exception fail)
@@ -255,7 +261,7 @@ namespace Client.Graphics
 
         private void insertService(ProtocolSv service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services);
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, "Root window of services");
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
@@ -278,7 +284,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel);
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow ());
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 

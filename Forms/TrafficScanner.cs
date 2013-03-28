@@ -39,12 +39,20 @@ namespace Client.Forms
 				GLib.Timeout.Add (1000, timer);
 				this.DeleteEvent += new DeleteEventHandler(Unshow);
 				textview2.Buffer.Text = "";
+				LoadStyle();
 				textview2.WrapMode = WrapMode.Char;
+				
 				this.Hide ();
 			} catch (Exception fail)
 			{
 				Core.handleException(fail);
 			}
+		}
+		
+		public void LoadStyle()
+		{
+			textview2.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+			textview2.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
 		}
 		
 		public void Clean()
