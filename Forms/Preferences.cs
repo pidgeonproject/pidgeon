@@ -58,6 +58,7 @@ namespace Client.Forms
                 checkbutton1.Sensitive = false;
             }
             messages.Localize(this);
+            this.DeleteEvent += new DeleteEventHandler(hide);
             entry1.Text = Configuration.UserData.nick;
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
@@ -160,6 +161,12 @@ namespace Client.Forms
         private void lquit_Click(object sender, EventArgs e)
         {
             this.Hide();
+        }
+
+        private void hide(object x, DeleteEventArgs e)
+        {
+            e.RetVal = true;
+            Hide();
         }
 
         private void bSave_Click(object sender, EventArgs e)
