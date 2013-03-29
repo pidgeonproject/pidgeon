@@ -27,14 +27,51 @@ namespace Client.Forms
 {
 	public partial class Channels : Gtk.Window
 	{
-		public Network network = null;
+        public Network network = null;
         private int channels = 0;
         //private ListViewColumnSorter lvwColumnSorter;
         public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
+        private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        private global::Gtk.TreeView treeview8;
+
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            // Widget MainWindow
+            this.Name = "MainWindow";
+            this.Title = global::Mono.Unix.Catalog.GetString("MainWindow");
+            this.TypeHint = ((global::Gdk.WindowTypeHint)(6));
+            this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+            this.Decorated = false;
+            // Container child MainWindow.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview8 = new global::Gtk.TreeView();
+            this.treeview8.CanFocus = true;
+            this.treeview8.Name = "treeview8";
+            this.DestroyEvent += new DestroyEventHandler(destroy);
+            this.GtkScrolledWindow.Add(this.treeview8);
+            this.Add(this.GtkScrolledWindow);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.DefaultWidth = 796;
+            this.DefaultHeight = 511;
+            this.Show();
+        }
+
+        public void destroy(object o, DestroyEventArgs e)
+        {
+            Hide();
+            e.RetVal = true;
+        }
 
         public Channels() : base(Gtk.WindowType.Toplevel)
         {
-			//this.Build ();
+			this.Build ();
         }
 	}
 }

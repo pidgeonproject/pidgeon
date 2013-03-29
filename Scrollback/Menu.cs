@@ -44,6 +44,8 @@ namespace Client
         public GTK.Menu whowasToolStripMenuItem = new GTK.Menu();
         public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
         public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
+        public GTK.Menu copyEntireWindowToClipBoardToolStripMenuItem = new GTK.Menu("Copy entire window to clipboard");
+        public GTK.Menu copyTextToClipBoardToolStripMenuItem = new GTK.Menu("Copy text to clipboard");
         public GTK.Menu scrollToolStripMenuItem = new GTK.Menu("Scroll");
         public GTK.Menu openLinkInBrowserToolStripMenuItem = new GTK.Menu("Open link in a new browser");
         public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
@@ -93,6 +95,30 @@ namespace Client
             separator1.Show();
             e.Menu.Append(separator1);
             e.Menu.Append(new Gtk.SeparatorMenuItem());
+
+            // channels
+            if (joinToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem join = new Gtk.MenuItem(joinToolStripMenuItem.Text);
+                join.Show();
+                join.Activated += new EventHandler(joinToolStripMenuItem_Click);
+                e.Menu.Append(join);
+                Gtk.SeparatorMenuItem separator6 = new Gtk.SeparatorMenuItem();
+                separator6.Show();
+                e.Menu.Append(separator6);
+            }
+
+            if (openLinkInBrowserToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem open = new Gtk.MenuItem(openLinkInBrowserToolStripMenuItem.Text);
+                open.Show();
+                open.Activated += new EventHandler(openLinkInBrowserToolStripMenuItem_Click);
+                e.Menu.Append(open);
+                Gtk.SeparatorMenuItem separator8 = new Gtk.SeparatorMenuItem();
+                separator8.Show();
+                e.Menu.Append(separator8);
+            }
+
             // whois items
             if (whoisToolStripMenuItem.Visible)
             {
@@ -100,7 +126,6 @@ namespace Client
                 whois.Show();
                 whois.Activated += new EventHandler(whoisToolStripMenuItem_Click);
                 e.Menu.Append(whois);
-
 
                 Gtk.MenuItem whowas = new Gtk.MenuItem(whowasToolStripMenuItem.Text);
                 whowas.Show();
@@ -194,7 +219,15 @@ namespace Client
             e.Menu.Append(list);
             Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
             retrieve.Show();
-			retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
+            retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
+            Gtk.MenuItem copy = new Gtk.MenuItem(copyTextToClipBoardToolStripMenuItem.Text);
+            copy.Activated += new EventHandler(copyTextToClipBoardToolStripMenuItem_Click);
+            copy.Show();
+            e.Menu.Append(copy);
+            Gtk.MenuItem copy_x = new Gtk.MenuItem(copyEntireWindowToClipBoardToolStripMenuItem.Text);
+            copy_x.Activated += new EventHandler(copyEntireWindowToClipBoardToolStripMenuItem_Click);
+            copy_x.Show();
+            e.Menu.Append(copy_x);
             e.Menu.Append(retrieve);
             CreatingMenu = false;
         }

@@ -661,11 +661,7 @@ namespace Client
             try
             {
                 Forms.ScriptEdit edit = new Forms.ScriptEdit();
-                string[] text = script.Split('\n');
-                foreach (string line in text)
-                {
-                    edit.textBox1.Buffer.Text += (line + Environment.NewLine);
-                }
+                edit.textBox1.Buffer.Text += script;
                 edit.network = target;
                 edit.Show();
             }

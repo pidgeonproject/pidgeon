@@ -69,10 +69,9 @@ namespace Client.Graphics
         public bool isInitialised = false;
 
         // menu
-        public GTK.Menu kbToolStripMenuIm = new GTK.Menu("Kick + ban <reason>");
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
-        public GTK.Menu kickrToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
+        public GTK.Menu krToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
         public GTK.Menu vToolStripMenuItem = new GTK.Menu(messages.get("give+v", Core.SelectedLanguage));
         public GTK.Menu hToolStripMenuItem = new GTK.Menu(messages.get("give+h", Core.SelectedLanguage));
         public GTK.Menu oToolStripMenuItem = new GTK.Menu(messages.get("give+o", Core.SelectedLanguage));
@@ -83,12 +82,9 @@ namespace Client.Graphics
         public GTK.Menu oToolStripMenuItem1 = new GTK.Menu(messages.get("give-o", Core.SelectedLanguage));
         public GTK.Menu aToolStripMenuItem1 = new GTK.Menu(messages.get("give-a", Core.SelectedLanguage));
         public GTK.Menu qToolStripMenuItem1 = new GTK.Menu(messages.get("give-q", Core.SelectedLanguage));
-        public GTK.Menu banToolStripMenuItem = new GTK.Menu("Ban");
+        public GTK.Menu banToolStripMenuItem = new GTK.Menu(messages.get("ban", Core.SelectedLanguage));
         public GTK.Menu whoisToolStripMenuItem = new GTK.Menu("Whois");
-        public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
-        public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
-        public GTK.Menu toolStripMenuItem3 = new GTK.Menu();
-        public GTK.Menu ctToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu ctToolStripMenuItem = new GTK.Menu("CTCP");
         public GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
         public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu("Kick + Ban");
         public GTK.Menu kickToolStripMenuItem = new GTK.Menu("Kick");
@@ -258,8 +254,8 @@ namespace Client.Graphics
             this.textbox.Init();
             this.Build();
             this.InitStyle();
-            kbToolStripMenuIm.Enabled = false;
-            kickrToolStripMenuItem.Enabled = false;
+            kbToolStripMenuItem.Enabled = false;
+            krToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
 			listView.TooltipColumn = 2;
             column1.Title = (messages.get("list", Core.SelectedLanguage));
@@ -279,9 +275,6 @@ namespace Client.Graphics
             {
                 banToolStripMenuItem.Visible = false;
                 whoisToolStripMenuItem.Visible = false;
-                toolStripMenuItem1.Visible = false;
-                toolStripMenuItem2.Visible = false;
-                toolStripMenuItem3.Visible = false;
                 kbToolStripMenuItem.Visible = false;
                 whoisToolStripMenuItem.Visible = false;
                 ctToolStripMenuItem.Visible = false;
@@ -289,10 +282,30 @@ namespace Client.Graphics
                 kickBanToolStripMenuItem.Visible = false;
                 modeToolStripMenuItem.Visible = false;
                 kickToolStripMenuItem.Visible = false;
-                kickrToolStripMenuItem.Visible = false;
+                krToolStripMenuItem.Visible = false;
             }
             else
             {
+                banToolStripMenuItem.Enabled = true;
+                whoisToolStripMenuItem.Enabled = true;
+                kbToolStripMenuItem.Enabled = false;
+                whoisToolStripMenuItem.Enabled = true;
+                ctToolStripMenuItem.Enabled = true;
+                refreshToolStripMenuItem.Enabled = true;
+                kickBanToolStripMenuItem.Enabled = true;
+                modeToolStripMenuItem.Enabled = true;
+                kickToolStripMenuItem.Enabled = true;
+                krToolStripMenuItem.Enabled = false;
+                banToolStripMenuItem.Visible = true;
+                whoisToolStripMenuItem.Visible = true;
+                kbToolStripMenuItem.Visible = true;
+                whoisToolStripMenuItem.Visible = true;
+                ctToolStripMenuItem.Visible = true;
+                refreshToolStripMenuItem.Visible = true;
+                kickBanToolStripMenuItem.Visible = true;
+                modeToolStripMenuItem.Visible = true;
+                kickToolStripMenuItem.Visible = true;
+                krToolStripMenuItem.Visible = true;
                 synchroToolStripMenuItem.Visible = true;
             }
             if (scrollback.owner == null || scrollback.owner._Network == null)
@@ -360,11 +373,89 @@ namespace Client.Graphics
                 }
                 if (modeToolStripMenuItem.Visible)
                 {
+                    Gtk.Menu changemode = new Gtk.Menu();
                     Gtk.MenuItem change = new MenuItem("Change mode");
                     change.Sensitive = modeToolStripMenuItem.Enabled;
+                    change.Submenu = changemode;
+                    
                     menu.Append(change);
+
+                    Gtk.MenuItem qp = new MenuItem(qToolStripMenuItem.Text);
+                    changemode.Append(qp);
+                    qp.Activated += new EventHandler(qToolStripMenuItem_Click);
+                    Gtk.MenuItem ap = new MenuItem(aToolStripMenuItem.Text);
+                    changemode.Append(ap);
+                    ap.Activated += new EventHandler(aToolStripMenuItem_Click);
+                    Gtk.MenuItem op = new MenuItem(oToolStripMenuItem.Text);
+                    changemode.Append(op);
+                    op.Activated += new EventHandler(oToolStripMenuItem_Click);
+                    Gtk.MenuItem hp = new MenuItem(hToolStripMenuItem.Text);
+                    changemode.Append(hp);
+                    hp.Activated += new EventHandler(hToolStripMenuItem_Click);
+                    Gtk.MenuItem vp = new MenuItem(vToolStripMenuItem.Text);
+                    changemode.Append(vp);
+                    vp.Activated += new EventHandler(vToolStripMenuItem_Click);
+
+                    Gtk.SeparatorMenuItem separator4 = new Gtk.SeparatorMenuItem();
+                    separator4.Show();
+                    changemode.Append(separator4);
+
+                    Gtk.MenuItem qp2 = new MenuItem(qToolStripMenuItem1.Text);
+                    changemode.Append(qp2);
+                    qp2.Activated += new EventHandler(qToolStripMenuItem1_Click);
+                    Gtk.MenuItem ap2 = new MenuItem(aToolStripMenuItem1.Text);
+                    changemode.Append(ap2);
+                    ap2.Activated += new EventHandler(aToolStripMenuItem1_Click);
+                    Gtk.MenuItem op2 = new MenuItem(oToolStripMenuItem1.Text);
+                    changemode.Append(op2);
+                    op2.Activated += new EventHandler(oToolStripMenuItem1_Click);
+                    Gtk.MenuItem hp2 = new MenuItem(hToolStripMenuItem1.Text);
+                    changemode.Append(hp2);
+                    hp2.Activated += new EventHandler(hToolStripMenuItem1_Click);
+                    Gtk.MenuItem vp2 = new MenuItem(vToolStripMenuItem1.Text);
+                    changemode.Append(vp2);
+                    vp2.Activated += new EventHandler(vToolStripMenuItem1_Click);
                 }
-                Gtk.MenuItem CTCP = new MenuItem("CTCP");
+                if (ctToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem CTCP = new MenuItem(ctToolStripMenuItem.Text);
+
+                    Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+                    separator1.Show();
+                    menu.Append(separator1);
+                }
+
+                if (kickBanToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem kick = new MenuItem(kickToolStripMenuItem.Text);
+                    kick.Activated += new EventHandler(kickToolStripMenuItem_Click);
+                    menu.Append(kick);
+                    Gtk.MenuItem kickban = new MenuItem(kickBanToolStripMenuItem.Text);
+                    kickban.Activated += new EventHandler(kickBanToolStripMenuItem_Click);
+                    menu.Append(kickban);
+                    Gtk.MenuItem kr = new MenuItem(krToolStripMenuItem.Text);
+                    kr.Sensitive = krToolStripMenuItem.Enabled;
+                    kr.Activated += new EventHandler(krToolStripMenuItem_Click);
+                    menu.Append(kr);
+                    Gtk.MenuItem kb = new MenuItem(kbToolStripMenuItem.Text);
+                    kb.Sensitive = kbToolStripMenuItem.Enabled;
+                    kb.Activated += new EventHandler(kickrToolStripMenuItem_Click);
+                    menu.Append(kb);
+
+                    Gtk.SeparatorMenuItem separator6 = new Gtk.SeparatorMenuItem();
+                    separator6.Show();
+                    menu.Append(separator6);
+                }
+
+                if (refreshToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItem.Text);
+                    refresh.Activated += new EventHandler(refreshToolStripMenuItem_Click);
+                    menu.Append(refresh);
+                    Gtk.MenuItem reload = new MenuItem(synchroToolStripMenuItem.Text);
+                    reload.Activated += new EventHandler(synchroToolStripMenuItem_Click);
+                    menu.Append(reload);
+                }
 
                 menu.ShowAll();
                 menu.Popup();
@@ -400,17 +491,17 @@ namespace Client.Graphics
                                         }
                                         else
                                         {
-                                            script += "# can't find hostname for " + user.Nick + " skipping this ban" + Environment.NewLine;
+                                            script += "# can't find hostname for " + user.Nick + " skipping this ban\n";
                                         }
                                         break;
                                 }
                             }
                             else
                             {
-                                script += "# can't find a channel for " + user.Nick + " skipping this ban" + Environment.NewLine;
+                                script += "# can't find a channel for " + user.Nick + " skipping this ban\n";
                             }
                             string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
-                            script += current_kick + Environment.NewLine;
+                            script += current_kick + "\n";
                             if (!Configuration.irc.ConfirmAll)
                             {
                                 _channel._Network.Transfer(current_ban, Configuration.Priority.High);
@@ -526,7 +617,7 @@ namespace Client.Graphics
                     foreach (User user in SelectedUsers)
                     {
                         string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
-                        script += current_kick + Environment.NewLine;
+                        script += current_kick + "\n";
                         if (!Configuration.irc.ConfirmAll)
                         {
                             _Network.Transfer(current_kick, Configuration.Priority.High);
@@ -592,7 +683,7 @@ namespace Client.Graphics
                                     }
                                     else
                                     {
-                                        script += "# can't find hostname for " + user.Nick + " skipping this ban" + Environment.NewLine;
+                                        script += "# can't find hostname for " + user.Nick + " skipping this ban\n";
                                     }
                                     break;
                             }
@@ -603,7 +694,7 @@ namespace Client.Graphics
                         }
                         else
                         {
-                            script += "# can't find a channel for " + user.Nick + " skipping this ban" + Environment.NewLine;
+                            script += "# can't find a channel for " + user.Nick + " skipping this ban\n";
                         }
                     }
                     if (Configuration.irc.ConfirmAll)

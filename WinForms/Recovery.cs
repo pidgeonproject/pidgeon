@@ -120,7 +120,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Environment.Exit(1);
+            Environment.Exit(80);
         }
     }
 }

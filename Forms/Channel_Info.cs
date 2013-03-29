@@ -202,6 +202,7 @@ namespace Client.Forms
             this.label4.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t4", Core.SelectedLanguage));
             this.notebook1.SetTabLabel(this.GtkScrolledWindow4, this.label4);
             this.label4.ShowAll();
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.Add(this.notebook1);
             if ((this.Child != null))
             {
