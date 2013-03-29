@@ -386,6 +386,10 @@ namespace Client
                     Click_L(SelectedLink);
                 }
             }
+			if (owner != null)
+			{
+				owner.textbox.setFocus();
+			}
         }
 
         public void Click_L(string http)
