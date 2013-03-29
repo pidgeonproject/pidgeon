@@ -59,10 +59,12 @@ namespace Client.Forms
             }
             messages.Localize(this);
             this.DeleteEvent += new DeleteEventHandler(hide);
+            button1.Clicked += new EventHandler(bSave_Click);
             entry1.Text = Configuration.UserData.nick;
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
             entry3.Text = Configuration.UserData.user;
+            button3.Clicked += new EventHandler(bCancel_Click);
             //checkBox3.Checked = Configuration.Logs.logs_xml;
             //checkBox1.Checked = Configuration.Logs.logs_txt;
             //checkBox2.Checked = Configuration.Logs.logs_html;
