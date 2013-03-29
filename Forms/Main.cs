@@ -67,6 +67,8 @@ namespace Client.Forms
 				this.Build ();
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
+                this.DetachFromMicroChatAction.Activated += new EventHandler(detachFromMicroChatToolStripMenuItem_Click);
+                this.AttachToMicroChatAction.Activated += new EventHandler(attachToMicroChatToolStripMenuItem_Click);
                 this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
                 this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
@@ -108,7 +110,7 @@ namespace Client.Forms
 				UserAction.Visible = false;
                 CreateChat(main, null);
                 main.name = "Pidgeon";
-                toolStripStatusChannel.TooltipText = "windows / channels / pm";
+                toolStripStatusNetwork.TooltipText = "windows / channels / pm";                 
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
@@ -250,7 +252,7 @@ namespace Client.Forms
                         info += "??";
                     }
                     setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
-                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " u: " + Core.network.RenderedChannel.UserList.Count + " m: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
+                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " user count: " + Core.network.RenderedChannel.UserList.Count + " channel modes: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)

@@ -30,10 +30,45 @@ namespace Client.Forms
 	{
 		public static MicroChat mc = null;
 		public Scrollback scrollback_mc = null;
-		
+        private Gtk.VBox vbox;
+
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.Forms.MicroChat";
+            this.Title = "Micro chat";
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.WindowPosition = Gtk.WindowPosition.Center;
+            vbox = new VBox();
+            scrollback_mc = new Scrollback();
+            scrollback_mc.isMicro = true;
+            scrollback_mc.Create();
+            this.TypeHint = Gdk.WindowTypeHint.Utility;
+            this.DefaultHeight = 420;
+            this.DefaultWidth = 680;
+            scrollback_mc.Events = ((global::Gdk.EventMask)(256));
+            scrollback_mc.Name = "scrollback1";
+            this.DeleteEvent += new DeleteEventHandler(Close);
+            vbox.Add(scrollback_mc);
+            this.Add(vbox);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.Hide();
+        }
+
+        public void Close(object sender, DeleteEventArgs e)
+        {
+            e.RetVal = true;
+            Hide();
+        }
+
 		public MicroChat () : base(Gtk.WindowType.Toplevel)
 		{
-			//this.Toplevel = true;
+            this.Build();
+            this.KeepAbove = true;
 			scrollback_mc = new Scrollback();
             scrollback_mc.owner = null;
             scrollback_mc.Create();

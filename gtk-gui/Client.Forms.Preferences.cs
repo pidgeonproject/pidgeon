@@ -197,7 +197,7 @@ namespace Client.Forms
 			// Container child table1.Gtk.Table+TableChild
 			this.label2 = new global::Gtk.Label ();
 			this.label2.Name = "label2";
-			this.label2.LabelProp = "Nick";
+            this.label2.LabelProp = messages.get("preferences-nick", Core.SelectedLanguage);
 			this.table1.Add (this.label2);
 			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table1 [this.label2]));
 			w12.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -205,7 +205,7 @@ namespace Client.Forms
 			// Container child table1.Gtk.Table+TableChild
 			this.label3 = new global::Gtk.Label ();
 			this.label3.Name = "label3";
-			this.label3.LabelProp = "Quit";
+            this.label3.LabelProp = messages.get("preferences-quit", Core.SelectedLanguage);
 			this.table1.Add (this.label3);
 			global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.table1 [this.label3]));
 			w13.TopAttach = ((uint)(1));
@@ -215,7 +215,7 @@ namespace Client.Forms
 			// Container child table1.Gtk.Table+TableChild
 			this.label4 = new global::Gtk.Label ();
 			this.label4.Name = "label4";
-			this.label4.LabelProp = "Ident";
+            this.label4.LabelProp = messages.get("preferences-ident", Core.SelectedLanguage);
 			this.table1.Add (this.label4);
 			global::Gtk.Table.TableChild w14 = ((global::Gtk.Table.TableChild)(this.table1 [this.label4]));
 			w14.TopAttach = ((uint)(2));
@@ -225,7 +225,7 @@ namespace Client.Forms
 			// Container child table1.Gtk.Table+TableChild
 			this.label5 = new global::Gtk.Label ();
 			this.label5.Name = "label5";
-			this.label5.LabelProp = "Real name";
+            this.label5.LabelProp = messages.get("preferences-name", Core.SelectedLanguage);
 			this.table1.Add (this.label5);
 			global::Gtk.Table.TableChild w15 = ((global::Gtk.Table.TableChild)(this.table1 [this.label5]));
 			w15.TopAttach = ((uint)(3));
@@ -235,7 +235,7 @@ namespace Client.Forms
 			// Container child table1.Gtk.Table+TableChild
 			this.label6 = new global::Gtk.Label ();
 			this.label6.Name = "label6";
-			this.label6.LabelProp = "Second nick";
+            this.label6.LabelProp = messages.get("preferences-al", Core.SelectedLanguage);
 			this.table1.Add (this.label6);
 			global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.table1 [this.label6]));
 			w16.TopAttach = ((uint)(4));
@@ -288,7 +288,7 @@ namespace Client.Forms
 			this.button3.CanFocus = true;
 			this.button3.Name = "button3";
 			this.button3.UseUnderline = true;
-			this.button3.Label = "OK";
+            this.button3.Label = messages.get("global-ok", Core.SelectedLanguage);
 			this.hbox3.Add (this.button3);
 			global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.button3]));
 			w23.Position = 0;
@@ -299,7 +299,7 @@ namespace Client.Forms
 			this.button1.CanFocus = true;
 			this.button1.Name = "button1";
 			this.button1.UseUnderline = true;
-			this.button1.Label = "Cancel";
+            this.button1.Label = messages.get("global-cancel", Core.SelectedLanguage);
 			this.hbox3.Add (this.button1);
 			global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.hbox3 [this.button1]));
 			w24.Position = 1;

@@ -49,6 +49,7 @@ namespace Client
         private bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
+        public bool isMicro = false;
         private string LogfilePath = null;
         public bool SortNeeded = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
@@ -56,6 +57,8 @@ namespace Client
         private GLib.TimeoutHandler timer2;
         public RichTBox RT = null;
         public string SelectedLink = null;
+        private int ScrollTime = 0;
+        public bool Scrolling = true;
 
         new public List<ContentLine> Data
         {
@@ -107,9 +110,12 @@ namespace Client
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox();
-            this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
-            this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
-            this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
+            if (!isMicro)
+            {
+                this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
+                this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
+                this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
+            }
             timer2 = new GLib.TimeoutHandler(timer2_Tick);
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);
@@ -258,6 +264,12 @@ namespace Client
             return false;
         }
 
+        private void ResetScrolling()
+        {
+            ScrollTime = 0;
+            Scrolling = true;
+        }
+
         public bool RestoreOffset()
         {
             if (scrollback_max != Configuration.Scrollback.scrollback_plimit)
@@ -276,15 +288,23 @@ namespace Client
             {
                 if (WindowVisible())
                 {
-                    if (ScrollingEnabled)
+                    if (ScrollingEnabled && Scrolling)
                     {
-                        if (simple)
+                        if (ScrollTime < 10)
                         {
-                            simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                            ScrollTime++;
+                            if (simple)
+                            {
+                                simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                            }
+                            if (!simple)
+                            {
+                                RT.ScrollToBottom();
+                            }
                         }
-                        if (!simple)
+                        else
                         {
-                            RT.ScrollToBottom();
+                            Scrolling = false;
                         }
                     }
                     lock (UndrawnLines)

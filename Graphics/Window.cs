@@ -69,6 +69,7 @@ namespace Client.Graphics
         public bool isInitialised = false;
 
         // menu
+        public GTK.Menu messageToolStripMenuItem = new GTK.Menu("Message");
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
         public GTK.Menu krToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
@@ -286,6 +287,7 @@ namespace Client.Graphics
             }
             else
             {
+                messageToolStripMenuItem.Enabled = true;
                 banToolStripMenuItem.Enabled = true;
                 whoisToolStripMenuItem.Enabled = true;
                 kbToolStripMenuItem.Enabled = false;
@@ -301,6 +303,7 @@ namespace Client.Graphics
                 kbToolStripMenuItem.Visible = true;
                 whoisToolStripMenuItem.Visible = true;
                 ctToolStripMenuItem.Visible = true;
+                messageToolStripMenuItem.Visible = true;
                 refreshToolStripMenuItem.Visible = true;
                 kickBanToolStripMenuItem.Visible = true;
                 modeToolStripMenuItem.Visible = true;
@@ -363,23 +366,34 @@ namespace Client.Graphics
         {
             try
             {
+                bool display = false;
                 Gtk.Menu menu = new Menu();
                 if (whoisToolStripMenuItem.Visible)
                 {
+                    display = true;
                     Gtk.MenuItem whois = new MenuItem("Whois");
                     whois.Sensitive = whoisToolStripMenuItem.Enabled;
                     whois.Activated += new EventHandler(whoisToolStripMenuItem_Click);
                     menu.Append(whois);
                 }
+
+                if (messageToolStripMenuItem.Visible)
+                {
+                    display = true;
+                    Gtk.MenuItem message = new MenuItem("Message");
+                    message.Sensitive = whoisToolStripMenuItem.Enabled;
+                    message.Activated += new EventHandler(messageToolStripMenuItem_Click);
+                    menu.Append(message);
+                }
+
                 if (modeToolStripMenuItem.Visible)
                 {
+                    display = true;
                     Gtk.Menu changemode = new Gtk.Menu();
                     Gtk.MenuItem change = new MenuItem("Change mode");
                     change.Sensitive = modeToolStripMenuItem.Enabled;
                     change.Submenu = changemode;
-                    
                     menu.Append(change);
-
                     Gtk.MenuItem qp = new MenuItem(qToolStripMenuItem.Text);
                     changemode.Append(qp);
                     qp.Activated += new EventHandler(qToolStripMenuItem_Click);
@@ -395,11 +409,9 @@ namespace Client.Graphics
                     Gtk.MenuItem vp = new MenuItem(vToolStripMenuItem.Text);
                     changemode.Append(vp);
                     vp.Activated += new EventHandler(vToolStripMenuItem_Click);
-
                     Gtk.SeparatorMenuItem separator4 = new Gtk.SeparatorMenuItem();
                     separator4.Show();
                     changemode.Append(separator4);
-
                     Gtk.MenuItem qp2 = new MenuItem(qToolStripMenuItem1.Text);
                     changemode.Append(qp2);
                     qp2.Activated += new EventHandler(qToolStripMenuItem1_Click);
@@ -416,10 +428,11 @@ namespace Client.Graphics
                     changemode.Append(vp2);
                     vp2.Activated += new EventHandler(vToolStripMenuItem1_Click);
                 }
+
                 if (ctToolStripMenuItem.Visible)
                 {
+                    display = true;
                     Gtk.MenuItem CTCP = new MenuItem(ctToolStripMenuItem.Text);
-
                     Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
                     separator1.Show();
                     menu.Append(separator1);
@@ -427,6 +440,7 @@ namespace Client.Graphics
 
                 if (kickBanToolStripMenuItem.Visible)
                 {
+                    display = true;
                     Gtk.MenuItem kick = new MenuItem(kickToolStripMenuItem.Text);
                     kick.Activated += new EventHandler(kickToolStripMenuItem_Click);
                     menu.Append(kick);
@@ -441,7 +455,6 @@ namespace Client.Graphics
                     kb.Sensitive = kbToolStripMenuItem.Enabled;
                     kb.Activated += new EventHandler(kickrToolStripMenuItem_Click);
                     menu.Append(kb);
-
                     Gtk.SeparatorMenuItem separator6 = new Gtk.SeparatorMenuItem();
                     separator6.Show();
                     menu.Append(separator6);
@@ -449,6 +462,7 @@ namespace Client.Graphics
 
                 if (refreshToolStripMenuItem.Visible)
                 {
+                    display = true;
                     Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItem.Text);
                     refresh.Activated += new EventHandler(refreshToolStripMenuItem_Click);
                     menu.Append(refresh);
@@ -457,8 +471,11 @@ namespace Client.Graphics
                     menu.Append(reload);
                 }
 
-                menu.ShowAll();
-                menu.Popup();
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
             }
             catch (Exception fail)
             {

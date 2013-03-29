@@ -110,6 +110,14 @@ namespace Client
 
             if (openLinkInBrowserToolStripMenuItem.Visible)
             {
+                Gtk.MenuItem copylink = new Gtk.MenuItem(copyLinkToClipboardToolStripMenuItem.Text);
+                copylink.Show();
+                copylink.Activated += new EventHandler(copyLinkToClipboardToolStripMenuItem_Click);
+                e.Menu.Append(copylink);
+            }
+
+            if (openLinkInBrowserToolStripMenuItem.Visible)
+            {
                 Gtk.MenuItem open = new Gtk.MenuItem(openLinkInBrowserToolStripMenuItem.Text);
                 open.Show();
                 open.Activated += new EventHandler(openLinkInBrowserToolStripMenuItem_Click);
@@ -118,6 +126,7 @@ namespace Client
                 separator8.Show();
                 e.Menu.Append(separator8);
             }
+
 
             // whois items
             if (whoisToolStripMenuItem.Visible)

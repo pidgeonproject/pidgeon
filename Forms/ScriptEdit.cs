@@ -108,7 +108,6 @@ namespace Client.Forms
             this.DefaultWidth = 737;
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.DefaultHeight = 432;
-            this.Show();
         }
 		
 		public TextView textBox1

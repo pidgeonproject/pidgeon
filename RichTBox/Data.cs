@@ -51,7 +51,7 @@ namespace Client
                     
                     if (text.Bold)
                     {
-                        format.Weight = Pango.Weight.Bold;
+                        format.Weight = Pango.Weight.Heavy;
                     }
 
                     if (text.Underline)
