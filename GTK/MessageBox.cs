@@ -36,8 +36,9 @@ namespace Client.GTK
 
         public MessageBox(Window parentWindow, MessageType messageType, ButtonsType buttons, string message, string title)
         {
-            Message = new MessageDialog(parentWindow, DialogFlags.Modal, messageType, buttons, message);
+            Message = new MessageDialog(parentWindow, DialogFlags.Modal, messageType, buttons, false, null);
             Message.WindowPosition = WindowPosition.Center;
+            Message.Text = message;
             Message.Title = title;
             result = (ResponseType)Message.Run();
             Message.Destroy();

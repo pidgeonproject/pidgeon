@@ -260,6 +260,17 @@ namespace Client
             return null;
         }
 
+        public void Part(string channel_name)
+        {
+            _Protocol.Part(channel_name, this);
+        }
+
+        public void Part(Channel channel)
+        {
+            channel.dispose = true;
+            _Protocol.Part(channel.Name, this);
+        }
+
         /// <summary>
         /// UNIX time to DateTime
         /// </summary>

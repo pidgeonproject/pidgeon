@@ -49,16 +49,14 @@ namespace Client.Graphics
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
         private Gtk.TreeStore Values = new TreeStore(typeof(string),
-		                                             typeof(object),
-		                                             typeof(ItemType),
-		                                             typeof(Window), typeof(string));
+                                                     typeof(object),
+                                                     typeof(ItemType),
+                                                     typeof(Window), typeof(string));
         private GLib.TimeoutHandler timer;
-		public bool partToolStripMenuItem_Visible = false;
-        public bool joinToolStripMenuItem_Visible = false;
-        public bool disconnectToolStripMenuItem_Visible = false;
 
         public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
+        public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
 
         protected virtual void Build()
@@ -79,6 +77,7 @@ namespace Client.Graphics
             Column.SetCellDataFunc(Item, UserListRendererTool);
             tv.AppendColumn(Column);
             tv.PopupMenu += Menu;
+            tv.TooltipColumn = 4;
             tv.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             Column.AddAttribute(Item, "text", 0);
             this.tv.Model = Values;
@@ -89,9 +88,9 @@ namespace Client.Graphics
 
             this.Add(this.GtkScrolledWindow);
             this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
-            partToolStripMenuItem.Visible = true;
-            disconnectToolStripMenuItem.Visible = true;
-            closeToolStripMenuItem.Visible = true;
+            partToolStripMenuItem.Enabled = true;
+            disconnectToolStripMenuItem.Enabled = true;
+            closeToolStripMenuItem.Enabled = true;
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -113,27 +112,37 @@ namespace Client.Graphics
         {
             try
             {
+                bool display = false;
                 Gtk.Menu menu = new Menu();
                 if (partToolStripMenuItem.Visible)
                 {
                     Gtk.MenuItem part = new MenuItem(partToolStripMenuItem.Text);
                     part.Sensitive = partToolStripMenuItem.Enabled;
+                    part.Activated += new EventHandler(partToolStripMenuItem_Click);
+                    display = true;
                     menu.Append(part);
                 }
                 if (closeToolStripMenuItem.Visible)
                 {
                     Gtk.MenuItem close = new MenuItem(closeToolStripMenuItem.Text);
+                    close.Activated += new EventHandler(closeToolStripMenuItem_Click);
                     close.Sensitive = closeToolStripMenuItem.Enabled;
+                    display = true;
                     menu.Append(close);
                 }
                 if (disconnectToolStripMenuItem.Visible)
                 {
                     Gtk.MenuItem disconnect = new MenuItem(disconnectToolStripMenuItem.Text);
+                    disconnect.Activated += new EventHandler(disconnectToolStripMenuItem_Click);
                     disconnect.Sensitive = disconnectToolStripMenuItem.Enabled;
+                    display = true;
                     menu.Append(disconnect);
                 }
-                menu.ShowAll();
-                menu.Popup();
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
             }
             catch (Exception fail)
             {
@@ -141,11 +150,11 @@ namespace Client.Graphics
             }
         }
 
-		public void InitStyle()
-		{
-			tv.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-			tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-		}
+        public void InitStyle()
+        {
+            tv.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+        }
 
         private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
         {
@@ -154,7 +163,7 @@ namespace Client.Graphics
                 ItemType type = (ItemType)model.GetValue(iter, 2);
                 Window window = null;
                 switch (type)
-                { 
+                {
                     case ItemType.Server:
                         Network nw = (Network)model.GetValue(iter, 1);
                         (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
@@ -175,15 +184,20 @@ namespace Client.Graphics
                         break;
                     case ItemType.Channel:
                         Channel channel = (Channel)model.GetValue(iter, 1);
+                        string data = (string)model.GetValue(iter, 4);
+                        if (data != channel.MenuData)
+                        {
+                            model.SetValue(iter, 4, channel.MenuData);
+                        }
                         window = channel.retrieveWindow();
                         if (window != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
                         }
                         break;
-					case ItemType.Services:
-						(cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
-						break;
+                    case ItemType.Services:
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
+                        break;
                 }
             }
             catch (Exception fail)
@@ -197,7 +211,7 @@ namespace Client.Graphics
             try
             {
                 this.Build();
-				this.InitStyle();
+                this.InitStyle();
             }
             catch (Exception fail)
             {
@@ -242,7 +256,7 @@ namespace Client.Graphics
                 if (ServerList.ContainsKey(user._Network))
                 {
                     //text.ImageIndex = 4;
-                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User);
+                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null);
                     TreePath path = tv.Model.GetPath(ServerList[user._Network]);
                     tv.ExpandRow(path, true);
 
@@ -284,7 +298,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow ());
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData);
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -307,7 +321,7 @@ namespace Client.Graphics
         {
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server);
+                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, null);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -317,7 +331,7 @@ namespace Client.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server);
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, null);
                 TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
                 tv.ExpandRow(path, true);
                 network.SystemWindow.treeNode = text;
@@ -356,9 +370,9 @@ namespace Client.Graphics
                 }
 
                 Updated = false;
-				
-				tv.ColumnsAutosize ();
-				
+
+                tv.ColumnsAutosize();
+
                 lock (queueNetwork)
                 {
                     foreach (Network it in queueNetwork)
@@ -447,9 +461,9 @@ namespace Client.Graphics
 
         public void RedrawMenu()
         {
-            partToolStripMenuItem_Visible = false;
-            joinToolStripMenuItem_Visible = false;
-            disconnectToolStripMenuItem_Visible = false;
+            partToolStripMenuItem.Visible = false;
+            joinToolStripMenuItem.Visible = false;
+            disconnectToolStripMenuItem.Visible = false;
         }
 
         private void items_AfterSelect2(object sender, EventArgs e)
@@ -462,7 +476,6 @@ namespace Client.Graphics
             try
             {
                 RedrawMenu();
-                //items.SelectedNode.ForeColor = Configuration.CurrentSkin.fontcolor;
                 TreeIter iter;
                 TreePath[] path = tv.Selection.GetSelectedRows();
                 tv.Model.GetIter(out iter, path[0]);
@@ -523,58 +536,34 @@ namespace Client.Graphics
             }
         }
 
-        /*
         private void closeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (items.SelectedNode == null)
+                TreeIter iter;
+                TreePath[] path = tv.Selection.GetSelectedRows();
+                if (path.Length > 0)
                 {
-                    return;
+                    tv.Model.GetIter(out iter, path[0]);
+                    object data = tv.Model.GetValue(iter, 1);
+                    ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                    RemoveItem(iter, data, type);
                 }
-
-                RemoveItem(items.SelectedNode);
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-		
-        public void RemoveAll(TreeNodeCollection Item, TreeNode node)
+
+        public void RemoveAll(TreeIter iter)
         {
-            if (Item.Contains(node))
-            {
-                Item.Remove(node);
-                return;
-            }
-            foreach (TreeNode Node in Item)
-            {
-                if (Node.Nodes.Count > 0)
-                {
-                    RemoveAll(Node.Nodes, node);
-                }
-            }
-        }
-		*/
-        public void RemoveAll(TreeNode Item)
-        {
-            //if (items.Nodes.Contains(Item))
-            {
-                //items.Nodes.Remove(Item);
-                return;
-            }
-            //foreach (TreeNode node in items.Nodes)
-            {
-                //if (node.Nodes.Count > 0)
-                {
-                    //    RemoveAll(node.Nodes, Item);
-                }
-            }
+
         }
 
-        public void RemoveItem(object Item, ItemType type)
+        public void RemoveItem(TreeIter it, object Item, ItemType type)
         {
+            bool removed = false;
             switch (type)
             {
                 case ItemType.Services:
@@ -588,6 +577,7 @@ namespace Client.Graphics
                             {
                                 TreeIter iter = ServiceList[service];
                                 Values.Remove(ref iter);
+                                removed = true;
                             }
                             ServiceList.Remove(service);
                         }
@@ -614,25 +604,11 @@ namespace Client.Graphics
                         if (ServerList.ContainsKey(network))
                         {
                             TreeIter iter = ServerList[network];
+                            removed = true;
                             Values.Remove(ref iter);
                             ServerList.Remove(network);
                         }
                     }
-
-                    /*
-                     foreach (TreeNode item in items.SelectedNode.Nodes)
-                        {
-                            RemoveItem(item);
-                        }
-                        lock (items.Nodes)
-                        {
-                            if (items.Nodes.Contains(Item))
-                            {
-                                items.Nodes.Remove(Item);
-                            }
-                        }
-                     
-                     */
                     break;
                 case ItemType.User:
                     User user = (User)Item;
@@ -669,12 +645,21 @@ namespace Client.Graphics
                         {
                             TreeIter iter = UserList[user];
                             Values.Remove(ref iter);
+                            removed = true;
                             UserList.Remove(user);
                         }
                     }
                     break;
                 case ItemType.Channel:
                     Channel channel = (Channel)Item;
+
+                    if (channel.ChannelWork && !channel.dispose)
+                    {
+                        channel._Network._Protocol.Part(channel.Name);
+                        channel.dispose = true;
+                        Core.DebugLog("Unable to remove channel because it's active: " + channel.Name);
+                        return;
+                    }
 
                     lock (channel._Network.Channels)
                     {
@@ -683,101 +668,48 @@ namespace Client.Graphics
                             channel._Network.Channels.Remove(channel);
                         }
                     }
-                    //RemoveAll(Item);
+
                     lock (ChannelList)
                     {
                         if (ChannelList.ContainsKey(channel))
                         {
                             TreeIter iter = ChannelList[channel];
                             Values.Remove(ref iter);
+                            removed = true;
                             ChannelList.Remove(channel);
                         }
                     }
                     break;
             }
 
-            /*lock (ChannelList)
+            if (removed == false)
             {
-                if (ChannelList.ContainsValue(Item))
-                {
-                    Channel item = null;
-                    foreach (var cu in ChannelList)
-                    {
-                        if (cu.Value == Item)
-                        {
-                            if (cu.Key.ChannelWork)
-                            {
-                                cu.Key._Network._Protocol.Part(cu.Key.Name);
-                                //cu.Key.dispose = true;
-                                return;
-                            }
-                            lock (cu.Key._Network.Channels)
-                            {
-                                if (cu.Key._Network.Channels.Contains(cu.Key))
-                                {
-                                    cu.Key._Network.Channels.Remove(cu.Key);
-                                }
-                            }
-                            item = cu.Key;
-                            RemoveAll(Item);
-                            break;
-                        }
-                    }
-                    if (item != null)
-                    {
-                        lock (items.Nodes)
-                        {
-                            if (items.Nodes.Contains(Item))
-                            {
-                                items.Nodes.Remove(Item);
-                            }
-                        }
-                        lock (item.retrieveWindow())
-                        {
-                            if (item.retrieveWindow() != null)
-                            {
-                                item.retrieveWindow().Visible = false;
-                                item.retrieveWindow().Dispose();
-                            }
-                            lock (item._Network.Channels)
-                            {
-                                item._Network.Channels.Remove(item);
-                            }
-                        }
-                        lock (ChannelList)
-                        {
-                            ChannelList.Remove(item);
-                        }
-                    }
-                }
+                Values.Remove(ref it);
             }
-             
-
-            lock (items.Nodes)
-            {
-                if (items.Nodes.Contains(Item))
-                {
-                    items.Nodes.Remove(Item);
-                }
-            }
-             */
         }
 
-        /*
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                lock (ServerList)
+                TreeIter iter;
+                TreePath[] path = tv.Selection.GetSelectedRows();
+                tv.Model.GetIter(out iter, path[0]);
+                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                if (type == ItemType.Server)
                 {
-                    if (ServerList.ContainsValue(items.SelectedNode))
+                    Network item = (Network)tv.Model.GetValue(iter, 1);
+                    lock (ServerList)
                     {
-                        foreach (var cu in ServerList)
+                        if (ServerList.ContainsKey(item))
                         {
-                            if (cu.Value == items.SelectedNode)
+                            if (item.Connected)
                             {
-                                cu.Key.Disconnect();
-                                return;
+                                item.Disconnect();
+                            }
+                            else
+                            {
+                                Core._Main.Chat.scrollback.InsertText("Not connected", ContentLine.MessageStyle.System, false);
                             }
                         }
                     }
@@ -789,24 +721,26 @@ namespace Client.Graphics
             }
         }
 		
-		*/
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                //if (ChannelList.ContainsValue(items.SelectedNode))
+                TreeIter iter;
+                TreePath[] path = tv.Selection.GetSelectedRows();
+                tv.Model.GetIter(out iter, path[0]);
+                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                if (type == ItemType.Channel)
                 {
-                    foreach (var cu in ChannelList)
+                    Channel channel = (Channel)tv.Model.GetValue(iter, 1);
+                    if (ChannelList.ContainsKey(channel))
                     {
-                        //        if (cu.Value == items.SelectedNode)
+                        if (channel.ChannelWork)
                         {
-                            //            if (cu.Key.ChannelWork)
-                            {
-                                //                cu.Key._Network._Protocol.Part(cu.Key.Name);
-                                //                cu.Key.ChannelWork = false;
-                                return;
-                            }
-                            return;
+                            channel._Network.Part(channel);
+                        }
+                        else
+                        {
+                            Core._Main.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
                         }
                     }
                 }

@@ -119,7 +119,7 @@ namespace Client.Forms
 			// Container child Client.Forms.Main.Gtk.Container+ContainerChild
 			this.vbox3 = new global::Gtk.VBox ();
 			this.vbox3.Name = "vbox3";
-			this.vbox3.Spacing = 6;
+			this.vbox3.Spacing = 2;
 			// Container child vbox3.Gtk.Box+BoxChild
 			this.UIManager.AddUiFromString ("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SkinEditorAction' action='SkinEditorAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MiscAction' action='MiscAction'><menuitem name='SearchAction' action='SearchAction'/><separator/><menuitem name='SwitchToAdvancedLayoutAction' action='SwitchToAdvancedLayoutAction'/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='ContentsAction' action='ContentsAction'/></menu></menubar></ui>");
 			this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget ("/menubar2")));
@@ -147,7 +147,7 @@ namespace Client.Forms
 			// Container child vbox3.Gtk.Box+BoxChild
 			this.toolStrip = new global::Gtk.Statusbar ();
 			this.toolStrip.Name = "toolStrip";
-			this.toolStrip.Spacing = 6;
+			this.toolStrip.Spacing = 2;
 			// Container child toolStrip.Gtk.Box+BoxChild
 			this.toolStripStatusNetwork = new global::Gtk.Label ();
 			this.toolStripStatusNetwork.Name = "toolStripStatusNetwork";

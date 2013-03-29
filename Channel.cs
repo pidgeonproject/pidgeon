@@ -172,6 +172,10 @@ namespace Client
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>
         public bool UserListRefreshWait = false;
+        /// <summary>
+        /// Text displayed in the list menu
+        /// </summary>
+        public string MenuData = null;
 
         /// <summary>
         /// Renew the bans
@@ -230,7 +234,7 @@ namespace Client
 
             }
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
-            //TreeNode.ToolTipText = text;
+            MenuData = text;
         }
 
         /// <summary>
@@ -359,106 +363,46 @@ namespace Client
                         vs.Sort();
                         users.Sort();
 
-                        Dictionary<User, UserData> CurrentUsers = new Dictionary<User, UserData>();
-                        Gtk.TreeIter iter;
                         Gtk.TreeIter xx;
-                        if (Chat.UserList.GetIterFirst(out iter))
-                        {
-                            while (true)
-                            {
-								string host = (string)Chat.UserList.GetValue(iter, 2);
-                                User user = (User)Chat.UserList.GetValue(iter, 1);
-								string nick = (string)Chat.UserList.GetValue(iter, 0);
-                                CurrentUsers.Add(user, new UserData(nick, iter, host));
-                                if (!Chat.UserList.IterNext(ref iter))
-                                {
-                                    break;
-                                }
-                            }
-                        }
 
                         foreach (User user in owners)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
+                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Owner;
                         }
 
                         foreach (User user in admins)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-							}
+                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Admin;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
                         }
                         foreach (User user in oper)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
+                             xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Op;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
                         }
                         foreach (User user in halfop)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
+                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Halfop;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
                         }
                         foreach (User user in vs)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
+                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Voice;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
                         }
 
                         foreach (User user in users)
                         {
-                            if (!CurrentUsers.ContainsKey(user))
-                            {
-                                xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
-                            }
+                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Regular;
-                            //listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
-                        }
-
-                        // check for all users who are in list but not in a channel
-                        foreach (KeyValuePair<User, UserData> info in CurrentUsers)
-                        {
-                            if (!this.UserList.Contains(info.Key))
-                            { 
-                                // this user is no longer in channel so we need to remove them from the list
-                                Gtk.TreeIter iter2 = CurrentUsers[info.Key].iter;
-                                Chat.UserList.Remove(ref iter2);
-                            } else 
-							{
-								if (info.Value.hn != info.Key.ToString ())
-								{
-									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 2, info.Key.ToString());
-								}
-								if (_Network.RemoveCharFromUser (info.Value.username) != info.Key.Nick)
-								{
-									Chat.UserList.SetValue(CurrentUsers[info.Key].iter, 0, uchr(info.Key) + info.Key.Nick);
-								}
-							}
                         }
                     }
                     return;
                 }
 
                 Redraw = true;
-                Graphics.PidgeonList.Updated = true;
+                //Graphics.PidgeonList.Updated = true;
                 return;
             }
             catch (Exception f)

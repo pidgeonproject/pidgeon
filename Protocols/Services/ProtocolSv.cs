@@ -298,6 +298,11 @@ namespace Client
 
         public override void Exit()
         {
+            if (!Connected)
+            {
+                Core.DebugLog("Request to disconnect from services that aren't connected");
+                return;
+            }
             Connected = false;
             if (Configuration.Services.UsingCache)
             {

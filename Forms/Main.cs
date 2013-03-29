@@ -68,6 +68,7 @@ namespace Client.Forms
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
                 this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
+                this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
 				_Load();
 			}

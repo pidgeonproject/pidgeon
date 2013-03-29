@@ -37,6 +37,7 @@ namespace Client.Forms
 				this.Build ();
 				this.timer = new GLib.TimeoutHandler(Tick);
 				GLib.Timeout.Add (1000, timer);
+                this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
 				this.DeleteEvent += new DeleteEventHandler(Unshow);
 				textview2.Buffer.Text = "";
 				LoadStyle();

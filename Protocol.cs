@@ -305,24 +305,32 @@ namespace Client
             return;
         }
 
+        public void ClearWins()
+        {
+            lock (Windows)
+            {
+                foreach (Graphics.Window xx in Windows.Values)
+                {
+                    xx.Destroy();
+                }
+            }
+            Windows.Clear();
+        }
+
         /// <summary>
         /// Disconnect server
         /// </summary>
         public virtual void Exit() 
         {
+            Core._Main.rootToolStripMenuItem_Click(null, null);
             if (SystemWindow != null)
             {
-                if (Windows.ContainsValue(SystemWindow))
+                if (!Windows.ContainsValue(SystemWindow))
                 {
-                    Core._Main.main.Visible = true;
-                    if (Core._Main.main != SystemWindow)
-                    {
-                        Core._Main.rootToolStripMenuItem_Click(null, null);
-                    }
-                    SystemWindow.Dispose();
-                    Core._Main.Chat = Core._Main.main;
+                    SystemWindow.Destroy();
                 }
             }
+            ClearWins();
             lock (Core.Connections)
             {
                 if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
