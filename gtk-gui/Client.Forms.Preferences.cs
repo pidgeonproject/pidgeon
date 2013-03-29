@@ -314,8 +314,8 @@ namespace Client.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 767;
-			this.DefaultHeight = 479;
+			this.DefaultWidth = 680;
+			this.DefaultHeight = 460;
 			this.Show ();
 		}
 	}

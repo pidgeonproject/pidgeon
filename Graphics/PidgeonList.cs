@@ -636,7 +636,7 @@ namespace Client.Graphics
                     {
                         lock (user._Network._Protocol.Windows)
                         {
-                            user._Network._Protocol.Windows[user._Network.window + user.Nick].Visible = false;
+                            Core._Main.rootToolStripMenuItem_Click(null, null);
                             user._Network._Protocol.Windows[user._Network.window + user.Nick].Dispose();
                         }
                     }
