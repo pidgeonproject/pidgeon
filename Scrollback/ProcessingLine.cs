@@ -284,7 +284,7 @@ namespace Client
 
             if (owner != null && owner.MicroBox)
             {
-                Forms.MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
+                Core._Main.micro.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
             }
 
             bool Matched = false;

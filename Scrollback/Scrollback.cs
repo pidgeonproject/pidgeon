@@ -110,13 +110,15 @@ namespace Client
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox();
-            if (!isMicro)
+            //if (!isMicro)
             {
                 this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
                 this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
                 this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
             }
             timer2 = new GLib.TimeoutHandler(timer2_Tick);
+			simpleview.ModifyBase(Gtk.StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            simpleview.ModifyText(Gtk.StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))

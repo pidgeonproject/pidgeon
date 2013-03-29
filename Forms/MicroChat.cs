@@ -28,14 +28,13 @@ namespace Client.Forms
 {
 	public partial class MicroChat : Gtk.Window
 	{
-		public static MicroChat mc = null;
+		//public static MicroChat mc = null;
 		public Scrollback scrollback_mc = null;
         private Gtk.VBox vbox;
 
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
-            global::Stetic.BinContainer.Attach(this);
             this.Name = "Client.Forms.MicroChat";
             this.Title = "Micro chat";
             this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
@@ -69,9 +68,6 @@ namespace Client.Forms
 		{
             this.Build();
             this.KeepAbove = true;
-			scrollback_mc = new Scrollback();
-            scrollback_mc.owner = null;
-            scrollback_mc.Create();
 		}
 	}
 }

@@ -27,6 +27,7 @@ namespace Client.Forms
 {
 	public partial class Main : Client.GTK.PidgeonForm
 	{
+		public MicroChat micro = null;
 		private string StatusBox = "";
         public Graphics.Window main = null;
         public Graphics.PidgeonList ChannelList = null;
@@ -104,6 +105,7 @@ namespace Client.Forms
                 hpaned1.Position = Configuration.Window.window_size;
 				ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;
+				micro = new MicroChat();
                 ChannelList.Visible = true;
                 main = new Client.Graphics.Window();
 				main.Events = ((global::Gdk.EventMask)(256));
@@ -436,7 +438,7 @@ namespace Client.Forms
         {
             try
             {
-                MicroChat.mc.Show();
+                micro.Show();
             }
             catch (Exception fail)
             {

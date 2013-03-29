@@ -195,6 +195,7 @@ namespace Client
             e.Menu.Append(scroll);
             Gtk.MenuItem refresh = new Gtk.MenuItem("Refresh");
             refresh.Show();
+			refresh.Activated += new EventHandler(refreshToolStripMenuItem_Click);
             e.Menu.Append(refresh);
             Gtk.CheckMenuItem taly = new Gtk.CheckMenuItem(toggleAdvancedLayoutToolStripMenuItem.Text);
             taly.Activated += new EventHandler(toggleAdvancedLayoutToolStripMenuItem_Click);
