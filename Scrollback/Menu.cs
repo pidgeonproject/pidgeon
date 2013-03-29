@@ -452,6 +452,7 @@ namespace Client
                     {
                         Forms.Channel_Info info = new Forms.Channel_Info();
                         info.channel = Core.network.RenderedChannel;
+                        info.Load();
                         info.Show();
                     }
                 }

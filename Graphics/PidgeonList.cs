@@ -514,6 +514,7 @@ namespace Client.Graphics
                         break;
                     case ItemType.Services:
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
+                        closeToolStripMenuItem.Visible = true;
                         protocol.ShowChat("!root");
                         Core.network = null;
                         disconnectToolStripMenuItem.Visible = true;
