@@ -220,9 +220,6 @@ namespace Client.Graphics
 
         public void InitStyle()
         {
-            scrollback.simpleview.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-            scrollback.simpleview.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-
             listView.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
