@@ -69,6 +69,10 @@ namespace Client.Graphics
         public bool isInitialised = false;
 
         // menu
+		public GTK.Menu vERSIONToolStripMenuItem = new GTK.Menu("Version");
+		public GTK.Menu tIMEToolStripMenuItem = new GTK.Menu("Time");
+		public GTK.Menu pINGToolStripMenuItem = new GTK.Menu("PING");
+	    public GTK.Menu pAGEToolStripMenuItem = new GTK.Menu("PAGE");
         public GTK.Menu messageToolStripMenuItem = new GTK.Menu("Message");
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
@@ -382,7 +386,31 @@ namespace Client.Graphics
                     message.Activated += new EventHandler(messageToolStripMenuItem_Click);
                     menu.Append(message);
                 }
-
+				
+				if (ctToolStripMenuItem.Visible)
+				{
+					Gtk.SeparatorMenuItem separatorX = new Gtk.SeparatorMenuItem();
+                    separatorX.Show();
+                    menu.Append(separatorX);
+					Gtk.Menu ctcp = new Gtk.Menu();
+                    Gtk.MenuItem Ctcp = new MenuItem("CTCP");
+                    Ctcp.Submenu = ctcp;
+                    menu.Append(Ctcp);
+                    Gtk.MenuItem ping = new MenuItem(pINGToolStripMenuItem.Text);
+					ping.Activated += new EventHandler(pINGToolStripMenuItem_Click);
+                    ctcp.Append(ping);
+					Gtk.MenuItem page = new MenuItem(pAGEToolStripMenuItem.Text);
+					page.Activated += new EventHandler(pAGEToolStripMenuItem_Click);
+                    ctcp.Append(page);
+					Gtk.MenuItem version = new MenuItem(vERSIONToolStripMenuItem.Text);
+					version.Activated += new EventHandler(vERSIONToolStripMenuItem_Click);
+                    ctcp.Append(version);
+					Gtk.MenuItem dt = new MenuItem(tIMEToolStripMenuItem.Text);
+					dt.Activated += new EventHandler(tIMEToolStripMenuItem_Click);
+                    ctcp.Append(dt);
+					
+				}
+				
                 if (modeToolStripMenuItem.Visible)
                 {
                     display = true;
@@ -424,15 +452,6 @@ namespace Client.Graphics
                     Gtk.MenuItem vp2 = new MenuItem(vToolStripMenuItem1.Text);
                     changemode.Append(vp2);
                     vp2.Activated += new EventHandler(vToolStripMenuItem1_Click);
-                }
-
-                if (ctToolStripMenuItem.Visible)
-                {
-                    display = true;
-                    Gtk.MenuItem CTCP = new MenuItem(ctToolStripMenuItem.Text);
-                    Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
-                    separator1.Show();
-                    menu.Append(separator1);
                 }
 
                 if (kickBanToolStripMenuItem.Visible)
@@ -796,7 +815,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
+		
         private void pINGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -832,7 +851,7 @@ namespace Client.Graphics
             }
             return null;
         }
-
+			
         private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try

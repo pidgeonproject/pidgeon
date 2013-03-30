@@ -30,6 +30,7 @@ namespace Client.Forms
 		private List<string> traf = new List<string>();
 		public GLib.TimeoutHandler timer;
 		private bool Enabled = true;
+		
 		public TrafficScanner () : 	base(Gtk.WindowType.Toplevel)
 		{
 			try
