@@ -177,15 +177,11 @@
     </Compile>
     <Compile Include="WinForms\Recovery.Designer.cs" />
     <Compile Include="Forms\Notification.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Notification.cs" />
     <Compile Include="WinForms\Updater.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WinForms\Updater.Designer.cs" />
     <Compile Include="Forms\ConfigFile.cs" />
-    <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
-    <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
-    <Compile Include="gtk-gui\Client.Forms.ConfigFile.cs" />
     <Compile Include="Forms\NetworkDB.cs" />
     <Compile Include="gtk-gui\Client.Forms.NetworkDB.cs" />
   </ItemGroup>
