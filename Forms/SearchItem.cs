@@ -27,11 +27,30 @@ namespace Client.Forms
 {
 	public partial class SearchItem : Gtk.Window
 	{
-		public SearchItem () : 
-				base(Gtk.WindowType.Toplevel)
+		protected virtual void Build ()
+		{
+			global::Stetic.Gui.Initialize (this);
+			// Widget Client.Forms.SearchItem
+			this.Name = "Client.Forms.SearchItem";
+			this.Title = "SearchItem";
+			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+			if ((this.Child != null)) {
+				this.Child.ShowAll ();
+			}
+			this.DefaultWidth = 400;
+			this.DefaultHeight = 300;
+			this.Show ();
+		}
+		
+		public SearchItem () : base(Gtk.WindowType.Toplevel)
 		{
 			this.Build ();
 			this.Hide();
+		}
+		
+		public void setFocus()
+		{
+			
 		}
 	}
 }

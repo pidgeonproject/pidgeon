@@ -27,8 +27,6 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
-
-
         public Preferences() : base(Gtk.WindowType.Toplevel)
         {
             try

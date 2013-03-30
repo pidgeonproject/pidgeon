@@ -110,7 +110,7 @@ namespace Client
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox();
-            //if (!isMicro)
+            if (!isMicro)
             {
                 this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
                 this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);

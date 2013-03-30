@@ -28,7 +28,6 @@ namespace Client.Forms
 {
 	public partial class MicroChat : Gtk.Window
 	{
-		//public static MicroChat mc = null;
 		public Scrollback scrollback_mc = null;
         private Gtk.VBox vbox;
 
@@ -63,7 +62,24 @@ namespace Client.Forms
             e.RetVal = true;
             Hide();
         }
-
+		
+		[GLib.ConnectBefore]
+        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        {
+            try
+            {
+                Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+	            separator1.Show();
+	            e.Menu.Append(separator1);
+	            e.Menu.Append(new Gtk.SeparatorMenuItem());
+				
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+		
 		public MicroChat () : base(Gtk.WindowType.Toplevel)
 		{
             this.Build();

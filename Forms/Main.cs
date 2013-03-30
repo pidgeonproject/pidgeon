@@ -72,6 +72,7 @@ namespace Client.Forms
                 this.AttachToMicroChatAction.Activated += new EventHandler(attachToMicroChatToolStripMenuItem_Click);
                 this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
                 this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
+				this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
 				_Load();
 			}
@@ -515,22 +516,6 @@ namespace Client.Forms
             }
         }
 
-        /*
-        protected void Wheeled(object sender, MouseEventArgs md)
-        {
-            try
-            {
-                if (Chat != null)
-                {
-                    Chat.scrollback.RT.Wheeled(sender, md);
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
         private void searchToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -539,25 +524,21 @@ namespace Client.Forms
                 {
                     searchbox = new SearchItem();
                 }
-                if (searchbox.IsDisposed)
-                {
-                    searchbox = new SearchItem();
-                }
+				
                 if (searchbox.Visible)
                 {
                     searchbox.Hide();
                     return;
                 }
                 searchbox.Show();
-                searchbox.TopMost = true;
-                searchbox.textBox1.Focus();
+                searchbox.setFocus();
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-		 */
+
         private void switchToAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -586,20 +567,6 @@ namespace Client.Forms
             }
         }
 
-		/*
-        private void skinEdToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                SkinEd skined = new SkinEd();
-                skined.Show();
-            }
-            catch (Exception x)
-            {
-                Core.handleException(x);
-            }
-        }
-
         private void favoriteNetworksToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -612,7 +579,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		*/
 	}
 }
 

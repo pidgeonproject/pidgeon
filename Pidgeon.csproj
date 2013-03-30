@@ -186,6 +186,8 @@
     <Compile Include="gtk-gui\Client.Forms.ScriptEdit.cs" />
     <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
     <Compile Include="gtk-gui\Client.Forms.ConfigFile.cs" />
+    <Compile Include="Forms\NetworkDB.cs" />
+    <Compile Include="gtk-gui\Client.Forms.NetworkDB.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -206,7 +208,7 @@
     <MonoDevelop>
       <Properties>
         <Policies>
-          <TextStylePolicy FileWidth="120" TabWidth="4" EolMarker="Windows" inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
+          <TextStylePolicy FileWidth="120" TabWidth="4" inheritsSet="Mono" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
         <GtkDesignInfo generateGettext="false" />

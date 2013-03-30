@@ -25,7 +25,7 @@ namespace Client.Forms
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new global::Gtk.Label();
-            this.label1.HeightRequest = 60;
+            this.label1.HeightRequest = 20;
             this.label1.Name = "label1";
             this.label1.LabelProp = "Notification";
             this.vbox1.Add(this.label1);
@@ -49,6 +49,8 @@ namespace Client.Forms
             // Container child hbox1.Gtk.Box+BoxChild
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
+			this.label2.WidthRequest = 320;
+			this.label2.Wrap = true;
             this.label2.LabelProp = "Description";
             this.hbox1.Add(this.label2);
             global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.label2]));
@@ -69,8 +71,8 @@ namespace Client.Forms
             {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 464;
-            this.DefaultHeight = 191;
+            this.DefaultWidth = 460;
+            this.DefaultHeight = 220;
             this.Show();
         }
 
