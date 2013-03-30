@@ -186,7 +186,7 @@ namespace Client
                     Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
-                        Core._Main.Status("");
+                        Core._Main.Status(protocol.getInfo());
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
                         protocol.SuppressChanges = false;
@@ -261,7 +261,7 @@ namespace Client
                     }
                     if (protocol.WaitingNetw.Count == 0)
                     {
-                        Core._Main.Status("");
+                        Core._Main.Status(protocol.getInfo());
                     }
                     else
                     {
@@ -461,14 +461,15 @@ namespace Client
                         Core._Main.ChannelList.ServerList.Remove(remove);
                     }
                 }
-                //if (item != null)
-                //{
-                    //Core._Main.ChannelList.RemoveAll(item);
-                //}
-                //else
-                //{
-                //    Core.DebugLog("Unable to remove " + curr.InnerText);
-                //}
+				
+                if (remove != null)
+                {
+                    Core._Main.ChannelList.RemoveItem (item, remove, Client.Graphics.PidgeonList.ItemType.Server);
+                }
+                else
+                {
+                    Core.DebugLog("Unable to remove " + curr.InnerText);
+                }
             }
 
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)
@@ -485,6 +486,22 @@ namespace Client
                             {
                                 foreach (string channel in channellist)
                                 {
+									lock (protocol.RemainingJobs)
+									{
+										ProtocolSv.Work item = null;
+										foreach (ProtocolSv.Work work in protocol.RemainingJobs)
+										{
+											if (work.type == ProtocolSv.Work.Type.ChannelInfo && channel == work.Name)
+											{
+												item = work;
+											}
+										}
+										
+										if (item != null)
+										{
+											protocol.RemainingJobs.Remove(item);
+										}
+									}
                                     if (channel != "")
                                     {
                                         if (nw.getChannel(channel) == null)
@@ -531,6 +548,10 @@ namespace Client
                                         Datagram response2 = new Datagram("CHANNELINFO", "INFO");
                                         response2.Parameters.Add("network", curr.Attributes[0].Value);
                                         response2.Parameters.Add("channel", channel);
+										lock (protocol.RemainingJobs)
+										{
+											protocol.RemainingJobs.Add(new ProtocolSv.Work(channel, ProtocolSv.Work.Type.ChannelInfo));
+										}
                                         protocol.Deliver(response2);
                                     }
                                 }

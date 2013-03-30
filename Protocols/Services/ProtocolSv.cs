@@ -28,6 +28,28 @@ namespace Client
 {
     public partial class ProtocolSv : Protocol
     {
+		public class Cache
+        {
+            public double size = 0;
+            public double current = 0;
+        }
+		
+		public class Work
+		{
+			public string Name = null;
+			public Type type = Type.ChannelInfo;
+			public Work(string name, Type Task)
+			{
+				Name = name;
+				type = Task;
+			}
+			
+			public enum Type
+			{
+				ChannelInfo,
+			}
+		}
+		
         public System.Threading.Thread main = null;
         public System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
@@ -43,18 +65,13 @@ namespace Client
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
         public Services.Buffer sBuffer = null;
+		public List<Work> RemainingJobs = new List<Work>();
 
         public string nick = "";
         public bool auth = false;
+		
 
         public List<string> WaitingNetw = new List<string>();
-
-
-        public class Cache
-        {
-            public double size = 0;
-            public double current = 0;
-        }
 
         public enum Status
         {
@@ -78,6 +95,15 @@ namespace Client
             }
         }
 
+		public string getInfo()
+		{
+			if (RemainingJobs.Count > 0)
+			{
+				return "Waiting for services to finish " + RemainingJobs.Count.ToString() + " requests";
+			}
+			return "";
+		}
+		
         public override bool Command(string cm, Network network = null)
         {
             if (cm.StartsWith(" ") != true && cm.Contains(" "))
