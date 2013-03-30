@@ -85,7 +85,6 @@ namespace Client.Graphics
             timer = new GLib.TimeoutHandler(timer01_Tick);
             GLib.Timeout.Add(200, timer);
             this.tv.RowActivated += new RowActivatedHandler(items_AfterSelect);
-
             this.Add(this.GtkScrolledWindow);
             this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
             partToolStripMenuItem.Enabled = true;

@@ -223,13 +223,20 @@ namespace Client
                 e.Menu.Append(channel);
                 channel.Activated += new EventHandler(channelToolStripMenuItem_Click);
             }
-            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
-            list.Show();
-            list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
-            e.Menu.Append(list);
-            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
-            retrieve.Show();
-            retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
+			if (listAllChannelsToolStripMenuItem.Visible)
+			{
+	            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
+	            list.Show();
+	            list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
+	            e.Menu.Append(list);
+			}
+			if (retrieveTopicToolStripMenuItem.Visible)
+			{
+	            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
+	            retrieve.Show();
+	            retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
+				e.Menu.Append(retrieve);
+			}
             Gtk.MenuItem copy = new Gtk.MenuItem(copyTextToClipBoardToolStripMenuItem.Text);
             copy.Activated += new EventHandler(copyTextToClipBoardToolStripMenuItem_Click);
             copy.Show();
@@ -238,7 +245,6 @@ namespace Client
             copy_x.Activated += new EventHandler(copyEntireWindowToClipBoardToolStripMenuItem_Click);
             copy_x.Show();
             e.Menu.Append(copy_x);
-            e.Menu.Append(retrieve);
             CreatingMenu = false;
         }
 
@@ -299,6 +305,7 @@ namespace Client
             {
                 toolStripMenuItem1.Visible = true;
                 Link = content;
+				listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
                 if (type == ViewType.Channel)
                 {
                     if (owner.isChannel)
@@ -310,7 +317,10 @@ namespace Client
                         kickToolStripMenuItem.Visible = false;
                         whoisToolStripMenuItem.Visible = false;
                         whowasToolStripMenuItem.Visible = false;
-                    }
+                    } else
+					{
+						listAllChannelsToolStripMenuItem.Visible = false;
+					}
                     toolStripMenuItem2.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
@@ -323,6 +333,7 @@ namespace Client
                     if (owner.isChannel)
                     {
                         kickToolStripMenuItem.Visible = true;
+						listAllChannelsToolStripMenuItem.Visible = true;
                         whoisToolStripMenuItem.Visible = true;
                         whowasToolStripMenuItem.Visible = true;
                         mode1e2ToolStripMenuItem.Visible = true;
@@ -342,7 +353,10 @@ namespace Client
                         	whoisToolStripMenuItem.Visible = false;
                         	whowasToolStripMenuItem.Visible = false;
 						}
-                    }
+                    } else
+					{
+						listAllChannelsToolStripMenuItem.Visible = false;
+					}
                     toolStripMenuItem2.Visible = true;
                     toolStripMenuItem1.Visible = true;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
@@ -360,7 +374,10 @@ namespace Client
                         kickToolStripMenuItem.Visible = false;
                         whoisToolStripMenuItem.Visible = false;
                         whowasToolStripMenuItem.Visible = false;
-                    }
+                    } else
+					{
+						listAllChannelsToolStripMenuItem.Visible = false;
+					}
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = true;
                     openLinkInBrowserToolStripMenuItem.Visible = true;

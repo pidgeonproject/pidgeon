@@ -230,6 +230,7 @@ namespace Client
                 {
                     wChannelList = new Forms.Channels();
 					wChannelList.network = this;
+					wChannelList.Init();
                 }
 
                 wChannelList.Show();

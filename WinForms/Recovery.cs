@@ -34,11 +34,6 @@ namespace Client
             InitializeComponent();
         }
 
-        private void __LP_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void Recovery_Load(object sender, EventArgs e)
         {
             try
@@ -108,7 +103,8 @@ namespace Client
         private void bContinue_Click(object sender, EventArgs e)
         {
             Core.blocked = false;
-            Close();
+            Hide();
+			Close();
         }
 
         private void timer_Tick(object sender, EventArgs e)

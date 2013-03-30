@@ -73,8 +73,7 @@ namespace Client
             this.@__LP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 88.60104F));
             this.@__LP.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.39896F));
             this.@__LP.Size = new System.Drawing.Size(766, 386);
-            this.@__LP.TabIndex = 2;
-            this.@__LP.Paint += new System.Windows.Forms.PaintEventHandler(this.@__LP_Paint);
+            this.@__LP.TabIndex = 2;;
             // 
             // flowLayoutPanel1
             // 
