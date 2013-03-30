@@ -49,7 +49,7 @@ namespace Client.Forms
             // Container child hbox1.Gtk.Box+BoxChild
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
-			this.label2.WidthRequest = 320;
+			this.label2.WidthRequest = 260;
 			this.label2.Wrap = true;
             this.label2.LabelProp = "Description";
             this.hbox1.Add(this.label2);
@@ -62,6 +62,8 @@ namespace Client.Forms
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
+			this.label1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
+			this.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             this.vbox1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             root = new Gtk.EventBox();
             root.Add(this.vbox1);

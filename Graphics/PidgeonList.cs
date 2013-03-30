@@ -85,7 +85,7 @@ namespace Client.Graphics
             timer = new GLib.TimeoutHandler(timer01_Tick);
             GLib.Timeout.Add(200, timer);
             this.tv.RowActivated += new RowActivatedHandler(items_AfterSelect);
-            
+
             this.Add(this.GtkScrolledWindow);
             this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
             partToolStripMenuItem.Enabled = true;
@@ -637,7 +637,7 @@ namespace Client.Graphics
                         lock (user._Network._Protocol.Windows)
                         {
                             Core._Main.rootToolStripMenuItem_Click(null, null);
-                            user._Network._Protocol.Windows[user._Network.window + user.Nick].Dispose();
+                            user._Network._Protocol.Windows.Remove(user._Network.window + user.Nick);
                         }
                     }
                     lock (UserList)
@@ -669,6 +669,15 @@ namespace Client.Graphics
                             channel._Network.Channels.Remove(channel);
                         }
                     }
+	
+					lock (channel._Network._Protocol.Windows)
+					{
+						if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.window + channel.Name))
+						{
+							channel._Network._Protocol.Windows[channel._Network.window + channel.Name].Dispose();
+							channel._Network._Protocol.Windows.Remove(channel._Network.window + channel.Name);
+						}
+					}
 
                     lock (ChannelList)
                     {
@@ -721,7 +730,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
+
         private void partToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
