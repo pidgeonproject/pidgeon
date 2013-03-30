@@ -53,10 +53,10 @@ namespace Client.Forms
             this.label1.WidthRequest = 720;
             this.label1.LabelProp = "Do you really want to execute following commands?\r\n\r\nLines prefixed with following symbols are:\r\n# - comment\r\n/ - will be launched as pidgeon command\r\n\r\nOther lines will be delivered as raw command to server";
             this.vbox1.Add(this.label1);
-            global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
-            w1.Position = 0;
-            w1.Expand = false;
-            w1.Fill = true;
+            //global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
+            //w1.Position = 0;
+            //w1.Expand = false;
+            //w1.Fill = true;
             // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";

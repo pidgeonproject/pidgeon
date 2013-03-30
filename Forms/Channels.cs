@@ -28,6 +28,7 @@ namespace Client.Forms
 	public partial class Channels : Gtk.Window
 	{
         public Network network = null;
+		public bool Loaded = false;
         private int channels = 0;
         public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
@@ -128,6 +129,8 @@ namespace Client.Forms
 				Gtk.MenuItem re = new MenuItem(refreshToolStripMenuItem.Text);
                 re.Activated += new EventHandler(refreshToolStripMenuItem_Click);
                 xx.Append(re);
+				xx.ShowAll();
+				xx.Popup();
 			} catch (Exception fail)
 			{
 				Core.handleException(fail);
@@ -145,10 +148,24 @@ namespace Client.Forms
             channels = 0;
             lock (network.ChannelList)
             {
-                channelData.Clear();
-                channelData.AddRange(network.ChannelList);
+				if (network.ChannelList.Count > 0)
+				{
+                	channelData.Clear();
+                	channelData.AddRange(network.ChannelList);
+				}
             }
-			
+			if (channelData.Count > 0)
+			{
+				foreach (Network.ChannelData info in channelData)
+				{
+					data.AppendValues (info.ChannelName, info.UserCount, info.ChannelTopic);
+				}
+				Loaded = true;
+			} else
+			{
+				Loaded = false;
+				data.AppendValues("No channels were loaded so far, download list first", 0, "");
+			}
         }
 
         private void Channels_Close(object sender, Gtk.DestroyEventArgs e)
@@ -206,6 +223,8 @@ namespace Client.Forms
         {
             try
             {
+				if (Loaded)
+				{
                     foreach (string item in Selected)
                     {
                         if (item != "")
@@ -213,6 +232,7 @@ namespace Client.Forms
                             network.Join(item);
                         }
                     }
+				}
             }
             catch (Exception fail)
             {
@@ -224,10 +244,13 @@ namespace Client.Forms
         {
             try
             {
+				if (Loaded)
+				{
                     foreach (string item in Selected)
                     {
                         network.Transfer("KNOCK " + item);
                     }
+				}
             }
             catch (Exception fail)
             {

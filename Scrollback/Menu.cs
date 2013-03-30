@@ -90,6 +90,7 @@ namespace Client
 
         public void CreateMenu(object o, Gtk.PopulatePopupArgs e)
         {
+			listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
             CreatingMenu = true;
             Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
             separator1.Show();
@@ -126,7 +127,6 @@ namespace Client
                 separator8.Show();
                 e.Menu.Append(separator8);
             }
-
 
             // whois items
             if (whoisToolStripMenuItem.Visible)
@@ -305,7 +305,6 @@ namespace Client
             {
                 toolStripMenuItem1.Visible = true;
                 Link = content;
-				listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
                 if (type == ViewType.Channel)
                 {
                     if (owner.isChannel)
@@ -353,10 +352,7 @@ namespace Client
                         	whoisToolStripMenuItem.Visible = false;
                         	whowasToolStripMenuItem.Visible = false;
 						}
-                    } else
-					{
-						listAllChannelsToolStripMenuItem.Visible = false;
-					}
+                    }
                     toolStripMenuItem2.Visible = true;
                     toolStripMenuItem1.Visible = true;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
@@ -374,10 +370,7 @@ namespace Client
                         kickToolStripMenuItem.Visible = false;
                         whoisToolStripMenuItem.Visible = false;
                         whowasToolStripMenuItem.Visible = false;
-                    } else
-					{
-						listAllChannelsToolStripMenuItem.Visible = false;
-					}
+                    }
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = true;
                     openLinkInBrowserToolStripMenuItem.Visible = true;
