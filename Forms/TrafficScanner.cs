@@ -103,7 +103,10 @@ namespace Client.Forms
 		
 		public void insert(string Server, string Text)
 		{
-			traf.Add(Server + " " + Text);
+			lock (traf)
+			{
+				traf.Add(Server + " " + Text);
+			}
 		}
 	}
 }

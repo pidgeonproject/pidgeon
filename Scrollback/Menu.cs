@@ -32,7 +32,7 @@ namespace Client
         public GTK.Menu toggleAdvancedLayoutToolStripMenuItem = new GTK.Menu("Toggle advanced layout");
         public GTK.Menu toggleSimpleLayoutToolStripMenuItem = new GTK.Menu("Toggle simple view");
         public GTK.Menu banToolStripMenuItem = new GTK.Menu();
-        public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu();
+        public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu("List all channels on this network");
         public GTK.Menu retrieveTopicToolStripMenuItem = new GTK.Menu();
         public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
         public GTK.Menu mode1b2ToolStripMenuItem = new GTK.Menu();
@@ -225,7 +225,7 @@ namespace Client
             }
 			if (listAllChannelsToolStripMenuItem.Visible)
 			{
-	            Gtk.MenuItem list = new Gtk.MenuItem("List all servers on this network");
+	            Gtk.MenuItem list = new Gtk.MenuItem(listAllChannelsToolStripMenuItem.Text);
 	            list.Show();
 	            list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
 	            e.Menu.Append(list);

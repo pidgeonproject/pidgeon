@@ -1333,6 +1333,63 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public
       </widget>
     </child>
   </widget>
+  <widget class="Gtk.Window" id="Client.Forms.NetworkDB" design-size="456 336">
+    <property name="MemberName" />
+    <property name="Title" translatable="yes">NetworkDB</property>
+    <property name="WindowPosition">CenterOnParent</property>
+    <child>
+      <placeholder />
+    </child>
+  </widget>
+  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
+    <property name="MemberName" />
+    <property name="Visible">False</property>
+    <child>
+      <widget class="Gtk.VPaned" id="vpaned1">
+        <property name="MemberName" />
+        <property name="CanFocus">True</property>
+        <property name="Position">319</property>
+        <child>
+          <widget class="Gtk.HPaned" id="hpaned1">
+            <property name="MemberName" />
+            <property name="CanFocus">True</property>
+            <property name="Position">333</property>
+            <child>
+              <widget class="Client.Scrollback" id="scrollback1">
+                <property name="MemberName" />
+                <property name="Events">ButtonPressMask</property>
+              </widget>
+              <packing>
+                <property name="Resize">False</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
+                <property name="MemberName" />
+                <property name="ShadowType">In</property>
+                <child>
+                  <widget class="Gtk.TreeView" id="listView">
+                    <property name="MemberName" />
+                    <property name="CanFocus">True</property>
+                    <property name="ShowScrollbars">True</property>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="Resize">False</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="Client.Graphics.TextBox" id="textbox1">
+            <property name="MemberName" />
+            <property name="Events">ButtonPressMask</property>
+          </widget>
+        </child>
+      </widget>
+    </child>
+  </widget>
   <widget class="Gtk.Window" id="Client.Forms.ScriptEdit" design-size="737 432">
     <property name="MemberName" />
     <property name="Title" translatable="yes">ScriptEdit</property>
@@ -1422,66 +1479,9 @@ Other lines will be delivered as raw command to server</property>
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.VPaned" id="vpaned1">
-        <property name="MemberName" />
-        <property name="CanFocus">True</property>
-        <property name="Position">319</property>
-        <child>
-          <widget class="Gtk.HPaned" id="hpaned1">
-            <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="Position">333</property>
-            <child>
-              <widget class="Client.Scrollback" id="scrollback1">
-                <property name="MemberName" />
-                <property name="Events">ButtonPressMask</property>
-              </widget>
-              <packing>
-                <property name="Resize">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
-                <property name="MemberName" />
-                <property name="ShadowType">In</property>
-                <child>
-                  <widget class="Gtk.TreeView" id="listView">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                  </widget>
-                </child>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Resize">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Client.Graphics.TextBox" id="textbox1">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
-          </widget>
-        </child>
-      </widget>
-    </child>
-  </widget>
   <widget class="Gtk.Window" id="Client.Forms.ConfigFile" design-size="400 300">
     <property name="MemberName" />
     <property name="Title" translatable="yes">ConfigFile</property>
-    <property name="WindowPosition">CenterOnParent</property>
-    <child>
-      <placeholder />
-    </child>
-  </widget>
-  <widget class="Gtk.Window" id="Client.Forms.NetworkDB" design-size="456 336">
-    <property name="MemberName" />
-    <property name="Title" translatable="yes">NetworkDB</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>
       <placeholder />
@@ -1544,55 +1544,6 @@ Other lines will be delivered as raw command to server</property>
             <property name="Expand">False</property>
             <property name="Fill">False</property>
           </packing>
-        </child>
-      </widget>
-    </child>
-  </widget>
-  <widget class="Gtk.Bin" id="Client.Graphics.Window" design-size="457 357">
-    <property name="MemberName" />
-    <property name="Visible">False</property>
-    <child>
-      <widget class="Gtk.VPaned" id="vpaned1">
-        <property name="MemberName" />
-        <property name="CanFocus">True</property>
-        <property name="Position">319</property>
-        <child>
-          <widget class="Gtk.HPaned" id="hpaned1">
-            <property name="MemberName" />
-            <property name="CanFocus">True</property>
-            <property name="Position">333</property>
-            <child>
-              <widget class="Client.Scrollback" id="scrollback1">
-                <property name="MemberName" />
-                <property name="Events">ButtonPressMask</property>
-              </widget>
-              <packing>
-                <property name="Resize">False</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="Gtk.ScrolledWindow" id="GtkScrolledWindow1">
-                <property name="MemberName" />
-                <property name="ShadowType">In</property>
-                <child>
-                  <widget class="Gtk.TreeView" id="listView">
-                    <property name="MemberName" />
-                    <property name="CanFocus">True</property>
-                    <property name="ShowScrollbars">True</property>
-                  </widget>
-                </child>
-              </widget>
-            </child>
-          </widget>
-          <packing>
-            <property name="Resize">False</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="Client.Graphics.TextBox" id="textbox1">
-            <property name="MemberName" />
-            <property name="Events">ButtonPressMask</property>
-          </widget>
         </child>
       </widget>
     </child>

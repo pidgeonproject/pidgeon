@@ -83,6 +83,14 @@ namespace Client.Forms
             this.DefaultHeight = 520;
         }
 		
+		[GLib.ConnectBefore]
+        private void Menu2(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                Menu(sender, null);
+            }
+        }		
 		public void Init()
 		{
 			Gtk.TreeViewColumn name = new Gtk.TreeViewColumn();
@@ -97,12 +105,16 @@ namespace Client.Forms
             name.PackStart(c1, true);
 			size.PackStart(c2, true);
 			topic_item.PackStart(c3, true);
+			name.AddAttribute    (c1, "text", 0);
+			size.AddAttribute    (c2, "text", 1);
+			topic_item.AddAttribute    (c3, "text", 2);
 			treeview8.PopupMenu += new PopupMenuHandler(Menu);
 			this.treeview8.Model = data;
 			treeview8.AppendColumn(name);
 			treeview8.AppendColumn(size);
 			treeview8.AppendColumn(topic_item);
 			Reload();
+			this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
 		}
 		
         public void destroy(object o, DestroyEventArgs e)
@@ -166,6 +178,7 @@ namespace Client.Forms
 				Loaded = false;
 				data.AppendValues("No channels were loaded so far, download list first", 0, "");
 			}
+			Title = "Channels on " + network.ServerName + " [" + channelData.Count.ToString() + "]";
         }
 
         private void Channels_Close(object sender, Gtk.DestroyEventArgs e)

@@ -184,7 +184,6 @@
     <Compile Include="Forms\NetworkDB.cs" />
     <Compile Include="gtk-gui\Client.Forms.NetworkDB.cs" />
     <Compile Include="Graphics\Window\Window.cs" />
-    <Compile Include="gtk-gui\Client.Graphics.Window.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
