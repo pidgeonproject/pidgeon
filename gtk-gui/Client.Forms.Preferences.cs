@@ -54,6 +54,7 @@ namespace Client.Forms
 			this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
 			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
 			this.treeview1 = new global::Gtk.TreeView ();
+			this.treeview1.WidthRequest = 200;
 			this.treeview1.HeightRequest = 400;
 			this.treeview1.CanFocus = true;
 			this.treeview1.Name = "treeview1";
@@ -78,26 +79,30 @@ namespace Client.Forms
 			this.checkbutton1 = new global::Gtk.CheckButton ();
 			this.checkbutton1.CanFocus = true;
 			this.checkbutton1.Name = "checkbutton1";
-			this.checkbutton1.Label = "checkbutton1";
+			this.checkbutton1.Label = "Display notifications in tray";
 			this.checkbutton1.DrawIndicator = true;
 			this.checkbutton1.UseUnderline = true;
 			this.table1.Add (this.checkbutton1);
 			global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1 [this.checkbutton1]));
 			w3.TopAttach = ((uint)(7));
 			w3.BottomAttach = ((uint)(8));
+			w3.LeftAttach = ((uint)(1));
+			w3.RightAttach = ((uint)(2));
 			w3.XOptions = ((global::Gtk.AttachOptions)(4));
 			w3.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
 			this.checkbutton2 = new global::Gtk.CheckButton ();
 			this.checkbutton2.CanFocus = true;
 			this.checkbutton2.Name = "checkbutton2";
-			this.checkbutton2.Label = "checkbutton2";
+			this.checkbutton2.Label = "Notify when update for pidgeon is available";
 			this.checkbutton2.DrawIndicator = true;
 			this.checkbutton2.UseUnderline = true;
 			this.table1.Add (this.checkbutton2);
 			global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1 [this.checkbutton2]));
 			w4.TopAttach = ((uint)(8));
 			w4.BottomAttach = ((uint)(9));
+			w4.LeftAttach = ((uint)(1));
+			w4.RightAttach = ((uint)(2));
 			w4.XOptions = ((global::Gtk.AttachOptions)(4));
 			w4.YOptions = ((global::Gtk.AttachOptions)(4));
 			// Container child table1.Gtk.Table+TableChild
@@ -198,6 +203,7 @@ namespace Client.Forms
 			this.label2 = new global::Gtk.Label ();
 			this.label2.Name = "label2";
 			this.label2.LabelProp = "Nick";
+			this.label2.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label2);
 			global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table1 [this.label2]));
 			w12.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -206,6 +212,7 @@ namespace Client.Forms
 			this.label3 = new global::Gtk.Label ();
 			this.label3.Name = "label3";
 			this.label3.LabelProp = "Quit";
+			this.label3.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label3);
 			global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.table1 [this.label3]));
 			w13.TopAttach = ((uint)(1));
@@ -216,6 +223,7 @@ namespace Client.Forms
 			this.label4 = new global::Gtk.Label ();
 			this.label4.Name = "label4";
 			this.label4.LabelProp = "Ident";
+			this.label4.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label4);
 			global::Gtk.Table.TableChild w14 = ((global::Gtk.Table.TableChild)(this.table1 [this.label4]));
 			w14.TopAttach = ((uint)(2));
@@ -226,6 +234,7 @@ namespace Client.Forms
 			this.label5 = new global::Gtk.Label ();
 			this.label5.Name = "label5";
 			this.label5.LabelProp = "Real name";
+			this.label5.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label5);
 			global::Gtk.Table.TableChild w15 = ((global::Gtk.Table.TableChild)(this.table1 [this.label5]));
 			w15.TopAttach = ((uint)(3));
@@ -236,6 +245,7 @@ namespace Client.Forms
 			this.label6 = new global::Gtk.Label ();
 			this.label6.Name = "label6";
 			this.label6.LabelProp = "Second nick";
+			this.label6.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label6);
 			global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.table1 [this.label6]));
 			w16.TopAttach = ((uint)(4));
@@ -246,6 +256,7 @@ namespace Client.Forms
 			this.label7 = new global::Gtk.Label ();
 			this.label7.Name = "label7";
 			this.label7.LabelProp = "Language";
+			this.label7.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label7);
 			global::Gtk.Table.TableChild w17 = ((global::Gtk.Table.TableChild)(this.table1 [this.label7]));
 			w17.TopAttach = ((uint)(5));
@@ -256,6 +267,7 @@ namespace Client.Forms
 			this.label8 = new global::Gtk.Label ();
 			this.label8.Name = "label8";
 			this.label8.LabelProp = "Skin";
+			this.label8.Justify = ((global::Gtk.Justification)(1));
 			this.table1.Add (this.label8);
 			global::Gtk.Table.TableChild w18 = ((global::Gtk.Table.TableChild)(this.table1 [this.label8]));
 			w18.TopAttach = ((uint)(6));
@@ -314,7 +326,7 @@ namespace Client.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			this.DefaultWidth = 767;
+			this.DefaultWidth = 728;
 			this.DefaultHeight = 479;
 			this.Show ();
 		}

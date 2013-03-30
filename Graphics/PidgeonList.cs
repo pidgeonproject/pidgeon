@@ -46,12 +46,17 @@ namespace Client.Graphics
         public List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
+		private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
+		private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash.png");
+		private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
         private Gtk.TreeStore Values = new TreeStore(typeof(string),
                                                      typeof(object),
                                                      typeof(ItemType),
-                                                     typeof(Window), typeof(string));
+                                                     typeof(Window),
+		                                             typeof(string),
+		                                             typeof(Gdk.Pixbuf));
         private GLib.TimeoutHandler timer;
 
         public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
@@ -71,10 +76,14 @@ namespace Client.Graphics
             this.tv.CanFocus = true;
             this.tv.Name = "treeview1";
             Gtk.TreeViewColumn Column = new TreeViewColumn();
+			Gtk.TreeViewColumn pict = new Gtk.TreeViewColumn();
             Gtk.CellRendererText Item = new Gtk.CellRendererText();
+			Gtk.CellRendererPixbuf icon = new CellRendererPixbuf();
             Column.Title = messages.get("list-active-conn", messages.Language);
             Column.PackStart(Item, true);
             Column.SetCellDataFunc(Item, UserListRendererTool);
+			pict.AddAttribute(icon, "pixbuf", 5);
+			tv.AppendColumn(pict);
             tv.AppendColumn(Column);
             tv.PopupMenu += Menu;
             tv.TooltipColumn = 4;
@@ -255,7 +264,7 @@ namespace Client.Graphics
                 if (ServerList.ContainsKey(user._Network))
                 {
                     //text.ImageIndex = 4;
-                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null);
+                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at);
                     TreePath path = tv.Model.GetPath(ServerList[user._Network]);
                     tv.ExpandRow(path, true);
 
@@ -274,7 +283,7 @@ namespace Client.Graphics
 
         private void insertService(ProtocolSv service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, "Root window of services");
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, "Root window of services", icon_0);
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
@@ -297,7 +306,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData);
+                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -320,7 +329,7 @@ namespace Client.Graphics
         {
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, null);
+                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, null, icon_0);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -330,7 +339,7 @@ namespace Client.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, null);
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, null, icon_0);
                 TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
                 tv.ExpandRow(path, true);
                 network.SystemWindow.treeNode = text;

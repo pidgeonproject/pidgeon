@@ -27,12 +27,66 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
+		private global::Gtk.Frame frame2;
+		private global::Gtk.Alignment GtkAlignment2;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow2;
+		private global::Gtk.TreeView treeview2;
+		private global::Gtk.Label GtkLabel2;
+		private Gtk.Widget widget = null;
+		
+		private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
+		
+		public int SelectedItem
+        {
+            get
+            {
+                TreeIter iter;
+                TreePath[] path = treeview1.Selection.GetSelectedRows();
+				if (path.Length < 1)
+				{
+					return 0;
+				}
+                treeview1.Model.GetIter(out iter, path[0]);
+                return (int)treeview1.Model.GetValue(iter, 1);
+            }
+        }
+		
+		public void Initialize()
+		{
+			this.frame2 = new global::Gtk.Frame ();
+			this.frame2.Name = "frame1";
+			this.frame2.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment2.Name = "GtkAlignment";
+			this.GtkAlignment2.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow2.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.treeview2 = new global::Gtk.TreeView ();
+			this.treeview2.CanFocus = true;
+			this.treeview2.Name = "treeview1";
+			this.GtkScrolledWindow2.Add (this.treeview2);
+			this.GtkAlignment2.Add (this.GtkScrolledWindow2);
+			this.frame2.Add (this.GtkAlignment2);
+			this.GtkLabel2 = new global::Gtk.Label ();
+			this.GtkLabel2.Name = "GtkLabel";
+			this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Extensions</b>");
+			this.GtkLabel2.UseMarkup = true;
+			this.frame2.LabelWidget = this.GtkLabel2;
+			this.frame2.ShowAll();
+		}
+		
         public Preferences() : base(Gtk.WindowType.Toplevel)
         {
             try
             {
                 this.Build();
-                Preferences_Load();
+				this.widget = frame1;
+				this.Initialize();
+                this.Preferences_Load();
             }
             catch (Exception fail)
             {
@@ -47,7 +101,6 @@ namespace Client.Forms
         /// <param name="e"></param>
         private void Preferences_Load()
         {
-
             checkbutton1.Active = Configuration.Kernel.CheckUpdate;
             messages.Localize(this);
             if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
@@ -59,10 +112,18 @@ namespace Client.Forms
             this.DeleteEvent += new DeleteEventHandler(hide);
             button1.Clicked += new EventHandler(bSave_Click);
             entry1.Text = Configuration.UserData.nick;
+			this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(Switch);
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
             entry3.Text = Configuration.UserData.user;
             button3.Clicked += new EventHandler(bCancel_Click);
+			this.treeview1.Model = item;
+			Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
+			Gtk.CellRendererText c1 = new Gtk.CellRendererText();
+			topic_item.Title = "Option";
+			topic_item.PackStart(c1, true);
+			topic_item.AddAttribute    (c1, "text", 0);
+			treeview1.AppendColumn(topic_item);
             //checkBox3.Checked = Configuration.Logs.logs_xml;
             //checkBox1.Checked = Configuration.Logs.logs_txt;
             //checkBox2.Checked = Configuration.Logs.logs_html;
@@ -103,21 +164,51 @@ namespace Client.Forms
             //    item.SubItems.Add(highlight.simple.ToString());
             //    list.Items.Add(item);
             }
-
-            //listView1.Items.Add(new ListViewItem("IRC"));
-            //listView1.Items.Add(new ListViewItem("System"));
-            //listView1.Items.Add(new ListViewItem("Logs"));
-            //listView1.Items.Add(new ListViewItem("Network"));
-            //listView1.Items.Add(new ListViewItem("Highlighting"));
-            //listView1.Items.Add(new ListViewItem("Ignore list"));
-            //listView1.Items.Add(new ListViewItem("Keyboard"));
-            //listView1.Items.Add(new ListViewItem("Extensions"));
+			
+			item.AppendValues("IRC", 1);
+			item.AppendValues("System", 2);
+			item.AppendValues("Logs", 3);
+			//item.AppendValues("Network", 4);
+			item.AppendValues("Highlighting", 5);
+			item.AppendValues("Ignore list", 6);
+			item.AppendValues("Keyboard", 7);
+			item.AppendValues("Extensions", 8);
             RefreshModules();
             ReloadIgnores();
             redrawS();
-
         }
 
+		private void setWindow(Gtk.Frame frame)
+		{
+			this.hbox1.Remove (widget);
+			widget = frame;
+			this.hbox1.Add(widget);
+		}
+		
+		[GLib.ConnectBefore]
+		private void Switch(object sender, ButtonPressEventArgs e)
+		{
+			try
+			{
+			if (e.Event.Button == 1)
+			{
+				switch (SelectedItem)
+				{
+					case 1:
+						setWindow(frame1);
+						break;
+					case 7:
+					case 8:
+						setWindow(frame2);
+						break;
+				}
+			}
+			} catch (Exception fail)
+			{
+				Core.handleException(fail);
+			}
+		}
+		
         public void RefreshModules()
         {
             //listView3.Items.Clear();

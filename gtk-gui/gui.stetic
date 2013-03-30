@@ -273,7 +273,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.Preferences" design-size="767 479">
+  <widget class="Gtk.Window" id="Client.Forms.Preferences" design-size="728 479">
     <property name="MemberName" />
     <property name="Title" translatable="yes">Preferences</property>
     <property name="Icon">resource:Client.Resources.Pigeon_clip_art_hight.png</property>
@@ -293,6 +293,7 @@
                 <child>
                   <widget class="Gtk.TreeView" id="treeview1">
                     <property name="MemberName" />
+                    <property name="WidthRequest">200</property>
                     <property name="HeightRequest">400</property>
                     <property name="CanFocus">True</property>
                     <property name="ShowScrollbars">True</property>
@@ -331,7 +332,7 @@
                           <widget class="Gtk.CheckButton" id="checkbutton1">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">checkbutton1</property>
+                            <property name="Label" translatable="yes">Display notifications in tray</property>
                             <property name="DrawIndicator">True</property>
                             <property name="HasLabel">True</property>
                             <property name="UseUnderline">True</property>
@@ -339,6 +340,8 @@
                           <packing>
                             <property name="TopAttach">7</property>
                             <property name="BottomAttach">8</property>
+                            <property name="LeftAttach">1</property>
+                            <property name="RightAttach">2</property>
                             <property name="AutoSize">True</property>
                             <property name="XOptions">Fill</property>
                             <property name="YOptions">Fill</property>
@@ -354,7 +357,7 @@
                           <widget class="Gtk.CheckButton" id="checkbutton2">
                             <property name="MemberName" />
                             <property name="CanFocus">True</property>
-                            <property name="Label" translatable="yes">checkbutton2</property>
+                            <property name="Label" translatable="yes">Notify when update for pidgeon is available</property>
                             <property name="DrawIndicator">True</property>
                             <property name="HasLabel">True</property>
                             <property name="UseUnderline">True</property>
@@ -362,6 +365,8 @@
                           <packing>
                             <property name="TopAttach">8</property>
                             <property name="BottomAttach">9</property>
+                            <property name="LeftAttach">1</property>
+                            <property name="RightAttach">2</property>
                             <property name="AutoSize">True</property>
                             <property name="XOptions">Fill</property>
                             <property name="YOptions">Fill</property>
@@ -538,6 +543,7 @@
                           <widget class="Gtk.Label" id="label2">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Nick</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="AutoSize">True</property>
@@ -555,6 +561,7 @@
                           <widget class="Gtk.Label" id="label3">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Quit</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">1</property>
@@ -574,6 +581,7 @@
                           <widget class="Gtk.Label" id="label4">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Ident</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">2</property>
@@ -593,6 +601,7 @@
                           <widget class="Gtk.Label" id="label5">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Real name</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">3</property>
@@ -612,6 +621,7 @@
                           <widget class="Gtk.Label" id="label6">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Second nick</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">4</property>
@@ -631,6 +641,7 @@
                           <widget class="Gtk.Label" id="label7">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Language</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">5</property>
@@ -650,6 +661,7 @@
                           <widget class="Gtk.Label" id="label8">
                             <property name="MemberName" />
                             <property name="LabelProp" translatable="yes">Skin</property>
+                            <property name="Justify">Right</property>
                           </widget>
                           <packing>
                             <property name="TopAttach">6</property>

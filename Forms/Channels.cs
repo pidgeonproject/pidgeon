@@ -88,6 +88,7 @@ namespace Client.Forms
         {
             if (e.Event.Button == 3)
             {
+				e.RetVal = true;
                 Menu(sender, null);
             }
         }		
@@ -114,6 +115,7 @@ namespace Client.Forms
 			treeview8.AppendColumn(size);
 			treeview8.AppendColumn(topic_item);
 			Reload();
+			this.treeview8.Selection.Mode = SelectionMode.Multiple;
 			this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
 		}
 		

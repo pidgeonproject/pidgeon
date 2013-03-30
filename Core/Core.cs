@@ -670,6 +670,11 @@ namespace Client
             }
         }
 
+		public static string normalizeHtml(string text)
+		{
+			return System.Web.HttpUtility.HtmlEncode(text);
+		}
+		
         /// <summary>
         /// Convert string to key
         /// </summary>
