@@ -70,6 +70,7 @@ namespace Client.Forms
                 GLib.Timeout.Add(200, timer);
                 this.DetachFromMicroChatAction.Activated += new EventHandler(detachFromMicroChatToolStripMenuItem_Click);
                 this.AttachToMicroChatAction.Activated += new EventHandler(attachToMicroChatToolStripMenuItem_Click);
+				this.SearchAction.Activated += new EventHandler(searchToolStripMenuItem_Click);
                 this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
                 this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
 				this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);

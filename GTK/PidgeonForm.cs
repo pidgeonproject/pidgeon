@@ -71,7 +71,29 @@ namespace Client.GTK
                 this.SetSizeRequest(value, Height);
             }
         }	
-
+		
+		public int Left
+		{
+			get
+			{
+				int x;
+                int y;
+                this.GetPosition(out x, out y);
+                return x;
+			}
+		}
+		
+		public int Top
+		{
+			get
+			{
+				int x;
+                int y;
+                this.GetPosition(out x, out y);
+                return y;
+			}
+		}
+		
         public bool Enabled
         {
             set
