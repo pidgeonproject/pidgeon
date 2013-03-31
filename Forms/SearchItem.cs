@@ -94,7 +94,7 @@ namespace Client.Forms
 			if ((this.Child != null)) {
 				this.Child.ShowAll ();
 			}
-			Move (80, System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - 200);
+			Move (80, 800);
 			this.DefaultWidth = 800;
 			this.DefaultHeight = 20;
 		}
