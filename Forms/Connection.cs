@@ -77,7 +77,7 @@ namespace Client.Forms
         {
             try
             {
-                int port;
+                int port = 6667;
                 if (entry2.Text == "")
                 {
                     GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-2", Core.SelectedLanguage), "Missing params");

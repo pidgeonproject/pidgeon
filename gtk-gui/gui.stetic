@@ -6,7 +6,7 @@
   </configuration>
   <import>
     <widget-library name="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <widget-library name="../bin/Debug/Pidgeon.exe" internal="true" />
+    <widget-library name="../bin/Release/Pidgeon.exe" internal="true" />
   </import>
   <widget class="Gtk.Window" id="Client.Forms.Main" design-size="1018 600">
     <action-group name="Default">
@@ -302,7 +302,8 @@
               </widget>
               <packing>
                 <property name="Position">0</property>
-                <property name="AutoSize">True</property>
+                <property name="AutoSize">False</property>
+                <property name="Expand">False</property>
               </packing>
             </child>
             <child>
@@ -754,6 +755,7 @@
   </widget>
   <widget class="Gtk.Window" id="Client.Forms.TrafficScanner" design-size="579 395">
     <property name="MemberName" />
+    <property name="Visible">False</property>
     <property name="Title" translatable="yes">TrafficScanner</property>
     <property name="WindowPosition">CenterOnParent</property>
     <child>

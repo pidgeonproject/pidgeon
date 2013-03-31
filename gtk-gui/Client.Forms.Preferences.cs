@@ -62,6 +62,7 @@ namespace Client.Forms
 			this.hbox1.Add (this.GtkScrolledWindow);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.GtkScrolledWindow]));
 			w2.Position = 0;
+			w2.Expand = false;
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.frame1 = new global::Gtk.Frame ();
 			this.frame1.Name = "frame1";

@@ -33,6 +33,27 @@ namespace Client.Forms
 		private global::Gtk.TreeView treeview2;
 		private global::Gtk.Label GtkLabel2;
 		private Gtk.Widget widget = null;
+		private global::Gtk.Frame frame3;
+		private global::Gtk.Alignment GtkAlignment3;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow3;
+		private global::Gtk.TreeView treeview3;
+		private global::Gtk.Label GtkLabel3;
+		private global::Gtk.Frame frame4;
+		private global::Gtk.Alignment GtkAlignment4;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow4;
+		private global::Gtk.TreeView treeview4;
+		private global::Gtk.Label GtkLabel4;
+		private global::Gtk.Frame frame5;
+		private global::Gtk.Alignment GtkAlignment5;
+		private global::Gtk.ScrolledWindow GtkScrolledWindow5;
+		private global::Gtk.TreeView treeview5;
+		private global::Gtk.Label GtkLabel5;
+		private global::Gtk.Frame frame6;
+		private global::Gtk.Alignment GtkAlignment6;
+		private global::Gtk.Label GtkLabel6;
+		private global::Gtk.Frame frame7;
+		private global::Gtk.Alignment GtkAlignment7;
+		private global::Gtk.Label GtkLabel7;
 		
 		private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
 		
@@ -77,6 +98,113 @@ namespace Client.Forms
 			this.GtkLabel2.UseMarkup = true;
 			this.frame2.LabelWidget = this.GtkLabel2;
 			this.frame2.ShowAll();
+			
+			this.frame4 = new global::Gtk.Frame ();
+			this.frame4.Name = "frame1";
+			this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment4 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment4.Name = "GtkAlignment";
+			this.GtkAlignment4.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.GtkScrolledWindow4 = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow4.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow4.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.treeview4 = new global::Gtk.TreeView ();
+			this.treeview4.CanFocus = true;
+			this.treeview4.Name = "treeview1";
+			this.GtkScrolledWindow4.Add (this.treeview4);
+			this.GtkAlignment4.Add (this.GtkScrolledWindow4);
+			this.frame4.Add (this.GtkAlignment4);
+			this.GtkLabel4 = new global::Gtk.Label ();
+			this.GtkLabel4.Name = "GtkLabel";
+			this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Highlighting</b>");
+			this.GtkLabel4.UseMarkup = true;
+			this.frame4.LabelWidget = this.GtkLabel4;
+			this.frame4.ShowAll();
+			
+			this.frame3 = new global::Gtk.Frame ();
+			this.frame3.Name = "frame1";
+			this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment3.Name = "GtkAlignment";
+			this.GtkAlignment3.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.GtkScrolledWindow3 = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow3.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow3.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.treeview3 = new global::Gtk.TreeView ();
+			this.treeview3.CanFocus = true;
+			this.treeview3.Name = "treeview1";
+			this.GtkScrolledWindow3.Add (this.treeview3);
+			this.GtkAlignment3.Add (this.GtkScrolledWindow3);
+			this.frame3.Add (this.GtkAlignment3);
+			this.GtkLabel3 = new global::Gtk.Label ();
+			this.GtkLabel3.Name = "GtkLabel";
+			this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Keyboard</b>");
+			this.GtkLabel3.UseMarkup = true;
+			this.frame3.LabelWidget = this.GtkLabel3;
+			this.frame3.ShowAll();
+			
+			this.frame5 = new global::Gtk.Frame ();
+			this.frame5.Name = "frame1";
+			this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment5 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment5.Name = "GtkAlignment";
+			this.GtkAlignment5.LeftPadding = ((uint)(12));
+			// Container child GtkAlignment.Gtk.Container+ContainerChild
+			this.GtkScrolledWindow5 = new global::Gtk.ScrolledWindow ();
+			this.GtkScrolledWindow5.Name = "GtkScrolledWindow";
+			this.GtkScrolledWindow5.ShadowType = ((global::Gtk.ShadowType)(1));
+			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+			this.treeview5 = new global::Gtk.TreeView ();
+			this.treeview5.CanFocus = true;
+			this.treeview5.Name = "treeview1";
+			this.GtkScrolledWindow5.Add (this.treeview5);
+			this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+			this.frame5.Add (this.GtkAlignment5);
+			this.GtkLabel5 = new global::Gtk.Label ();
+			this.GtkLabel5.Name = "GtkLabel";
+			this.GtkLabel5.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Ignore list</b>");
+			this.GtkLabel5.UseMarkup = true;
+			this.frame5.LabelWidget = this.GtkLabel5;
+			this.frame5.ShowAll();
+			
+			this.frame6 = new global::Gtk.Frame ();
+			this.frame6.Name = "frame1";
+			this.frame6.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment6.Name = "GtkAlignment";
+			this.GtkAlignment6.LeftPadding = ((uint)(12));
+			//this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+			this.frame6.Add (this.GtkAlignment6);
+			this.GtkLabel6 = new global::Gtk.Label ();
+			this.GtkLabel6.Name = "GtkLabel";
+			this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>System</b>");
+			this.GtkLabel6.UseMarkup = true;
+			this.frame6.LabelWidget = this.GtkLabel5;
+			this.frame6.ShowAll();
+			
+			this.frame7 = new global::Gtk.Frame ();
+			this.frame7.Name = "frame1";
+			this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
+			// Container child frame1.Gtk.Container+ContainerChild
+			this.GtkAlignment7 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+			this.GtkAlignment7.Name = "GtkAlignment";
+			this.GtkAlignment7.LeftPadding = ((uint)(12));
+			//this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+			this.frame7.Add (this.GtkAlignment7);
+			this.GtkLabel7 = new global::Gtk.Label ();
+			this.GtkLabel7.Name = "GtkLabel";
+			this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Logs</b>");
+			this.GtkLabel7.UseMarkup = true;
+			this.frame7.LabelWidget = this.GtkLabel5;
+			this.frame7.ShowAll();
 		}
 		
         public Preferences() : base(Gtk.WindowType.Toplevel)
@@ -112,7 +240,7 @@ namespace Client.Forms
             this.DeleteEvent += new DeleteEventHandler(hide);
             button1.Clicked += new EventHandler(bSave_Click);
             entry1.Text = Configuration.UserData.nick;
-			this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(Switch);
+			this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(s1);
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
             entry3.Text = Configuration.UserData.user;
@@ -124,6 +252,7 @@ namespace Client.Forms
 			topic_item.PackStart(c1, true);
 			topic_item.AddAttribute    (c1, "text", 0);
 			treeview1.AppendColumn(topic_item);
+			treeview1.RowActivated += new RowActivatedHandler(s2);
             //checkBox3.Checked = Configuration.Logs.logs_xml;
             //checkBox1.Checked = Configuration.Logs.logs_txt;
             //checkBox2.Checked = Configuration.Logs.logs_html;
@@ -185,28 +314,54 @@ namespace Client.Forms
 			this.hbox1.Add(widget);
 		}
 		
+		
 		[GLib.ConnectBefore]
-		private void Switch(object sender, ButtonPressEventArgs e)
+		private void s1(object sender, ButtonPressEventArgs e)
+		{
+			if (e.Event.Button == 1)
+			{
+				Switch();
+			}
+		}
+		
+		private void Switch()
 		{
 			try
-			{
-			if (e.Event.Button == 1)
 			{
 				switch (SelectedItem)
 				{
 					case 1:
 						setWindow(frame1);
 						break;
+					case 2:
+						setWindow(frame6);
+						break;
+					case 3:
+						setWindow(frame7);
+						break;
+					case 5:
+						setWindow(frame4);
+						break;
+					case 6:
+						setWindow(frame5);
+						break;
 					case 7:
+						setWindow(frame3);
+						break;
 					case 8:
 						setWindow(frame2);
 						break;
 				}
-			}
 			} catch (Exception fail)
 			{
 				Core.handleException(fail);
 			}
+		}
+		
+		[GLib.ConnectBefore]
+		private void s2(object sender, RowActivatedArgs e)
+		{
+			Switch();
 		}
 		
         public void RefreshModules()
