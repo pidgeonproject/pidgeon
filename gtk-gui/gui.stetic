@@ -1217,14 +1217,6 @@
       </widget>
     </child>
   </widget>
-  <widget class="Gtk.Window" id="Client.Forms.SearchItem" design-size="400 300">
-    <property name="MemberName" />
-    <property name="Title" translatable="yes">SearchItem</property>
-    <property name="WindowPosition">CenterOnParent</property>
-    <child>
-      <placeholder />
-    </child>
-  </widget>
   <widget class="Gtk.Window" id="Client.Forms.Help" design-size="579 629">
     <property name="MemberName" />
     <property name="WidthRequest">520</property>

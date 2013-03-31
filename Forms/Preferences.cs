@@ -243,9 +243,10 @@ namespace Client.Forms
 			this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(s1);
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
-            entry3.Text = Configuration.UserData.user;
+            entry4.Text = Configuration.UserData.user;
             button3.Clicked += new EventHandler(bCancel_Click);
 			this.treeview1.Model = item;
+			this.treeview1.CursorChanged += new EventHandler(s4);
 			Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
 			Gtk.CellRendererText c1 = new Gtk.CellRendererText();
 			topic_item.Title = "Option";
@@ -322,6 +323,12 @@ namespace Client.Forms
 			{
 				Switch();
 			}
+		}
+		
+		[GLib.ConnectBefore]
+		private void s4(object sender, EventArgs e)
+		{
+			Switch();
 		}
 		
 		private void Switch()

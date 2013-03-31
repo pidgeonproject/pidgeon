@@ -120,15 +120,10 @@ namespace Client.Graphics
                     return;
                 }
 
-                if (e.Event.State == Gdk.ModifierType.ShiftMask)
+                if (e.Event.State == Gdk.ModifierType.ShiftMask||
+				e.Event.State == Gdk.ModifierType.ControlMask)
                 {
-					e.RetVal = true;
-                    return;
-                }
-
-                if (e.Event.State == Gdk.ModifierType.ControlMask)
-                {
-                    switch (e.Event.Key)
+					switch (e.Event.Key)
                     {
                         case Gdk.Key.KP_Enter:
                         case Gdk.Key.ISO_Enter:

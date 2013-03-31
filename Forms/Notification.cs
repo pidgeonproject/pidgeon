@@ -92,7 +92,6 @@ namespace Client.Forms
             }
             this.DefaultWidth = 460;
             this.DefaultHeight = 220;
-            this.Show();
         }
 
         public Gtk.Label title
