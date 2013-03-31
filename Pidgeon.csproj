@@ -99,6 +99,7 @@
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight_mini.png" />
     <EmbeddedResource Include="version.txt" />
     <EmbeddedResource Include="Resources\icon.png" />
+    <EmbeddedResource Include="Resources\icon_hash.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="gtk-gui\generated.cs" />

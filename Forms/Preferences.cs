@@ -54,6 +54,7 @@ namespace Client.Forms
 		private global::Gtk.Frame frame7;
 		private global::Gtk.Alignment GtkAlignment7;
 		private global::Gtk.Label GtkLabel7;
+		private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
 		
 		private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
 		
@@ -116,7 +117,26 @@ namespace Client.Forms
 			this.treeview4.Name = "treeview1";
 			this.GtkScrolledWindow4.Add (this.treeview4);
 			this.GtkAlignment4.Add (this.GtkScrolledWindow4);
+			treeview4.Model = Highlights;
 			this.frame4.Add (this.GtkAlignment4);
+			Gtk.TreeViewColumn highlight_text = new Gtk.TreeViewColumn();
+			Gtk.TreeViewColumn highlight_type = new Gtk.TreeViewColumn();
+			Gtk.TreeViewColumn highlight_stat = new Gtk.TreeViewColumn();
+			Gtk.CellRendererText r1 = new Gtk.CellRendererText();
+			Gtk.CellRendererText r2 = new Gtk.CellRendererText();
+			Gtk.CellRendererText r3 = new Gtk.CellRendererText();
+			highlight_text.PackStart(r1, true);
+			highlight_text.Title = "Text";
+			highlight_type.Title = "Regular expression";
+			highlight_type.PackStart(r2, true);
+			highlight_stat.PackStart(r3, true);
+			highlight_stat.Title = "Highlight enabled";
+			this.treeview4.AppendColumn(highlight_text);
+			highlight_text.AddAttribute(r1, "text", 0);
+			highlight_type.AddAttribute(r2, "text", 1);
+			highlight_stat.AddAttribute(r3, "text", 2);
+			this.treeview4.AppendColumn(highlight_type);
+			this.treeview4.AppendColumn(highlight_stat);
 			this.GtkLabel4 = new global::Gtk.Label ();
 			this.GtkLabel4.Name = "GtkLabel";
 			this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Highlighting</b>");
@@ -288,11 +308,7 @@ namespace Client.Forms
 
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
-            //    ListViewItem item = new ListViewItem();
-            //    item.Text = highlight.text;
-            //    item.SubItems.Add(highlight.enabled.ToString().ToLower());
-            //    item.SubItems.Add(highlight.simple.ToString());
-            //    list.Items.Add(item);
+				Highlights.AppendValues(highlight.text, highlight.simple.ToString (), highlight.enabled.ToString(), highlight);
             }
 			
 			item.AppendValues("IRC", 1);

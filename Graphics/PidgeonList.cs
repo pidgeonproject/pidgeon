@@ -47,7 +47,7 @@ namespace Client.Graphics
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
 		private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
-		private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash.png");
+		private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
 		private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
@@ -81,6 +81,7 @@ namespace Client.Graphics
 			Gtk.CellRendererPixbuf icon = new CellRendererPixbuf();
             Column.Title = messages.get("list-active-conn", messages.Language);
             Column.PackStart(Item, true);
+			pict.PackStart(icon, true);
             Column.SetCellDataFunc(Item, UserListRendererTool);
 			pict.AddAttribute(icon, "pixbuf", 5);
 			tv.AppendColumn(pict);
