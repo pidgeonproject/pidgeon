@@ -307,7 +307,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.AppendValues(ServerList[channel._Network], channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
+					TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2 );
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -316,7 +316,6 @@ namespace Client.Graphics
                         ChannelList.Add(channel, text);
                     }
                     channel.TreeNode = text;
-                    //text.ImageIndex = 6;
                     Graphics.Window xx = channel.retrieveWindow();
                     if (xx != null)
                     {

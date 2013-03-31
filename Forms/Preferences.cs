@@ -308,7 +308,7 @@ namespace Client.Forms
 
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
-				Highlights.AppendValues(highlight.text, highlight.simple.ToString (), highlight.enabled.ToString(), highlight);
+				Highlights.AppendValues(highlight.text, (!highlight.simple).ToString (), highlight.enabled.ToString(), highlight);
             }
 			
 			item.AppendValues("IRC", 1);
@@ -444,7 +444,7 @@ namespace Client.Forms
             {
                 lock (Configuration.HighlighterList)
                 {
-                    Configuration.HighlighterList.Clear();
+                    //Configuration.HighlighterList.Clear();
                     //foreach (ListViewItem curr in list.Items)
                     {
                        // Network.Highlighter hl = new Network.Highlighter();
@@ -483,7 +483,7 @@ namespace Client.Forms
                 }
                 lock (Ignoring.IgnoreList)
                 {
-                    Ignoring.IgnoreList.Clear();
+                    //Ignoring.IgnoreList.Clear();
                     //foreach (ListViewItem curr in listView4.Items)
                     {
                     //    Ignoring.Ignore.Type type = Ignoring.Ignore.Type.Everything;

@@ -162,7 +162,6 @@
               </node>
               <node type="Menu" action="ToolsAction">
                 <node type="Menuitem" action="PacketViewerAction" />
-                <node type="Menuitem" action="SkinEditorAction" />
                 <node type="Menuitem" action="SmallChatAction" />
                 <node type="Separator" />
                 <node type="Menuitem" action="AttachToMicroChatAction" />
@@ -171,7 +170,6 @@
               <node type="Menu" action="MiscAction">
                 <node type="Menuitem" action="SearchAction" />
                 <node type="Separator" />
-                <node type="Menuitem" action="SwitchToAdvancedLayoutAction" />
                 <node type="Menuitem" action="ConfigurationFileAction" />
               </node>
               <node type="Menu" action="ShowAction">
