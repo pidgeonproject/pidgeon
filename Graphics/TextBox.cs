@@ -85,22 +85,22 @@ namespace Client.Graphics
         {
             try
             {
-                if (false && restore)
-                {
-                    int selection = richTextBox1.Buffer.CursorPosition;
-                    if (richTextBox1.Buffer.Text.Length != prevtext.Length)
-                    {
-                        selection = selection - (richTextBox1.Buffer.Text.Length - prevtext.Length);
-                    }
-                    if (selection < 0)
-                    {
-                        selection = 0;
-                    }
-                    richTextBox1.Buffer.Text = prevtext;
-                    TextIter iter = richTextBox.Buffer.GetIterAtOffset(selection);
-                    richTextBox1.Buffer.PlaceCursor(iter);
-                    return;
-                }
+                //if (false && restore)
+                //{
+                //    int selection = richTextBox1.Buffer.CursorPosition;
+                //    if (richTextBox1.Buffer.Text.Length != prevtext.Length)
+                //    {
+                //        selection = selection - (richTextBox1.Buffer.Text.Length - prevtext.Length);
+                //    }
+                //    if (selection < 0)
+                //    {
+                //        selection = 0;
+                //    }
+                //    richTextBox1.Buffer.Text = prevtext;
+                //    TextIter iter = richTextBox.Buffer.GetIterAtOffset(selection);
+                //    richTextBox1.Buffer.PlaceCursor(iter);
+                //    return;
+                //}
                 prevtext = richTextBox1.Buffer.Text;
             }
             catch (Exception fail)

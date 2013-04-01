@@ -46,16 +46,17 @@ namespace Client.Forms
             // Container child Client.Forms.ScriptEdit.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();
             this.vbox1.Name = "vbox1";
-            this.vbox1.Spacing = 6;
+            this.vbox1.Spacing = 2;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.WidthRequest = 720;
-            this.label1.LabelProp = "Do you really want to execute following commands?\r\n\r\nLines prefixed with following symbols are:\r\n# - comment\r\n/ - will be launched as pidgeon command\r\n\r\nOther lines will be delivered as raw command to server";
-            this.vbox1.Add(this.label1);
-            //global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
-            //w1.Position = 0;
-            //w1.Expand = false;
+			this.label1.Justify = Justification.Left;
+			//this.label1.SetSizeRequest(740, 100);
+            this.label1.LabelProp = "Do you really want to execute following commands?\n\nLines prefixed with following symbols are:\n# - comment\n/ - will be launched as pidgeon command\n\nOther lines will be delivered as raw command to server";
+            this.vbox1.Add(label1);
+            global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
+            w1.Position = 0;
+            w1.Expand = false;
             //w1.Fill = true;
             // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
@@ -105,9 +106,9 @@ namespace Client.Forms
             {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 737;
+            this.DefaultWidth = 740;
             this.WindowPosition = Gtk.WindowPosition.Center;
-            this.DefaultHeight = 432;
+            this.DefaultHeight = 460;
         }
 		
 		public TextView textBox1

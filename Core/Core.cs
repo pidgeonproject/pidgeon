@@ -898,6 +898,7 @@ namespace Client
                     {
                         foreach (Protocol server in Connections)
                         {
+							Core.Ringlog("Exiting network " + server.Server);
                             server.Exit();
                         }
                     }
@@ -913,6 +914,7 @@ namespace Client
                             {
                                 continue;
                             }
+							Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
                             th.Abort();
                         }
                         catch (Exception fail)
@@ -921,6 +923,7 @@ namespace Client
                         }
                     }
                     Thread.Sleep(800);
+					Core.DebugLog("Exiting with code 0");
                     Environment.Exit(0);
                 }
             }

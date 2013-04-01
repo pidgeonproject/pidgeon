@@ -241,7 +241,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-
+		
         /// <summary>
         /// Prepare the control
         /// </summary>

@@ -533,6 +533,17 @@ namespace Client.Graphics
                     case ItemType.User:
                         User us = (User)tv.Model.GetValue(iter, 1); ;
                         Core.network = us._Network;
+						lock (us._Network.PrivateWins)
+						{
+							if (us._Network.PrivateWins.ContainsKey(us))
+						   	{
+								window = us._Network.PrivateWins[us];
+							}
+						}
+						if (window != null)
+                        {
+                            window.MenuColor = Configuration.CurrentSkin.fontcolor;
+                        } 
                         us._Network._Protocol.ShowChat(us._Network.window + us.Nick);
                         closeToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();

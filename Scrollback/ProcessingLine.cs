@@ -299,7 +299,7 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-             if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges)
+            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges)
             {
                 switch (InputStyle)
                 {

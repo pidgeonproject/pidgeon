@@ -27,19 +27,21 @@ namespace Client.Forms
 {
 	public partial class SearchItem : Gtk.Window
 	{	
+		private bool NeedReset = false;
 		private global::Gtk.HBox hbox1;
 		private global::Gtk.Entry entry1;
 		private global::Gtk.CheckButton checkbutton1;
 		private global::Gtk.Button button1;
 		private global::Gtk.Button button2;
 		public bool Direction = true;
+		public TextIter position;
 		
 		protected virtual void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget MainWindow
 			this.Name = "MainWindow";
-			this.Title = global::Mono.Unix.Catalog.GetString ("MainWindow");
+			this.Title = global::Mono.Unix.Catalog.GetString ("Search text");
 			this.TypeHint = ((global::Gdk.WindowTypeHint)(5));
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child MainWindow.Gtk.Container+ContainerChild
@@ -65,6 +67,7 @@ namespace Client.Forms
 			this.hbox1.Add (this.checkbutton1);
 			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.checkbutton1]));
 			w2.Position = 1;
+			w2.Expand = false;
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.button1 = new global::Gtk.Button ();
 			this.button1.CanFocus = true;
@@ -85,8 +88,10 @@ namespace Client.Forms
 			this.button2.UseUnderline = true;
 			this.button2.Label = global::Mono.Unix.Catalog.GetString ("Down");
 			this.hbox1.Add (this.button2);
+			this.entry1.KeyPressEvent += new KeyPressEventHandler(enter_press);
 			global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.button2]));
 			w4.Position = 3;
+			entry1.Changed += new EventHandler(textBox1_TextChanged);
 			w4.Expand = false;
 			w4.Fill = false;
 			this.DeleteEvent += new DeleteEventHandler(hide2);
@@ -112,6 +117,21 @@ namespace Client.Forms
 			messages.Localize(this);
 		}
 		
+		[GLib.ConnectBefore]
+		public void enter_press(object sender, KeyPressEventArgs keys)
+		{
+			try
+			{
+				if (keys.Event.KeyValue == 65293)
+				{
+					SearchRun(Direction);
+				}
+			}catch (Exception fail)
+			{
+				Core.handleException(fail);
+			}
+		}
+		
 		public void SearchItem_Keys(object sender, Gtk.KeyPressEventArgs keys)
         {
             try
@@ -129,82 +149,67 @@ namespace Client.Forms
 
         public void SearchRun(bool tp)
         {
-            /*Direction = tp;
+            Direction = tp;
             Scrollback text = null;
+			Gtk.TextView tv = null;
             if (Core._Main.Chat == null || Core._Main.Chat.scrollback == null)
             {
                 return;
             }
-            else
-            {
-                text = Core._Main.Chat.scrollback;
-            }
+
+            text = Core._Main.Chat.scrollback;
+			
             if (!text.simple)
             {
-                if (checkBox1.Checked)
-                {
-                    if (tp)
-                    {
-                        text.RT.SearchDown(new System.Text.RegularExpressions.Regex(textBox1.Text));
-                    }
-                    else
-                    {
-                        text.RT.SearchUp(new System.Text.RegularExpressions.Regex(textBox1.Text));
-                    }
-                }
-                else
-                {
-                    if (tp)
-                    {
-                        text.RT.SearchDown(textBox1.Text);
-                    }
-                    else
-                    {
-                        text.RT.SearchUp(new System.Text.RegularExpressions.Regex(textBox1.Text));
-                    }
-                }
+				tv = text.RT.textView;
+			}
+			else
+			{
+				tv = text.simpleview;
+            }
+			TextIter start;
+			TextIter stop;
+            if (tp)
+            {
+				// we need to scroll down from current position
+				if (!NeedReset)
+				{
+					position = tv.Buffer.StartIter;
+				}
+				//position = tv.Buffer.GetIterAtOffset (tv.Buffer.CursorPosition);
+				if (position.ForwardSearch(entry1.Text, TextSearchFlags.TextOnly, out start, out stop, tv.Buffer.EndIter))
+				{
+					NeedReset = true;
+					entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.LightGreen));
+					position = stop;
+					tv.Buffer.SelectRange (start, stop);
+					tv.ScrollToIter (start, 0, false, 0, 0);
+				} else
+				{
+					NeedReset = true;
+					entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.Pink));
+				}
             }
             else
             {
-                if (tp)
-                {
-                    // we need to scroll down from current position
-                    string Data = text.simpleview.Text;
-                    int offset = 0;
-                    if (text.simpleview.SelectedText != "")
-                    {
-                        offset = text.simpleview.SelectionStart + text.simpleview.SelectionLength;
-                        Data = text.simpleview.Text.Substring(offset);
-                    }
-                    if (Data.Contains(textBox1.Text))
-                    {
-                        text.simpleview.Select(offset + Data.IndexOf(textBox1.Text), textBox1.Text.Length);
-                        text.simpleview.ScrollToCaret();
-                        textBox1.BackColor = Color.LightSeaGreen;
-                        text.simpleview.Focus();
-                        return;
-                    }
-                    textBox1.BackColor = Color.PaleVioletRed;
-                }
-                else
-                {
-                    // we need to scroll up from current position
-                    string Data = text.simpleview.Text;
-                    if (text.simpleview.SelectedText != "")
-                    {
-                        Data = text.simpleview.Text.Substring(0, text.simpleview.SelectionStart);
-                    }
-                    if (Data.Contains(textBox1.Text))
-                    {
-                        text.simpleview.Select(Data.LastIndexOf(textBox1.Text), textBox1.Text.Length);
-                        text.simpleview.ScrollToCaret();
-                        textBox1.BackColor = Color.LightSeaGreen;
-                        text.simpleview.Focus();
-                        return;
-                    }
-                    textBox1.BackColor = Color.PaleVioletRed;
-                }
-            }*/
+                // we need to scroll up from current position
+                if (!NeedReset)
+				{
+					position = tv.Buffer.EndIter;
+				}
+				if (position.BackwardSearch(entry1.Text, TextSearchFlags.TextOnly, out start, out stop, tv.Buffer.StartIter))
+				{
+					NeedReset = true;
+					position = start;
+					entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.LightGreen));
+					tv.Buffer.SelectRange (start, stop);
+					tv.ScrollToIter (start, 0, false, 0, 0);
+				} else
+				{
+					NeedReset = true;
+					entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.Pink));
+				}
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -233,7 +238,13 @@ namespace Client.Forms
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            //textBox1.BackColor = Color.White;
+			if (!NeedReset)
+			{
+				return;
+			}
+			NeedReset = false;
+            entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.White));
+			return;
         }
 		
 		public void setFocus()

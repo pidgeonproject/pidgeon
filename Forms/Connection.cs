@@ -101,13 +101,13 @@ namespace Client.Forms
                 switch (combobox1.Active)
                 {
                     case 0:
-                        Core.connectIRC(comboboxentry1.ActiveText, port, entry4.Text, false);//checkbutton1.);
+                        Core.connectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case 1:
-                        Core.connectQl(comboboxentry1.ActiveText, port, entry4.Text, false);
+                        Core.connectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case 2:
-                        Core.connectPS(comboboxentry1.ActiveText, port, entry4.Text, false);
+                        Core.connectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                 }
                 Hide();

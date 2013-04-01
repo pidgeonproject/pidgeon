@@ -54,6 +54,24 @@ namespace Client.Forms
         private global::Gtk.ScrolledWindow GtkScrolledWindow4;
         private global::Gtk.TreeView treeview7;
         private global::Gtk.Label label4;
+		private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Except));
+		private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(SimpleBan));
+		private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Invite));
+		private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu();
+		private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu();
+		private Client.GTK.Menu reloadToolStripMenuItemb= new Client.GTK.Menu();
+		private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu();
+		private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu();
+		private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu();
+		private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu();
+		private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu();
+		private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu();
+		private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu();
+		private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu();
+		private Client.GTK.Menu cleanToolStripMenuIteme = new Client.GTK.Menu();
+		private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
+		private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
+		private Gtk.ListStore options = new Gtk.ListStore(typeof(bool), typeof(char), typeof(string));
 
         protected virtual void Build()
         {
@@ -88,8 +106,12 @@ namespace Client.Forms
             this.textview1 = new global::Gtk.TextView();
             this.textview1.CanFocus = true;
             this.textview1.Name = "textview1";
+			this.textview1.HeightRequest = 60;
             this.GtkScrolledWindow.Add(this.textview1);
             this.GtkAlignment3.Add(this.GtkScrolledWindow);
+			//global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(GtkAlignment3));
+            //w2.Position = 0;
+			//w2.Expand = false;
             this.frame4.Add(this.GtkAlignment3);
             this.GtkLabel = new global::Gtk.Label();
             this.GtkLabel.Name = "GtkLabel";
@@ -118,6 +140,9 @@ namespace Client.Forms
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
             this.treeview1 = new global::Gtk.TreeView();
             this.treeview1.CanFocus = true;
+			Gtk.TreeViewColumn enabled = new Gtk.TreeViewColumn();
+			this.treeview1.AppendColumn(enabled);
+			this.treeview1.Model = options;
             this.treeview1.Name = "treeview1";
             this.GtkScrolledWindow1.Add(this.treeview1);
             this.GtkAlignment4.Add(this.GtkScrolledWindow1);
@@ -154,6 +179,7 @@ namespace Client.Forms
             this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
             this.treeview5 = new global::Gtk.TreeView();
+			this.treeview5.Model = exceptions;
             this.treeview5.CanFocus = true;
             this.treeview5.Name = "treeview5";
             this.GtkScrolledWindow2.Add(this.treeview5);
@@ -177,7 +203,9 @@ namespace Client.Forms
             this.GtkScrolledWindow3.Add(this.treeview6);
             this.notebook1.Add(this.GtkScrolledWindow3);
             global::Gtk.Notebook.NotebookChild w14 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow3]));
+			this.treeview6.Model = invites;
             w14.Position = 2;
+			
             // Notebook tab
             this.label3 = new global::Gtk.Label();
             this.label3.Name = "label3";
@@ -193,6 +221,7 @@ namespace Client.Forms
             this.treeview7.CanFocus = true;
             this.treeview7.Name = "treeview7";
             this.GtkScrolledWindow4.Add(this.treeview7);
+			this.treeview7.Model = bans;
             this.notebook1.Add(this.GtkScrolledWindow4);
             global::Gtk.Notebook.NotebookChild w16 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow4]));
             w16.Position = 3;
@@ -202,6 +231,7 @@ namespace Client.Forms
             this.label4.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t4", Core.SelectedLanguage));
             this.notebook1.SetTabLabel(this.GtkScrolledWindow4, this.label4);
             this.label4.ShowAll();
+			this.WindowPosition = WindowPosition.Center;
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.Add(this.notebook1);
             if ((this.Child != null))
@@ -217,7 +247,262 @@ namespace Client.Forms
         {
 
         }
+		
+		public void ReloadExceptions()
+        {
+            if (channel != null)
+            {
+                if (channel.Exceptions != null)
+                {
+                    exceptions.Clear();
+                    lock (channel.Exceptions)
+                    {
+                        foreach (Except ex in channel.Exceptions)
+                        {
+							
+                        }
+                    }
+                }
+            }
+        }
 
+        public void ReloadBans()
+        {
+            if (channel != null)
+            {
+                if (channel.Bans != null)
+                {
+                    bans.Clear();
+                    lock (channel.Bans)
+                    {
+                        foreach (SimpleBan sb in channel.Bans)
+                        {
+							bans.AppendValues(sb.Target, convertUNIX (sb.Time) + " (" + sb.Time + ")", sb.User, sb);
+                        }
+                    }
+                }
+            }
+        }
+
+        public void ReloadInvites()
+        {
+            if (channel != null)
+            {
+                if (channel.Invites != null)
+                {
+                    //listView3.Items.Clear();
+                    lock (channel.Invites)
+                    {
+                        foreach (Invite sb in channel.Invites)
+                        {
+							
+                        }
+                    }
+                }
+            }
+        }
+
+        private void bClose_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (channel.Topic != textview1.Buffer.Text)
+                {
+                    channel._Network.Transfer("TOPIC " + channel.Name + " :" + textview1.Buffer.Text);
+                }
+                bool change = false;
+                string cset = "+";
+                string uset = "-";
+                //foreach (string item in checkedList.Items)
+                //{
+                //    if (checkedList.CheckedItems.Contains(item))
+                //    {
+                //        if (!channel.ChannelMode._Mode.Contains(item[0].ToString()))
+                //        {
+                //            cset += item[0];
+                //            change = true;
+                //        }
+                //        continue;
+                //    }
+                //    if (channel.ChannelMode._Mode.Contains(item[0].ToString()))
+                //    {
+                //        uset += item[0];
+                //        change = true;
+                //    }
+                //}
+                //if (change)
+                //{
+                //    if (uset == "-")
+                //    {
+                //        uset = "";
+                //    }
+                //    if (cset == "+")
+                //    {
+                //        cset = "";
+                //    }
+                //    channel._Network.Transfer("MODE " + channel.Name + " " + cset + uset);
+                //}
+            }
+            catch (Exception f)
+            {
+                Core.handleException(f);
+            }
+            Hide();
+        }
+
+        private void textBox1_TextChanged(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Text);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ReloadBans();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void enforceAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+             	channel._Network.Transfer("MODE " + channel.Name + " -b ");
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void reloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ReloadInvites();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+            	channel._Network.Transfer("MODE " + channel.Name + " -e ");
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void cleanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void reloadToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //timerBans.Enabled = true;
+                channel.ReloadBans();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private bool timerBans_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!channel.parsing_bans)
+                {
+                    ReloadBans();
+					return false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+			return true;
+        }
+
+        private void reloadToolStripMenuItem3_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ReloadInvites();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void refreshToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ReloadExceptions();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+		
         public void Load()
         {
             this.Build();
@@ -237,7 +522,6 @@ namespace Client.Forms
                 return "Unable to read: " + time;
             }
         }
-
     }
 }
 
