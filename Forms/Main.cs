@@ -531,7 +531,9 @@ namespace Client.Forms
                     searchbox.Hide();
                     return;
                 }
+				
                 searchbox.Show();
+				searchbox.GrabFocus();
                 searchbox.setFocus();
             }
             catch (Exception fail)
