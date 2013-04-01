@@ -42,7 +42,8 @@ namespace Client.Forms
 			// Widget MainWindow
 			this.Name = "MainWindow";
 			this.Title = global::Mono.Unix.Catalog.GetString ("Search text");
-			this.TypeHint = ((global::Gdk.WindowTypeHint)(5));
+			this.TypeHint = Gdk.WindowTypeHint.Normal;
+			this.Resizable = false;
 			this.WindowPosition = ((global::Gtk.WindowPosition)(4));
 			// Container child MainWindow.Gtk.Container+ContainerChild
 			this.hbox1 = new global::Gtk.HBox ();
@@ -53,21 +54,22 @@ namespace Client.Forms
 			this.entry1.CanFocus = true;
 			this.entry1.Name = "entry1";
 			this.entry1.IsEditable = true;
+			this.entry1.WidthRequest = 800;
 			this.entry1.InvisibleChar = '•';
 			this.hbox1.Add (this.entry1);
 			global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.entry1]));
 			w1.Position = 0;
 			// Container child hbox1.Gtk.Box+BoxChild
-			this.checkbutton1 = new global::Gtk.CheckButton ();
-			this.checkbutton1.CanFocus = true;
-			this.checkbutton1.Name = "checkbutton1";
-			this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("Regular expression");
-			this.checkbutton1.DrawIndicator = true;
-			this.checkbutton1.UseUnderline = true;
-			this.hbox1.Add (this.checkbutton1);
-			global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.checkbutton1]));
-			w2.Position = 1;
-			w2.Expand = false;
+			//this.checkbutton1 = new global::Gtk.CheckButton ();
+			//this.checkbutton1.CanFocus = true;
+			//this.checkbutton1.Name = "checkbutton1";
+			//this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("Regular expression");
+			//this.checkbutton1.DrawIndicator = true;
+			//this.checkbutton1.UseUnderline = true;
+			//this.hbox1.Add (this.checkbutton1);
+			//global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.checkbutton1]));
+			//w2.Position = 1;
+			//w2.Expand = false;
 			// Container child hbox1.Gtk.Box+BoxChild
 			this.button1 = new global::Gtk.Button ();
 			this.button1.CanFocus = true;

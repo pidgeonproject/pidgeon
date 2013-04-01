@@ -94,7 +94,6 @@
       </action>
       <action id="FavoriteNetworksAction">
         <property name="Type">Action</property>
-        <property name="Accelerator">&lt;Alt&gt;f</property>
         <property name="Label" translatable="yes">Favorite networks</property>
         <property name="ShortLabel" translatable="yes">Favorite networks</property>
       </action>

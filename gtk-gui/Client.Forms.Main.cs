@@ -91,7 +91,7 @@ namespace Client.Forms
 			w1.Add (this.OpenNewConnectionAction1, "<Alt>n");
 			this.FavoriteNetworksAction = new global::Gtk.Action ("FavoriteNetworksAction", "Favorite networks", null, null);
 			this.FavoriteNetworksAction.ShortLabel = "Favorite networks";
-			w1.Add (this.FavoriteNetworksAction, "<Alt>f");
+			w1.Add (this.FavoriteNetworksAction, null);
 			this.PreferencesAction = new global::Gtk.Action ("PreferencesAction", "Preferences", null, null);
 			this.PreferencesAction.ShortLabel = "Preferences";
 			w1.Add (this.PreferencesAction, "<Alt>p");

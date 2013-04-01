@@ -59,7 +59,7 @@ namespace Client.Forms
             public Protocol owner;
         }
 
-		
+
 		public Main ()
 		{
 			try
@@ -82,7 +82,7 @@ namespace Client.Forms
 				Core.handleException(fail);
 			}
 		}
-		
+
 		public void _Load()
         {
             try
@@ -114,7 +114,7 @@ namespace Client.Forms
 				UserAction.Visible = false;
                 CreateChat(main, null);
                 main.name = "Pidgeon";
-                toolStripStatusNetwork.TooltipText = "windows / channels / pm";                 
+                toolStripStatusNetwork.TooltipText = "windows / channels / pm";
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;
@@ -145,7 +145,7 @@ namespace Client.Forms
                 Core.handleException(f);
             }
         }
-		
+
 		public void Changed(object sender, EventArgs dt)
         {
             if (done)
@@ -200,7 +200,7 @@ namespace Client.Forms
             {
                 foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
                 {
-                    if (shortcut.control == (e.Event.State == Gdk.ModifierType.ControlMask) 
+                    if (shortcut.control == (e.Event.State == Gdk.ModifierType.ControlMask)
                         && shortcut.keys == e.Event.Key) //&& shortcut.alt == )
                     {
                         Parser.parse(shortcut.data);
@@ -214,7 +214,7 @@ namespace Client.Forms
             }
             return rt;
         }
-         
+
         public void UpdateStatus()
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
@@ -267,18 +267,18 @@ namespace Client.Forms
                 }
             }
         }
-		
+
 		public void setFocus()
 		{
 			GrabFocus();
 		}
-		
+
         public int setText(string name)
         {
             this.Title = "Pidgeon Client v 1.0 " + name;
             return 2;
         }
-		
+
         private void shutDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -290,8 +290,8 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
-		
+
+
         private void preferencesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -319,7 +319,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
+
         public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try
@@ -332,7 +332,7 @@ namespace Client.Forms
 				MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
 				message.WindowPosition = WindowPosition.Center;
 				message.Title = "Shut down?";
-				ResponseType result = (ResponseType)message.Run ();	
+				ResponseType result = (ResponseType)message.Run ();
 				if (result != ResponseType.Yes)
 				{
   	  				message.Destroy();
@@ -360,7 +360,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
+
         private void newConnectionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             try
@@ -422,8 +422,8 @@ namespace Client.Forms
             }
 			return true;
         }
-		
-		
+
+
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             try
@@ -447,7 +447,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
+
         private void attachToMicroChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -525,13 +525,13 @@ namespace Client.Forms
                 {
                     searchbox = new SearchItem();
                 }
-				
+
                 if (searchbox.Visible)
                 {
                     searchbox.Hide();
                     return;
                 }
-				
+
                 searchbox.Show();
 				searchbox.GrabFocus();
                 searchbox.setFocus();
@@ -556,7 +556,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
+
         private void configurationFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
