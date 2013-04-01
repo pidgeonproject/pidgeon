@@ -56,18 +56,19 @@ namespace Client.Forms
         private global::Gtk.Label label4;
         private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Except));
         private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(SimpleBan));
+		public Gtk.VPaned vpaned01 = null;
         private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Invite));
-        private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu();
-        private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu();
-        private Client.GTK.Menu reloadToolStripMenuItemb= new Client.GTK.Menu();
-        private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu();
-        private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu();
-        private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu();
-        private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu();
-        private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu();
-        private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu();
-        private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu();
-        private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu();
+        private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
+        private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
+        private Client.GTK.Menu reloadToolStripMenuItemb= new Client.GTK.Menu("Reload");
+        private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu("Reload");
+        private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu("Remove");
+        private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu("Remove");
+        private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu("Insert");
+        private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu("Insert");
+        private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
+        private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu("Refresh");
+        private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
         private Client.GTK.Menu cleanToolStripMenuIteme = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
@@ -86,6 +87,7 @@ namespace Client.Forms
             this.notebook1.Name = "notebook1";
             this.notebook1.CurrentPage = 0;
             // Container child notebook1.Gtk.Notebook+NotebookChild
+			this.vpaned01 = new Gtk.VPaned();
             this.vbox1 = new global::Gtk.VBox();
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 6;
@@ -122,7 +124,8 @@ namespace Client.Forms
             }
             this.GtkLabel.UseMarkup = true;
             this.frame4.LabelWidget = this.GtkLabel;
-            this.vbox1.Add(this.frame4);
+            //this.vbox1.Add(this.frame4);
+			this.vpaned01.Add(this.frame4);
             global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.frame4]));
             w4.Position = 0;
             // Container child vbox1.Gtk.Box+BoxChild
@@ -166,12 +169,13 @@ namespace Client.Forms
             w9.Position = 2;
             w9.Expand = false;
             w9.Fill = false;
-            this.notebook1.Add(this.vbox1);
+			vpaned01.Add2(this.vbox1);
+            this.notebook1.Add(this.vpaned01);
             // Notebook tab
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
             this.label1.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t0", Core.SelectedLanguage));
-            this.notebook1.SetTabLabel(this.vbox1, this.label1);
+            this.notebook1.SetTabLabel(this.vpaned01, this.label1);
             this.label1.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
             this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow();

@@ -72,7 +72,7 @@ namespace Client.Forms
             this.treeview8 = new global::Gtk.TreeView();
             this.treeview8.CanFocus = true;
             this.treeview8.Name = "treeview8";
-            this.DestroyEvent += new DestroyEventHandler(destroy);
+            this.DeleteEvent += new DeleteEventHandler(destroy);
             this.GtkScrolledWindow.Add(this.treeview8);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
@@ -119,7 +119,7 @@ namespace Client.Forms
             this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
         }
         
-        public void destroy(object o, DestroyEventArgs e)
+        public void destroy(object o, Gtk.DeleteEventArgs e)
         {
             Hide();
             e.RetVal = true;

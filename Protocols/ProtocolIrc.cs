@@ -185,12 +185,20 @@ namespace Client
         {
             try
             {
-                while (_IRCNetwork.Connected)
+                while (_IRCNetwork.Connected && Connected)
                 {
                     Transfer("PING :" + _IRCNetwork._Protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
                 }
             }
+			catch (System.Threading.ThreadAbortException)
+			{
+				return;
+			}
+			catch (System.Net.Sockets.SocketException)
+			{
+				return;
+			}
             catch (Exception)
             {
                 Core.killThread(System.Threading.Thread.CurrentThread);
@@ -269,6 +277,12 @@ namespace Client
             {
                 return;
             }
+			catch (System.Net.Sockets.SocketException)
+			{
+				SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
+                Core._Main.Status("Disconnected from server " + Server);
+                Exit();
+			}
             catch (System.IO.IOException)
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
@@ -308,6 +322,11 @@ namespace Client
         {
             try
             {
+				if (!Connected)
+				{
+					Core.DebugLog("NETWORK: attempt to send a packet to disconnected network");
+					return;
+				}
                 _StreamWriter.WriteLine(ms);
                 Core.trafficscanner.insert(Server, " << " + ms);
                 _StreamWriter.Flush();
@@ -375,6 +394,7 @@ namespace Client
             }
             catch (Exception) { }
             _IRCNetwork.Connected = false;
+			Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
             keep.Abort();
