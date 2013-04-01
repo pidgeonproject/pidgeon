@@ -33,7 +33,7 @@ namespace Client.Forms
 		private global::Gtk.CheckButton checkbutton1;
 		private global::Gtk.Button button1;
 		private global::Gtk.Button button2;
-		public bool Direction = true;
+		public new bool Direction = true;
 		public TextIter position;
 		
 		protected virtual void Build ()

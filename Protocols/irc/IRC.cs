@@ -180,7 +180,7 @@ namespace Client
                         string command = "";
                         string parameters = "";
                         string value = "";
-                        string source = source = text.Substring(1);
+                        string source = text.Substring(1);
                         source = source.Substring(0, source.IndexOf(" "));
                         string command2 = text.Substring(source.Length + 2);
                         if (command2.Contains(" :"))

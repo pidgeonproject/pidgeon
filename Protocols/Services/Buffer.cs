@@ -280,7 +280,6 @@ namespace Client.Services
                 target.scrollback.SetText(Source.lines);
 				Source.lines.Clear();
                 Source.lines = null;
-				System.Drawing.Color test;
                 if (Source.menucolor != 0)
 				{
 					target.MenuColor = System.Drawing.Color.FromArgb(Source.menucolor);

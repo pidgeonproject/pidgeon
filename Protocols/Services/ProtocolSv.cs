@@ -64,6 +64,7 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
+		private SslStream _networkSsl = null;
         public Services.Buffer sBuffer = null;
 		public List<Work> RemainingJobs = new List<Work>();
 
@@ -141,18 +142,17 @@ namespace Client
                 if (SSL)
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
-                    //_networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
-                    //    new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-                    //_StreamWriter = new System.IO.StreamWriter(_networkSsl);
-                    //_StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
+                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                        new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
+                    _StreamWriter = new System.IO.StreamWriter(_networkSsl);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
 
                 Connected = true;
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-
-
+				
                 Datagram login = new Datagram("AUTH", "");
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);
@@ -382,22 +382,6 @@ namespace Client
         {
             Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
-            return 0;
-        }
-
-        /// <summary>
-        /// Deprecated, scheduled for removal in 1.2.0
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="to"></param>
-        /// <param name="_priority"></param>
-        /// <param name="pmsg"></param>
-        /// <returns></returns>
-        [Obsolete]
-        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
-        {
-            Core.DebugLog("Warning, this function is deprecated: ProtocolSv.Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) " + Environment.StackTrace);
-            Message(text, to, Core.network, _priority, pmsg);
             return 0;
         }
 

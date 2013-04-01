@@ -291,8 +291,6 @@ namespace Client
             return null;
         }
 
-
-
         public static Client.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
             if (SBAB == null)
@@ -301,9 +299,7 @@ namespace Client
             }
 
             Client.RichTBox.Line line = new Client.RichTBox.Line("", SBAB);
-            string result = text;
             Client.RichTBox.ContentText lprttext = null;
-            string templink = text;
             string tempdata = text;
             Color color = _style;
             string templine = "";

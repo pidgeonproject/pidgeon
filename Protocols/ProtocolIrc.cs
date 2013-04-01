@@ -197,11 +197,6 @@ namespace Client
             }
         }
 
-        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
         public void Start()
         {
             Messages.protocol = this;
@@ -220,7 +215,7 @@ namespace Client
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
                     _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
-                        new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                        new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }

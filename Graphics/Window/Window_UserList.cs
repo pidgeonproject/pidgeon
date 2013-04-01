@@ -539,7 +539,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        string reason = Configuration.irc.DefaultReason;
+                        //string reason = Configuration.irc.DefaultReason;
                     }
                 }
             }

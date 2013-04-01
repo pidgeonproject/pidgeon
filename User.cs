@@ -35,6 +35,7 @@ namespace Client
         public ChannelStatus Status = ChannelStatus.Regular;
         public string Nick = null;
         public string RealName = null;
+		public string Server = null;
         public List<Channel> ChannelList
         {
             get
@@ -76,8 +77,8 @@ namespace Client
                 ChannelMode.ChangeMode("+" + mode.ToString());
             }
         }
-
-        public User(string nick, string host, Network network, string ident)
+		
+		private void MakeUser(string nick, string host, Network network, string ident)
         {
             _Network = network;
             if (nick != "")
@@ -92,6 +93,17 @@ namespace Client
             Nick = nick;
             Ident = ident;
             Host = host;
+        }
+		
+        public User(string nick, string host, Network network, string ident)
+        {
+            MakeUser (nick, host, network, ident);
+        }
+		
+		public User(string nick, string host, Network network, string ident, string server)
+        {
+            MakeUser (nick, host, network, ident);
+			Server = server;
         }
 
         /// <summary>

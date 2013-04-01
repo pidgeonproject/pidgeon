@@ -363,38 +363,36 @@ namespace Client
                         vs.Sort();
                         users.Sort();
 
-                        Gtk.TreeIter xx;
-
                         foreach (User user in owners)
                         {
-                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Owner;
                         }
 
                         foreach (User user in admins)
                         {
-                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Admin;
                         }
                         foreach (User user in oper)
                         {
-                             xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Op;
                         }
                         foreach (User user in halfop)
                         {
-                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Halfop;
                         }
                         foreach (User user in vs)
                         {
-                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Voice;
                         }
 
                         foreach (User user in users)
                         {
-                            xx = Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Regular;
                         }
                     }
@@ -402,7 +400,7 @@ namespace Client
                 }
 
                 Redraw = true;
-                //Graphics.PidgeonList.Updated = true;
+                Graphics.PidgeonList.Updated = true;
                 return;
             }
             catch (Exception f)

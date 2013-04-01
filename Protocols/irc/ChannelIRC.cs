@@ -238,7 +238,6 @@ namespace Client
         {
             if (code.Length > 6)
             {
-                string chan = code[3];
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
@@ -317,7 +316,6 @@ namespace Client
         {
             string chan = parameters;
             chan = chan.Replace(" ", "");
-            string user = source.Substring(0, source.IndexOf("!"));
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {

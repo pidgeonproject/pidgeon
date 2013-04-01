@@ -23,6 +23,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Client
@@ -194,7 +196,12 @@ namespace Client
         {
             return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
         }
-
+		
+		public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+		
         /// <summary>
         /// Deliver raw data to server
         /// </summary>

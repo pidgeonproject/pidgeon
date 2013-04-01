@@ -97,11 +97,11 @@ namespace Client
                             User _user = null;
                             if (mode != '\0')
                             {
-                                _user = new User(mode.ToString() + nick, host, _Network, ident);
+                                _user = new User(mode.ToString() + nick, host, _Network, ident, server);
                             }
                             else
                             {
-                                _user = new User(nick, host, _Network, ident);
+                                _user = new User(nick, host, _Network, ident, server);
                             }
                             lock (channel.UserList)
                             {
@@ -117,6 +117,7 @@ namespace Client
                                 {
                                     u.Ident = ident;
                                     u.Host = host;
+									u.Server = server;
                                     break;
                                 }
                             }
@@ -332,10 +333,6 @@ namespace Client
                 name = name.Substring(0, name.IndexOf(" "));
                 idle = idle.Substring(0, idle.IndexOf(" "));
                 DateTime logintime = Network.convertUNIX(uptime);
-                if (logintime == null)
-                {
-                    return false;
-                }
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
@@ -350,7 +347,6 @@ namespace Client
             _host = source.Substring(source.IndexOf("@") + 1);
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
-            string _new = value;
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ChannelWork)
