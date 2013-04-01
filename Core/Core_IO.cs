@@ -28,7 +28,7 @@ using System.Text;
 namespace Client
 {
     public partial class Core
-    {	
+    {   
         public class IO
         {
             public class FileLine
@@ -74,7 +74,7 @@ namespace Client
                         try
                         {
                             Save();
-							System.Threading.Thread.Sleep(2000);
+                            System.Threading.Thread.Sleep(2000);
                         }
                         catch (ThreadAbortException)
                         {
@@ -102,11 +102,11 @@ namespace Client
                 }
             }
         }
-		
-		public static Gdk.Color fromColor(System.Drawing.Color color)
-		{
-			Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
-			return xx;
-		}
+        
+        public static Gdk.Color fromColor(System.Drawing.Color color)
+        {
+            Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
+            return xx;
+        }
     }
 }

@@ -104,7 +104,7 @@ namespace Client
         {
             Core.blocked = false;
             Hide();
-			Close();
+            Close();
         }
 
         private void timer_Tick(object sender, EventArgs e)

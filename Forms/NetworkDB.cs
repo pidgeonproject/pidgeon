@@ -19,12 +19,12 @@ using System;
 
 namespace Client.Forms
 {
-	public partial class NetworkDB : Gtk.Window
-	{
-		public NetworkDB () : base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
-		}
-	}
+    public partial class NetworkDB : Gtk.Window
+    {
+        public NetworkDB () : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build ();
+        }
+    }
 }
 

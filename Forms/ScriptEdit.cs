@@ -25,9 +25,9 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class ScriptEdit : Gtk.Window
-	{
-		public Network network = null;
+    public partial class ScriptEdit : Gtk.Window
+    {
+        public Network network = null;
         private global::Gtk.VBox vbox1;
         private global::Gtk.Label label1;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
@@ -50,8 +50,8 @@ namespace Client.Forms
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-			this.label1.Justify = Justification.Left;
-			//this.label1.SetSizeRequest(740, 100);
+            this.label1.Justify = Justification.Left;
+            //this.label1.SetSizeRequest(740, 100);
             this.label1.LabelProp = "Do you really want to execute following commands?\n\nLines prefixed with following symbols are:\n# - comment\n/ - will be launched as pidgeon command\n\nOther lines will be delivered as raw command to server";
             this.vbox1.Add(label1);
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
@@ -110,26 +110,26 @@ namespace Client.Forms
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.DefaultHeight = 460;
         }
-		
-		public TextView textBox1
-		{
-			get
-			{
-				return textview1;
-			}
-		}
+        
+        public TextView textBox1
+        {
+            get
+            {
+                return textview1;
+            }
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.Hide ();
-			this.Destroy ();
+            this.Destroy ();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
-				string[] values = textview1.Buffer.Text.Split ('\n');
+                string[] values = textview1.Buffer.Text.Split ('\n');
                 foreach (string text in values)
                 {
                     if (text != "")
@@ -147,22 +147,22 @@ namespace Client.Forms
                     }
                 }
                 Hide();
-				this.Destroy();
+                this.Destroy();
             }
             catch(Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-		
-		public ScriptEdit () : base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
+        
+        public ScriptEdit () : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build ();
             this.button1.Clicked += new EventHandler(button1_Click);
-			messages.Localize(this);
+            messages.Localize(this);
             this.button2.Clicked += new EventHandler(button2_Click);
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
-		}
-	}
+        }
+    }
 }
 

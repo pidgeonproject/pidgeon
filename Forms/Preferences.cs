@@ -27,213 +27,213 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
-		private global::Gtk.Frame frame2;
-		private global::Gtk.Alignment GtkAlignment2;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow2;
-		private global::Gtk.TreeView treeview2;
-		private global::Gtk.Label GtkLabel2;
-		private Gtk.Widget widget = null;
-		private global::Gtk.Frame frame3;
-		private global::Gtk.Alignment GtkAlignment3;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow3;
-		private global::Gtk.TreeView treeview3;
-		private global::Gtk.Label GtkLabel3;
-		private global::Gtk.Frame frame4;
-		private global::Gtk.Alignment GtkAlignment4;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow4;
-		private global::Gtk.TreeView treeview4;
-		private global::Gtk.Label GtkLabel4;
-		private global::Gtk.Frame frame5;
-		private global::Gtk.Alignment GtkAlignment5;
-		private global::Gtk.ScrolledWindow GtkScrolledWindow5;
-		private global::Gtk.TreeView treeview5;
-		private global::Gtk.Label GtkLabel5;
-		private global::Gtk.Frame frame6;
-		private global::Gtk.Alignment GtkAlignment6;
-		private global::Gtk.Label GtkLabel6;
-		private global::Gtk.Frame frame7;
-		private global::Gtk.Alignment GtkAlignment7;
-		private global::Gtk.Label GtkLabel7;
-		private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
-		
-		private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
-		
-		public int SelectedItem
+        private global::Gtk.Frame frame2;
+        private global::Gtk.Alignment GtkAlignment2;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow2;
+        private global::Gtk.TreeView treeview2;
+        private global::Gtk.Label GtkLabel2;
+        private Gtk.Widget widget = null;
+        private global::Gtk.Frame frame3;
+        private global::Gtk.Alignment GtkAlignment3;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow3;
+        private global::Gtk.TreeView treeview3;
+        private global::Gtk.Label GtkLabel3;
+        private global::Gtk.Frame frame4;
+        private global::Gtk.Alignment GtkAlignment4;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow4;
+        private global::Gtk.TreeView treeview4;
+        private global::Gtk.Label GtkLabel4;
+        private global::Gtk.Frame frame5;
+        private global::Gtk.Alignment GtkAlignment5;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow5;
+        private global::Gtk.TreeView treeview5;
+        private global::Gtk.Label GtkLabel5;
+        private global::Gtk.Frame frame6;
+        private global::Gtk.Alignment GtkAlignment6;
+        private global::Gtk.Label GtkLabel6;
+        private global::Gtk.Frame frame7;
+        private global::Gtk.Alignment GtkAlignment7;
+        private global::Gtk.Label GtkLabel7;
+        private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
+        
+        private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
+        
+        public int SelectedItem
         {
             get
             {
                 TreeIter iter;
                 TreePath[] path = treeview1.Selection.GetSelectedRows();
-				if (path.Length < 1)
-				{
-					return 0;
-				}
+                if (path.Length < 1)
+                {
+                    return 0;
+                }
                 treeview1.Model.GetIter(out iter, path[0]);
                 return (int)treeview1.Model.GetValue(iter, 1);
             }
         }
-		
-		public void Initialize()
-		{
-			this.frame2 = new global::Gtk.Frame ();
-			this.frame2.Name = "frame1";
-			this.frame2.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment2.Name = "GtkAlignment";
-			this.GtkAlignment2.LeftPadding = ((uint)(12));
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow2.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-			this.treeview2 = new global::Gtk.TreeView ();
-			this.treeview2.CanFocus = true;
-			this.treeview2.Name = "treeview1";
-			this.GtkScrolledWindow2.Add (this.treeview2);
-			this.GtkAlignment2.Add (this.GtkScrolledWindow2);
-			this.frame2.Add (this.GtkAlignment2);
-			this.GtkLabel2 = new global::Gtk.Label ();
-			this.GtkLabel2.Name = "GtkLabel";
-			this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Extensions</b>");
-			this.GtkLabel2.UseMarkup = true;
-			this.frame2.LabelWidget = this.GtkLabel2;
-			this.frame2.ShowAll();
-			
-			this.frame4 = new global::Gtk.Frame ();
-			this.frame4.Name = "frame1";
-			this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment4 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment4.Name = "GtkAlignment";
-			this.GtkAlignment4.LeftPadding = ((uint)(12));
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			this.GtkScrolledWindow4 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow4.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow4.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-			this.treeview4 = new global::Gtk.TreeView ();
-			this.treeview4.CanFocus = true;
-			this.treeview4.Name = "treeview1";
-			this.GtkScrolledWindow4.Add (this.treeview4);
-			this.GtkAlignment4.Add (this.GtkScrolledWindow4);
-			treeview4.Model = Highlights;
-			this.frame4.Add (this.GtkAlignment4);
-			Gtk.TreeViewColumn highlight_text = new Gtk.TreeViewColumn();
-			Gtk.TreeViewColumn highlight_type = new Gtk.TreeViewColumn();
-			Gtk.TreeViewColumn highlight_stat = new Gtk.TreeViewColumn();
-			Gtk.CellRendererText r1 = new Gtk.CellRendererText();
-			Gtk.CellRendererText r2 = new Gtk.CellRendererText();
-			Gtk.CellRendererText r3 = new Gtk.CellRendererText();
-			highlight_text.PackStart(r1, true);
-			highlight_text.Title = "Text";
-			highlight_type.Title = "Regular expression";
-			highlight_type.PackStart(r2, true);
-			highlight_stat.PackStart(r3, true);
-			highlight_stat.Title = "Highlight enabled";
-			this.treeview4.AppendColumn(highlight_text);
-			highlight_text.AddAttribute(r1, "text", 0);
-			highlight_type.AddAttribute(r2, "text", 1);
-			highlight_stat.AddAttribute(r3, "text", 2);
-			this.treeview4.AppendColumn(highlight_type);
-			this.treeview4.AppendColumn(highlight_stat);
-			this.GtkLabel4 = new global::Gtk.Label ();
-			this.GtkLabel4.Name = "GtkLabel";
-			this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Highlighting</b>");
-			this.GtkLabel4.UseMarkup = true;
-			this.frame4.LabelWidget = this.GtkLabel4;
-			this.frame4.ShowAll();
-			
-			this.frame3 = new global::Gtk.Frame ();
-			this.frame3.Name = "frame1";
-			this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment3.Name = "GtkAlignment";
-			this.GtkAlignment3.LeftPadding = ((uint)(12));
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			this.GtkScrolledWindow3 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow3.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow3.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-			this.treeview3 = new global::Gtk.TreeView ();
-			this.treeview3.CanFocus = true;
-			this.treeview3.Name = "treeview1";
-			this.GtkScrolledWindow3.Add (this.treeview3);
-			this.GtkAlignment3.Add (this.GtkScrolledWindow3);
-			this.frame3.Add (this.GtkAlignment3);
-			this.GtkLabel3 = new global::Gtk.Label ();
-			this.GtkLabel3.Name = "GtkLabel";
-			this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Keyboard</b>");
-			this.GtkLabel3.UseMarkup = true;
-			this.frame3.LabelWidget = this.GtkLabel3;
-			this.frame3.ShowAll();
-			
-			this.frame5 = new global::Gtk.Frame ();
-			this.frame5.Name = "frame1";
-			this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment5 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment5.Name = "GtkAlignment";
-			this.GtkAlignment5.LeftPadding = ((uint)(12));
-			// Container child GtkAlignment.Gtk.Container+ContainerChild
-			this.GtkScrolledWindow5 = new global::Gtk.ScrolledWindow ();
-			this.GtkScrolledWindow5.Name = "GtkScrolledWindow";
-			this.GtkScrolledWindow5.ShadowType = ((global::Gtk.ShadowType)(1));
-			// Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-			this.treeview5 = new global::Gtk.TreeView ();
-			this.treeview5.CanFocus = true;
-			this.treeview5.Name = "treeview1";
-			this.GtkScrolledWindow5.Add (this.treeview5);
-			this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-			this.frame5.Add (this.GtkAlignment5);
-			this.GtkLabel5 = new global::Gtk.Label ();
-			this.GtkLabel5.Name = "GtkLabel";
-			this.GtkLabel5.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Ignore list</b>");
-			this.GtkLabel5.UseMarkup = true;
-			this.frame5.LabelWidget = this.GtkLabel5;
-			this.frame5.ShowAll();
-			
-			this.frame6 = new global::Gtk.Frame ();
-			this.frame6.Name = "frame1";
-			this.frame6.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment6.Name = "GtkAlignment";
-			this.GtkAlignment6.LeftPadding = ((uint)(12));
-			//this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-			this.frame6.Add (this.GtkAlignment6);
-			this.GtkLabel6 = new global::Gtk.Label ();
-			this.GtkLabel6.Name = "GtkLabel";
-			this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>System</b>");
-			this.GtkLabel6.UseMarkup = true;
-			this.frame6.LabelWidget = this.GtkLabel5;
-			this.frame6.ShowAll();
-			
-			this.frame7 = new global::Gtk.Frame ();
-			this.frame7.Name = "frame1";
-			this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
-			// Container child frame1.Gtk.Container+ContainerChild
-			this.GtkAlignment7 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
-			this.GtkAlignment7.Name = "GtkAlignment";
-			this.GtkAlignment7.LeftPadding = ((uint)(12));
-			//this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-			this.frame7.Add (this.GtkAlignment7);
-			this.GtkLabel7 = new global::Gtk.Label ();
-			this.GtkLabel7.Name = "GtkLabel";
-			this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Logs</b>");
-			this.GtkLabel7.UseMarkup = true;
-			this.frame7.LabelWidget = this.GtkLabel5;
-			this.frame7.ShowAll();
-		}
-		
+        
+        public void Initialize()
+        {
+            this.frame2 = new global::Gtk.Frame ();
+            this.frame2.Name = "frame1";
+            this.frame2.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment2.Name = "GtkAlignment";
+            this.GtkAlignment2.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow2 = new global::Gtk.ScrolledWindow ();
+            this.GtkScrolledWindow2.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview2 = new global::Gtk.TreeView ();
+            this.treeview2.CanFocus = true;
+            this.treeview2.Name = "treeview1";
+            this.GtkScrolledWindow2.Add (this.treeview2);
+            this.GtkAlignment2.Add (this.GtkScrolledWindow2);
+            this.frame2.Add (this.GtkAlignment2);
+            this.GtkLabel2 = new global::Gtk.Label ();
+            this.GtkLabel2.Name = "GtkLabel";
+            this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Extensions</b>");
+            this.GtkLabel2.UseMarkup = true;
+            this.frame2.LabelWidget = this.GtkLabel2;
+            this.frame2.ShowAll();
+            
+            this.frame4 = new global::Gtk.Frame ();
+            this.frame4.Name = "frame1";
+            this.frame4.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment4 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment4.Name = "GtkAlignment";
+            this.GtkAlignment4.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow4 = new global::Gtk.ScrolledWindow ();
+            this.GtkScrolledWindow4.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow4.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview4 = new global::Gtk.TreeView ();
+            this.treeview4.CanFocus = true;
+            this.treeview4.Name = "treeview1";
+            this.GtkScrolledWindow4.Add (this.treeview4);
+            this.GtkAlignment4.Add (this.GtkScrolledWindow4);
+            treeview4.Model = Highlights;
+            this.frame4.Add (this.GtkAlignment4);
+            Gtk.TreeViewColumn highlight_text = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn highlight_type = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn highlight_stat = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText r1 = new Gtk.CellRendererText();
+            Gtk.CellRendererText r2 = new Gtk.CellRendererText();
+            Gtk.CellRendererText r3 = new Gtk.CellRendererText();
+            highlight_text.PackStart(r1, true);
+            highlight_text.Title = "Text";
+            highlight_type.Title = "Regular expression";
+            highlight_type.PackStart(r2, true);
+            highlight_stat.PackStart(r3, true);
+            highlight_stat.Title = "Highlight enabled";
+            this.treeview4.AppendColumn(highlight_text);
+            highlight_text.AddAttribute(r1, "text", 0);
+            highlight_type.AddAttribute(r2, "text", 1);
+            highlight_stat.AddAttribute(r3, "text", 2);
+            this.treeview4.AppendColumn(highlight_type);
+            this.treeview4.AppendColumn(highlight_stat);
+            this.GtkLabel4 = new global::Gtk.Label ();
+            this.GtkLabel4.Name = "GtkLabel";
+            this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Highlighting</b>");
+            this.GtkLabel4.UseMarkup = true;
+            this.frame4.LabelWidget = this.GtkLabel4;
+            this.frame4.ShowAll();
+            
+            this.frame3 = new global::Gtk.Frame ();
+            this.frame3.Name = "frame1";
+            this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment3.Name = "GtkAlignment";
+            this.GtkAlignment3.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow3 = new global::Gtk.ScrolledWindow ();
+            this.GtkScrolledWindow3.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow3.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview3 = new global::Gtk.TreeView ();
+            this.treeview3.CanFocus = true;
+            this.treeview3.Name = "treeview1";
+            this.GtkScrolledWindow3.Add (this.treeview3);
+            this.GtkAlignment3.Add (this.GtkScrolledWindow3);
+            this.frame3.Add (this.GtkAlignment3);
+            this.GtkLabel3 = new global::Gtk.Label ();
+            this.GtkLabel3.Name = "GtkLabel";
+            this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Keyboard</b>");
+            this.GtkLabel3.UseMarkup = true;
+            this.frame3.LabelWidget = this.GtkLabel3;
+            this.frame3.ShowAll();
+            
+            this.frame5 = new global::Gtk.Frame ();
+            this.frame5.Name = "frame1";
+            this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment5 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment5.Name = "GtkAlignment";
+            this.GtkAlignment5.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow5 = new global::Gtk.ScrolledWindow ();
+            this.GtkScrolledWindow5.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow5.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.treeview5 = new global::Gtk.TreeView ();
+            this.treeview5.CanFocus = true;
+            this.treeview5.Name = "treeview1";
+            this.GtkScrolledWindow5.Add (this.treeview5);
+            this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+            this.frame5.Add (this.GtkAlignment5);
+            this.GtkLabel5 = new global::Gtk.Label ();
+            this.GtkLabel5.Name = "GtkLabel";
+            this.GtkLabel5.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Ignore list</b>");
+            this.GtkLabel5.UseMarkup = true;
+            this.frame5.LabelWidget = this.GtkLabel5;
+            this.frame5.ShowAll();
+            
+            this.frame6 = new global::Gtk.Frame ();
+            this.frame6.Name = "frame1";
+            this.frame6.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment6.Name = "GtkAlignment";
+            this.GtkAlignment6.LeftPadding = ((uint)(12));
+            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+            this.frame6.Add (this.GtkAlignment6);
+            this.GtkLabel6 = new global::Gtk.Label ();
+            this.GtkLabel6.Name = "GtkLabel";
+            this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>System</b>");
+            this.GtkLabel6.UseMarkup = true;
+            this.frame6.LabelWidget = this.GtkLabel5;
+            this.frame6.ShowAll();
+            
+            this.frame7 = new global::Gtk.Frame ();
+            this.frame7.Name = "frame1";
+            this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment7 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
+            this.GtkAlignment7.Name = "GtkAlignment";
+            this.GtkAlignment7.LeftPadding = ((uint)(12));
+            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+            this.frame7.Add (this.GtkAlignment7);
+            this.GtkLabel7 = new global::Gtk.Label ();
+            this.GtkLabel7.Name = "GtkLabel";
+            this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Logs</b>");
+            this.GtkLabel7.UseMarkup = true;
+            this.frame7.LabelWidget = this.GtkLabel5;
+            this.frame7.ShowAll();
+        }
+        
         public Preferences() : base(Gtk.WindowType.Toplevel)
         {
             try
             {
                 this.Build();
-				this.widget = frame1;
-				this.Initialize();
+                this.widget = frame1;
+                this.Initialize();
                 this.Preferences_Load();
             }
             catch (Exception fail)
@@ -241,7 +241,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
+        
         /// <summary>
         /// Prepare the control
         /// </summary>
@@ -260,20 +260,20 @@ namespace Client.Forms
             this.DeleteEvent += new DeleteEventHandler(hide);
             button1.Clicked += new EventHandler(bSave_Click);
             entry1.Text = Configuration.UserData.nick;
-			this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(s1);
+            this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(s1);
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
             entry4.Text = Configuration.UserData.user;
             button3.Clicked += new EventHandler(bCancel_Click);
-			this.treeview1.Model = item;
-			this.treeview1.CursorChanged += new EventHandler(s4);
-			Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
-			Gtk.CellRendererText c1 = new Gtk.CellRendererText();
-			topic_item.Title = "Option";
-			topic_item.PackStart(c1, true);
-			topic_item.AddAttribute    (c1, "text", 0);
-			treeview1.AppendColumn(topic_item);
-			treeview1.RowActivated += new RowActivatedHandler(s2);
+            this.treeview1.Model = item;
+            this.treeview1.CursorChanged += new EventHandler(s4);
+            Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText c1 = new Gtk.CellRendererText();
+            topic_item.Title = "Option";
+            topic_item.PackStart(c1, true);
+            topic_item.AddAttribute    (c1, "text", 0);
+            treeview1.AppendColumn(topic_item);
+            treeview1.RowActivated += new RowActivatedHandler(s2);
             //checkBox3.Checked = Configuration.Logs.logs_xml;
             //checkBox1.Checked = Configuration.Logs.logs_txt;
             //checkBox2.Checked = Configuration.Logs.logs_html;
@@ -308,85 +308,85 @@ namespace Client.Forms
 
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
-				Highlights.AppendValues(highlight.text, (!highlight.simple).ToString (), highlight.enabled.ToString(), highlight);
+                Highlights.AppendValues(highlight.text, (!highlight.simple).ToString (), highlight.enabled.ToString(), highlight);
             }
-			
-			item.AppendValues("IRC", 1);
-			item.AppendValues("System", 2);
-			item.AppendValues("Logs", 3);
-			//item.AppendValues("Network", 4);
-			item.AppendValues("Highlighting", 5);
-			item.AppendValues("Ignore list", 6);
-			item.AppendValues("Keyboard", 7);
-			item.AppendValues("Extensions", 8);
+            
+            item.AppendValues("IRC", 1);
+            item.AppendValues("System", 2);
+            item.AppendValues("Logs", 3);
+            //item.AppendValues("Network", 4);
+            item.AppendValues("Highlighting", 5);
+            item.AppendValues("Ignore list", 6);
+            item.AppendValues("Keyboard", 7);
+            item.AppendValues("Extensions", 8);
             RefreshModules();
             ReloadIgnores();
             redrawS();
         }
 
-		private void setWindow(Gtk.Frame frame)
-		{
-			this.hbox1.Remove (widget);
-			widget = frame;
-			this.hbox1.Add(widget);
-		}
-		
-		
-		[GLib.ConnectBefore]
-		private void s1(object sender, ButtonPressEventArgs e)
-		{
-			if (e.Event.Button == 1)
-			{
-				Switch();
-			}
-		}
-		
-		[GLib.ConnectBefore]
-		private void s4(object sender, EventArgs e)
-		{
-			Switch();
-		}
-		
-		private void Switch()
-		{
-			try
-			{
-				switch (SelectedItem)
-				{
-					case 1:
-						setWindow(frame1);
-						break;
-					case 2:
-						setWindow(frame6);
-						break;
-					case 3:
-						setWindow(frame7);
-						break;
-					case 5:
-						setWindow(frame4);
-						break;
-					case 6:
-						setWindow(frame5);
-						break;
-					case 7:
-						setWindow(frame3);
-						break;
-					case 8:
-						setWindow(frame2);
-						break;
-				}
-			} catch (Exception fail)
-			{
-				Core.handleException(fail);
-			}
-		}
-		
-		[GLib.ConnectBefore]
-		private void s2(object sender, RowActivatedArgs e)
-		{
-			Switch();
-		}
-		
+        private void setWindow(Gtk.Frame frame)
+        {
+            this.hbox1.Remove (widget);
+            widget = frame;
+            this.hbox1.Add(widget);
+        }
+        
+        
+        [GLib.ConnectBefore]
+        private void s1(object sender, ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 1)
+            {
+                Switch();
+            }
+        }
+        
+        [GLib.ConnectBefore]
+        private void s4(object sender, EventArgs e)
+        {
+            Switch();
+        }
+        
+        private void Switch()
+        {
+            try
+            {
+                switch (SelectedItem)
+                {
+                    case 1:
+                        setWindow(frame1);
+                        break;
+                    case 2:
+                        setWindow(frame6);
+                        break;
+                    case 3:
+                        setWindow(frame7);
+                        break;
+                    case 5:
+                        setWindow(frame4);
+                        break;
+                    case 6:
+                        setWindow(frame5);
+                        break;
+                    case 7:
+                        setWindow(frame3);
+                        break;
+                    case 8:
+                        setWindow(frame2);
+                        break;
+                }
+            } catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+        
+        [GLib.ConnectBefore]
+        private void s2(object sender, RowActivatedArgs e)
+        {
+            Switch();
+        }
+        
         public void RefreshModules()
         {
             //listView3.Items.Clear();

@@ -25,10 +25,10 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Main : Client.GTK.PidgeonForm
-	{
-		public MicroChat micro = null;
-		private string StatusBox = "";
+    public partial class Main : Client.GTK.PidgeonForm
+    {
+        public MicroChat micro = null;
+        private string StatusBox = "";
         public Graphics.Window main = null;
         public Graphics.PidgeonList ChannelList = null;
         public Graphics.Window Chat = null;
@@ -40,7 +40,7 @@ namespace Client.Forms
         public double progress = 0;
         public bool DisplayingProgress = false;
         public double ProgressMax = 0;
-		public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
+        public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
         private GLib.TimeoutHandler timer;
         public global::Gtk.HPaned hPaned
         {
@@ -60,36 +60,36 @@ namespace Client.Forms
         }
 
 
-		public Main ()
-		{
-			try
-			{
-				Core._Main = this;
-				this.Build ();
+        public Main ()
+        {
+            try
+            {
+                Core._Main = this;
+                this.Build ();
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
                 this.DetachFromMicroChatAction.Activated += new EventHandler(detachFromMicroChatToolStripMenuItem_Click);
                 this.AttachToMicroChatAction.Activated += new EventHandler(attachToMicroChatToolStripMenuItem_Click);
-				this.SearchAction.Activated += new EventHandler(searchToolStripMenuItem_Click);
+                this.SearchAction.Activated += new EventHandler(searchToolStripMenuItem_Click);
                 this.ContentsAction.Activated += new EventHandler(contentsToolStripMenuItem_Click);
                 this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
-				this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
+                this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
-				_Load();
-			}
-			catch (Exception fail)
-			{
-				Core.handleException(fail);
-			}
-		}
+                _Load();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
 
-		public void _Load()
+        public void _Load()
         {
             try
             {
                 messages.Localize(this);
-				SkinEditorAction.Sensitive = false;
-				setText("");
+                SkinEditorAction.Sensitive = false;
+                setText("");
                 if (Configuration.Window.Window_Maximized)
                 {
                     this.Maximize();
@@ -105,13 +105,13 @@ namespace Client.Forms
                     }
                 }
                 hpaned1.Position = Configuration.Window.window_size;
-				ChannelList = pidgeonlist1;
+                ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;
-				micro = new MicroChat();
+                micro = new MicroChat();
                 ChannelList.Visible = true;
                 main = new Client.Graphics.Window();
-				main.Events = ((global::Gdk.EventMask)(256));
-				UserAction.Visible = false;
+                main.Events = ((global::Gdk.EventMask)(256));
+                UserAction.Visible = false;
                 CreateChat(main, null);
                 main.name = "Pidgeon";
                 toolStripStatusNetwork.TooltipText = "windows / channels / pm";
@@ -146,7 +146,7 @@ namespace Client.Forms
             }
         }
 
-		public void Changed(object sender, EventArgs dt)
+        public void Changed(object sender, EventArgs dt)
         {
             if (done)
             {
@@ -268,10 +268,10 @@ namespace Client.Forms
             }
         }
 
-		public void setFocus()
-		{
-			GrabFocus();
-		}
+        public void setFocus()
+        {
+            GrabFocus();
+        }
 
         public int setText(string name)
         {
@@ -329,18 +329,18 @@ namespace Client.Forms
                     Core.DebugLog("Closing main");
                     return;
                 }
-				MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
-				message.WindowPosition = WindowPosition.Center;
-				message.Title = "Shut down?";
-				ResponseType result = (ResponseType)message.Run ();
-				if (result != ResponseType.Yes)
-				{
-  	  				message.Destroy();
-					closing.RetVal = true;
+                MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
+                message.WindowPosition = WindowPosition.Center;
+                message.Title = "Shut down?";
+                ResponseType result = (ResponseType)message.Run ();
+                if (result != ResponseType.Yes)
+                {
+                    message.Destroy();
+                    closing.RetVal = true;
                     return;
                 }
                 Core.Quit();
-				return;
+                return;
             }
             catch (Exception fail)
             {
@@ -420,7 +420,7 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-			return true;
+            return true;
         }
 
 
@@ -533,7 +533,7 @@ namespace Client.Forms
                 }
 
                 searchbox.Show();
-				searchbox.GrabFocus();
+                searchbox.GrabFocus();
                 searchbox.setFocus();
             }
             catch (Exception fail)
@@ -582,6 +582,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-	}
+    }
 }
 

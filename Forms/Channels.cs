@@ -25,21 +25,21 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Channels : Gtk.Window
-	{
+    public partial class Channels : Gtk.Window
+    {
         public Network network = null;
-		public bool Loaded = false;
+        public bool Loaded = false;
         private int channels = 0;
         public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView treeview8;
-		private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(int), typeof(string), typeof(Network.ChannelData)); 
-		private GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
-		private GTK.Menu knockToolStripMenuItem = new GTK.Menu("Knock");
-		private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
-		private GTK.Menu downloadListFromServerToolStripMenuItem = new GTK.Menu("Download from server");
-		
-		public List<string> Selected
+        private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(int), typeof(string), typeof(Network.ChannelData)); 
+        private GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
+        private GTK.Menu knockToolStripMenuItem = new GTK.Menu("Knock");
+        private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
+        private GTK.Menu downloadListFromServerToolStripMenuItem = new GTK.Menu("Download from server");
+        
+        public List<string> Selected
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Client.Forms
                 return ul;
             }
         }
-		
+        
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -82,50 +82,50 @@ namespace Client.Forms
             this.DefaultWidth = 800;
             this.DefaultHeight = 520;
         }
-		
-		[GLib.ConnectBefore]
+        
+        [GLib.ConnectBefore]
         private void Menu2(object sender, Gtk.ButtonPressEventArgs e)
         {
             if (e.Event.Button == 3)
             {
-				e.RetVal = true;
+                e.RetVal = true;
                 Menu(sender, null);
             }
-        }		
-		public void Init()
-		{
-			Gtk.TreeViewColumn name = new Gtk.TreeViewColumn();
-			Gtk.TreeViewColumn size = new Gtk.TreeViewColumn();
-			Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
-			Gtk.CellRendererText c1 = new Gtk.CellRendererText();
-			Gtk.CellRendererText c2 = new Gtk.CellRendererText();
-			Gtk.CellRendererText c3 = new Gtk.CellRendererText();
+        }       
+        public void Init()
+        {
+            Gtk.TreeViewColumn name = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn size = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn topic_item = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText c1 = new Gtk.CellRendererText();
+            Gtk.CellRendererText c2 = new Gtk.CellRendererText();
+            Gtk.CellRendererText c3 = new Gtk.CellRendererText();
             name.Title = "Name";
-			size.Title = "Users";
-			topic_item.Title = "Channel topic";
+            size.Title = "Users";
+            topic_item.Title = "Channel topic";
             name.PackStart(c1, true);
-			size.PackStart(c2, true);
-			topic_item.PackStart(c3, true);
-			name.AddAttribute    (c1, "text", 0);
-			size.AddAttribute    (c2, "text", 1);
-			topic_item.AddAttribute    (c3, "text", 2);
-			treeview8.PopupMenu += new PopupMenuHandler(Menu);
-			this.treeview8.Model = data;
-			treeview8.AppendColumn(name);
-			treeview8.AppendColumn(size);
-			treeview8.AppendColumn(topic_item);
-			Reload();
-			this.treeview8.Selection.Mode = SelectionMode.Multiple;
-			this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
-		}
-		
+            size.PackStart(c2, true);
+            topic_item.PackStart(c3, true);
+            name.AddAttribute    (c1, "text", 0);
+            size.AddAttribute    (c2, "text", 1);
+            topic_item.AddAttribute    (c3, "text", 2);
+            treeview8.PopupMenu += new PopupMenuHandler(Menu);
+            this.treeview8.Model = data;
+            treeview8.AppendColumn(name);
+            treeview8.AppendColumn(size);
+            treeview8.AppendColumn(topic_item);
+            Reload();
+            this.treeview8.Selection.Mode = SelectionMode.Multiple;
+            this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
+        }
+        
         public void destroy(object o, DestroyEventArgs e)
         {
             Hide();
             e.RetVal = true;
         }
-		
-		[GLib.ConnectBefore]
+        
+        [GLib.ConnectBefore]
         private void Menu(object sender, Gtk.PopupMenuArgs e)
         {
             try
@@ -134,26 +134,26 @@ namespace Client.Forms
                 Gtk.MenuItem join = new MenuItem(joinToolStripMenuItem.Text);
                 join.Activated += new EventHandler(joinToolStripMenuItem_Click);
                 xx.Append(join);
-				Gtk.MenuItem knock = new MenuItem(knockToolStripMenuItem.Text);
+                Gtk.MenuItem knock = new MenuItem(knockToolStripMenuItem.Text);
                 join.Activated += new EventHandler(knockToolStripMenuItem_Click);
                 xx.Append(knock);
-				Gtk.MenuItem download = new MenuItem(downloadListFromServerToolStripMenuItem.Text);
+                Gtk.MenuItem download = new MenuItem(downloadListFromServerToolStripMenuItem.Text);
                 join.Activated += new EventHandler(downloadListFromServerToolStripMenuItem_Click);
                 xx.Append(download);
-				Gtk.MenuItem re = new MenuItem(refreshToolStripMenuItem.Text);
+                Gtk.MenuItem re = new MenuItem(refreshToolStripMenuItem.Text);
                 re.Activated += new EventHandler(refreshToolStripMenuItem_Click);
                 xx.Append(re);
-				xx.ShowAll();
-				xx.Popup();
-			} catch (Exception fail)
-			{
-				Core.handleException(fail);
-			}
-		}
-				
+                xx.ShowAll();
+                xx.Popup();
+            } catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+                
         public Channels() : base(Gtk.WindowType.Toplevel)
         {
-			this.Build ();
+            this.Build ();
         }
 
         private void Reload()
@@ -162,25 +162,25 @@ namespace Client.Forms
             channels = 0;
             lock (network.ChannelList)
             {
-				if (network.ChannelList.Count > 0)
-				{
-                	channelData.Clear();
-                	channelData.AddRange(network.ChannelList);
-				}
+                if (network.ChannelList.Count > 0)
+                {
+                    channelData.Clear();
+                    channelData.AddRange(network.ChannelList);
+                }
             }
-			if (channelData.Count > 0)
-			{
-				foreach (Network.ChannelData info in channelData)
-				{
-					data.AppendValues (info.ChannelName, info.UserCount, info.ChannelTopic);
-				}
-				Loaded = true;
-			} else
-			{
-				Loaded = false;
-				data.AppendValues("No channels were loaded so far, download list first", 0, "");
-			}
-			Title = "Channels on " + network.ServerName + " [" + channelData.Count.ToString() + "]";
+            if (channelData.Count > 0)
+            {
+                foreach (Network.ChannelData info in channelData)
+                {
+                    data.AppendValues (info.ChannelName, info.UserCount, info.ChannelTopic);
+                }
+                Loaded = true;
+            } else
+            {
+                Loaded = false;
+                data.AppendValues("No channels were loaded so far, download list first", 0, "");
+            }
+            Title = "Channels on " + network.ServerName + " [" + channelData.Count.ToString() + "]";
         }
 
         private void Channels_Close(object sender, Gtk.DestroyEventArgs e)
@@ -213,7 +213,7 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-			return false;
+            return false;
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
@@ -238,8 +238,8 @@ namespace Client.Forms
         {
             try
             {
-				if (Loaded)
-				{
+                if (Loaded)
+                {
                     foreach (string item in Selected)
                     {
                         if (item != "")
@@ -247,7 +247,7 @@ namespace Client.Forms
                             network.Join(item);
                         }
                     }
-				}
+                }
             }
             catch (Exception fail)
             {
@@ -259,19 +259,19 @@ namespace Client.Forms
         {
             try
             {
-				if (Loaded)
-				{
+                if (Loaded)
+                {
                     foreach (string item in Selected)
                     {
                         network.Transfer("KNOCK " + item);
                     }
-				}
+                }
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-	}
+    }
 }
 

@@ -590,7 +590,7 @@ namespace Client
                 }
             }
         }
-		
+        
         /// <summary>
         /// Show a notice box, if started from non kernel thread, then it's finalized in that
         /// </summary>
@@ -670,11 +670,11 @@ namespace Client
             }
         }
 
-		public static string normalizeHtml(string text)
-		{
-			return System.Web.HttpUtility.HtmlEncode(text);
-		}
-		
+        public static string normalizeHtml(string text)
+        {
+            return System.Web.HttpUtility.HtmlEncode(text);
+        }
+        
         /// <summary>
         /// Convert string to key
         /// </summary>
@@ -898,7 +898,7 @@ namespace Client
                     {
                         foreach (Protocol server in Connections)
                         {
-							Core.Ringlog("Exiting network " + server.Server);
+                            Core.Ringlog("Exiting network " + server.Server);
                             server.Exit();
                         }
                     }
@@ -914,7 +914,7 @@ namespace Client
                             {
                                 continue;
                             }
-							Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
+                            Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
                             th.Abort();
                         }
                         catch (Exception fail)
@@ -923,7 +923,7 @@ namespace Client
                         }
                     }
                     Thread.Sleep(800);
-					Core.DebugLog("Exiting with code 0");
+                    Core.DebugLog("Exiting with code 0");
                     Environment.Exit(0);
                 }
             }

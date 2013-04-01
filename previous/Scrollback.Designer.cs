@@ -268,7 +268,7 @@ namespace Client
             this.PerformLayout();
 
         }
-		
+        
         #endregion
 
         private System.Windows.Forms.Timer refresh;

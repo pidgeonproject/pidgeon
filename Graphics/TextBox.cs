@@ -70,12 +70,12 @@ namespace Client.Graphics
             }
         }
 
-		public void InitStyle()
-		{
-			richTextBox.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-			richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-		}
-		
+        public void InitStyle()
+        {
+            richTextBox.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+        }
+        
         public TextBox()
         {
             
@@ -121,15 +121,15 @@ namespace Client.Graphics
                 }
 
                 if (e.Event.State == Gdk.ModifierType.ShiftMask||
-				e.Event.State == Gdk.ModifierType.ControlMask)
+                e.Event.State == Gdk.ModifierType.ControlMask)
                 {
-					switch (e.Event.Key)
+                    switch (e.Event.Key)
                     {
                         case Gdk.Key.KP_Enter:
                         case Gdk.Key.ISO_Enter:
                         case Gdk.Key.Up:
                         case Gdk.Key.Down:
-							e.RetVal = true;
+                            e.RetVal = true;
                             return;
                     }
                 }
@@ -245,7 +245,7 @@ namespace Client.Graphics
         public void Init()
         {
             this.Build();
-			this.InitStyle();
+            this.InitStyle();
             richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
             richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
             if (history == null)

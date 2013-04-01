@@ -19,8 +19,8 @@ using System;
 
 namespace Client.Forms
 {
-	public partial class Notification : GTK.PidgeonForm
-	{
+    public partial class Notification : GTK.PidgeonForm
+    {
         private Gtk.VBox vbox1;
         private Gtk.Label label1;
         private Gtk.HBox hbox1;
@@ -34,7 +34,7 @@ namespace Client.Forms
             // Widget Client.Forms.Notification
             this.Name = "Client.Forms.Notification";
             this.Title = "Notification";
-			this.TypeHint = Gdk.WindowTypeHint.Normal;
+            this.TypeHint = Gdk.WindowTypeHint.Normal;
             //this.TypeHint = ((global::Gdk.WindowTypeHint)(4));
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child Client.Forms.Notification.Gtk.Container+ContainerChild
@@ -67,8 +67,8 @@ namespace Client.Forms
             // Container child hbox1.Gtk.Box+BoxChild
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
-			this.label2.WidthRequest = 260;
-			this.label2.Wrap = true;
+            this.label2.WidthRequest = 260;
+            this.label2.Wrap = true;
             this.label2.LabelProp = "Description";
             this.hbox1.Add(this.label2);
             global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.label2]));
@@ -80,8 +80,8 @@ namespace Client.Forms
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-			this.label1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
-			this.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
+            this.label1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
+            this.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             this.vbox1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             root = new Gtk.EventBox();
             root.Add(this.vbox1);
@@ -111,9 +111,9 @@ namespace Client.Forms
             }
         }
 
-		public Notification ()
-		{
-			this.Build ();
+        public Notification ()
+        {
+            this.Build ();
             this.BorderWidth = 0;
             this.Title = "Notification";
             this.KeepAbove = true;
@@ -125,7 +125,7 @@ namespace Client.Forms
             this.AllowShrink = false;
             this.SetSizeRequest(400, 160);
             this.DeleteEvent += new Gtk.DeleteEventHandler(Unshow);
-		}
+        }
 
         public void Relocate()
         {
@@ -162,6 +162,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-	}
+    }
 }
 

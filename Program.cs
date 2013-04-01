@@ -23,12 +23,12 @@ namespace Client
 {
     static class Program
     {
-		public static void ExceptionForm(GLib.UnhandledExceptionArgs e)
-		{
-			Core.handleException((Exception)e.ExceptionObject, true);
-			Environment.Exit(2);
-		}
-		
+        public static void ExceptionForm(GLib.UnhandledExceptionArgs e)
+        {
+            Core.handleException((Exception)e.ExceptionObject, true);
+            Environment.Exit(2);
+        }
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -38,7 +38,7 @@ namespace Client
             try
             {
                 Application.Init();
-				GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
+                GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
                 Core.startup = parameters;
                 if (Core.Load())
                 {
@@ -60,6 +60,6 @@ namespace Client
             {
                 Core.handleException(fail, true);
             }
-		}
+        }
     }
 }

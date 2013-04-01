@@ -117,7 +117,7 @@ namespace Client
                                 {
                                     u.Ident = ident;
                                     u.Host = host;
-									u.Server = server;
+                                    u.Server = server;
                                     break;
                                 }
                             }

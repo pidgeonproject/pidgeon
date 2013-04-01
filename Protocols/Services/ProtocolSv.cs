@@ -28,28 +28,28 @@ namespace Client
 {
     public partial class ProtocolSv : Protocol
     {
-		public class Cache
+        public class Cache
         {
             public double size = 0;
             public double current = 0;
         }
-		
-		public class Work
-		{
-			public string Name = null;
-			public Type type = Type.ChannelInfo;
-			public Work(string name, Type Task)
-			{
-				Name = name;
-				type = Task;
-			}
-			
-			public enum Type
-			{
-				ChannelInfo,
-			}
-		}
-		
+        
+        public class Work
+        {
+            public string Name = null;
+            public Type type = Type.ChannelInfo;
+            public Work(string name, Type Task)
+            {
+                Name = name;
+                type = Task;
+            }
+            
+            public enum Type
+            {
+                ChannelInfo,
+            }
+        }
+        
         public System.Threading.Thread main = null;
         public System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
@@ -64,13 +64,13 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
-		private SslStream _networkSsl = null;
+        private SslStream _networkSsl = null;
         public Services.Buffer sBuffer = null;
-		public List<Work> RemainingJobs = new List<Work>();
+        public List<Work> RemainingJobs = new List<Work>();
 
         public string nick = "";
         public bool auth = false;
-		
+        
 
         public List<string> WaitingNetw = new List<string>();
 
@@ -96,15 +96,15 @@ namespace Client
             }
         }
 
-		public string getInfo()
-		{
-			if (RemainingJobs.Count > 0)
-			{
-				return "Waiting for services to finish " + RemainingJobs.Count.ToString() + " requests";
-			}
-			return "";
-		}
-		
+        public string getInfo()
+        {
+            if (RemainingJobs.Count > 0)
+            {
+                return "Waiting for services to finish " + RemainingJobs.Count.ToString() + " requests";
+            }
+            return "";
+        }
+        
         public override bool Command(string cm, Network network = null)
         {
             if (cm.StartsWith(" ") != true && cm.Contains(" "))
@@ -152,7 +152,7 @@ namespace Client
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-				
+                
                 Datagram login = new Datagram("AUTH", "");
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);

@@ -46,17 +46,17 @@ namespace Client.Graphics
         public List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
-		private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
-		private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
-		private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
+        private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
+        private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
+        private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
         private Gtk.TreeStore Values = new TreeStore(typeof(string),
                                                      typeof(object),
                                                      typeof(ItemType),
                                                      typeof(Window),
-		                                             typeof(string),
-		                                             typeof(Gdk.Pixbuf));
+                                                     typeof(string),
+                                                     typeof(Gdk.Pixbuf));
         private GLib.TimeoutHandler timer;
 
         public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
@@ -76,15 +76,15 @@ namespace Client.Graphics
             this.tv.CanFocus = true;
             this.tv.Name = "treeview1";
             Gtk.TreeViewColumn Column = new TreeViewColumn();
-			Gtk.TreeViewColumn pict = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn pict = new Gtk.TreeViewColumn();
             Gtk.CellRendererText Item = new Gtk.CellRendererText();
-			Gtk.CellRendererPixbuf icon = new CellRendererPixbuf();
+            Gtk.CellRendererPixbuf icon = new CellRendererPixbuf();
             Column.Title = messages.get("list-active-conn", messages.Language);
             Column.PackStart(Item, true);
-			pict.PackStart(icon, true);
+            pict.PackStart(icon, true);
             Column.SetCellDataFunc(Item, UserListRendererTool);
-			pict.AddAttribute(icon, "pixbuf", 5);
-			tv.AppendColumn(pict);
+            pict.AddAttribute(icon, "pixbuf", 5);
+            tv.AppendColumn(pict);
             tv.AppendColumn(Column);
             tv.PopupMenu += Menu;
             tv.TooltipColumn = 4;
@@ -307,7 +307,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-					TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2 );
+                    TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2 );
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -533,14 +533,14 @@ namespace Client.Graphics
                     case ItemType.User:
                         User us = (User)tv.Model.GetValue(iter, 1); ;
                         Core.network = us._Network;
-						lock (us._Network.PrivateWins)
-						{
-							if (us._Network.PrivateWins.ContainsKey(us))
-						   	{
-								window = us._Network.PrivateWins[us];
-							}
-						}
-						if (window != null)
+                        lock (us._Network.PrivateWins)
+                        {
+                            if (us._Network.PrivateWins.ContainsKey(us))
+                            {
+                                window = us._Network.PrivateWins[us];
+                            }
+                        }
+                        if (window != null)
                         {
                             window.MenuColor = Configuration.CurrentSkin.fontcolor;
                         } 
@@ -688,15 +688,15 @@ namespace Client.Graphics
                             channel._Network.Channels.Remove(channel);
                         }
                     }
-	
-					lock (channel._Network._Protocol.Windows)
-					{
-						if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.window + channel.Name))
-						{
-							channel._Network._Protocol.Windows[channel._Network.window + channel.Name].Dispose();
-							channel._Network._Protocol.Windows.Remove(channel._Network.window + channel.Name);
-						}
-					}
+    
+                    lock (channel._Network._Protocol.Windows)
+                    {
+                        if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.window + channel.Name))
+                        {
+                            channel._Network._Protocol.Windows[channel._Network.window + channel.Name].Dispose();
+                            channel._Network._Protocol.Windows.Remove(channel._Network.window + channel.Name);
+                        }
+                    }
 
                     lock (ChannelList)
                     {

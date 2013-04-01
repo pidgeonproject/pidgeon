@@ -91,7 +91,7 @@ namespace Client
             {
                 if (e.Event.Type == Gdk.EventType.MotionNotify)
                 {
-					if (scrollback != null)
+                    if (scrollback != null)
                     {
                         scrollback.SelectedLink = null;
                     }
@@ -106,7 +106,7 @@ namespace Client
                 Core.handleException(fail);
             }
         }
-		
+        
         public void LinkHandler(object sender, TextEventArgs e)
         {
             try

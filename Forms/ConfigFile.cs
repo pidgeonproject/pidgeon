@@ -3,30 +3,30 @@ using System.IO;
 
 namespace Client.Forms
 {
-	public partial class ConfigFile : Gtk.Window
-	{
-		public Gtk.Button button3;
-		public Gtk.Button button4;
-		public Gtk.TextView textview1;
-		
-		public ConfigFile () : 	base(Gtk.WindowType.Toplevel)
-		{
-			try
+    public partial class ConfigFile : Gtk.Window
+    {
+        public Gtk.Button button3;
+        public Gtk.Button button4;
+        public Gtk.TextView textview1;
+        
+        public ConfigFile () :  base(Gtk.WindowType.Toplevel)
+        {
+            try
             {
-				this.Build ();
+                this.Build ();
                 if (!File.Exists(Core.ConfigFile))
                 {
                     return;
                 }
-				this.button3.Activated += new EventHandler(button1_Click);
-				this.button4.Activated += new EventHandler(button2_Click);
-				textview1.Buffer.Text = File.ReadAllText(Core.ConfigFile);
+                this.button3.Activated += new EventHandler(button1_Click);
+                this.button4.Activated += new EventHandler(button2_Click);
+                textview1.Buffer.Text = File.ReadAllText(Core.ConfigFile);
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
-		}
+        }
 
         protected virtual void Build()
         {
@@ -84,18 +84,18 @@ namespace Client.Forms
             this.Show();
         }
 
-		private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
             if (ValidateXml())
             {
                 File.WriteAllText(Core.ConfigFile, textview1.Buffer.Text);
                 Core.ConfigurationLoad();
                 Hide();
-				Destroy();
+                Destroy();
             }
         }
 
-		public bool ValidateXml()
+        public bool ValidateXml()
         {
             try
             {
@@ -109,11 +109,11 @@ namespace Client.Forms
                 return false;
             }
         }
-		
-		private void button2_Click(object sender, EventArgs e)
+        
+        private void button2_Click(object sender, EventArgs e)
         {
             ValidateXml();
         }
-	}
+    }
 }
 

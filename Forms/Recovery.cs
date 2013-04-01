@@ -8,12 +8,12 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Recovery : Gtk.Window
-	{
-		public Recovery () : base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
-		}
-	}
+    public partial class Recovery : Gtk.Window
+    {
+        public Recovery () : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build ();
+        }
+    }
 }
 

@@ -20,11 +20,11 @@ using Gtk;
 
 namespace Client.Forms
 {
-	public partial class Connection : Gtk.Window
-	{
-		public Connection () : base(Gtk.WindowType.Toplevel)
-		{
-			this.Build ();
+    public partial class Connection : Gtk.Window
+    {
+        public Connection () : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build ();
             messages.Localize(this);
             this.entry4.Visibility = false;
             this.DeleteEvent += new DeleteEventHandler(Unshow);
@@ -58,7 +58,7 @@ namespace Client.Forms
                 this.comboboxentry1.SetActiveIter(iter2);
             }
             this.Title = messages.get("connection", Core.SelectedLanguage);
-		}
+        }
 
         public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
@@ -117,6 +117,6 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-	}
+    }
 }
 

@@ -36,11 +36,11 @@ namespace Client.Services
             public string Name = null;
             public string topic = null;
             public bool Changed = true;
-			public int menucolor = 0;
+            public int menucolor = 0;
 
             public Window()
             {
-				
+                
             }
 
             public Window(Graphics.Window owner)
@@ -53,7 +53,7 @@ namespace Client.Services
                     history.AddRange(owner.textbox.history);
                 }
                 lines.AddRange(owner.scrollback.Data);
-				menucolor = owner.MenuColor.ToArgb();
+                menucolor = owner.MenuColor.ToArgb();
             }
         }
 
@@ -278,12 +278,12 @@ namespace Client.Services
                     throw new Exception("This window doesn't contain any lines");
                 }
                 target.scrollback.SetText(Source.lines);
-				Source.lines.Clear();
+                Source.lines.Clear();
                 Source.lines = null;
                 if (Source.menucolor != 0)
-				{
-					target.MenuColor = System.Drawing.Color.FromArgb(Source.menucolor);
-				}
+                {
+                    target.MenuColor = System.Drawing.Color.FromArgb(Source.menucolor);
+                }
                 if (target.textbox != null)
                 {
                     target.textbox.history = new List<string>();

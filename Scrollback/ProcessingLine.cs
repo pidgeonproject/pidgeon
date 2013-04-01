@@ -41,8 +41,8 @@ namespace Client
                 }
                 Gtk.TextIter iter = simpleview.Buffer.EndIter;
                 simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
-				                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-										  Core.RemoveSpecial(line.text) + Environment.NewLine);
+                                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                                          Core.RemoveSpecial(line.text) + Environment.NewLine);
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
@@ -329,9 +329,9 @@ namespace Client
                         }
                         break;
                 }
-				
-				Graphics.PidgeonList.Updated = true;
-				
+                
+                Graphics.PidgeonList.Updated = true;
+                
                 if (Matched)
                 {
                     owner.MenuColor = Configuration.CurrentSkin.highlightcolor;

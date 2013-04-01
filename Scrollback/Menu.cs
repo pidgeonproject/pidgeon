@@ -90,7 +90,7 @@ namespace Client
 
         public void CreateMenu(object o, Gtk.PopulatePopupArgs e)
         {
-			listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
+            listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
             CreatingMenu = true;
             Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
             separator1.Show();
@@ -195,7 +195,7 @@ namespace Client
             e.Menu.Append(scroll);
             Gtk.MenuItem refresh = new Gtk.MenuItem("Refresh");
             refresh.Show();
-			refresh.Activated += new EventHandler(refreshToolStripMenuItem_Click);
+            refresh.Activated += new EventHandler(refreshToolStripMenuItem_Click);
             e.Menu.Append(refresh);
             Gtk.CheckMenuItem taly = new Gtk.CheckMenuItem(toggleAdvancedLayoutToolStripMenuItem.Text);
             taly.Activated += new EventHandler(toggleAdvancedLayoutToolStripMenuItem_Click);
@@ -223,20 +223,20 @@ namespace Client
                 e.Menu.Append(channel);
                 channel.Activated += new EventHandler(channelToolStripMenuItem_Click);
             }
-			if (listAllChannelsToolStripMenuItem.Visible)
-			{
-	            Gtk.MenuItem list = new Gtk.MenuItem(listAllChannelsToolStripMenuItem.Text);
-	            list.Show();
-	            list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
-	            e.Menu.Append(list);
-			}
-			if (retrieveTopicToolStripMenuItem.Visible)
-			{
-	            Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
-	            retrieve.Show();
-	            retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
-				e.Menu.Append(retrieve);
-			}
+            if (listAllChannelsToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem list = new Gtk.MenuItem(listAllChannelsToolStripMenuItem.Text);
+                list.Show();
+                list.Activated += new EventHandler(listAllChannelsToolStripMenuItem_Click);
+                e.Menu.Append(list);
+            }
+            if (retrieveTopicToolStripMenuItem.Visible)
+            {
+                Gtk.MenuItem retrieve = new Gtk.MenuItem("Retrieve topic");
+                retrieve.Show();
+                retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
+                e.Menu.Append(retrieve);
+            }
             Gtk.MenuItem copy = new Gtk.MenuItem(copyTextToClipBoardToolStripMenuItem.Text);
             copy.Activated += new EventHandler(copyTextToClipBoardToolStripMenuItem_Click);
             copy.Show();
@@ -317,9 +317,9 @@ namespace Client
                         whoisToolStripMenuItem.Visible = false;
                         whowasToolStripMenuItem.Visible = false;
                     } else
-					{
-						listAllChannelsToolStripMenuItem.Visible = false;
-					}
+                    {
+                        listAllChannelsToolStripMenuItem.Visible = false;
+                    }
                     toolStripMenuItem2.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;
                     copyLinkToClipboardToolStripMenuItem.Visible = false;
@@ -332,7 +332,7 @@ namespace Client
                     if (owner.isChannel)
                     {
                         kickToolStripMenuItem.Visible = true;
-						listAllChannelsToolStripMenuItem.Visible = true;
+                        listAllChannelsToolStripMenuItem.Visible = true;
                         whoisToolStripMenuItem.Visible = true;
                         whowasToolStripMenuItem.Visible = true;
                         mode1e2ToolStripMenuItem.Visible = true;
@@ -346,12 +346,12 @@ namespace Client
                         whoisToolStripMenuItem.Text = "/whois " + name;
                         whowasToolStripMenuItem.Text = "/whowas " + name;
                         mode1b2ToolStripMenuItem.Visible = true;
-						if (name == "")
-						{
-							kickToolStripMenuItem.Visible = false;
-                        	whoisToolStripMenuItem.Visible = false;
-                        	whowasToolStripMenuItem.Visible = false;
-						}
+                        if (name == "")
+                        {
+                            kickToolStripMenuItem.Visible = false;
+                            whoisToolStripMenuItem.Visible = false;
+                            whowasToolStripMenuItem.Visible = false;
+                        }
                     }
                     toolStripMenuItem2.Visible = true;
                     toolStripMenuItem1.Visible = true;
@@ -397,10 +397,10 @@ namespace Client
                     Click_L(SelectedLink);
                 }
             }
-			if (owner != null)
-			{
-				owner.textbox.setFocus();
-			}
+            if (owner != null)
+            {
+                owner.textbox.setFocus();
+            }
         }
 
         public void Click_L(string http)

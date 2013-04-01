@@ -65,7 +65,7 @@ namespace Client.Graphics
         public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
-		public bool isInitialised = false;
+        public bool isInitialised = false;
         
         // window
         private global::Gtk.VPaned vpaned1;
@@ -121,7 +121,7 @@ namespace Client.Graphics
             this.listView = new global::Gtk.TreeView();
             this.listView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             this.listView.CanFocus = true;
-			this.listView.ButtonPressEvent += new ButtonPressEventHandler(Ignore);
+            this.listView.ButtonPressEvent += new ButtonPressEventHandler(Ignore);
             this.listView.PopupMenu += new PopupMenuHandler(Menu);
             this.listView.Name = "listView";
             this.listView.Selection.Mode = SelectionMode.Multiple;
@@ -161,16 +161,16 @@ namespace Client.Graphics
                 textbox1.history = new List<string>();
             }
         }
-		
-		[GLib.ConnectBefore]
-		private void Ignore(object sender, Gtk.ButtonPressEventArgs e)
-		{
-			if (e.Event.Button == 3)
-			{
-				e.RetVal = true;
-			}
-		}
-		
+        
+        [GLib.ConnectBefore]
+        private void Ignore(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                e.RetVal = true;
+            }
+        }
+        
         public void Init()
         {
             this.scrollback.owner = this;
@@ -181,7 +181,7 @@ namespace Client.Graphics
             kbToolStripMenuItem.Enabled = false;
             krToolStripMenuItem.Enabled = false;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
-			listView.TooltipColumn = 2;
+            listView.TooltipColumn = 2;
             column1.Title = (messages.get("list", Core.SelectedLanguage));
             listView.AppendColumn(column1);
             listView.Model = UserList;

@@ -28,12 +28,12 @@ namespace Client.Graphics
 {
     public partial class Window : Gtk.Bin
     {
-		public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User), typeof(string));
+        public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User), typeof(string));
         // menu
-		public GTK.Menu vERSIONToolStripMenuItem = new GTK.Menu("Version");
-		public GTK.Menu tIMEToolStripMenuItem = new GTK.Menu("Time");
-		public GTK.Menu pINGToolStripMenuItem = new GTK.Menu("PING");
-	    public GTK.Menu pAGEToolStripMenuItem = new GTK.Menu("PAGE");
+        public GTK.Menu vERSIONToolStripMenuItem = new GTK.Menu("Version");
+        public GTK.Menu tIMEToolStripMenuItem = new GTK.Menu("Time");
+        public GTK.Menu pINGToolStripMenuItem = new GTK.Menu("PING");
+        public GTK.Menu pAGEToolStripMenuItem = new GTK.Menu("PAGE");
         public GTK.Menu messageToolStripMenuItem = new GTK.Menu("Message");
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
@@ -55,8 +55,8 @@ namespace Client.Graphics
         public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu("Kick + Ban");
         public GTK.Menu kickToolStripMenuItem = new GTK.Menu("Kick");
         public GTK.Menu synchroToolStripMenuItem = new GTK.Menu("Reload");
-		
-		public List<User> SelectedUsers
+        
+        public List<User> SelectedUsers
         {
             get
             {
@@ -72,8 +72,8 @@ namespace Client.Graphics
                 return ul;
             }
         }
-		
-		[GLib.ConnectBefore]
+        
+        [GLib.ConnectBefore]
         private void Menu2(object sender, Gtk.ButtonPressEventArgs e)
         {
             if (e.Event.Button == 3)
@@ -81,8 +81,8 @@ namespace Client.Graphics
                 Menu(sender, null);
             }
         }
-		
-		private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
+        
+        private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
+        
         private void Menu(object sender, Gtk.PopupMenuArgs e)
         {
             try
@@ -138,31 +138,31 @@ namespace Client.Graphics
                     message.Activated += new EventHandler(messageToolStripMenuItem_Click);
                     menu.Append(message);
                 }
-				
-				if (ctToolStripMenuItem.Visible)
-				{
-					Gtk.SeparatorMenuItem separatorX = new Gtk.SeparatorMenuItem();
+                
+                if (ctToolStripMenuItem.Visible)
+                {
+                    Gtk.SeparatorMenuItem separatorX = new Gtk.SeparatorMenuItem();
                     separatorX.Show();
                     menu.Append(separatorX);
-					Gtk.Menu ctcp = new Gtk.Menu();
+                    Gtk.Menu ctcp = new Gtk.Menu();
                     Gtk.MenuItem Ctcp = new MenuItem("CTCP");
                     Ctcp.Submenu = ctcp;
                     menu.Append(Ctcp);
                     Gtk.MenuItem ping = new MenuItem(pINGToolStripMenuItem.Text);
-					ping.Activated += new EventHandler(pINGToolStripMenuItem_Click);
+                    ping.Activated += new EventHandler(pINGToolStripMenuItem_Click);
                     ctcp.Append(ping);
-					Gtk.MenuItem page = new MenuItem(pAGEToolStripMenuItem.Text);
-					page.Activated += new EventHandler(pAGEToolStripMenuItem_Click);
+                    Gtk.MenuItem page = new MenuItem(pAGEToolStripMenuItem.Text);
+                    page.Activated += new EventHandler(pAGEToolStripMenuItem_Click);
                     ctcp.Append(page);
-					Gtk.MenuItem version = new MenuItem(vERSIONToolStripMenuItem.Text);
-					version.Activated += new EventHandler(vERSIONToolStripMenuItem_Click);
+                    Gtk.MenuItem version = new MenuItem(vERSIONToolStripMenuItem.Text);
+                    version.Activated += new EventHandler(vERSIONToolStripMenuItem_Click);
                     ctcp.Append(version);
-					Gtk.MenuItem dt = new MenuItem(tIMEToolStripMenuItem.Text);
-					dt.Activated += new EventHandler(tIMEToolStripMenuItem_Click);
+                    Gtk.MenuItem dt = new MenuItem(tIMEToolStripMenuItem.Text);
+                    dt.Activated += new EventHandler(tIMEToolStripMenuItem_Click);
                     ctcp.Append(dt);
-					
-				}
-				
+                    
+                }
+                
                 if (modeToolStripMenuItem.Visible)
                 {
                     display = true;
@@ -306,7 +306,7 @@ namespace Client.Graphics
             }
         }
 
-		private void qToolStripMenuItem_Click(object sender, EventArgs e)
+        private void qToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Mode("+q");
         }
@@ -436,8 +436,8 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
-		private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
+        
+        private void pAGEToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
@@ -512,7 +512,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
+        
         private void krToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -586,7 +586,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
+        
         private void pINGToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -601,7 +601,7 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-		
+        
         public void SendCtcp(string message)
         {
             if (isChannel)
@@ -639,6 +639,6 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-	}
+    }
 }
 
