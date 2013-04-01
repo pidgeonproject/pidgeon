@@ -34,7 +34,8 @@ namespace Client.Forms
             // Widget Client.Forms.Notification
             this.Name = "Client.Forms.Notification";
             this.Title = "Notification";
-            this.TypeHint = ((global::Gdk.WindowTypeHint)(4));
+			this.TypeHint = Gdk.WindowTypeHint.Normal;
+            //this.TypeHint = ((global::Gdk.WindowTypeHint)(4));
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child Client.Forms.Notification.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();
@@ -117,7 +118,6 @@ namespace Client.Forms
             this.Title = "Notification";
             this.KeepAbove = true;
             this.Opacity = 0.6;
-            this.Hide();
             this.ModifyBg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.root.ButtonPressEvent += new Gtk.ButtonPressEventHandler(_Remove);
