@@ -405,6 +405,15 @@ namespace Client
                     {
                         if (text.Contains("PING"))
                         {
+                            /* Some networks such as Espernet ping in the following format: "PING :<random string>" and require the client to 
+                             * reply with "PONG :<same random string>". This makes the program able to communicate with such networks.
+                             * Example:
+                             * 
+                             * irc.server.net >> PING :G56D32
+                             * irc.server.net << PONG :G56D32
+                             * 
+                             * Or else, the client will timeout.
+                             * */
                             _Network.Transfer("PONG" + text.Substring("PING".Length, text.Length - "PING".Length), Configuration.Priority.High);
                             return true;                            
                         }
