@@ -243,6 +243,22 @@ namespace Client
             }
         }
 
+        ~Scrollback()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                if (owner != null)
+                {
+                    Core.DebugLog("Destructor called for scrollback " + owner.name);
+                }
+                else
+                {
+                    Core.DebugLog("Destructor called for scrollback of no name");
+                }
+                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+            }
+        }
+
         public void HideLn()
         {
             mode1b2ToolStripMenuItem.Visible = false;

@@ -261,6 +261,15 @@ namespace Client
             return null;
         }
 
+        ~Network()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor called for network: " + ServerName);
+                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+            }
+        }
+
         public void Part(string channel_name)
         {
             _Protocol.Part(channel_name, this);

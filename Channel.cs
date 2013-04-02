@@ -212,6 +212,15 @@ namespace Client
             Chat = null;
         }
 
+        ~Channel()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor called for channel: " + Name);
+                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+            }
+        }
+
         /// <summary>
         /// Recreate information in side menu
         /// </summary>
