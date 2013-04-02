@@ -302,15 +302,19 @@ namespace Client
                 try
                 {
                     XmlDocument configuration = new XmlDocument();
+                    configuration.Load(ConfigFile);
                     lock (Configuration.ShortcutKeylist)
                     {
                         Configuration.ShortcutKeylist = new List<Shortcut>();
+                    }
+                    lock (Ignoring.IgnoreList)
+                    {
+                        Ignoring.IgnoreList.Clear();
                     }
                     lock (Configuration.HighlighterList)
                     {
                         Configuration.HighlighterList = new List<Network.Highlighter>();
                     }
-                    configuration.Load(ConfigFile);
                     lock (NetworkData.Networks)
                     {
                         NetworkData.Networks.Clear();
@@ -376,6 +380,7 @@ namespace Client
                                         }
                                         continue;
                                     }
+
                                     if (curr.Name == "list")
                                     {
                                         if (curr.Attributes.Count > 2)

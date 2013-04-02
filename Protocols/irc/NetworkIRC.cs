@@ -274,6 +274,10 @@ namespace Client
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
+                            if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                            {
+                                message = message.Substring(0, message.Length - 1);
+                            }
                             channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
