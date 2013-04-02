@@ -573,6 +573,11 @@ namespace Client
         {
             try
             {
+                lock (ContentLines)
+                {
+                    ContentLines.Sort();
+                }
+                SortNeeded = false;
                 Reload(true, true);
             }
             catch (Exception fail)

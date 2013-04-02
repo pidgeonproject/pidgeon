@@ -27,13 +27,13 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
-        private global::Gtk.Frame frame2;
+        private global::Gtk.Frame fExtensions;
         private global::Gtk.Alignment GtkAlignment2;
         private global::Gtk.ScrolledWindow GtkScrolledWindow2;
         private global::Gtk.TreeView treeview2;
         private global::Gtk.Label GtkLabel2;
         private Gtk.Widget widget = null;
-        private global::Gtk.Frame frame3;
+        private global::Gtk.Frame fKeyboard;
         private global::Gtk.Alignment GtkAlignment3;
         private global::Gtk.ScrolledWindow GtkScrolledWindow3;
         private global::Gtk.TreeView treeview3;
@@ -43,7 +43,7 @@ namespace Client.Forms
         private global::Gtk.ScrolledWindow GtkScrolledWindow4;
         private global::Gtk.TreeView treeview4;
         private global::Gtk.Label GtkLabel4;
-        private global::Gtk.Frame frame5;
+        private global::Gtk.Frame fIgnore;
         private global::Gtk.Alignment GtkAlignment5;
         private global::Gtk.ScrolledWindow GtkScrolledWindow5;
         private global::Gtk.TreeView treeview5;
@@ -54,6 +54,9 @@ namespace Client.Forms
         private global::Gtk.Frame frame7;
         private global::Gtk.Alignment GtkAlignment7;
         private global::Gtk.Label GtkLabel7;
+        private global::Gtk.Frame fSys;
+        private global::Gtk.Alignment GtkAlignment8;
+        private global::Gtk.Label GtkLabel8;
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
@@ -75,9 +78,9 @@ namespace Client.Forms
         
         public void Initialize()
         {
-            this.frame2 = new global::Gtk.Frame ();
-            this.frame2.Name = "frame1";
-            this.frame2.ShadowType = ((global::Gtk.ShadowType)(0));
+            this.fExtensions = new global::Gtk.Frame ();
+            this.fExtensions.Name = "frame1";
+            this.fExtensions.ShadowType = ((global::Gtk.ShadowType)(0));
             // Container child frame1.Gtk.Container+ContainerChild
             this.GtkAlignment2 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
             this.GtkAlignment2.Name = "GtkAlignment";
@@ -92,13 +95,13 @@ namespace Client.Forms
             this.treeview2.Name = "treeview1";
             this.GtkScrolledWindow2.Add (this.treeview2);
             this.GtkAlignment2.Add (this.GtkScrolledWindow2);
-            this.frame2.Add (this.GtkAlignment2);
+            this.fExtensions.Add (this.GtkAlignment2);
             this.GtkLabel2 = new global::Gtk.Label ();
             this.GtkLabel2.Name = "GtkLabel";
             this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Extensions</b>");
             this.GtkLabel2.UseMarkup = true;
-            this.frame2.LabelWidget = this.GtkLabel2;
-            this.frame2.ShowAll();
+            this.fExtensions.LabelWidget = this.GtkLabel2;
+            this.fExtensions.ShowAll();
             
             this.frame4 = new global::Gtk.Frame ();
             this.frame4.Name = "frame1";
@@ -144,9 +147,9 @@ namespace Client.Forms
             this.frame4.LabelWidget = this.GtkLabel4;
             this.frame4.ShowAll();
             
-            this.frame3 = new global::Gtk.Frame ();
-            this.frame3.Name = "frame1";
-            this.frame3.ShadowType = ((global::Gtk.ShadowType)(0));
+            this.fKeyboard = new global::Gtk.Frame ();
+            this.fKeyboard.Name = "frame1";
+            this.fKeyboard.ShadowType = ((global::Gtk.ShadowType)(0));
             // Container child frame1.Gtk.Container+ContainerChild
             this.GtkAlignment3 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
             this.GtkAlignment3.Name = "GtkAlignment";
@@ -161,17 +164,17 @@ namespace Client.Forms
             this.treeview3.Name = "treeview1";
             this.GtkScrolledWindow3.Add (this.treeview3);
             this.GtkAlignment3.Add (this.GtkScrolledWindow3);
-            this.frame3.Add (this.GtkAlignment3);
+            this.fKeyboard.Add (this.GtkAlignment3);
             this.GtkLabel3 = new global::Gtk.Label ();
             this.GtkLabel3.Name = "GtkLabel";
             this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Keyboard</b>");
             this.GtkLabel3.UseMarkup = true;
-            this.frame3.LabelWidget = this.GtkLabel3;
-            this.frame3.ShowAll();
+            this.fKeyboard.LabelWidget = this.GtkLabel3;
+            this.fKeyboard.ShowAll();
             
-            this.frame5 = new global::Gtk.Frame ();
-            this.frame5.Name = "frame1";
-            this.frame5.ShadowType = ((global::Gtk.ShadowType)(0));
+            this.fIgnore = new global::Gtk.Frame ();
+            this.fIgnore.Name = "frame1";
+            this.fIgnore.ShadowType = ((global::Gtk.ShadowType)(0));
             // Container child frame1.Gtk.Container+ContainerChild
             this.GtkAlignment5 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
             this.GtkAlignment5.Name = "GtkAlignment";
@@ -186,13 +189,13 @@ namespace Client.Forms
             this.treeview5.Name = "treeview1";
             this.GtkScrolledWindow5.Add (this.treeview5);
             this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-            this.frame5.Add (this.GtkAlignment5);
+            this.fIgnore.Add (this.GtkAlignment5);
             this.GtkLabel5 = new global::Gtk.Label ();
             this.GtkLabel5.Name = "GtkLabel";
             this.GtkLabel5.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Ignore list</b>");
             this.GtkLabel5.UseMarkup = true;
-            this.frame5.LabelWidget = this.GtkLabel5;
-            this.frame5.ShowAll();
+            this.fIgnore.LabelWidget = this.GtkLabel5;
+            this.fIgnore.ShowAll();
             
             this.frame6 = new global::Gtk.Frame ();
             this.frame6.Name = "frame1";
@@ -207,7 +210,7 @@ namespace Client.Forms
             this.GtkLabel6.Name = "GtkLabel";
             this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>System</b>");
             this.GtkLabel6.UseMarkup = true;
-            this.frame6.LabelWidget = this.GtkLabel5;
+            this.frame6.LabelWidget = this.GtkLabel6;
             this.frame6.ShowAll();
             
             this.frame7 = new global::Gtk.Frame ();
@@ -223,8 +226,24 @@ namespace Client.Forms
             this.GtkLabel7.Name = "GtkLabel";
             this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>Logs</b>");
             this.GtkLabel7.UseMarkup = true;
-            this.frame7.LabelWidget = this.GtkLabel5;
+            this.frame7.LabelWidget = this.GtkLabel7;
             this.frame7.ShowAll();
+
+            this.fSys = new global::Gtk.Frame();
+            this.fSys.Name = "frame1";
+            this.fSys.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment8 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+            this.GtkAlignment8.Name = "GtkAlignment";
+            this.GtkAlignment8.LeftPadding = ((uint)(12));
+            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
+            this.fSys.Add(this.GtkAlignment8);
+            this.GtkLabel8 = new global::Gtk.Label();
+            this.GtkLabel8.Name = "GtkLabel";
+            this.GtkLabel8.LabelProp = global::Mono.Unix.Catalog.GetString("<b>System</b>");
+            this.GtkLabel8.UseMarkup = true;
+            this.fSys.LabelWidget = this.GtkLabel8;
+            this.fSys.ShowAll();
         }
         
         public Preferences() : base(Gtk.WindowType.Toplevel)
@@ -357,7 +376,7 @@ namespace Client.Forms
                         setWindow(frame1);
                         break;
                     case 2:
-                        setWindow(frame6);
+                        setWindow(fSys);
                         break;
                     case 3:
                         setWindow(frame7);
@@ -366,13 +385,13 @@ namespace Client.Forms
                         setWindow(frame4);
                         break;
                     case 6:
-                        setWindow(frame5);
+                        setWindow(fIgnore);
                         break;
                     case 7:
-                        setWindow(frame3);
+                        setWindow(fKeyboard);
                         break;
                     case 8:
-                        setWindow(frame2);
+                        setWindow(fExtensions);
                         break;
                 }
             } catch (Exception fail)

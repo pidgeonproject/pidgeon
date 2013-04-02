@@ -127,8 +127,11 @@ namespace Client
             {
                 if (SortNeeded)
                 {
-                    ContentLines.Sort();
-                    SortNeeded = false;
+                    lock (ContentLines)
+                    {
+                        ContentLines.Sort();
+                        SortNeeded = false;
+                    }
                 }
 
                 if (simple)
@@ -372,6 +375,7 @@ namespace Client
                 }
                 else
                 {
+                    SortNeeded = true;
                     Reload(false, true);
                 }
             }
@@ -390,10 +394,10 @@ namespace Client
                 }
                 else
                 {
+                    SortNeeded = true;
                     ReloadWaiting = true;
                 }
             }
-
             return false;
         }
     }
