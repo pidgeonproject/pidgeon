@@ -154,7 +154,12 @@ namespace Client
                         }
                         return false;
                     }
+                    else if (_data2[1].Contains("PING"))
+                    {
+                        return true;
+                    }
                 }
+                
             }
             return false;
         }
@@ -392,8 +397,18 @@ namespace Client
                                     break;
                             }
                         }
+
                     }
+                    
                 }
+                else //Not all incoming commands start with a ':'
+                    {
+                        if (text.Contains("PING"))
+                        {
+                            _Network.Transfer("PONG" + text.Substring("PING".Length, text.Length - "PING".Length), Configuration.Priority.High);
+                            return true;                            
+                        }
+                    }
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
