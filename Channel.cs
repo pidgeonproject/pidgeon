@@ -417,7 +417,32 @@ namespace Client
                 Core.handleException(f);
             }
         }
-
+        /// <summary>
+		/// Destroy this class, be careful, it can't be used in any way after you
+		/// call this
+		/// </summary>
+		public void Destroy()
+		{
+			lock (UserList)
+			{
+				UserList.Clear();
+			}
+			
+			Chat = null;
+			ChannelWork = false;
+			_Network = null;
+			
+			lock (Exceptions)
+			{
+				Exceptions.Clear();
+			}
+			
+			lock (Bans)
+			{
+				Bans.Clear();
+			}
+		}
+		
         private string uchr(User nick)
         {
             if (nick.ChannelMode._Mode.Count < 1)

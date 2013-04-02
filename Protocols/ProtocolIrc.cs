@@ -394,6 +394,7 @@ namespace Client
             }
             catch (Exception) { }
             _IRCNetwork.Connected = false;
+			_IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();

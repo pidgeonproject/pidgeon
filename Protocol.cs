@@ -327,7 +327,7 @@ namespace Client
             {
                 foreach (Graphics.Window xx in Windows.Values)
                 {
-                    xx.Destroy();
+                    xx._Destroy();
                 }
             }
             Windows.Clear();

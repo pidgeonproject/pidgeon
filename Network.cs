@@ -373,7 +373,7 @@ namespace Client
         {
             _Protocol.Message(text, to, this, _priority, pmsg);
         }
-
+		
         /// <summary>
         /// Unregister info for user and channel modes
         /// </summary>
@@ -391,7 +391,47 @@ namespace Client
             }
             return false;
         }
-
+		
+		/// <summary>
+		/// Destroy this class, be careful, it can't be used in any way after you
+		/// call this
+		/// </summary>
+		public void Destroy()
+		{
+			lock (ChannelList)
+			{
+				ChannelList.Clear();
+			}
+			
+			lock (PrivateChat)
+			{
+				PrivateChat.Clear();
+			}
+			
+			lock (Channels)
+			{
+				foreach (Channel xx in Channels)
+				{
+					xx.Destroy();
+				}
+				
+				Channels.Clear();
+			}
+			
+			lock (PrivateWins)
+			{
+				PrivateWins.Clear();
+			}
+			
+			_Protocol = null;
+			SystemWindow = null;
+			
+			lock (Descriptions)
+			{
+				Descriptions.Clear();
+			}
+		}
+		
         /// <summary>
         /// Register info for channel info
         /// </summary>

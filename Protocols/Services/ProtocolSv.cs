@@ -339,6 +339,7 @@ namespace Client
                 foreach (Network network in NetworkList)
                 {
                     network.Connected = false;
+					network.Destroy();
                     if (Core.network == network)
                     {
                         Core.network = null;
@@ -351,6 +352,15 @@ namespace Client
                 keep.Abort();
                 Core.killThread(keep);
             }
+			
+			if (sBuffer != null)
+			{
+				sBuffer.Networks.Clear();
+				sBuffer.networkInfo.Clear();
+			}
+			
+			sBuffer = null;
+			
             if (_StreamWriter != null) _StreamWriter.Close();
             if (_StreamReader != null) _StreamReader.Close();
             base.Exit();

@@ -269,6 +269,18 @@ namespace Client.Graphics
             return true;
         }
 
+		public void _Destroy()
+		{
+			if (scrollback != null)
+			{
+				scrollback.Destroy();
+			}
+			
+			this.scrollback1 = null;
+			this.textbox1 = null;
+			this.Destroy();
+		}
+		
         public void Changed(object sender, GLib.NotifyArgs dt)
         {
             try
