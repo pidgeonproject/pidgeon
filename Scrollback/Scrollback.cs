@@ -24,12 +24,11 @@ using System.IO;
 using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Linq;
-
 
 namespace Client
 {
-    public partial class Scrollback : UserControl
+    [System.ComponentModel.ToolboxItem(true)]
+    public partial class Scrollback : Gtk.Bin
     {
         /// <summary>
         /// Maximal size of text
@@ -42,17 +41,26 @@ namespace Client
         /// <summary>
         /// Owner window
         /// </summary>
-        public Window owner = null;
+        public Graphics.Window owner = null;
         private List<ContentLine> UndrawnLines = new List<ContentLine>();
         private string Link = "";
-        public bool simple = false;
+        public bool simple = true;
         private DateTime lastDate;
         private bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
+        public bool isMicro = false;
         private string LogfilePath = null;
         public bool SortNeeded = false;
-        public List<ContentLine> Data
+        private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        public global::Gtk.TextView simpleview;
+        private GLib.TimeoutHandler timer2;
+        public RichTBox RT = null;
+        public string SelectedLink = null;
+        private int ScrollTime = 0;
+        public bool Scrolling = true;
+
+        new public List<ContentLine> Data
         {
             get
             {
@@ -65,18 +73,6 @@ namespace Client
             }
         }
 
-        public enum MessageStyle
-        {
-            System,
-            Message,
-            Action,
-            User,
-            Channel,
-            Kick,
-            Join,
-            Part,
-        }
-
         public int Lines
         {
             get
@@ -85,55 +81,67 @@ namespace Client
             }
         }
 
-        [Serializable]
-        public class ContentLine : IComparable
-        {
-            public DateTime time;
-            public string text;
-            public bool notice = false;
-            public MessageStyle style;
-            public ContentLine()
-            {
-
-            }
-
-            public ContentLine(MessageStyle _style, string Text, DateTime when, bool _notice)
-            {
-                style = _style;
-                time = when;
-                text = Text;
-                notice = _notice;
-            }
-
-            public int CompareTo(object obj)
-            {
-                if (obj is ContentLine)
-                {
-                    return this.time.CompareTo((obj as ContentLine).time);
-                }
-                return 0;
-            }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-        }
-
         public bool WindowVisible()
         {
-            if (this.Visible == false)
-            {
-                return false;
-            }
             if (owner != null)
             {
-                if (owner.Visible != true)
+                if (owner != Core._Main.Chat)
                 {
                     return false;
                 }
             }
             return true;
+        }
+
+        protected virtual void Build()
+        {
+            global::Stetic.Gui.Initialize(this);
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.ScrollbackWidget";
+            this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+            this.simpleview = new global::Gtk.TextView();
+            this.simpleview.CanFocus = true;
+            this.simpleview.WrapMode = Gtk.WrapMode.Word;
+            this.Visible = true;
+            this.simpleview.Name = "simpleview";
+            this.simpleview.Editable = false;
+            this.simpleview.DoubleBuffered = true;
+            this.GtkScrolledWindow.Add(this.simpleview);
+            this.RT = new RichTBox();
+            if (!isMicro)
+            {
+                this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
+                this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
+                this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
+            }
+            timer2 = new GLib.TimeoutHandler(timer2_Tick);
+            simpleview.ModifyBase(Gtk.StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            simpleview.ModifyText(Gtk.StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+            GLib.Timeout.Add(200, timer2);
+            this.Add(this.GtkScrolledWindow);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+
+            this.Hide();
+        }
+
+        private void simpleviewFinished(object o, EventArgs r)
+        {
+            try
+            {
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
@@ -166,11 +174,13 @@ namespace Client
                 if (simple)
                 {
                     simple = false;
-                    RT.Visible = true;
-                    simpleview.Visible = false;
+                    if (this.Child != null)
+                    {
+                        this.Remove(this.Child);
+                    }
+                    this.Add(RT);
                     toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     toggleSimpleLayoutToolStripMenuItem.Checked = false;
-                    RT.RedrawText();
                     return;
                 }
                 Reload(true, true);
@@ -179,8 +189,14 @@ namespace Client
             toggleAdvancedLayoutToolStripMenuItem.Checked = false;
             toggleSimpleLayoutToolStripMenuItem.Checked = true;
             simple = true;
-            simpleview.Visible = true;
-            RT.Visible = false;
+            if (this.Child != null)
+            {
+                this.Remove(this.Child);
+            }
+            this.Add(GtkScrolledWindow);
+
+            this.ShowAll();
+
             Reload(true, true);
         }
 
@@ -189,14 +205,11 @@ namespace Client
         /// </summary>
         public Scrollback()
         {
-            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
-
             ReloadWaiting = true;
         }
 
-        public Scrollback(Window _ParentWindow)
+        public Scrollback(Graphics.Window _ParentWindow)
         {
-            this.BackColor = Configuration.CurrentSkin.backgroundcolor;
             this.owner = _ParentWindow;
 
             ReloadWaiting = true;
@@ -204,44 +217,28 @@ namespace Client
 
         public void Create()
         {
-            InitializeComponent();
-            simpleview.Visible = false;
-            toggleAdvancedLayoutToolStripMenuItem.Checked = true;
-        }
-
-        private void Scrollback_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                RT.Spacing = Configuration.CurrentSkin.SBABOX_sp;
-                RT.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                RT.Font = Configuration.CurrentSkin.SBABOX;
-                simpleview.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                simpleview.ForeColor = Configuration.CurrentSkin.fontcolor;
-                RT.scrollback = this;
-                HideLn();
-                lastDate = DateTime.MinValue;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            Build();
+            RT.scrollback = this;
+            scrollToolStripMenuItem.Checked = true;
+            HideLn();
+            lastDate = DateTime.MinValue;
+            Switch(true);
         }
 
         public void ReloadSimple()
         {
             lock (ContentLines)
             {
-                simpleview.Text = "";
                 StringBuilder everything = new StringBuilder("");
                 foreach (ContentLine _line in ContentLines)
                 {
                     everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
                 }
-                simpleview.AppendText(everything.ToString());
+                simpleview.Buffer.Text = "";
+                simpleview.Buffer.InsertAtCursor(everything.ToString());
                 if (ScrollingEnabled)
                 {
-                    simpleview.ScrollToCaret();
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
                 }
             }
         }
@@ -269,6 +266,12 @@ namespace Client
             return false;
         }
 
+        private void ResetScrolling()
+        {
+            ScrollTime = 0;
+            Scrolling = true;
+        }
+
         public bool RestoreOffset()
         {
             if (scrollback_max != Configuration.Scrollback.scrollback_plimit)
@@ -281,49 +284,78 @@ namespace Client
             return false;
         }
 
-        private void timer2_Tick(object sender, EventArgs e)
+        public bool timer2_Tick()
         {
             try
             {
-                if (RT != null && WindowVisible())
+                if (WindowVisible())
                 {
+                    if (ScrollingEnabled && Scrolling)
+                    {
+                        if (ScrollTime < 10)
+                        {
+                            ScrollTime++;
+                            if (simple)
+                            {
+                                simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                            }
+                            if (!simple)
+                            {
+                                RT.ScrollToBottom();
+                            }
+                        }
+                        else
+                        {
+                            Scrolling = false;
+                        }
+                    }
                     lock (UndrawnLines)
                     {
                         if (!ReloadWaiting)
                         {
                             if (UndrawnLines.Count > 0)
                             {
-                                timer2.Enabled = false;
-                                foreach (ContentLine curr in UndrawnLines)
+                                // if there is too many lines in buffer we write only last
+                                if (UndrawnLines.Count > scrollback_max && !simple)
                                 {
-                                    InsertLineToText(curr, false);
-                                }
-                                RT.RedrawText();
-                                if (ScrollingEnabled)
+                                    lock (ContentLines)
+                                    {
+                                        ContentLines.Clear();
+                                    }
+                                    int from = UndrawnLines.Count - scrollback_max - 1;
+                                    while (from < UndrawnLines.Count)
+                                    {
+                                        InsertLineToText(UndrawnLines[from], false);
+                                        from++;
+                                    }
+                                    SortNeeded = true;
+                                    ReloadWaiting = true;
+                                    Changed = true;
+                                } else
                                 {
-                                    RT.ScrollToBottom();
+                                    foreach (ContentLine curr in UndrawnLines)
+                                    {
+                                        InsertLineToText(curr, false);
+                                    }
                                 }
-                                timer2.Enabled = true;
                             }
                         }
                         UndrawnLines.Clear();
                     }
                     if (ReloadWaiting)
                     {
-                        timer2.Enabled = false;
                         if (Reload())
                         {
                             ReloadWaiting = false;
                         }
-                        timer2.Enabled = true;
                     }
                 }
             }
             catch (Exception fail)
             {
-                timer2.Enabled = true;
                 Core.handleException(fail);
             }
+            return true;
         }
     }
 }

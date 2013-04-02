@@ -33,27 +33,27 @@ namespace Client
                     string channel = parameter;
                     if (Core.network == null)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.network.Connected)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     Channel curr = Core.network.getChannel(channel);
                     if (curr != null)
                     {
-                        Window window = curr.retrieveWindow();
+                        Graphics.Window window = curr.retrieveWindow();
                         if (window != null)
                         {
-                            Core.network._Protocol.ShowChat(Core.network.window + window.name);
+                            Core.network._Protocol.ShowChat(Core.network.SystemWindow + window.name);
                         }
                     }
                     Core.network._Protocol.Join(channel);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
             }
 
             public static void raw(string parameter)
@@ -68,11 +68,11 @@ namespace Client
                             Core.network._Protocol.Command(text);
                             return;
                         }
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
             }
 
             public static void quit(string parameter)
@@ -95,18 +95,18 @@ namespace Client
                     string message = parameter;
                     if (Core.network == null)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.network.Connected)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     Channel curr = Core.network.RenderedChannel;
                     if (curr != null)
                     {
-                        Window window = curr.retrieveWindow();
+                        Graphics.Window window = curr.retrieveWindow();
                         if (window != null)
                         {
                             Core.network._Protocol.Message2(message, curr.Name);
@@ -114,7 +114,7 @@ namespace Client
                     }
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
 
             }
 
@@ -132,17 +132,17 @@ namespace Client
                             {
                                 ms = ms.Substring(1);
                             }
-                            Core.network.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Scrollback.MessageStyle.System);
+                            Core.network.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.network.Nickname + "> " + ms, Client.ContentLine.MessageStyle.System);
                             Core.network.Message(ms, channel, Configuration.Priority.Normal, true);
                             return;
                         }
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Scrollback.MessageStyle.Message);
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
             }
 
             public static void ctcp(string parameter)
@@ -152,27 +152,27 @@ namespace Client
                     string[] Params = parameter.Split(' ');
                     if (Core.network == null)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.network.Connected)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
                     Core.network.Transfer("PRIVMSG " + Params[0] + " :" + Core.network._Protocol.delimiter +
                         Params[1].ToUpper() + Core.network._Protocol.delimiter);
-                    Core._Main.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Scrollback.MessageStyle.Message, false);
+                    Core._Main.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Client.ContentLine.MessageStyle.Message, false);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Scrollback.MessageStyle.Message);
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
             }
 
             public static void query(string parameter)
             {
                 if (parameter.Length == 0)
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
                     return;
                 }
                 string channel = parameter;
@@ -182,7 +182,7 @@ namespace Client
                 }
                 if (channel.Contains(Core.network.channel_prefix))
                 {
-                    Core._Main.Chat.scrollback.InsertText("Invalid name", Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText("Invalid name", Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 while (channel.StartsWith(" "))
@@ -201,14 +201,15 @@ namespace Client
                                 Core.network.Private(channel);
                             }
                             Core.network._Protocol.ShowChat(Core.network.window + channel);
-                            Core.network._Protocol.Windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname, parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Scrollback.MessageStyle.Channel);
+                            Core.network._Protocol.Windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname,
+                                parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
                             Core.network.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;
                         }
-                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 if (Core.network != null && Core.network._Protocol != null)
@@ -223,7 +224,7 @@ namespace Client
                         return;
                     }
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Scrollback.MessageStyle.Message);
+                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
         }
     }

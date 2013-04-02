@@ -17,40 +17,48 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
+using Gtk;
 
 namespace Client
 {
     static class Program
     {
+        public static void ExceptionForm(GLib.UnhandledExceptionArgs e)
+        {
+            Core.handleException((Exception)e.ExceptionObject, true);
+            Environment.Exit(2);
+        }
+        
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main(string[] parameters)
         {
-            AppDomain.CurrentDomain.UnhandledException
-                += delegate(object sender, UnhandledExceptionEventArgs args)
-                {
-                    Exception exception = (Exception)args.ExceptionObject;
-                    Core.handleException(exception, true);
-                    Environment.Exit(1);
-                };
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
             try
             {
+                Application.Init();
+                GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
                 Core.startup = parameters;
                 if (Core.Load())
                 {
-                    Core._Main = new Main();
                     Core.network = null;
-                    Application.Run(Core._Main);
+                    Core._Main = new Forms.Main();
+                    Core._Main.Show();
+                    Application.Run();
                 }
             }
             catch (System.Threading.ThreadAbortException)
             {
-                Application.Exit();
+                Application.Quit();
+            }
+            catch (AccessViolationException fail)
+            {
+                Core.handleException(fail, true);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail, true);
             }
         }
     }

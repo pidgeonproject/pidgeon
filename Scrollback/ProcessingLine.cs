@@ -26,19 +26,10 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Linq;
 
-
 namespace Client
 {
     public partial class Scrollback
     {
-        public void Display()
-        {
-            if (!this.Visible)
-            {
-                this.Visible = true;
-            }
-        }
-
         private void InsertLineToText(ContentLine line, bool Draw = true)
         {
             if (simple)
@@ -48,10 +39,15 @@ namespace Client
                     Changed = true;
                     return;
                 }
-                lock (simpleview.Lines)
+                Gtk.TextIter iter = simpleview.Buffer.EndIter;
+                simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                                          Core.RemoveSpecial(line.text) + Environment.NewLine);
+                if (ScrollingEnabled)
                 {
-                    simpleview.AppendText(Configuration.Scrollback.format_date.Replace("$1", line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(line.text) + Environment.NewLine);
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
                 }
+                Changed = false;
                 return;
             }
             lock (ContentLines)
@@ -64,7 +60,6 @@ namespace Client
             RT.InsertLine(CreateLine(line));
             if (Draw)
             {
-                RT.RedrawText();
                 if (ScrollingEnabled)
                 {
                     RT.ScrollToBottom();
@@ -74,29 +69,29 @@ namespace Client
             Changed = false;
         }
 
-        private SBABox.Line CreateLine(ContentLine Line)
+        private Client.RichTBox.Line CreateLine(ContentLine Line)
         {
             ContentLine _c = Line;
             Color color = Configuration.CurrentSkin.fontcolor;
             switch (_c.style)
             {
-                case MessageStyle.Action:
+                case Client.ContentLine.MessageStyle.Action:
                     color = Configuration.CurrentSkin.miscelancscolor;
                     break;
-                case MessageStyle.Kick:
+                case Client.ContentLine.MessageStyle.Kick:
                     color = Configuration.CurrentSkin.kickcolor;
                     break;
-                case MessageStyle.System:
+                case Client.ContentLine.MessageStyle.System:
                     color = Configuration.CurrentSkin.miscelancscolor;
                     break;
-                case MessageStyle.Channel:
+                case Client.ContentLine.MessageStyle.Channel:
                     color = Configuration.CurrentSkin.colortalk;
                     break;
-                case MessageStyle.User:
+                case Client.ContentLine.MessageStyle.User:
                     color = Configuration.CurrentSkin.changenickcolor;
                     break;
-                case MessageStyle.Join:
-                case MessageStyle.Part:
+                case Client.ContentLine.MessageStyle.Join:
+                case Client.ContentLine.MessageStyle.Part:
                     color = Configuration.CurrentSkin.joincolor;
                     break;
             }
@@ -110,9 +105,10 @@ namespace Client
             {
                 stamp = Configuration.Scrollback.format_date.Replace("$1", _c.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
-            SBABox.Line text = Parser.FormatLine(_c.text, RT, color);
-            SBABox.ContentText content = new SBABox.ContentText(stamp, RT, color);
-            SBABox.Line line = new SBABox.Line(RT);
+
+            Client.RichTBox.Line text = Parser.FormatLine(_c.text, RT, color);
+            Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, RT, color);
+            Client.RichTBox.Line line = new Client.RichTBox.Line(RT);
             line.insertData(content);
             line.Merge(text);
             return line;
@@ -131,8 +127,11 @@ namespace Client
             {
                 if (SortNeeded)
                 {
-                    ContentLines.Sort();
-                    SortNeeded = false;
+                    lock (ContentLines)
+                    {
+                        ContentLines.Sort();
+                        SortNeeded = false;
+                    }
                 }
 
                 if (simple)
@@ -243,7 +242,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, false);
         }
@@ -257,7 +256,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertTextAndIgnoreUpdate(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertTextAndIgnoreUpdate(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, true);
         }
@@ -271,7 +270,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        private bool insertText(string text, MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
@@ -284,9 +283,11 @@ namespace Client
                 return true;
             }
 
+            ResetScrolling();
+
             if (owner != null && owner.MicroBox)
             {
-                MicroChat.mc.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
+                Core._Main.micro.scrollback_mc.InsertText("{" + owner.name + "} " + text, InputStyle, false, Date);
             }
 
             bool Matched = false;
@@ -301,40 +302,42 @@ namespace Client
                 Core.DisplayNote(text, owner.name);
             }
 
-            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges && owner.treeNode != null)
+            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Protocol != null && !owner._Protocol.SuppressChanges)
             {
                 switch (InputStyle)
                 {
-                    case MessageStyle.Kick:
-                    case MessageStyle.System:
-                        owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                    case ContentLine.MessageStyle.Kick:
+                    case ContentLine.MessageStyle.System:
+                        owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
                         break;
-                    case MessageStyle.Message:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                    case ContentLine.MessageStyle.Message:
+                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.colortalk;
+                            owner.MenuColor = Configuration.CurrentSkin.colortalk;
                         }
                         break;
-                    case MessageStyle.Action:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk && owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor)
+                    case ContentLine.MessageStyle.Action:
+                        if (owner.MenuColor != Configuration.CurrentSkin.colortalk && owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.miscelancscolor;
+                            owner.MenuColor = Configuration.CurrentSkin.miscelancscolor;
                         }
                         break;
-                    case MessageStyle.Part:
-                    case MessageStyle.Channel:
-                    case MessageStyle.User:
-                    case MessageStyle.Join:
-                        if (owner.treeNode.ForeColor != Configuration.CurrentSkin.highlightcolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.miscelancscolor && owner.treeNode.ForeColor != Configuration.CurrentSkin.colortalk)
+                    case ContentLine.MessageStyle.Part:
+                    case ContentLine.MessageStyle.Channel:
+                    case ContentLine.MessageStyle.User:
+                    case ContentLine.MessageStyle.Join:
+                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor && owner.MenuColor != Configuration.CurrentSkin.miscelancscolor && owner.MenuColor != Configuration.CurrentSkin.colortalk)
                         {
-                            owner.treeNode.ForeColor = Configuration.CurrentSkin.joincolor;
+                            owner.MenuColor = Configuration.CurrentSkin.joincolor;
                         }
                         break;
                 }
-
+                
+                Graphics.PidgeonList.Updated = true;
+                
                 if (Matched)
                 {
-                    owner.treeNode.ForeColor = Configuration.CurrentSkin.highlightcolor;
+                    owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
                 }
             }
 
@@ -372,6 +375,7 @@ namespace Client
                 }
                 else
                 {
+                    SortNeeded = true;
                     Reload(false, true);
                 }
             }
@@ -390,10 +394,10 @@ namespace Client
                 }
                 else
                 {
+                    SortNeeded = true;
                     ReloadWaiting = true;
                 }
             }
-
             return false;
         }
     }

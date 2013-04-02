@@ -97,11 +97,11 @@ namespace Client
                             User _user = null;
                             if (mode != '\0')
                             {
-                                _user = new User(mode.ToString() + nick, host, _Network, ident);
+                                _user = new User(mode.ToString() + nick, host, _Network, ident, server);
                             }
                             else
                             {
-                                _user = new User(nick, host, _Network, ident);
+                                _user = new User(nick, host, _Network, ident, server);
                             }
                             lock (channel.UserList)
                             {
@@ -117,6 +117,7 @@ namespace Client
                                 {
                                     u.Ident = ident;
                                     u.Host = host;
+                                    u.Server = server;
                                     break;
                                 }
                             }
@@ -248,7 +249,7 @@ namespace Client
                     if (Configuration.irc.DisplayCtcp)
                     {
                         WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + message,
-                            Scrollback.MessageStyle.Message, true, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                         return true; ;
                     }
                     return true;
@@ -266,19 +267,19 @@ namespace Client
                 channel = _Network.getChannel(chan);
                 if (channel != null)
                 {
-                    Window window;
+                    Graphics.Window window;
                     window = channel.retrieveWindow();
                     if (window != null)
                     {
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
-                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Scrollback.MessageStyle.Action,
+                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
                         channel.retrieveWindow().scrollback.InsertText(_Protocol.PRIVMSG(user.Nick, message),
-                            Scrollback.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
                     }
                     channel.UpdateInfo();
                     return true;
@@ -295,7 +296,7 @@ namespace Client
                         _Network.Private(chan);
                     }
                     _Protocol.Windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
-                        Scrollback.MessageStyle.Message, updated_text, date, !updated_text);
+                        Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                 }
                 return true;
             }
@@ -308,7 +309,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ") + 1);
                 string message = value;
-                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -332,11 +333,7 @@ namespace Client
                 name = name.Substring(0, name.IndexOf(" "));
                 idle = idle.Substring(0, idle.IndexOf(" "));
                 DateTime logintime = Network.convertUNIX(uptime);
-                if (logintime == null)
-                {
-                    return false;
-                }
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Scrollback.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -350,7 +347,6 @@ namespace Client
             _host = source.Substring(source.IndexOf("@") + 1);
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
-            string _new = value;
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ChannelWork)
@@ -358,12 +354,12 @@ namespace Client
                     User target = item.userFromName(user);
                     if (target != null)
                     {
-                        Window window = item.retrieveWindow();
+                        Graphics.Window window = item.retrieveWindow();
                         if (window != null && window.scrollback != null)
                         {
                             WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                 new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                                Scrollback.MessageStyle.Join,
+                                Client.ContentLine.MessageStyle.Join,
                                 !item.temporary_hide, date, !updated_text);
                         }
                         if (updated_text)

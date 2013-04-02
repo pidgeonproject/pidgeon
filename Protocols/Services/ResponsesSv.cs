@@ -14,7 +14,6 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-
 using System;
 using System.Xml;
 using System.Threading;
@@ -34,10 +33,10 @@ namespace Client
                 string message_text = curr.InnerText;
                 string message_target = curr.Attributes[3].Value;
                 string MQID = curr.Attributes[4].Value;
-                Window message_window = null;
+                Graphics.Window message_window = null;
                 Network mn = protocol.retrieveNetwork(curr.Attributes[1].Value);
                 if (Configuration.Services.UsingCache)
-                { 
+                {
                     string ID = protocol.sBuffer.getUID(curr.Attributes[1].Value);
                     if (ID != null)
                     {
@@ -76,7 +75,7 @@ namespace Client
 
                 if (message_window != null)
                 {
-                    message_window.scrollback.InsertTextAndIgnoreUpdate(mn._Protocol.PRIVMSG(message_nick, message_text), Scrollback.MessageStyle.Message, true, message_time, true);
+                    message_window.scrollback.InsertTextAndIgnoreUpdate(mn._Protocol.PRIVMSG(message_nick, message_text), Client.ContentLine.MessageStyle.Message, true, message_time, true);
                 }
                 else
                 {
@@ -89,16 +88,16 @@ namespace Client
                 if (curr.InnerText == "PERMISSIONDENY")
                 {
                     protocol.Windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in",
-                        Scrollback.MessageStyle.System, false);
+                        Client.ContentLine.MessageStyle.System, false);
                     return;
                 }
                 protocol.Windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
-                    Scrollback.MessageStyle.User, false);
+                    Client.ContentLine.MessageStyle.User, false);
             }
 
             public static void sLoad(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Scrollback.MessageStyle.System, false);
+                protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Client.ContentLine.MessageStyle.System, false);
             }
 
             public static void sStatus(XmlNode curr, ProtocolSv protocol)
@@ -176,17 +175,17 @@ namespace Client
                 {
                     if (Core._Main.DisplayingProgress == false)
                     {
-                        Core._Main.progress = int.Parse(id);
+                        Core._Main.progress = double.Parse(id);
                         Core._Main.DisplayingProgress = true;
                         protocol.SuppressChanges = true;
                         Core._Main.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
-                    Core._Main.progress = int.Parse(id);
+                    Core._Main.progress = double.Parse(id);
                     Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
-                    if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < int.Parse(id))
+                    if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
-                        Core._Main.Status("");
+                        Core._Main.Status(protocol.getInfo());
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
                         protocol.SuppressChanges = false;
@@ -218,7 +217,7 @@ namespace Client
                 {
                     sv.Nickname = curr.InnerText;
                     protocol.Windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
-                        Scrollback.MessageStyle.User, true);
+                        Client.ContentLine.MessageStyle.User, true);
                 }
             }
 
@@ -228,10 +227,10 @@ namespace Client
                 switch (curr.InnerText)
                 {
                     case "CONNECTED":
-                        protocol.Windows["!root"].scrollback.InsertText("You are already connected to " + network, Scrollback.MessageStyle.System);
+                        protocol.Windows["!root"].scrollback.InsertText("You are already connected to " + network, Client.ContentLine.MessageStyle.System);
                         return;
                     case "PROBLEM":
-                        protocol.Windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Scrollback.MessageStyle.System, false);
+                        protocol.Windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Client.ContentLine.MessageStyle.System, false);
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
@@ -246,7 +245,7 @@ namespace Client
             public static void sGlobalident(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
-                                new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                                new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
             }
 
             public static void sBacklog(XmlNode curr, ProtocolSv protocol)
@@ -261,7 +260,7 @@ namespace Client
                     }
                     if (protocol.WaitingNetw.Count == 0)
                     {
-                        Core._Main.Status("");
+                        Core._Main.Status(protocol.getInfo());
                     }
                     else
                     {
@@ -286,7 +285,7 @@ namespace Client
             {
                 protocol.nick = curr.InnerText;
                 protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
-                    new List<string> { curr.InnerText }), Scrollback.MessageStyle.User, true);
+                    new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
             }
 
             public static void sNetworkInfo(XmlNode curr, ProtocolSv protocol)
@@ -323,7 +322,7 @@ namespace Client
                     foreach (XmlAttribute xx in curr.Attributes)
                     {
                         switch (xx.Name.ToLower())
-                        { 
+                        {
                             case "description":
                                 description = xx.Value;
                                 break;
@@ -337,10 +336,10 @@ namespace Client
                 error += "code (" + code + ") description: " + description;
                 if (protocol.SystemWindow == null)
                 {
-                    Core._Main.main.scrollback.InsertText(error, Scrollback.MessageStyle.User);
+                    Core._Main.main.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
                     return;
                 }
-                protocol.SystemWindow.scrollback.InsertText(error, Scrollback.MessageStyle.User);
+                protocol.SystemWindow.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
             }
 
             public static void sNetworkList(XmlNode curr, ProtocolSv protocol)
@@ -443,31 +442,30 @@ namespace Client
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
                 Network remove = null;
-                System.Windows.Forms.TreeNode item = null;
+                Gtk.TreeIter item;
                 lock (Core._Main.ChannelList.ServerList)
                 {
-                    foreach (KeyValuePair<Network, System.Windows.Forms.TreeNode> n in Core._Main.ChannelList.ServerList)
+                    foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)
                     {
                         if (n.Key.ServerName == curr.InnerText)
                         {
                             item = n.Value;
                             remove = n.Key;
+                            if (remove != null)
+                            {
+                                Core._Main.ChannelList.ServerList.Remove(remove);
+                            }
+                            if (remove != null)
+                            {
+                                Core._Main.ChannelList.RemoveItem(item, remove, Client.Graphics.PidgeonList.ItemType.Server);
+                            }
+                            else
+                            {
+                                Core.DebugLog("Unable to remove " + curr.InnerText);
+                            }
                             break;
                         }
                     }
-
-                    if (remove != null)
-                    {
-                        Core._Main.ChannelList.ServerList.Remove(remove);
-                    }
-                }
-                if (item != null)
-                {
-                    Core._Main.ChannelList.RemoveAll(item);
-                }
-                else
-                {
-                    Core.DebugLog("Unable to remove " + curr.InnerText);
                 }
             }
 
@@ -494,8 +492,8 @@ namespace Client
                                             {
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
                                                 if (ID != null && protocol.sBuffer.networkInfo.ContainsKey(ID))
-                                                { 
-                                                    Window window = xx.retrieveWindow();
+                                                {
+                                                    Graphics.Window window = xx.retrieveWindow();
                                                     if (xx != null)
                                                     {
                                                         protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.name);
@@ -531,6 +529,10 @@ namespace Client
                                         Datagram response2 = new Datagram("CHANNELINFO", "INFO");
                                         response2.Parameters.Add("network", curr.Attributes[0].Value);
                                         response2.Parameters.Add("channel", channel);
+                                        lock (protocol.RemainingJobs)
+                                        {
+                                            protocol.RemainingJobs.Add(new ProtocolSv.Work(channel, ProtocolSv.Work.Type.ChannelInfo));
+                                        }
                                         protocol.Deliver(response2);
                                     }
                                 }
@@ -546,6 +548,23 @@ namespace Client
                     Network nw = protocol.retrieveNetwork(curr.Attributes[0].Value);
                     if (nw != null)
                     {
+                        lock (protocol.RemainingJobs)
+                        {
+                            ProtocolSv.Work item = null;
+                            foreach (ProtocolSv.Work work in protocol.RemainingJobs)
+                            {
+                                if (work.type == ProtocolSv.Work.Type.ChannelInfo && curr.Attributes[1].Value == work.Name)
+                                {
+                                    item = work;
+                                }
+                            }
+
+                            if (item != null)
+                            {
+                                protocol.RemainingJobs.Remove(item);
+                                Core._Main.Status(protocol.getInfo());
+                            }
+                        }
                         Channel channel = nw.getChannel(curr.Attributes[1].Value);
 
                         if (channel != null)
@@ -613,15 +632,15 @@ namespace Client
                 if (curr.InnerText == "INVALID")
                 {
                     protocol.Windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed",
-                        Scrollback.MessageStyle.System, false);
+                        Client.ContentLine.MessageStyle.System, false);
                     protocol.Connected = false;
                     protocol.Exit();
                 }
                 if (curr.InnerText == "OK")
                 {
                     protocol.ConnectionStatus = Status.Connected;
-                    protocol.Windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Scrollback.MessageStyle.System, false);
-                    protocol.Windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Scrollback.MessageStyle.System);
+                    protocol.Windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Client.ContentLine.MessageStyle.System, false);
+                    protocol.Windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Client.ContentLine.MessageStyle.System);
                 }
                 return;
             }

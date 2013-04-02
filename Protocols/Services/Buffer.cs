@@ -32,26 +32,28 @@ namespace Client.Services
             public bool isChannel = false;
             public bool isPM = false;
             public List<string> history = new List<string>();
-            public List<Scrollback.ContentLine> lines = null;
+            public List<Client.ContentLine> lines = null;
             public string Name = null;
             public string topic = null;
             public bool Changed = true;
+            public int menucolor = 0;
 
             public Window()
             {
-
+                
             }
 
-            public Window(Client.Window owner)
+            public Window(Graphics.Window owner)
             {
                 Name = owner.name;
                 isChannel = owner.isChannel;
-                lines = new List<Scrollback.ContentLine>();
+                lines = new List<Client.ContentLine>();
                 if (owner.textbox != null)
                 {
                     history.AddRange(owner.textbox.history);
                 }
                 lines.AddRange(owner.scrollback.Data);
+                menucolor = owner.MenuColor.ToArgb();
             }
         }
 
@@ -167,8 +169,8 @@ namespace Client.Services
             public List<Network.ChannelData> ChannelList = new List<Network.ChannelData>();
 
             public List<Description> Descriptions = new List<Description>();
-            public List<Buffer.Window> _windows = new List<Window>();
-            public List<Buffer.ChannelInfo> _channels = new List<ChannelInfo>();
+            public List<Buffer.Window> _windows = new List<Buffer.Window>();
+            public List<Buffer.ChannelInfo> _channels = new List<Buffer.ChannelInfo>();
             public List<string> PrivateWins = new List<string>();
 
             [Serializable]
@@ -263,7 +265,7 @@ namespace Client.Services
                 return range;
             }
 
-            public void recoverWindowText(Client.Window target, string source)
+            public void recoverWindowText(Graphics.Window target, string source)
             {
                 Buffer.Window Source = getW(source);
                 if (Source == null)
@@ -278,6 +280,10 @@ namespace Client.Services
                 target.scrollback.SetText(Source.lines);
                 Source.lines.Clear();
                 Source.lines = null;
+                if (Source.menucolor != 0)
+                {
+                    target.MenuColor = System.Drawing.Color.FromArgb(Source.menucolor);
+                }
                 if (target.textbox != null)
                 {
                     target.textbox.history = new List<string>();
@@ -492,7 +498,7 @@ namespace Client.Services
                             {
                                 foreach (Channel xx in network.Channels)
                                 {
-                                    Client.Window window = xx.retrieveWindow();
+                                    Graphics.Window window = xx.retrieveWindow();
                                     if (window != null)
                                     {
                                         networkInfo[uid]._windows.Add(new Buffer.Window(window));
@@ -517,7 +523,7 @@ namespace Client.Services
                                     networkInfo[uid]._channels.Add(info);
                                 }
 
-                                foreach (KeyValuePair<User, Client.Window> wn in network.PrivateWins)
+                                foreach (KeyValuePair<User, Graphics.Window> wn in network.PrivateWins)
                                 {
                                     Buffer.Window window = new Buffer.Window(wn.Value);
                                     if (!networkInfo[uid].PrivateWins.Contains(window.Name))
@@ -586,12 +592,12 @@ namespace Client.Services
         {
             if (Core._Main.Chat != null)
             {
-                Core._Main.Chat.scrollback.InsertText("Information about cache:", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Information about cache:", Client.ContentLine.MessageStyle.System, false);
                 lock (networkInfo)
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Scrollback.MessageStyle.System, false);
+                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Client.ContentLine.MessageStyle.System, false);
                     }
                 }
             }

@@ -23,6 +23,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Client
@@ -36,11 +38,11 @@ namespace Client
         /// <summary>
         /// Displayed window
         /// </summary>
-        public Window Current = null;
+        public Graphics.Window Current = null;
         /// <summary>
         /// Windows
         /// </summary>
-        public Dictionary<string, Window> Windows = new Dictionary<string, Window>();
+        public Dictionary<string, Graphics.Window> Windows = new Dictionary<string, Graphics.Window>();
         /// <summary>
         /// Whether this server is connected or not
         /// </summary>
@@ -72,7 +74,7 @@ namespace Client
         /// <summary>
         /// Root window
         /// </summary>
-        public Window SystemWindow
+        public Graphics.Window SystemWindow
         {
             get
             {
@@ -95,9 +97,9 @@ namespace Client
         /// <param name="network">Network the window belongs to</param>
         /// <param name="writable">If true user will be able to send text in window</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
-        public virtual Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
+        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
         {
-            Main._WindowRequest request = new Main._WindowRequest();
+            Forms.Main._WindowRequest request = new Forms.Main._WindowRequest();
             if (id == null)
             {
                 id = name;
@@ -105,7 +107,7 @@ namespace Client
             request.owner = this;
             request.name = name;
             request.writable = writable;
-            request.window = new Window();
+            request.window = new Graphics.Window();
             request.focus = focus;
             request.window._Network = network;
             request.window.name = name;
@@ -128,7 +130,7 @@ namespace Client
             {
                 // Create a request to create this window
                 Core._Main.WindowRequests.Add(request);
-                PidgeonList.Updated = true;
+                Graphics.PidgeonList.Updated = true;
             }
             return request.window;
         }
@@ -143,9 +145,7 @@ namespace Client
             if (Windows.ContainsKey(name))
             {
                 Current = Windows[name];
-                Current.scrollback.Display();
-                Current.BringToFront();
-                Current.Visible = true;
+                Core._Main.SwitchWindow(Current);
                 Current.Redraw();
                 if (Current.isChannel)
                 {
@@ -154,17 +154,10 @@ namespace Client
                         Core.network.RenderedChannel = Core.network.getChannel(Current.name);
                     }
                 }
-                Core._Main.toolStripStatusChannel.Text = name;
+                Core._Main.setChannel(name);
                 if (Current.Making == false)
                 {
-                    Current.textbox.Focus();
-                }
-                if (Current != Core._Main.Chat)
-                {
-                    if (Core._Main.Chat != null)
-                    {
-                        Core._Main.Chat.Visible = false;
-                    }
+                    Current.textbox.setFocus();
                 }
                 Core._Main.Chat = Windows[name];
                 Current.Making = false;
@@ -203,7 +196,12 @@ namespace Client
         {
             return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
         }
-
+        
+        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        {
+            return true;
+        }
+        
         /// <summary>
         /// Deliver raw data to server
         /// </summary>
@@ -314,24 +312,32 @@ namespace Client
             return;
         }
 
+        public void ClearWins()
+        {
+            lock (Windows)
+            {
+                foreach (Graphics.Window xx in Windows.Values)
+                {
+                    xx.Destroy();
+                }
+            }
+            Windows.Clear();
+        }
+
         /// <summary>
         /// Disconnect server
         /// </summary>
         public virtual void Exit() 
         {
+            Core._Main.rootToolStripMenuItem_Click(null, null);
             if (SystemWindow != null)
             {
-                if (Windows.ContainsValue(SystemWindow))
+                if (!Windows.ContainsValue(SystemWindow))
                 {
-                    Core._Main.main.Visible = true;
-                    if (Core._Main.main != SystemWindow)
-                    {
-                        SystemWindow.Visible = false;
-                    }
-                    SystemWindow.Dispose();
-                    Core._Main.Chat = Core._Main.main;
+                    SystemWindow.Destroy();
                 }
             }
+            ClearWins();
             lock (Core.Connections)
             {
                 if (Core.Connections.Contains(this) && !Core.IgnoreErrors)

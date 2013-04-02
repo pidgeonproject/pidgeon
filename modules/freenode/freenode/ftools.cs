@@ -32,7 +32,7 @@ namespace Client
         {
             if (text == "")
             {
-                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
                 return;
             }
             string user = text;
@@ -44,7 +44,7 @@ namespace Client
             }
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
@@ -56,7 +56,7 @@ namespace Client
         {
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             Core.network._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
@@ -66,7 +66,7 @@ namespace Client
         {
             if (text == "")
             {
-                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
                 return;
             }
             string user = text;
@@ -78,7 +78,7 @@ namespace Client
             }
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             User host = null;
@@ -95,13 +95,13 @@ namespace Client
                         Core.network.Transfer("MODE " + Core._Main.Chat.name + " +q *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
-                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
+                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
                 return;
             }
-            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
 
         }
 
@@ -109,7 +109,7 @@ namespace Client
         {
             if (text == "")
             {
-                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
                 return;
             }
             string user = text;
@@ -119,7 +119,7 @@ namespace Client
             }
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
@@ -140,17 +140,17 @@ namespace Client
                             return;
                         }
                     }
-                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
+                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
                     return;
                 }
-            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
         }
 
         public void JoinHostBan(string text)
         {
             if (text == "")
             {
-                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
                 return;
             }
             string user = text;
@@ -160,7 +160,7 @@ namespace Client
             }
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
@@ -172,14 +172,14 @@ namespace Client
                             Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + user + "$##fix_your_connection", Configuration.Priority.High);
                             return;
                 }
-            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
         }
 
         public void Ban(string text)
         {
             if (text == "")
             {
-                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
                 return;
             }
             string user = text;
@@ -191,7 +191,7 @@ namespace Client
             }
             if (!Core._Main.Chat.isChannel)
             {
-                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", Scrollback.MessageStyle.User, false);
+                Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
             Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
@@ -209,13 +209,13 @@ namespace Client
                         Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
-                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", Scrollback.MessageStyle.System, false);
+                    Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the user", Scrollback.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the user", ContentLine.MessageStyle.System, false);
                 return;
             }
-            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", Scrollback.MessageStyle.System, false);
+            Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
         }
     }
 }

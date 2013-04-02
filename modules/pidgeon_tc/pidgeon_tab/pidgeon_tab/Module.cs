@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Gtk;
 
 namespace Client
 {
@@ -11,7 +12,7 @@ namespace Client
         {
             Name = "Input tab completion for the pidgeon";
             Description = "This plugin enable you to use tab completion like in terminal";
-            Version = "1.0.20";
+            Version = "1.0.60";
             base.Initialise();
         }
 
@@ -90,7 +91,7 @@ namespace Client
                     }
                     if (Results.Count > 1)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                         string part = "";
                         int curr = 0;
                         bool match = true;
@@ -166,7 +167,7 @@ namespace Client
                             }
                             if (Results.Count > 1)
                             {
-                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), Scrollback.MessageStyle.System);
+                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                                 string part = "";
                                 int curr = 0;
                                 bool match = true;
@@ -247,7 +248,7 @@ namespace Client
 
                 if (Results2.Count > 1)
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System);
                     string part = "";
                     int curr = 0;
                     char orig = ' ';

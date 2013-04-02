@@ -44,7 +44,13 @@ namespace Client
             pong = DateTime.Now;
             return;
         }
-
+		
+		public bool Pong(string source, string parameters, string _value)
+        {
+			_Network.Transfer("PONG :" + _value, Configuration.Priority.Low); 
+			return true;
+		}
+		
         public bool ProcessThis(string source, string[] data, string _value)
         {
             if (source.StartsWith(_Network.Nickname + "!"))
@@ -106,7 +112,8 @@ namespace Client
                 {
                     if (_data2[1].Contains("NICK"))
                     {
-                        _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }), Scrollback.MessageStyle.User, true, date);
+                        _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }),
+                            Client.ContentLine.MessageStyle.User, true, date);
                         _Network.Nickname = _value;
                     }
                     if (_data2[1].Contains("PART"))
@@ -118,19 +125,19 @@ namespace Client
                             Channel c = _Network.getChannel(channel);
                             if (c != null)
                             {
-                                Window Chat = c.retrieveWindow();
+                                Graphics.Window Chat = c.retrieveWindow();
                                 if (c != null)
                                 {
                                     if (c.ChannelWork)
                                     {
                                         c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
-                                            Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                            Client.ContentLine.MessageStyle.Message, !c.temporary_hide, date);
                                     }
                                     else
                                     {
                                         Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
-                                            Scrollback.MessageStyle.Message, !c.temporary_hide, date);
+                                            Client.ContentLine.MessageStyle.Message, !c.temporary_hide, date);
                                     }
                                 }
                                 c.ChannelWork = false;
@@ -179,7 +186,7 @@ namespace Client
                         string command = "";
                         string parameters = "";
                         string value = "";
-                        string source = source = text.Substring(1);
+                        string source = text.Substring(1);
                         source = source.Substring(0, source.IndexOf(" "));
                         string command2 = text.Substring(source.Length + 2);
                         if (command2.Contains(" :"))
@@ -220,7 +227,7 @@ namespace Client
                         {
                             OK = true;
                         }
-
+						
                         switch (command)
                         {
                             case "001":
@@ -266,11 +273,17 @@ namespace Client
                                 }
                                 _Network.DownloadingList = false;
                                 break;
+						    case "PING":
+							    if (Pong (command, parameters, value))
+							    {
+								    return true;
+							    }
+							    break;
                             case "PONG":
                                 Ping();
                                 return true;
                             case "INFO":
-                                _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Scrollback.MessageStyle.User, true, date, !updated_text);
+                                _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Client.ContentLine.MessageStyle.User, true, date, !updated_text);
                                 return true;
                             case "NOTICE":
                                 if (parameters.Contains(_Network.channel_prefix))
@@ -278,19 +291,16 @@ namespace Client
                                     Channel channel = _Network.getChannel(parameters);
                                     if (channel != null)
                                     {
-                                        Window window;
+                                        Graphics.Window window;
                                         window = channel.retrieveWindow();
                                         if (window != null)
                                         {
-                                            window.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
+                                            window.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                                             return true;
                                         }
                                     }
                                 }
-                                _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Scrollback.MessageStyle.Message, true, date, !updated_text);
-                                return true;
-                            case "PING":
-                                _Network.Transfer("PONG ", Configuration.Priority.High);
+                                _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                                 return true;
                             case "NICK":
                                 if (ProcessNick(source, parameters, value))
@@ -393,11 +403,34 @@ namespace Client
                             }
                         }
                     }
-                }
+                } else
+				{
+					// malformed requests this needs to exist so that it works with some broked ircd
+					string command = text;
+					string value = "";
+					if (command.Contains(" :"))
+					{
+						value = command.Substring(command.IndexOf(" :") + 2);
+						command = command.Substring(0, command.IndexOf(" :"));
+					}
+					// for extra borked ircd
+					if (command.Contains (" "))
+					{
+						command = command.Substring(0, command.IndexOf(" "));
+					}
+					
+					switch (command)
+					{
+					    case "PING":
+						    Pong (command, null, value);
+						    OK = true;
+						    break;
+					}
+				}
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
-                    _Network.SystemWindow.scrollback.InsertText(text, Scrollback.MessageStyle.System, true, date, true);
+                    _Network.SystemWindow.scrollback.InsertText(text, Client.ContentLine.MessageStyle.System, true, date, true);
                 }
             }
             catch (Exception fail)
@@ -416,7 +449,7 @@ namespace Client
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        public void WindowText(Window window, string text, Scrollback.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public void WindowText(Graphics.Window window, string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             bool logging = WriteLog;
 

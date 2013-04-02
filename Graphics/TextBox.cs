@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,14 +18,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
+using System.Drawing;
+using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using Gtk;
 
-namespace Client
+namespace Client.Graphics
 {
-    public partial class TextBox : UserControl
+    [System.ComponentModel.ToolboxItem(true)]
+    public partial class TextBox : Gtk.Bin
     {
         public List<string> history = null;
         public int position = 0;
@@ -33,20 +35,73 @@ namespace Client
         public string original = "";
         public Window parent = null;
         public bool restore = false;
+        private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        public global::Gtk.TextView richTextBox;
 
-        public void Init()
+        protected virtual void Build()
         {
-            InitializeComponent();
+            global::Stetic.Gui.Initialize(this);
+            // Widget Client.Graphics.TextBox
+            global::Stetic.BinContainer.Attach(this);
+            this.Name = "Client.Graphics.TextBox";
+            // Container child Client.Graphics.TextBox.Gtk.Container+ContainerChild
+            this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
+            this.GtkScrolledWindow.Name = "GtkScrolledWindow";
+            this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
+            // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
+            this.richTextBox = new global::Gtk.TextView();
+            this.richTextBox.CanFocus = true;
+            this.richTextBox.Name = "richTextBox";
+            this.richTextBox.AcceptsTab = true;
+            this.GtkScrolledWindow.Add(this.richTextBox);
+            this.Add(this.GtkScrolledWindow);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.Hide();
         }
 
-        private void Wheeled(object sender, MouseEventArgs e)
+        public Gtk.TextView richTextBox1
+        {
+            get
+            {
+                return richTextBox;
+            }
+        }
+
+        public void InitStyle()
+        {
+            richTextBox.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+        }
+        
+        public TextBox()
+        {
+            
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             try
             {
-                if (parent.scrollback != null)
-                {
-                    parent.scrollback.RT.Wheeled(sender, e);
-                }
+                //if (false && restore)
+                //{
+                //    int selection = richTextBox1.Buffer.CursorPosition;
+                //    if (richTextBox1.Buffer.Text.Length != prevtext.Length)
+                //    {
+                //        selection = selection - (richTextBox1.Buffer.Text.Length - prevtext.Length);
+                //    }
+                //    if (selection < 0)
+                //    {
+                //        selection = 0;
+                //    }
+                //    richTextBox1.Buffer.Text = prevtext;
+                //    TextIter iter = richTextBox.Buffer.GetIterAtOffset(selection);
+                //    richTextBox1.Buffer.PlaceCursor(iter);
+                //    return;
+                //}
+                prevtext = richTextBox1.Buffer.Text;
             }
             catch (Exception fail)
             {
@@ -54,37 +109,79 @@ namespace Client
             }
         }
 
-        private void _Enter(object sender, KeyEventArgs e)
+        [GLib.ConnectBefore]
+        private void _Enter(object sender, KeyPressEventArgs e)
         {
             try
             {
-                if (Main.ShortcutHandle(sender, e))
+                if (Forms.Main.ShortcutHandle(sender, e))
                 {
-                    e.SuppressKeyPress = true;
+                    e.RetVal = true;
                     return;
                 }
 
-                if (e.Shift)
+                if (e.Event.State == Gdk.ModifierType.ShiftMask||
+                e.Event.State == Gdk.ModifierType.ControlMask)
                 {
-                    return;
-                }
-
-                if (e.Control)
-                {
-                    switch (e.KeyCode)
+                    switch (e.Event.Key)
                     {
-                        case Keys.Enter:
-                        case Keys.Down:
-                        case Keys.Up:
+                        case Gdk.Key.KP_Enter:
+                        case Gdk.Key.ISO_Enter:
+                        case Gdk.Key.Up:
+                        case Gdk.Key.Down:
+                            e.RetVal = true;
                             return;
                     }
                 }
 
-                if (!(e.KeyCode == Keys.Tab))
-                { restore = false; }
-                switch (e.KeyCode)
+                // enter
+                if (e.Event.KeyValue == 65293)
                 {
-                    case Keys.Down:
+                    List<string> input = new List<string>();
+                    if (richTextBox1.Buffer.Text.Contains("\n"))
+                    {
+                        input.AddRange(richTextBox1.Buffer.Text.Split('\n'));
+                        foreach (var line in input)
+                        {
+                            Parser.parse(line);
+                            if (line != "")
+                            {
+                                lock (history)
+                                {
+                                    while (history.Count > Configuration.Window.history)
+                                    {
+                                        history.RemoveAt(0);
+                                    }
+                                    history.Add(line);
+                                }
+                            }
+                        }
+                        original = "";
+                        richTextBox1.Buffer.Text = "";
+                        position = history.Count;
+                        e.RetVal = true;
+                        return;
+                    }
+
+                    richTextBox1.Buffer.Text = richTextBox1.Buffer.Text.Replace("\n", "");
+
+                    if (richTextBox1.Buffer.Text != "")
+                    {
+                        Parser.parse(richTextBox1.Buffer.Text);
+                        history.Add(richTextBox1.Buffer.Text);
+                    }
+                    original = "";
+                    richTextBox1.Buffer.Text = "";
+                    position = history.Count;
+                    e.RetVal = true;
+                    return;
+                }
+
+                if (!(e.Event.Key == Gdk.Key.Tab))
+                { restore = false; }
+                switch (e.Event.Key)
+                {
+                    case Gdk.Key.Down:
                         if (position == history.Count)
                         {
                             return;
@@ -93,7 +190,7 @@ namespace Client
                         if (history.Count <= max)
                         {
                             position = history.Count;
-                            richTextBox1.Text = original.Replace("\n", "");
+                            richTextBox1.Buffer.Text = original.Replace("\n", "");
                             return;
                         }
                         position++;
@@ -101,88 +198,42 @@ namespace Client
                         {
                             position = history.Count - 1;
                         }
-                        richTextBox1.Text = history[position];
+                        richTextBox1.Buffer.Text = history[position];
+                        e.RetVal = true;
                         break;
-                    case Keys.B:
-                        if (e.Control)
-                        {
-                            richTextBox1.AppendText(((char)002).ToString());
-                            e.SuppressKeyPress = true;
-                            if (richTextBox1.SelectionFont.Bold)
-                            {
-                                richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Regular);
-                                return;
-                            }
-                            richTextBox1.SelectionFont = new System.Drawing.Font(richTextBox1.SelectionFont, FontStyle.Bold);
-                        }
-                        return;
-                    case Keys.K:
-                        if (e.Control)
-                        {
-                            richTextBox1.AppendText(((char)003).ToString());
-                            e.SuppressKeyPress = true;
-                        }
-                        break;
-                    case Keys.Up:
+                    //case Gdk.Key.b | Gdk.Key.Control_L:
+                    //case Gdk.Key.B | Gdk.Key.Control_R:
+                    //    richTextBox1.Buffer.Text += (((char)002).ToString());
+                    //    e.RetVal = true;
+                    //    return;
+                    //case Gdk.Key.K | Gdk.Key.Control_L:
+                    //    richTextBox1.Buffer.Text += (((char)003).ToString());
+                    //    e.RetVal = true;
+                    //    return;
+                    case Gdk.Key.Up:
                         if (position < 1)
                         {
                             return;
                         }
                         if (history.Count == position)
                         {
-                            original = richTextBox1.Text;
+                            original = richTextBox1.Buffer.Text;
                         }
                         position = position - 1;
-                        richTextBox1.Text = history[position];
+                        richTextBox1.Buffer.Text = history[position];
+                        e.RetVal = true;
                         return;
-                    case Keys.Tab:
-                        int caret = richTextBox1.SelectionStart;
-                        string data = richTextBox1.Text;
+                    case Gdk.Key.Tab:
+                        int caret = richTextBox1.Buffer.CursorPosition;
+                        string data = richTextBox1.Buffer.Text;
                         Hooks._Scrollback.TextTab(ref restore, ref data, ref prevtext, ref caret);
-                        richTextBox1.Text = data;
+                        richTextBox1.Buffer.Text = data;
                         restore = true;
-                        richTextBox1.Text = prevtext;
-                        richTextBox1.SelectionStart = caret;
+                        richTextBox1.Buffer.Text = prevtext;
+                        TextIter position2 = richTextBox.Buffer.GetIterAtOffset(caret);
+                        richTextBox.Buffer.PlaceCursor(position2);
+                        e.RetVal = true;
                         break;
-                    case Keys.Enter:
-                        List<string> input = new List<string>();
-                        if (richTextBox1.Text.Contains("\n"))
-                        {
-                            input.AddRange(richTextBox1.Text.Split('\n'));
-                            foreach (var line in input)
-                            {
-                                Parser.parse(line);
-                                if (line != "")
-                                {
-                                    lock (history)
-                                    {
-                                        while (history.Count > Configuration.Window.history)
-                                        {
-                                            history.RemoveAt(0);
-                                        }
-                                        history.Add(line);
-                                    }
-                                }
-                            }
-                            original = "";
-                            richTextBox1.Text = "";
-                            position = history.Count;
-                            e.SuppressKeyPress = true;
-                            return;
-                        }
-
-                        richTextBox1.Text = richTextBox1.Text.Replace("\n", "");
-
-                        if (richTextBox1.Text != "")
-                        {
-                            Parser.parse(richTextBox1.Text);
-                            history.Add(richTextBox1.Text);
-                        }
-                        original = "";
-                        richTextBox1.Text = "";
-                        position = history.Count;
-                        e.SuppressKeyPress = true;
-                        return;
                 }
             }
             catch (Exception fail)
@@ -191,53 +242,22 @@ namespace Client
             }
         }
 
-        public void resize()
+        public void Init()
         {
-            richTextBox1.Height = this.Height - 2;
-            richTextBox1.Width = this.Width - 2;
-        }
-
-        private void TextBox_Load(object sender, EventArgs e)
-        {
-            try
+            this.Build();
+            this.InitStyle();
+            richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
+            richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
+            if (history == null)
             {
-                richTextBox1.Font = new Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
-                richTextBox1.ForeColor = Configuration.CurrentSkin.fontcolor;
-                richTextBox1.BackColor = Configuration.CurrentSkin.backgroundcolor;
-                resize();
-            }
-            catch (Exception f)
-            {
-                Core.handleException(f);
+                history = new List<string>();
             }
         }
 
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        public void setFocus()
         {
-            try
-            {
-                if (restore)
-                {
-                    int selection = richTextBox1.SelectionStart;
-                    if (richTextBox1.Text.Length != prevtext.Length)
-                    {
-                        selection = selection - (richTextBox1.Text.Length - prevtext.Length);
-                    }
-                    if (selection < 0)
-                    {
-                        selection = 0;
-                    }
-                    richTextBox1.Text = prevtext;
-
-                    richTextBox1.SelectionStart = selection;
-                    return;
-                }
-                prevtext = richTextBox1.Text;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            this.richTextBox.GrabFocus();
         }
     }
 }
+

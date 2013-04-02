@@ -90,7 +90,7 @@ namespace Client
         /// <summary>
         /// Notification box
         /// </summary>
-        private static Notification notification = null;
+        private static Forms.Notification notification = null;
         /// <summary>
         /// Threads currently allocated in kernel
         /// </summary>
@@ -106,7 +106,7 @@ namespace Client
         /// <summary>
         /// Main
         /// </summary>
-        public static Main _Main = null;
+        public static Forms.Main _Main = null;
         /// <summary>
         /// Wheter notification is waiting
         /// </summary>
@@ -130,7 +130,7 @@ namespace Client
         /// <summary>
         /// Packet scan
         /// </summary>
-        public static TrafficScanner trafficscanner;
+        public static Forms.TrafficScanner trafficscanner;
         /// <summary>
         /// System is blocked - if this is set to true, all subsystems and kernel are supposed to freeze
         /// </summary>
@@ -211,9 +211,9 @@ namespace Client
             public bool control;
             public bool alt;
             public bool shift;
-            public System.Windows.Forms.Keys keys;
+            public Gdk.Key keys;
             public string data;
-            public Shortcut(System.Windows.Forms.Keys Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
+            public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
             {
                 control = Control;
                 shift = Shift;
@@ -253,7 +253,7 @@ namespace Client
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
                 messages.Read();
-                trafficscanner = new TrafficScanner();
+                trafficscanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
                     LoadSkin();
@@ -275,10 +275,9 @@ namespace Client
                     Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
-                    MicroChat.mc = new MicroChat();
-                    notification = new Notification();
-                    DebugLog("Loading scripting core");
-                    ScriptingCore.Load();
+                    notification = new Forms.Notification();
+                    //DebugLog("Loading scripting core");
+                    //ScriptingCore.Load();
                     DebugLog("Loading extensions");
                     Extension.Init();
                     if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
@@ -374,7 +373,7 @@ namespace Client
         /// </summary>
         public static void Recover()
         {
-            Recovery x = new Recovery();
+            Client.Recovery x = new Client.Recovery();
             System.Windows.Forms.Application.Run(x);
         }
 
@@ -467,7 +466,7 @@ namespace Client
                     {
                         if (Core._Main.main != null)
                         {
-                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Scrollback.MessageStyle.System, false);
+                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
                         }
                     }
                 }
@@ -479,13 +478,13 @@ namespace Client
             }
         }
 
-        public static void PrintRing(Window window, bool write = true)
+        public static void PrintRing(Graphics.Window window, bool write = true)
         {
             lock (Ring)
             {
                 foreach (string item in Ring)
                 {
-                    window.scrollback.InsertText(item, Scrollback.MessageStyle.System, write, 0, true);
+                    window.scrollback.InsertText(item, Client.ContentLine.MessageStyle.System, write, 0, true);
                 }
             }
         }
@@ -510,8 +509,6 @@ namespace Client
                     return true;
                 }
 
-                string[] values = command.Split(' ');
-
                 // if not we can try to pass it to server
                 if (Core._Main.Chat._Protocol != null)
                 {
@@ -521,7 +518,7 @@ namespace Client
                         return false;
                     }
                 }
-                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Scrollback.MessageStyle.System);
+                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
                 return false;
             }
             catch (Exception f)
@@ -568,36 +565,32 @@ namespace Client
                 {
                     bool Focus = false;
                     notification.text.Text = notification_data;
-                    notification.label1.Text = notification_caption;
+                    notification.title.Text = notification_caption;
                     notification_waiting = false;
                     if (Core._Main.Chat != null)
                     {
-                        if (Core._Main.Chat.textbox.richTextBox1.Focused)
+                        if (Core._Main.Chat.textbox.richTextBox1.IsFocus)
                         {
                             Focus = true;
                         }
                     }
                     if (!notification.Visible)
                     {
-                        if (notification.Width < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && notification.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
-                        {
-                            notification.Top = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - notification.Height;
-                            notification.Left = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - notification.Width;
-                        }
+                        notification.Relocate();
                         notification.Show();
                         if (Focus)
                         {
-                            Core._Main.Focus();
+                            Core._Main.setFocus();
                             if (Core._Main.Chat != null)
                             {
-                                Core._Main.Chat.textbox.Focus();
+                                Core._Main.Chat.textbox.setFocus();
                             }
                         }
                     }
                 }
             }
         }
-
+        
         /// <summary>
         /// Show a notice box, if started from non kernel thread, then it's finalized in that
         /// </summary>
@@ -667,11 +660,7 @@ namespace Client
             try
             {
                 Forms.ScriptEdit edit = new Forms.ScriptEdit();
-                string[] text = script.Split('\n');
-                foreach (string line in text)
-                {
-                    edit.textBox1.AppendText(line + Environment.NewLine);
-                }
+                edit.textBox1.Buffer.Text += script;
                 edit.network = target;
                 edit.Show();
             }
@@ -681,103 +670,108 @@ namespace Client
             }
         }
 
+        public static string normalizeHtml(string text)
+        {
+            return System.Web.HttpUtility.HtmlEncode(text);
+        }
+        
         /// <summary>
         /// Convert string to key
         /// </summary>
         /// <param name="Key">Key</param>
         /// <returns></returns>
-        public static System.Windows.Forms.Keys parseKey(string Key)
+        public static Gdk.Key parseKey(string Key)
         {
             switch (Key.ToLower())
             {
                 case "a":
-                    return System.Windows.Forms.Keys.A;
+                    return Gdk.Key.A;
                 case "b":
-                    return System.Windows.Forms.Keys.B;
+                    return Gdk.Key.B;
                 case "c":
-                    return System.Windows.Forms.Keys.C;
+                    return Gdk.Key.C;
                 case "d":
-                    return System.Windows.Forms.Keys.D;
+                    return Gdk.Key.D;
                 case "e":
-                    return System.Windows.Forms.Keys.E;
+                    return Gdk.Key.E;
                 case "f":
-                    return System.Windows.Forms.Keys.F;
+                    return Gdk.Key.F;
                 case "g":
-                    return System.Windows.Forms.Keys.G;
+                    return Gdk.Key.G;
                 case "h":
-                    return System.Windows.Forms.Keys.H;
+                    return Gdk.Key.H;
                 case "i":
-                    return System.Windows.Forms.Keys.I;
+                    return Gdk.Key.I;
                 case "j":
-                    return System.Windows.Forms.Keys.J;
+                    return Gdk.Key.J;
                 case "k":
-                    return System.Windows.Forms.Keys.K;
+                    return Gdk.Key.K;
                 case "l":
-                    return System.Windows.Forms.Keys.L;
+                    return Gdk.Key.L;
                 case "m":
-                    return System.Windows.Forms.Keys.M;
+                    return Gdk.Key.M;
                 case "n":
-                    return System.Windows.Forms.Keys.N;
+                    return Gdk.Key.N;
                 case "o":
-                    return System.Windows.Forms.Keys.O;
+                    return Gdk.Key.O;
                 case "p":
-                    return System.Windows.Forms.Keys.P;
+                    return Gdk.Key.P;
                 case "q":
-                    return System.Windows.Forms.Keys.Q;
+                    return Gdk.Key.Q;
                 case "r":
-                    return System.Windows.Forms.Keys.R;
+                    return Gdk.Key.R;
                 case "s":
-                    return System.Windows.Forms.Keys.S;
+                    return Gdk.Key.S;
                 case "t":
-                    return System.Windows.Forms.Keys.T;
+                    return Gdk.Key.T;
                 case "u":
-                    return System.Windows.Forms.Keys.U;
+                    return Gdk.Key.U;
                 case "v":
-                    return System.Windows.Forms.Keys.V;
+                    return Gdk.Key.V;
                 case "x":
-                    return System.Windows.Forms.Keys.X;
+                    return Gdk.Key.X;
                 case "w":
-                    return System.Windows.Forms.Keys.W;
+                    return Gdk.Key.W;
                 case "y":
-                    return System.Windows.Forms.Keys.Y;
+                    return Gdk.Key.Y;
                 case "z":
-                    return System.Windows.Forms.Keys.Z;
+                    return Gdk.Key.Z;
                 case "1":
-                    return System.Windows.Forms.Keys.D1;
+                    return Gdk.Key.Key_1;
                 case "2":
-                    return System.Windows.Forms.Keys.D2;
+                    return Gdk.Key.Key_2;
                 case "3":
-                    return System.Windows.Forms.Keys.D3;
+                    return Gdk.Key.Key_3;
                 case "4":
-                    return System.Windows.Forms.Keys.D4;
+                    return Gdk.Key.Key_4;
                 case "5":
-                    return System.Windows.Forms.Keys.D5;
+                    return Gdk.Key.Key_5;
                 case "6":
-                    return System.Windows.Forms.Keys.D6;
+                    return Gdk.Key.Key_6;
                 case "7":
-                    return System.Windows.Forms.Keys.D7;
+                    return Gdk.Key.Key_7;
                 case "8":
-                    return System.Windows.Forms.Keys.D8;
+                    return Gdk.Key.Key_8;
                 case "9":
-                    return System.Windows.Forms.Keys.D9;
+                    return Gdk.Key.Key_9;
                 case "0":
-                    return System.Windows.Forms.Keys.D0;
+                    return Gdk.Key.Key_0;
                 case "f1":
-                    return System.Windows.Forms.Keys.F1;
+                    return Gdk.Key.F1;
                 case "f2":
-                    return System.Windows.Forms.Keys.F2;
+                    return Gdk.Key.F2;
                 case "f3":
-                    return System.Windows.Forms.Keys.F3;
+                    return Gdk.Key.F3;
                 case "home":
-                    return System.Windows.Forms.Keys.Home;
+                    return Gdk.Key.Home;
                 case "end":
-                    return System.Windows.Forms.Keys.End;
+                    return Gdk.Key.End;
                 case "pageup":
-                    return System.Windows.Forms.Keys.PageUp;
+                    return Gdk.Key.Page_Up;
                 case "delete":
-                    return System.Windows.Forms.Keys.Delete;
+                    return Gdk.Key.Delete;
             }
-            return System.Windows.Forms.Keys.A;
+            return Gdk.Key.A;
         }
 
         public static bool LoadSkin()
@@ -904,6 +898,7 @@ namespace Client
                     {
                         foreach (Protocol server in Connections)
                         {
+                            Core.Ringlog("Exiting network " + server.Server);
                             server.Exit();
                         }
                     }
@@ -919,6 +914,7 @@ namespace Client
                             {
                                 continue;
                             }
+                            Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
                             th.Abort();
                         }
                         catch (Exception fail)
@@ -927,6 +923,7 @@ namespace Client
                         }
                     }
                     Thread.Sleep(800);
+                    Core.DebugLog("Exiting with code 0");
                     Environment.Exit(0);
                 }
             }

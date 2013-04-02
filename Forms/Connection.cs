@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -16,54 +16,56 @@
  ***************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
+using Gtk;
 
-namespace Client
+namespace Client.Forms
 {
-    public partial class Connection : Form
+    public partial class Connection : Gtk.Window
     {
-        public Connection()
+        public Connection () : base(Gtk.WindowType.Toplevel)
         {
-            InitializeComponent();
+            this.Build ();
+            messages.Localize(this);
+            this.entry4.Visibility = false;
+            this.DeleteEvent += new DeleteEventHandler(Unshow);
+            entry3.Text = "6667";
+            entry2.Text = Configuration.UserData.ident;
+            entry1.Text = Configuration.UserData.nick;
+            combobox1.Clear();
+            CellRendererText cell = new CellRendererText();
+            combobox1.PackStart(cell, false);
+            combobox1.AddAttribute(cell, "text", 0);
+            ListStore store = new ListStore(typeof(string));
+            combobox1.Model = store;
+            ListStore store2 = new ListStore(typeof(string));
+            comboboxentry1.Model = store2;
+            TreeIter iter = store.AppendValues("irc");
+            store.AppendValues("quassel");
+            store.AppendValues("pidgeon services");
+            combobox1.SetActiveIter(iter);
+            button1.Clicked += new EventHandler(bConnect_Click);
+            if (Configuration.UserData.LastPort != "")
+            {
+                entry3.Text = Configuration.UserData.LastPort;
+            }
+            if (Configuration.UserData.LastNick != "")
+            {
+                entry1.Text = Configuration.UserData.LastNick;
+            }
+            if (Configuration.UserData.LastHost != "")
+            {
+                TreeIter iter2 = store2.AppendValues(Configuration.UserData.LastHost);
+                this.comboboxentry1.SetActiveIter(iter2);
+            }
+            this.Title = messages.get("connection", Core.SelectedLanguage);
         }
 
-        private void Connection_Load(object sender, EventArgs e)
+        public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try
             {
-                messages.Localize(this);
-                label5.Text = messages.get("nconnection-start-protocol", Core.SelectedLanguage);
-                label6.Text = messages.get("nconnection-p", Core.SelectedLanguage);
-                label4.Text = messages.get("nconnection-start-server", Core.SelectedLanguage);
-                label3.Text = messages.get("nconnection-start-port", Core.SelectedLanguage);
-                label2.Text = messages.get("nconnection-ident", Core.SelectedLanguage);
-                label1.Text = messages.get("nconnection-name", Core.SelectedLanguage);
-                textBox2.Text = "6667";
-                textBox1.Text = Configuration.UserData.ident;
-                _Nickname.Text = Configuration.UserData.nick;
-                comboBox1.Items.Add("irc");
-                comboBox1.SelectedItem = "irc";
-                if (Configuration.UserData.LastPort != "")
-                {
-                    textBox2.Text = Configuration.UserData.LastPort;
-                }
-                if (Configuration.UserData.LastNick != "")
-                {
-                    _Nickname.Text = Configuration.UserData.LastNick;
-                }
-                if (Configuration.UserData.LastHost != "")
-                {
-                    comboBox2.Text = Configuration.UserData.LastHost;
-                }
-                comboBox1.Items.Add("quassel");
-                comboBox1.Items.Add("pidgeon service");
-                Text = messages.get("connection", Core.SelectedLanguage);
-                bConnect.Text = messages.get("bconnect", Core.SelectedLanguage);
+                this.Hide();
+                closing.RetVal = true;
             }
             catch (Exception fail)
             {
@@ -75,40 +77,40 @@ namespace Client
         {
             try
             {
-                int port;
-                if (textBox1.Text == "")
+                int port = 6667;
+                if (entry2.Text == "")
                 {
-                    MessageBox.Show(messages.get("nconnection-2", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-2", Core.SelectedLanguage), "Missing params");
                     return;
                 }
-                if (textBox2.Text == "" || !int.TryParse(textBox2.Text, out port))
+                if (entry3.Text == "" || !int.TryParse(entry3.Text, out port))
                 {
-                    MessageBox.Show(messages.get("nconnection-3", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-3", Core.SelectedLanguage), "Missing params");
                     return;
                 }
-                if (_Nickname.Text == "")
+                if (entry1.Text == "")
                 {
-                    MessageBox.Show(messages.get("nconnection-1", Core.SelectedLanguage), "Missing params", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-1", Core.SelectedLanguage), "Missing params");
                     return;
                 }
-                Configuration.UserData.nick = _Nickname.Text;
-                Configuration.UserData.ident = textBox1.Text;
-                Configuration.UserData.LastHost = comboBox2.Text;
-                Configuration.UserData.LastPort = textBox2.Text;
-                Configuration.UserData.LastNick = _Nickname.Text;
-                switch (comboBox1.SelectedIndex)
+                Configuration.UserData.nick = entry1.Text;
+                Configuration.UserData.ident = entry2.Text;
+                Configuration.UserData.LastHost = comboboxentry1.ActiveText;
+                Configuration.UserData.LastPort = entry3.Text;
+                Configuration.UserData.LastNick = entry1.Text;
+                switch (combobox1.Active)
                 {
                     case 0:
-                        Core.connectIRC(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        Core.connectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case 1:
-                        Core.connectQl(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        Core.connectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case 2:
-                        Core.connectPS(comboBox2.Text, port, textBox3.Text, checkBox1.Checked);
+                        Core.connectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                 }
-                Close();
+                Hide();
             }
             catch (Exception fail)
             {
@@ -117,3 +119,4 @@ namespace Client
         }
     }
 }
+

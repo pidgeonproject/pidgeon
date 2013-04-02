@@ -71,11 +71,9 @@ namespace Client
             return controlList;
         }
 
-        public static void Localize(Form form)
+        public static void Localize(Gtk.Window form)
         {
-            try
-            {
-                lock (form.Controls)
+                /*lock (form)
                 {
                     foreach (Control control in GetControls(form))
                     {
@@ -105,7 +103,7 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail);
-            }
+            } */
         }
 
         /// <summary>

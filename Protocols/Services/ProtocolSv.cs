@@ -28,6 +28,28 @@ namespace Client
 {
     public partial class ProtocolSv : Protocol
     {
+        public class Cache
+        {
+            public double size = 0;
+            public double current = 0;
+        }
+        
+        public class Work
+        {
+            public string Name = null;
+            public Type type = Type.ChannelInfo;
+            public Work(string name, Type Task)
+            {
+                Name = name;
+                type = Task;
+            }
+            
+            public enum Type
+            {
+                ChannelInfo,
+            }
+        }
+        
         public System.Threading.Thread main = null;
         public System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
@@ -42,19 +64,15 @@ namespace Client
         public string password = "";
         public List<Cache> cache = new List<Cache>();
         public Status ConnectionStatus = Status.WaitingPW;
+        private SslStream _networkSsl = null;
         public Services.Buffer sBuffer = null;
+        public List<Work> RemainingJobs = new List<Work>();
 
         public string nick = "";
         public bool auth = false;
+        
 
         public List<string> WaitingNetw = new List<string>();
-
-
-        public class Cache
-        {
-            public int size = 0;
-            public int current = 0;
-        }
 
         public enum Status
         {
@@ -78,6 +96,15 @@ namespace Client
             }
         }
 
+        public string getInfo()
+        {
+            if (RemainingJobs.Count > 0)
+            {
+                return "Waiting for services to finish " + RemainingJobs.Count.ToString() + " requests";
+            }
+            return "";
+        }
+        
         public override bool Command(string cm, Network network = null)
         {
             if (cm.StartsWith(" ") != true && cm.Contains(" "))
@@ -97,7 +124,7 @@ namespace Client
             try
             {
                 Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Scrollback.MessageStyle.System);
+                Client.ContentLine.MessageStyle.System);
 
                 sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -115,18 +142,17 @@ namespace Client
                 if (SSL)
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
-                    //_networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
-                    //    new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-                    //_StreamWriter = new System.IO.StreamWriter(_networkSsl);
-                    //_StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
+                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                        new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
+                    _StreamWriter = new System.IO.StreamWriter(_networkSsl);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
 
                 Connected = true;
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-
-
+                
                 Datagram login = new Datagram("AUTH", "");
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);
@@ -143,7 +169,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -168,7 +194,7 @@ namespace Client
             {
                 if (Connected)
                 {
-                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                 }
             }
             catch (System.Threading.ThreadAbortException)
@@ -298,6 +324,11 @@ namespace Client
 
         public override void Exit()
         {
+            if (!Connected)
+            {
+                Core.DebugLog("Request to disconnect from services that aren't connected");
+                return;
+            }
             Connected = false;
             if (Configuration.Services.UsingCache)
             {
@@ -349,23 +380,8 @@ namespace Client
 
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Scrollback.MessageStyle.Action);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
-            return 0;
-        }
-
-        /// <summary>
-        /// Deprecated, scheduled for removal in 1.2.0
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="to"></param>
-        /// <param name="_priority"></param>
-        /// <param name="pmsg"></param>
-        /// <returns></returns>
-        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
-        {
-            Core.DebugLog("Warning, this function is deprecated: ProtocolSv.Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) " + Environment.StackTrace);
-            Message(text, to, Core.network, _priority, pmsg);
             return 0;
         }
 
@@ -407,7 +423,7 @@ namespace Client
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
-                Windows["!root"].scrollback.InsertText("Connecting to " + server, Scrollback.MessageStyle.User, true);
+                Windows["!root"].scrollback.InsertText("Connecting to " + server, Client.ContentLine.MessageStyle.User, true);
                 Datagram request = new Datagram("CONNECT", server);
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
@@ -431,7 +447,7 @@ namespace Client
 
         public void Disconnect(Network network)
         {
-            Transfer("QUIT :" + network.Quit);
+            Transfer("QUIT :" + network.Quit, Configuration.Priority.High, network);
             Datagram request = new Datagram("REMOVE", network.ServerName);
             Deliver(request);
         }
@@ -452,7 +468,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    Windows["!root"].scrollback.InsertText(er.Message, Scrollback.MessageStyle.User);
+                    Windows["!root"].scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
                     Exit();
                 }
                 catch (Exception f)

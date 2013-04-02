@@ -21,6 +21,20 @@ using System.Text;
 
 namespace Client
 {
+    public class UserData
+    {
+        public Gtk.TreeIter iter;
+        public string username;
+        public string hn;
+        
+        public UserData(string Name, Gtk.TreeIter Node, string HostName)
+        {
+            iter = Node;
+            username = Name;
+            hn = HostName;
+        }
+    }
+    
     public class ChannelParameterMode
     {
         public string Target = null;
@@ -116,7 +130,7 @@ namespace Client
         /// Window this channel is rendered to, if any
         /// </summary>
         [NonSerialized]
-        private Window Chat = null;
+        private Graphics.Window Chat = null;
         /// <summary>
         /// If channel output is temporarily hidden
         /// </summary>
@@ -153,11 +167,15 @@ namespace Client
         /// <summary>
         /// Tree node
         /// </summary>
-        public System.Windows.Forms.TreeNode TreeNode = null;
+        public Gtk.TreeIter TreeNode;
         /// <summary>
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>
         public bool UserListRefreshWait = false;
+        /// <summary>
+        /// Text displayed in the list menu
+        /// </summary>
+        public string MenuData = null;
 
         /// <summary>
         /// Renew the bans
@@ -199,27 +217,24 @@ namespace Client
         /// </summary>
         public void UpdateInfo()
         {
-            if (TreeNode != null)
+            string text = "";
+            string trimmed = Topic;
+            if (trimmed.Length > 160)
             {
-                string text = "";
-                string trimmed = Topic;
-                if (trimmed.Length > 160)
+                if (trimmed.Contains(" "))
                 {
-                    if (trimmed.Contains(" "))
-                    {
-                        int space = 0;
-                        space = 160 + trimmed.Substring(160).IndexOf(" ");
-                        trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
-                    }
+                    int space = 0;
+                    space = 160 + trimmed.Substring(160).IndexOf(" ");
+                    trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
                 }
-                if (!ChannelWork)
-                {
-                    text = "[PARTED CHAN] ";
-
-                }
-                text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
-                TreeNode.ToolTipText = text;
             }
+            if (!ChannelWork)
+            {
+                text = "[PARTED CHAN] ";
+
+            }
+            text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
+            MenuData = Core.normalizeHtml(text);
         }
 
         /// <summary>
@@ -266,7 +281,6 @@ namespace Client
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;
-                    System.Windows.Forms.ListView listView = null;
                     retrieveWindow();
                     List<User> owners = new List<User>();
                     List<User> admins = new List<User>();
@@ -276,28 +290,13 @@ namespace Client
                     List<User> users = new List<User>();
                     bool Inserted;
                     Core._Main.UpdateStatus();
-                    if (Chat != null)
+                    if (Chat != null && Chat.isInitialised)
                     {
                         if (Chat.Locked)
                         {
                             Redraw = true;
-                            PidgeonList.Updated = true;
+                            Graphics.PidgeonList.Updated = true;
                             UserListRefreshWait = true;
-                            return;
-                        }
-                        if (Chat.listView.Visible)
-                        {
-                            listView = Chat.listViewd;
-                        }
-                        if (Chat.listViewd.Visible)
-                        {
-                            listView = Chat.listView;
-                        }
-                        if (listView == null)
-                        {
-                            Chat.listView.Visible = true;
-                            Redraw = true;
-                            PidgeonList.Updated = true;
                             return;
                         }
                         lock (UserList)
@@ -353,9 +352,10 @@ namespace Client
                                 users.Add(nick);
                             }
                         }
-
-                        listView.Items.Clear();
-
+                        
+                        Chat.UserList.Clear();
+                        
+                        
                         owners.Sort();
                         admins.Sort();
                         halfop.Sort();
@@ -363,67 +363,44 @@ namespace Client
                         vs.Sort();
                         users.Sort();
 
-                        int i = 0;
-
                         foreach (User user in owners)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorq;
-                            i++;
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Owner;
                         }
+
                         foreach (User user in admins)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colora;
-                            i++;
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Admin;
                         }
                         foreach (User user in oper)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.coloro;
-                            i++;
+                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Op;
                         }
                         foreach (User user in halfop)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorh;
-                            i++;
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Halfop;
                         }
                         foreach (User user in vs)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colorv;
-                            i++;
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Voice;
                         }
 
                         foreach (User user in users)
                         {
-                            listView.Items.Add(uchr(user) + user.Nick);
-                            listView.Items[i].ToolTipText = user.Nick + "!" + user.Ident + "@" + user.Host;
-                            listView.Items[i].ForeColor = Configuration.CurrentSkin.colordefault;
-                            i++;
-                        }
-                        if (Chat.listViewd.Visible == true)
-                        {
-                            Chat.listViewd.Visible = false;
-                            Chat.listView.Visible = true;
-                        }
-                        else
-                        {
-                            Chat.listView.Visible = false;
-                            Chat.listViewd.Visible = true;
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            user.Status = User.ChannelStatus.Regular;
                         }
                     }
                     return;
                 }
 
                 Redraw = true;
-                PidgeonList.Updated = true;
+                Graphics.PidgeonList.Updated = true;
                 return;
             }
             catch (Exception f)
@@ -459,7 +436,7 @@ namespace Client
 
         public void InsertBan(string ban, string user)
         {
-            
+
         }
 
         public bool RemoveBan(string ban)
@@ -475,7 +452,7 @@ namespace Client
                         break;
                     }
                 }
-            
+
                 if (br != null)
                 {
                     Bans.Remove(br);
@@ -506,7 +483,7 @@ namespace Client
         /// Retrieve window
         /// </summary>
         /// <returns></returns>
-        public Window retrieveWindow()
+        public Graphics.Window retrieveWindow()
         {
             if (Chat == null)
             {

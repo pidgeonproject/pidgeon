@@ -43,7 +43,7 @@ namespace Client
             {
                 if (parameter == "")
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 string name2 = parameter;
@@ -51,7 +51,7 @@ namespace Client
                 int n3;
                 if (name2 == "")
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Scrollback.MessageStyle.System);
+                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 if (Core._Main.Chat._Protocol == null)
@@ -94,7 +94,7 @@ namespace Client
                 {
                     ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
                     protocol.sBuffer.Clear();
-                    Core._Main.Chat.scrollback.InsertText("Services cache was cleared", Scrollback.MessageStyle.System, false);
+                    Core._Main.Chat.scrollback.InsertText("Services cache was cleared", Client.ContentLine.MessageStyle.System, false);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Client
                     return;
                 }
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }),
-                    Scrollback.MessageStyle.Message);
+                    Client.ContentLine.MessageStyle.Message);
             }
         }
     }

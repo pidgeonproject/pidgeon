@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -16,53 +16,24 @@
  ***************************************************************************/
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Diagnostics;
-using System.Text;
-using System.Windows.Forms;
 
-namespace Client
+namespace Client.Forms
 {
-    public partial class Help : Form
+    public partial class Help : Gtk.Window
     {
-        public Help()
+        public Help () : base(Gtk.WindowType.Toplevel)
         {
             try
             {
-                InitializeComponent();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            try
-            {
-                Process.Start(linkLabel1.Text);
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void Help_Load(object sender, EventArgs e)
-        {
-            try
-            {
-                messages.Localize(this);
-                label2.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
-            }
-            catch (Exception fail)
+                this.Build ();
+                messages.Localize (this);
+                this.label1.Markup = "<span size='18000'>Pidgeon</span>";
+                this.label4.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
+            } catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
     }
 }
+

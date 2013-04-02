@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -15,7 +15,6 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -23,35 +22,47 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
+using Gtk;
 
-namespace Client
+namespace Client.Forms
 {
-    public partial class MicroChat : Form
+    public partial class MicroChat : Gtk.Window
     {
-        public static MicroChat mc;
-        public MicroChat()
+        public Scrollback scrollback_mc = null;
+        private Gtk.VBox vbox;
+
+        protected virtual void Build()
         {
-            InitializeComponent();
-            this.TopMost = true;
-            scrollback_mc.owner = null;
+            global::Stetic.Gui.Initialize(this);
+            this.Name = "Client.Forms.MicroChat";
+            this.Title = "Micro chat";
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.WindowPosition = Gtk.WindowPosition.Center;
+            vbox = new VBox();
+            scrollback_mc = new Scrollback();
+            scrollback_mc.isMicro = true;
             scrollback_mc.Create();
-            scrollback_mc.contextMenuStrip1.Items.Clear();
-            scrollback_mc.contextMenuStrip1.Items.Add(scrollback_mc.scrollToolStripMenuItem);
-            scrollback_mc.contextMenuStrip1.Items.Add(transparencyToolStripMenuItem);
+            this.TypeHint = Gdk.WindowTypeHint.Utility;
+            this.DefaultHeight = 420;
+            this.DefaultWidth = 680;
+            scrollback_mc.Events = ((global::Gdk.EventMask)(256));
+            scrollback_mc.Name = "scrollback1";
+            this.DeleteEvent += new DeleteEventHandler(Close);
+            vbox.Add(scrollback_mc);
+            this.Add(vbox);
+            if ((this.Child != null))
+            {
+                this.Child.ShowAll();
+            }
+            this.Hide();
         }
 
-        public void Unload(object sender, FormClosingEventArgs e)
+        public void Close(object sender, DeleteEventArgs e)
         {
-            e.Cancel = true;
-            this.Visible = false;
+            e.RetVal = true;
+            Hide();
         }
-
-        protected override void OnShown(EventArgs e)
-        {
-            base.OnShown(e);
-        }
-
+        
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
             this.Opacity = 0.8;
@@ -76,22 +87,54 @@ namespace Client
         {
             this.Opacity = 0.2;
         }
-
-        private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void MicroChat_Load(object sender, EventArgs e)
+        
+        [GLib.ConnectBefore]
+        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
         {
             try
             {
-                messages.Localize(this);
+                Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+                separator1.Show();
+                e.Menu.Append(separator1);
+                Gtk.Menu m0 = new Gtk.Menu();
+                Gtk.MenuItem m1 = new Gtk.MenuItem("Transparency");
+                m1.Submenu = m0;
+                m1.Show();
+                e.Menu.Append(m1);
+                Gtk.MenuItem m2 = new Gtk.MenuItem("0%");
+                m2.Activated += new EventHandler(toolStripMenuItem6_Click);
+                Gtk.MenuItem m3 = new Gtk.MenuItem("20%");
+                m3.Activated += new EventHandler(toolStripMenuItem5_Click);
+                Gtk.MenuItem m4 = new Gtk.MenuItem("40%");
+                m4.Activated += new EventHandler(toolStripMenuItem4_Click);
+                Gtk.MenuItem m6 = new Gtk.MenuItem("80%");
+                m6.Activated += new EventHandler(toolStripMenuItem2_Click);
+                Gtk.MenuItem m5 = new Gtk.MenuItem("60%");
+                m5.Activated += new EventHandler(toolStripMenuItem3_Click);
+                m0.Append(m2);
+                m0.Append(m3);
+                m0.Append(m4);
+                m0.Append(m5);
+                m0.Append(m6);
+                m2.Show();
+                m3.Show();
+                m4.Show();
+                m5.Show();
+                m6.Show();
+                e.Menu.Append(m1);
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
+        
+        public MicroChat () : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build();
+            scrollback_mc.RT.textView.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
+            this.KeepAbove = true;
+        }
     }
 }
+

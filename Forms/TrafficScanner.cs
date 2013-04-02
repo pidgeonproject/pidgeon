@@ -1,4 +1,4 @@
-﻿/***************************************************************************
+/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -18,118 +18,96 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Linq;
 using System.Drawing;
+using System.Data;
 using System.Text;
-using System.Windows.Forms;
+using Gtk;
 
-namespace Client
+namespace Client.Forms
 {
-    public partial class TrafficScanner : Form
+    public partial class TrafficScanner : Gtk.Window
     {
-        bool modified = true;
-        List<string> text = new List<string>();
-        public TrafficScanner()
+        private List<string> traf = new List<string>();
+        public GLib.TimeoutHandler timer;
+        private bool Enabled = true;
+        
+        public TrafficScanner () :  base(Gtk.WindowType.Toplevel)
         {
-            InitializeComponent();
+            try
+            {
+                this.Build ();
+                this.timer = new GLib.TimeoutHandler(Tick);
+                GLib.Timeout.Add (1000, timer);
+                this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+                this.DeleteEvent += new DeleteEventHandler(Unshow);
+                textview2.Buffer.Text = "";
+                LoadStyle();
+                textview2.WrapMode = WrapMode.Char;
+                
+                this.Hide ();
+            } catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
-
-        public void Stop(object O, FormClosingEventArgs L)
+        
+        public void LoadStyle()
         {
-            Visible = false;
-            L.Cancel = true;
+            textview2.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            textview2.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
-
+        
         public void Clean()
         {
-            lock (text)
-            {
-                text.Clear();
-            }
-            textBox1.Clear();
-            modified = true;
+            textview2.Buffer.Text = "";
         }
-
-        public bool insert(string server, string data)
+        
+        public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
-            modified = true;
-            if (!Configuration.Kernel.NetworkSniff)
+            Hide();
+            closing.RetVal = true;
+        }
+        
+        public bool Tick()
+        {
+            if (!Enabled)
             {
                 return true;
             }
-            lock (text)
+            if (!this.Visible)
             {
-                text.Add(server + " " + data);
+                return true;
             }
+            StringBuilder text = new StringBuilder("");
+            lock (traf)
+            {
+                if (traf.Count > 800)
+                {
+                    Client.GTK.MessageBox message = new Client.GTK.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
+                    if (message.result == ResponseType.No)
+                    {
+                        Enabled = false;
+                        return true;
+                    }
+                }
+                foreach (string xx in traf)
+                {
+                    text.Append(xx + Environment.NewLine);
+                }
+                traf.Clear();
+            }
+            TextIter iter = textview2.Buffer.EndIter;
+            textview2.Buffer.Insert(ref iter, text.ToString());
             return true;
         }
-
-        private void refresh_Tick(object sender, EventArgs e)
+        
+        public void insert(string Server, string Text)
         {
-            try
+            lock (traf)
             {
-                if (Visible && modified)
-                {
-                    refresh.Enabled = false;
-                    modified = false;
-                    lock (text)
-                    {
-                        if (text.Count > 800)
-                        {
-                            if (MessageBox.Show("There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == System.Windows.Forms.DialogResult.No)
-                            {
-                                refresh.Enabled = false;
-                                scrollToolStripMenuItem.Checked = false;
-                                return;
-                            }
-                        }
-                        StringBuilder xx = new StringBuilder("");
-                        foreach (string x in text)
-                        {
-                            xx.Append(x + Environment.NewLine);
-                        }
-                        textBox1.AppendText(xx.ToString());
-                        text.Clear();
-                        textBox1.ScrollToCaret();
-                    }
-                    refresh.Enabled = true;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Clean();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void scrollToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            scrollToolStripMenuItem.Checked = !scrollToolStripMenuItem.Checked;
-            refresh.Enabled = scrollToolStripMenuItem.Checked;
-        }
-
-        private void copyDataToClipboradToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Clipboard.SetText(textBox1.Text);
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
+                traf.Add(Server + " " + Text);
             }
         }
     }
 }
+

@@ -185,28 +185,31 @@ namespace Client
         {
             try
             {
-                while (_IRCNetwork.Connected)
+                while (_IRCNetwork.Connected && Connected)
                 {
                     Transfer("PING :" + _IRCNetwork._Protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
                 }
             }
+			catch (System.Threading.ThreadAbortException)
+			{
+				return;
+			}
+			catch (System.Net.Sockets.SocketException)
+			{
+				return;
+			}
             catch (Exception)
             {
                 Core.killThread(System.Threading.Thread.CurrentThread);
             }
         }
 
-        public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
-
         public void Start()
         {
             Messages.protocol = this;
             Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Scrollback.MessageStyle.System);
+                Client.ContentLine.MessageStyle.System);
             try
             {
                 if (!SSL)
@@ -220,7 +223,7 @@ namespace Client
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
                     _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
-                        new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                        new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
@@ -247,7 +250,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Scrollback.MessageStyle.System);
+                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -274,9 +277,15 @@ namespace Client
             {
                 return;
             }
+			catch (System.Net.Sockets.SocketException)
+			{
+				SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
+                Core._Main.Status("Disconnected from server " + Server);
+                Exit();
+			}
             catch (System.IO.IOException)
             {
-                SystemWindow.scrollback.InsertText("Disconnected", Scrollback.MessageStyle.User);
+                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
                 Core._Main.Status("Disconnected from server " + Server);
                 Exit();
             }
@@ -313,7 +322,12 @@ namespace Client
         {
             try
             {
-                _StreamWriter.WriteLine(ms); 
+				if (!Connected)
+				{
+					Core.DebugLog("NETWORK: attempt to send a packet to disconnected network");
+					return;
+				}
+                _StreamWriter.WriteLine(ms);
                 Core.trafficscanner.insert(Server, " << " + ms);
                 _StreamWriter.Flush();
             }
@@ -333,7 +347,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Scrollback.MessageStyle.Message, true, 0, true);
+                Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, _priority);
             return 0;
@@ -348,7 +362,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Scrollback.MessageStyle.Action, true, 0, true);
+            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -380,6 +394,7 @@ namespace Client
             }
             catch (Exception) { }
             _IRCNetwork.Connected = false;
+			Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
             keep.Abort();
@@ -387,7 +402,7 @@ namespace Client
             {
                 main.Abort();
             }
-            SystemWindow.scrollback.InsertText("You have disconnected from network", Scrollback.MessageStyle.System);
+            SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {
                 Core.network = null;
