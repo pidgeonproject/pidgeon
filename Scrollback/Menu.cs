@@ -405,22 +405,18 @@ namespace Client
 
         public void Click_L(string http)
         {
-            if (http.StartsWith("https://"))
+            if (http.StartsWith("https://") ||
+                http.StartsWith("http://") ||
+                http.StartsWith("ftp://"))
             {
                 try
                 {
-                    System.Diagnostics.Process.Start(http);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
-                }
-            }
-            if (http.StartsWith("http://"))
-            {
-                try
-                {
-                    System.Diagnostics.Process.Start(http);
+                    if (Configuration.UserData.OpenLinkInBrowser)
+                    {
+                        System.Diagnostics.Process.Start(http);
+                    }
+                    // we don't need to continue with execution of this parser because it's not possible for http to start with any other value
+                    return;
                 }
                 catch (Exception)
                 {

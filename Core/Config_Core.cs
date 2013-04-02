@@ -162,6 +162,8 @@ namespace Client
                     make_comment("Last host you connected to", config, xmlnode);
                     make_node("history.port", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
                     make_node("message_mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Change this to false in order to disable clickable browser links", config, xmlnode);
+                    make_node("userdata.openlinkinbrowser", Configuration.UserData.OpenLinkInBrowser.ToString(), curr, confname, config, xmlnode);
 
 
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -551,6 +553,9 @@ namespace Client
                                                     break;
                                                 case "Configuration.Window.history":
                                                     Configuration.Window.history = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "userdata.openlinkinbrowser":
+                                                    Configuration.UserData.OpenLinkInBrowser = bool.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

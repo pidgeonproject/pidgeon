@@ -147,6 +147,10 @@ namespace Client
             /// Last used port
             /// </summary>
             public static string LastPort = "";
+            /// <summary>
+            /// Change this to false to disable links to open a browser
+            /// </summary>
+            public static bool OpenLinkInBrowser = true;
         }
 
         public class Colors
