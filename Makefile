@@ -11,13 +11,7 @@ include $(top_srcdir)/rules.make
 #include $(top_srcdir)/custom-hooks.make
 
 #Warning: This is an automatically generated file, do not edit!
-ifeq ($(CONFIG),DEBUG_X64)
- SUBDIRS =  . 
-endif
 ifeq ($(CONFIG),DEBUG_X86)
- SUBDIRS =  . 
-endif
-ifeq ($(CONFIG),RELEASE_X64)
  SUBDIRS =  . 
 endif
 ifeq ($(CONFIG),RELEASE_X86)

@@ -7,65 +7,30 @@ top_srcdir=.
 
 include $(top_srcdir)/config.make
 
-ifeq ($(CONFIG),DEBUG_X64)
-ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize- -debug "-define:DEBUG;TRACE"
-ASSEMBLY = bin/x64/Debug/Pidgeon.exe
-ASSEMBLY_MDB = $(ASSEMBLY).mdb
-COMPILE_TARGET = winexe
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/x64/Debug/
-
-PIDGEON_EXE_MDB_SOURCE=bin/x64/Debug/Pidgeon.exe.mdb
-PIDGEON_EXE_MDB=$(BUILD_DIR)/Pidgeon.exe.mdb
-TCL84_DLL_SOURCE=tcl84.dll
-PIDGEON_EXE_CONFIG_SOURCE=app.config
-
-endif
-
 ifeq ($(CONFIG),DEBUG_X86)
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize- -debug "-define:DEBUG;TRACE"
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize- -debug "-define:DEBUG;" "-main:Client.Program"
 ASSEMBLY = bin/Debug/Pidgeon.exe
 ASSEMBLY_MDB = $(ASSEMBLY).mdb
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES = 
-BUILD_DIR = bin/Debug/
+BUILD_DIR = bin/Debug
 
 PIDGEON_EXE_MDB_SOURCE=bin/Debug/Pidgeon.exe.mdb
 PIDGEON_EXE_MDB=$(BUILD_DIR)/Pidgeon.exe.mdb
-TCL84_DLL_SOURCE=tcl84.dll
-PIDGEON_EXE_CONFIG_SOURCE=app.config
-
-endif
-
-ifeq ($(CONFIG),RELEASE_X64)
-ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize+ "-define:TRACE"
-ASSEMBLY = bin/x64/Release/Pidgeon.exe
-ASSEMBLY_MDB = 
-COMPILE_TARGET = winexe
-PROJECT_REFERENCES = 
-BUILD_DIR = bin/x64/Release/
-
-PIDGEON_EXE_MDB=
-TCL84_DLL_SOURCE=tcl84.dll
-PIDGEON_EXE_CONFIG_SOURCE=app.config
 
 endif
 
 ifeq ($(CONFIG),RELEASE_X86)
 ASSEMBLY_COMPILER_COMMAND = dmcs
-ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize+ "-define:TRACE"
+ASSEMBLY_COMPILER_FLAGS =  -noconfig -codepage:utf8 -unsafe -warn:4 -optimize- "-main:Client.Program"
 ASSEMBLY = bin/Release/Pidgeon.exe
 ASSEMBLY_MDB = 
 COMPILE_TARGET = winexe
 PROJECT_REFERENCES = 
-BUILD_DIR = bin/Release/
+BUILD_DIR = bin/Release
 
 PIDGEON_EXE_MDB=
-TCL84_DLL_SOURCE=tcl84.dll
-PIDGEON_EXE_CONFIG_SOURCE=app.config
 
 endif
 
@@ -73,9 +38,7 @@ AL=al
 SATELLITE_ASSEMBLY_NAME=$(notdir $(basename $(ASSEMBLY))).resources.dll
 
 PROGRAMFILES = \
-	$(PIDGEON_EXE_MDB) \
-	$(TCL84_DLL) \
-	$(PIDGEON_EXE_CONFIG)  
+	$(PIDGEON_EXE_MDB)  
 
 BINARIES = \
 	$(PIDGEON)  
@@ -83,156 +46,142 @@ BINARIES = \
 
 RESGEN=resgen2
 
-TCL84_DLL = $(BUILD_DIR)/tcl84.dll
-PIDGEON_EXE_CONFIG = $(BUILD_DIR)/Pidgeon.exe.config
 PIDGEON = $(BUILD_DIR)/pidgeon
 
 FILES = \
+	gtk-gui/generated.cs \
+	Commands/Commands.cs \
+	Commands/Commands_IRC.cs \
+	Commands/Commands_Services.cs \
+	Commands/Commands_System.cs \
+	GTK/MessageBox.cs \
+	GTK/PidgeonForm.cs \
+	RichTBox/Classes.cs \
+	RichTBox/Data.cs \
+	RichTBox/RichTBox_Core.cs \
+	RichTBox/Searching.cs \
+	Scrollback/LineLogs.cs \
+	Scrollback/Menu.cs \
+	Scrollback/Parser.cs \
+	Scrollback/ProcessingLine.cs \
+	Scrollback/Scrollback.cs \
 	Buffers.cs \
 	Channel.cs \
-	Commands.cs \
-	Extension.cs \
-	Forms/Channels.cs \
-	Forms/Channels.Designer.cs \
 	Configuration.cs \
-	Core.cs \
-	Forms/Connection.cs \
-	Forms/Connection.Designer.cs \
-	Forms/Help.cs \
-	Forms/Help.Designer.cs \
-	Forms/Logs.cs \
-	Forms/Logs.Designer.cs \
-	Forms/Main.cs \
-	Forms/Main.Designer.cs \
-	Forms/MicroChat.cs \
-	Forms/MicroChat.Designer.cs \
-	Forms/Notification.cs \
-	Forms/Notification.Designer.cs \
-	Forms/ScriptEdit.cs \
-	Forms/ScriptEdit.Designer.cs \
-	Forms/SearchItem.cs \
-	Forms/SearchItem.Designer.cs \
-	Forms/SettingsEd.cs \
-	Forms/SettingsEd.Designer.cs \
-	Forms/ShortcutBox.cs \
-	Forms/ShortcutBox.Designer.cs \
-	Forms/SkinEd.cs \
-	Forms/SkinEd.Designer.cs \
-	Ignoring.cs \
-	IRC.cs \
-	ListViewDB.cs \
-	NetworkMode.cs \
-	ProtocolXmpp.cs \
-	Qt.cs \
-	Services/Datagram.cs \
-	Services/Loader.cs \
-	Services/ResponsesSv.cs \
-	RevisionInfo.cs \
-	SBABOX/Line.cs \
-	SBABOX/Link.cs \
-	SBABOX/SBABox.cs \
-	SBABOX/SBABox.Designer.cs \
-	Forms/TrafficScanner.cs \
-	Forms/TrafficScanner.Designer.cs \
-	Forms/Warning.cs \
-	Forms/Warning.Designer.cs \
+	Extension.cs \
 	Hooks.cs \
-	PidgeonList.cs \
-	PidgeonList.Designer.cs \
-	Forms/Recovery.cs \
-	Forms/Recovery.Designer.cs \
-	Forms/Channel_Info.cs \
-	Forms/Channel_Info.Designer.cs \
-	Forms/Updater.cs \
-	Forms/Updater.Designer.cs \
-	Services/ProtocolSv.cs \
-	ScriptingCore.cs \
-	Scrollback/Menu.cs \
-	Scrollback/ProcessingLine.cs \
-	Timer.cs \
-	Window.cs \
-	Window.Designer.cs \
+	Ignoring.cs \
 	Messages.cs \
 	Network.cs \
-	Forms/Preferences.cs \
-	Forms/Preferences.Designer.cs \
-	DataProcessor.cs \
+	NetworkData.cs \
+	NetworkMode.cs \
 	Program.cs \
-	Properties/AssemblyInfo.cs \
 	Protocol.cs \
-	ProtocolIrc.cs \
-	ProtocolQuassel.cs \
-	Scrollback/Scrollback.cs \
-	Scrollback/Scrollback.Designer.cs \
+	RevisionInfo.cs \
+	ScriptingCore.cs \
+	Scrollback/ScrollbackLine.cs \
 	SkinCl.cs \
-	TextBox.cs \
-	TextBox.Designer.cs \
+	Timer.cs \
+	Core/Config_Core.cs \
+	Core/Core.cs \
+	Core/Core_IO.cs \
+	Core/Core_Modules.cs \
+	Protocols/ProtocolIrc.cs \
+	Protocols/ProtocolQuassel.cs \
+	Protocols/ProtocolXmpp.cs \
+	Protocols/Qt.cs \
+	Protocols/Services/Buffer.cs \
+	Protocols/Services/Datagram.cs \
+	Protocols/Services/ProtocolSv.cs \
+	Protocols/Services/ResponsesSv.cs \
+	Protocols/irc/ChannelIRC.cs \
+	Protocols/irc/IRC.cs \
+	Protocols/irc/NetworkIRC.cs \
+	Forms/Main.cs \
+	gtk-gui/Client.Forms.Main.cs \
 	User.cs \
+	Forms/Preferences.cs \
+	gtk-gui/Client.Forms.Preferences.cs \
+	Forms/Channels.cs \
+	Forms/TrafficScanner.cs \
+	gtk-gui/Client.Forms.TrafficScanner.cs \
+	Properties/AssemblyInfo.cs \
 	Properties/Resources.Designer.cs \
-	Properties/Settings.Designer.cs 
+	Properties/Settings.Designer.cs \
+	Graphics/PidgeonList.cs \
+	Forms/Connection.cs \
+	gtk-gui/Client.Forms.Connection.cs \
+	Forms/SearchItem.cs \
+	Forms/Channel_Info.cs \
+	Forms/MicroChat.cs \
+	Forms/ScriptEdit.cs \
+	Graphics/TextBox.cs \
+	Forms/Help.cs \
+	gtk-gui/Client.Forms.Help.cs \
+	WinForms/Recovery.cs \
+	WinForms/Recovery.Designer.cs \
+	Forms/Notification.cs \
+	WinForms/Updater.cs \
+	WinForms/Updater.Designer.cs \
+	Forms/ConfigFile.cs \
+	Forms/NetworkDB.cs \
+	gtk-gui/Client.Forms.NetworkDB.cs \
+	Graphics/Window/Window.cs \
+	Graphics/Window/Window_UserList.cs 
 
 DATA_FILES = 
 
 RESOURCES = \
-	Forms/Channels.resx,Client.Channels.resources \
-	Forms/Channel_Info.resx,Client.Channel_Info.resources \
-	Forms/Connection.resx,Client.Connection.resources \
-	Forms/Help.resx,Client.Help.resources \
-	Forms/Logs.resx,Client.Forms.Logs.resources \
-	Forms/Main.resx,Client.Main.resources \
-	Forms/MicroChat.resx,Client.MicroChat.resources \
-	Forms/Notification.resx,Client.Notification.resources \
-	Forms/Preferences.resx,Client.Preferences.resources \
-	Forms/ScriptEdit.resx,Client.Forms.ScriptEdit.resources \
-	Forms/SearchItem.resx,Client.SearchItem.resources \
-	Forms/SettingsEd.resx,Client.SettingsEd.resources \
-	Forms/ShortcutBox.resx,Client.ShortcutBox.resources \
-	Forms/SkinEd.resx,Client.SkinEd.resources \
-	SBABOX/SBABox.resx,Client.SBABox.resources \
-	Forms/TrafficScanner.resx,Client.TrafficScanner.resources \
-	Forms/Updater.resx,Client.Updater.resources \
-	Forms/Warning.resx,Client.Warning.resources \
-	PidgeonList.resx,Client.PidgeonList.resources \
-	Forms/Recovery.resx,Client.Recovery.resources \
-	Window.resx,Client.Window.resources \
+	gtk-gui/gui.stetic \
+	ManualPages/Connect.txt,Client.ManualPages.Connect.txt \
+	ManualPages/Oper.txt,Client.ManualPages.Oper.txt \
+	ManualPages/PidgeonMan.txt,Client.ManualPages.PidgeonMan.txt \
+	ManualPages/PidgeonModule.txt,Client.ManualPages.PidgeonModule.txt \
+	ManualPages/PidgeonUptime.txt,Client.ManualPages.PidgeonUptime.txt \
+	ManualPages/Server.txt,Client.ManualPages.Server.txt \
+	ManualPages/ServicesClear.txt,Client.ManualPages.ServicesClear.txt \
 	Properties/Resources.resx,Client.Properties.Resources.resources \
-	Scrollback/Scrollback.resx,Client.Scrollback.resources \
-	TextBox.resx,Client.TextBox.resources \
-	version.txt,Client.version.txt 
+	Languages/en_english.txt,Client.Languages.en_english.txt \
+	Languages/cs_czech.txt,Client.Languages.cs_czech.txt \
+	Resources/arrow.png,Client.Resources.arrow.png \
+	Resources/pigeon_clip_art_hight.ico,Client.Resources.pigeon_clip_art_hight.ico \
+	Resources/at.png,Client.Resources.at.png \
+	Resources/darknetwork.png,Client.Resources.darknetwork.png \
+	Resources/exclamation\ mark.png,Client.Resources.exclamation\ mark.png \
+	Resources/hash.png,Client.Resources.hash.png \
+	Resources/Pigeon_clip_art_hight.png,Client.Resources.Pigeon_clip_art_hight.png \
+	Resources/Pigeon_clip_art_hight_mini.png,Client.Resources.Pigeon_clip_art_hight_mini.png \
+	version.txt,Client.version.txt \
+	Resources/icon.png,Client.Resources.icon.png \
+	Resources/icon_hash.png,Client.Resources.icon_hash.png 
 
 EXTRAS = \
-	app.config \
-	Properties/Settings.settings \
-	Languages/cs_czech.txt \
-	Languages/en_english.txt \
-	Resources/icon.png \
-	ManualPages/Connect.txt \
-	ManualPages/Oper.txt \
-	ManualPages/PidgeonMan.txt \
-	ManualPages/PidgeonModule.txt \
-	ManualPages/PidgeonUptime.txt \
-	ManualPages/Server.txt \
-	Resources/darknetwork.png \
-	Pigeon_clip_art_hight.ico \
-	Resources/Pigeon_clip_art_hight.png \
-	tcl84.dll \
-	Resources/Image2.png \
-	Resources/Image2.bmp \
 	Resources/50px-IRC_icon.png \
 	Resources/Image1.bmp \
+	Resources/Image1.jpg \
+	Resources/Image2\ (1).bmp \
+	Resources/Image2.bmp \
+	Resources/Image2.png \
+	Resources/Letter\ S.png \
 	Resources/irc_channel.ico \
 	Resources/regular.bmp \
-	Resources/Image1.jpg \
+	Properties/Settings.settings \
+	Properties/Resources.resources \
+	Graphics/Window \
 	pidgeon.in 
 
 REFERENCES =  \
 	System \
-	System.Web \
-	System.Data \
+	-pkg:gtk-sharp-2.0 \
+	Mono.Posix \
 	System.Drawing \
+	System.Data \
 	System.Windows.Forms \
 	System.Xml \
-	System.Xml.Linq
+	System.Web \
+	-pkg:gtk-dotnet-2.0 \
+	-pkg:glib-sharp-2.0 \
+	-pkg:glade-sharp-2.0
 
 DLL_REFERENCES = 
 
@@ -243,14 +192,16 @@ all-local: $(ASSEMBLY) $(PROGRAMFILES) $(BINARIES)  $(top_srcdir)/config.make
 
 
 
-$(eval $(call emit-deploy-target,TCL84_DLL))
-$(eval $(call emit-deploy-target,PIDGEON_EXE_CONFIG))
 $(eval $(call emit-deploy-wrapper,PIDGEON,pidgeon,x))
 
 
 $(eval $(call emit_resgen_targets))
 $(build_xamlg_list): %.xaml.g.cs: %.xaml
 	xamlg '$<'
+
+# Targets for Custom commands
+DEBUG|X86_BeforeBuild:
+	(cd $(srcdir) && update.cmd )
 
 
 $(ASSEMBLY_MDB): $(ASSEMBLY)
@@ -269,8 +220,6 @@ install-local: $(ASSEMBLY) $(ASSEMBLY_MDB)
 	$(call cp,$(ASSEMBLY),$(DESTDIR)$(libdir)/$(PACKAGE))
 	$(call cp,$(ASSEMBLY_MDB),$(DESTDIR)$(libdir)/$(PACKAGE))
 	$(call cp,$(PIDGEON_EXE_MDB),$(DESTDIR)$(libdir)/$(PACKAGE))
-	$(call cp,$(TCL84_DLL),$(DESTDIR)$(libdir)/$(PACKAGE))
-	$(call cp,$(PIDGEON_EXE_CONFIG),$(DESTDIR)$(libdir)/$(PACKAGE))
 	mkdir -p '$(DESTDIR)$(bindir)'
 	$(call cp,$(PIDGEON),$(DESTDIR)$(bindir))
 	make post-install-local-hook prefix=$(prefix)
@@ -281,7 +230,5 @@ uninstall-local: $(ASSEMBLY) $(ASSEMBLY_MDB)
 	$(call rm,$(ASSEMBLY),$(DESTDIR)$(libdir)/$(PACKAGE))
 	$(call rm,$(ASSEMBLY_MDB),$(DESTDIR)$(libdir)/$(PACKAGE))
 	$(call rm,$(PIDGEON_EXE_MDB),$(DESTDIR)$(libdir)/$(PACKAGE))
-	$(call rm,$(TCL84_DLL),$(DESTDIR)$(libdir)/$(PACKAGE))
-	$(call rm,$(PIDGEON_EXE_CONFIG),$(DESTDIR)$(libdir)/$(PACKAGE))
 	$(call rm,$(PIDGEON),$(DESTDIR)$(bindir))
 	make post-uninstall-local-hook prefix=$(prefix)
