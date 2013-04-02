@@ -562,6 +562,7 @@ namespace Client.Forms
             try
             {
                 Forms.ConfigFile ed = new Forms.ConfigFile();
+                ed.Load();
                 ed.Show();
             }
             catch (Exception fail)

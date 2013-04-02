@@ -14,18 +14,22 @@ namespace Client.Forms
             try
             {
                 this.Build ();
-                if (!File.Exists(Core.ConfigFile))
-                {
-                    return;
-                }
                 this.button3.Activated += new EventHandler(button1_Click);
                 this.button4.Activated += new EventHandler(button2_Click);
-                textview1.Buffer.Text = File.ReadAllText(Core.ConfigFile);
             }
             catch (Exception fail)
             {
                 Core.handleException(fail);
             }
+        }
+
+        public void Load()
+        {
+            if (!File.Exists(Core.ConfigFile))
+            {
+                return;
+            }
+            textview1.Buffer.Text = File.ReadAllText(Core.ConfigFile);
         }
 
         protected virtual void Build()
