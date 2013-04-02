@@ -44,13 +44,13 @@ namespace Client
             pong = DateTime.Now;
             return;
         }
-		
-		public bool Pong(string source, string parameters, string _value)
+        
+        public bool Pong(string source, string parameters, string _value)
         {
-			_Network.Transfer("PONG :" + _value, Configuration.Priority.Low); 
-			return true;
-		}
-		
+            _Network.Transfer("PONG :" + _value, Configuration.Priority.Low); 
+            return true;
+        }
+        
         public bool ProcessThis(string source, string[] data, string _value)
         {
             if (source.StartsWith(_Network.Nickname + "!"))
@@ -227,7 +227,7 @@ namespace Client
                         {
                             OK = true;
                         }
-						
+                        
                         switch (command)
                         {
                             case "001":
@@ -273,12 +273,12 @@ namespace Client
                                 }
                                 _Network.DownloadingList = false;
                                 break;
-						    case "PING":
-							    if (Pong (command, parameters, value))
-							    {
-								    return true;
-							    }
-							    break;
+                            case "PING":
+                                if (Pong (command, parameters, value))
+                                {
+                                    return true;
+                                }
+                                break;
                             case "PONG":
                                 Ping();
                                 return true;
@@ -404,29 +404,29 @@ namespace Client
                         }
                     }
                 } else
-				{
-					// malformed requests this needs to exist so that it works with some broked ircd
-					string command = text;
-					string value = "";
-					if (command.Contains(" :"))
-					{
-						value = command.Substring(command.IndexOf(" :") + 2);
-						command = command.Substring(0, command.IndexOf(" :"));
-					}
-					// for extra borked ircd
-					if (command.Contains (" "))
-					{
-						command = command.Substring(0, command.IndexOf(" "));
-					}
-					
-					switch (command)
-					{
-					    case "PING":
-						    Pong (command, null, value);
-						    OK = true;
-						    break;
-					}
-				}
+                {
+                    // malformed requests this needs to exist so that it works with some broked ircd
+                    string command = text;
+                    string value = "";
+                    if (command.Contains(" :"))
+                    {
+                        value = command.Substring(command.IndexOf(" :") + 2);
+                        command = command.Substring(0, command.IndexOf(" :"));
+                    }
+                    // for extra borked ircd
+                    if (command.Contains (" "))
+                    {
+                        command = command.Substring(0, command.IndexOf(" "));
+                    }
+                    
+                    switch (command)
+                    {
+                        case "PING":
+                            Pong (command, null, value);
+                            OK = true;
+                            break;
+                    }
+                }
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
