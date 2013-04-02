@@ -49,6 +49,7 @@ namespace Client.Forms
             this.hbox1 = new global::Gtk.HBox ();
             this.hbox1.Name = "hbox1";
             this.hbox1.Spacing = 6;
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             // Container child hbox1.Gtk.Box+BoxChild
             this.entry1 = new global::Gtk.Entry ();
             this.entry1.CanFocus = true;

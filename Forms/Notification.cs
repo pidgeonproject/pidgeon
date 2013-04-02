@@ -40,6 +40,7 @@ namespace Client.Forms
             // Container child Client.Forms.Notification.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();
             this.vbox1.Name = "vbox1";
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.vbox1.Spacing = 6;
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new global::Gtk.Label();
