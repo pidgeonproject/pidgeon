@@ -277,7 +277,8 @@ namespace Client.Forms
             }
             messages.Localize(this);
             this.DeleteEvent += new DeleteEventHandler(hide);
-            button1.Clicked += new EventHandler(bSave_Click);
+            button1.Clicked += new EventHandler(bCancel_Click);
+            button3.Clicked += new EventHandler(bSave_Click);
             entry1.Text = Configuration.UserData.nick;
             this.treeview1.ButtonPressEvent += new ButtonPressEventHandler(s1);
             entry2.Text = Configuration.UserData.quit;
