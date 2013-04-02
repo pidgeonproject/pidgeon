@@ -275,7 +275,7 @@ namespace Client.Forms
 
         public int setText(string name)
         {
-            this.Title = "Pidgeon Client v 1.0 " + name;
+            this.Title = "Pidgeon Client v 1.2 " + name;
             return 2;
         }
 

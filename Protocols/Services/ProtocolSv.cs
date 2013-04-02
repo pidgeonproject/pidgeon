@@ -447,7 +447,7 @@ namespace Client
 
         public void Disconnect(Network network)
         {
-            Transfer("QUIT :" + network.Quit);
+            Transfer("QUIT :" + network.Quit, Configuration.Priority.High, network);
             Datagram request = new Datagram("REMOVE", network.ServerName);
             Deliver(request);
         }

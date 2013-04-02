@@ -315,9 +315,28 @@ namespace Client
                         {
                             if (UndrawnLines.Count > 0)
                             {
-                                foreach (ContentLine curr in UndrawnLines)
+                                // if there is too many lines in buffer we write only last
+                                if (UndrawnLines.Count > scrollback_max && !simple)
                                 {
-                                    InsertLineToText(curr, false);
+                                    lock (ContentLines)
+                                    {
+                                        ContentLines.Clear();
+                                    }
+                                    int from = UndrawnLines.Count - scrollback_max - 1;
+                                    while (from < UndrawnLines.Count)
+                                    {
+                                        InsertLineToText(UndrawnLines[from], false);
+                                        from++;
+                                    }
+                                    SortNeeded = true;
+                                    ReloadWaiting = true;
+                                    Changed = true;
+                                } else
+                                {
+                                    foreach (ContentLine curr in UndrawnLines)
+                                    {
+                                        InsertLineToText(curr, false);
+                                    }
                                 }
                             }
                         }

@@ -518,6 +518,7 @@ namespace Client.Graphics
                         server.SystemWindow.MenuColor = Configuration.CurrentSkin.fontcolor;
                         Core.network = server;
                         disconnectToolStripMenuItem.Visible = true;
+                        closeToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
                     case ItemType.Services:
@@ -574,11 +575,6 @@ namespace Client.Graphics
             {
                 Core.handleException(fail);
             }
-        }
-
-        public void RemoveAll(TreeIter iter)
-        {
-
         }
 
         public void RemoveItem(TreeIter it, object Item, ItemType type)

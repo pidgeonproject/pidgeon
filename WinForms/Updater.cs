@@ -164,8 +164,10 @@ namespace Client
                                 info = info + "previous: " + System.Windows.Forms.Application.StartupPath;
                                 System.IO.File.WriteAllText(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat", info);
                                 System.Diagnostics.Process.Start(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
-                                Core._KernelThread.Abort();
-                                Application.Exit();
+                                // we need to quit application as fast as possible
+                                Core.IgnoreErrors = true;
+                                Core._Configuration.ConfigSave();
+                                Environment.Exit(0);
                                 return;
                         }
                         if (progressBar1.Value < progressBar1.Maximum)
