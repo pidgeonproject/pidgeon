@@ -371,6 +371,8 @@ namespace Client
                 }
             }
             ClearWins();
+            // we removed lot of memory now, let's clean it
+            System.GC.Collect();
             lock (Core.Connections)
             {
                 if (Core.Connections.Contains(this) && !Core.IgnoreErrors)

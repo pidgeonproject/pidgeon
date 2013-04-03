@@ -440,12 +440,16 @@ namespace Client.Services
             }
         }
 
-        public static string SerializeNetwork(NetworkInfo line)
+        public static void SerializeNetwork(NetworkInfo line, string file)
         {
             XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
-            StringWriter data = new StringWriter();
-            xs.Serialize(data, line);
-            return data.ToString();
+            if (File.Exists(file))
+            {
+                File.Delete(file);
+            }
+            StreamWriter writer = File.AppendText(file);
+            xs.Serialize(writer, line);
+            writer.Close();
         }
 
         public static NetworkInfo DeserializeNetwork(string text)
@@ -642,8 +646,7 @@ namespace Client.Services
                 {
                     foreach (KeyValuePair<string, NetworkInfo> network in networkInfo)
                     {
-                        string xx = SerializeNetwork(network.Value);
-                        File.WriteAllText(Root + network.Key, xx);
+                        SerializeNetwork(network.Value, Root + network.Key);
                         files.Add(network.Key);
                     }
                 }
