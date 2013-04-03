@@ -27,6 +27,7 @@ using System.Windows.Forms;
 
 namespace Client
 {
+    [Serializable]
     [System.ComponentModel.ToolboxItem(true)]
     public partial class Scrollback : Gtk.Bin
     {
@@ -268,7 +269,7 @@ namespace Client
                 {
                     Core.DebugLog("Destructor called for scrollback of no name");
                 }
-                Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
+                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
 

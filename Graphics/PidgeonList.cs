@@ -175,7 +175,10 @@ namespace Client.Graphics
                 {
                     case ItemType.Server:
                         Network nw = (Network)model.GetValue(iter, 1);
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
+                        if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
+                        {
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
+                        }
                         break;
                     case ItemType.User:
                         User user = (User)model.GetValue(iter, 1);
@@ -186,7 +189,7 @@ namespace Client.Graphics
                                 window = user._Network.PrivateWins[user];
                             }
                         }
-                        if (window != null)
+                        if (window != null && !window.IsDestroyed)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
                         }
@@ -381,6 +384,7 @@ namespace Client.Graphics
 
                 tv.ColumnsAutosize();
 
+                // we sort out all networks that are waiting to be inserted to list
                 lock (queueNetwork)
                 {
                     foreach (Network it in queueNetwork)
@@ -390,6 +394,7 @@ namespace Client.Graphics
                     queueNetwork.Clear();
                 }
 
+                // we sort out all channels that are waiting to be inserted to list
                 lock (queueChannels)
                 {
                     foreach (Channel item in queueChannels)
@@ -399,6 +404,7 @@ namespace Client.Graphics
                     queueChannels.Clear();
                 }
 
+                // we sort out all services that are waiting to be inserted to list
                 lock (queueProtocol)
                 {
                     foreach (ProtocolSv item in queueProtocol)
@@ -427,6 +433,7 @@ namespace Client.Graphics
                     ChannelList.Remove(chan);
                 }
 
+                // if there are waiting window requests we process them here
                 lock (Core._Main.WindowRequests)
                 {
                     foreach (Forms.Main._WindowRequest item in Core._Main.WindowRequests)
@@ -472,7 +479,8 @@ namespace Client.Graphics
                         {
                             if (window.IsDestroyed)
                             {
-                                Values.SetValue(iter, 3, null);
+                                //Values.SetValue(iter, 3, null);
+                                Values.Remove(ref iter);
                             }
                         }
                     } while (Values.IterNext(ref iter));
@@ -757,6 +765,7 @@ namespace Client.Graphics
                                 }
                             }
                         }
+                        Values.Remove(ref iter);
                         break;
                     case ItemType.Services:
                         ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);

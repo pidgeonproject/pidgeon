@@ -279,7 +279,7 @@ namespace Client
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for network: " + ServerName);
-                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
             }
         }
 

@@ -26,6 +26,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Client
 {
+    [Serializable]
     public partial class ProtocolSv : Protocol
     {
         public class Cache
