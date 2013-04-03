@@ -375,6 +375,11 @@ namespace Client
 
         public override bool Disconnect()
         {
+            if (!Connected)
+            {
+                Core.DebugLog("User attempted to disconnect services that are already disconnected");
+                return false;
+            }
             Connected = false;
             try
             {

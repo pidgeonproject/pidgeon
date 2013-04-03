@@ -109,7 +109,7 @@ namespace Client.Graphics
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for window: " + name);
-                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+                Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
 

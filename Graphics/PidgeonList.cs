@@ -459,6 +459,24 @@ namespace Client.Graphics
                         }
                     }
                 }
+
+                // check all destroyed windows
+                TreeIter iter;
+                if (Values.GetIterFirst(out iter))
+                {
+                    do
+                    {
+                        // in case the window is destroyed we need to remove the reference
+                        var window = (Window)Values.GetValue(iter, 3);
+                        if (window != null)
+                        {
+                            if (window.IsDestroyed)
+                            {
+                                Values.SetValue(iter, 3, null);
+                            }
+                        }
+                    } while (Values.IterNext(ref iter));
+                } 
             }
             catch (Exception fail)
             {
@@ -721,23 +739,29 @@ namespace Client.Graphics
                 TreePath[] path = tv.Selection.GetSelectedRows();
                 tv.Model.GetIter(out iter, path[0]);
                 ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
-                if (type == ItemType.Server)
+                switch (type)
                 {
-                    Network item = (Network)tv.Model.GetValue(iter, 1);
-                    lock (ServerList)
-                    {
-                        if (ServerList.ContainsKey(item))
+                    case ItemType.Server:
+                        Network item = (Network)tv.Model.GetValue(iter, 1);
+                        lock (ServerList)
                         {
-                            if (item.Connected)
+                            if (ServerList.ContainsKey(item))
                             {
-                                item.Disconnect();
-                            }
-                            else
-                            {
-                                Core._Main.Chat.scrollback.InsertText("Not connected", ContentLine.MessageStyle.System, false);
+                                if (item.Connected)
+                                {
+                                    item.Disconnect();
+                                }
+                                else
+                                {
+                                    Core._Main.Chat.scrollback.InsertText("Not connected", ContentLine.MessageStyle.System, false);
+                                }
                             }
                         }
-                    }
+                        break;
+                    case ItemType.Services:
+                        ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);
+                        services.Disconnect();
+                        break;
                 }
             }
             catch (Exception fail)

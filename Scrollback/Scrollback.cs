@@ -268,7 +268,7 @@ namespace Client
                 {
                     Core.DebugLog("Destructor called for scrollback of no name");
                 }
-                Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+                Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
 

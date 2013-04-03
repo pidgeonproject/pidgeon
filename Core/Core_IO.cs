@@ -28,7 +28,7 @@ using System.Text;
 namespace Client
 {
     public partial class Core
-    {   
+    {
         public class IO
         {
             public class FileLine
@@ -102,7 +102,17 @@ namespace Client
                 }
             }
         }
-        
+
+        public static long GetSizeOfObject(object obj)
+        {
+            var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            var ms = new MemoryStream();
+            bf.Serialize(ms, obj);
+            var size = ms.Length;
+            ms.Dispose();
+            return size;
+        }
+
         public static Gdk.Color fromColor(System.Drawing.Color color)
         {
             Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
