@@ -196,12 +196,12 @@ namespace Client
                     {
                         if (Core.network.Connected)
                         {
-                            if (!Core.network._Protocol.Windows.ContainsKey(Core.network.window + channel))
+                            if (!Core.network._Protocol.Windows.ContainsKey(Core.network.SystemWindowID + channel))
                             {
                                 Core.network.Private(channel);
                             }
-                            Core.network._Protocol.ShowChat(Core.network.window + channel);
-                            Core.network._Protocol.Windows[Core.network.window + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname,
+                            Core.network._Protocol.ShowChat(Core.network.SystemWindowID + channel);
+                            Core.network._Protocol.Windows[Core.network.SystemWindowID + channel].scrollback.InsertText(Core.network._Protocol.PRIVMSG(Core.network.Nickname,
                                 parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
                             Core.network.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;
@@ -216,11 +216,11 @@ namespace Client
                 {
                     if (Core.network.Connected)
                     {
-                        if (!Core.network._Protocol.Windows.ContainsKey(Core.network.window + channel))
+                        if (!Core.network._Protocol.Windows.ContainsKey(Core.network.SystemWindowID + channel))
                         {
                             Core.network.Private(channel);
                         }
-                        Core.network._Protocol.ShowChat(Core.network.window + channel);
+                        Core.network._Protocol.ShowChat(Core.network.SystemWindowID + channel);
                         return;
                     }
                 }

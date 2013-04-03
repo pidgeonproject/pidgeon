@@ -551,7 +551,7 @@ namespace Client
                 }
                 foreach (var curr in _Network._Protocol.Windows)
                 {
-                    if (curr.Key == _Network.window + Name)
+                    if (curr.Key == _Network.SystemWindowID + Name)
                     {
                         this.Chat = curr.Value;
                         return curr.Value;

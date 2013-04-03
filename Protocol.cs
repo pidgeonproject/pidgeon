@@ -130,7 +130,7 @@ namespace Client
 
             if (network != null && !name.Contains("!"))
             { 
-                Windows.Add(network.window + id, request.window);
+                Windows.Add(network.SystemWindowID + id, request.window);
             }
             else
             {

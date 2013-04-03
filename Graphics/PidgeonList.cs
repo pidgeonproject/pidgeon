@@ -327,9 +327,9 @@ namespace Client.Graphics
                     {
                         UserList.Add(user, text);
                     }
-                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
+                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
                     {
-                        user._Network._Protocol.Windows[user._Network.window + user.Nick].treeNode = text;
+                        user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick].treeNode = text;
                     }
                     Updated = true;
                 }
@@ -583,7 +583,7 @@ namespace Client.Graphics
                         partToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
-                        chan._Network._Protocol.ShowChat(chan._Network.window + chan.Name);
+                        chan._Network._Protocol.ShowChat(chan._Network.SystemWindowID + chan.Name);
                         Core._Main.UpdateStatus();
                         break;
                     case ItemType.Server:
@@ -594,7 +594,7 @@ namespace Client.Graphics
                         }
                         else
                         {
-                            server.ParentSv.ShowChat("!" + server.window);
+                            server.ParentSv.ShowChat("!" + server.SystemWindowID);
                         }
                         server.SystemWindow.MenuColor = Configuration.CurrentSkin.fontcolor;
                         Core.network = server;
@@ -626,7 +626,7 @@ namespace Client.Graphics
                         {
                             window.MenuColor = Configuration.CurrentSkin.fontcolor;
                         } 
-                        us._Network._Protocol.ShowChat(us._Network.window + us.Nick);
+                        us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
                         closeToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
@@ -728,12 +728,12 @@ namespace Client.Graphics
                             user._Network.PrivateChat.Remove(user);
                         }
                     }
-                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.window + user.Nick))
+                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
                     {
                         lock (user._Network._Protocol.Windows)
                         {
                             Core._Main.rootToolStripMenuItem_Click(null, null);
-                            user._Network._Protocol.Windows.Remove(user._Network.window + user.Nick);
+                            user._Network._Protocol.Windows.Remove(user._Network.SystemWindowID + user.Nick);
                         }
                     }
                     lock (UserList)
@@ -768,10 +768,10 @@ namespace Client.Graphics
     
                     lock (channel._Network._Protocol.Windows)
                     {
-                        if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.window + channel.Name))
+                        if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.SystemWindowID + channel.Name))
                         {
-                            channel._Network._Protocol.Windows[channel._Network.window + channel.Name].Dispose();
-                            channel._Network._Protocol.Windows.Remove(channel._Network.window + channel.Name);
+                            channel._Network._Protocol.Windows[channel._Network.SystemWindowID + channel.Name].Dispose();
+                            channel._Network._Protocol.Windows.Remove(channel._Network.SystemWindowID + channel.Name);
                         }
                     }
 

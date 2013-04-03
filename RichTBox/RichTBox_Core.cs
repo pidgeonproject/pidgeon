@@ -117,6 +117,7 @@ namespace Client
             this.Build();
             ForeColor = Configuration.CurrentSkin.colordefault;
             BackColor = Configuration.CurrentSkin.backgroundcolor;
+            font = new Font(Configuration.CurrentSkin.localfont, (float)Configuration.CurrentSkin.fontsize);
         }
 
         public void InsertLine(Line line)

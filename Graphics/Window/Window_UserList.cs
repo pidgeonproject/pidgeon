@@ -478,11 +478,11 @@ namespace Client.Graphics
                         string nickname = user.Nick;
                         if (nickname != "")
                         {
-                            if (!Core.network._Protocol.Windows.ContainsKey(_Network.window + nickname))
+                            if (!Core.network._Protocol.Windows.ContainsKey(_Network.SystemWindowID + nickname))
                             {
                                 _Network.Private(nickname);
                             }
-                            _Network._Protocol.ShowChat(_Network.window + nickname);
+                            _Network._Protocol.ShowChat(_Network.SystemWindowID + nickname);
                         }
                     }
                 }
@@ -613,7 +613,7 @@ namespace Client.Graphics
                     {
                         if (Configuration.irc.DisplayCtcp)
                         {
-                            _channel._Network._Protocol.Windows["!" + _channel._Network.window].scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
+                            _channel._Network._Protocol.Windows["!" + _channel._Network.SystemWindowID].scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
                         }
                         _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
                     }

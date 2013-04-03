@@ -29,7 +29,7 @@ namespace Client
     {
         public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
         public string localfont = "Arial";
-        public float fontsize = 11;
+        public float fontsize = 10;
         public System.Drawing.Color joincolor;
         public System.Drawing.Color kickcolor;
         public System.Drawing.Color miscelancscolor;
@@ -53,10 +53,6 @@ namespace Client
         /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
         public bool italic;
-        /// <summary>
-        /// Font
-        /// </summary>
-        public Font SBABOX = new Font("Arial", 11);
         /// <summary>
         /// Spacing
         /// </summary>

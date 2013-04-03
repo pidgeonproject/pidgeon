@@ -75,9 +75,12 @@ namespace Client
 
                     format.Data.Add("link", text.Link);
                     format.Data.Add("identifier", text.Text);
-                    format.Font = Configuration.CurrentSkin.localfont;
+                    Pango.FontDescription font = new Pango.FontDescription();
+                    font.Family = Configuration.CurrentSkin.localfont;
                     format.ForegroundGdk = Core.fromColor(text.TextColor);
                     richTextBox.Buffer.TagTable.Add(format);
+                    format.FontDesc = font;
+                    format.SizePoints = Configuration.CurrentSkin.fontsize;
                     richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
                     iter = richTextBox.Buffer.EndIter;
                 }

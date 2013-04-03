@@ -198,7 +198,7 @@ namespace Client
         /// <summary>
         /// Window ID of this network system window
         /// </summary>
-        public string window
+        public string SystemWindowID
         {
             get
             {

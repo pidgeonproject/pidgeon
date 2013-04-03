@@ -64,11 +64,11 @@ namespace Client
                     {
                         lock (protocol.Windows)
                         {
-                            if (!protocol.Windows.ContainsKey(mn.window + message_target))
+                            if (!protocol.Windows.ContainsKey(mn.SystemWindowID + message_target))
                             {
                                 mn.Private(message_target);
                             }
-                            message_window = protocol.Windows[mn.window + message_target];
+                            message_window = protocol.Windows[mn.SystemWindowID + message_target];
                         }
                     }
                 }
@@ -216,7 +216,7 @@ namespace Client
                 if (sv != null)
                 {
                     sv.Nickname = curr.InnerText;
-                    protocol.Windows["!" + sv.window].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
+                    protocol.Windows["!" + sv.SystemWindowID].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
                         Client.ContentLine.MessageStyle.User, true);
                 }
             }

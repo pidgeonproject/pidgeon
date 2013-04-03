@@ -295,11 +295,11 @@ namespace Client
                 chan = source.Substring(0, source.IndexOf("!"));
                 lock (_Protocol.Windows)
                 {
-                    if (!_Protocol.Windows.ContainsKey(_Network.window + chan))
+                    if (!_Protocol.Windows.ContainsKey(_Network.SystemWindowID + chan))
                     {
                         _Network.Private(chan);
                     }
-                    _Protocol.Windows[_Network.window + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
+                    _Protocol.Windows[_Network.SystemWindowID + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
                         Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                 }
                 return true;
