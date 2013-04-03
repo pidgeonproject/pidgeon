@@ -335,6 +335,18 @@ namespace Client.Services
         public string Root = null;
         private List<string> Data = null;
         public bool Modified = true;
+        private bool destroyed = false;
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
 
         public Buffer(ProtocolSv _s)
         {
@@ -543,9 +555,13 @@ namespace Client.Services
             {
                 // we wait here for a while so that we don't colide with post processing functions
                 System.Threading.Thread.Sleep(20000);
+                if (IsDestroyed)
+                {
+                    return;
+                }
                 NetworkInfo nw = (NetworkInfo)network;
                 NetworkInfo.Range range = nw.getRange();
-                while (range != null)
+                while (range != null && !IsDestroyed)
                 {
                     ProtocolSv.Datagram request = new ProtocolSv.Datagram("BACKLOGRANGE");
                     request.Parameters.Add("network", nw.Server);
@@ -559,6 +575,20 @@ namespace Client.Services
             {
                 Core.handleException(fail);
             }
+        }
+
+        public void Destroy()
+        {
+            destroyed = true;
+            foreach (NetworkInfo nw in networkInfo.Values)
+            {
+                nw._windows.Clear();
+                nw._channels.Clear();
+                nw.ChannelList.Clear();
+                nw.MQ.Clear();
+            }
+            Networks.Clear();
+            networkInfo.Clear();
         }
 
         public void retrieveData(string network)

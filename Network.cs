@@ -417,7 +417,9 @@ namespace Client
                 Core.DebugLog("Destroy() called multiple times on " + ServerName);
                 return;
             }
+
             destroyed = true;
+
 			lock (ChannelList)
 			{
 				ChannelList.Clear();
@@ -425,6 +427,11 @@ namespace Client
 			
 			lock (PrivateChat)
 			{
+                // release all windows
+                foreach (User user in PrivateChat)
+                {
+                    user.Destroy();
+                }
 				PrivateChat.Clear();
 			}
 			

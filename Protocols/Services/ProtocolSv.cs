@@ -363,8 +363,7 @@ namespace Client
 			
 			if (sBuffer != null)
 			{
-				sBuffer.Networks.Clear();
-				sBuffer.networkInfo.Clear();
+                sBuffer.Destroy();
 			}
 			
 			sBuffer = null;

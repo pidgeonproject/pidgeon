@@ -434,6 +434,15 @@ namespace Client
 		/// </summary>
 		public void Destroy()
 		{
+            destroyed = true;
+
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destroying channel " + Name);
+            }
+
+            Core._Main.ChannelList.RemoveChannel(this);
+
 			lock (UserList)
 			{
 				UserList.Clear();

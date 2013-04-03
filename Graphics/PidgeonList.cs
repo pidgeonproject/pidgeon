@@ -159,12 +159,63 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// This function removes a reference to channel object, it is being called only by destructor of Channel
+        /// </summary>
+        /// <param name="channel"></param>
+        public void RemoveChannel(Channel channel)
+        {
+            lock (queueChannels)
+            {
+                if (queueChannels.Contains(channel))
+                {
+                    queueChannels.Remove(channel);
+                }
+            }
+            lock (ChannelList)
+            {
+                if (ChannelList.ContainsKey(channel))
+                {
+                    ChannelList.Remove(channel);
+                }
+            }
+        }
+
+        /// <summary>
+        /// This function removes a reference to user object, it is being called only by destructor of User
+        /// </summary>
+        /// <param name="channel"></param>
+        public void RemoveUser(User user)
+        {
+            lock (queueUsers)
+            {
+                if (queueUsers.Contains(user))
+                {
+                    queueUsers.Remove(user);
+                }
+            }
+            lock (UserList)
+            {
+                if (UserList.ContainsKey(user))
+                {
+                    UserList.Remove(user);
+                }
+            }
+        }
+
         public void InitStyle()
         {
             tv.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
 
+        /// <summary>
+        /// This function handles the icons and colors in list
+        /// </summary>
+        /// <param name="column"></param>
+        /// <param name="cell"></param>
+        /// <param name="model"></param>
+        /// <param name="iter"></param>
         private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
         {
             try
@@ -295,6 +346,10 @@ namespace Client.Graphics
             service.Windows["!root"].treeNode = text;
         }
 
+        /// <summary>
+        /// This function insert a service to a list, thread safe
+        /// </summary>
+        /// <param name="service">Service</param>
         public void insertSv(ProtocolSv service)
         {
             lock (queueProtocol)
@@ -484,7 +539,7 @@ namespace Client.Graphics
                             }
                         }
                     } while (Values.IterNext(ref iter));
-                } 
+                }
             }
             catch (Exception fail)
             {

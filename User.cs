@@ -36,6 +36,18 @@ namespace Client
         public string Nick = null;
         public string RealName = null;
         public string Server = null;
+        private bool destroyed = false;
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
         public List<Channel> ChannelList
         {
             get
@@ -94,7 +106,14 @@ namespace Client
             Ident = ident;
             Host = host;
         }
-        
+
+        public void Destroy()
+        {
+            destroyed = true;
+            Core._Main.ChannelList.RemoveUser(this);
+            _Network = null;
+        }
+
         public User(string nick, string host, Network network, string ident)
         {
             MakeUser (nick, host, network, ident);
