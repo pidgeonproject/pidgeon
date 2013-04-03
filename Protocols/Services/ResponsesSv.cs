@@ -189,7 +189,7 @@ namespace Client
                         Core._Main.DisplayingProgress = false;
                         Core._Main.progress = 0;
                         protocol.SuppressChanges = false;
-                        if (Configuration.Services.UsingCache)
+                        if (Configuration.Services.UsingCache && Configuration.Services.MissingFix)
                         {
                             // get all holes we are missing from backlog
                             protocol.sBuffer.retrieveData(name);

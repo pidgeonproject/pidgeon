@@ -297,6 +297,10 @@ namespace Client
             /// Services can store cached traffic to local temp
             /// </summary>
             public static bool UsingCache = true;
+            /// <summary>
+            /// This is experimental function that allows you to get missing information from backlog
+            /// </summary>
+            public static bool MissingFix = false;
         }
 
         public class Parser
