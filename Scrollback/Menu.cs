@@ -90,7 +90,6 @@ namespace Client
 
         public void CreateMenu(object o, Gtk.PopulatePopupArgs e)
         {
-            listAllChannelsToolStripMenuItem.Visible = owner.isChannel;
             CreatingMenu = true;
             Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
             separator1.Show();
@@ -316,9 +315,6 @@ namespace Client
                         kickToolStripMenuItem.Visible = false;
                         whoisToolStripMenuItem.Visible = false;
                         whowasToolStripMenuItem.Visible = false;
-                    } else
-                    {
-                        listAllChannelsToolStripMenuItem.Visible = false;
                     }
                     toolStripMenuItem2.Visible = false;
                     openLinkInBrowserToolStripMenuItem.Visible = false;

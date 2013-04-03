@@ -236,6 +236,10 @@ namespace Client
             scrollToolStripMenuItem.Checked = true;
             HideLn();
             lastDate = DateTime.MinValue;
+            if (owner != null && owner.isPM)
+            {
+                listAllChannelsToolStripMenuItem.Visible = true;
+            }
             Switch(true);
         }
 

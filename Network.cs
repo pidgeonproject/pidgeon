@@ -336,6 +336,7 @@ namespace Client
             PrivateChat.Add(referenced_user);
             Core._Main.ChannelList.insertUser(referenced_user);
             PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true));
+            PrivateWins[referenced_user].isPM = true;
             return referenced_user;
         }
 
