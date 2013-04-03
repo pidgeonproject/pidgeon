@@ -71,6 +71,20 @@ namespace Client
         /// Ssl
         /// </summary>
         public bool SSL = false;
+        private bool destroyed = false;
+
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
+
         /// <summary>
         /// Root window
         /// </summary>
@@ -312,6 +326,15 @@ namespace Client
         }
 
         /// <summary>
+        /// This will disconnect the protocol but leave it in memory
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Disconnect()
+        {
+            return false;
+        }
+
+        /// <summary>
         /// /part
         /// </summary>
         /// <param name="name">Channel</param>
@@ -343,7 +366,7 @@ namespace Client
             {
                 if (!Windows.ContainsValue(SystemWindow))
                 {
-                    SystemWindow.Destroy();
+                    SystemWindow._Destroy();
                 }
             }
             ClearWins();

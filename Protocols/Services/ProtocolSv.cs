@@ -84,11 +84,15 @@ namespace Client
         {
             try
             {
-                while (true)
+                while (Connected)
                 {
                     Deliver(new Datagram("PING"));
                     System.Threading.Thread.Sleep(480000);
                 }
+            }
+            catch (System.Threading.ThreadAbortException)
+            {
+                return;
             }
             catch (Exception)
             {
@@ -322,6 +326,9 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// This will close the protocol, that mean it will release all objects and memory, you should only call it when you want to remove this
+        /// </summary>
         public override void Exit()
         {
             if (!Connected)
@@ -364,6 +371,33 @@ namespace Client
             if (_StreamWriter != null) _StreamWriter.Close();
             if (_StreamReader != null) _StreamReader.Close();
             base.Exit();
+        }
+
+        public override bool Disconnect()
+        {
+            Connected = false;
+            try
+            {
+                if (_StreamWriter != null) _StreamWriter.Close();
+                if (_StreamReader != null) _StreamReader.Close();
+            }
+            catch (System.Net.Sockets.SocketException fail)
+            {
+                Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
+            }
+            lock (NetworkList)
+            {
+                foreach (Network xx in NetworkList)
+                {
+                    // we need to flag all networks here as disconnected so that it knows we can't use them
+                    xx.Connected = false;
+                }
+            }
+            if (keep != null && (keep.ThreadState == System.Threading.ThreadState.Running || keep.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
+            {
+                keep.Abort();
+            }
+            return true;
         }
 
         public void Deliver(Datagram message)
@@ -488,7 +522,6 @@ namespace Client
                         Core.handleException(f);
                     }
                 }
-
             }
         }
 

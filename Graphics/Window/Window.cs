@@ -74,6 +74,19 @@ namespace Client.Graphics
         private global::Gtk.ScrolledWindow GtkScrolledWindow1;
         private global::Gtk.TreeView listView;
         private global::Client.Graphics.TextBox textbox1;
+        private bool destroyed = false;
+
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
 
         public Scrollback scrollback
         {
@@ -271,6 +284,13 @@ namespace Client.Graphics
 
 		public void _Destroy()
 		{
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destroying " + name);
+            }
+
+            destroyed = true;
+
 			if (scrollback != null)
 			{
 				scrollback.Destroy();

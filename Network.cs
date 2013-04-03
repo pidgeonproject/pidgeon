@@ -182,6 +182,19 @@ namespace Client
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
+        private bool destroyed = false;
+
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
         /// <summary>
         /// Window ID of this network system window
         /// </summary>
@@ -398,6 +411,13 @@ namespace Client
 		/// </summary>
 		public void Destroy()
 		{
+            if (IsDestroyed)
+            {
+                // avoid calling this function multiple times, otherwise it could crash
+                Core.DebugLog("Destroy() called multiple times on " + ServerName);
+                return;
+            }
+            destroyed = true;
 			lock (ChannelList)
 			{
 				ChannelList.Clear();

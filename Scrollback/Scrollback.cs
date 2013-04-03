@@ -59,6 +59,19 @@ namespace Client
         public string SelectedLink = null;
         private int ScrollTime = 0;
         public bool Scrolling = true;
+        private bool destroyed = false;
+
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
 
         new public List<ContentLine> Data
         {
@@ -275,6 +288,7 @@ namespace Client
 		/// </summary>
 		public void _Destroy()
 		{
+            destroyed = true;
 			lock (UndrawnLines)
 			{
 				UndrawnLines.Clear();
@@ -323,6 +337,11 @@ namespace Client
         {
             try
             {
+                if (IsDestroyed)
+                {
+                    // the window was destroyed so we can't work with it
+                    return false;
+                }
                 if (WindowVisible())
                 {
                     if (ScrollingEnabled && Scrolling)

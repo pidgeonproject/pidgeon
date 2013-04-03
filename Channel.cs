@@ -176,7 +176,18 @@ namespace Client
         /// Text displayed in the list menu
         /// </summary>
         public string MenuData = null;
-
+        private bool destroyed = false;
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
         /// <summary>
         /// Renew the bans
         /// </summary>
