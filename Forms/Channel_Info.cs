@@ -29,7 +29,7 @@ namespace Client.Forms
     public partial class Channel_Info : Gtk.Window
     {
         public Channel channel = null;
-        public List<char> cm = null;
+        public List<char> cm = new List<char>();
 
         private global::Gtk.Notebook notebook1;
         private global::Gtk.VBox vbox1;
@@ -144,7 +144,23 @@ namespace Client.Forms
             this.treeview1 = new global::Gtk.TreeView();
             this.treeview1.CanFocus = true;
             Gtk.TreeViewColumn enabled = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn character = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn ds = new Gtk.TreeViewColumn();
             this.treeview1.AppendColumn(enabled);
+            this.treeview1.AppendColumn(character);
+            this.treeview1.AppendColumn(ds);
+            enabled.Title = "Enabled";
+            character.Title = "Channel mode";
+            ds.Title = "Description";
+            Gtk.CellRendererToggle r_enabled = new CellRendererToggle();
+            enabled.PackStart(r_enabled, true);
+            Gtk.CellRendererText r_char = new CellRendererText();
+            Gtk.CellRendererText r_desc = new CellRendererText();
+            ds.PackStart(r_desc, true);
+            character.PackStart(r_char, true);
+            enabled.AddAttribute(r_enabled, "bool", 0);
+            character.AddAttribute(r_char, "char", 1);
+            ds.AddAttribute(r_desc, "text", 2);
             this.treeview1.Model = options;
             this.treeview1.Name = "treeview1";
             this.GtkScrolledWindow1.Add(this.treeview1);
@@ -183,9 +199,27 @@ namespace Client.Forms
             this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
             this.treeview5 = new global::Gtk.TreeView();
-            this.treeview5.Model = exceptions;
+            this.treeview5.Model = invites;
             this.treeview5.CanFocus = true;
             this.treeview5.Name = "treeview5";
+            Gtk.TreeViewColumn invite = new TreeViewColumn();
+            Gtk.CellRendererText r3 = new CellRendererText();
+            Gtk.TreeViewColumn itime = new TreeViewColumn();
+            Gtk.CellRendererText r2 = new CellRendererText();
+            Gtk.TreeViewColumn iu = new TreeViewColumn();
+            Gtk.CellRendererText r1 = new CellRendererText();
+            invite.Title = "Invite";
+            itime.Title = "Time";
+            iu.Title = "Created by";
+            invite.PackStart(r1, true);
+            itime.PackStart(r2, true);
+            iu.PackStart(r3, true);
+            invite.AddAttribute(r1, "text", 0);
+            itime.AddAttribute(r2, "text", 1);
+            iu.AddAttribute(r3, "text", 2);
+            treeview5.AppendColumn(invite);
+            treeview5.AppendColumn(itime);
+            treeview5.AppendColumn(iu);
             this.GtkScrolledWindow2.Add(this.treeview5);
             this.notebook1.Add(this.GtkScrolledWindow2);
             global::Gtk.Notebook.NotebookChild w12 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow2]));
@@ -204,10 +238,28 @@ namespace Client.Forms
             this.treeview6 = new global::Gtk.TreeView();
             this.treeview6.CanFocus = true;
             this.treeview6.Name = "treeview6";
+            Gtk.TreeViewColumn exception = new TreeViewColumn();
+            Gtk.CellRendererText er3 = new CellRendererText();
+            Gtk.TreeViewColumn etime = new TreeViewColumn();
+            Gtk.CellRendererText er2 = new CellRendererText();
+            Gtk.TreeViewColumn eu = new TreeViewColumn();
+            Gtk.CellRendererText er1 = new CellRendererText();
+            exception.Title = "Exception";
+            etime.Title = "Time";
+            eu.Title = "Created by";
+            exception.PackStart(er1, true);
+            etime.PackStart(er2, true);
+            eu.PackStart(er3, true);
+            exception.AddAttribute(er1, "text", 0);
+            etime.AddAttribute(er2, "text", 1);
+            eu.AddAttribute(er3, "text", 2);
+            treeview6.AppendColumn(exception);
+            treeview6.AppendColumn(etime);
+            treeview6.AppendColumn(eu);
             this.GtkScrolledWindow3.Add(this.treeview6);
             this.notebook1.Add(this.GtkScrolledWindow3);
             global::Gtk.Notebook.NotebookChild w14 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow3]));
-            this.treeview6.Model = invites;
+            this.treeview6.Model = exceptions;
             w14.Position = 2;
             
             // Notebook tab
@@ -227,6 +279,24 @@ namespace Client.Forms
             this.GtkScrolledWindow4.Add(this.treeview7);
             this.treeview7.Model = bans;
             this.notebook1.Add(this.GtkScrolledWindow4);
+            Gtk.TreeViewColumn ban = new TreeViewColumn();
+            Gtk.CellRendererText br3 = new CellRendererText();
+            Gtk.TreeViewColumn btime = new TreeViewColumn();
+            Gtk.CellRendererText br2 = new CellRendererText();
+            Gtk.TreeViewColumn bu = new TreeViewColumn();
+            Gtk.CellRendererText br1 = new CellRendererText();
+            ban.Title = "Host";
+            btime.Title = "Time";
+            bu.Title = "Created by";
+            ban.PackStart(br1, true);
+            btime.PackStart(br2, true);
+            bu.PackStart(br3, true);
+            ban.AddAttribute(br1, "text", 0);
+            btime.AddAttribute(br2, "text", 1);
+            bu.AddAttribute(br3, "text", 2);
+            treeview7.AppendColumn(ban);
+            treeview7.AppendColumn(btime);
+            treeview7.AppendColumn(bu);
             global::Gtk.Notebook.NotebookChild w16 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow4]));
             w16.Position = 3;
             // Notebook tab
@@ -261,9 +331,9 @@ namespace Client.Forms
                     exceptions.Clear();
                     lock (channel.Exceptions)
                     {
-                        foreach (Except ex in channel.Exceptions)
+                        foreach (Except sb in channel.Exceptions)
                         {
-                            
+                            exceptions.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -281,7 +351,7 @@ namespace Client.Forms
                     {
                         foreach (SimpleBan sb in channel.Bans)
                         {
-                            bans.AppendValues(sb.Target, convertUNIX (sb.Time) + " (" + sb.Time + ")", sb.User, sb);
+                            bans.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -299,7 +369,7 @@ namespace Client.Forms
                     {
                         foreach (Invite sb in channel.Invites)
                         {
-                            
+                            invites.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -512,6 +582,27 @@ namespace Client.Forms
             this.Build();
             this.textview1.WrapMode = WrapMode.Word;
             textview1.Buffer.Text = channel.Topic;
+
+            if (channel != null)
+            {
+                ReloadBans();
+                ReloadExceptions();
+                ReloadInvites();
+
+                lock (channel.ChannelMode)
+                {
+                    foreach (char item in channel._Network.CModes)
+                    {
+                        string de = "unknown mode. Refer to ircd manual (/raw help)";
+                        cm.Add(item);
+                        if (channel._Network.Descriptions.ContainsKey(item))
+                        {
+                            de = channel._Network.Descriptions[item];
+                        }
+                        //options.AppendValues(channel.ChannelMode._Mode.Contains(item.ToString()), item, de);
+                    }
+                }
+            }
         }
 
         public static string convertUNIX(string time)

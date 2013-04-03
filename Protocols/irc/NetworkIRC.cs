@@ -70,115 +70,37 @@ namespace Client
             return true;
         }
 
-        private bool ParseUser(string[] code)
+        private bool ChannelData(string command, string parameters, string value)
         {
-            if (code.Length > 8)
+            string channel_name = parameters.Substring(parameters.IndexOf(" ") + 1);
+            int user_count = 0;
+            if (channel_name.Contains(" "))
             {
-                Channel channel = _Network.getChannel(code[3]);
-                string ident = code[4];
-                string host = code[5];
-                string nick = code[7];
-                string server = code[6];
-                char mode = '\0';
-                if (code[8].Length > 0)
+                if (!int.TryParse(channel_name.Substring(channel_name.IndexOf(" ") + 1), out user_count))
                 {
-                    mode = code[8][code[8].Length - 1];
-                    if (!_Network.UChars.Contains(mode))
-                    {
-                        mode = '\0';
-                    }
+                    user_count = 0;
                 }
-                if (channel != null)
-                {
-                    if (updated_text)
-                    {
-                        if (!channel.containsUser(nick))
-                        {
-                            User _user = null;
-                            if (mode != '\0')
-                            {
-                                _user = new User(mode.ToString() + nick, host, _Network, ident, server);
-                            }
-                            else
-                            {
-                                _user = new User(nick, host, _Network, ident, server);
-                            }
-                            lock (channel.UserList)
-                            {
-                                channel.UserList.Add(_user);
-                            }
-                            return true;
-                        }
-                        lock (channel.UserList)
-                        {
-                            foreach (User u in channel.UserList)
-                            {
-                                if (u.Nick == nick)
-                                {
-                                    u.Ident = ident;
-                                    u.Host = host;
-                                    u.Server = server;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
-                    {
-                        return true;
-                    }
-                }
+
+                channel_name = channel_name.Substring(0, channel_name.IndexOf(" "));
             }
-            return false;
-        }
 
-        private bool ParseInfo(string[] code, string[] data)
-        {
-            if (code.Length > 3)
+            _Network.DownloadingList = true;
+
+            lock (_Network.ChannelList)
             {
-                string name = code[4];
-                if (!updated_text)
+                Network.ChannelData channel = _Network.ContainsChannel(channel_name);
+                if (channel == null)
                 {
-                    return true;
+                    channel = new Network.ChannelData(user_count, channel_name, value);
+                    _Network.ChannelList.Add(channel);
                 }
-                Channel channel = _Network.getChannel(name);
-                if (channel != null)
+                else
                 {
-                    string[] _chan = data[2].Split(' ');
-                    foreach (var user in _chan)
-                    {
-                        string _user = user;
-                        char _UserMode = '\0';
-                        if (_user.Length > 0)
-                        {
-                            foreach (char mode in _Network.UChars)
-                            {
-                                if (_user[0] == mode)
-                                {
-                                    _UserMode = user[0];
-                                    _user = _user.Substring(1);
-                                }
-                            }
-
-                            lock (channel.UserList)
-                            {
-                                User _u = channel.userFromName(_user);
-                                if (_u == null && _user != "")
-                                {
-                                    channel.UserList.Add(new User(user, "", _Network, ""));
-                                }
-                                else
-                                {
-                                    if (_u != null)
-                                    {
-                                        _u.SymbolMode(_UserMode);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    channel.redrawUsers();
-                    channel.UpdateInfo();
+                    channel.UserCount = user_count;
+                    channel.ChannelTopic = value;
+                }
+                if (_Network.SuppressData)
+                {
                     return true;
                 }
             }
