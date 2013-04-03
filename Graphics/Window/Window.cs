@@ -283,8 +283,8 @@ namespace Client.Graphics
             return true;
         }
 
-		public void _Destroy()
-		{
+        public void _Destroy()
+        {
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destroying " + name);
@@ -292,16 +292,16 @@ namespace Client.Graphics
 
             destroyed = true;
 
-			if (scrollback != null)
-			{
-				scrollback.Destroy();
-			}
-			
-			this.scrollback1 = null;
-			this.textbox1 = null;
-			this.Destroy();
-		}
-		
+            if (scrollback != null)
+            {
+                scrollback.Destroy();
+            }
+            
+            this.scrollback1 = null;
+            this.textbox1 = null;
+            this.Destroy();
+        }
+        
         public void Changed(object sender, GLib.NotifyArgs dt)
         {
             try
