@@ -40,7 +40,7 @@ namespace Client.Services
 
             public Window()
             {
-                
+
             }
 
             public Window(Graphics.Window owner)
@@ -224,14 +224,7 @@ namespace Client.Services
 
             public bool containsMQID(int id)
             {
-                lock (MQ)
-                {
-                    if (MQ.Contains(id))
-                    {
-                        return true;
-                    }
-                }
-                return false;
+                return MQ.Contains(id);
             }
 
             public Range getRange(int startindex = 0)
@@ -548,6 +541,8 @@ namespace Client.Services
         {
             try
             {
+                // we wait here for a while so that we don't colide with post processing functions
+                System.Threading.Thread.Sleep(20000);
                 NetworkInfo nw = (NetworkInfo)network;
                 NetworkInfo.Range range = nw.getRange();
                 while (range != null)
