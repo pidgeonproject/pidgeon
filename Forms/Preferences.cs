@@ -183,7 +183,7 @@ namespace Client.Forms
             this.llabel2 = new global::Gtk.Label();
             this.llabel2.Name = "label2";
             this.llabel2.LabelProp = global::Mono.Unix.Catalog.GetString("File name:");
-            this.ltable2.Add(this.label2);
+            this.ltable2.Add(this.llabel2);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.ltable2[this.llabel2]));
             w7.TopAttach = ((uint)(1));
             w7.BottomAttach = ((uint)(2));
@@ -482,8 +482,8 @@ namespace Client.Forms
             //checkBox4.Checked = Configuration.irc.DisplayCtcp;
             //checkBox8.Checked = Configuration.irc.ConfirmAll;
             //checkBox9.Checked = Configuration.Kernel.Notice;
-            lentry1.Text = Configuration.Logs.logs_dir;
-            lentry2.Text = Configuration.Logs.logs_name;
+            lentry2.Text = Configuration.Logs.logs_dir;
+            lentry1.Text = Configuration.Logs.logs_name;
             //textBox7.Text = Configuration.UserData.Nick2;
             switch (Configuration.Logs.ServicesLogs)
             {
@@ -670,8 +670,8 @@ namespace Client.Forms
                 //Configuration.Kernel.CheckUpdate = checkBox10.Checked;
                 //Configuration.irc.DisplayCtcp = checkBox4.Checked;
                 //Configuration.Kernel.Notice = checkBox9.Checked;
-                Configuration.Logs.logs_dir = lentry1.Text;
-                Configuration.Logs.logs_name = lentry2.Text;
+                Configuration.Logs.logs_dir = lentry2.Text;
+                Configuration.Logs.logs_name = lentry1.Text;
                 //Configuration.UserData.Nick2 = textBox7.Text;
                 if (lradiobutton1.Active)
                 {
