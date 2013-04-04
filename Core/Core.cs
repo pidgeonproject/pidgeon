@@ -29,16 +29,34 @@ namespace Client
 {
     public partial class Core
     {
-        public enum Platform
+        public class Domain
         {
-            Linuxx64,
-            Linuxx86,
-            Windowsx64,
-            Windowsx86,
-            MacOSx64,
-            MacOSx86,
+            AppDomain domain;
+            string name;
+            public Domain(AppDomain _appDomain, string _name)
+            {
+                domain = _appDomain;
+                name = _name;
+            }
         }
 
+        public class Shortcut
+        {
+            public bool control;
+            public bool alt;
+            public bool shift;
+            public Gdk.Key keys;
+            public string data;
+            public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
+            {
+                control = Control;
+                shift = Shift;
+                alt = Alt;
+                data = Data;
+                keys = Value;
+            }
+        }
+        
         /// <summary>
         /// Thread of core
         /// </summary>
@@ -192,34 +210,6 @@ namespace Client
                     rb.AddRange(Ring);
                 }
                 return rb;
-            }
-        }
-
-        public class Domain
-        {
-            AppDomain domain;
-            string name;
-            public Domain(AppDomain _appDomain, string _name)
-            {
-                domain = _appDomain;
-                name = _name;
-            }
-        }
-
-        public class Shortcut
-        {
-            public bool control;
-            public bool alt;
-            public bool shift;
-            public Gdk.Key keys;
-            public string data;
-            public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
-            {
-                control = Control;
-                shift = Shift;
-                alt = Alt;
-                data = Data;
-                keys = Value;
             }
         }
 
@@ -565,7 +555,7 @@ namespace Client
                 {
                     bool Focus = false;
                     notification.text.Text = notification_data;
-                    notification.title.Text = notification_caption;
+                    notification.title.Markup = "<span size='18000'>" + notification_caption + "</span>";
                     notification_waiting = false;
                     if (Core._Main.Chat != null)
                     {
@@ -933,6 +923,16 @@ namespace Client
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             return true;
+        }
+
+        public enum Platform
+        {
+            Linuxx64,
+            Linuxx86,
+            Windowsx64,
+            Windowsx86,
+            MacOSx64,
+            MacOSx86,
         }
     }
 }

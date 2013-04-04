@@ -135,7 +135,6 @@ namespace Client.Forms
                 this.Move(System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width - this.Width,
                     System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height - this.Height);
             }
-            this.label1.Markup = "<span size='18000'>" + this.label1.Text + "</span>";
         }
 
         [GLib.ConnectBefore]

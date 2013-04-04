@@ -207,9 +207,9 @@ namespace Client.Forms
             this.lvbox3.Name = "vbox3";
             this.lvbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton1 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton1"));
+            this.lradiobutton1 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Enable logs for all text"));
             this.lradiobutton1.CanFocus = true;
-            this.lradiobutton1.Name = "Enable logs for all text";
+            this.lradiobutton1.Name = "radiobutton1";
             this.lradiobutton1.DrawIndicator = true;
             this.lradiobutton1.UseUnderline = true;
             this.lradiobutton1.Group = new global::GLib.SList(global::System.IntPtr.Zero);
@@ -219,9 +219,9 @@ namespace Client.Forms
             w9.Expand = false;
             w9.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton2 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton2"));
+            this.lradiobutton2 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Append"));
             this.lradiobutton2.CanFocus = true;
-            this.lradiobutton2.Name = "Append";
+            this.lradiobutton2.Name = "radiobutton2";
             this.lradiobutton2.DrawIndicator = true;
             this.lradiobutton2.UseUnderline = true;
             this.lradiobutton2.Group = this.lradiobutton1.Group;
@@ -231,9 +231,9 @@ namespace Client.Forms
             w10.Expand = false;
             w10.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton3 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton3"));
+            this.lradiobutton3 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Disable logs"));
             this.lradiobutton3.CanFocus = true;
-            this.lradiobutton3.Name = "Disable logs";
+            this.lradiobutton3.Name = "radiobutton3";
             this.lradiobutton3.DrawIndicator = true;
             this.lradiobutton3.UseUnderline = true;
             this.lradiobutton3.Group = this.lradiobutton1.Group;
