@@ -136,10 +136,10 @@ namespace Client.Forms
                 join.Activated += new EventHandler(joinToolStripMenuItem_Click);
                 xx.Append(join);
                 Gtk.MenuItem knock = new MenuItem(knockToolStripMenuItem.Text);
-                join.Activated += new EventHandler(knockToolStripMenuItem_Click);
+                knock.Activated += new EventHandler(knockToolStripMenuItem_Click);
                 xx.Append(knock);
                 Gtk.MenuItem download = new MenuItem(downloadListFromServerToolStripMenuItem.Text);
-                join.Activated += new EventHandler(downloadListFromServerToolStripMenuItem_Click);
+                download.Activated += new EventHandler(downloadListFromServerToolStripMenuItem_Click);
                 xx.Append(download);
                 Gtk.MenuItem re = new MenuItem(refreshToolStripMenuItem.Text);
                 re.Activated += new EventHandler(refreshToolStripMenuItem_Click);

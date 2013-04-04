@@ -286,6 +286,10 @@ namespace Client.Services
                 }
                 target.isPM = Source.isPM;
                 target.isChannel = Source.isChannel;
+                if (target.isPM || target.isChannel)
+                {
+                    target.scrollback.listAllChannelsToolStripMenuItem.Visible = true;
+                }
             }
 
             public ChannelInfo getChannel(string name)
