@@ -387,7 +387,7 @@ namespace Client
         {
             _Protocol.Message(text, to, this, _priority, pmsg);
         }
-		
+        
         /// <summary>
         /// Unregister info for user and channel modes
         /// </summary>
@@ -405,13 +405,13 @@ namespace Client
             }
             return false;
         }
-		
-		/// <summary>
-		/// Destroy this class, be careful, it can't be used in any way after you
-		/// call this
-		/// </summary>
-		public void Destroy()
-		{
+        
+        /// <summary>
+        /// Destroy this class, be careful, it can't be used in any way after you
+        /// call this
+        /// </summary>
+        public void Destroy()
+        {
             if (IsDestroyed)
             {
                 // avoid calling this function multiple times, otherwise it could crash
@@ -421,45 +421,45 @@ namespace Client
 
             destroyed = true;
 
-			lock (ChannelList)
-			{
-				ChannelList.Clear();
-			}
-			
-			lock (PrivateChat)
-			{
+            lock (ChannelList)
+            {
+                ChannelList.Clear();
+            }
+            
+            lock (PrivateChat)
+            {
                 // release all windows
                 foreach (User user in PrivateChat)
                 {
                     user.Destroy();
                 }
-				PrivateChat.Clear();
-			}
-			
-			lock (Channels)
-			{
-				foreach (Channel xx in Channels)
-				{
-					xx.Destroy();
-				}
-				
-				Channels.Clear();
-			}
-			
-			lock (PrivateWins)
-			{
-				PrivateWins.Clear();
-			}
-			
-			_Protocol = null;
-			SystemWindow = null;
-			
-			lock (Descriptions)
-			{
-				Descriptions.Clear();
-			}
-		}
-		
+                PrivateChat.Clear();
+            }
+            
+            lock (Channels)
+            {
+                foreach (Channel xx in Channels)
+                {
+                    xx.Destroy();
+                }
+                
+                Channels.Clear();
+            }
+            
+            lock (PrivateWins)
+            {
+                PrivateWins.Clear();
+            }
+            
+            _Protocol = null;
+            SystemWindow = null;
+            
+            lock (Descriptions)
+            {
+                Descriptions.Clear();
+            }
+        }
+        
         /// <summary>
         /// Register info for channel info
         /// </summary>

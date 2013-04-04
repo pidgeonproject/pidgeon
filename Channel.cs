@@ -370,11 +370,11 @@ namespace Client
             }
         }
         /// <summary>
-		/// Destroy this class, be careful, it can't be used in any way after you
-		/// call this
-		/// </summary>
-		public void Destroy()
-		{
+        /// Destroy this class, be careful, it can't be used in any way after you
+        /// call this
+        /// </summary>
+        public void Destroy()
+        {
             destroyed = true;
 
             if (Configuration.Kernel.Debugging)
@@ -384,26 +384,26 @@ namespace Client
 
             Core._Main.ChannelList.RemoveChannel(this);
 
-			lock (UserList)
-			{
-				UserList.Clear();
-			}
-			
-			Chat = null;
-			ChannelWork = false;
-			_Network = null;
-			
-			lock (Exceptions)
-			{
-				Exceptions.Clear();
-			}
-			
-			lock (Bans)
-			{
-				Bans.Clear();
-			}
-		}
-		
+            lock (UserList)
+            {
+                UserList.Clear();
+            }
+            
+            Chat = null;
+            ChannelWork = false;
+            _Network = null;
+            
+            lock (Exceptions)
+            {
+                Exceptions.Clear();
+            }
+            
+            lock (Bans)
+            {
+                Bans.Clear();
+            }
+        }
+        
         private string uchr(User nick)
         {
             if (nick.ChannelMode._Mode.Count < 1)

@@ -287,27 +287,27 @@ namespace Client
             mode1I2ToolStripMenuItem.Visible = false;
             mode1q2ToolStripMenuItem.Visible = false;
         }
-		
-		/// <summary>
-		/// Destroy this instance.
-		/// </summary>
-		public void _Destroy()
-		{
+        
+        /// <summary>
+        /// Destroy this instance.
+        /// </summary>
+        public void _Destroy()
+        {
             destroyed = true;
-			lock (UndrawnLines)
-			{
-				UndrawnLines.Clear();
-			}
-			lock (ContentLines)
-			{
-				ContentLines.Clear();
-			}
-			RT.textView.Buffer.Text = "";
-			simpleview.Buffer.Text = "";
-			RT = null;
-			owner = null;
-		}
-		
+            lock (UndrawnLines)
+            {
+                UndrawnLines.Clear();
+            }
+            lock (ContentLines)
+            {
+                ContentLines.Clear();
+            }
+            RT.textView.Buffer.Text = "";
+            simpleview.Buffer.Text = "";
+            RT = null;
+            owner = null;
+        }
+        
         public bool IncreaseOffset()
         {
             if (scrollback_max < ContentLines.Count)
