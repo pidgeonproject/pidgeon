@@ -47,6 +47,7 @@ namespace Client.Services
             {
                 Name = owner.name;
                 isChannel = owner.isChannel;
+                isPM = owner.isPM;
                 lines = new List<Client.ContentLine>();
                 if (owner.textbox != null)
                 {
@@ -283,6 +284,7 @@ namespace Client.Services
                     target.textbox.history.AddRange(Source.history);
                     target.textbox.position = Source.history.Count;
                 }
+                target.isPM = Source.isPM;
                 target.isChannel = Source.isChannel;
             }
 

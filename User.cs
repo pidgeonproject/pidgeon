@@ -48,6 +48,24 @@ namespace Client
                 return destroyed;
             }
         }
+
+        public User(string nick, string host, Network network, string ident)
+        {
+            MakeUser(nick, host, network, ident);
+        }
+
+        public User(string nick, string host, Network network, string ident, string server)
+        {
+            MakeUser(nick, host, network, ident);
+            Server = server;
+        }
+
+        ~User()
+        {
+            // remove reference to network from channel mode that is no longer going to be accessible so that GC can remove it
+            ChannelMode.network = null;
+        }
+
         public List<Channel> ChannelList
         {
             get
@@ -112,17 +130,6 @@ namespace Client
             destroyed = true;
             Core._Main.ChannelList.RemoveUser(this);
             _Network = null;
-        }
-
-        public User(string nick, string host, Network network, string ident)
-        {
-            MakeUser (nick, host, network, ident);
-        }
-        
-        public User(string nick, string host, Network network, string ident, string server)
-        {
-            MakeUser (nick, host, network, ident);
-            Server = server;
         }
 
         /// <summary>

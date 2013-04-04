@@ -156,6 +156,10 @@ namespace Client
 
         ~Channel()
         {
+            if (!destroyed)
+            {
+                Destroy();
+            }
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for channel: " + Name);
