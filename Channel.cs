@@ -128,15 +128,6 @@ namespace Client
                 return destroyed;
             }
         }
-        /// <summary>
-        /// Renew the bans
-        /// </summary>
-        public void ReloadBans()
-        {
-            parsing_bans = true;
-            Bans.Clear();
-            _Network.Transfer("MODE +b " + Name);
-        }
 
         /// <summary>
         /// Constructor (simple)
@@ -170,6 +161,16 @@ namespace Client
                 Core.DebugLog("Destructor called for channel: " + Name);
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
+        }
+
+        /// <summary>
+        /// Renew the bans
+        /// </summary>
+        public void ReloadBans()
+        {
+            parsing_bans = true;
+            Bans.Clear();
+            _Network.Transfer("MODE +b " + Name);
         }
 
         /// <summary>
