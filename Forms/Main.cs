@@ -59,8 +59,7 @@ namespace Client.Forms
             public Protocol owner;
         }
 
-
-        public Main ()
+        public Main()
         {
             try
             {

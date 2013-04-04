@@ -55,7 +55,7 @@ namespace Client.Forms
                 return ul;
             }
         }
-        
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);

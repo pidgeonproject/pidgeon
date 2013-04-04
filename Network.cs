@@ -276,6 +276,10 @@ namespace Client
 
         ~Network()
         {
+            if (!IsDestroyed)
+            {
+                Destroy();
+            }
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for network: " + ServerName);
@@ -425,7 +429,13 @@ namespace Client
             {
                 ChannelList.Clear();
             }
-            
+
+            if (wChannelList != null)
+            {
+                wChannelList.Dispose();
+                wChannelList = null;
+            }
+
             lock (PrivateChat)
             {
                 // release all windows
