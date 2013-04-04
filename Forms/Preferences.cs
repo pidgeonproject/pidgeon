@@ -1,4 +1,4 @@
-/***************************************************************************
+﻿/***************************************************************************
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
@@ -57,6 +57,25 @@ namespace Client.Forms
         private global::Gtk.Frame fSys;
         private global::Gtk.Alignment GtkAlignment8;
         private global::Gtk.Label GtkLabel8;
+
+        // logs
+        private global::Gtk.VBox vbox2;
+        private global::Gtk.Table ltable2;
+        private global::Gtk.CheckButton lcheckbutton1;
+        private global::Gtk.CheckButton lcheckbutton2;
+        private global::Gtk.CheckButton lcheckbutton3;
+        private global::Gtk.Entry lentry1;
+        private global::Gtk.Entry lentry2;
+        private global::Gtk.Label llabel1;
+        private global::Gtk.Label llabel2;
+        private global::Gtk.Frame lframe1;
+        private global::Gtk.Alignment lGtkAlignment;
+        private global::Gtk.VBox lvbox3;
+        private global::Gtk.RadioButton lradiobutton1;
+        private global::Gtk.RadioButton lradiobutton2;
+        private global::Gtk.RadioButton lradiobutton3;
+        private global::Gtk.Label lGtkLabel1;
+
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
@@ -75,7 +94,169 @@ namespace Client.Forms
                 return (int)treeview1.Model.GetValue(iter, 1);
             }
         }
-        
+
+        public void CreateLogs()
+        {
+            this.vbox2 = new global::Gtk.VBox();
+            this.vbox2.Name = "vbox2";
+            this.vbox2.Spacing = 6;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.ltable2 = new global::Gtk.Table(((uint)(5)), ((uint)(2)), false);
+            this.ltable2.Name = "table2";
+            this.ltable2.RowSpacing = ((uint)(6));
+            this.ltable2.ColumnSpacing = ((uint)(6));
+            // Container child table2.Gtk.Table+TableChild
+            this.lcheckbutton1 = new global::Gtk.CheckButton();
+            this.lcheckbutton1.CanFocus = true;
+            this.lcheckbutton1.Name = "checkbutton1";
+            this.lcheckbutton1.Label = global::Mono.Unix.Catalog.GetString("TXT logs");
+            this.lcheckbutton1.DrawIndicator = true;
+            this.lcheckbutton1.UseUnderline = true;
+            this.ltable2.Add(this.lcheckbutton1);
+            global::Gtk.Table.TableChild w1 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lcheckbutton1]));
+            w1.TopAttach = ((uint)(2));
+            w1.BottomAttach = ((uint)(3));
+            w1.LeftAttach = ((uint)(1));
+            w1.RightAttach = ((uint)(2));
+            w1.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.lcheckbutton2 = new global::Gtk.CheckButton();
+            this.lcheckbutton2.CanFocus = true;
+            this.lcheckbutton2.Name = "checkbutton2";
+            this.lcheckbutton2.Label = global::Mono.Unix.Catalog.GetString("HTML logs");
+            this.lcheckbutton2.DrawIndicator = true;
+            this.lcheckbutton2.UseUnderline = true;
+            this.ltable2.Add(this.lcheckbutton2);
+            global::Gtk.Table.TableChild w2 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lcheckbutton2]));
+            w2.TopAttach = ((uint)(3));
+            w2.BottomAttach = ((uint)(4));
+            w2.LeftAttach = ((uint)(1));
+            w2.RightAttach = ((uint)(2));
+            w2.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.lcheckbutton3 = new global::Gtk.CheckButton();
+            this.lcheckbutton3.CanFocus = true;
+            this.lcheckbutton3.Name = "checkbutton3";
+            this.lcheckbutton3.Label = global::Mono.Unix.Catalog.GetString("XML logs");
+            this.lcheckbutton3.DrawIndicator = true;
+            this.lcheckbutton3.UseUnderline = true;
+            this.ltable2.Add(this.lcheckbutton3);
+            global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lcheckbutton3]));
+            w3.TopAttach = ((uint)(4));
+            w3.BottomAttach = ((uint)(5));
+            w3.LeftAttach = ((uint)(1));
+            w3.RightAttach = ((uint)(2));
+            w3.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.lentry1 = new global::Gtk.Entry();
+            this.lentry1.CanFocus = true;
+            this.lentry1.Name = "entry1";
+            this.lentry1.IsEditable = true;
+            this.lentry1.InvisibleChar = '●';
+            this.ltable2.Add(this.lentry1);
+            global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lentry1]));
+            w4.TopAttach = ((uint)(1));
+            w4.BottomAttach = ((uint)(2));
+            w4.LeftAttach = ((uint)(1));
+            w4.RightAttach = ((uint)(2));
+            w4.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.lentry2 = new global::Gtk.Entry();
+            this.lentry2.CanFocus = true;
+            this.lentry2.Name = "entry2";
+            this.lentry2.IsEditable = true;
+            this.lentry2.InvisibleChar = '●';
+            this.ltable2.Add(this.lentry2);
+            global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lentry2]));
+            w5.LeftAttach = ((uint)(1));
+            w5.RightAttach = ((uint)(2));
+            w5.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.llabel1 = new global::Gtk.Label();
+            this.llabel1.Name = "label1";
+            this.llabel1.LabelProp = global::Mono.Unix.Catalog.GetString("Path:");
+            this.ltable2.Add(this.llabel1);
+            global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.ltable2[this.llabel1]));
+            w6.XOptions = ((global::Gtk.AttachOptions)(4));
+            w6.YOptions = ((global::Gtk.AttachOptions)(4));
+            // Container child table2.Gtk.Table+TableChild
+            this.llabel2 = new global::Gtk.Label();
+            this.llabel2.Name = "label2";
+            this.llabel2.LabelProp = global::Mono.Unix.Catalog.GetString("File name:");
+            this.ltable2.Add(this.label2);
+            global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.ltable2[this.llabel2]));
+            w7.TopAttach = ((uint)(1));
+            w7.BottomAttach = ((uint)(2));
+            w7.XOptions = ((global::Gtk.AttachOptions)(4));
+            w7.YOptions = ((global::Gtk.AttachOptions)(4));
+            this.vbox2.Add(this.ltable2);
+            global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.ltable2]));
+            w8.Position = 0;
+            w8.Expand = false;
+            w8.Fill = false;
+            // Container child vbox2.Gtk.Box+BoxChild
+            this.lframe1 = new global::Gtk.Frame();
+            this.lframe1.Name = "frame1";
+            this.lframe1.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.lGtkAlignment = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+            this.lGtkAlignment.Name = "GtkAlignment";
+            this.lGtkAlignment.LeftPadding = ((uint)(12));
+            // Container child GtkAlignment.Gtk.Container+ContainerChild
+            this.lvbox3 = new global::Gtk.VBox();
+            this.lvbox3.Name = "vbox3";
+            this.lvbox3.Spacing = 6;
+            // Container child vbox3.Gtk.Box+BoxChild
+            this.lradiobutton1 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton1"));
+            this.lradiobutton1.CanFocus = true;
+            this.lradiobutton1.Name = "Enable logs for all text";
+            this.lradiobutton1.DrawIndicator = true;
+            this.lradiobutton1.UseUnderline = true;
+            this.lradiobutton1.Group = new global::GLib.SList(global::System.IntPtr.Zero);
+            this.lvbox3.Add(this.lradiobutton1);
+            global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.lvbox3[this.lradiobutton1]));
+            w9.Position = 0;
+            w9.Expand = false;
+            w9.Fill = false;
+            // Container child vbox3.Gtk.Box+BoxChild
+            this.lradiobutton2 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton2"));
+            this.lradiobutton2.CanFocus = true;
+            this.lradiobutton2.Name = "Append";
+            this.lradiobutton2.DrawIndicator = true;
+            this.lradiobutton2.UseUnderline = true;
+            this.lradiobutton2.Group = this.lradiobutton1.Group;
+            this.lvbox3.Add(this.lradiobutton2);
+            global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.lvbox3[this.lradiobutton2]));
+            w10.Position = 1;
+            w10.Expand = false;
+            w10.Fill = false;
+            // Container child vbox3.Gtk.Box+BoxChild
+            this.lradiobutton3 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("radiobutton3"));
+            this.lradiobutton3.CanFocus = true;
+            this.lradiobutton3.Name = "Disable logs";
+            this.lradiobutton3.DrawIndicator = true;
+            this.lradiobutton3.UseUnderline = true;
+            this.lradiobutton3.Group = this.lradiobutton1.Group;
+            this.lvbox3.Add(this.lradiobutton3);
+            global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.lvbox3[this.lradiobutton3]));
+            w11.Position = 2;
+            w11.Expand = false;
+            w11.Fill = false;
+            this.lGtkAlignment.Add(this.lvbox3);
+            this.lframe1.Add(this.lGtkAlignment);
+            this.lGtkLabel1 = new global::Gtk.Label();
+            this.lGtkLabel1.Name = "GtkLabel1";
+            this.lGtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Services logs</b>");
+            this.lGtkLabel1.UseMarkup = true;
+            this.lframe1.LabelWidget = this.lGtkLabel1;
+            this.vbox2.Add(this.lframe1);
+            global::Gtk.Box.BoxChild w14 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.lframe1]));
+            w14.Position = 1;
+            w14.Expand = false;
+            w14.Fill = false;
+            this.GtkAlignment7.Add(this.vbox2);
+        }
+
         public void Initialize()
         {
             this.fExtensions = new global::Gtk.Frame ();
@@ -220,6 +401,7 @@ namespace Client.Forms
             this.GtkAlignment7 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
             this.GtkAlignment7.Name = "GtkAlignment";
             this.GtkAlignment7.LeftPadding = ((uint)(12));
+            CreateLogs();
             //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
             this.frame7.Add (this.GtkAlignment7);
             this.GtkLabel7 = new global::Gtk.Label ();
@@ -294,23 +476,25 @@ namespace Client.Forms
             topic_item.AddAttribute    (c1, "text", 0);
             treeview1.AppendColumn(topic_item);
             treeview1.RowActivated += new RowActivatedHandler(s2);
-            //checkBox3.Checked = Configuration.Logs.logs_xml;
-            //checkBox1.Checked = Configuration.Logs.logs_txt;
-            //checkBox2.Checked = Configuration.Logs.logs_html;
+            lcheckbutton3.Active = Configuration.Logs.logs_xml;
+            lcheckbutton1.Active = Configuration.Logs.logs_txt;
+            lcheckbutton2.Active = Configuration.Logs.logs_html;
             //checkBox4.Checked = Configuration.irc.DisplayCtcp;
             //checkBox8.Checked = Configuration.irc.ConfirmAll;
             //checkBox9.Checked = Configuration.Kernel.Notice;
-            //textBox5.Text = Configuration.Logs.logs_dir;
-            //textBox6.Text = Configuration.Logs.logs_name;
+            lentry1.Text = Configuration.Logs.logs_dir;
+            lentry2.Text = Configuration.Logs.logs_name;
             //textBox7.Text = Configuration.UserData.Nick2;
-            //radioButton3.Checked = true;
             switch (Configuration.Logs.ServicesLogs)
             {
                 case Configuration.Logs.ServiceLogs.full:
-                    //radioButton1.Checked = true;
+                    lradiobutton1.Active = true;
                     break;
                 case Configuration.Logs.ServiceLogs.incremental:
-                    //radioButton2.Checked = true;
+                    lradiobutton2.Active = true;
+                    break;
+                case Configuration.Logs.ServiceLogs.none:
+                    lradiobutton3.Active = true;
                     break;
             }
 
@@ -480,26 +664,26 @@ namespace Client.Forms
                 Configuration.UserData.quit = entry2.Text;
                 Configuration.UserData.ident = entry3.Text;
                 Configuration.UserData.user = entry4.Text;
-                //Configuration.Logs.logs_xml = checkBox3.Checked;
-                //Configuration.Logs.logs_txt = checkBox1.Checked;
-                //Configuration.Logs.logs_html = checkBox2.Checked;
+                Configuration.Logs.logs_xml = lcheckbutton3.Active;
+                Configuration.Logs.logs_txt = lcheckbutton1.Active;
+                Configuration.Logs.logs_html = lcheckbutton2.Active;
                 //Configuration.Kernel.CheckUpdate = checkBox10.Checked;
                 //Configuration.irc.DisplayCtcp = checkBox4.Checked;
                 //Configuration.Kernel.Notice = checkBox9.Checked;
-                //Configuration.Logs.logs_dir = textBox5.Text;
-                //Configuration.Logs.logs_name = textBox6.Text;
+                Configuration.Logs.logs_dir = lentry1.Text;
+                Configuration.Logs.logs_name = lentry2.Text;
                 //Configuration.UserData.Nick2 = textBox7.Text;
-                //if (radioButton1.Checked)
+                if (lradiobutton1.Active)
                 {
-                //    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
                 }
-                //if (radioButton2.Checked)
+                if (lradiobutton2.Active)
                 {
-                //    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.incremental;
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.incremental;
                 }
-                //if (radioButton3.Checked)
+                if (lradiobutton3.Active)
                 {
-                //    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.none;
+                    Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.none;
                 }
                 lock (Ignoring.IgnoreList)
                 {
