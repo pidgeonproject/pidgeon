@@ -236,6 +236,7 @@ namespace Client.Forms
             w8.Position = 1;
             // Container child vbox1.Gtk.Box+BoxChild
             this.button1 = new global::Gtk.Button();
+            this.button1.Clicked += new EventHandler(bClose_Click);
             this.button1.CanFocus = true;
             this.button1.Name = "button1";
             this.button1.UseUnderline = true;
@@ -525,21 +526,25 @@ namespace Client.Forms
                 //    }
                 //    channel._Network.Transfer("MODE " + channel.Name + " " + cset + uset);
                 //}
+                this.Hide();
+                this.Dispose();
             }
             catch (Exception f)
             {
                 Core.handleException(f);
             }
-            Hide();
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                foreach (Invite item in SelectedInvites)
+                if (SelectedInvites != null)
                 {
-                    channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Target);
+                    foreach (Invite item in SelectedInvites)
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Target);
+                    }
                 }
             }
             catch (Exception fail)
