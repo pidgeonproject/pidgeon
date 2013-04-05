@@ -117,7 +117,9 @@ namespace Client.Graphics
                     e.RetVal = true;
                     return;
                 }
-
+				
+				bool control = false;
+				
                 if (e.Event.State == Gdk.ModifierType.ShiftMask||
                 e.Event.State == Gdk.ModifierType.ControlMask)
                 {
@@ -130,6 +132,7 @@ namespace Client.Graphics
                             e.RetVal = true;
                             return;
                     }
+					control = true;
                 }
 
                 // enter
@@ -199,15 +202,24 @@ namespace Client.Graphics
                         richTextBox1.Buffer.Text = history[position];
                         e.RetVal = true;
                         break;
-                    //case Gdk.Key.b | Gdk.Key.Control_L:
-                    //case Gdk.Key.B | Gdk.Key.Control_R:
-                    //    richTextBox1.Buffer.Text += (((char)002).ToString());
-                    //    e.RetVal = true;
-                    //    return;
-                    //case Gdk.Key.K | Gdk.Key.Control_L:
-                    //    richTextBox1.Buffer.Text += (((char)003).ToString());
-                    //    e.RetVal = true;
-                    //    return;
+                    case Gdk.Key.b:
+					case Gdk.Key.B:
+						if (control)
+						{
+	                        richTextBox1.Buffer.Text += (((char)002).ToString());
+	                        e.RetVal = true;
+	                        return;
+						}
+					break;
+					case Gdk.Key.k:
+                    case Gdk.Key.K:
+						if (control)
+						{
+	                        richTextBox1.Buffer.Text += (((char)003).ToString());
+	                        e.RetVal = true;
+	                        return;
+						}
+						break;
                     case Gdk.Key.Up:
                         if (position < 1)
                         {
