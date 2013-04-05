@@ -10,7 +10,7 @@ namespace Client
     {
         public ToolStripMenuItem item = null;
         public ToolStripSeparator separator = null;
-        private Main _m = null;
+        private Forms.Main _m = null;
 
 
         public override void Initialise()
@@ -30,29 +30,29 @@ namespace Client
                     Core.DebugLog("No handle to main");
                     return false;
                 }
-                lock (_m.helpToolStripMenuItem.DropDownItems)
-                {
-                    if (_m.helpToolStripMenuItem.DropDownItems.Contains(item))
-                    {
-                        _m.helpToolStripMenuItem.DropDownItems.Remove(item);
-                    }
-                    if (_m.helpToolStripMenuItem.DropDownItems.Contains(separator))
-                    {
-                        _m.helpToolStripMenuItem.DropDownItems.Remove(separator);
-                    }
-                }
-                _m.menuStrip1.ResumeLayout(false);
-                _m.menuStrip1.PerformLayout();
+                //lock (_m.helpToolStripMenuItem.DropDownItems)
+                //{
+                //    if (_m.helpToolStripMenuItem.DropDownItems.Contains(item))
+                //    {
+                //        _m.helpToolStripMenuItem.DropDownItems.Remove(item);
+                //    }
+                //    if (_m.helpToolStripMenuItem.DropDownItems.Contains(separator))
+                //    {
+                //        _m.helpToolStripMenuItem.DropDownItems.Remove(separator);
+                //    }
+                //}
+                //_m.menuStrip1.ResumeLayout(false);
+                //_m.menuStrip1.PerformLayout();
                 return true;
             }
             catch (Exception fail)
             {
-                Core.DebugLog(fail.ToString());
+                //Core.DebugLog(fail.ToString());
                 return false;
             }
         }
 
-        public override void Hook_Initialise(Main main)
+        public override void Hook_Initialise(Forms.Main main)
         {
             _m = main;
             item = new ToolStripMenuItem("#pidgeon");
@@ -61,11 +61,11 @@ namespace Client
             item.Click += new EventHandler(pidgeonToolStripMenuItem_Click);
             separator = new ToolStripSeparator();
             separator.Size = new System.Drawing.Size(200, 22);
-            main.helpToolStripMenuItem.DropDownItems.Add(separator);
-            main.helpToolStripMenuItem.DropDownItems.Add(item);
-            _m.menuStrip1.ResumeLayout(false);
-            _m.menuStrip1.PerformLayout();
-            _m.Refresh();
+            //main.helpToolStripMenuItem.DropDownItems.Add(separator);
+            //main.helpToolStripMenuItem.DropDownItems.Add(item);
+            //_m.menuStrip1.ResumeLayout(false);
+            //_m.menuStrip1.PerformLayout();
+            //_m.Refresh();
             Core.DebugLog("Registered #pidgeon in menu");
         }
 

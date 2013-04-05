@@ -183,7 +183,6 @@ namespace Client
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
         private bool destroyed = false;
-
         /// <summary>
         /// This will return true in case object was requested to be disposed
         /// you should never work with objects that return true here

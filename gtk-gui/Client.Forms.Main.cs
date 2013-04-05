@@ -5,37 +5,37 @@ namespace Client.Forms
     public partial class Main
     {
         private global::Gtk.UIManager UIManager;
-        private global::Gtk.Action FileAction;
-        private global::Gtk.Action ShutDownAction;
-        private global::Gtk.Action ToolsAction;
-        private global::Gtk.Action MiscAction;
-        private global::Gtk.Action ShowAction;
-        private global::Gtk.Action UserAction;
-        private global::Gtk.Action HelpAction;
-        private global::Gtk.Action AboutAction;
-        private global::Gtk.Action ContentsAction;
-        private global::Gtk.Action RootAction;
-        private global::Gtk.Action SearchAction;
-        private global::Gtk.Action SwitchToAdvancedLayoutAction;
-        private global::Gtk.Action ConfigurationFileAction;
-        private global::Gtk.Action OpenNewConnectionAction;
-        private global::Gtk.Action OpenNewConnectionAction1;
-        private global::Gtk.Action FavoriteNetworksAction;
-        private global::Gtk.Action PreferencesAction;
-        private global::Gtk.Action PacketViewerAction;
-        private global::Gtk.Action SkinEditorAction;
-        private global::Gtk.Action SmallChatAction;
-        private global::Gtk.Action AttachToMicroChatAction;
-        private global::Gtk.Action DetachFromMicroChatAction;
+        public global::Gtk.Action FileAction;
+        public global::Gtk.Action ShutDownAction;
+        public global::Gtk.Action ToolsAction;
+        public global::Gtk.Action MiscAction;
+        public global::Gtk.Action ShowAction;
+        public global::Gtk.Action UserAction;
+        public global::Gtk.Action HelpAction;
+        public global::Gtk.Action AboutAction;
+        public global::Gtk.Action ContentsAction;
+        public global::Gtk.Action RootAction;
+        public global::Gtk.Action SearchAction;
+        public global::Gtk.Action SwitchToAdvancedLayoutAction;
+        public global::Gtk.Action ConfigurationFileAction;
+        public global::Gtk.Action OpenNewConnectionAction;
+        public global::Gtk.Action OpenNewConnectionAction1;
+        public global::Gtk.Action FavoriteNetworksAction;
+        public global::Gtk.Action PreferencesAction;
+        public global::Gtk.Action PacketViewerAction;
+        public global::Gtk.Action SkinEditorAction;
+        public global::Gtk.Action SmallChatAction;
+        public global::Gtk.Action AttachToMicroChatAction;
+        public global::Gtk.Action DetachFromMicroChatAction;
         private global::Gtk.VBox vbox3;
-        private global::Gtk.MenuBar menubar2;
+        public global::Gtk.MenuBar menubar2;
         private global::Gtk.HPaned hpaned1;
         private global::Client.Graphics.PidgeonList pidgeonlist1;
-        private global::Gtk.Statusbar toolStrip;
-        private global::Gtk.Label toolStripStatusNetwork;
-        private global::Gtk.Label toolStripStatusChannel;
-        private global::Gtk.Label toolStripInfo;
-        private global::Gtk.ProgressBar toolStripProgressBar1;
+        public global::Gtk.Statusbar toolStrip;
+        public global::Gtk.Label toolStripStatusNetwork;
+        public global::Gtk.Label toolStripStatusChannel;
+        public global::Gtk.Label toolStripInfo;
+        public global::Gtk.ProgressBar toolStripProgressBar1;
         
         protected virtual void Build ()
         {

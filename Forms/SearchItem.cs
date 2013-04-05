@@ -33,7 +33,7 @@ namespace Client.Forms
         private global::Gtk.CheckButton checkbutton1;
         private global::Gtk.Button button1;
         private global::Gtk.Button button2;
-        public new bool Direction = true;
+        public new bool Direction = false;
         public TextIter position;
         
         protected virtual void Build ()
@@ -105,7 +105,6 @@ namespace Client.Forms
             Move (80, 800);
             this.DefaultWidth = 800;
             this.DefaultHeight = 20;
-            Direction = true;
         }
         
         private void hide2(object sender, DeleteEventArgs e)

@@ -354,6 +354,7 @@ namespace Client
                     xx._Destroy();
                 }
             }
+            Current = null;
             Windows.Clear();
         }
 

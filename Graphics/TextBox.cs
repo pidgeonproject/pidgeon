@@ -37,6 +37,19 @@ namespace Client.Graphics
         public bool restore = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         public global::Gtk.TextView richTextBox;
+        private bool destroyed = false;
+
+        /// <summary>
+        /// This will return true in case object was requested to be disposed
+        /// you should never work with objects that return true here
+        /// </summary>
+        public bool IsDestroyed
+        {
+            get
+            {
+                return destroyed;
+            }
+        }
 
         protected virtual void Build()
         {
@@ -86,22 +99,6 @@ namespace Client.Graphics
         {
             try
             {
-                //if (false && restore)
-                //{
-                //    int selection = richTextBox1.Buffer.CursorPosition;
-                //    if (richTextBox1.Buffer.Text.Length != prevtext.Length)
-                //    {
-                //        selection = selection - (richTextBox1.Buffer.Text.Length - prevtext.Length);
-                //    }
-                //    if (selection < 0)
-                //    {
-                //        selection = 0;
-                //    }
-                //    richTextBox1.Buffer.Text = prevtext;
-                //    TextIter iter = richTextBox.Buffer.GetIterAtOffset(selection);
-                //    richTextBox1.Buffer.PlaceCursor(iter);
-                //    return;
-                //}
                 prevtext = richTextBox1.Buffer.Text;
             }
             catch (Exception fail)
@@ -241,6 +238,12 @@ namespace Client.Graphics
             {
                 Core.handleException(fail);
             }
+        }
+
+        public void _Destroy()
+        {
+            history.Clear();
+            parent = null;
         }
 
         public void Init()

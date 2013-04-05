@@ -36,6 +36,7 @@ namespace Client
             /// </summary>
             public NetworkInfo()
             {
+                // this is here for xml parser
                 // keep this
             }
         }
