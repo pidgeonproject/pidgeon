@@ -573,6 +573,7 @@ namespace Client
                             Core._Main.setFocus();
                             if (Core._Main.Chat != null)
                             {
+                                notification.focus = true;
                                 Core._Main.Chat.textbox.setFocus();
                             }
                         }

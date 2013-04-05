@@ -105,6 +105,7 @@ namespace Client.Forms
             Move (80, 800);
             this.DefaultWidth = 800;
             this.DefaultHeight = 20;
+            Direction = true;
         }
         
         private void hide2(object sender, DeleteEventArgs e)
@@ -116,7 +117,6 @@ namespace Client.Forms
         public SearchItem () : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();
-            //Move(Core._Main.Left + 200, Core._Main.Top + Core._Main.Height - 200);
             messages.Localize(this);
         }
         

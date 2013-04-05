@@ -21,6 +21,7 @@ namespace Client.Forms
 {
     public partial class Notification : GTK.PidgeonForm
     {
+        public bool focus = false;
         private Gtk.VBox vbox1;
         private Gtk.Label label1;
         private Gtk.HBox hbox1;
@@ -124,6 +125,7 @@ namespace Client.Forms
             this.root.ButtonPressEvent += new Gtk.ButtonPressEventHandler(_Remove);
             this.AllowGrow = false;
             this.AllowShrink = false;
+            this.KeyPressEvent += new Gtk.KeyPressEventHandler(focusText);
             this.SetSizeRequest(400, 160);
             this.DeleteEvent += new Gtk.DeleteEventHandler(Unshow);
         }
@@ -143,6 +145,27 @@ namespace Client.Forms
             try
             {
                 this.Hide();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public void focusText(object sender, Gtk.KeyPressEventArgs keys)
+        {
+            try
+            {
+                if (focus)
+                {
+                    Core._Main.setFocus();
+                    if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
+                    {
+                        // workaround because of bugs in GTK#
+                        this.Hide();
+                        Core._Main.Chat.textbox.setFocus();
+                    }
+                }
             }
             catch (Exception fail)
             {
