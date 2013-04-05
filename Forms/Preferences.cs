@@ -79,6 +79,22 @@ namespace Client.Forms
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
+        private GTK.Menu enableToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu simpleToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu disableToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu addToolStripMenuItem1 = new GTK.Menu();
+        private GTK.Menu modifyToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu deleteToolStripMenuItem1 = new GTK.Menu();
+        private GTK.Menu createToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu disableToolStripMenuItem1 = new GTK.Menu();
+        private GTK.Menu enableToolStripMenuItem1 = new GTK.Menu();
+        private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu();
+        private GTK.Menu regexToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu matchingOnlyUserStringToolStripMenuItem = new GTK.Menu();
         
         public int SelectedItem
         {
@@ -466,6 +482,7 @@ namespace Client.Forms
             entry2.Text = Configuration.UserData.quit;
             entry3.Text = Configuration.UserData.ident;
             entry4.Text = Configuration.UserData.user;
+            entry5.Text = Configuration.UserData.Nick2;
             button3.Clicked += new EventHandler(bCancel_Click);
             this.treeview1.Model = item;
             this.treeview1.CursorChanged += new EventHandler(s4);
@@ -484,7 +501,6 @@ namespace Client.Forms
             //checkBox9.Checked = Configuration.Kernel.Notice;
             lentry2.Text = Configuration.Logs.logs_dir;
             lentry1.Text = Configuration.Logs.logs_name;
-            //textBox7.Text = Configuration.UserData.Nick2;
             switch (Configuration.Logs.ServicesLogs)
             {
                 case Configuration.Logs.ServiceLogs.full:

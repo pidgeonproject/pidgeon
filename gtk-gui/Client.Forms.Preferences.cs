@@ -279,7 +279,7 @@ namespace Client.Forms
             this.frame1.Add (this.GtkAlignment);
             this.GtkLabel1 = new global::Gtk.Label ();
             this.GtkLabel1.Name = "GtkLabel1";
-            this.GtkLabel1.LabelProp = "IRC";
+            this.GtkLabel1.LabelProp = "<b>IRC</b>";
             this.GtkLabel1.UseMarkup = true;
             this.frame1.LabelWidget = this.GtkLabel1;
             this.hbox1.Add (this.frame1);

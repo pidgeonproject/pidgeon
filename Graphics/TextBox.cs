@@ -51,6 +51,7 @@ namespace Client.Graphics
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
             this.richTextBox = new global::Gtk.TextView();
             this.richTextBox.CanFocus = true;
+            this.richTextBox.WrapMode = WrapMode.Word;
             this.richTextBox.Name = "richTextBox";
             this.richTextBox.AcceptsTab = true;
             this.GtkScrolledWindow.Add(this.richTextBox);
