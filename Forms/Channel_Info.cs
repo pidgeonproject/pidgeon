@@ -74,6 +74,66 @@ namespace Client.Forms
         private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
         private Gtk.ListStore options = new Gtk.ListStore(typeof(bool), typeof(char), typeof(string));
 
+        public List<Except> SelectedExcept
+        {
+            get
+            {
+                List<Except> el = new List<Except>();
+                TreeIter iter;
+                TreePath[] path = treeview6.Selection.GetSelectedRows();
+                if (path.Length < 1)
+                {
+                    return null;
+                }
+                foreach (TreePath p in path)
+                {
+                    treeview6.Model.GetIter(out iter, p);
+                    el.Add((Except)treeview6.Model.GetValue(iter, 3));
+                }
+                return el;
+            }
+        }
+
+        public List<SimpleBan> SelectedBans
+        {
+            get
+            {
+                List<SimpleBan> bl = new List<SimpleBan>();
+                TreeIter iter;
+                TreePath[] path = treeview7.Selection.GetSelectedRows();
+                if (path.Length < 1)
+                {
+                    return null;
+                }
+                foreach (TreePath p in path)
+                {
+                    treeview7.Model.GetIter(out iter, p);
+                    bl.Add((SimpleBan)treeview7.Model.GetValue(iter, 3));
+                }
+                return bl;
+            }
+        }
+
+        public List<Invite> SelectedInvites
+        {
+            get
+            {
+                List<Invite> il = new List<Invite>();
+                TreeIter iter;
+                TreePath[] path = treeview5.Selection.GetSelectedRows();
+                if (path.Length < 1)
+                {
+                    return null;
+                }
+                foreach (TreePath p in path)
+                {
+                    treeview5.Model.GetIter(out iter, p);
+                    il.Add((Invite)treeview5.Model.GetValue(iter, 3));
+                }
+                return il;
+            }
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -199,6 +259,7 @@ namespace Client.Forms
             this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow2.Gtk.Container+ContainerChild
             this.treeview5 = new global::Gtk.TreeView();
+            treeview5.Selection.Mode = SelectionMode.Multiple;
             this.treeview5.Model = invites;
             this.treeview5.CanFocus = true;
             this.treeview5.Name = "treeview5";
@@ -219,6 +280,7 @@ namespace Client.Forms
             iu.AddAttribute(r3, "text", 2);
             treeview5.AppendColumn(invite);
             treeview5.AppendColumn(itime);
+            treeview5.ButtonPressEvent += new ButtonPressEventHandler(IgnoreInvite);
             treeview5.AppendColumn(iu);
             this.GtkScrolledWindow2.Add(this.treeview5);
             this.notebook1.Add(this.GtkScrolledWindow2);
@@ -237,6 +299,7 @@ namespace Client.Forms
             // Container child GtkScrolledWindow3.Gtk.Container+ContainerChild
             this.treeview6 = new global::Gtk.TreeView();
             this.treeview6.CanFocus = true;
+            this.treeview6.Selection.Mode = SelectionMode.Multiple;
             this.treeview6.Name = "treeview6";
             Gtk.TreeViewColumn exception = new TreeViewColumn();
             Gtk.CellRendererText er3 = new CellRendererText();
@@ -256,6 +319,7 @@ namespace Client.Forms
             treeview6.AppendColumn(exception);
             treeview6.AppendColumn(etime);
             treeview6.AppendColumn(eu);
+            this.treeview6.ButtonPressEvent += new ButtonPressEventHandler(IgnoreExcept);
             this.GtkScrolledWindow3.Add(this.treeview6);
             this.notebook1.Add(this.GtkScrolledWindow3);
             global::Gtk.Notebook.NotebookChild w14 = ((global::Gtk.Notebook.NotebookChild)(this.notebook1[this.GtkScrolledWindow3]));
@@ -276,6 +340,9 @@ namespace Client.Forms
             this.treeview7 = new global::Gtk.TreeView();
             this.treeview7.CanFocus = true;
             this.treeview7.Name = "treeview7";
+            this.treeview7.ButtonPressEvent += new ButtonPressEventHandler(IgnoreBans);
+            this.treeview7.PopupMenu += new PopupMenuHandler(MenuBans);
+            this.treeview7.Selection.Mode = SelectionMode.Multiple;
             this.GtkScrolledWindow4.Add(this.treeview7);
             this.treeview7.Model = bans;
             this.notebook1.Add(this.GtkScrolledWindow4);
@@ -321,7 +388,21 @@ namespace Client.Forms
         {
 
         }
-        
+
+
+        public void MenuBans(object sender, Gtk.PopupMenuArgs e)
+        {
+            Gtk.Menu menu = new Menu();
+            Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
+            reload.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
+            Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
+            delete.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
+            menu.Append(delete);
+            menu.Append(reload);
+            menu.ShowAll();
+            menu.Popup();
+        }
+
         public void ReloadExceptions()
         {
             if (channel != null)
@@ -358,13 +439,41 @@ namespace Client.Forms
             }
         }
 
+        [GLib.ConnectBefore]
+        private void IgnoreBans(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                MenuBans(sender, null);
+                e.RetVal = true;
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void IgnoreExcept(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                e.RetVal = true;
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void IgnoreInvite(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                e.RetVal = true;
+            }
+        }
+
         public void ReloadInvites()
         {
             if (channel != null)
             {
                 if (channel.Invites != null)
                 {
-                    //listView3.Items.Clear();
+                    invites.Clear();
                     lock (channel.Invites)
                     {
                         foreach (Invite sb in channel.Invites)
@@ -424,23 +533,14 @@ namespace Client.Forms
             Hide();
         }
 
-        private void textBox1_TextChanged(object sender, KeyPressEventArgs e)
-        {
-            try
-            {
-                
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                //channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Text);
+                foreach (Invite item in SelectedInvites)
+                {
+                    channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Target);
+                }
             }
             catch (Exception fail)
             {
@@ -474,7 +574,13 @@ namespace Client.Forms
         {
             try
             {
-                channel._Network.Transfer("MODE " + channel.Name + " -b ");
+                if (SelectedBans != null)
+                {
+                    foreach (SimpleBan ban in SelectedBans)
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -b " + ban.Target);
+                    }
+                }
             }
             catch (Exception fail)
             {
@@ -498,7 +604,13 @@ namespace Client.Forms
         {
             try
             {
-                channel._Network.Transfer("MODE " + channel.Name + " -e ");
+                if (SelectedExcept != null)
+                {
+                    foreach (Except ex in SelectedExcept)
+                    {
+                        channel._Network.Transfer("MODE " + channel.Name + " -e " + ex.Target);
+                    }
+                }
             }
             catch (Exception fail)
             {

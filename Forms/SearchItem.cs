@@ -30,10 +30,10 @@ namespace Client.Forms
         private bool NeedReset = false;
         private global::Gtk.HBox hbox1;
         private global::Gtk.Entry entry1;
-        private global::Gtk.CheckButton checkbutton1;
+        //private global::Gtk.CheckButton checkbutton1;
+        public new bool Direction = false;
         private global::Gtk.Button button1;
         private global::Gtk.Button button2;
-        public new bool Direction = false;
         public TextIter position;
         
         protected virtual void Build ()
@@ -105,6 +105,7 @@ namespace Client.Forms
             Move (80, 800);
             this.DefaultWidth = 800;
             this.DefaultHeight = 20;
+            Init();
         }
         
         private void hide2(object sender, DeleteEventArgs e)
@@ -112,7 +113,12 @@ namespace Client.Forms
             e.RetVal = true;
             Hide();
         }
-        
+
+        public void Init()
+        {
+            Direction = false;
+        }
+
         public SearchItem () : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();
