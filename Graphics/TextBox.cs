@@ -132,7 +132,10 @@ namespace Client.Graphics
                             e.RetVal = true;
                             return;
                     }
-					control = true;
+					if (e.Event.State == Gdk.ModifierType.ControlMask)
+					{
+						control = true;
+					}
                 }
 
                 // enter
