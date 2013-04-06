@@ -86,7 +86,7 @@ namespace Client
 
             public static void services_clear(string parameter)
             {
-                if (Core.network == null)
+				if (Core.network == null)
                 {
 					foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
 					{
