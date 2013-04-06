@@ -63,6 +63,20 @@ namespace Client.Graphics
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
+		/// <summary>
+		/// Gets a value indicating whether this instance is empty.
+		/// </summary>
+		/// <value>
+		/// <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+		/// </value>
+		public bool IsEmpty
+		{
+			get
+			{
+				return (ServiceList.Count == 0 && ServerList.Count == 0
+				        && UserList.Count == 0 && ChannelList.Count == 0);
+			}
+		}
 
         protected virtual void Build()
         {
@@ -491,7 +505,7 @@ namespace Client.Graphics
                 {
                     ChannelList.Remove(chan);
                 }
-
+				
                 // if there are waiting window requests we process them here
                 lock (Core._Main.WindowRequests)
                 {
@@ -525,7 +539,15 @@ namespace Client.Graphics
                         }
                     }
                 }
-
+				
+				// we check if there are some data at all, if not we can safely remove
+				// items in store and skip all checks
+				if (IsEmpty)
+				{
+					Values.Clear();
+					return true;
+				}
+				
                 // check all destroyed windows
                 TreeIter iter;
                 if (Values.GetIterFirst(out iter))
@@ -544,9 +566,9 @@ namespace Client.Graphics
                         }
                     } while (Values.IterNext(ref iter));
                 }
-                ClearServer();
-                ClearUser();
-                ClearChan();
+                //ClearServer();
+                //ClearUser();
+                //ClearChan();
             }
             catch (Exception fail)
             {
