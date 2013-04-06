@@ -86,13 +86,13 @@ namespace Client
 
             public static void services_clear(string parameter)
             {
-				if (Core.network == null)
+                if (Core.network == null)
                 {
-					foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
-					{
-						f.Delete(true);
-						Core._Main.Chat.scrollback.InsertText("Removed " + f.Name, Client.ContentLine.MessageStyle.System, false);
-					}
+                    foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
+                    {
+                        f.Delete(true);
+                        Core._Main.Chat.scrollback.InsertText("Removed " + f.Name, Client.ContentLine.MessageStyle.System, false);
+                    }
                     return;
                 }
                 if (Core.network._Protocol.GetType() == typeof(ProtocolSv))

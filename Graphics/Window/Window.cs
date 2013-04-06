@@ -297,6 +297,11 @@ namespace Client.Graphics
                 scrollback._Destroy();
             }
             
+            if (textbox != null)
+            {
+                textbox._Destroy();
+            }
+            
             this.scrollback1 = null;
             this.textbox1 = null;
             this.Destroy();

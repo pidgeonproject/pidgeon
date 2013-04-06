@@ -666,67 +666,67 @@ namespace Client
             return System.Web.HttpUtility.HtmlEncode(text);
         }
         
-		public static Gdk.Key convertKey(Gdk.Key key)
-		{
-			switch(key)
-			{
-				case Gdk.Key.a:
-					return Gdk.Key.A;
-				case Gdk.Key.b:
-					return Gdk.Key.B;
-				case Gdk.Key.c:
-					return Gdk.Key.C;
-				case Gdk.Key.d:
-					return Gdk.Key.D;
-				case Gdk.Key.e:
-					return Gdk.Key.E;
-				case Gdk.Key.f:
-					return Gdk.Key.F;
-				case Gdk.Key.g:
-					return Gdk.Key.G;
-				case Gdk.Key.h:
-					return Gdk.Key.H;
-				case Gdk.Key.i:
-					return Gdk.Key.I;
-				case Gdk.Key.j:
-					return Gdk.Key.J;
-				case Gdk.Key.k:
-					return Gdk.Key.K;
-				case Gdk.Key.l:
-					return Gdk.Key.L;
-				case Gdk.Key.m:
-					return Gdk.Key.M;
-				case Gdk.Key.n:
-					return Gdk.Key.N;
-				case Gdk.Key.o:
-					return Gdk.Key.O;
-				case Gdk.Key.p:
-					return Gdk.Key.P;
-				case Gdk.Key.q:
-					return Gdk.Key.Q;
-				case Gdk.Key.r:
-					return Gdk.Key.R;
-				case Gdk.Key.s:
-					return Gdk.Key.S;
-				case Gdk.Key.t:
-					return Gdk.Key.T;
-				case Gdk.Key.u:
-					return Gdk.Key.U;
-				case Gdk.Key.v:
-					return Gdk.Key.V;
-				case Gdk.Key.w:
-					return Gdk.Key.W;
-				case Gdk.Key.x:
-					return Gdk.Key.X;
-				case Gdk.Key.y:
-					return Gdk.Key.Y;
-				case Gdk.Key.z:
-					return Gdk.Key.Z;
-			}
-			
-			return key;
-		}
-		
+        public static Gdk.Key convertKey(Gdk.Key key)
+        {
+            switch(key)
+            {
+                case Gdk.Key.a:
+                    return Gdk.Key.A;
+                case Gdk.Key.b:
+                    return Gdk.Key.B;
+                case Gdk.Key.c:
+                    return Gdk.Key.C;
+                case Gdk.Key.d:
+                    return Gdk.Key.D;
+                case Gdk.Key.e:
+                    return Gdk.Key.E;
+                case Gdk.Key.f:
+                    return Gdk.Key.F;
+                case Gdk.Key.g:
+                    return Gdk.Key.G;
+                case Gdk.Key.h:
+                    return Gdk.Key.H;
+                case Gdk.Key.i:
+                    return Gdk.Key.I;
+                case Gdk.Key.j:
+                    return Gdk.Key.J;
+                case Gdk.Key.k:
+                    return Gdk.Key.K;
+                case Gdk.Key.l:
+                    return Gdk.Key.L;
+                case Gdk.Key.m:
+                    return Gdk.Key.M;
+                case Gdk.Key.n:
+                    return Gdk.Key.N;
+                case Gdk.Key.o:
+                    return Gdk.Key.O;
+                case Gdk.Key.p:
+                    return Gdk.Key.P;
+                case Gdk.Key.q:
+                    return Gdk.Key.Q;
+                case Gdk.Key.r:
+                    return Gdk.Key.R;
+                case Gdk.Key.s:
+                    return Gdk.Key.S;
+                case Gdk.Key.t:
+                    return Gdk.Key.T;
+                case Gdk.Key.u:
+                    return Gdk.Key.U;
+                case Gdk.Key.v:
+                    return Gdk.Key.V;
+                case Gdk.Key.w:
+                    return Gdk.Key.W;
+                case Gdk.Key.x:
+                    return Gdk.Key.X;
+                case Gdk.Key.y:
+                    return Gdk.Key.Y;
+                case Gdk.Key.z:
+                    return Gdk.Key.Z;
+            }
+            
+            return key;
+        }
+        
         /// <summary>
         /// Convert string to key
         /// </summary>

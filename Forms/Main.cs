@@ -206,8 +206,8 @@ namespace Client.Forms
                         rt = true;
                     }
                 }
-				
-				e.RetVal = rt;
+                
+                e.RetVal = rt;
             }
             catch (Exception fail)
             {
@@ -276,10 +276,10 @@ namespace Client.Forms
 
         public int setText(string name)
         {
-			if (Core._KernelThread != System.Threading.Thread.CurrentThread)
-			{
-				throw new Exception("This function can be called only from kernel thread");
-			}
+            if (Core._KernelThread != System.Threading.Thread.CurrentThread)
+            {
+                throw new Exception("This function can be called only from kernel thread");
+            }
             this.Title = "Pidgeon Client v 1.2 " + name;
             return 2;
         }
@@ -499,10 +499,10 @@ namespace Client.Forms
 
         public void setChannel(string channel)
         {
-			if (Core._KernelThread != System.Threading.Thread.CurrentThread)
-			{
-				throw new Exception("This function can be called only from kernel thread");
-			}
+            if (Core._KernelThread != System.Threading.Thread.CurrentThread)
+            {
+                throw new Exception("This function can be called only from kernel thread");
+            }
             toolStripStatusChannel.Text = channel;
         }
 

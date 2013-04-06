@@ -176,6 +176,8 @@ namespace Client.Graphics
             {
                 if (ChannelList.ContainsKey(channel))
                 {
+                    TreeIter tree = ChannelList[d];
+                    Values.Remove(tree);
                     ChannelList.Remove(channel);
                 }
             }
@@ -198,6 +200,8 @@ namespace Client.Graphics
             {
                 if (UserList.ContainsKey(user))
                 {
+                    TreeIter tree = UserList[user];
+                    Values.Remove(tree);
                     UserList.Remove(user);
                 }
             }
@@ -540,6 +544,9 @@ namespace Client.Graphics
                         }
                     } while (Values.IterNext(ref iter));
                 }
+                ClearServer();
+                ClearUser();
+                ClearChan();
             }
             catch (Exception fail)
             {
@@ -554,7 +561,79 @@ namespace Client.Graphics
             joinToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
         }
-
+        
+        /// <summary>
+        /// Delete unused channels
+        /// </summary>
+        private void ClearUser()
+        {
+            List <User> removedUser = new List<User>();
+                lock (UserList)
+                {
+                    foreach (User d in UserList.Keys)
+                    {
+                        if (d.IsDestroyed)
+                        {
+                            removedUser.Add(d);
+                            TreeIter tree = UserList[d];
+                            Values.Remove(ref tree);
+                        }
+                    }
+                    foreach (User d in removedUser)
+                    {
+                        UserList.Remove(d);
+                    }
+                }
+        }
+        
+        /// <summary>
+        /// Delete unused networks
+        /// </summary>
+        private void ClearServer()
+        {
+            List <Network> removedChan = new List<Network>();
+                lock (ServerList)
+                {
+                    foreach (Network d in ServerList.Keys)
+                    {
+                        if (d.IsDestroyed)
+                        {
+                            removedChan.Add(d);
+                            TreeIter tree = ServerList[d];
+                            Values.Remove(ref tree);
+                        }
+                    }
+                    foreach (Network d in removedChan)
+                    {
+                        ServerList.Remove(d);
+                    }
+                }
+        }
+        
+        /// <summary>
+        /// Delete unused channels
+        /// </summary>
+        private void ClearChan()
+        {
+            List <Channel> removedChan = new List<Channel>();
+                lock (ChannelList)
+                {
+                    foreach (Channel d in ChannelList.Keys)
+                    {
+                        if (d.IsDestroyed)
+                        {
+                            removedChan.Add(d);
+                            TreeIter tree = ChannelList[d];
+                            Values.Remove(ref tree);
+                        }
+                    }
+                    foreach (Channel d in removedChan)
+                    {
+                        ChannelList.Remove(d);
+                    }
+                }
+        }
+        
         private void items_AfterSelect2(object sender, EventArgs e)
         {
             items_AfterSelect(sender, null);
@@ -679,6 +758,7 @@ namespace Client.Graphics
                             ServiceList.Remove(service);
                         }
                     }
+                    Updated = true;
                     break;
                 case ItemType.Server:
                     Network network = (Network)Item;
@@ -695,7 +775,9 @@ namespace Client.Graphics
                             Core.Connections.Remove(network._Protocol);
                         }
                     }
-
+                    
+                    Updated = true;
+                    
                     lock (ServerList)
                     {
                         if (ServerList.ContainsKey(network))
