@@ -77,6 +77,8 @@ namespace Client.Forms
         private global::Gtk.Label lGtkLabel1;
 
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
+		public Gtk.ListStore Extensions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Extension));
+		private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Core.Shortcut));
         
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
         private GTK.Menu enableToolStripMenuItem = new GTK.Menu();

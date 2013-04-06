@@ -302,8 +302,6 @@ namespace Client
             {
                 ContentLines.Clear();
             }
-            RT.textView.Buffer.Text = "";
-            simpleview.Buffer.Text = "";
             RT = null;
             owner = null;
         }

@@ -294,7 +294,7 @@ namespace Client.Graphics
 
             if (scrollback != null)
             {
-                scrollback.Destroy();
+                scrollback._Destroy();
             }
             
             this.scrollback1 = null;
