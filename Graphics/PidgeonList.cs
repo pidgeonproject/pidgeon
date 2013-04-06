@@ -176,8 +176,8 @@ namespace Client.Graphics
             {
                 if (ChannelList.ContainsKey(channel))
                 {
-                    TreeIter tree = ChannelList[d];
-                    Values.Remove(tree);
+                    TreeIter tree = ChannelList[channel];
+                    Values.Remove(ref tree);
                     ChannelList.Remove(channel);
                 }
             }
@@ -201,7 +201,7 @@ namespace Client.Graphics
                 if (UserList.ContainsKey(user))
                 {
                     TreeIter tree = UserList[user];
-                    Values.Remove(tree);
+                    Values.Remove(ref tree);
                     UserList.Remove(user);
                 }
             }
