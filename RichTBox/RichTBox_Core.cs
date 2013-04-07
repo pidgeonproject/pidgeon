@@ -141,6 +141,10 @@ namespace Client
 
         public void ScrollToBottom()
         {
+			if (Core._KernelThread != System.Threading.Thread.CurrentThread)
+			{
+				throw new Exception("You can't call this function from different thread");
+			}
             TextIter iter = richTextBox.Buffer.EndIter;
             richTextBox.ScrollToIter(iter, 0, true, 0, 0);
         }

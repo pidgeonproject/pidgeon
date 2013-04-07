@@ -61,6 +61,7 @@ namespace Client
         private int ScrollTime = 0;
         public bool Scrolling = true;
         private bool destroyed = false;
+		private bool running = false;
 
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -340,6 +341,11 @@ namespace Client
         {
             try
             {
+				if (running)
+				{
+					return true;
+				}
+				running = true;
                 if (IsDestroyed)
                 {
                     // the window was destroyed so we can't work with it
@@ -412,6 +418,7 @@ namespace Client
             {
                 Core.handleException(fail);
             }
+			running = false;
             return true;
         }
     }

@@ -244,6 +244,11 @@ namespace Client.Graphics
                 {
                     case ItemType.Server:
                         Network nw = (Network)model.GetValue(iter, 1);
+						if (nw.IsDestroyed)
+						{
+							Values.Remove(ref iter);
+							return;
+						}
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
@@ -251,6 +256,10 @@ namespace Client.Graphics
                         break;
                     case ItemType.User:
                         User user = (User)model.GetValue(iter, 1);
+						if (user.IsDestroyed)
+						{
+							Values.Remove(ref iter);
+						}
                         lock (user._Network.PrivateWins)
                         {
                             if (user._Network.PrivateWins.ContainsKey(user))
@@ -265,6 +274,10 @@ namespace Client.Graphics
                         break;
                     case ItemType.Channel:
                         Channel channel = (Channel)model.GetValue(iter, 1);
+						if (channel.IsDestroyed)
+						{
+							Values.Remove (ref iter);
+						}
                         string data = (string)model.GetValue(iter, 4);
                         if (data != channel.MenuData)
                         {

@@ -72,7 +72,7 @@ namespace Client.Forms
         private Client.GTK.Menu cleanToolStripMenuIteme = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
-        private Gtk.ListStore options = new Gtk.ListStore(typeof(bool), typeof(char), typeof(string));
+        //private Gtk.ListStore options = new Gtk.ListStore(typeof(bool), typeof(char), typeof(string));
 
         public List<Except> SelectedExcept
         {
@@ -221,7 +221,7 @@ namespace Client.Forms
             enabled.AddAttribute(r_enabled, "bool", 0);
             character.AddAttribute(r_char, "char", 1);
             ds.AddAttribute(r_desc, "text", 2);
-            this.treeview1.Model = options;
+            //this.treeview1.Model = options;
             this.treeview1.Name = "treeview1";
             this.GtkScrolledWindow1.Add(this.treeview1);
             this.GtkAlignment4.Add(this.GtkScrolledWindow1);
