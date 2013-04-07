@@ -285,6 +285,7 @@ namespace Client
                         simple.text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
+					Gtk.Rc.ParseString("style \"my-style-name\" { bg[NORMAL] = \"#339933\" }\nwidget \"notification\" style = \"my-style-name\"");
                     Hooks._Sys.AfterCore();
                     return true;
                 }

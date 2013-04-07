@@ -33,7 +33,7 @@ namespace Client.Forms
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.Notification
-            this.Name = "Client.Forms.Notification";
+            this.Name = "notification";
             this.Title = "Notification";
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             //this.TypeHint = ((global::Gdk.WindowTypeHint)(4));

@@ -414,8 +414,7 @@ namespace Client.Services
                         if (network != "")
                         {
                             Core._Main.Status("Reading disk cache for " + network);
-                            string content = File.ReadAllText(Root + network);
-                            NetworkInfo info = DeserializeNetwork(content);
+                            NetworkInfo info = DeserializeNetwork(Root + network);
                             networkInfo.Add(network, info);
                             Networks.Add(info.Server, network);
                         }
@@ -457,14 +456,17 @@ namespace Client.Services
             xs.Serialize(writer, line);
             writer.Close();
         }
-
-        public static NetworkInfo DeserializeNetwork(string text)
+		
+        public static NetworkInfo DeserializeNetwork(string file)
         {
             XmlDocument document = new XmlDocument();
-            document.LoadXml(text);
+			TextReader sr = new StreamReader(file);
+			document.Load(sr);
             XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
             XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
             NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
+			reader.Close();
+			sr.Close();
             return info;
         }
 

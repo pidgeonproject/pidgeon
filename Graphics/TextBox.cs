@@ -257,6 +257,11 @@ namespace Client.Graphics
 
         public void _Destroy()
         {
+			if (IsDestroyed)
+			{
+				return;
+			}
+			destroyed = true;
             history.Clear();
             parent = null;
         }
