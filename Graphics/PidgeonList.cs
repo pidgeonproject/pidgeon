@@ -63,20 +63,20 @@ namespace Client.Graphics
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
-		/// <summary>
-		/// Gets a value indicating whether this instance is empty.
-		/// </summary>
-		/// <value>
-		/// <c>true</c> if this instance is empty; otherwise, <c>false</c>.
-		/// </value>
-		public bool IsEmpty
-		{
-			get
-			{
-				return (ServiceList.Count == 0 && ServerList.Count == 0
-				        && UserList.Count == 0 && ChannelList.Count == 0);
-			}
-		}
+        /// <summary>
+        /// Gets a value indicating whether this instance is empty.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is empty; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsEmpty
+        {
+            get
+            {
+                return (ServiceList.Count == 0 && ServerList.Count == 0
+                        && UserList.Count == 0 && ChannelList.Count == 0);
+            }
+        }
 
         protected virtual void Build()
         {
@@ -244,11 +244,11 @@ namespace Client.Graphics
                 {
                     case ItemType.Server:
                         Network nw = (Network)model.GetValue(iter, 1);
-						if (nw.IsDestroyed)
-						{
-							Values.Remove(ref iter);
-							return;
-						}
+                        if (nw.IsDestroyed)
+                        {
+                            Values.Remove(ref iter);
+                            return;
+                        }
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
@@ -256,10 +256,10 @@ namespace Client.Graphics
                         break;
                     case ItemType.User:
                         User user = (User)model.GetValue(iter, 1);
-						if (user.IsDestroyed)
-						{
-							Values.Remove(ref iter);
-						}
+                        if (user.IsDestroyed)
+                        {
+                            Values.Remove(ref iter);
+                        }
                         lock (user._Network.PrivateWins)
                         {
                             if (user._Network.PrivateWins.ContainsKey(user))
@@ -274,10 +274,10 @@ namespace Client.Graphics
                         break;
                     case ItemType.Channel:
                         Channel channel = (Channel)model.GetValue(iter, 1);
-						if (channel.IsDestroyed)
-						{
-							Values.Remove (ref iter);
-						}
+                        if (channel.IsDestroyed)
+                        {
+                            Values.Remove (ref iter);
+                        }
                         string data = (string)model.GetValue(iter, 4);
                         if (data != channel.MenuData)
                         {
@@ -518,7 +518,7 @@ namespace Client.Graphics
                 {
                     ChannelList.Remove(chan);
                 }
-				
+                
                 // if there are waiting window requests we process them here
                 lock (Core._Main.WindowRequests)
                 {
@@ -552,15 +552,15 @@ namespace Client.Graphics
                         }
                     }
                 }
-				
-				// we check if there are some data at all, if not we can safely remove
-				// items in store and skip all checks
-				if (IsEmpty)
-				{
-					Values.Clear();
-					return true;
-				}
-				
+                
+                // we check if there are some data at all, if not we can safely remove
+                // items in store and skip all checks
+                if (IsEmpty)
+                {
+                    Values.Clear();
+                    return true;
+                }
+                
                 // check all destroyed windows
                 TreeIter iter;
                 if (Values.GetIterFirst(out iter))

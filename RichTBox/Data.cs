@@ -150,12 +150,15 @@ namespace Client
 
         private void Redraw()
         {
-            richTextBox.Buffer.Text = "";
-            lock (Lines)
+            lock (richTextBox.Buffer.Text)
             {
-                foreach (Line curr in Lines)
+                richTextBox.Buffer.Text = "";
+                lock (Lines)
                 {
-                    DrawLine(curr);
+                    foreach (Line curr in Lines)
+                    {
+                        DrawLine(curr);
+                    }
                 }
             }
         }

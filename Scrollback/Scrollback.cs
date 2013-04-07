@@ -61,7 +61,7 @@ namespace Client
         private int ScrollTime = 0;
         public bool Scrolling = true;
         private bool destroyed = false;
-		private bool running = false;
+        private bool running = false;
 
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -341,11 +341,11 @@ namespace Client
         {
             try
             {
-				if (running)
-				{
-					return true;
-				}
-				running = true;
+                if (running)
+                {
+                    return true;
+                }
+                running = true;
                 if (IsDestroyed)
                 {
                     // the window was destroyed so we can't work with it
@@ -360,7 +360,10 @@ namespace Client
                             ScrollTime++;
                             if (simple)
                             {
-                                simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                                lock (simpleview.Buffer.Text)
+                                {
+                                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                                }
                             }
                             if (!simple)
                             {
@@ -418,7 +421,7 @@ namespace Client
             {
                 Core.handleException(fail);
             }
-			running = false;
+            running = false;
             return true;
         }
     }
