@@ -71,12 +71,16 @@ namespace Client
 
         public static bool Matches(string text, User user = null)
         {
+            // we need to walk through list of all ignores to find out
             foreach (Ignore x in IgnoreList)
             {
+                // first of all we need to know if it's enabled, otherwise there is no point in checking it
                 if (x.Enabled)
                 {
+                    // if it's simple match we only check the text
                     if (x.Simple)
                     {
+                        // if user is null we can skip it
                         if (user != null && x.type == Ignore.Type.User)
                         {
                             if (user.ToString().Contains(x.Text))

@@ -23,6 +23,54 @@ using System.Text;
 
 namespace Client
 {
+    public class SimpleMode
+    {
+        private char _char;
+        private string _Parameter = null;
+        /// <summary>
+        /// Character of this mode
+        /// </summary>
+        public char Mode
+        {
+            get
+            {
+                return _char;
+            }
+        }
+        /// <summary>
+        /// Parameter of this mode
+        /// </summary>
+        public string Parameter
+        {
+            get
+            {
+                return _Parameter;
+            }
+        }
+        public bool ContainsParameter
+        {
+            get
+            {
+                return (_Parameter == null);
+            }
+        }
+
+        public SimpleMode(char mode, string parameter)
+        {
+            _char = mode;
+            _Parameter = parameter;
+        }
+
+        public override string ToString()
+        {
+            if (ContainsParameter)
+            {
+                return "+" + _char.ToString() + " " + Parameter;
+            }
+            return "+" + _char.ToString();
+        }
+    }
+
     [Serializable]
     public class NetworkMode
     {

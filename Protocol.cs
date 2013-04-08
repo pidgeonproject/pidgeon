@@ -383,6 +383,8 @@ namespace Client
             // we removed lot of memory now, let's clean it
             System.GC.Collect();
 			Core._Main.setChannel("");
+            Core._Main.Status("Disconnected from " + Server);
+            Core._Main.DisplayingProgress = false;
 			Core._Main.setText("");
             lock (Core.Connections)
             {
