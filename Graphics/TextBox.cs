@@ -129,8 +129,11 @@ namespace Client.Graphics
                         case Gdk.Key.ISO_Enter:
                         case Gdk.Key.Up:
                         case Gdk.Key.Down:
-                            e.RetVal = true;
                             return;
+                    }
+                    if (e.Event.KeyValue == 65293)
+                    {
+                        return;
                     }
                     if (e.Event.State == Gdk.ModifierType.ControlMask)
                     {

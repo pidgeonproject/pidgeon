@@ -516,17 +516,28 @@ namespace Client.Forms
                     break;
             }
 
+            ListStore lg = new ListStore(typeof(string));
+
+            combobox2.Model = lg;
+
             foreach (Skin skin in Configuration.SL)
             {
             //    comboBox1.Items.Add(skin.name);
             }
             //comboBox1.SelectedIndex = 0;
 
+            int selectedLanguage = 0;
+            int current = 0;
             foreach (KeyValuePair<string, messages.container> language in messages.data)
             {
-            //    comboBox2.Items.Add(language.Key);
+                if (language.Key == Core.SelectedLanguage)
+                {
+                    selectedLanguage = current;
+                }
+                lg.AppendValues(language.Key);
+                current++;
             }
-            //comboBox2.Text = Core.SelectedLanguage;
+            combobox2.Active = selectedLanguage;
 
             foreach (Network.Highlighter highlight in Configuration.HighlighterList)
             {
