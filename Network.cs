@@ -234,6 +234,56 @@ namespace Client
             return username;
         }
 
+        /// <summary>
+        /// Create a new network, requires name and protocol type
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="protocol"></param>
+        public Network(string Server, Protocol protocol)
+        {
+            try
+            {
+                randomuqid = Core.retrieveRandom();
+                lock (Descriptions)
+                {
+                    Descriptions.Clear();
+                    Descriptions.Add('n', "no /knock is allowed on channel");
+                    Descriptions.Add('r', "registered channel");
+                    Descriptions.Add('m', "talking is restricted");
+                    Descriptions.Add('i', "users need to be invited to join");
+                    Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                    Descriptions.Add('p', "channel is private");
+                    Descriptions.Add('A', "admins only");
+                    Descriptions.Add('O', "opers chan");
+                    Descriptions.Add('t', "topic changes can be done only by operators");
+                }
+                _Protocol = protocol;
+                ServerName = Server;
+                Quit = Configuration.UserData.quit;
+                Nickname = Configuration.UserData.nick;
+
+                UserName = Configuration.UserData.user;
+                Ident = Configuration.UserData.ident;
+                if (protocol.GetType() == typeof(ProtocolSv))
+                {
+                    protocol.CreateChat("!" + ServerName, false, this, false, false, "!" + randomuqid + ServerName);
+                    SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
+                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
+                }
+                else
+                {
+                    protocol.CreateChat("!system", true, this);
+                    SystemWindow = protocol.Windows["!system"];
+                    Core._Main.ChannelList.insertNetwork(this);
+                }
+                Hooks._Network.CreatingNetwork(this);
+            }
+            catch (Exception ex)
+            {
+                Core.handleException(ex);
+            }
+        }
+
         public void DisplayChannelWindow()
         {
             try
@@ -250,6 +300,19 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail);
+            }
+        }
+
+        ~Network()
+        {
+            if (!IsDestroyed)
+            {
+                Destroy();
+            }
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor called for network: " + ServerName);
+                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
             }
         }
 
@@ -271,19 +334,6 @@ namespace Client
                 }
             }
             return null;
-        }
-
-        ~Network()
-        {
-            if (!IsDestroyed)
-            {
-                Destroy();
-            }
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destructor called for network: " + ServerName);
-                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
-            }
         }
 
         public void Part(string channel_name)
@@ -310,6 +360,18 @@ namespace Client
                 unixtimestmp = 0;
             }
             return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
+        }
+
+        public User getUser(string user)
+        {
+            foreach (User x in PrivateChat)
+            {
+                if (x.Nick.ToLower() == user.ToLower())
+                {
+                    return x;
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -518,56 +580,6 @@ namespace Client
             else
             {
                 Transfer("QUIT :" + Quit);
-            }
-        }
-
-        /// <summary>
-        /// Create a new network, requires name and protocol type
-        /// </summary>
-        /// <param name="Server"></param>
-        /// <param name="protocol"></param>
-        public Network(string Server, Protocol protocol)
-        {
-            try
-            {
-                randomuqid = Core.retrieveRandom();
-                lock (Descriptions)
-                {
-                    Descriptions.Clear();
-                    Descriptions.Add('n', "no /knock is allowed on channel");
-                    Descriptions.Add('r', "registered channel");
-                    Descriptions.Add('m', "talking is restricted");
-                    Descriptions.Add('i', "users need to be invited to join");
-                    Descriptions.Add('s', "channel is secret (doesn't appear on list)");
-                    Descriptions.Add('p', "channel is private");
-                    Descriptions.Add('A', "admins only");
-                    Descriptions.Add('O', "opers chan");
-                    Descriptions.Add('t', "topic changes can be done only by operators");
-                }
-                _Protocol = protocol;
-                ServerName = Server;
-                Quit = Configuration.UserData.quit;
-                Nickname = Configuration.UserData.nick;
-
-                UserName = Configuration.UserData.user;
-                Ident = Configuration.UserData.ident;
-                if (protocol.GetType() == typeof(ProtocolSv))
-                {
-                    protocol.CreateChat("!" + ServerName, false, this, false, false, "!" + randomuqid + ServerName);
-                    SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
-                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
-                }
-                else
-                {
-                    protocol.CreateChat("!system", true, this);
-                    SystemWindow = protocol.Windows["!system"];
-                    Core._Main.ChannelList.insertNetwork(this);
-                }
-                Hooks._Network.CreatingNetwork(this);
-            }
-            catch (Exception ex)
-            {
-                Core.handleException(ex);
             }
         }
     }

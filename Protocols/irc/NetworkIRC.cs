@@ -130,6 +130,7 @@ namespace Client
             }
 
             chan = parameters.Replace(" ", "");
+            User user = null;
             string message = value;
             if (!chan.Contains(_Network.channel_prefix))
             {
@@ -166,19 +167,38 @@ namespace Client
                                     }
                                 }
                                 break;
+                            case "ACTION":
+                                message = message.Substring("xACTION".Length);
+                                if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                                {
+                                    message = message.Substring(0, message.Length - 1);
+                                }
+                                user = _Network.getUser(_nick);
+                                if (user != null)
+                                {
+                                    lock (_Network.PrivateWins)
+                                    {
+                                        if (_Network.PrivateWins.ContainsKey(user))
+                                        {
+                                            WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
+                                                date, !updated_text);
+                                        }
+                                    }
+                                }
+                                break;
                         }
                     }
                     if (Configuration.irc.DisplayCtcp)
                     {
                         WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + message,
                             Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
-                        return true; ;
+                        return true;
                     }
                     return true;
                 }
 
             }
-            User user = new User(_nick, _host, _Network, _ident);
+            user = new User(_nick, _host, _Network, _ident);
             if (Ignoring.Matches(message, user))
             {
                 return true;
