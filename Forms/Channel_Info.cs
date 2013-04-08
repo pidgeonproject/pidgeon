@@ -72,6 +72,7 @@ namespace Client.Forms
         private Client.GTK.Menu cleanToolStripMenuIteme = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
+        private List<CheckButton> options = new List<CheckButton>();
         //private Gtk.ListStore options = new Gtk.ListStore(typeof(bool), typeof(char), typeof(string));
 
         public List<Except> SelectedExcept
@@ -201,29 +202,31 @@ namespace Client.Forms
             this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
             this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-            this.treeview1 = new global::Gtk.TreeView();
-            this.treeview1.CanFocus = true;
-            Gtk.TreeViewColumn enabled = new Gtk.TreeViewColumn();
-            Gtk.TreeViewColumn character = new Gtk.TreeViewColumn();
-            Gtk.TreeViewColumn ds = new Gtk.TreeViewColumn();
-            this.treeview1.AppendColumn(enabled);
-            this.treeview1.AppendColumn(character);
-            this.treeview1.AppendColumn(ds);
-            enabled.Title = "Enabled";
-            character.Title = "Channel mode";
-            ds.Title = "Description";
-            Gtk.CellRendererToggle r_enabled = new CellRendererToggle();
-            enabled.PackStart(r_enabled, true);
-            Gtk.CellRendererText r_char = new CellRendererText();
-            Gtk.CellRendererText r_desc = new CellRendererText();
-            ds.PackStart(r_desc, true);
-            character.PackStart(r_char, true);
-            enabled.AddAttribute(r_enabled, "bool", 0);
-            character.AddAttribute(r_char, "char", 1);
-            ds.AddAttribute(r_desc, "text", 2);
+            //this.treeview1 = new global::Gtk.TreeView();
+            //this.treeview1.CanFocus = true;
+            //Gtk.TreeViewColumn enabled = new Gtk.TreeViewColumn();
+            //Gtk.TreeViewColumn character = new Gtk.TreeViewColumn();
+            //Gtk.TreeViewColumn ds = new Gtk.TreeViewColumn();
+            //this.treeview1.AppendColumn(enabled);
+            //this.treeview1.AppendColumn(character);
+            //this.treeview1.AppendColumn(ds);
+            //enabled.Title = "Enabled";
+            //character.Title = "Channel mode";
+            //ds.Title = "Description";
+            //Gtk.CellRendererToggle r_enabled = new CellRendererToggle();
+            //enabled.PackStart(r_enabled, true);
+            //Gtk.CellRendererText r_char = new CellRendererText();
+            //Gtk.CellRendererText r_desc = new CellRendererText();
+            //ds.PackStart(r_desc, true);
+            //character.PackStart(r_char, true);
+            //enabled.AddAttribute(r_enabled, "bool", 0);
+            //character.AddAttribute(r_char, "char", 1);
+            //ds.AddAttribute(r_desc, "text", 2);
             //this.treeview1.Model = options;
-            this.treeview1.Name = "treeview1";
-            this.GtkScrolledWindow1.Add(this.treeview1);
+            //this.treeview1.Name = "treeview1";
+            Gtk.Fixed f = new Fixed();
+            ReloadModes(ref f);
+            this.GtkScrolledWindow1.Add(f);
             this.GtkAlignment4.Add(this.GtkScrolledWindow1);
             this.frame5.Add(this.GtkAlignment4);
             this.GtkLabel4 = new global::Gtk.Label();
@@ -693,13 +696,10 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-        
-        public void Load()
-        {
-            this.Build();
-            this.textview1.WrapMode = WrapMode.Word;
-            textview1.Buffer.Text = channel.Topic;
 
+        public void ReloadModes(ref Gtk.Fixed vbox)
+        {
+            options.Clear();
             if (channel != null)
             {
                 ReloadBans();
@@ -708,6 +708,7 @@ namespace Client.Forms
 
                 lock (channel.ChannelMode)
                 {
+                    int height = 0;
                     foreach (char item in channel._Network.CModes)
                     {
                         string de = "unknown mode. Refer to ircd manual (/raw help)";
@@ -716,10 +717,24 @@ namespace Client.Forms
                         {
                             de = channel._Network.Descriptions[item];
                         }
-                        //options.AppendValues(channel.ChannelMode._Mode.Contains(item.ToString()), item, de);
+                        CheckButton xx = new CheckButton(item.ToString() + " : " + de);
+                        xx.Name = item.ToString();
+                        options.Add(xx);
+                        vbox.Add(xx);
+                        global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(vbox[xx]));
+                        w1.X = height;
+                        w1.Y = 0;
+                        height += 20;
                     }
                 }
             }
+        }
+
+        public void Load()
+        {
+            this.Build();
+            this.textview1.WrapMode = WrapMode.Word;
+            textview1.Buffer.Text = channel.Topic;
         }
 
         public static string convertUNIX(string time)
