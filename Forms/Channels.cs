@@ -38,6 +38,8 @@ namespace Client.Forms
         private GTK.Menu knockToolStripMenuItem = new GTK.Menu("Knock");
         private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         private GTK.Menu downloadListFromServerToolStripMenuItem = new GTK.Menu("Download from server");
+        private GTK.Menu listtoclipboard = new GTK.Menu("Copy selected to clipboard");
+        private GTK.Menu listtoclipboard2 = new GTK.Menu("Copy selected channel names (separated by space) to clipboard");
         
         public List<string> Selected
         {
@@ -51,6 +53,24 @@ namespace Client.Forms
                     this.treeview8.Model.GetIter(out iter, tree);
                     string user = (string)this.treeview8.Model.GetValue(iter, 0);
                     ul.Add(user);
+                }
+                return ul;
+            }
+        }
+
+        public List<string> SelectedData
+        {
+            get
+            {
+                List<string> ul = new List<string>();
+                TreeIter iter;
+                TreePath[] path = this.treeview8.Selection.GetSelectedRows();
+                foreach (TreePath tree in path)
+                {
+                    this.treeview8.Model.GetIter(out iter, tree);
+                    string user = (string)this.treeview8.Model.GetValue(iter, 0);
+                    string topic = (string)this.treeview8.Model.GetValue(iter, 2);
+                    ul.Add(user + " topic: " + topic);
                 }
                 return ul;
             }
@@ -143,7 +163,11 @@ namespace Client.Forms
                 xx.Append(download);
                 Gtk.MenuItem re = new MenuItem(refreshToolStripMenuItem.Text);
                 re.Activated += new EventHandler(refreshToolStripMenuItem_Click);
+                Gtk.MenuItem copy = new MenuItem(listtoclipboard.Text);
+                copy.Activated += new EventHandler(ToClipboard);
                 xx.Append(re);
+                xx.Append(new Gtk.SeparatorMenuItem());
+                xx.Append(copy);
                 xx.ShowAll();
                 xx.Popup();
             } catch (Exception fail)
@@ -155,6 +179,16 @@ namespace Client.Forms
         public Channels() : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();
+        }
+
+        private void ToClipboard(object sender, EventArgs e)
+        {
+            string list = "";
+            foreach (string item in SelectedData)
+            {
+                list += item + "\n";
+            }
+            System.Windows.Forms.Clipboard.SetText(list);
         }
 
         private void Reload()
