@@ -40,6 +40,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// This represents a shortcut defined in pidgeon
+        /// </summary>
         public class Shortcut
         {
             public bool control;

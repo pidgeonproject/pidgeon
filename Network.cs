@@ -431,6 +431,7 @@ namespace Client
 
             if (wChannelList != null)
             {
+                wChannelList.Hide();
                 wChannelList.Dispose();
                 wChannelList = null;
             }

@@ -227,6 +227,22 @@ namespace Client.Graphics
             tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
 
+        public TreeIter getIter(object item)
+        {
+            TreeIter iter = new TreeIter();
+            if (Values.GetIterFirst(out iter))
+            {
+                while (Values.IterNext(ref iter))
+                {
+                    if (Values.GetValue(iter, 1) == item)
+                    {
+                        return iter;
+                    }
+                }
+            }
+            return iter;
+        }
+
         /// <summary>
         /// This function handles the icons and colors in list
         /// </summary>
@@ -276,7 +292,7 @@ namespace Client.Graphics
                         Channel channel = (Channel)model.GetValue(iter, 1);
                         if (channel.IsDestroyed)
                         {
-                            Values.Remove (ref iter);
+                            Values.Remove(ref iter);
                         }
                         string data = (string)model.GetValue(iter, 4);
                         if (data != channel.MenuData)
@@ -396,7 +412,7 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2 );
+                    TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -518,7 +534,7 @@ namespace Client.Graphics
                 {
                     ChannelList.Remove(chan);
                 }
-                
+
                 // if there are waiting window requests we process them here
                 lock (Core._Main.WindowRequests)
                 {
@@ -552,7 +568,7 @@ namespace Client.Graphics
                         }
                     }
                 }
-                
+
                 // we check if there are some data at all, if not we can safely remove
                 // items in store and skip all checks
                 if (IsEmpty)
@@ -560,7 +576,7 @@ namespace Client.Graphics
                     Values.Clear();
                     return true;
                 }
-                
+
                 // check all destroyed windows
                 TreeIter iter;
                 if (Values.GetIterFirst(out iter))
@@ -579,9 +595,9 @@ namespace Client.Graphics
                         }
                     } while (Values.IterNext(ref iter));
                 }
-                //ClearServer();
-                //ClearUser();
-                //ClearChan();
+                ClearServer();
+                ClearUser();
+                ClearChan();
             }
             catch (Exception fail)
             {
@@ -596,79 +612,79 @@ namespace Client.Graphics
             joinToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
         }
-        
+
         /// <summary>
         /// Delete unused channels
         /// </summary>
         private void ClearUser()
         {
-            List <User> removedUser = new List<User>();
-                lock (UserList)
+            List<User> removedUser = new List<User>();
+            lock (UserList)
+            {
+                foreach (User d in UserList.Keys)
                 {
-                    foreach (User d in UserList.Keys)
+                    if (d.IsDestroyed)
                     {
-                        if (d.IsDestroyed)
-                        {
-                            removedUser.Add(d);
-                            TreeIter tree = UserList[d];
-                            Values.Remove(ref tree);
-                        }
-                    }
-                    foreach (User d in removedUser)
-                    {
-                        UserList.Remove(d);
+                        removedUser.Add(d);
+                        TreeIter tree = getIter(d);
+                        Values.Remove(ref tree);
                     }
                 }
+                foreach (User d in removedUser)
+                {
+                    UserList.Remove(d);
+                }
+            }
         }
-        
+
         /// <summary>
         /// Delete unused networks
         /// </summary>
         private void ClearServer()
         {
-            List <Network> removedChan = new List<Network>();
-                lock (ServerList)
+            List<Network> removedChan = new List<Network>();
+            lock (ServerList)
+            {
+                foreach (Network d in ServerList.Keys)
                 {
-                    foreach (Network d in ServerList.Keys)
+                    if (d.IsDestroyed)
                     {
-                        if (d.IsDestroyed)
-                        {
-                            removedChan.Add(d);
-                            TreeIter tree = ServerList[d];
-                            Values.Remove(ref tree);
-                        }
-                    }
-                    foreach (Network d in removedChan)
-                    {
-                        ServerList.Remove(d);
+                        removedChan.Add(d);
+                        TreeIter tree = getIter(d);
+                        Values.Remove(ref tree);
                     }
                 }
+                foreach (Network d in removedChan)
+                {
+                    ServerList.Remove(d);
+                }
+            }
         }
-        
+
         /// <summary>
         /// Delete unused channels
         /// </summary>
         private void ClearChan()
         {
-            List <Channel> removedChan = new List<Channel>();
-                lock (ChannelList)
+            List<Channel> removedChan = new List<Channel>();
+            lock (ChannelList)
+            {
+                foreach (Channel d in ChannelList.Keys)
                 {
-                    foreach (Channel d in ChannelList.Keys)
+                    if (d.IsDestroyed)
                     {
-                        if (d.IsDestroyed)
-                        {
-                            removedChan.Add(d);
-                            TreeIter tree = ChannelList[d];
-                            Values.Remove(ref tree);
-                        }
-                    }
-                    foreach (Channel d in removedChan)
-                    {
-                        ChannelList.Remove(d);
+                        removedChan.Add(d);
+                        TreeIter tree = getIter(d);
+                        Values.Remove(ref tree);
                     }
                 }
+                foreach (Channel d in removedChan)
+                {
+                    ChannelList.Remove(d);
+                }
+            }
         }
-        
+
         private void items_AfterSelect2(object sender, EventArgs e)
         {
             items_AfterSelect(sender, null);
@@ -739,7 +755,7 @@ namespace Client.Graphics
                         if (window != null)
                         {
                             window.MenuColor = Configuration.CurrentSkin.fontcolor;
-                        } 
+                        }
                         us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
                         closeToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
@@ -810,9 +826,9 @@ namespace Client.Graphics
                             Core.Connections.Remove(network._Protocol);
                         }
                     }
-                    
+
                     Updated = true;
-                    
+
                     lock (ServerList)
                     {
                         if (ServerList.ContainsKey(network))
@@ -882,7 +898,7 @@ namespace Client.Graphics
                             channel._Network.Channels.Remove(channel);
                         }
                     }
-    
+
                     lock (channel._Network._Protocol.Windows)
                     {
                         if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.SystemWindowID + channel.Name))
