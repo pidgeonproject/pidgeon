@@ -85,7 +85,7 @@ namespace Client
         {
             try
             {
-                while (Connected)
+                while (IsConnected)
                 {
                     Deliver(new Datagram("PING"));
                     System.Threading.Thread.Sleep(480000);
@@ -197,7 +197,7 @@ namespace Client
             }
             catch (System.IO.IOException fail)
             {
-                if (Connected)
+                if (IsConnected)
                 {
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                 }
@@ -211,7 +211,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                if (Connected)
+                if (IsConnected)
                 {
                     Core.handleException(fail);
                 }
@@ -332,7 +332,7 @@ namespace Client
         /// </summary>
         public override void Exit()
         {
-            if (!Connected)
+            if (!IsConnected)
             {
                 Core.DebugLog("Request to disconnect from services that aren't connected");
                 return;

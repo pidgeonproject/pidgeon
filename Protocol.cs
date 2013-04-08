@@ -47,7 +47,7 @@ namespace Client
         /// <summary>
         /// Whether this server is connected or not
         /// </summary>
-        public bool Connected = false;
+        protected bool Connected = false;
         /// <summary>
         /// Type of protocol (deprecated)
         /// </summary>
@@ -73,6 +73,14 @@ namespace Client
         /// </summary>
         public bool SSL = false;
         private bool destroyed = false;
+
+        public bool IsConnected
+        {
+            get
+            {
+                return Connected;
+            }
+        }
 
         /// <summary>
         /// This will return true in case object was requested to be disposed

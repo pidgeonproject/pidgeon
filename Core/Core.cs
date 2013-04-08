@@ -56,7 +56,7 @@ namespace Client
                 keys = Value;
             }
         }
-        
+
         /// <summary>
         /// Thread of core
         /// </summary>
@@ -285,7 +285,7 @@ namespace Client
                         simple.text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
-					Gtk.Rc.ParseString("style \"my-style-name\" { bg[NORMAL] = \"#339933\" }\nwidget \"notification\" style = \"my-style-name\"");
+                    Gtk.Rc.ParseString("style \"my-style-name\" { bg[NORMAL] = \"#339933\" }\nwidget \"notification\" style = \"my-style-name\"");
                     Hooks._Sys.AfterCore();
                     return true;
                 }
@@ -503,7 +503,7 @@ namespace Client
                 // if not we can try to pass it to server
                 if (Core._Main.Chat._Protocol != null)
                 {
-                    if (_Main.Chat._Protocol.Connected)
+                    if (_Main.Chat._Protocol.IsConnected)
                     {
                         Core._Main.Chat._Protocol.Command(command);
                         return false;
@@ -582,7 +582,7 @@ namespace Client
                 }
             }
         }
-        
+
         /// <summary>
         /// Show a notice box, if started from non kernel thread, then it's finalized in that
         /// </summary>
@@ -666,10 +666,10 @@ namespace Client
         {
             return System.Web.HttpUtility.HtmlEncode(text);
         }
-        
+
         public static Gdk.Key convertKey(Gdk.Key key)
         {
-            switch(key)
+            switch (key)
             {
                 case Gdk.Key.a:
                     return Gdk.Key.A;
@@ -724,10 +724,10 @@ namespace Client
                 case Gdk.Key.z:
                     return Gdk.Key.Z;
             }
-            
+
             return key;
         }
-        
+
         /// <summary>
         /// Convert string to key
         /// </summary>

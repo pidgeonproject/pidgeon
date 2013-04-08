@@ -186,7 +186,7 @@ namespace Client
         {
             try
             {
-                while (_IRCNetwork.Connected && Connected)
+                while (_IRCNetwork.Connected && IsConnected)
                 {
                     Transfer("PING :" + _IRCNetwork._Protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
@@ -323,7 +323,7 @@ namespace Client
         {
             try
             {
-                if (!Connected)
+                if (!IsConnected)
                 {
                     Core.DebugLog("NETWORK: attempt to send a packet to disconnected network");
                     return;
