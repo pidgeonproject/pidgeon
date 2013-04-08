@@ -508,7 +508,7 @@ namespace Client.Graphics
                         if (chan.Key.dispose)
                         {
                             chan.Key._Network.Channels.Remove(chan.Key);
-                            chan.Key.retrieveWindow().Dispose();
+                            chan.Key.retrieveWindow()._Destroy();
                             _channels.Add(chan.Key);
                         }
                     }
@@ -887,7 +887,7 @@ namespace Client.Graphics
                     {
                         if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.SystemWindowID + channel.Name))
                         {
-                            channel._Network._Protocol.Windows[channel._Network.SystemWindowID + channel.Name].Dispose();
+                            channel._Network._Protocol.Windows[channel._Network.SystemWindowID + channel.Name]._Destroy();
                             channel._Network._Protocol.Windows.Remove(channel._Network.SystemWindowID + channel.Name);
                         }
                     }

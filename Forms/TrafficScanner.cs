@@ -30,12 +30,15 @@ namespace Client.Forms
         private List<string> traf = new List<string>();
         public GLib.TimeoutHandler timer;
         private bool Enabled = true;
+        private GTK.Menu scroll = new GTK.Menu("Scroll");
+        private GTK.Menu remove = new GTK.Menu("Delete");
         
         public TrafficScanner () :  base(Gtk.WindowType.Toplevel)
         {
             try
             {
                 this.Build ();
+                this.textview2.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
                 this.timer = new GLib.TimeoutHandler(Tick);
                 GLib.Timeout.Add (1000, timer);
                 this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
@@ -43,6 +46,7 @@ namespace Client.Forms
                 textview2.Buffer.Text = "";
                 LoadStyle();
                 textview2.WrapMode = WrapMode.Char;
+                scroll.Checked = Enabled;
                 
                 this.Hide ();
             } catch (Exception fail)
@@ -50,7 +54,41 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-        
+
+        [GLib.ConnectBefore]
+        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        {
+            try
+            {
+                Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
+                separator1.Show();
+                e.Menu.Append(separator1);
+                Gtk.CheckMenuItem sc = new CheckMenuItem(scroll.Text);
+                sc.Active = scroll.Checked;
+                sc.Show();
+                e.Menu.Append(sc);
+                Gtk.MenuItem m1 = new Gtk.MenuItem(remove.Text);
+                m1.Activated += new EventHandler(Clear);
+                m1.Show();
+                e.Menu.Append(m1);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public void Scroll(object sender, EventArgs e)
+        {
+            scroll.Checked = !scroll.Checked;
+            Enabled = scroll.Checked;
+        }
+
+        public void Clear(object sender, EventArgs e)
+        {
+            Clean();
+        }
+
         public void LoadStyle()
         {
             textview2.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
@@ -59,6 +97,10 @@ namespace Client.Forms
         
         public void Clean()
         {
+            lock (traf)
+            {
+                traf.Clear();
+            }
             textview2.Buffer.Text = "";
         }
         
@@ -87,6 +129,7 @@ namespace Client.Forms
                     if (message.result == ResponseType.No)
                     {
                         Enabled = false;
+                        scroll.Checked = false;
                         return true;
                     }
                 }

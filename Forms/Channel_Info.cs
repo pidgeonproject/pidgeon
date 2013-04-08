@@ -500,35 +500,35 @@ namespace Client.Forms
                 bool change = false;
                 string cset = "+";
                 string uset = "-";
-                //foreach (string item in checkedList.Items)
-                //{
-                //    if (checkedList.CheckedItems.Contains(item))
-                //    {
-                //        if (!channel.ChannelMode._Mode.Contains(item[0].ToString()))
-                //        {
-                //            cset += item[0];
-                //            change = true;
-                //        }
-                //        continue;
-                //    }
-                //    if (channel.ChannelMode._Mode.Contains(item[0].ToString()))
-                //    {
-                //        uset += item[0];
-                //        change = true;
-                //    }
-                //}
-                //if (change)
-                //{
-                //    if (uset == "-")
-                //    {
-                //        uset = "";
-                //    }
-                //    if (cset == "+")
-                //    {
-                //        cset = "";
-                //    }
-                //    channel._Network.Transfer("MODE " + channel.Name + " " + cset + uset);
-                //}
+                foreach (CheckButton item in options)
+                {
+                    if (item.Active)
+                    {
+                        if (!channel.ChannelMode._Mode.Contains(item.Name))
+                        {
+                            cset += item.Name;
+                            change = true;
+                        }
+                        continue;
+                    }
+                    if (channel.ChannelMode._Mode.Contains(item.Name))
+                    {
+                        uset += item.Name;
+                        change = true;
+                    }
+                }
+                if (change)
+                {
+                    if (uset == "-")
+                    {
+                        uset = "";
+                    }
+                    if (cset == "+")
+                    {
+                        cset = "";
+                    }
+                    channel._Network.Transfer("MODE " + channel.Name + " " + cset + uset);
+                }
                 this.Hide();
                 this.Dispose();
             }
@@ -718,6 +718,7 @@ namespace Client.Forms
                             de = channel._Network.Descriptions[item];
                         }
                         CheckButton xx = new CheckButton(item.ToString() + " : " + de);
+                        xx.Active = channel.ChannelMode._Mode.Contains(item.ToString());
                         xx.Name = item.ToString();
                         options.Add(xx);
                         vbox.Add(xx);
@@ -729,7 +730,6 @@ namespace Client.Forms
                     Adjustment ad = new Adjustment(0, 0, height * 100, 10, 20, 20);
                     vbox.SetScrollAdjustments(new Adjustment(10, 0, 10, 10, 10, 10), ad);
                     this.GtkScrolledWindow1.SetScrollAdjustments(new Adjustment(10, 0, 10, 10, 10, 10), ad);
-                    //vbox.HeightRequest = height;
                     vbox.Height = (uint)height;
                 }
             }
