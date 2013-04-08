@@ -433,11 +433,20 @@ namespace Client
             return "";
         }
 
-        public void InsertBan(string ban, string user)
+        public void InsertBan(string ban, string user, string time = "0")
         {
-
+            SimpleBan br = new SimpleBan(user, ban, time);
+            lock (Bans)
+            {
+                Bans.Add(br);
+            }
         }
 
+        /// <summary>
+        /// Removes a ban where target is matching "ban" this needs to be perfect match (a != A and x* != xX) you can't use mask
+        /// </summary>
+        /// <param name="ban"></param>
+        /// <returns></returns>
         public bool RemoveBan(string ban)
         {
             SimpleBan br = null;

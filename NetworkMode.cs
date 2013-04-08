@@ -92,8 +92,6 @@ namespace Client
         /// </summary>
         public ModeType _ModeType = ModeType.Network;
 
-
-
         public override string ToString()
         {
             string _val = "";

@@ -86,13 +86,13 @@ namespace Client.Graphics
 
         public void InitStyle()
         {
-            richTextBox.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
+            richTextBox.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
-        
+
         public TextBox()
         {
-            
+
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -117,10 +117,10 @@ namespace Client.Graphics
                     e.RetVal = true;
                     return;
                 }
-                
+
                 bool control = false;
-                
-                if (e.Event.State == Gdk.ModifierType.ShiftMask||
+
+                if (e.Event.State == Gdk.ModifierType.ShiftMask ||
                 e.Event.State == Gdk.ModifierType.ControlMask)
                 {
                     switch (e.Event.Key)
@@ -221,7 +221,7 @@ namespace Client.Graphics
                             e.RetVal = true;
                             return;
                         }
-                    break;
+                        break;
                     case Gdk.Key.k:
                     case Gdk.Key.K:
                         if (control)
@@ -265,11 +265,11 @@ namespace Client.Graphics
 
         public void _Destroy()
         {
-			if (IsDestroyed)
-			{
-				return;
-			}
-			destroyed = true;
+            if (IsDestroyed)
+            {
+                return;
+            }
+            destroyed = true;
             history.Clear();
             parent = null;
         }
