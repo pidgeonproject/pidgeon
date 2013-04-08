@@ -280,7 +280,11 @@ namespace Client.Services
                 }
                 if (target.textbox != null)
                 {
-                    target.textbox.history = new List<string>();
+                    if (target.textbox.history == null)
+                    {
+                        target.textbox.history = new List<string>();
+                    }
+                    target.textbox.history.Clear();
                     target.textbox.history.AddRange(Source.history);
                     target.textbox.position = Source.history.Count;
                 }

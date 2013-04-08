@@ -171,8 +171,10 @@ namespace Client.Forms
             Chat._Protocol = WindowOwner;
             if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
             {
-                Chat.textbox.history.Clear();
-                Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
+                if (Chat.textbox.history.Count == 0)
+                {
+                    Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
+                }
             }
             if (Focus)
             {
