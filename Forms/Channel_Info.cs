@@ -224,7 +224,7 @@ namespace Client.Forms
             //ds.AddAttribute(r_desc, "text", 2);
             //this.treeview1.Model = options;
             //this.treeview1.Name = "treeview1";
-            Gtk.Fixed f = new Fixed();
+            Gtk.Layout f = new Layout(new Adjustment(10, 0, 10000, 10, 10, 10), new Adjustment(10, 0, 100000, 10, 10, 10));
             ReloadModes(ref f);
             this.GtkScrolledWindow1.Add(f);
             this.GtkAlignment4.Add(this.GtkScrolledWindow1);
@@ -697,7 +697,7 @@ namespace Client.Forms
             }
         }
 
-        public void ReloadModes(ref Gtk.Fixed vbox)
+        public void ReloadModes(ref Gtk.Layout vbox)
         {
             options.Clear();
             if (channel != null)
@@ -721,11 +721,16 @@ namespace Client.Forms
                         xx.Name = item.ToString();
                         options.Add(xx);
                         vbox.Add(xx);
-                        global::Gtk.Fixed.FixedChild w1 = ((global::Gtk.Fixed.FixedChild)(vbox[xx]));
-                        w1.X = height;
-                        w1.Y = 0;
+                        global::Gtk.Layout.LayoutChild w1 = ((global::Gtk.Layout.LayoutChild)(vbox[xx]));
+                        w1.X = 0;
+                        w1.Y = height;
                         height += 20;
                     }
+                    Adjustment ad = new Adjustment(0, 0, height * 100, 10, 20, 20);
+                    vbox.SetScrollAdjustments(new Adjustment(10, 0, 10, 10, 10, 10), ad);
+                    this.GtkScrolledWindow1.SetScrollAdjustments(new Adjustment(10, 0, 10, 10, 10, 10), ad);
+                    //vbox.HeightRequest = height;
+                    vbox.Height = (uint)height;
                 }
             }
         }

@@ -404,12 +404,12 @@ namespace Client
                                     info.recoverWindowText(nw.SystemWindow, nw.SystemWindow.name);
                                     nw.CModes = info.CModes;
                                     nw.CUModes = info.CUModes;
-                                    nw.Nickname = info.Nick;
                                     nw.PModes = info.PModes;
                                     nw.SModes = info.SModes;
                                     nw.UChars = info.UChars;
                                     nw.UModes = info.UModes;
                                     nw.XModes = info.XModes;
+                                    nw.Nickname = info.Nick;
                                     nw.ChannelList.Clear();
                                     nw.ChannelList.AddRange(info.ChannelList);
                                     info.ChannelList.Clear();

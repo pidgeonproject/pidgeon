@@ -139,31 +139,31 @@ namespace Client.Services
             /// <summary>
             /// User modes
             /// </summary>
-            public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
+            public List<char> UModes = new List<char>();
             /// <summary>
             /// Channel user symbols (oper and such)
             /// </summary>
-            public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
+            public List<char> UChars = new List<char>();
             /// <summary>
             /// Channel user modes
             /// </summary>
-            public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
+            public List<char> CUModes = new List<char>();
             /// <summary>
             /// Channel modes
             /// </summary>
-            public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
+            public List<char> CModes = new List<char>();
             /// <summary>
             /// Special channel modes with parameter as a string
             /// </summary>
-            public List<char> SModes = new List<char> { 'k', 'L' };
+            public List<char> SModes = new List<char>();
             /// <summary>
             /// Special channel modes with parameter as a number
             /// </summary>
-            public List<char> XModes = new List<char> { 'l' };
+            public List<char> XModes = new List<char>();
             /// <summary>
             /// Special channel user modes with parameters as a string
             /// </summary>
-            public List<char> PModes = new List<char> { 'b', 'I', 'e' };
+            public List<char> PModes = new List<char>();
             /// <summary>
             /// List of channels
             /// </summary>

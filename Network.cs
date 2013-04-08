@@ -109,7 +109,7 @@ namespace Client
         /// <summary>
         /// List of private message windows
         /// </summary>
-        public List<User> PrivateChat= new List<User>();
+        public List<User> PrivateChat = new List<User>();
         /// <summary>
         /// System window
         /// </summary>
@@ -211,7 +211,7 @@ namespace Client
                 }
             }
         }
-        
+
         /// <summary>
         /// Removes the char from user.
         /// </summary>
@@ -225,15 +225,15 @@ namespace Client
         {
             foreach (char xx in UChars)
             {
-                if (username.Contains(xx.ToString ()))
+                if (username.Contains(xx.ToString()))
                 {
-                    username = username.Replace (xx.ToString(), "");
+                    username = username.Replace(xx.ToString(), "");
                 }
             }
-            
+
             return username;
         }
-        
+
         public void DisplayChannelWindow()
         {
             try
@@ -390,7 +390,7 @@ namespace Client
         {
             _Protocol.Message(text, to, this, _priority, pmsg);
         }
-        
+
         /// <summary>
         /// Unregister info for user and channel modes
         /// </summary>
@@ -408,7 +408,7 @@ namespace Client
             }
             return false;
         }
-        
+
         /// <summary>
         /// Destroy this class, be careful, it can't be used in any way after you
         /// call this
@@ -444,31 +444,31 @@ namespace Client
                 }
                 PrivateChat.Clear();
             }
-            
+
             lock (Channels)
             {
                 foreach (Channel xx in Channels)
                 {
                     xx.Destroy();
                 }
-                
+
                 Channels.Clear();
             }
-            
+
             lock (PrivateWins)
             {
                 PrivateWins.Clear();
             }
-            
+
             _Protocol = null;
             SystemWindow = null;
-            
+
             lock (Descriptions)
             {
                 Descriptions.Clear();
             }
         }
-        
+
         /// <summary>
         /// Register info for channel info
         /// </summary>
@@ -476,7 +476,7 @@ namespace Client
         /// <param name="text"></param>
         /// <returns></returns>
         public bool RegisterInfo(char key, string text)
-        { 
+        {
             lock (Descriptions)
             {
                 if (Descriptions.ContainsKey(key))
@@ -532,18 +532,16 @@ namespace Client
                 randomuqid = Core.retrieveRandom();
                 lock (Descriptions)
                 {
-                    if (Descriptions.Count < 1)
-                    {
-                        Descriptions.Add('n', "no /knock is allowed on channel");
-                        Descriptions.Add('r', "registered channel");
-                        Descriptions.Add('m', "talking is restricted");
-                        Descriptions.Add('i', "users need to be invited to join");
-                        Descriptions.Add('s', "channel is secret (doesn't appear on list)");
-                        Descriptions.Add('p', "channel is private");
-                        Descriptions.Add('A', "admins only");
-                        Descriptions.Add('O', "opers chan");
-                        Descriptions.Add('t', "topic changes can be done only by operators");
-                    }
+                    Descriptions.Clear();
+                    Descriptions.Add('n', "no /knock is allowed on channel");
+                    Descriptions.Add('r', "registered channel");
+                    Descriptions.Add('m', "talking is restricted");
+                    Descriptions.Add('i', "users need to be invited to join");
+                    Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                    Descriptions.Add('p', "channel is private");
+                    Descriptions.Add('A', "admins only");
+                    Descriptions.Add('O', "opers chan");
+                    Descriptions.Add('t', "topic changes can be done only by operators");
                 }
                 _Protocol = protocol;
                 ServerName = Server;
