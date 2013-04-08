@@ -328,9 +328,12 @@ namespace Client
                     Core.DebugLog("NETWORK: attempt to send a packet to disconnected network");
                     return;
                 }
-                _StreamWriter.WriteLine(ms);
-                Core.trafficscanner.insert(Server, " << " + ms);
-                _StreamWriter.Flush();
+                lock (_StreamWriter)
+                {
+                    _StreamWriter.WriteLine(ms);
+                    Core.trafficscanner.insert(Server, " << " + ms);
+                    _StreamWriter.Flush();
+                }
             }
             catch (Exception fail)
             {

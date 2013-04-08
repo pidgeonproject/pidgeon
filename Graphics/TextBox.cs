@@ -150,8 +150,13 @@ namespace Client.Graphics
                         input.AddRange(richTextBox1.Buffer.Text.Split('\n'));
                         foreach (var line in input)
                         {
-                            Parser.parse(line);
-                            if (line != "")
+                            string Line = line;
+                            if (Line.Contains("\r"))
+                            {
+                                Line = Line.Replace("\r", "");
+                            }
+                            Parser.parse(Line);
+                            if (Line != "")
                             {
                                 lock (history)
                                 {
@@ -159,7 +164,7 @@ namespace Client.Graphics
                                     {
                                         history.RemoveAt(0);
                                     }
-                                    history.Add(line);
+                                    history.Add(Line);
                                 }
                             }
                         }

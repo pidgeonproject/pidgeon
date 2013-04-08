@@ -511,9 +511,12 @@ namespace Client
             {
                 try
                 {
-                    _StreamWriter.WriteLine(text);
-                    Core.trafficscanner.insert(Server, " << " + text);
-                    _StreamWriter.Flush();
+                    lock (_StreamWriter)
+                    {
+                        _StreamWriter.WriteLine(text);
+                        Core.trafficscanner.insert(Server, " << " + text);
+                        _StreamWriter.Flush();
+                    }
                 }
                 catch (System.IO.IOException er)
                 {
@@ -522,9 +525,13 @@ namespace Client
                 }
                 catch (Exception f)
                 {
-                    if (Connected)
+                    if (IsConnected)
                     {
                         Core.handleException(f);
+                    }
+                    else
+                    {
+                        Core.DebugLog("ex " + f.ToString());
                     }
                 }
             }
