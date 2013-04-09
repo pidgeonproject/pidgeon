@@ -466,17 +466,17 @@ namespace Client.Services
             xs.Serialize(writer, line);
             writer.Close();
         }
-		
+        
         public static NetworkInfo DeserializeNetwork(string file)
         {
             XmlDocument document = new XmlDocument();
-			TextReader sr = new StreamReader(file);
-			document.Load(sr);
+            TextReader sr = new StreamReader(file);
+            document.Load(sr);
             XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
             XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
             NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
-			reader.Close();
-			sr.Close();
+            reader.Close();
+            sr.Close();
             return info;
         }
 

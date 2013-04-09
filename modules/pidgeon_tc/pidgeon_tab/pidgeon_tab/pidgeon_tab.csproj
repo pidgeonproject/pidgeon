@@ -49,7 +49,7 @@
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="Pidgeon">
-      <HintPath>..\..\..\..\bin\Release\Pidgeon.exe</HintPath>
+      <HintPath>..\..\..\..\bin\Debug\Pidgeon.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
