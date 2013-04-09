@@ -32,7 +32,7 @@ namespace Client
     {
         private void InsertLineToText(ContentLine line, bool Draw = true)
         {
-            if (simple)
+            if (Configuration.Memory.EnableSimpleViewCache && simple)
             {
                 if (!ScrollingEnabled)
                 {
@@ -125,6 +125,18 @@ namespace Client
 
             if (owner == null || (owner != null && WindowVisible()))
             {
+                if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize >= ContentLines.Count)
+                {
+                    lock (ContentLines)
+                    {
+                        ContentLines.Sort();
+                        SortNeeded = false;
+                        while (Configuration.Memory.MaximumChannelBufferSize >= ContentLines.Count)
+                        {
+                            ContentLines.RemoveAt(0);
+                        }
+                    }
+                }
                 if (SortNeeded)
                 {
                     lock (ContentLines)
@@ -134,7 +146,7 @@ namespace Client
                     }
                 }
 
-                if (simple)
+                if (simple && Configuration.Memory.EnableSimpleViewCache)
                 {
                     ReloadSimple();
                     return true;
@@ -332,9 +344,9 @@ namespace Client
                         }
                         break;
                 }
-                
+
                 Graphics.PidgeonList.Updated = true;
-                
+
                 if (Matched)
                 {
                     owner.MenuColor = Configuration.CurrentSkin.highlightcolor;

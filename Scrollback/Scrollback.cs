@@ -108,6 +108,21 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Creates a new scrollback instance
+        /// </summary>
+        public Scrollback()
+        {
+            ReloadWaiting = true;
+        }
+
+        public Scrollback(Graphics.Window _ParentWindow)
+        {
+            this.owner = _ParentWindow;
+
+            ReloadWaiting = true;
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -184,6 +199,10 @@ namespace Client
         /// <param name="advanced"></param>
         public void Switch(bool advanced)
         {
+            if (!Configuration.Memory.EnableSimpleViewCache)
+            {
+                simpleview.Buffer.Text = "";
+            }
             if (advanced)
             {
                 if (simple)
@@ -213,21 +232,6 @@ namespace Client
             this.ShowAll();
 
             Reload(true, true);
-        }
-
-        /// <summary>
-        /// Creates a new scrollback instance
-        /// </summary>
-        public Scrollback()
-        {
-            ReloadWaiting = true;
-        }
-
-        public Scrollback(Graphics.Window _ParentWindow)
-        {
-            this.owner = _ParentWindow;
-
-            ReloadWaiting = true;
         }
 
         public void Create()

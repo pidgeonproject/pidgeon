@@ -195,6 +195,18 @@ namespace Client
             public static bool ShutdownCheck = true;
         }
 
+        public class Memory
+        {
+            /// <summary>
+            /// Turning this to false will disable simple view
+            /// </summary>
+            public static bool EnableSimpleViewCache = true;
+            /// <summary>
+            /// Changing this to anything but 0 will trim the channel buffer
+            /// </summary>
+            public static int MaximumChannelBufferSize = 0;
+        }
+
         public class ChannelModes
         {
             /// <summary>
