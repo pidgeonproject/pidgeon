@@ -168,6 +168,10 @@ namespace Client
                         Core.killThread(System.Threading.Thread.CurrentThread);
                         return;
                     }
+                    catch (Exception fail)
+                    {
+                        Core.handleException(fail);
+                    }
                 }
             }
         }
@@ -186,7 +190,7 @@ namespace Client
         {
             try
             {
-                while (_IRCNetwork.Connected && IsConnected)
+                while (_IRCNetwork.IsConnected && IsConnected)
                 {
                     Transfer("PING :" + _IRCNetwork._Protocol.Server, Configuration.Priority.High);
                     System.Threading.Thread.Sleep(24000);
@@ -231,7 +235,7 @@ namespace Client
                 }
 
                 Hooks._Protocol.BeforeConnect(this);
-                _IRCNetwork.Connected = true;
+                _IRCNetwork.flagConnection();
 
                 Connected = true;
 
@@ -261,8 +265,7 @@ namespace Client
                 deliveryqueue = new System.Threading.Thread(Messages.Run);
                 deliveryqueue.Start();
 
-
-                while (_IRCNetwork.Connected && !_StreamReader.EndOfStream)
+                while (_IRCNetwork.IsConnected && !_StreamReader.EndOfStream)
                 {
                     while (Core.blocked)
                     {
@@ -385,7 +388,7 @@ namespace Client
 
         public override void Exit()
         {
-            if (!_IRCNetwork.Connected)
+            if (!_IRCNetwork.IsConnected)
             {
                 return;
             }
@@ -402,7 +405,7 @@ namespace Client
             {
                 main.Abort();
             }
-            _IRCNetwork.Connected = false;
+            _IRCNetwork.flagDisconnect();
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);

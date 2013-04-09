@@ -72,7 +72,6 @@ namespace Client
         public string nick = "";
         public bool auth = false;
         
-
         public List<string> WaitingNetw = new List<string>();
 
         public enum Status
@@ -202,13 +201,12 @@ namespace Client
                 {
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                 }
+                Disconnect();
             }
             catch (System.Threading.ThreadAbortException)
             {
-                if (Core.IgnoreErrors)
-                {
-                    return;
-                }
+                Core.killThread(System.Threading.Thread.CurrentThread);
+                return;
             }
             catch (Exception fail)
             {
@@ -343,15 +341,18 @@ namespace Client
             {
                 main.Abort();
             }
+            RemainingJobs.Clear();
             if (Configuration.Services.UsingCache)
             {
+                Core._Main.Status("Writing the service cache");
                 sBuffer.Snapshot();
+                Core._Main.Status("Done");
             }
             lock (NetworkList)
             {
                 foreach (Network network in NetworkList)
                 {
-                    network.Connected = false;
+                    network.flagDisconnect();
                     network.Destroy();
                     if (Core.network == network)
                     {
@@ -360,10 +361,12 @@ namespace Client
                 }
                 NetworkList.Clear();
             }
+
             if (keep != null)
             {
                 keep.Abort();
                 Core.killThread(keep);
+                keep = null;
             }
             
             if (sBuffer != null)
@@ -375,6 +378,8 @@ namespace Client
             
             if (_StreamWriter != null) _StreamWriter.Close();
             if (_StreamReader != null) _StreamReader.Close();
+            _StreamWriter = null;
+            _StreamReader = null;
             base.Exit();
         }
 
@@ -394,6 +399,8 @@ namespace Client
             {
                 if (_StreamWriter != null) _StreamWriter.Close();
                 if (_StreamReader != null) _StreamReader.Close();
+                _StreamWriter = null;
+                _StreamReader = null;
             }
             catch (System.Net.Sockets.SocketException fail)
             {
@@ -404,7 +411,7 @@ namespace Client
                 foreach (Network xx in NetworkList)
                 {
                     // we need to flag all networks here as disconnected so that it knows we can't use them
-                    xx.Connected = false;
+                    xx.flagDisconnect();
                 }
             }
             if (keep != null && (keep.ThreadState == System.Threading.ThreadState.Running || keep.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
@@ -516,7 +523,7 @@ namespace Client
         /// <param name="text"></param>
         public void Send(string text)
         {
-            if (Connected)
+            if (IsConnected)
             {
                 try
                 {
@@ -530,7 +537,7 @@ namespace Client
                 catch (System.IO.IOException er)
                 {
                     Windows["!root"].scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
-                    Exit();
+                    Disconnect();
                 }
                 catch (Exception f)
                 {

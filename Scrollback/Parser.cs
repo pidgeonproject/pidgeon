@@ -776,7 +776,7 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);
                 return 2;
             }
-            if (Core.network.Connected)
+            if (Core.network.IsConnected)
             {
                 if (Core._Main.Chat.writable)
                 {

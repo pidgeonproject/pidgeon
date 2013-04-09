@@ -154,7 +154,7 @@ namespace Client
                     protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
                     server.Nickname = protocol.nick;
-                    server.Connected = true;
+                    server.flagConnection();
                 }
                 if (Configuration.Services.UsingCache)
                 {
@@ -234,7 +234,7 @@ namespace Client
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
-                        _network.Connected = true;
+                        _network.flagConnection();
                         _network.Nickname = protocol.nick;
                         protocol.cache.Add(new Cache());
                         protocol.NetworkList.Add(_network);
@@ -306,7 +306,13 @@ namespace Client
                 {
                     if (curr.Attributes[0].Value == s2.ServerName)
                     {
-                        s2.Connected = connected;
+                        if (connected)
+                        {
+                            s2.flagConnection();
+                        } else
+                        {
+                            s2.flagDisconnect();
+                        }
                         break;
                     }
                 }

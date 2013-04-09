@@ -497,7 +497,7 @@ namespace Client.Graphics
         {
             try
             {
-                if (_Network.Connected)
+                if (_Network.IsConnected)
                 {
                     Channel channel = getChannel();
                     if (channel != null)

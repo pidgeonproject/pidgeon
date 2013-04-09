@@ -813,7 +813,7 @@ namespace Client.Graphics
                     break;
                 case ItemType.Server:
                     Network network = (Network)Item;
-                    if (network.Connected)
+                    if (network.IsConnected)
                     {
                         Core._Main.Chat.scrollback.InsertText("Server will not be removed from sidebar, because you are still using it, disconnect first", Client.ContentLine.MessageStyle.System, false, 0, true);
                         return;
@@ -945,7 +945,7 @@ namespace Client.Graphics
                         {
                             if (ServerList.ContainsKey(item))
                             {
-                                if (item.Connected)
+                                if (item.IsConnected)
                                 {
                                     item.Disconnect();
                                 }

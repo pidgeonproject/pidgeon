@@ -105,7 +105,7 @@ namespace Client
         /// <summary>
         /// Specifies if you are connected to network
         /// </summary>
-        public bool Connected = false;
+        protected bool Connected = false;
         /// <summary>
         /// List of private message windows
         /// </summary>
@@ -183,6 +183,13 @@ namespace Client
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
         private bool destroyed = false;
+        public bool IsConnected
+        {
+            get
+            {
+                return Connected;
+            }
+        }
         /// <summary>
         /// This will return true in case object was requested to be disposed
         /// you should never work with objects that return true here
@@ -210,28 +217,6 @@ namespace Client
                     return randomuqid + ServerName;
                 }
             }
-        }
-
-        /// <summary>
-        /// Removes the char from user.
-        /// </summary>
-        /// <returns>
-        /// The username without char.
-        /// </returns>
-        /// <param name='username'>
-        /// Username.
-        /// </param>
-        public string RemoveCharFromUser(string username)
-        {
-            foreach (char xx in UChars)
-            {
-                if (username.Contains(xx.ToString()))
-                {
-                    username = username.Replace(xx.ToString(), "");
-                }
-            }
-
-            return username;
         }
 
         /// <summary>
@@ -284,6 +269,19 @@ namespace Client
             }
         }
 
+        ~Network()
+        {
+            if (!IsDestroyed)
+            {
+                Destroy();
+            }
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor called for network: " + ServerName);
+                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
+            }
+        }
+
         public void DisplayChannelWindow()
         {
             try
@@ -303,17 +301,42 @@ namespace Client
             }
         }
 
-        ~Network()
+        /// <summary>
+        /// This will mark the connected
+        /// </summary>
+        public void flagConnection()
         {
-            if (!IsDestroyed)
+            Connected = true;
+        }
+
+        /// <summary>
+        /// This will mark the network as disconnected
+        /// </summary>
+        public void flagDisconnect()
+        {
+            Connected = false;
+        }
+
+        /// <summary>
+        /// Removes the char from user.
+        /// </summary>
+        /// <returns>
+        /// The username without char.
+        /// </returns>
+        /// <param name='username'>
+        /// Username.
+        /// </param>
+        public string RemoveCharFromUser(string username)
+        {
+            foreach (char xx in UChars)
             {
-                Destroy();
+                if (username.Contains(xx.ToString()))
+                {
+                    username = username.Replace(xx.ToString(), "");
+                }
             }
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destructor called for network: " + ServerName);
-                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
-            }
+
+            return username;
         }
 
         /// <summary>
@@ -581,6 +604,7 @@ namespace Client
             {
                 Transfer("QUIT :" + Quit);
             }
+            Connected = false;
         }
     }
 }
