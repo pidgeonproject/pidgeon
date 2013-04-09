@@ -76,6 +76,10 @@ namespace Client.Forms
         private global::Gtk.RadioButton lradiobutton3;
         private global::Gtk.Label lGtkLabel1;
 
+        // system
+        private global::Gtk.CheckButton checkButton_CTCP;
+        private global::Gtk.CheckButton checkButton_request;
+
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         public Gtk.ListStore Extensions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Extension));
         private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Core.Shortcut));
@@ -292,6 +296,34 @@ namespace Client.Forms
             this.treeview2 = new global::Gtk.TreeView ();
             this.treeview2.CanFocus = true;
             this.treeview2.Name = "treeview1";
+            Gtk.TreeViewColumn el_1 = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn el_2 = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn el_3 = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn el_4 = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText exr1 = new Gtk.CellRendererText();
+            Gtk.CellRendererText exr2 = new Gtk.CellRendererText();
+            Gtk.CellRendererText exr3 = new Gtk.CellRendererText();
+            Gtk.CellRendererText exr4 = new Gtk.CellRendererText();
+            el_1.PackStart(exr1, true);
+            el_1.Title = "Name";
+            el_2.PackStart(exr2, true);
+            el_2.Title = "Version";
+            el_3.PackStart(exr3, true);
+            el_3.Title = "Description";
+            el_4.PackStart(exr4, true);
+            el_4.Title = "Type";
+            this.treeview2.AppendColumn(el_1);
+            this.treeview2.AppendColumn(el_2);
+            this.treeview2.AppendColumn(el_3);
+            this.treeview2.AppendColumn(el_4);
+            el_1.AddAttribute(exr1, "text", 0);
+            el_2.AddAttribute(exr2, "text", 1);
+            el_3.AddAttribute(exr3, "text", 2);
+            el_4.AddAttribute(exr4, "text", 2);
+            this.treeview5.AppendColumn(el_1);
+            this.treeview5.AppendColumn(el_2);
+            this.treeview5.AppendColumn(el_3);
+            this.treeview5.AppendColumn(el_4);
             this.GtkScrolledWindow2.Add (this.treeview2);
             this.GtkAlignment2.Add (this.GtkScrolledWindow2);
             this.fExtensions.Add (this.GtkAlignment2);
@@ -361,6 +393,19 @@ namespace Client.Forms
             this.treeview3 = new global::Gtk.TreeView ();
             this.treeview3.CanFocus = true;
             this.treeview3.Name = "treeview1";
+            this.treeview3.Model = Keyboard;
+            Gtk.TreeViewColumn keyboard_keys = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn keyboard_line = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText kr1 = new Gtk.CellRendererText();
+            Gtk.CellRendererText kr2 = new Gtk.CellRendererText();
+            keyboard_keys.PackStart(kr1, true);
+            keyboard_keys.Title = "Shortcut";
+            keyboard_line.Title = "Command";
+            keyboard_line.PackStart(kr2, true);
+            this.treeview3.AppendColumn(keyboard_keys);
+            keyboard_keys.AddAttribute(kr1, "text", 0);
+            keyboard_line.AddAttribute(kr2, "text", 1);
+            this.treeview3.AppendColumn(keyboard_line);
             this.GtkScrolledWindow3.Add (this.treeview3);
             this.GtkAlignment3.Add (this.GtkScrolledWindow3);
             this.fKeyboard.Add (this.GtkAlignment3);
@@ -386,6 +431,34 @@ namespace Client.Forms
             this.treeview5 = new global::Gtk.TreeView ();
             this.treeview5.CanFocus = true;
             this.treeview5.Name = "treeview1";
+            Gtk.TreeViewColumn list_1= new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn list_2 = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn list_3 = new Gtk.TreeViewColumn();
+            Gtk.TreeViewColumn list_4 = new Gtk.TreeViewColumn();
+            Gtk.CellRendererText lr1 = new Gtk.CellRendererText();
+            Gtk.CellRendererText lr2 = new Gtk.CellRendererText();
+            Gtk.CellRendererText lr3 = new Gtk.CellRendererText();
+            Gtk.CellRendererText lr4 = new Gtk.CellRendererText();
+            list_1.PackStart(lr1, true);
+            list_1.Title = "Ignore";
+            list_2.PackStart(lr2, true);
+            list_2.Title = "Simple";
+            list_3.PackStart(lr3, true);
+            list_3.Title = "Enabled";
+            list_4.PackStart(lr4, true);
+            list_4.Title = "Type";
+            this.treeview5.AppendColumn(list_1);
+            this.treeview5.AppendColumn(list_2);
+            this.treeview5.AppendColumn(list_3);
+            this.treeview5.AppendColumn(list_4);
+            list_1.AddAttribute(lr1, "text", 0);
+            list_2.AddAttribute(lr2, "text", 1);
+            list_3.AddAttribute(lr3, "text", 2);
+            list_4.AddAttribute(lr4, "text", 2);
+            this.treeview5.AppendColumn(list_1);
+            this.treeview5.AppendColumn(list_2);
+            this.treeview5.AppendColumn(list_4);
+            this.treeview5.AppendColumn(list_3);
             this.GtkScrolledWindow5.Add (this.treeview5);
             this.GtkAlignment5.Add (this.GtkScrolledWindow5);
             this.fIgnore.Add (this.GtkAlignment5);
@@ -403,9 +476,34 @@ namespace Client.Forms
             this.GtkAlignment6 = new global::Gtk.Alignment (0F, 0F, 1F, 1F);
             this.GtkAlignment6.Name = "GtkAlignment";
             this.GtkAlignment6.LeftPadding = ((uint)(12));
-            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-            this.frame6.Add (this.GtkAlignment6);
-            this.GtkLabel6 = new global::Gtk.Label ();
+            VBox vb01 = new VBox();
+            vb01.Name = "vb01";
+            vb01.Spacing = 2;
+            this.checkButton_request = new CheckButton();
+            this.checkButton_request.CanFocus = true;
+            this.checkButton_request.Name = "request";
+            this.checkButton_request.Label = "Request a confirmation for every system generated kickban";
+            this.checkButton_request.DrawIndicator = true;
+            this.checkButton_request.UseUnderline = true;
+            this.checkButton_CTCP = new CheckButton();
+            this.checkButton_CTCP.CanFocus = true;
+            this.checkButton_CTCP.Name = "ctcp";
+            this.checkButton_CTCP.Label = "Display CTCP";
+            this.checkButton_CTCP.DrawIndicator = true;
+            this.checkButton_CTCP.UseUnderline = true;
+            vb01.Add(checkButton_CTCP);
+            global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(vb01[this.checkButton_CTCP]));
+            w20.Position = 1;
+            w20.Expand = false;
+            w20.Fill = false;
+            vb01.Add(checkButton_request);
+            global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(vb01[this.checkButton_request]));
+            w60.Position = 1;
+            w60.Expand = false;
+            w60.Fill = false;
+            GtkAlignment6.Add(vb01);
+            this.frame6.Add(this.GtkAlignment6);
+            this.GtkLabel6 = new global::Gtk.Label();
             this.GtkLabel6.Name = "GtkLabel";
             this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString ("<b>System</b>");
             this.GtkLabel6.UseMarkup = true;
@@ -468,12 +566,12 @@ namespace Client.Forms
         /// <param name="e"></param>
         private void Preferences_Load()
         {
-            checkbutton1.Active = Configuration.Kernel.CheckUpdate;
+            checkbutton2.Active = Configuration.Kernel.CheckUpdate;
             messages.Localize(this);
             if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
             {
-                checkbutton1.Active = false;
-                checkbutton1.Sensitive = false;
+                checkbutton2.Active = false;
+                checkbutton2.Sensitive = false;
             }
             messages.Localize(this);
             this.DeleteEvent += new DeleteEventHandler(hide);
@@ -493,14 +591,14 @@ namespace Client.Forms
             topic_item.Title = "Option";
             topic_item.PackStart(c1, true);
             topic_item.AddAttribute    (c1, "text", 0);
-            treeview1.AppendColumn(topic_item);
-            treeview1.RowActivated += new RowActivatedHandler(s2);
-            lcheckbutton3.Active = Configuration.Logs.logs_xml;
-            lcheckbutton1.Active = Configuration.Logs.logs_txt;
-            lcheckbutton2.Active = Configuration.Logs.logs_html;
-            //checkBox4.Checked = Configuration.irc.DisplayCtcp;
-            //checkBox8.Checked = Configuration.irc.ConfirmAll;
-            //checkBox9.Checked = Configuration.Kernel.Notice;
+            this.treeview1.AppendColumn(topic_item);
+            this.treeview1.RowActivated += new RowActivatedHandler(s2);
+            this.lcheckbutton3.Active = Configuration.Logs.logs_xml;
+            this.lcheckbutton1.Active = Configuration.Logs.logs_txt;
+            this.lcheckbutton2.Active = Configuration.Logs.logs_html;
+            this.checkButton_CTCP.Active = Configuration.irc.DisplayCtcp;
+            this.checkButton_request.Active = Configuration.irc.ConfirmAll;
+            checkbutton1.Active = Configuration.Kernel.Notice;
             lentry2.Text = Configuration.Logs.logs_dir;
             lentry1.Text = Configuration.Logs.logs_name;
             switch (Configuration.Logs.ServicesLogs)
@@ -696,12 +794,12 @@ namespace Client.Forms
                 Configuration.Logs.logs_xml = lcheckbutton3.Active;
                 Configuration.Logs.logs_txt = lcheckbutton1.Active;
                 Configuration.Logs.logs_html = lcheckbutton2.Active;
-                //Configuration.Kernel.CheckUpdate = checkBox10.Checked;
-                //Configuration.irc.DisplayCtcp = checkBox4.Checked;
-                //Configuration.Kernel.Notice = checkBox9.Checked;
+                Configuration.Kernel.CheckUpdate = checkbutton2.Active;
+                Configuration.irc.DisplayCtcp = checkButton_CTCP.Active;
+                Configuration.Kernel.Notice = checkbutton1.Active;
                 Configuration.Logs.logs_dir = lentry2.Text;
                 Configuration.Logs.logs_name = lentry1.Text;
-                //Configuration.UserData.Nick2 = textBox7.Text;
+                Configuration.UserData.Nick2 = entry5.Text;
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
