@@ -584,7 +584,7 @@ namespace Client
             {
                 if (owner.isChannel)
                 {
-                    owner._Protocol.Transfer("TOPIC " + owner.name);
+                    owner._Network._Protocol.Transfer("TOPIC " + owner.name);
                 }
             }
             catch (Exception fail)

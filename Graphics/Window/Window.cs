@@ -55,14 +55,17 @@ namespace Client.Graphics
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
         /// </summary>
+        [Obsolete]
         public Protocol _Protocol = null;
         /// <summary>
         /// In case this is true, we are in micro chat
         /// </summary>
         public bool MicroBox = false;
         public bool isPM = false;
+        /// <summary>
+        /// Network that is associated with this window
+        /// </summary>
         public Network _Network = null;
-        public bool Resizing = false;
         public bool ignoreChange = false;
         private Channel channel = null;
         public bool isInitialised = false;
@@ -104,8 +107,25 @@ namespace Client.Graphics
             }
         }
 
+        public Window()
+        {
+            this.scrollback1 = new global::Client.Scrollback();
+            this.textbox1 = new global::Client.Graphics.TextBox();
+            MenuColor = Configuration.CurrentSkin.colordefault;
+            textbox1.parent = this;
+            if (textbox1.history == null)
+            {
+                textbox1.history = new List<string>();
+            }
+        }
+
         ~Window()
         {
+            if (!IsDestroyed)
+            {
+                // we need to remove some containers that could hold the references and create a leak
+                //_Destroy();
+            }
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for window: " + name);
@@ -171,18 +191,6 @@ namespace Client.Graphics
         {
             listView.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-        }
-
-        public Window()
-        {
-            this.scrollback1 = new global::Client.Scrollback();
-            this.textbox1 = new global::Client.Graphics.TextBox();
-            MenuColor = Configuration.CurrentSkin.colordefault;
-            textbox1.parent = this;
-            if (textbox1.history == null)
-            {
-                textbox1.history = new List<string>();
-            }
         }
         
         [GLib.ConnectBefore]
@@ -285,6 +293,11 @@ namespace Client.Graphics
 
         public void _Destroy()
         {
+            if (IsDestroyed)
+            {
+                return;
+            }
+
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destroying " + name);
@@ -301,10 +314,14 @@ namespace Client.Graphics
             {
                 textbox._Destroy();
             }
-            
+
+            UserList.Clear();
+
+            channel = null;
+            _Network = null;
+
             this.scrollback1 = null;
             this.textbox1 = null;
-            this.Destroy();
         }
         
         public void Changed(object sender, GLib.NotifyArgs dt)

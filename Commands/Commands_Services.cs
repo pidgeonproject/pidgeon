@@ -54,19 +54,19 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
-                if (Core._Main.Chat._Protocol == null)
+                if (Core._Main.Chat._Network._Protocol == null)
                 {
                     return;
                 }
-                if (Core._Main.Chat._Protocol.GetType() == typeof(ProtocolSv))
+                if (Core._Main.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
                 {
                     if (int.TryParse(b2, out n3))
                     {
-                        Core._Main.Chat._Protocol.ConnectTo(name2, n3);
+                        Core._Main.Chat._Network._Protocol.ConnectTo(name2, n3);
                         return;
                     }
 
-                    Core._Main.Chat._Protocol.ConnectTo(name2, 6667);
+                    Core._Main.Chat._Network._Protocol.ConnectTo(name2, 6667);
                     return;
                 }
             }
@@ -108,11 +108,11 @@ namespace Client
                 if (parameter != "")
                 {
                     string nick = parameter;
-                    if (Core._Main.Chat._Protocol != null)
+                    if (Core._Main.Chat._Network._Protocol != null)
                     {
-                        if (Core._Main.Chat._Protocol.GetType() == typeof(ProtocolSv))
+                        if (Core._Main.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
                         {
-                            Core._Main.Chat._Protocol.requestNick(nick);
+                            Core._Main.Chat._Network._Protocol.requestNick(nick);
                             return;
                         }
                     }

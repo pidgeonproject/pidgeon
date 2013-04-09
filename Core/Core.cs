@@ -504,11 +504,11 @@ namespace Client
                 }
 
                 // if not we can try to pass it to server
-                if (Core._Main.Chat._Protocol != null)
+                if (Core._Main.Chat._Network._Protocol != null)
                 {
-                    if (_Main.Chat._Protocol.IsConnected)
+                    if (_Main.Chat._Network._Protocol.IsConnected)
                     {
-                        Core._Main.Chat._Protocol.Command(command);
+                        Core._Main.Chat._Network._Protocol.Command(command);
                         return false;
                     }
                 }

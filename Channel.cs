@@ -182,6 +182,10 @@ namespace Client
         /// </summary>
         public void UpdateInfo()
         {
+            if (IsDestroyed)
+            {
+                return;
+            }
             string text = "";
             string trimmed = Topic;
             if (trimmed.Length > 160)
@@ -243,6 +247,10 @@ namespace Client
         {
             try
             {
+                if (IsDestroyed)
+                {
+                    return;
+                }
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;
@@ -257,6 +265,10 @@ namespace Client
                     Core._Main.UpdateStatus();
                     if (Chat != null && Chat.isInitialised)
                     {
+                        if (Chat.IsDestroyed)
+                        {
+                            return;
+                        }
                         if (Chat.Locked)
                         {
                             Redraw = true;

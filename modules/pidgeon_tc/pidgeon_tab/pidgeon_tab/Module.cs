@@ -55,7 +55,7 @@ namespace Client
                     }
                 }
 
-                if (Core.network != null && Core.network.Connected)
+                if (Core.network != null && Core.network.IsConnected)
                 {
                     foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                     {
@@ -145,7 +145,7 @@ namespace Client
 
                 if (text2.StartsWith(Core.network.channel_prefix))
                 {
-                    if (Core.network.Connected)
+                    if (Core.network.IsConnected)
                     {
 
                         if (text2.StartsWith(Core._Main.Chat._Network.channel_prefix))

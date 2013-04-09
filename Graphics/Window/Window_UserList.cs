@@ -615,7 +615,7 @@ namespace Client.Graphics
                         {
                             _channel._Network._Protocol.Windows["!" + _channel._Network.SystemWindowID].scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
                         }
-                        _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Protocol.delimiter + message + _Protocol.delimiter);
+                        _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Network._Protocol.delimiter + message + _Network._Protocol.delimiter);
                     }
                 }
 
