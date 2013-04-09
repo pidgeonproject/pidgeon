@@ -523,8 +523,15 @@ namespace Client.Graphics
                     {
                         if (chan.Key.dispose)
                         {
-                            chan.Key._Network.Channels.Remove(chan.Key);
-                            chan.Key.retrieveWindow()._Destroy();
+                            if (chan.Key._Network.Channels.Contains(chan.Key))
+                            {
+                                chan.Key._Network.Channels.Remove(chan.Key);
+                            }
+                            Graphics.Window window = chan.Key.retrieveWindow();
+                            if (window != null)
+                            {
+                                window._Destroy();
+                            }
                             _channels.Add(chan.Key);
                         }
                     }
@@ -533,6 +540,7 @@ namespace Client.Graphics
                 foreach (var chan in _channels)
                 {
                     ChannelList.Remove(chan);
+                    chan.Destroy();
                 }
 
                 // if there are waiting window requests we process them here
@@ -562,7 +570,7 @@ namespace Client.Graphics
                 {
                     foreach (var channel in ChannelList)
                     {
-                        if (channel.Key.Redraw)
+                        if (!channel.Key.IsDestroyed && channel.Key.Redraw)
                         {
                             channel.Key.redrawUsers();
                         }
@@ -589,12 +597,12 @@ namespace Client.Graphics
                         {
                             if (window.IsDestroyed)
                             {
-                                //Values.SetValue(iter, 3, null);
                                 Values.Remove(ref iter);
                             }
                         }
                     } while (Values.IterNext(ref iter));
                 }
+
                 ClearServer();
                 ClearUser();
                 ClearChan();
@@ -842,33 +850,38 @@ namespace Client.Graphics
                     break;
                 case ItemType.User:
                     User user = (User)Item;
-
-                    lock (user._Network.PrivateChat)
+                    if (user._Network != null && !user._Network.IsDestroyed)
                     {
-                        if (user._Network.PrivateChat.Contains(user))
+                        lock (user._Network.PrivateChat)
                         {
-                            lock (user._Network.PrivateWins)
+                            if (user._Network.PrivateChat.Contains(user))
                             {
-                                if (user._Network.PrivateWins.ContainsKey(user))
+                                lock (user._Network.PrivateWins)
                                 {
-                                    user._Network.PrivateWins.Remove(user);
+                                    if (user._Network.PrivateWins.ContainsKey(user))
+                                    {
+                                        user._Network.PrivateWins.Remove(user);
+                                    }
+                                    else
+                                    {
+                                        Core.DebugLog("There was no private window handle for " + user.Nick);
+                                    }
                                 }
-                                else
-                                {
-                                    Core.DebugLog("There was no private window handle for " + user.Nick);
-                                }
+                                user._Network.PrivateChat.Remove(user);
                             }
-                            user._Network.PrivateChat.Remove(user);
                         }
                     }
-                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
+
+                    lock (user._Network._Protocol.Windows)
                     {
-                        lock (user._Network._Protocol.Windows)
+                        if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
                         {
                             Core._Main.rootToolStripMenuItem_Click(null, null);
+                            user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick]._Destroy();
                             user._Network._Protocol.Windows.Remove(user._Network.SystemWindowID + user.Nick);
                         }
                     }
+
                     lock (UserList)
                     {
                         if (UserList.ContainsKey(user))

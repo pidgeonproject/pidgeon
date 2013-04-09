@@ -30,13 +30,13 @@ namespace Client.Forms
         private global::Gtk.Frame fExtensions;
         private global::Gtk.Alignment GtkAlignment2;
         private global::Gtk.ScrolledWindow GtkScrolledWindow2;
-        private global::Gtk.TreeView treeview2;
+        private global::Gtk.TreeView treeviewEx;
         private global::Gtk.Label GtkLabel2;
         private Gtk.Widget widget = null;
         private global::Gtk.Frame fKeyboard;
         private global::Gtk.Alignment GtkAlignment3;
         private global::Gtk.ScrolledWindow GtkScrolledWindow3;
-        private global::Gtk.TreeView treeview3;
+        private global::Gtk.TreeView treeviewSh;
         private global::Gtk.Label GtkLabel3;
         private global::Gtk.Frame frame4;
         private global::Gtk.Alignment GtkAlignment4;
@@ -82,7 +82,7 @@ namespace Client.Forms
 
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         public Gtk.ListStore Extensions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Extension));
-        private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Core.Shortcut));
+        private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(Core.Shortcut));
         
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
         private GTK.Menu enableToolStripMenuItem = new GTK.Menu();
@@ -293,9 +293,9 @@ namespace Client.Forms
             this.GtkScrolledWindow2.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow2.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-            this.treeview2 = new global::Gtk.TreeView ();
-            this.treeview2.CanFocus = true;
-            this.treeview2.Name = "treeview1";
+            this.treeviewEx = new global::Gtk.TreeView ();
+            this.treeviewEx.CanFocus = true;
+            this.treeviewEx.Name = "treeview1";
             Gtk.TreeViewColumn el_1 = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn el_2 = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn el_3 = new Gtk.TreeViewColumn();
@@ -312,20 +312,20 @@ namespace Client.Forms
             el_3.Title = "Description";
             el_4.PackStart(exr4, true);
             el_4.Title = "Type";
-            this.treeview2.AppendColumn(el_1);
-            this.treeview2.AppendColumn(el_2);
-            this.treeview2.AppendColumn(el_3);
-            this.treeview2.AppendColumn(el_4);
+            this.treeviewEx.AppendColumn(el_1);
+            this.treeviewEx.AppendColumn(el_2);
+            this.treeviewEx.AppendColumn(el_3);
+            this.treeviewEx.AppendColumn(el_4);
             el_1.AddAttribute(exr1, "text", 0);
             el_2.AddAttribute(exr2, "text", 1);
             el_3.AddAttribute(exr3, "text", 2);
             el_4.AddAttribute(exr4, "text", 3);
-            this.treeview2.AppendColumn(el_1);
-            this.treeview2.AppendColumn(el_2);
-            this.treeview2.AppendColumn(el_3);
-            this.treeview2.AppendColumn(el_4);
-            this.treeview2.Model = Extensions;
-            this.GtkScrolledWindow2.Add (this.treeview2);
+            this.treeviewEx.AppendColumn(el_1);
+            this.treeviewEx.AppendColumn(el_2);
+            this.treeviewEx.AppendColumn(el_3);
+            this.treeviewEx.AppendColumn(el_4);
+            this.treeviewEx.Model = Extensions;
+            this.GtkScrolledWindow2.Add (this.treeviewEx);
             this.GtkAlignment2.Add (this.GtkScrolledWindow2);
             this.fExtensions.Add (this.GtkAlignment2);
             this.GtkLabel2 = new global::Gtk.Label ();
@@ -391,10 +391,10 @@ namespace Client.Forms
             this.GtkScrolledWindow3.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow3.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow.Gtk.Container+ContainerChild
-            this.treeview3 = new global::Gtk.TreeView ();
-            this.treeview3.CanFocus = true;
-            this.treeview3.Name = "treeview1";
-            this.treeview3.Model = Keyboard;
+            this.treeviewSh = new global::Gtk.TreeView ();
+            this.treeviewSh.CanFocus = true;
+            this.treeviewSh.Name = "treeview1";
+            this.treeviewSh.Model = Keyboard;
             Gtk.TreeViewColumn keyboard_keys = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn keyboard_line = new Gtk.TreeViewColumn();
             Gtk.CellRendererText kr1 = new Gtk.CellRendererText();
@@ -403,11 +403,11 @@ namespace Client.Forms
             keyboard_keys.Title = "Shortcut";
             keyboard_line.Title = "Command";
             keyboard_line.PackStart(kr2, true);
-            this.treeview3.AppendColumn(keyboard_keys);
+            this.treeviewSh.AppendColumn(keyboard_keys);
             keyboard_keys.AddAttribute(kr1, "text", 0);
             keyboard_line.AddAttribute(kr2, "text", 1);
-            this.treeview3.AppendColumn(keyboard_line);
-            this.GtkScrolledWindow3.Add (this.treeview3);
+            this.treeviewSh.AppendColumn(keyboard_line);
+            this.GtkScrolledWindow3.Add (this.treeviewSh);
             this.GtkAlignment3.Add (this.GtkScrolledWindow3);
             this.fKeyboard.Add (this.GtkAlignment3);
             this.GtkLabel3 = new global::Gtk.Label ();
@@ -617,7 +617,9 @@ namespace Client.Forms
 
             ListStore lg = new ListStore(typeof(string));
 
+            combobox1.Sensitive = false;
             combobox2.Model = lg;
+            combobox2.Sensitive = false;
 
             foreach (Skin skin in Configuration.SL)
             {
@@ -721,24 +723,18 @@ namespace Client.Forms
         
         public void RefreshModules()
         {
-            //listView3.Items.Clear();
+            Extensions.Clear();
             foreach (Extension ex in Core.Extensions)
             {
-                //ListViewItem item = new ListViewItem();
-                //item.Text = ex.Name;
-                //item.SubItems.Add(ex.Version);
-                //item.SubItems.Add(ex.Description);
-                //item.SubItems.Add("Extension");
-                //listView3.Items.Add(item);
+                Extensions.AppendValues(ex.Name, ex.Version, ex.Description, "Extension", ex);
             }
         }
 
         public void redrawS()
         {
-            //listView2.Items.Clear();
+            Keyboard.Clear();
             foreach (Core.Shortcut s in Configuration.ShortcutKeylist)
             {
-                //ListViewItem item = new ListViewItem();
                 string keys = "";
                 if (s.control)
                 {
@@ -753,9 +749,7 @@ namespace Client.Forms
                     keys += "shift + ";
                 }
                 keys += s.keys.ToString();
-                //item.Text = keys;
-                //item.SubItems.Add(s.data);
-                //listView2.Items.Add(item);
+                Keyboard.AppendValues(keys, s.data, s);
             }
         }
 
@@ -867,19 +861,6 @@ namespace Client.Forms
             }
         }
 
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                //if (listView1.SelectedItems.Count != 1) return;
-                
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
         private void removeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -978,7 +959,7 @@ namespace Client.Forms
             //        {
             //            Configuration.ShortcutKeylist.RemoveAt(curr.Index);
             //        }
-            //        redrawS();
+                    redrawS();
             //    }
             //}
         }

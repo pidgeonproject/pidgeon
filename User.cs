@@ -138,6 +138,10 @@ namespace Client
 
         public void Destroy()
         {
+            if (IsDestroyed)
+            {
+                return;
+            }
             destroyed = true;
             Core._Main.ChannelList.RemoveUser(this);
             _Network = null;

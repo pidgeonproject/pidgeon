@@ -124,7 +124,7 @@ namespace Client.Graphics
             if (!IsDestroyed)
             {
                 // we need to remove some containers that could hold the references and create a leak
-                //_Destroy();
+                _Destroy();
             }
             if (Configuration.Kernel.Debugging)
             {

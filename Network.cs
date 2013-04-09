@@ -537,12 +537,15 @@ namespace Client
                 {
                     xx.Destroy();
                 }
-
                 Channels.Clear();
             }
 
             lock (PrivateWins)
             {
+                foreach (Graphics.Window cw in PrivateWins.Values)
+                {
+                    cw._Destroy();
+                }
                 PrivateWins.Clear();
             }
 
