@@ -119,8 +119,23 @@ namespace Client
         public Scrollback(Graphics.Window _ParentWindow)
         {
             this.owner = _ParentWindow;
-
             ReloadWaiting = true;
+        }
+
+        ~Scrollback()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                if (owner != null)
+                {
+                    Core.DebugLog("Destructor called for scrollback " + owner.name);
+                }
+                else
+                {
+                    Core.DebugLog("Destructor called for scrollback of no name");
+                }
+                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
+            }
         }
 
         protected virtual void Build()
@@ -266,22 +281,6 @@ namespace Client
             }
         }
 
-        ~Scrollback()
-        {
-            if (Configuration.Kernel.Debugging)
-            {
-                if (owner != null)
-                {
-                    Core.DebugLog("Destructor called for scrollback " + owner.name);
-                }
-                else
-                {
-                    Core.DebugLog("Destructor called for scrollback of no name");
-                }
-                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
-            }
-        }
-
         public void HideLn()
         {
             mode1b2ToolStripMenuItem.Visible = false;
@@ -298,6 +297,10 @@ namespace Client
         /// </summary>
         public void _Destroy()
         {
+            if (IsDestroyed)
+            {
+                return;
+            }
             destroyed = true;
             lock (UndrawnLines)
             {

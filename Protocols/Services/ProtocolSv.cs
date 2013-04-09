@@ -338,7 +338,10 @@ namespace Client
             {
                 main.Abort();
             }
-            RemainingJobs.Clear();
+            lock (RemainingJobs)
+            {
+                RemainingJobs.Clear();
+            }
             if (Configuration.Services.UsingCache)
             {
                 Core._Main.Status("Writing the service cache");
