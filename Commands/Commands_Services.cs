@@ -58,7 +58,7 @@ namespace Client
                 {
                     return;
                 }
-                if (Core._Main.Chat._Protocol.ProtocolType == 3)
+                if (Core._Main.Chat._Protocol.GetType() == typeof(ProtocolSv))
                 {
                     if (int.TryParse(b2, out n3))
                     {
@@ -110,7 +110,7 @@ namespace Client
                     string nick = parameter;
                     if (Core._Main.Chat._Protocol != null)
                     {
-                        if (Core._Main.Chat._Protocol.ProtocolType == 3)
+                        if (Core._Main.Chat._Protocol.GetType() == typeof(ProtocolSv))
                         {
                             Core._Main.Chat._Protocol.requestNick(nick);
                             return;

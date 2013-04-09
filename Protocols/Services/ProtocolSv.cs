@@ -157,7 +157,6 @@ namespace Client
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-                
                 Datagram login = new Datagram("AUTH", "");
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);
@@ -165,8 +164,6 @@ namespace Client
                 Deliver(new Datagram("GLOBALNICK"));
                 Deliver(new Datagram("NETWORKLIST"));
                 Deliver(new Datagram("STATUS"));
-
-
                 keep = new System.Threading.Thread(_Ping);
                 Core.SystemThreads.Add(keep);
                 keep.Name = "pinger thread";
@@ -428,7 +425,6 @@ namespace Client
 
         public override bool Open()
         {
-            ProtocolType = 3;
             CreateChat("!root", true, null);
             main = new System.Threading.Thread(Start);
             Core._Main.ChannelList.insertSv(this);
@@ -510,6 +506,10 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Disconnect from a specific network on bouncer side
+        /// </summary>
+        /// <param name="network"></param>
         public void Disconnect(Network network)
         {
             Transfer("QUIT :" + network.Quit, Configuration.Priority.High, network);
@@ -550,6 +550,10 @@ namespace Client
                         Core.DebugLog("ex " + f.ToString());
                     }
                 }
+            }
+            else
+            {
+                Core.DebugLog("ERROR: Can't send a datagram because connection to " + Server + " is closed");
             }
         }
 

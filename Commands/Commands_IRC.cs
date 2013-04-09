@@ -36,7 +36,7 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    if (!Core.network.Connected)
+                    if (!Core.network.IsConnected)
                     {
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
@@ -63,7 +63,7 @@ namespace Client
                     if (parameter != "")
                     {
                         string text = parameter;
-                        if (Core.network.Connected)
+                        if (Core.network.IsConnected)
                         {
                             Core.network._Protocol.Command(text);
                             return;
@@ -98,7 +98,7 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    if (!Core.network.Connected)
+                    if (!Core.network.IsConnected)
                     {
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
@@ -125,7 +125,7 @@ namespace Client
                     string channel = parameter.Substring(0, parameter.IndexOf(" "));
                     if (Core.network != null)
                     {
-                        if (Core.network.Connected)
+                        if (Core.network.IsConnected)
                         {
                             string ms = parameter.Substring(channel.Length);
                             while (ms.StartsWith(" "))
@@ -155,7 +155,7 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    if (!Core.network.Connected)
+                    if (!Core.network.IsConnected)
                     {
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
@@ -194,7 +194,7 @@ namespace Client
                     channel = channel.Substring(0, channel.IndexOf(" "));
                     if (Core.network != null && Core.network._Protocol != null)
                     {
-                        if (Core.network.Connected)
+                        if (Core.network.IsConnected)
                         {
                             if (!Core.network._Protocol.Windows.ContainsKey(Core.network.SystemWindowID + channel))
                             {
@@ -214,7 +214,7 @@ namespace Client
                 }
                 if (Core.network != null && Core.network._Protocol != null)
                 {
-                    if (Core.network.Connected)
+                    if (Core.network.IsConnected)
                     {
                         if (!Core.network._Protocol.Windows.ContainsKey(Core.network.SystemWindowID + channel))
                         {

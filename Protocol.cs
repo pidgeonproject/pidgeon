@@ -49,10 +49,6 @@ namespace Client
         /// </summary>
         protected bool Connected = false;
         /// <summary>
-        /// Type of protocol (deprecated)
-        /// </summary>
-        public int ProtocolType = 0;
-        /// <summary>
         /// If changes to windows should be suppressed (no color changes on new messages)
         /// </summary>
         public bool SuppressChanges = false;

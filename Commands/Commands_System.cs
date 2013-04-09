@@ -153,7 +153,7 @@ namespace Client
                     Core._Main.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
                     return;
                 }
-                if (!Core.network.Connected)
+                if (!Core.network.IsConnected)
                 {
                     Configuration.UserData.nick = Nick;
                     Core._Main.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
