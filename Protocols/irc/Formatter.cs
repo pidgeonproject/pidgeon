@@ -30,12 +30,45 @@ namespace Client.Protocols.irc
         private int ParametersPerOneLine = 2;
         private int ModesPerOneLine = 20;
         public string Prefix = "";
+        /// <summary>
+        /// This buffer contains modes that belong to channel and is only filled up when you rewrite this formatter with custom mode
+        /// </summary>
+        public string channelModes = "";
         private string buffer = null;
         /// <summary>
         /// If this is true the produced string will remove the modes
         /// </summary>
         public bool Removing = false;
         private List<SimpleMode> Mode = new List<SimpleMode>();
+        private List<SimpleMode> rMode = new List<SimpleMode>();
+
+        public List<SimpleMode> getMode
+        {
+            get
+            {
+                List<SimpleMode> mode = new List<SimpleMode>();
+                lock (Mode)
+                {
+                    mode.AddRange(Mode);
+                    return mode;
+                }
+            }
+        }
+
+        public List<SimpleMode> getRemovingMode
+        {
+            get
+            {
+                List<SimpleMode> mode = new List<SimpleMode>();
+                lock (rMode)
+                {
+                    mode.AddRange(rMode);
+                    return mode;
+                }
+            }
+        }
+
+        public Formatter() {}
 
         public Formatter(int _ParametersPerOneLine, int _ModesPerOneLine)
         {
@@ -51,11 +84,121 @@ namespace Client.Protocols.irc
             }
         }
 
-        public void RewriteBuffer(string data)
+        public void RewriteBuffer(string data, Network network)
         {
             lock (Mode)
             {
                 buffer = data;
+                Mode.Clear();
+
+                List<string> line = new List<string>();
+                line.AddRange(data.Split('\n'));
+                rMode.Clear();
+                channelModes = "";
+                string positive = "+";
+                string negative = "-";
+                foreach (string xx in line)
+                {
+                    bool rm = false;
+                    int CurrentParam = 1;
+                    List<string> parts = new List<string>();
+                    parts.AddRange(xx.Split(' '));
+                    if (parts.Count > 0)
+                    {
+                        if (parts[0].Contains("-") || parts[0].Contains("+"))
+                        {
+                            foreach (char CurrentMode in parts[0])
+                            {
+                                switch (CurrentMode)
+                                { 
+                                    case '+':
+                                        rm = false;
+                                        continue;
+                                    case '-':
+                                        rm = true;
+                                        continue;
+                                }
+
+                                // user mode, has a parameter
+                                if (network.CUModes.Contains(CurrentMode) || network.PModes.Contains(CurrentMode))
+                                {
+                                    if (parts.Count < CurrentParam + 1)
+                                    {
+                                        Core.DebugLog("Mode: " + xx + " is invalid and can't be parsed");
+                                        return;
+                                    }
+
+                                    SimpleMode mode = new SimpleMode(CurrentMode, parts[CurrentParam]);
+                                    if (rm)
+                                    {
+                                        rMode.Add(mode);
+                                    }
+                                    else
+                                    {
+                                        Mode.Add(mode);
+                                    }
+                                    CurrentParam++;
+                                    continue;
+                                }
+
+                                // channel special mode with parameter
+                                if (network.SModes.Contains(CurrentMode) || network.XModes.Contains(CurrentMode))
+                                {
+                                    if (parts.Count < CurrentParam + 1)
+                                    {
+                                        Core.DebugLog("Mode: " + xx + " is invalid and can't be parsed");
+                                        return;
+                                    }
+
+                                    SimpleMode mode = new SimpleMode(CurrentMode, parts[CurrentParam]);
+                                    if (rm)
+                                    {
+                                        rMode.Add(mode);
+                                        positive = positive.Replace(CurrentMode.ToString(), "");
+                                        negative += CurrentMode.ToString();
+                                    }
+                                    else
+                                    {
+                                        Mode.Add(mode);
+                                        negative = negative.Replace(CurrentMode.ToString(), "");
+                                        positive += CurrentMode.ToString();
+                                    }
+                                    CurrentParam++;
+                                    continue;
+                                }
+
+                                // channel mode
+                                if (network.CModes.Contains(CurrentMode))
+                                { 
+                                    SimpleMode mode = new SimpleMode(CurrentMode, null);
+                                    if (rm)
+                                    {
+                                        rMode.Add(mode);
+                                        positive = positive.Replace(CurrentMode.ToString(), "");
+                                        negative += CurrentMode.ToString();
+                                    }
+                                    else
+                                    {
+                                        Mode.Add(mode);
+                                        negative = negative.Replace(CurrentMode.ToString(), "");
+                                        positive += CurrentMode.ToString();
+                                    }
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (positive.Length > 1)
+                {
+                    channelModes += positive;
+                }
+
+                if (negative.Length > 1)
+                {
+                    channelModes += negative;
+                }
             }
         }
 

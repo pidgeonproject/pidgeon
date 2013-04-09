@@ -478,70 +478,70 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        channel.ChannelMode.ChangeMode(change);
+                        Client.Protocols.irc.Formatter formatter = new Protocols.irc.Formatter();
 
                         while (change.EndsWith(" ") && change.Length > 1)
                         {
                             change = change.Substring(0, change.Length - 1);
                         }
 
-                        if (change.Contains(" "))
+                        // we get all the mode changes for this channel
+                        formatter.RewriteBuffer(change, _Network);
+
+                        channel.ChannelMode.ChangeMode("+" + formatter.channelModes);
+
+                        foreach (SimpleMode m in formatter.getMode)
                         {
-                            string header = change.Substring(0, change.IndexOf(" "));
-                            List<string> parameters2 = new List<string>();
-                            parameters2.AddRange(change.Substring(change.IndexOf(" ") + 1).Split(' '));
-                            int curr = 0;
-
-                            char type = ' ';
-
-                            foreach (char m in header)
+                            if (_Network.CUModes.Contains(m.Mode) && m.ContainsParameter)
                             {
-                                if (m == '+')
+                                User flagged_user = channel.userFromName(m.Parameter);
+                                if (flagged_user != null)
                                 {
-                                    type = '+';
+                                    flagged_user.ChannelMode.ChangeMode("+" + m.Mode);
                                 }
-                                if (m == '-')
-                                {
-                                    type = '-';
-                                }
-                                if (type == ' ')
-                                {
-                                    continue;
-                                }
-                                if (_Network.CUModes.Contains(m) && curr <= parameters2.Count)
-                                {
-                                    User flagged_user = channel.userFromName(parameters2[curr]);
-                                    if (flagged_user != null)
-                                    {
-                                        flagged_user.ChannelMode.ChangeMode(type.ToString() + m.ToString());
-                                    }
-                                    curr++;
-                                }
-                                if (parameters2.Count > curr)
-                                {
-                                    switch (m.ToString())
-                                    {
-                                        case "b":
-                                            if (channel.Bans == null)
-                                            {
-                                                channel.Bans = new List<SimpleBan>();
-                                            }
+                            }
 
-                                            if (type == '-')
-                                            {
-                                                channel.RemoveBan(parameters2[curr]);
-                                            }
-                                            else
-                                            {
-                                                lock (channel.Bans)
-                                                {
-                                                    channel.Bans.Add(new SimpleBan(user, parameters2[curr], ""));
-                                                }
-                                            }
+                            if (m.ContainsParameter)
+                            {
+                                switch (m.Mode.ToString())
+                                {
+                                    case "b":
+                                        if (channel.Bans == null)
+                                        {
+                                            channel.Bans = new List<SimpleBan>();
+                                        }
+                                        break;
+                                }
 
-                                            curr++;
-                                            break;
-                                    }
+                                lock (channel.Bans)
+                                {
+                                    channel.Bans.Add(new SimpleBan(user, m.Parameter, ""));
+                                }
+                            }
+                        }
+
+                        foreach (SimpleMode m in formatter.getRemovingMode)
+                        {
+                            if (_Network.CUModes.Contains(m.Mode) && m.ContainsParameter)
+                            {
+                                User flagged_user = channel.userFromName(m.Parameter);
+                                if (flagged_user != null)
+                                {
+                                    flagged_user.ChannelMode.ChangeMode("-" + m.Mode);
+                                }
+                            }
+
+                            if (m.ContainsParameter)
+                            {
+                                switch (m.Mode.ToString())
+                                {
+                                    case "b":
+                                        if (channel.Bans == null)
+                                        {
+                                            channel.Bans = new List<SimpleBan>();
+                                        }
+                                        channel.RemoveBan(m.Parameter);
+                                        break;
                                 }
                             }
                         }

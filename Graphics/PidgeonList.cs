@@ -899,6 +899,8 @@ namespace Client.Graphics
                         }
                     }
 
+                    Core._Main.rootToolStripMenuItem_Click(null, null);
+
                     lock (channel._Network._Protocol.Windows)
                     {
                         if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.SystemWindowID + channel.Name))
