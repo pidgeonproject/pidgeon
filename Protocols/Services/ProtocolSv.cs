@@ -147,8 +147,9 @@ namespace Client
                 if (SSL)
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
-                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), false,
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
+                    _networkSsl.AuthenticateAsClient(Server);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
@@ -338,6 +339,10 @@ namespace Client
                 return;
             }
             Connected = false;
+            if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
+            {
+                main.Abort();
+            }
             if (Configuration.Services.UsingCache)
             {
                 sBuffer.Snapshot();
@@ -381,6 +386,10 @@ namespace Client
                 return false;
             }
             Connected = false;
+            if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
+            {
+                main.Abort();
+            }
             try
             {
                 if (_StreamWriter != null) _StreamWriter.Close();

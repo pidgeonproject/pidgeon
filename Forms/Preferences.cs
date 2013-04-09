@@ -319,11 +319,12 @@ namespace Client.Forms
             el_1.AddAttribute(exr1, "text", 0);
             el_2.AddAttribute(exr2, "text", 1);
             el_3.AddAttribute(exr3, "text", 2);
-            el_4.AddAttribute(exr4, "text", 2);
-            this.treeview5.AppendColumn(el_1);
-            this.treeview5.AppendColumn(el_2);
-            this.treeview5.AppendColumn(el_3);
-            this.treeview5.AppendColumn(el_4);
+            el_4.AddAttribute(exr4, "text", 3);
+            this.treeview2.AppendColumn(el_1);
+            this.treeview2.AppendColumn(el_2);
+            this.treeview2.AppendColumn(el_3);
+            this.treeview2.AppendColumn(el_4);
+            this.treeview2.Model = Extensions;
             this.GtkScrolledWindow2.Add (this.treeview2);
             this.GtkAlignment2.Add (this.GtkScrolledWindow2);
             this.fExtensions.Add (this.GtkAlignment2);

@@ -225,6 +225,7 @@ namespace Client
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
                     _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
+                    _networkSsl.AuthenticateAsClient(Server);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
@@ -397,16 +398,16 @@ namespace Client
                 Send("QUIT :" + _IRCNetwork.Quit);
             }
             catch (Exception) { }
+            if (main.ThreadState == System.Threading.ThreadState.Running || main.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            {
+                main.Abort();
+            }
             _IRCNetwork.Connected = false;
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);
             deliveryqueue.Abort();
             keep.Abort();
-            if (main.ThreadState == System.Threading.ThreadState.Running)
-            {
-                main.Abort();
-            }
             SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {
