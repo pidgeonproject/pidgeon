@@ -190,7 +190,7 @@ namespace Client.Graphics
             {
                 if (ChannelList.ContainsKey(channel))
                 {
-                    TreeIter tree = ChannelList[channel];
+                    TreeIter tree = getIter(channel);
                     Values.Remove(ref tree);
                     ChannelList.Remove(channel);
                 }

@@ -295,6 +295,11 @@ namespace Client.Services
                 {
                     target.scrollback.listAllChannelsToolStripMenuItem.Visible = true;
                 }
+                // once we recover a window we don't longer need it, so remove it from memory
+                if (_windows.Contains(Source))
+                {
+                    _windows.Remove(Source);
+                }
             }
 
             public ChannelInfo getChannel(string name)

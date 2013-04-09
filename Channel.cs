@@ -391,6 +391,11 @@ namespace Client
         /// </summary>
         public void Destroy()
         {
+            if (IsDestroyed)
+            {
+                // prevent this from being called multiple times
+                return;
+            }
             destroyed = true;
 
             if (Configuration.Kernel.Debugging)
@@ -408,15 +413,29 @@ namespace Client
             Chat = null;
             ChannelWork = false;
             _Network = null;
-            
-            lock (Exceptions)
+
+            if (Invites != null)
             {
-                Exceptions.Clear();
+                lock (Invites)
+                {
+                    Invites.Clear();
+                }
             }
-            
-            lock (Bans)
+
+            if (Exceptions != null)
             {
-                Bans.Clear();
+                lock (Exceptions)
+                {
+                    Exceptions.Clear();
+                }
+            }
+
+            if (Bans != null)
+            {
+                lock (Bans)
+                {
+                    Bans.Clear();
+                }
             }
         }
         
