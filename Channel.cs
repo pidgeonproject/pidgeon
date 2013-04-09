@@ -408,6 +408,11 @@ namespace Client
             }
         }
         
+        /// <summary>
+        /// This function returns a special user mode for a user that should be in user list (for example % for halfop or @ for operator)
+        /// </summary>
+        /// <param name="nick"></param>
+        /// <returns></returns>
         private string uchr(User nick)
         {
             if (nick.ChannelMode._Mode.Count < 1)

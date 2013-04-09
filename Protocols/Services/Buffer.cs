@@ -288,6 +288,7 @@ namespace Client.Services
                     target.textbox.history.AddRange(Source.history);
                     target.textbox.position = Source.history.Count;
                 }
+                Source.history.Clear();
                 target.isPM = Source.isPM;
                 target.isChannel = Source.isChannel;
                 if (target.isPM || target.isChannel)

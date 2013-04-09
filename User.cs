@@ -49,6 +49,17 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// This return true if we are looking at current user
+        /// </summary>
+        public bool IsPidgeon
+        {
+            get
+            {
+                return (Nick.ToLower() == _Network.Nickname.ToLower());
+            }
+        }
+
         public User(string nick, string host, Network network, string ident)
         {
             MakeUser(nick, host, network, ident);

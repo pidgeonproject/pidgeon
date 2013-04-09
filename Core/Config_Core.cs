@@ -164,20 +164,24 @@ namespace Client
                     make_node("message_mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
                     make_comment("Change this to false in order to disable clickable browser links", config, xmlnode);
                     make_node("userdata.openlinkinbrowser", Configuration.UserData.OpenLinkInBrowser.ToString(), curr, confname, config, xmlnode);
+                    make_comment(" ============= MISC ============= ", config, xmlnode);
+                    make_node("formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
 
-
+                    make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
                     {
                         make_node("extension." + data.Key, data.Value, curr, confname, config, xmlnode);
                     }
 
                     string separators = "";
+                    make_comment(" ============= SEPARATORS ============= ", config, xmlnode);
                     foreach (char separator in Configuration.Parser.Separators)
                     {
                         separators = separators + separator.ToString();
                     }
                     make_node("delimiters", separators, curr, confname, config, xmlnode);
 
+                    make_comment(" ============= PROTOCOLS ============= ", config, xmlnode);
                     lock (Configuration.Parser.Protocols)
                     {
                         foreach (string xx in Configuration.Parser.Protocols)
@@ -188,6 +192,7 @@ namespace Client
                         }
                     }
 
+                    make_comment(" ============= NETWORKS ============= ", config, xmlnode);
                     lock (NetworkData.Networks)
                     {
                         foreach (NetworkData.NetworkInfo ni in NetworkData.Networks)
@@ -210,6 +215,7 @@ namespace Client
                     }
                     config.AppendChild(xmlnode);
 
+                    make_comment(" ============= HIGHLIGHTERS ============= ", config, xmlnode);
                     lock (Configuration.HighlighterList)
                     {
                         foreach (Network.Highlighter high in Configuration.HighlighterList)
@@ -229,6 +235,7 @@ namespace Client
                     }
                     config.AppendChild(xmlnode);
 
+                    make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
                     lock (Ignoring.IgnoreList)
                     {
                         foreach (Ignoring.Ignore ci in Ignoring.IgnoreList)
@@ -250,6 +257,8 @@ namespace Client
                         }
                     }
                     config.AppendChild(xmlnode);
+
+                    make_comment(" ============= SHORTCUTS ============= ", config, xmlnode);
 
                     lock (Configuration.ShortcutKeylist)
                     {
@@ -561,6 +570,9 @@ namespace Client
                                                     break;
                                                 case "userdata.openlinkinbrowser":
                                                     Configuration.UserData.OpenLinkInBrowser = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "formatter":
+                                                    Configuration.Parser.formatter = bool.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

@@ -584,9 +584,25 @@ namespace Client.Forms
             {
                 if (SelectedBans != null)
                 {
+                    List<SimpleMode> mode = new List<SimpleMode>();
                     foreach (SimpleBan ban in SelectedBans)
                     {
-                        channel._Network.Transfer("MODE " + channel.Name + " -b " + ban.Target);
+                        if (Configuration.Parser.formatter)
+                        {
+                            mode.Add(new SimpleMode('b', ban.Target));
+                        }
+                        else
+                        {
+                            channel._Network.Transfer("MODE " + channel.Name + " -b " + ban.Target);
+                        }
+                    }
+                    if (Configuration.Parser.formatter)
+                    {
+                        Protocols.irc.Formatter formatter = new Protocols.irc.Formatter(20, 4);
+                        formatter.Prefix = "MODE " + channel.Name + " ";
+                        formatter.Removing = true;
+                        formatter.InsertModes(mode);
+                        Core.ProcessScript(formatter.ToString(), channel._Network);
                     }
                 }
             }
