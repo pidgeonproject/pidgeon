@@ -513,6 +513,11 @@ namespace Client
                                         break;
                                 }
 
+                                if (channel.Bans == null)
+                                {
+                                    channel.Bans = new List<SimpleBan>();
+                                }
+
                                 lock (channel.Bans)
                                 {
                                     channel.Bans.Add(new SimpleBan(user, m.Parameter, ""));
