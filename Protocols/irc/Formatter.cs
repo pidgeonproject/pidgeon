@@ -53,7 +53,7 @@ namespace Client.Protocols.irc
 
         public void RewriteBuffer(string data)
         {
-            lock (buffer)
+            lock (Mode)
             {
                 buffer = data;
             }
@@ -73,6 +73,10 @@ namespace Client.Protocols.irc
             int CurrentPm = 1;
             lock (Mode)
             {
+                if (Mode.Count == 0)
+                {
+                    return;
+                }
                 foreach (SimpleMode xx in Mode)
                 {
                     if (CurrentMode > ModesPerOneLine || CurrentPm > ParametersPerOneLine)
@@ -99,12 +103,13 @@ namespace Client.Protocols.irc
                         CurrentPm++;
                     }
                 }
+                buffer += Prefix + modes + parameters + "\n";
             }
         }
 
         public override string ToString()
         {
-            lock (buffer)
+            lock (Mode)
             {
                 Format();
                 return buffer;

@@ -51,7 +51,7 @@ namespace Client
         {
             get
             {
-                return (_Parameter == null);
+                return !(_Parameter == null);
             }
         }
 

@@ -83,15 +83,9 @@ namespace Client
             try
             {
                 Core.IgnoreErrors = true;
+                Core._Configuration.ConfigSave();
                 Core._KernelThread.Abort();
-                lock (Core.Connections)
-                {
-                    foreach (Protocol server in Core.Connections)
-                    {
-                        server.Exit();
-                    }
-                }
-                Application.ExitThread();
+                Core.Quit();
             }
             catch (Exception)
             {
@@ -116,7 +110,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Environment.Exit(80);
+            System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
     }
 }
