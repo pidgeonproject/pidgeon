@@ -271,6 +271,14 @@ namespace Client
                                 }
                                 _Network.DownloadingList = false;
                                 break;
+                            case "433":
+                                if (!_Network.usingNick2 && Configuration.UserData.Nick2 != "")
+                                {
+                                    _Network.usingNick2 = true;
+                                    _Network.Transfer("NICK " + Configuration.UserData.Nick2, Configuration.Priority.High);
+                                    _Network.Nickname = Configuration.UserData.Nick2;
+                                }
+                                break;
                             case "PING":
                                 if (Pong (command, parameters, value))
                                 {

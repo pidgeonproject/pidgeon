@@ -235,6 +235,8 @@ namespace Client
             {
                 _KernelThread = System.Threading.Thread.CurrentThread;
                 LoadTime = DateTime.Now;
+                // turn on debugging until we load the config
+                Configuration.Kernel.Debugging = true;
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
                 foreach (string data in startup)
                 {
@@ -260,6 +262,7 @@ namespace Client
                 {
                     LoadSkin();
                     DebugLog("Loading configuration file");
+                    Configuration.Kernel.Debugging = false;
                     ConfigurationLoad();
                     if (!Directory.Exists(PermanentTemp))
                     {
@@ -467,7 +470,10 @@ namespace Client
                     Ring.RemoveAt(0);
                 }
             }
-            Console.WriteLine(text);
+            if (Configuration.Kernel.Debugging)
+            {
+                Console.WriteLine(text);
+            }
         }
 
         /// <summary>

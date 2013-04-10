@@ -77,6 +77,14 @@ namespace Client
             /// Interval for lock of userlist in case that user is working with it
             /// </summary>
             public static int LockWork = 8000;
+            /// <summary>
+            /// What should happen when you doubleclick a user
+            /// </summary>
+            public static UserList_MouseClick DoubleClick = UserList_MouseClick.Nothing;
+            /// <summary>
+            /// What should happen when you scroll a user
+            /// </summary>
+            public static UserList_MouseClick MiddleClick = UserList_MouseClick.Nothing;
         }
 
         /// <summary>
@@ -455,6 +463,33 @@ namespace Client
             High = 8,
             Normal = 2,
             Low = 1
+        }
+
+        public enum PidgeonList_MouseClick
+        {
+            Close,
+            Disconnect,
+            Nothing
+        }
+
+        public enum UserList_MouseClick
+        {
+            Whois,
+            Kick,
+            KickBan,
+            qop,
+            aop,
+            op,
+            hop,
+            voice,
+            deqop,
+            deaop,
+            deop,
+            dehop,
+            devoice,
+            version,
+            ping,
+            Nothing
         }
     }
 }

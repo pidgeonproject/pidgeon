@@ -963,6 +963,7 @@ namespace Client.Graphics
                             {
                                 if (item.IsConnected)
                                 {
+                                    ServerList.Remove(item);
                                     item.Disconnect();
                                 }
                                 else

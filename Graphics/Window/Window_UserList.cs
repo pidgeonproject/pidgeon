@@ -80,6 +80,63 @@ namespace Client.Graphics
             {
                 Menu(sender, null);
             }
+
+            if (e.Event.Button == 2)
+            {
+                Click(Configuration.Window.MiddleClick);
+            }
+        }
+
+        private void Click(Configuration.UserList_MouseClick xx)
+        {
+            switch (xx)
+            {
+                case Configuration.UserList_MouseClick.aop:
+                    this.aToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.deaop:
+                    this.aToolStripMenuItem1_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.dehop:
+                    this.hToolStripMenuItem1_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.deop:
+                    this.oToolStripMenuItem1_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.deqop:
+                    this.qToolStripMenuItem1_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.devoice:
+                    this.vToolStripMenuItem1_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.hop:
+                    this.hToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.Kick:
+                    this.kickToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.KickBan:
+                    this.kickBanToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.op:
+                    this.oToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.ping:
+                    this.pINGToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.qop:
+                    this.qToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.version:
+                    this.vERSIONToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.voice:
+                    this.vToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.Whois:
+                    this.whoisToolStripMenuItem_Click(null, null);
+                    break;
+            }
         }
         
         private void UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter)
