@@ -103,6 +103,9 @@
     <EmbeddedResource Include="Resources\icon_hash.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\Channel_Info.Designer.cs">
+      <DependentUpon>Channel_Info.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>

@@ -36,6 +36,22 @@ namespace Client.Forms
         private global::Gtk.Button button2;
         private global::Gtk.Button button1;
 
+        public TextView textBox1
+        {
+            get
+            {
+                return textview1;
+            }
+        }
+
+        ~ScriptEdit()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor for script edit");
+            }
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -109,14 +125,6 @@ namespace Client.Forms
             this.DefaultWidth = 740;
             this.WindowPosition = Gtk.WindowPosition.Center;
             this.DefaultHeight = 460;
-        }
-        
-        public TextView textBox1
-        {
-            get
-            {
-                return textview1;
-            }
         }
 
         private void button1_Click(object sender, EventArgs e)

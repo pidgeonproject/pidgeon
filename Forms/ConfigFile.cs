@@ -5,9 +5,10 @@ namespace Client.Forms
 {
     public partial class ConfigFile : Gtk.Window
     {
-        public Gtk.Button button3;
-        public Gtk.Button button4;
-        public Gtk.TextView textview1;
+        private Gtk.Button button3;
+        private Gtk.Button button4;
+        private Gtk.TextView textview1;
+        private Gtk.Label label;
         
         public ConfigFile () :  base(Gtk.WindowType.Toplevel)
         {
@@ -30,6 +31,7 @@ namespace Client.Forms
                 return;
             }
             textview1.Buffer.Text = File.ReadAllText(Core.ConfigFile);
+            Locate();
         }
 
         protected virtual void Build()
@@ -77,6 +79,11 @@ namespace Client.Forms
             w4.Position = 0;
             w4.Expand = false;
             w4.Fill = false;
+            this.label = new Gtk.Label();
+            label.Name = "label";
+            label.Text = "L 0 C 0";
+            hbox1.Add(label);
+            textview1.MoveCursor += new Gtk.MoveCursorHandler(cursor);
             this.Add(vbox1);
             if ((this.Child != null))
             {
@@ -99,7 +106,20 @@ namespace Client.Forms
             }
         }
 
-        public bool ValidateXml()
+        private void cursor(object sender, Gtk.MoveCursorArgs e)
+        {
+            Locate();
+        }
+
+        private void Locate()
+        {
+            Gtk.TextIter iter = textview1.Buffer.GetIterAtOffset(textview1.Buffer.CursorPosition);
+            int X = iter.LineOffset;
+            int Y = iter.Line;
+            label.Text = "L: " + Y.ToString() + " C: " + X.ToString();
+        }
+
+        private bool ValidateXml()
         {
             try
             {
