@@ -487,7 +487,7 @@ namespace Client
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
-                Windows["!root"].scrollback.InsertText("Connecting to " + server, Client.ContentLine.MessageStyle.User, true);
+                SystemWindow.scrollback.InsertText("Connecting to " + server, Client.ContentLine.MessageStyle.User, true);
                 Datagram request = new Datagram("CONNECT", server);
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
@@ -539,7 +539,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    Windows["!root"].scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
+                    SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
                     Disconnect();
                 }
                 catch (Exception f)

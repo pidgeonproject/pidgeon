@@ -103,6 +103,9 @@
     <EmbeddedResource Include="Resources\icon_hash.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\Preferences.Designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </Compile>
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />

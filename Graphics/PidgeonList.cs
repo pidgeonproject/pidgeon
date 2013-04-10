@@ -827,6 +827,8 @@ namespace Client.Graphics
                         return;
                     }
 
+                    network._Protocol.Exit();
+
                     lock (Core.Connections)
                     {
                         if (Core.Connections.Contains(network._Protocol))

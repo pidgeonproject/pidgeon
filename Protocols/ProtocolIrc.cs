@@ -375,6 +375,31 @@ namespace Client
             return 0;
         }
 
+        public override bool Disconnect()
+        {
+            if (IsConnected)
+            {
+                return false;
+            }
+            try
+            {
+                Send("QUIT :" + _IRCNetwork.Quit);
+                _IRCNetwork.flagDisconnect();
+                Connected = false;
+                _StreamWriter.Close();
+                _StreamReader.Close();
+            }
+            catch (System.IO.IOException er)
+            {
+                SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+            return true;
+        }
+
         public override void Join(string name, Network network = null)
         {
             Transfer("JOIN " + name);
@@ -388,24 +413,15 @@ namespace Client
 
         public override void Exit()
         {
-            if (!_IRCNetwork.IsConnected)
-            {
-                return;
-            }
             if (!Hooks._Network.BeforeExit(_IRCNetwork))
             {
                 return;
             }
-            try
-            {
-                Send("QUIT :" + _IRCNetwork.Quit);
-            }
-            catch (Exception) { }
+            Disconnect();
             if (main.ThreadState == System.Threading.ThreadState.Running || main.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
             {
                 main.Abort();
             }
-            _IRCNetwork.flagDisconnect();
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);
@@ -417,7 +433,6 @@ namespace Client
                 Core.network = null;
             }
             base.Exit();
-            return;
         }
 
         public override bool Open()

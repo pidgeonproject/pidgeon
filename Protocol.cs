@@ -69,6 +69,21 @@ namespace Client
         /// </summary>
         public bool SSL = false;
         private bool destroyed = false;
+        /// <summary>
+        /// This is a time when this connection was open
+        /// </summary>
+        protected DateTime _time;
+        
+        /// <summary>
+        /// Time since you connected to this protocol
+        /// </summary>
+        public TimeSpan ConnectionTime
+        {
+            get
+            {
+                return DateTime.Now - _time;
+            }
+        }
 
         public bool IsConnected
         {
@@ -105,6 +120,20 @@ namespace Client
                     }
                 }
                 return null;
+            }
+        }
+
+        public Protocol()
+        {
+            _time = DateTime.Now;
+        }
+
+        ~Protocol()
+        {
+            if (Configuration.Kernel.Debugging)
+            {
+                Core.DebugLog("Destructor called for connection to: " + Server);
+                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
 
@@ -183,15 +212,6 @@ namespace Client
                 Core._Main.UpdateStatus();
             }
             return true;
-        }
-
-        ~Protocol()
-        {
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destructor called for connection to: " + Server);
-                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
-            }
         }
 
         /// <summary>

@@ -601,7 +601,7 @@ namespace Client
             }
             else if (_Protocol.GetType() == typeof(ProtocolIrc))
             {
-                _Protocol.Exit();
+                _Protocol.Disconnect();
             }
             else
             {
