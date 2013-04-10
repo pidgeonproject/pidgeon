@@ -126,14 +126,25 @@ namespace Client
                 string name = parameter;
                 string b = parameter.Substring(parameter.IndexOf(name) + name.Length);
                 int n2;
+                bool ssl = false;
                 if (name == "")
                 {
                     Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
+
+                if (name.StartsWith("$"))
+                {
+                    ssl = true;
+                    while (name.StartsWith("$"))
+                    {
+                        name = name.Substring(1);
+                    }
+                }
+
                 if (int.TryParse(b, out n2))
                 {
-                    Core.connectIRC(name, n2);
+                    Core.connectIRC(name, n2, "", ssl);
                     return;
                 }
                 Core.connectIRC(name);

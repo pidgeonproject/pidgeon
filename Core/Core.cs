@@ -336,7 +336,13 @@ namespace Client
                 text = text.Substring("irc://".Length);
                 string network = text;
                 string channel = null;
+                bool ssl = false;
                 int PORT = 6667;
+                if (network.StartsWith("$"))
+                {
+                    network = network.Substring(1);
+                    ssl = true;
+                }
                 if (network.Contains("#"))
                 {
                     channel = network.Substring(network.IndexOf("#"));
@@ -371,7 +377,7 @@ namespace Client
 
                 if (server == null)
                 {
-                    server = connectIRC(network, PORT);
+                    server = connectIRC(network, PORT, "", ssl);
                 }
 
                 if (channel != null)
