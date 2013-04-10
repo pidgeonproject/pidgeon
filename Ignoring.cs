@@ -23,7 +23,7 @@ using System.Text;
 
 namespace Client
 {
-    class Ignoring
+    public class Ignoring
     {
         public class Ignore
         {

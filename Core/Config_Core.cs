@@ -147,6 +147,10 @@ namespace Client
                     make_node("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
                     make_comment("Whether color codes override the system color for links", config, xmlnode);
                     make_node("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Maximum size of scrollback in memory", config, xmlnode);
+                    make_node("system.maximumchannelbuffersize", Configuration.Memory.MaximumChannelBufferSize.ToString(), curr, confname, config, xmlnode);
+                    make_comment("This disable the simpleview, saving some memory", config, xmlnode);
+                    make_node("system.enablesimpleviewcache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
                     // Services
                     make_comment(" ============= SERVICES ============= ", config, xmlnode);
                     make_comment("Size of backlog for services", config, xmlnode);
@@ -573,6 +577,12 @@ namespace Client
                                                     break;
                                                 case "formatter":
                                                     Configuration.Parser.formatter = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "system.maximumchannelbuffersize":
+                                                    Configuration.Memory.MaximumChannelBufferSize = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "system.enablesimpleviewcache":
+                                                    Configuration.Memory.EnableSimpleViewCache = bool.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

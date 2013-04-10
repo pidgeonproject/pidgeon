@@ -706,6 +706,7 @@ namespace Client.Graphics
                 TreeIter iter;
                 TreePath[] path = tv.Selection.GetSelectedRows();
                 tv.Model.GetIter(out iter, path[0]);
+                Hooks._Sys.Poke();
                 Window window = null;
                 ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
                 switch (type)

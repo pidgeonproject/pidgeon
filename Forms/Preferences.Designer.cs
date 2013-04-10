@@ -198,6 +198,118 @@ namespace Client.Forms
             }
         }
 
+        [GLib.ConnectBefore]
+        private void ExtensionMenu(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                EM(sender, null);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void HlMenu(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                HM(sender, null);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void ShMenu(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                SM(sender, null);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void IgMenu(object sender, Gtk.ButtonPressEventArgs e)
+        {
+            if (e.Event.Button == 3)
+            {
+                IM(sender, null);
+            }
+        }
+
+        private void EM(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                bool display = false;
+                Gtk.Menu menu = new Menu();
+
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void HM(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                bool display = false;
+                Gtk.Menu menu = new Menu();
+
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void IM(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                bool display = false;
+                Gtk.Menu menu = new Menu();
+
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void SM(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                bool display = false;
+                Gtk.Menu menu = new Menu();
+
+                if (display)
+                {
+                    menu.ShowAll();
+                    menu.Popup();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         public void CreateLogs()
         {
             this.vbox2 = new global::Gtk.VBox();
@@ -406,6 +518,9 @@ namespace Client.Forms
             this.treeviewEx.AppendColumn(el_3);
             this.treeviewEx.AppendColumn(el_4);
             this.treeviewEx.Model = Extensions;
+            this.treeviewEx.Selection.Mode = SelectionMode.Multiple;
+            this.treeviewEx.PopupMenu += new PopupMenuHandler(EM);
+            this.treeviewEx.ButtonPressEvent += new ButtonPressEventHandler(ExtensionMenu);
             this.GtkScrolledWindow2.Add(this.treeviewEx);
             this.GtkAlignment2.Add(this.GtkScrolledWindow2);
             this.fExtensions.Add(this.GtkAlignment2);
@@ -431,6 +546,9 @@ namespace Client.Forms
             this.treeview4 = new global::Gtk.TreeView();
             this.treeview4.CanFocus = true;
             this.treeview4.Name = "treeview1";
+            this.treeview4.Selection.Mode = SelectionMode.Multiple;
+            this.treeview4.PopupMenu += new PopupMenuHandler(HM);
+            this.treeview4.ButtonPressEvent += new ButtonPressEventHandler(HlMenu);
             this.GtkScrolledWindow4.Add(this.treeview4);
             this.GtkAlignment4.Add(this.GtkScrolledWindow4);
             treeview4.Model = Highlights;
@@ -484,6 +602,9 @@ namespace Client.Forms
             keyboard_keys.Title = "Shortcut";
             keyboard_line.Title = "Command";
             keyboard_line.PackStart(kr2, true);
+            this.treeviewSh.Selection.Mode = SelectionMode.Multiple;
+            this.treeviewSh.PopupMenu += new PopupMenuHandler(SM);
+            this.treeviewSh.ButtonPressEvent += new ButtonPressEventHandler(ShMenu);
             this.treeviewSh.AppendColumn(keyboard_keys);
             keyboard_keys.AddAttribute(kr1, "text", 0);
             keyboard_line.AddAttribute(kr2, "text", 1);
@@ -513,6 +634,9 @@ namespace Client.Forms
             this.treeview5 = new global::Gtk.TreeView();
             this.treeview5.CanFocus = true;
             this.treeview5.Name = "treeview1";
+            this.treeview5.Selection.Mode = SelectionMode.Multiple;
+            this.treeview5.PopupMenu += new PopupMenuHandler(IM);
+            this.treeview5.ButtonPressEvent += new ButtonPressEventHandler(IgMenu);
             Gtk.TreeViewColumn list_1 = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn list_2 = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn list_3 = new Gtk.TreeViewColumn();

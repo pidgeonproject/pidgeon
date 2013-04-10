@@ -507,6 +507,8 @@ namespace Client
                 return;
             }
 
+            Core.DebugLog("Destroying network " + ServerName);
+
             destroyed = true;
 
             lock (ChannelList)

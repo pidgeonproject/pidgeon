@@ -312,6 +312,7 @@ namespace Client
             }
             RT = null;
             owner = null;
+            this.Destroy();
         }
         
         public bool IncreaseOffset()

@@ -112,6 +112,7 @@ namespace Client.Graphics
         {
             try
             {
+                Hooks._Sys.Poke();
                 if (Forms.Main.ShortcutHandle(sender, e))
                 {
                     e.RetVal = true;
@@ -272,6 +273,7 @@ namespace Client.Graphics
             destroyed = true;
             history.Clear();
             parent = null;
+            this.Destroy();
         }
 
         public void Init()

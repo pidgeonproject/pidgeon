@@ -70,6 +70,7 @@ namespace Client.Forms
                 Gtk.MenuItem m1 = new Gtk.MenuItem(remove.Text);
                 m1.Activated += new EventHandler(Clear);
                 m1.Show();
+                sc.Activated += new EventHandler(Scroll);
                 e.Menu.Append(m1);
             }
             catch (Exception fail)

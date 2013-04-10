@@ -176,6 +176,7 @@ namespace Client
         /// Extensions loaded in core
         /// </summary>
         public static List<Extension> Extensions = new List<Extension>();
+        private static DateTime lastActivityTime;
         /// <summary>
         /// Parameters that were retrieved in console
         /// </summary>
@@ -189,6 +190,14 @@ namespace Client
                     data.AddRange(startup_params);
                 }
                 return data;
+            }
+        }
+
+        public static TimeSpan IdleTime
+        {
+            get
+            {
+                return DateTime.Now - lastActivityTime;
             }
         }
 
@@ -288,6 +297,7 @@ namespace Client
                         simple.text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
+                    ResetMainActivityTimer();
                     Gtk.Rc.ParseString("style \"my-style-name\" { bg[NORMAL] = \"#339933\" }\nwidget \"notification\" style = \"my-style-name\"");
                     Hooks._Sys.AfterCore();
                     return true;
@@ -303,6 +313,15 @@ namespace Client
                 Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
             }
             return false;
+        }
+
+
+        /// <summary>
+        /// This will reset the activity timer
+        /// </summary>
+        public static void ResetMainActivityTimer()
+        {
+            lastActivityTime = DateTime.Now;
         }
 
         /// <summary>

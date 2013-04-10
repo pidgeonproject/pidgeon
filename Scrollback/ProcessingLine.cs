@@ -125,13 +125,13 @@ namespace Client
 
             if (owner == null || (owner != null && WindowVisible()))
             {
-                if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize >= ContentLines.Count)
+                if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                 {
                     lock (ContentLines)
                     {
                         ContentLines.Sort();
                         SortNeeded = false;
-                        while (Configuration.Memory.MaximumChannelBufferSize >= ContentLines.Count)
+                        while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                         {
                             ContentLines.RemoveAt(0);
                         }

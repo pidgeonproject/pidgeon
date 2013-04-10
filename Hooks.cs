@@ -77,6 +77,11 @@ namespace Client
             {
 
             }
+
+            public static void Poke(Network network = null)
+            {
+                Core.ResetMainActivityTimer();
+            }
         }
 
         public class _Protocol
