@@ -55,7 +55,6 @@ namespace Client.Graphics
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
         /// </summary>
-        [Obsolete]
         public Protocol _Protocol = null;
         /// <summary>
         /// In case this is true, we are in micro chat
@@ -305,12 +304,12 @@ namespace Client.Graphics
 
             destroyed = true;
 
-            if (scrollback != null)
+            if (scrollback1 != null)
             {
                 scrollback._Destroy();
             }
-            
-            if (textbox != null)
+
+            if (textbox1 != null)
             {
                 textbox._Destroy();
             }

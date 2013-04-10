@@ -86,22 +86,22 @@ namespace Client.Forms
         private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(Core.Shortcut));
 
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
-        private GTK.Menu enableToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu simpleToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu disableToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu addToolStripMenuItem1 = new GTK.Menu();
-        private GTK.Menu modifyToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu deleteToolStripMenuItem1 = new GTK.Menu();
-        private GTK.Menu createToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu disableToolStripMenuItem1 = new GTK.Menu();
-        private GTK.Menu enableToolStripMenuItem1 = new GTK.Menu();
-        private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu();
-        private GTK.Menu regexToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu();
-        private GTK.Menu matchingOnlyUserStringToolStripMenuItem = new GTK.Menu();
+        private GTK.Menu enableToolStripMenuItem = new GTK.Menu("Enable");
+        private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
+        private GTK.Menu disableToolStripMenuItem = new GTK.Menu("Disable");
+        private GTK.Menu addToolStripMenuItem1 = new GTK.Menu("Add");
+        private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
+        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu("Delete");
+        private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
+        private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
+        private GTK.Menu deleteToolStripMenuItem1 = new GTK.Menu("Delete");
+        private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
+        private GTK.Menu disableToolStripMenuItem1 = new GTK.Menu("Disable");
+        private GTK.Menu enableToolStripMenuItem1 = new GTK.Menu("Enable");
+        private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu("Simple");
+        private GTK.Menu regexToolStripMenuItem = new GTK.Menu("Regex");
+        private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu("Matching text");
+        private GTK.Menu matchingOnlyUserStringToolStripMenuItem = new GTK.Menu("Matching user");
 
         public List<Extension> SelectedExtensions
         {
@@ -238,14 +238,13 @@ namespace Client.Forms
         {
             try
             {
-                bool display = false;
                 Gtk.Menu menu = new Menu();
 
-                if (display)
-                {
-                    menu.ShowAll();
-                    menu.Popup();
-                }
+                MenuItem remove = new MenuItem(deleteToolStripMenuItem.Text);
+                menu.Append(remove);
+
+                menu.ShowAll();
+                menu.Popup();
             }
             catch (Exception fail)
             {

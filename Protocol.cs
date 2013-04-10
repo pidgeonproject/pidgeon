@@ -108,7 +108,7 @@ namespace Client
         /// <summary>
         /// Root window
         /// </summary>
-        public Graphics.Window SystemWindow
+        public virtual Graphics.Window SystemWindow
         {
             get
             {

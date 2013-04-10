@@ -96,6 +96,8 @@ namespace Client
             e.Menu.Append(separator1);
             e.Menu.Append(new Gtk.SeparatorMenuItem());
 
+            listAllChannelsToolStripMenuItem.Visible = (owner != null && owner._Network != null);
+
             // channels
             if (joinToolStripMenuItem.Visible)
             {
@@ -814,7 +816,7 @@ namespace Client
         {
             try
             {
-                if (owner != null)
+                if (owner != null && owner._Network != null)
                 {
                     owner._Network.DisplayChannelWindow();
                 }

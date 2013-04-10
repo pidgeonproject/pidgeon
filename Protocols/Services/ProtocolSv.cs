@@ -74,10 +74,22 @@ namespace Client
         
         public List<string> WaitingNetw = new List<string>();
 
-        public enum Status
+        /// <summary>
+        /// Root window
+        /// </summary>
+        public override Graphics.Window SystemWindow
         {
-            WaitingPW,
-            Connected,
+            get
+            {
+                lock (Windows)
+                {
+                    if (Windows.ContainsKey("!root"))
+                    {
+                        return Windows["!root"];
+                    }
+                }
+                return null;
+            }
         }
 
         public void _Ping()
@@ -596,6 +608,12 @@ namespace Client
                     Core.DebugLog("Network is not a part of this services connection " + network.ServerName);
                 }
             }
+        }
+
+        public enum Status
+        {
+            WaitingPW,
+            Connected,
         }
     }
 }

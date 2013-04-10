@@ -301,6 +301,7 @@ namespace Client
             {
                 return;
             }
+
             destroyed = true;
             lock (UndrawnLines)
             {
@@ -310,6 +311,8 @@ namespace Client
             {
                 ContentLines.Clear();
             }
+            RT.Destroy();
+            simpleview.Destroy();
             RT = null;
             owner = null;
             this.Destroy();

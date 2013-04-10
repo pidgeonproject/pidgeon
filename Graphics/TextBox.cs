@@ -84,15 +84,15 @@ namespace Client.Graphics
             }
         }
 
+        public TextBox()
+        {
+
+        }
+
         public void InitStyle()
         {
             richTextBox.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
-        }
-
-        public TextBox()
-        {
-
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)

@@ -455,7 +455,8 @@ namespace Client
                 _channel.Name = channel;
                 Channels.Add(_channel);
                 Core._Main.ChannelList.insertChannel(_channel);
-                _Protocol.CreateChat(channel, !nf, this, true, true);
+                Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true, true);
+                window.isChannel = true;
                 return _channel;
             }
             else
