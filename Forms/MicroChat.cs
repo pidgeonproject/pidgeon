@@ -30,6 +30,7 @@ namespace Client.Forms
     {
         public Scrollback scrollback_mc = null;
         private Gtk.VBox vbox;
+        public bool OnTop = true;
 
         protected virtual void Build()
         {
@@ -87,6 +88,12 @@ namespace Client.Forms
         {
             this.Opacity = 0.2;
         }
+
+        private void mx_Click(object sender, EventArgs e)
+        {
+            OnTop = !OnTop;
+            this.KeepAbove = OnTop;
+        }
         
         [GLib.ConnectBefore]
         public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
@@ -111,6 +118,9 @@ namespace Client.Forms
                 m6.Activated += new EventHandler(toolStripMenuItem2_Click);
                 Gtk.MenuItem m5 = new Gtk.MenuItem("60%");
                 m5.Activated += new EventHandler(toolStripMenuItem3_Click);
+                Gtk.CheckMenuItem ma = new Gtk.CheckMenuItem("On top");
+                ma.Active = OnTop;
+                ma.Activated += new EventHandler(mx_Click);
                 m0.Append(m2);
                 m0.Append(m3);
                 m0.Append(m4);
@@ -121,7 +131,9 @@ namespace Client.Forms
                 m4.Show();
                 m5.Show();
                 m6.Show();
+                ma.Show();
                 e.Menu.Append(m1);
+                e.Menu.Append(ma);
             }
             catch (Exception fail)
             {
@@ -133,7 +145,7 @@ namespace Client.Forms
         {
             this.Build();
             scrollback_mc.RT.textView.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
-            this.KeepAbove = true;
+            this.KeepAbove = OnTop;
         }
     }
 }

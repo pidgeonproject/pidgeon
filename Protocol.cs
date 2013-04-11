@@ -68,7 +68,7 @@ namespace Client
         /// Ssl
         /// </summary>
         public bool SSL = false;
-        private bool destroyed = false;
+        protected bool destroyed = false;
         /// <summary>
         /// This is a time when this connection was open
         /// </summary>
@@ -257,7 +257,7 @@ namespace Client
         /// <param name="_priority"></param>
         public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null)
         {
-            
+            Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
         }
 
         /// <summary>
@@ -269,6 +269,7 @@ namespace Client
         /// <returns></returns>
         public virtual int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
+            Core.DebugLog("Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal) is not implemented");
             return 2;
         }
 
@@ -281,6 +282,7 @@ namespace Client
         /// <returns></returns>
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
+            Core.DebugLog("Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) is not implemented");
             return 2;
         }
 
@@ -295,6 +297,8 @@ namespace Client
         /// <returns></returns>
         public virtual int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
+            Core.DebugLog("Message(string text, string to, Network network, Configuration.Priority _priority = "
+                +"Configuration.Priority.Normal, bool pmsg = false) is not implemented");
             return 2;
         }
 
@@ -305,6 +309,7 @@ namespace Client
         /// <returns></returns>
         public virtual int requestNick(string _Nick, Network network = null)
         {
+            Core.DebugLog("requestNick(string _Nick, Network network = null) is not implemented");
             return 2;
         }
 
@@ -315,6 +320,7 @@ namespace Client
         /// <returns></returns>
         public virtual bool Command(string cm, Network network = null)
         {
+            Core.DebugLog("Command(string cm, Network network = null) is not implemented");
             return false;
         }
 
@@ -326,6 +332,7 @@ namespace Client
         /// <param name="network">Network</param>
         public virtual void WriteMode(NetworkMode _x, string target, Network network = null)
         {
+            Core.DebugLog("WriteMode(NetworkMode _x, string target, Network network = null) is not implemented");
             return;
         }
 
@@ -336,6 +343,7 @@ namespace Client
         /// <param name="network">Network</param>
         public virtual void Join(string name, Network network = null)
         {
+            Core.DebugLog("Join() is not implemented");
             return;
         }
 
@@ -347,6 +355,7 @@ namespace Client
         /// <returns></returns>
         public virtual bool ConnectTo(string server, int port)
         {
+            Core.DebugLog("Disconnect() is not implemented");
             return false;
         }
 
@@ -356,6 +365,7 @@ namespace Client
         /// <returns></returns>
         public virtual bool Disconnect()
         {
+            Core.DebugLog("Disconnect() is not implemented");
             return false;
         }
 
@@ -366,6 +376,7 @@ namespace Client
         /// <param name="network">Network</param>
         public virtual void Part(string name, Network network = null)
         {
+            Core.DebugLog("Part(string name, Network network = null) is not implemented");
             return;
         }
 
@@ -413,6 +424,7 @@ namespace Client
 
         public virtual bool Open()
         {
+            Core.DebugLog("Open() is not implemented");
             return false;
         }
     }

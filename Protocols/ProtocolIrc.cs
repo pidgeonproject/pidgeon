@@ -413,11 +413,19 @@ namespace Client
 
         public override void Exit()
         {
+            if (IsDestroyed)
+            {
+                throw new Exception("This object is already removed");
+            }
+            destroyed = true;
             if (!Hooks._Network.BeforeExit(_IRCNetwork))
             {
                 return;
             }
-            Disconnect();
+            if (IsConnected)
+            {
+                Disconnect();
+            }
             if (main.ThreadState == System.Threading.ThreadState.Running || main.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
             {
                 main.Abort();

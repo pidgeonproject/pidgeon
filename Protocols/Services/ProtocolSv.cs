@@ -340,16 +340,19 @@ namespace Client
         /// </summary>
         public override void Exit()
         {
-            if (!IsConnected)
+            if (IsConnected)
             {
-                Core.DebugLog("Request to disconnect from services that aren't connected");
+                Disconnect();
+            }
+            if (IsDestroyed)
+            {
                 return;
             }
-            Connected = false;
             if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
             {
                 main.Abort();
             }
+            destroyed = true;
             lock (RemainingJobs)
             {
                 RemainingJobs.Clear();
@@ -364,7 +367,6 @@ namespace Client
             {
                 foreach (Network network in NetworkList)
                 {
-                    network.flagDisconnect();
                     network.Destroy();
                     if (Core.network == network)
                     {
@@ -397,7 +399,7 @@ namespace Client
 
         public override bool Disconnect()
         {
-            if (!Connected)
+            if (!IsConnected)
             {
                 Core.DebugLog("User attempted to disconnect services that are already disconnected");
                 return false;
@@ -406,6 +408,13 @@ namespace Client
             if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
             {
                 main.Abort();
+            }
+            lock (NetworkList)
+            {
+                foreach (Network network in NetworkList)
+                {
+                    network.flagDisconnect();
+                }
             }
             try
             {

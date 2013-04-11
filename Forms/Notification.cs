@@ -36,7 +36,6 @@ namespace Client.Forms
             this.Name = "notification";
             this.Title = "Notification";
             this.TypeHint = Gdk.WindowTypeHint.Normal;
-            //this.TypeHint = ((global::Gdk.WindowTypeHint)(4));
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child Client.Forms.Notification.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();
