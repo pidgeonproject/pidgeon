@@ -341,6 +341,81 @@ namespace Client
         }
 
         /// <summary>
+        /// This function remove the network from memory and release all the resources associated with it
+        /// </summary>
+        /// <param name="network"></param>
+        public void RemoveNetworkFromMemory(string network)
+        {
+            network = network.ToLower();
+            Network remove = null;
+            Gtk.TreeIter item;
+            lock (Core._Main.ChannelList.ServerList)
+            {
+                foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)
+                {
+                    if (n.Key.ServerName.ToLower() == network)
+                    {
+                        item = n.Value;
+                        remove = n.Key;
+                        if (remove != null)
+                        {
+                            Core._Main.ChannelList.ServerList.Remove(remove);
+                        }
+                        if (remove != null)
+                        {
+                            Core._Main.ChannelList.RemoveItem(item, remove, Client.Graphics.PidgeonList.ItemType.Server);
+                        }
+                        else
+                        {
+                            Core.DebugLog("Unable to remove " + network);
+                        }
+                        break;
+                    }
+                }
+            }
+
+            lock (NetworkList)
+            {
+                if (remove == null)
+                {
+                    foreach (Network xx in NetworkList)
+                    {
+                        if (network == xx.ServerName.ToLower())
+                        {
+                            remove = xx;
+                            break;
+                        }
+                    }
+                }
+
+                if (remove != null)
+                {
+                    if (NetworkList.Contains(remove))
+                    {
+                        NetworkList.Remove(remove);
+                    }
+
+                    remove.flagDisconnect();
+                    remove.Destroy();
+
+                    if (Configuration.Services.UsingCache)
+                    {
+                        // we need to remove the network here from db
+                        if (sBuffer.networkInfo.ContainsKey(remove.ServerName))
+                        {
+                            sBuffer.networkInfo.Remove(remove.ServerName);
+                        }
+
+                        if (sBuffer.Networks.ContainsKey(remove.ServerName))
+                        {
+                            sBuffer.Networks.Remove(remove.ServerName);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// This will close the protocol, that mean it will release all objects and memory, you should only call it when you want to remove this
         /// </summary>
         public override void Exit()

@@ -448,32 +448,7 @@ namespace Client
 
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
-                Network remove = null;
-                Gtk.TreeIter item;
-                lock (Core._Main.ChannelList.ServerList)
-                {
-                    foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)
-                    {
-                        if (n.Key.ServerName == curr.InnerText)
-                        {
-                            item = n.Value;
-                            remove = n.Key;
-                            if (remove != null)
-                            {
-                                Core._Main.ChannelList.ServerList.Remove(remove);
-                            }
-                            if (remove != null)
-                            {
-                                Core._Main.ChannelList.RemoveItem(item, remove, Client.Graphics.PidgeonList.ItemType.Server);
-                            }
-                            else
-                            {
-                                Core.DebugLog("Unable to remove " + curr.InnerText);
-                            }
-                            break;
-                        }
-                    }
-                }
+                protocol.RemoveNetworkFromMemory(curr.InnerText);
             }
 
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)
