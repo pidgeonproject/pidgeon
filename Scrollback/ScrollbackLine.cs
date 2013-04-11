@@ -13,9 +13,13 @@ namespace Client
         public bool notice = false;
         public MessageStyle style;
 
+        /// <summary>
+        /// This needs to exist for xml serialization
+        /// </summary>
         public ContentLine()
         {
-
+            text = null;
+            style = MessageStyle.Channel;
         }
 
         public ContentLine(MessageStyle _style, string Text, DateTime when, bool _notice)

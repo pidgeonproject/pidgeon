@@ -264,10 +264,6 @@ namespace Client.Graphics
                 krToolStripMenuItem.Visible = true;
                 synchroToolStripMenuItem.Visible = true;
             }
-            if (scrollback.owner == null || scrollback.owner._Network == null)
-            {
-                scrollback.listAllChannelsToolStripMenuItem.Visible = false;
-            }
             Redraw();
             isInitialised = true;
         }

@@ -330,7 +330,6 @@ namespace Client
                     if (owner.isChannel)
                     {
                         kickToolStripMenuItem.Visible = true;
-                        listAllChannelsToolStripMenuItem.Visible = true;
                         whoisToolStripMenuItem.Visible = true;
                         whowasToolStripMenuItem.Visible = true;
                         mode1e2ToolStripMenuItem.Visible = true;

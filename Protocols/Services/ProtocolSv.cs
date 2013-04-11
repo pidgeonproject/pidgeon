@@ -395,9 +395,6 @@ namespace Client
                         NetworkList.Remove(remove);
                     }
 
-                    remove.flagDisconnect();
-                    remove.Destroy();
-
                     if (Configuration.Services.UsingCache)
                     {
                         // we need to remove the network here from db
@@ -411,6 +408,9 @@ namespace Client
                             sBuffer.Networks.Remove(remove.ServerName);
                         }
                     }
+
+                    remove.flagDisconnect();
+                    remove.Destroy();
                 }
             }
         }

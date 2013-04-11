@@ -291,10 +291,6 @@ namespace Client.Services
                 Source.history.Clear();
                 target.isPM = Source.isPM;
                 target.isChannel = Source.isChannel;
-                if (target.isPM || target.isChannel)
-                {
-                    target.scrollback.listAllChannelsToolStripMenuItem.Visible = true;
-                }
                 // once we recover a window we don't longer need it, so remove it from memory
                 if (_windows.Contains(Source))
                 {
