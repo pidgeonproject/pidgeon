@@ -66,15 +66,12 @@ namespace Client.Forms
             // Container child vbox1.Gtk.Box+BoxChild
             this.label1 = new Gtk.TextView();
             this.label1.Name = "label1";
-            //this.label1.SetSizeRequest(740, 100);
             this.label1.Editable = false;
-            this.label1.ModifyBg(StateType.Normal, Core.fromColor(Color.LightGray));
             this.label1.Buffer.Text = "Do you really want to execute following commands?\n\nLines prefixed with following symbols are:\n# - comment\n/ - will be launched as pidgeon command\n\nOther lines will be delivered as raw command to server";
             this.vbox1.Add(label1);
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
             w1.Position = 0;
             w1.Expand = false;
-            //w1.Fill = true;
             // Container child vbox1.Gtk.Box+BoxChild
             this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
@@ -117,6 +114,7 @@ namespace Client.Forms
             global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
             w6.Position = 2;
             w6.Expand = false;
+            this.label1.ModifyBase(StateType.Normal, Core.fromColor(Color.LightGray));
             w6.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null))

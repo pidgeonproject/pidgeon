@@ -202,7 +202,7 @@ namespace Client.Forms
             {
                 if (channel.Topic != textview1.Buffer.Text)
                 {
-                    channel._Network.Transfer("TOPIC " + channel.Name + " :" + textview1.Buffer.Text);
+                    channel._Network.Transfer("TOPIC " + channel.Name + " :" + textview1.Buffer.Text.Replace("\n", ""));
                 }
                 bool change = false;
                 string cset = "+";
