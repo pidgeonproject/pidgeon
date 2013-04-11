@@ -18,7 +18,7 @@ On linux:
 ```
 # create version.txt
 ./update.sh
-#build
+# build
 xbuild
 ```
 

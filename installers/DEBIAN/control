@@ -4,7 +4,7 @@ Section: network
 Priority: optional
 Architecture: all
 Essential: no
-Depends: mono-complete
+Depends: mono-runtime
 Installed-Size: 1024
 Maintainer: Petr Bena <benapetr@gmail.com>
 Description: Pidgeon client is advanced IRC client
