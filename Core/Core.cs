@@ -301,7 +301,6 @@ namespace Client
                         Configuration.HighlighterList.Add(simple);
                     }
                     ResetMainActivityTimer();
-                    Gtk.Rc.ParseString("style \"my-style-name\" { bg[NORMAL] = \"#339933\" }\nwidget \"notification\" style = \"my-style-name\"");
                     Hooks._Sys.AfterCore();
                     return true;
                 }

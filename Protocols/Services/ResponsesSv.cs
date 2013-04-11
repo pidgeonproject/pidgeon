@@ -177,6 +177,7 @@ namespace Client
                     {
                         Core._Main.progress = double.Parse(id);
                         Core._Main.DisplayingProgress = true;
+                        protocol.FinishedLoading = false;
                         protocol.SuppressChanges = true;
                         Core._Main.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
@@ -577,7 +578,6 @@ namespace Client
                         {
                             foreach (string user in userlist)
                             {
-
                                 if (user.Contains("!") && user.Contains("@"))
                                 {
                                     string us = "";

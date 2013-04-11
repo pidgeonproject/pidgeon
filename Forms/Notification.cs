@@ -81,10 +81,8 @@ namespace Client.Forms
             w4.Position = 1;
             w4.Expand = false;
             w4.Fill = false;
-            this.label1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
-            this.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
-            this.vbox1.ModifyBase(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             root = new Gtk.EventBox();
+            root.ModifyBg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
             root.Add(this.vbox1);
             this.Decorated = false;
             this.Add(root);

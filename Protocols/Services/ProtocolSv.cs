@@ -68,6 +68,7 @@ namespace Client
         private SslStream _networkSsl = null;
         public Services.Buffer sBuffer = null;
         public List<Work> RemainingJobs = new List<Work>();
+        public bool FinishedLoading = false;
 
         public string nick = "";
         public bool auth = false;
@@ -116,8 +117,10 @@ namespace Client
         {
             if (RemainingJobs.Count > 0)
             {
+                this.FinishedLoading = false;
                 return "Waiting for services to finish " + RemainingJobs.Count.ToString() + " requests";
             }
+            this.FinishedLoading = true;
             return "";
         }
         
@@ -142,7 +145,6 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                 Client.ContentLine.MessageStyle.System);
 
-                sBuffer = new Services.Buffer(this);
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
                 _StreamWriter = new System.IO.StreamWriter(_networkStream);
@@ -189,6 +191,7 @@ namespace Client
             string text = "";
             try
             {
+                sBuffer = new Services.Buffer(this);
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
@@ -210,6 +213,8 @@ namespace Client
                 {
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                 }
+                // we need to prevent buffer from saving corrupted data
+                sBuffer = null;
                 Disconnect();
             }
             catch (System.Threading.ThreadAbortException)
@@ -357,7 +362,7 @@ namespace Client
             {
                 RemainingJobs.Clear();
             }
-            if (Configuration.Services.UsingCache)
+            if (Configuration.Services.UsingCache && sBuffer != null && FinishedLoading)
             {
                 Core._Main.Status("Writing the service cache");
                 sBuffer.Snapshot();
