@@ -29,7 +29,7 @@ namespace Client.Forms
     {
         public Network network = null;
         private global::Gtk.VBox vbox1;
-        private global::Gtk.Label label1;
+        private global::Gtk.TextView label1;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TextView textview1;
         private global::Gtk.HBox hbox1;
@@ -64,11 +64,12 @@ namespace Client.Forms
             this.vbox1.Name = "vbox1";
             this.vbox1.Spacing = 2;
             // Container child vbox1.Gtk.Box+BoxChild
-            this.label1 = new global::Gtk.Label();
+            this.label1 = new Gtk.TextView();
             this.label1.Name = "label1";
-            this.label1.Justify = Justification.Left;
             //this.label1.SetSizeRequest(740, 100);
-            this.label1.LabelProp = "Do you really want to execute following commands?\n\nLines prefixed with following symbols are:\n# - comment\n/ - will be launched as pidgeon command\n\nOther lines will be delivered as raw command to server";
+            this.label1.Editable = false;
+            this.label1.ModifyBg(StateType.Normal, Core.fromColor(Color.LightGray));
+            this.label1.Buffer.Text = "Do you really want to execute following commands?\n\nLines prefixed with following symbols are:\n# - comment\n/ - will be launched as pidgeon command\n\nOther lines will be delivered as raw command to server";
             this.vbox1.Add(label1);
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.label1]));
             w1.Position = 0;
