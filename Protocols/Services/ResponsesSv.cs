@@ -614,7 +614,7 @@ namespace Client
                 {
                     protocol.Windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed",
                         Client.ContentLine.MessageStyle.System, false);
-                    protocol.Exit();
+                    protocol.Disconnect();
                 }
                 if (curr.InnerText == "OK")
                 {

@@ -692,7 +692,7 @@ namespace Client
             {
                 if (Link.StartsWith("http"))
                 {
-                    System.Diagnostics.Process.Start(Link);
+                    Hyperlink.OpenLink(Link);
                 }
             }
             catch (Exception fail)

@@ -60,11 +60,47 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="user">user!ident@hostname</param>
+        /// <param name="network"></param>
+        public User(string user, Network network)
+        {
+            if (!user.Contains("@") || !user.Contains("!"))
+            {
+                Core.DebugLog("Unable to create user from " + user);
+                return;
+            }
+            string name = user.Substring(0, user.IndexOf("!"));
+            string ident = user.Substring(user.IndexOf("!") + 1);
+            string host = ident.Substring(ident.IndexOf("@") + 1);
+            ident = ident.Substring(0, ident.IndexOf("@"));
+            MakeUser(name, host, network, ident);
+            Server = network.ServerName;
+        }
+
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="nick"></param>
+        /// <param name="host"></param>
+        /// <param name="network"></param>
+        /// <param name="ident"></param>
         public User(string nick, string host, Network network, string ident)
         {
             MakeUser(nick, host, network, ident);
+            Server = network.ServerName;
         }
 
+        /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="nick"></param>
+        /// <param name="host"></param>
+        /// <param name="network"></param>
+        /// <param name="ident"></param>
+        /// <param name="server"></param>
         public User(string nick, string host, Network network, string ident, string server)
         {
             MakeUser(nick, host, network, ident);

@@ -171,11 +171,11 @@ namespace Client
             /// <param name="network"></param>
             public static void AfterConnectToNetwork(Network network)
             {
-
+                network.isLoaded = true;
             }
 
             /// <summary>
-            /// Events to happen before user is kicked from channel, in case you return false, the kick is cancelled
+            /// Events to happen before user is kicked from channel, in case you return false, the kick is ignored
             /// </summary>
             /// <param name="network">Network</param>
             /// <param name="Source">Performer</param>
@@ -213,7 +213,7 @@ namespace Client
 
             }
 
-            public static void UserQuit(Network network, User user, Channel channel, string message)
+            public static void UserQuit(Network network, User user, string message)
             {
 
             }

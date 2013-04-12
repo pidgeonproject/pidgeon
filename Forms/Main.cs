@@ -226,7 +226,7 @@ namespace Client.Forms
                 throw new Exception("You can't control other windows from non kernel thread");
             }
             this.toolStripInfo.Text = StatusBox;
-            if (Core.network != null)
+            if (Core.network != null && !Core.network.IsDestroyed)
             {
                 toolStripStatusNetwork.Text = Core.network.ServerName + "    w/c/p " + Core.network._Protocol.Windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
                 if (Core.network.RenderedChannel != null)
@@ -274,7 +274,7 @@ namespace Client.Forms
 
         public void setFocus()
         {
-            //GrabFocus();
+            GrabFocus();
         }
 
         public int setText(string name)

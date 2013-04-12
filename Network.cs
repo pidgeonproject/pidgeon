@@ -186,6 +186,7 @@ namespace Client
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
+        public bool isLoaded = false;
         private bool destroyed = false;
         public bool IsConnected
         {
@@ -440,7 +441,10 @@ namespace Client
         /// <returns></returns>
         public void Join(string channel)
         {
-            Transfer("JOIN " + channel, Configuration.Priority.Normal);
+            if (Hooks._Network.BeforeJoin(this, channel))
+            {
+                Transfer("JOIN " + channel, Configuration.Priority.Normal);
+            }
         }
 
         /// <summary>

@@ -239,7 +239,9 @@ namespace Client
         {
             string user = parameters.Substring(parameters.IndexOf(" ") + 1);
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
-            Channel channel = _Network.getChannel(parameters.Substring(0, parameters.IndexOf(" ")));
+            string chan = parameters.Substring(0, parameters.IndexOf(" "));
+            Channel channel = _Network.getChannel(chan);
+            Hooks._Network.UserKick(_Network, new User(user, null, _Network, null), new User(source, _Network), channel, value);
             if (channel != null)
             {
                 Graphics.Window window;

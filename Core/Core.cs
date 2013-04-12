@@ -400,9 +400,9 @@ namespace Client
             System.Windows.Forms.Application.Run(x);
         }
 
-        public static void killThread(Thread name)
+        public static void killThread(Thread name, bool remove = false)
         {
-            if (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
             {
                 name.Abort();
                 Core.DebugLog("Killed thread " + name.Name);

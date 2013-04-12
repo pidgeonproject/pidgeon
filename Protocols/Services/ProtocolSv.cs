@@ -219,7 +219,7 @@ namespace Client
             }
             catch (System.Threading.ThreadAbortException)
             {
-                Core.killThread(System.Threading.Thread.CurrentThread);
+                Core.killThread(System.Threading.Thread.CurrentThread, true);
                 return;
             }
             catch (Exception fail)
@@ -428,10 +428,6 @@ namespace Client
             {
                 return;
             }
-            if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
-            {
-                main.Abort();
-            }
             destroyed = true;
             lock (RemainingJobs)
             {
@@ -485,7 +481,8 @@ namespace Client
                 return false;
             }
             Connected = false;
-            if (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running)
+            if (System.Threading.Thread.CurrentThread != main &&
+                (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running))
             {
                 main.Abort();
             }

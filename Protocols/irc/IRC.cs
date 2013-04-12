@@ -235,6 +235,10 @@ namespace Client
                             case "004":
                             case "005":
                                 Info(command, parameters, value);
+                                if (!_Network.isLoaded)
+                                {
+                                    Hooks._Network.AfterConnectToNetwork(_Network);
+                                }
                                 break;
                             case "301":
                                 if (Idle2(command, parameters, value))
