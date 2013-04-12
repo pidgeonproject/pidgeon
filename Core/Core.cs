@@ -285,6 +285,8 @@ namespace Client
                     //ScriptingCore.Load();
                     DebugLog("Loading extensions");
                     Extension.Init();
+                    DebugLog("Loading http");
+                    Hyperlink.Initialize();
                     if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                     {
                         foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))

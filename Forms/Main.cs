@@ -320,7 +320,7 @@ namespace Client.Forms
         {
             try
             {
-                System.Diagnostics.Process.Start("http://pidgeonclient.org/wiki/Help:Contents");
+                Hyperlink.OpenLink("http://pidgeonclient.org/wiki/Help:Contents");
             }
             catch (Exception fail)
             {

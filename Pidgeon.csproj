@@ -116,6 +116,7 @@
     <Compile Include="Commands\Commands_System.cs" />
     <Compile Include="GTK\MessageBox.cs" />
     <Compile Include="GTK\PidgeonForm.cs" />
+    <Compile Include="Hyperlink.cs" />
     <Compile Include="Protocols\irc\Formatter.cs" />
     <Compile Include="Protocols\irc\IRC_objects.cs" />
     <Compile Include="RichTBox\Classes.cs" />

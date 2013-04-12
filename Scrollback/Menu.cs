@@ -410,7 +410,7 @@ namespace Client
                 {
                     if (Configuration.UserData.OpenLinkInBrowser)
                     {
-                        System.Diagnostics.Process.Start(http);
+                        Hyperlink.OpenLink(http);
                     }
                     // we don't need to continue with execution of this parser because it's not possible for http to start with any other value
                     return;

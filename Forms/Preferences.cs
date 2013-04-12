@@ -343,13 +343,10 @@ namespace Client.Forms
         {
             try
             {
-                //if (list.SelectedItems.Count > 0)
-                {
                 //    foreach (ListViewItem curr in list.SelectedItems)
                     {
                 //        list.Items.Remove(curr);
                     }
-                }
             }
             catch (Exception fail)
             {
