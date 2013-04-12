@@ -143,7 +143,10 @@ namespace Client.Forms
 			this.hpaned1.Name = "hpaned1";
 			this.hpaned1.Position = 183;
 			// Container child hpaned1.Gtk.Paned+PanedChild
-			this.pidgeonlist1 = null;
+            this.pidgeonlist1 = new global::Client.Graphics.PidgeonList ();
+            this.pidgeonlist1.Events = ((global::Gdk.EventMask)(256));
+            this.pidgeonlist1.Name = "pidgeonlist1";
+
 			this.hpaned1.Add (this.pidgeonlist1);
 			global::Gtk.Paned.PanedChild w3 = ((global::Gtk.Paned.PanedChild)(this.hpaned1 [this.pidgeonlist1]));
 			w3.Resize = false;

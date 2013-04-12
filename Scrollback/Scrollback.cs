@@ -174,6 +174,15 @@ namespace Client
             this.Hide();
         }
 
+        public void IncreaseLimits()
+        {
+            if (scrollback_max < ContentLines.Count)
+            {
+                scrollback_max = scrollback_max + 800;
+                Reload(true, true);
+            }
+        }
+
         private void simpleviewFinished(object o, EventArgs r)
         {
             try

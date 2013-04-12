@@ -74,6 +74,7 @@ namespace Client.Forms
                 this.ConfigurationFileAction.Activated += new EventHandler(configurationFileToolStripMenuItem_Click);
                 this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
+                this.LoadMoreToScrollbackAction.Activated += new EventHandler(loadToolStripMenuItem_Click);
                 _Load();
             }
             catch (Exception fail)
@@ -463,6 +464,21 @@ namespace Client.Forms
                 if (Chat != null)
                 {
                     Chat.MicroBox = true;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Chat != null)
+                {
+                    Chat.scrollback.IncreaseLimits();
                 }
             }
             catch (Exception fail)
