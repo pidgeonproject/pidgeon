@@ -296,7 +296,7 @@ namespace Client
             mode1I2ToolStripMenuItem.Visible = false;
             mode1q2ToolStripMenuItem.Visible = false;
         }
-        
+
         /// <summary>
         /// Destroy this instance.
         /// </summary>
@@ -322,7 +322,7 @@ namespace Client
             owner = null;
             this.Destroy();
         }
-        
+
         public bool IncreaseOffset()
         {
             if (scrollback_max < ContentLines.Count)
@@ -397,28 +397,9 @@ namespace Client
                         {
                             if (UndrawnLines.Count > 0)
                             {
-                                // if there is too many lines in buffer we write only last
-                                if (UndrawnLines.Count > scrollback_max && !simple)
+                                foreach (ContentLine curr in UndrawnLines)
                                 {
-                                    lock (ContentLines)
-                                    {
-                                        ContentLines.Clear();
-                                    }
-                                    int from = UndrawnLines.Count - scrollback_max - 1;
-                                    while (from < UndrawnLines.Count)
-                                    {
-                                        InsertLineToText(UndrawnLines[from], false);
-                                        from++;
-                                    }
-                                    SortNeeded = true;
-                                    ReloadWaiting = true;
-                                    Changed = true;
-                                } else
-                                {
-                                    foreach (ContentLine curr in UndrawnLines)
-                                    {
-                                        InsertLineToText(curr, false);
-                                    }
+                                    InsertLineToText(curr, false);
                                 }
                             }
                         }

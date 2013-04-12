@@ -125,15 +125,18 @@ namespace Client
 
             if (owner == null || (owner != null && WindowVisible()))
             {
-                if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                if (Configuration.Memory.MaximumChannelBufferSize != 0)
                 {
                     lock (ContentLines)
                     {
-                        ContentLines.Sort();
-                        SortNeeded = false;
-                        while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                        if (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                         {
-                            ContentLines.RemoveAt(0);
+                            ContentLines.Sort();
+                            SortNeeded = false;
+                            while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                            {
+                                ContentLines.RemoveAt(0);
+                            }
                         }
                     }
                 }
@@ -154,16 +157,16 @@ namespace Client
 
                 int min = 0;
 
-                if (scrollback_max != 0 && scrollback_max < ContentLines.Count)
+                lock (ContentLines)
                 {
-                    min = ContentLines.Count - scrollback_max;
-                }
+                    if (scrollback_max != 0 && scrollback_max < ContentLines.Count)
+                    {
+                        min = ContentLines.Count - scrollback_max;
+                    }
 
-                RT.RemoveText();
+                    RT.RemoveText();
 
-                if (ContentLines.Count > 0)
-                {
-                    lock (ContentLines)
+                    if (ContentLines.Count > 0)
                     {
                         int max = ContentLines.Count;
                         int current = min;
