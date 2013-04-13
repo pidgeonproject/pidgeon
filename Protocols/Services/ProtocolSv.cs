@@ -183,6 +183,10 @@ namespace Client
                 keep.Name = "pinger thread";
                 keep.Start();
             }
+            catch (System.Threading.ThreadAbortException)
+            {
+                return;
+            }
             catch (Exception b)
             {
                 Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
@@ -212,10 +216,10 @@ namespace Client
                 if (IsConnected)
                 {
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
+                    Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
+                    sBuffer = null;
+                    Disconnect();
                 }
-                // we need to prevent buffer from saving corrupted data
-                sBuffer = null;
-                Disconnect();
             }
             catch (System.Threading.ThreadAbortException)
             {
@@ -420,24 +424,46 @@ namespace Client
         /// </summary>
         public override void Exit()
         {
-            if (IsConnected)
-            {
-                Disconnect();
-            }
             if (IsDestroyed)
             {
                 return;
             }
+            if (IsConnected)
+            {
+                Disconnect();
+            }
             destroyed = true;
+            int remaining = 0;
             lock (RemainingJobs)
             {
+                remaining = RemainingJobs.Count;
+                if (RemainingJobs.Count == 0)
+                {
+                    FinishedLoading = true;
+                }
                 RemainingJobs.Clear();
             }
-            if (Configuration.Services.UsingCache && sBuffer != null && FinishedLoading)
+            Core.DebugLog("Remaining jobs are now cleared");
+            if (sBuffer == null)
             {
-                Core._Main.Status("Writing the service cache");
-                sBuffer.Snapshot();
-                Core._Main.Status("Done");
+                Core.DebugLog("Warning sBuffer == null");
+            }
+            if (Configuration.Services.UsingCache && sBuffer != null)
+            {
+                if (FinishedLoading)
+                {
+                    Core._Main.Status("Writing the service cache");
+                    sBuffer.Snapshot();
+                    Core._Main.Status("Done");
+                }
+                else
+                {
+                    Core.DebugLog("Didn't write the network cache because the services were still waiting on " + remaining.ToString() + " requests");
+                }
+            }
+            else
+            {
+                Core.DebugLog("Didn't write the network cache because it is disallowed");
             }
             lock (NetworkList)
             {

@@ -420,7 +420,6 @@ namespace Client
                                     nw.ChannelList.Clear();
                                     nw.ChannelList.AddRange(info.ChannelList);
                                     info.ChannelList.Clear();
-                                    info.ChannelList = null;
                                     lock (nw.Descriptions)
                                     {
                                         nw.Descriptions.Clear();
