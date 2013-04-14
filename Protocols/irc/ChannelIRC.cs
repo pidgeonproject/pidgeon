@@ -416,6 +416,16 @@ namespace Client
         {
             string nick = source.Substring(0, source.IndexOf("!"));
             string _new = value;
+            if (value == "" && parameters != "")
+            {
+                // server is fucked
+                _new = parameters;
+                // server is totally borked
+                if (_new.Contains(" "))
+                {
+                    _new = _new.Substring(0, _new.IndexOf(" "));
+                }
+            }
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ChannelWork)
