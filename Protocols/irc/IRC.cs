@@ -110,9 +110,20 @@ namespace Client
                 {
                     if (_data2[1].Contains("NICK"))
                     {
-                        _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _value }),
+                        string _new = _value;
+                        if (_value == "" && _data2.Length > 1 && _data2[2] != "")
+                        {
+                            // server is fucked
+                            _new = _data2[2];
+                            // server is totally borked
+                            if (_new.Contains(" "))
+                            {
+                                _new = _new.Substring(0, _new.IndexOf(" "));
+                            }
+                        }
+                        _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _new }),
                             Client.ContentLine.MessageStyle.User, true, date);
-                        _Network.Nickname = _value;
+                        _Network.Nickname = _new;
                     }
                     if (_data2[1].Contains("PART"))
                     {
