@@ -800,7 +800,7 @@ namespace Client
                 {
                     foreach (ContentLine _line in ContentLines)
                     {
-                        text += Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + "\n";
+                        text += Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine;
                     }
                 }
                 Clipboard.SetText(text);

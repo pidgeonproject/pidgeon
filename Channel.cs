@@ -194,7 +194,7 @@ namespace Client
                 {
                     int space = 0;
                     space = 160 + trimmed.Substring(160).IndexOf(" ");
-                    trimmed = trimmed.Substring(0, space) + "\n" + trimmed.Substring(space);
+                    trimmed = trimmed.Substring(0, space) + Environment.NewLine + trimmed.Substring(space);
                 }
             }
             if (!ChannelWork)
@@ -202,7 +202,8 @@ namespace Client
                 text = "[PARTED CHAN] ";
 
             }
-            text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() + "\n" + "Topic: " + trimmed + "\nLast activity: " + DateTime.Now.ToString();
+            text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
+                Environment.NewLine +  "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
             MenuData = Core.normalizeHtml(Core.RemoveSpecial(text));
         }
 
@@ -229,7 +230,7 @@ namespace Client
         {
             lock (Bans)
             {
-                foreach (var name in Bans)
+                foreach (SimpleBan name in Bans)
                 {
                     if (name.Target == host)
                     {

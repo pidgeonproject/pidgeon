@@ -54,9 +54,7 @@ namespace Client.Forms
         private global::Gtk.Frame frame7;
         private global::Gtk.Alignment GtkAlignment7;
         private global::Gtk.Label GtkLabel7;
-        private global::Gtk.Frame fSys;
-        private global::Gtk.Alignment GtkAlignment8;
-        private global::Gtk.Label GtkLabel8;
+        private VBox vb01;
 
         // logs
         private global::Gtk.VBox vbox2;
@@ -391,6 +389,13 @@ namespace Client.Forms
 
         public void CreateLogs()
         {
+            this.frame7 = new global::Gtk.Frame();
+            this.frame7.Name = "frame1";
+            this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
+            // Container child frame1.Gtk.Container+ContainerChild
+            this.GtkAlignment7 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
+            this.GtkAlignment7.Name = "GtkAlignment";
+            this.GtkAlignment7.LeftPadding = ((uint)(12));
             this.vbox2 = new global::Gtk.VBox();
             this.vbox2.Name = "vbox2";
             this.vbox2.Spacing = 6;
@@ -549,6 +554,13 @@ namespace Client.Forms
             w14.Expand = false;
             w14.Fill = false;
             this.GtkAlignment7.Add(this.vbox2);
+            this.frame7.Add(this.GtkAlignment7);
+            this.GtkLabel7 = new global::Gtk.Label();
+            this.GtkLabel7.Name = "GtkLabel";
+            this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Logs</b>");
+            this.GtkLabel7.UseMarkup = true;
+            this.frame7.LabelWidget = this.GtkLabel7;
+            this.frame7.ShowAll();
         }
 
         public void Initialize()
@@ -758,17 +770,15 @@ namespace Client.Forms
             this.frame6 = new global::Gtk.Frame();
             this.frame6.Name = "frame1";
             this.frame6.ShadowType = ((global::Gtk.ShadowType)(0));
-            // Container child frame1.Gtk.Container+ContainerChild
             this.GtkAlignment6 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
             this.GtkAlignment6.Name = "GtkAlignment";
             this.GtkAlignment6.LeftPadding = ((uint)(12));
-            VBox vb01 = new VBox();
-            vb01.Name = "vb01";
-            vb01.Spacing = 2;
-            this.checkButton_request = new CheckButton();
+            this.vb01 = new VBox();
+            this.vb01.Name = "vb01";
+            this.vb01.Spacing = 2;
+            this.checkButton_request = new CheckButton("Request a confirmation for every system generated kickban");
             this.checkButton_request.CanFocus = true;
             this.checkButton_request.Name = "request";
-            this.checkButton_request.Label = "Request a confirmation for every system generated kickban";
             this.checkButton_request.DrawIndicator = true;
             this.checkButton_request.UseUnderline = true;
             this.checkButton_CTCP = new CheckButton();
@@ -777,17 +787,17 @@ namespace Client.Forms
             this.checkButton_CTCP.Label = "Display CTCP";
             this.checkButton_CTCP.DrawIndicator = true;
             this.checkButton_CTCP.UseUnderline = true;
-            vb01.Add(checkButton_CTCP);
-            global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(vb01[this.checkButton_CTCP]));
+            this.vb01.Add(checkButton_CTCP);
+            global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_CTCP]));
             w20.Position = 1;
             w20.Expand = false;
             w20.Fill = false;
-            vb01.Add(checkButton_request);
-            global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(vb01[this.checkButton_request]));
+            this.vb01.Add(checkButton_request);
+            global::Gtk.Box.BoxChild w60 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_request]));
             w60.Position = 1;
             w60.Expand = false;
             w60.Fill = false;
-            GtkAlignment6.Add(vb01);
+            this.GtkAlignment6.Add(vb01);
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();
             this.GtkLabel6.Name = "GtkLabel";
@@ -796,38 +806,7 @@ namespace Client.Forms
             this.frame6.LabelWidget = this.GtkLabel6;
             this.frame6.ShowAll();
 
-            this.frame7 = new global::Gtk.Frame();
-            this.frame7.Name = "frame1";
-            this.frame7.ShadowType = ((global::Gtk.ShadowType)(0));
-            // Container child frame1.Gtk.Container+ContainerChild
-            this.GtkAlignment7 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-            this.GtkAlignment7.Name = "GtkAlignment";
-            this.GtkAlignment7.LeftPadding = ((uint)(12));
             CreateLogs();
-            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-            this.frame7.Add(this.GtkAlignment7);
-            this.GtkLabel7 = new global::Gtk.Label();
-            this.GtkLabel7.Name = "GtkLabel";
-            this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Logs</b>");
-            this.GtkLabel7.UseMarkup = true;
-            this.frame7.LabelWidget = this.GtkLabel7;
-            this.frame7.ShowAll();
-
-            this.fSys = new global::Gtk.Frame();
-            this.fSys.Name = "frame1";
-            this.fSys.ShadowType = ((global::Gtk.ShadowType)(0));
-            // Container child frame1.Gtk.Container+ContainerChild
-            this.GtkAlignment8 = new global::Gtk.Alignment(0F, 0F, 1F, 1F);
-            this.GtkAlignment8.Name = "GtkAlignment";
-            this.GtkAlignment8.LeftPadding = ((uint)(12));
-            //this.GtkAlignment5.Add (this.GtkScrolledWindow5);
-            this.fSys.Add(this.GtkAlignment8);
-            this.GtkLabel8 = new global::Gtk.Label();
-            this.GtkLabel8.Name = "GtkLabel";
-            this.GtkLabel8.LabelProp = global::Mono.Unix.Catalog.GetString("<b>System</b>");
-            this.GtkLabel8.UseMarkup = true;
-            this.fSys.LabelWidget = this.GtkLabel8;
-            this.fSys.ShowAll();
         }
     }
 }

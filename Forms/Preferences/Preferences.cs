@@ -27,7 +27,8 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
-        public Preferences() : base(Gtk.WindowType.Toplevel)
+        public Preferences()
+            : base(Gtk.WindowType.Toplevel)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-        
+
         /// <summary>
         /// Prepare the control
         /// </summary>
@@ -73,7 +74,7 @@ namespace Client.Forms
             Gtk.CellRendererText c1 = new Gtk.CellRendererText();
             topic_item.Title = "Option";
             topic_item.PackStart(c1, true);
-            topic_item.AddAttribute    (c1, "text", 0);
+            topic_item.AddAttribute(c1, "text", 0);
             this.treeview1.AppendColumn(topic_item);
             this.treeview1.RowActivated += new RowActivatedHandler(s2);
             this.lcheckbutton3.Active = Configuration.Logs.logs_xml;
@@ -124,7 +125,7 @@ namespace Client.Forms
             combobox2.Active = selectedLanguage;
 
             ReloadHL();
-            
+
             item.AppendValues("IRC", 1);
             item.AppendValues("System", 2);
             item.AppendValues("Logs", 3);
@@ -140,7 +141,7 @@ namespace Client.Forms
 
         private void setWindow(Gtk.Frame frame)
         {
-            this.hbox1.Remove (widget);
+            this.hbox1.Remove(widget);
             widget = frame;
             this.hbox1.Add(widget);
         }
@@ -156,7 +157,7 @@ namespace Client.Forms
                 }
             }
         }
-        
+
         [GLib.ConnectBefore]
         private void s1(object sender, ButtonPressEventArgs e)
         {
@@ -165,13 +166,13 @@ namespace Client.Forms
                 Switch();
             }
         }
-        
+
         [GLib.ConnectBefore]
         private void s4(object sender, EventArgs e)
         {
             Switch();
         }
-        
+
         private void Switch()
         {
             try
@@ -182,7 +183,7 @@ namespace Client.Forms
                         setWindow(frame1);
                         break;
                     case 2:
-                        setWindow(fSys);
+                        setWindow(frame6);
                         break;
                     case 3:
                         setWindow(frame7);
@@ -200,18 +201,19 @@ namespace Client.Forms
                         setWindow(fExtensions);
                         break;
                 }
-            } catch (Exception fail)
+            }
+            catch (Exception fail)
             {
                 Core.handleException(fail);
             }
         }
-        
+
         [GLib.ConnectBefore]
         private void s2(object sender, RowActivatedArgs e)
         {
             Switch();
         }
-        
+
         public void RefreshModules()
         {
             Extensions.Clear();
@@ -259,19 +261,6 @@ namespace Client.Forms
         {
             try
             {
-                lock (Configuration.HighlighterList)
-                {
-                    //Configuration.HighlighterList.Clear();
-                    //foreach (ListViewItem curr in list.Items)
-                    {
-                       // Network.Highlighter hl = new Network.Highlighter();
-                       // hl.enabled = bool.Parse(curr.SubItems[1].Text);
-                       // hl.text = curr.Text;
-                       /// hl.simple = bool.Parse(curr.SubItems[2].Text);
-                       // Configuration.HighlighterList.Add(hl);
-                    }
-                }
-
                 Configuration.irc.ConfirmAll = checkButton_request.Active;
                 Configuration.UserData.nick = entry1.Text;
                 Configuration.UserData.quit = entry2.Text;
@@ -297,24 +286,6 @@ namespace Client.Forms
                 if (lradiobutton3.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.none;
-                }
-                lock (Ignoring.IgnoreList)
-                {
-                    //Ignoring.IgnoreList.Clear();
-                    //foreach (ListViewItem curr in listView4.Items)
-                    {
-                    //    Ignoring.Ignore.Type type = Ignoring.Ignore.Type.Everything;
-                    //    if (curr.SubItems[3].Text == "User")
-                    //    {
-                    //        type = Ignoring.Ignore.Type.User;
-                    //    }
-                    //    Ignoring.Ignore x = new Ignoring.Ignore(bool.Parse(curr.SubItems[2].Text), bool.Parse(curr.SubItems[1].Text), curr.Text, type);
-                    //    Ignoring.IgnoreList.Add(x);
-                    }
-                }
-                //if (Configuration.SL.Count >= comboBox1.SelectedIndex)
-                {
-                    //Configuration.CurrentSkin = Configuration.SL[comboBox1.SelectedIndex];
                 }
                 Core._Configuration.ConfigSave();
             }
@@ -383,14 +354,14 @@ namespace Client.Forms
         {
             //foreach (ListViewItem curr in list.SelectedItems)
             {
-            //    if (curr.SubItems[2].Text == "false")
-            //    {
-            //        curr.SubItems[2].Text = "true";
-            //    }
-            //    else
-            //    {
-            //        curr.SubItems[2].Text = "false";
-            //    }
+                //    if (curr.SubItems[2].Text == "false")
+                //    {
+                //        curr.SubItems[2].Text = "true";
+                //    }
+                //    else
+                //    {
+                //        curr.SubItems[2].Text = "false";
+                //    }
             }
 
         }
