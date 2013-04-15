@@ -90,11 +90,14 @@ namespace Client.Forms
         private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
         private GTK.Menu disableToolStripMenuItem = new GTK.Menu("Disable");
         private GTK.Menu addToolStripMenuItem1 = new GTK.Menu("Add");
+        private GTK.Menu addToolStripMenuItem = new GTK.Menu("Add");
+        private GTK.Menu addToolStripMenuItem2 = new GTK.Menu("Add");
         private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
         private GTK.Menu deleteToolStripMenuItem = new GTK.Menu("Delete");
         private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
         private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
         private GTK.Menu deleteToolStripMenuItem1 = new GTK.Menu("Delete");
+        private GTK.Menu deleteToolStripMenuItem2 = new GTK.Menu("Delete");
         private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
         private GTK.Menu disableToolStripMenuItem1 = new GTK.Menu("Disable");
         private GTK.Menu enableToolStripMenuItem1 = new GTK.Menu("Enable");
@@ -234,13 +237,23 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Extensions
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void EM(object sender, Gtk.PopupMenuArgs e)
         {
             try
             {
                 Gtk.Menu menu = new Menu();
 
-                MenuItem remove = new MenuItem(deleteToolStripMenuItem.Text);
+                MenuItem load = new MenuItem(loadModuleFromFileToolStripMenuItem.Text);
+                load.Activated += new EventHandler(loadModuleFromFileToolStripMenuItem_Click);
+                menu.Append(load);
+
+                MenuItem remove = new MenuItem(disableToolStripMenuItem.Text);
+                remove.Activated += new EventHandler(disableToolStripMenuItem_Click);
                 menu.Append(remove);
 
                 menu.ShowAll();
@@ -252,18 +265,37 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Highlights
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void HM(object sender, Gtk.PopupMenuArgs e)
         {
             try
             {
-                bool display = false;
                 Gtk.Menu menu = new Menu();
 
-                if (display)
-                {
-                    menu.ShowAll();
-                    menu.Popup();
-                }
+                Gtk.MenuItem make = new MenuItem(addToolStripMenuItem2.Text);
+
+                menu.Append(make);
+
+                Gtk.MenuItem remove = new MenuItem(deleteToolStripMenuItem2.Text);
+                remove.Activated += new EventHandler(deleteToolStripMenuItem2_Click);
+                menu.Append(remove);
+
+                menu.Append(new Gtk.SeparatorMenuItem());
+
+                Gtk.MenuItem m8 = new MenuItem(enableToolStripMenuItem.Text);
+                m8.Activated += new EventHandler(enableToolStripMenuItem1_Click);
+                menu.Append(m8);
+
+                Gtk.MenuItem m7 = new MenuItem(disableToolStripMenuItem.Text);
+                m7.Activated += new EventHandler(disableToolStripMenuItem1_Click);
+                menu.Append(m7);
+
+                menu.ShowAll();
+                menu.Popup();
             }
             catch (Exception fail)
             {
@@ -271,18 +303,57 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Ignores
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void IM(object sender, Gtk.PopupMenuArgs e)
         {
             try
             {
-                bool display = false;
                 Gtk.Menu menu = new Menu();
 
-                if (display)
-                {
-                    menu.ShowAll();
-                    menu.Popup();
-                }
+                Gtk.MenuItem m3 = new MenuItem(addToolStripMenuItem1.Text);
+                m3.Activated += new EventHandler(addToolStripMenuItem_Click);
+                menu.Append(m3);
+
+                Gtk.MenuItem m4 = new MenuItem(deleteToolStripMenuItem1.Text);
+                m4.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
+                menu.Append(m4);
+
+                menu.Append(new Gtk.SeparatorMenuItem());
+
+                Gtk.MenuItem m5 = new MenuItem(simpleToolStripMenuItem1.Text);
+                m5.Activated += new EventHandler(simpleToolStripMenuItem1_Click);
+                menu.Append(m5);
+
+                Gtk.MenuItem m6 = new MenuItem(regexToolStripMenuItem.Text);
+                m6.Activated += new EventHandler(regexToolStripMenuItem_Click);
+                menu.Append(m6);
+
+                menu.Append(new Gtk.SeparatorMenuItem());
+
+                Gtk.MenuItem m1 = new MenuItem(matchingOnlyUserStringToolStripMenuItem.Text);
+                m1.Activated += new EventHandler(matchingOnlyUserStringToolStripMenuItem_Click);
+                menu.Append(m1);
+
+                Gtk.MenuItem m2 = new MenuItem(matchingTextInWindowToolStripMenuItem.Text);
+                m2.Activated += new EventHandler(matchingTextInWindowToolStripMenuItem_Click);
+                menu.Append(m2);
+
+                menu.Append(new Gtk.SeparatorMenuItem());
+
+                Gtk.MenuItem m8 = new MenuItem(enableToolStripMenuItem.Text);
+                m8.Activated += new EventHandler(enableToolStripMenuItem_Click);
+                menu.Append(m8);
+
+                Gtk.MenuItem m7 = new MenuItem(disableToolStripMenuItem.Text);
+                m7.Activated += new EventHandler(disableToolStripMenuItem_Click);
+                menu.Append(m7);
+
+                menu.ShowAll();
+                menu.Popup();
             }
             catch (Exception fail)
             {
@@ -290,18 +361,27 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Shortcuts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void SM(object sender, Gtk.PopupMenuArgs e)
         {
             try
             {
-                bool display = false;
                 Gtk.Menu menu = new Menu();
 
-                if (display)
-                {
-                    menu.ShowAll();
-                    menu.Popup();
-                }
+                Gtk.MenuItem make = new MenuItem(addToolStripMenuItem.Text);
+
+                menu.Append(make);
+
+                Gtk.MenuItem remove = new MenuItem(deleteToolStripMenuItem.Text);
+                remove.Activated += new EventHandler(deleteToolStripMenuItem_Click);
+                menu.Append(remove);
+
+                menu.ShowAll();
+                menu.Popup();
             }
             catch (Exception fail)
             {

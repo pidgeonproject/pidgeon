@@ -106,9 +106,11 @@
     <Compile Include="Forms\Channel_Info.Designer.cs">
       <DependentUpon>Channel_Info.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Preferences.Designer.cs">
+    <Compile Include="Forms\Preferences\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Preferences\Ignore.cs" />
+    <Compile Include="Forms\Preferences\Shortcut.cs" />
     <Compile Include="gtk-gui\generated.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />
@@ -163,7 +165,7 @@
     <Compile Include="Forms\Main.cs" />
     <Compile Include="gtk-gui\Client.Forms.Main.cs" />
     <Compile Include="User.cs" />
-    <Compile Include="Forms\Preferences.cs" />
+    <Compile Include="Forms\Preferences\Preferences.cs" />
     <Compile Include="gtk-gui\Client.Forms.Preferences.cs" />
     <Compile Include="Forms\Channels.cs" />
     <Compile Include="Forms\TrafficScanner.cs" />

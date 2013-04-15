@@ -123,10 +123,7 @@ namespace Client.Forms
             }
             combobox2.Active = selectedLanguage;
 
-            foreach (Network.Highlighter highlight in Configuration.HighlighterList)
-            {
-                Highlights.AppendValues(highlight.text, (!highlight.simple).ToString (), highlight.enabled.ToString(), highlight);
-            }
+            ReloadHL();
             
             item.AppendValues("IRC", 1);
             item.AppendValues("System", 2);
@@ -147,7 +144,18 @@ namespace Client.Forms
             widget = frame;
             this.hbox1.Add(widget);
         }
-        
+
+        public void ReloadHL()
+        {
+            Highlights.Clear();
+            lock (Configuration.HighlighterList)
+            {
+                foreach (Network.Highlighter highlight in Configuration.HighlighterList)
+                {
+                    Highlights.AppendValues(highlight.text, (!highlight.simple).ToString(), highlight.enabled.ToString(), highlight);
+                }
+            }
+        }
         
         [GLib.ConnectBefore]
         private void s1(object sender, ButtonPressEventArgs e)
@@ -339,21 +347,6 @@ namespace Client.Forms
             }
         }
 
-        private void removeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //    foreach (ListViewItem curr in list.SelectedItems)
-                    {
-                //        list.Items.Remove(curr);
-                    }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
         private void addToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -372,9 +365,17 @@ namespace Client.Forms
 
         private void enableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in list.SelectedItems)
+            try
             {
-            //    curr.SubItems[1].Text = "true";
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.Enabled = true;
+                }
+                ReloadIgnores();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
@@ -396,10 +397,18 @@ namespace Client.Forms
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in list.SelectedItems)
-            //{
-            //    curr.SubItems[1].Text = "false";
-            //}
+            try
+            {
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.Enabled = false;
+                }
+                ReloadIgnores();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void addToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -426,34 +435,40 @@ namespace Client.Forms
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (listView2.SelectedItems.Count > 0)
-            //{
-            //    foreach (ListViewItem curr in listView2.SelectedItems)
-            //    {
-            //        if (Configuration.ShortcutKeylist.Count > curr.Index)
-            //        {
-            //            Configuration.ShortcutKeylist.RemoveAt(curr.Index);
-            //        }
-                    redrawS();
-            //    }
-            //}
+            try
+            {
+                foreach (Core.Shortcut x in SelectedShorts)
+                {
+                    lock (Configuration.ShortcutKeylist)
+                    {
+                        Configuration.ShortcutKeylist.Remove(x);
+                    }
+                }
+                redrawS();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void loadModuleFromFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                //if (openFileDialog1.ShowDialog() != System.Windows.Forms.DialogResult.Cancel)
-                //{
-                //    if (openFileDialog1.FileName != "")
-                //    {
-                //        Core.RegisterPlugin(openFileDialog1.FileName);
-                //    }
-                //    else
-                //    {
-                //        Core.DebugLog("Preferences: provided invalid file name");
-                //    }
-                //}
+                Gtk.FileChooserDialog dialog = new FileChooserDialog("Load module", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
+                if (dialog.Run() == (int)ResponseType.Accept)
+                {
+                    if (dialog.Filename != "")
+                    {
+                        Core.RegisterPlugin(dialog.Filename);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Preferences: provided invalid file name");
+                    }
+                }
+                dialog.Destroy();
                 RefreshModules();
             }
             catch (Exception fail)
@@ -464,20 +479,50 @@ namespace Client.Forms
 
         private void unloadModuleToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (listView3.SelectedItems != null && listView3.SelectedItems[0] != null)
-            //{
-            //    string name = listView3.SelectedItems[0].Text;
-            //}
+            foreach (Extension x in SelectedExtensions)
+            {
+                x.Exit();
+            }
+            RefreshModules();
+        }
+
+        private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Network.Highlighter c in SelectedHs)
+                {
+                    lock (Configuration.HighlighterList)
+                    {
+                        if (Configuration.HighlighterList.Contains(c))
+                        {
+                            Configuration.HighlighterList.Remove(c);
+                        }
+                    }
+                }
+                ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             try
             {
-                //foreach (ListViewItem x in listView4.SelectedItems)
-                //{
-                //    listView4.Items.Remove(x);
-                //}
+                foreach (Ignoring.Ignore x in SelectedIgnore)
+                {
+                    lock (Ignoring.IgnoreList)
+                    {
+                        if (Ignoring.IgnoreList.Contains(x))
+                        {
+                            Ignoring.IgnoreList.Remove(x);
+                        }
+                    }
+                }
+                ReloadIgnores();
             }
             catch (Exception fail)
             {
@@ -489,12 +534,12 @@ namespace Client.Forms
         {
             try
             {
-                //ListViewItem item = new ListViewItem();
-                //item.Text = "someone_bad";
-                //item.SubItems.Add("true");
-                //item.SubItems.Add("false");
-                //item.SubItems.Add("User");
-                //listView4.Items.Add(item);
+                Ignoring.Ignore item = new Ignoring.Ignore(false, true, "someone_bad", Ignoring.Ignore.Type.User);
+                lock (Ignoring.IgnoreList)
+                {
+                    Ignoring.IgnoreList.Add(item);
+                }
+                ReloadIgnores();
             }
             catch (Exception fail)
             {
@@ -504,50 +549,98 @@ namespace Client.Forms
 
         private void disableToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[2].Text = "false";
-            //}
+            try
+            {
+                foreach (Network.Highlighter x in SelectedHs)
+                {
+                    x.enabled = false;
+                }
+                ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void enableToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[2].Text = "true";
-            //}
+            try
+            {
+                foreach (Network.Highlighter x in SelectedHs)
+                {
+                    x.enabled = true;
+                }
+                ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void simpleToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[1].Text = "true";
-            //}
+            try
+            {
+                foreach (Network.Highlighter x in SelectedHs)
+                {
+                    x.simple = true;
+                }
+                ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void regexToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[1].Text = "false";
-            //}
+            try
+            {
+                foreach (Network.Highlighter x in SelectedHs)
+                {
+                    x.simple = false;
+                }
+                ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void matchingOnlyUserStringToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[3].Text = "User";
-            //}
+            try
+            {
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.type = Ignoring.Ignore.Type.User;
+                }
+                ReloadIgnores();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void matchingTextInWindowToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //foreach (ListViewItem curr in listView4.SelectedItems)
-            //{
-            //    curr.SubItems[3].Text = "Everything";
-            //}
+            try
+            {
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.type = Ignoring.Ignore.Type.Everything;
+                }
+                ReloadIgnores();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
     }
 }
