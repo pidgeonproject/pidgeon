@@ -186,7 +186,7 @@ namespace Client.Forms
             string list = "";
             foreach (string item in SelectedData)
             {
-                list += item + "\n";
+                list += item + Environment.NewLine;
             }
             System.Windows.Forms.Clipboard.SetText(list);
         }
