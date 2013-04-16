@@ -358,7 +358,6 @@ namespace Client.Forms
         {
             try
             {
-                //timerBans.Enabled = true;
                 channel.ReloadBans();
             }
             catch (Exception fail)

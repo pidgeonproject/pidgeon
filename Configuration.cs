@@ -201,6 +201,7 @@ namespace Client
             /// Require confirmation from user before exiting
             /// </summary>
             public static bool ShutdownCheck = true;
+            public static bool Profiler = false;
         }
 
         public class Memory

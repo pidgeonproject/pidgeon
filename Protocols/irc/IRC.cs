@@ -175,6 +175,20 @@ namespace Client
             return false;
         }
 
+        public bool ProfiledResult()
+        {
+            if (Configuration.Kernel.Profiler)
+            {
+                System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
+                stop.Start();
+                bool result = Result();
+                stop.Stop();
+                Console.WriteLine("PROFILER IRC.Result() took: " + stop.ElapsedMilliseconds.ToString());
+                return result;
+            }
+            return Result();
+        }
+
         public bool Result()
         {
             string last = "";
@@ -256,6 +270,12 @@ namespace Client
                                 {
                                     return true;
                                 }
+                                break;
+                            case "305":
+                                _Network.IsAway = false;
+                                break;
+                            case "306":
+                                _Network.IsAway = true;
                                 break;
                             case "317":
                                 if (Configuration.irc.FriendlyWhois)

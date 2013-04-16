@@ -281,7 +281,7 @@ namespace Client
                     text = _StreamReader.ReadLine();
                     Core.trafficscanner.insert(Server, " >> " + text);
                     ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
-                    processor.Result();
+                    processor.ProfiledResult();
                     pong = processor.pong;
                 }
             }

@@ -150,6 +150,12 @@ namespace Client
 
         private void Redraw()
         {
+            System.Diagnostics.Stopwatch profiler = null;
+            if (Configuration.Kernel.Profiler)
+            {
+                profiler = new System.Diagnostics.Stopwatch();
+                profiler.Start();
+            }
             lock (richTextBox.Buffer.Text)
             {
                 richTextBox.Buffer.Text = "";
@@ -160,6 +166,11 @@ namespace Client
                         DrawLine(curr);
                     }
                 }
+            }
+            if (Configuration.Kernel.Profiler)
+            {
+                profiler.Stop();
+                Console.WriteLine("PROFILER RichTBox.Redraw() took: " + profiler.ElapsedMilliseconds.ToString());
             }
         }
     }

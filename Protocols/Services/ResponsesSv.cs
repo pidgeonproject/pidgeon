@@ -204,11 +204,11 @@ namespace Client
                         }
                     }
                     processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
-                    processor.Result();
+                    processor.ProfiledResult();
                     return;
                 }
                 processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
-                processor.Result();
+                processor.ProfiledResult();
             }
 
             public static void sNick(XmlNode curr, ProtocolSv protocol)

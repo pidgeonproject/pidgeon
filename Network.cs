@@ -63,6 +63,10 @@ namespace Client
         }
 
         /// <summary>
+        /// Message that is shown to users when you are away
+        /// </summary>
+        public string AwayMessage = null;
+        /// <summary>
         /// User modes
         /// </summary>
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
@@ -186,6 +190,7 @@ namespace Client
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
+        public bool IsAway = false;
         public bool isLoaded = false;
         private bool destroyed = false;
         public bool IsConnected
