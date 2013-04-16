@@ -38,6 +38,7 @@ namespace Client.Forms
         private global::Gtk.ComboBox combobox2;
         private global::Gtk.Button buttonCancel;
         private global::Gtk.Button buttonOk;
+        private Gtk.ListStore keys = new ListStore(typeof(string));
 
         public void Click1(object sender, EventArgs e)
         {
@@ -47,11 +48,64 @@ namespace Client.Forms
 
         public void Click2(object sender, EventArgs e)
         {
-            
+            try
+            {
+                Core.Shortcut xx = new Core.Shortcut(Core.parseKey(combobox2.ActiveText),
+                    checkbutton2.Active,
+                    checkbutton3.Active,
+                    checkbutton4.Active,
+                    entry2.Text);
+                lock (Configuration.ShortcutKeylist)
+                {
+                    Configuration.ShortcutKeylist.Add(xx);
+                }
+                this.Hide();
+                Core._Main.fPrefs.redrawS();
+                this.Destroy();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         public void Build()
         {
+            keys.AppendValues("a");
+            keys.AppendValues("b");
+            keys.AppendValues("c");
+            keys.AppendValues("d");
+            keys.AppendValues("e");
+            keys.AppendValues("f");
+            keys.AppendValues("g");
+            keys.AppendValues("h");
+            keys.AppendValues("i");
+            keys.AppendValues("j");
+            keys.AppendValues("k");
+            keys.AppendValues("l");
+            keys.AppendValues("m");
+            keys.AppendValues("n");
+            keys.AppendValues("o");
+            keys.AppendValues("p");
+            keys.AppendValues("q");
+            keys.AppendValues("r");
+            keys.AppendValues("s");
+            keys.AppendValues("t");
+            keys.AppendValues("u");
+            keys.AppendValues("v");
+            keys.AppendValues("w");
+            keys.AppendValues("y");
+            keys.AppendValues("x");
+            keys.AppendValues("z");
+            keys.AppendValues("0");
+            keys.AppendValues("1");
+            keys.AppendValues("2");
+            keys.AppendValues("3");
+            keys.AppendValues("4");
+            keys.AppendValues("5");
+            keys.AppendValues("6");
+            keys.AppendValues("7");
+            keys.AppendValues("8");
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
@@ -129,8 +183,10 @@ namespace Client.Forms
             w7.Position = 2;
             // Container child hbox2.Gtk.Box+BoxChild
             this.combobox2 = global::Gtk.ComboBox.NewText();
-            this.combobox2.WidthRequest = 200;
+            this.combobox2.WidthRequest = 80;
+            combobox2.Model = keys;
             this.combobox2.Name = "combobox2";
+            this.combobox2.Active = 0;
             this.hbox2.Add(this.combobox2);
             global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.hbox2[this.combobox2]));
             w8.Position = 3;
