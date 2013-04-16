@@ -58,13 +58,6 @@ namespace Client
                 }
             }
             RT.InsertLine(CreateLine(line));
-            if (Draw)
-            {
-                if (ScrollingEnabled)
-                {
-                    RT.ScrollToBottom();
-                }
-            }
 
             Changed = false;
         }
@@ -116,6 +109,11 @@ namespace Client
 
         public bool Reload(bool fast = false, bool enforce = false)
         {
+            if (IsDestroyed)
+            {
+                return false;
+            }
+
             if (!enforce && !Changed)
             {
                 return false;
@@ -180,10 +178,6 @@ namespace Client
                 }
 
                 RT.RedrawText();
-                if (ScrollingEnabled)
-                {
-                    RT.ScrollToBottom();
-                }
                 return true;
             }
             return false;
@@ -297,8 +291,6 @@ namespace Client
                 }
                 return true;
             }
-
-            ResetScrolling();
 
             if (owner != null && owner.MicroBox)
             {

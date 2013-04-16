@@ -44,7 +44,7 @@ namespace Client
         public static List<NetworkInfo> Networks = new List<NetworkInfo>();
 
         public enum ProtocolType
-        { 
+        {
             IRC,
             Services,
             Quassel,

@@ -63,6 +63,10 @@ namespace Client.Graphics
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
+        private object ObjectStore = null;
+        private TreeIter IterStore;
+        private bool ResultStore = true;
+
         /// <summary>
         /// Gets a value indicating whether this instance is empty.
         /// </summary>
@@ -190,9 +194,46 @@ namespace Client.Graphics
             {
                 if (ChannelList.ContainsKey(channel))
                 {
-                    TreeIter tree = getIter(channel);
-                    Values.Remove(ref tree);
+                    KeyValuePair<TreeIter, bool> result = getIter(channel);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + channel.Name);
+                    }
                     ChannelList.Remove(channel);
+                }
+            }
+        }
+
+        public void RemoveServer(Network server)
+        {
+            lock (queueNetwork)
+            {
+                if (queueNetwork.Contains(server))
+                {
+                    queueNetwork.Remove(server);
+                }
+            }
+
+            lock (ServerList)
+            {
+                if (ServerList.ContainsKey(server))
+                {
+                    KeyValuePair<TreeIter, bool> result = getIter(server);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + server.ServerName);
+                    }
+                    ServerList.Remove(server);
                 }
             }
         }
@@ -214,8 +255,16 @@ namespace Client.Graphics
             {
                 if (UserList.ContainsKey(user))
                 {
-                    TreeIter tree = UserList[user];
-                    Values.Remove(ref tree);
+                    KeyValuePair<TreeIter, bool> result = getIter(user);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + user.Nick);
+                    }
                     UserList.Remove(user);
                 }
             }
@@ -227,20 +276,35 @@ namespace Client.Graphics
             tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
 
-        public TreeIter getIter(object item)
+        private bool feIter(TreeModel model, TreePath path, TreeIter iter)
         {
-            TreeIter iter = new TreeIter();
-            if (Values.GetIterFirst(out iter))
+            if (Values.GetValue(iter, 1) == ObjectStore)
             {
-                while (Values.IterNext(ref iter))
-                {
-                    if (Values.GetValue(iter, 1) == item)
-                    {
-                        return iter;
-                    }
-                }
+                ResultStore = true;
+                IterStore = iter;
+                return true;
             }
-            return iter;
+            return false;
+        }
+
+        /// <summary>
+        /// This function return iter and true in case that the iter is found, if not it return some random iter and false
+        /// It's ugly shit because the creator of gtk# decided to disallow doing it pretty way
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns></returns>
+        public KeyValuePair<TreeIter, bool> getIter(object item)
+        {
+            lock (this)
+            {
+                ObjectStore = item;
+                IterStore = new TreeIter();
+                ResultStore = false;
+                Values.Foreach(feIter);
+                ObjectStore = null;
+
+                return new KeyValuePair<TreeIter, bool>(IterStore, ResultStore);
+            }
         }
 
         /// <summary>
@@ -634,8 +698,16 @@ namespace Client.Graphics
                     if (d.IsDestroyed)
                     {
                         removedUser.Add(d);
-                        TreeIter tree = getIter(d);
-                        Values.Remove(ref tree);
+                        KeyValuePair<TreeIter, bool> result = getIter(d);
+                        if (result.Value)
+                        {
+                            TreeIter tree = result.Key;
+                            Values.Remove(ref tree);
+                        }
+                        else
+                        {
+                            Core.DebugLog("Can't remove user from sidebar because there is no reference " + d.Nick);
+                        }
                     }
                 }
                 foreach (User d in removedUser)
@@ -658,8 +730,16 @@ namespace Client.Graphics
                     if (d.IsDestroyed)
                     {
                         removedChan.Add(d);
-                        TreeIter tree = getIter(d);
-                        Values.Remove(ref tree);
+                        KeyValuePair<TreeIter, bool> result = getIter(d);
+                        if (result.Value)
+                        {
+                            TreeIter tree = result.Key;
+                            Values.Remove(ref tree);
+                        }
+                        else
+                        {
+                            Core.DebugLog("unable to remove network from list " + d.ServerName);
+                        }
                     }
                 }
                 foreach (Network d in removedChan)
@@ -682,8 +762,16 @@ namespace Client.Graphics
                     if (d.IsDestroyed)
                     {
                         removedChan.Add(d);
-                        TreeIter tree = getIter(d);
-                        Values.Remove(ref tree);
+                        KeyValuePair<TreeIter, bool> result = getIter(d);
+                        if (result.Value)
+                        {
+                            TreeIter tree = result.Key;
+                            Values.Remove(ref tree);
+                        }
+                        else
+                        {
+                            Core.DebugLog("unable to remove channel from sidebar " + d.Name);
+                        }
                     }
                 }
                 foreach (Channel d in removedChan)
@@ -840,16 +928,8 @@ namespace Client.Graphics
 
                     Updated = true;
 
-                    lock (ServerList)
-                    {
-                        if (ServerList.ContainsKey(network))
-                        {
-                            TreeIter iter = ServerList[network];
-                            removed = true;
-                            Values.Remove(ref iter);
-                            ServerList.Remove(network);
-                        }
-                    }
+                    RemoveServer(network);
+                    removed = true;
                     break;
                 case ItemType.User:
                     User user = (User)Item;
@@ -885,16 +965,8 @@ namespace Client.Graphics
                         }
                     }
 
-                    lock (UserList)
-                    {
-                        if (UserList.ContainsKey(user))
-                        {
-                            TreeIter iter = UserList[user];
-                            Values.Remove(ref iter);
-                            removed = true;
-                            UserList.Remove(user);
-                        }
-                    }
+                    RemoveUser(user);
+                    removed = true;
                     break;
                 case ItemType.Channel:
                     Channel channel = (Channel)Item;
@@ -926,16 +998,8 @@ namespace Client.Graphics
                         }
                     }
 
-                    lock (ChannelList)
-                    {
-                        if (ChannelList.ContainsKey(channel))
-                        {
-                            TreeIter iter = ChannelList[channel];
-                            Values.Remove(ref iter);
-                            removed = true;
-                            ChannelList.Remove(channel);
-                        }
-                    }
+                    RemoveChannel(channel);
+                    removed = true;
                     break;
             }
 
@@ -963,7 +1027,7 @@ namespace Client.Graphics
                             {
                                 if (item.IsConnected)
                                 {
-                                    ServerList.Remove(item);
+                                    RemoveServer(item);
                                     item.Disconnect();
                                 }
                                 else

@@ -567,6 +567,8 @@ namespace Client
             {
                 Descriptions.Clear();
             }
+
+            Core._Main.ChannelList.RemoveServer(this);
         }
 
         /// <summary>

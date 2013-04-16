@@ -38,7 +38,6 @@ namespace Client.Forms
         private global::Gtk.Frame frame5;
         private global::Gtk.Alignment GtkAlignment4;
         private global::Gtk.ScrolledWindow GtkScrolledWindow1;
-        private global::Gtk.TreeView treeview1;
         private global::Gtk.Label GtkLabel4;
         private global::Gtk.Button button1;
         private global::Gtk.Label label1;

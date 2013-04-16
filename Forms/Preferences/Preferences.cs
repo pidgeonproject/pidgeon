@@ -306,7 +306,7 @@ namespace Client.Forms
             Hide();
         }
 
-        private void ReloadIgnores()
+        public void ReloadIgnores()
         {
             lock (Ignoring.IgnoreList)
             {
@@ -336,6 +336,20 @@ namespace Client.Forms
             try
             {
                 Preferences_Shortcut dialog = new Preferences_Shortcut();
+                dialog.Build();
+                dialog.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void addToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Preferences_Hl dialog = new Preferences_Hl();
                 dialog.Show();
             }
             catch (Exception fail)
@@ -358,22 +372,6 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-        }
-
-        private void simpleToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //foreach (ListViewItem curr in list.SelectedItems)
-            {
-                //    if (curr.SubItems[2].Text == "false")
-                //    {
-                //        curr.SubItems[2].Text = "true";
-                //    }
-                //    else
-                //    {
-                //        curr.SubItems[2].Text = "false";
-                //    }
-            }
-
         }
 
         private void disableToolStripMenuItem_Click(object sender, EventArgs e)
@@ -559,6 +557,38 @@ namespace Client.Forms
                     x.simple = true;
                 }
                 ReloadHL();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void simpleToolStripMenuItemIgnore_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.Simple = true;
+                }
+                ReloadIgnores();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void regexToolStripMenuItemIgnore_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                foreach (Ignoring.Ignore curr in SelectedIgnore)
+                {
+                    curr.Simple = false;
+                }
+                ReloadIgnores();
             }
             catch (Exception fail)
             {

@@ -29,7 +29,6 @@ namespace Client
     {
         public Scrollback scrollback = null;
         private Font font;
-        private double textSize = 2;
         private string text = null;
         private System.Drawing.Color foreColor;
         private System.Drawing.Color backColor;
@@ -102,6 +101,7 @@ namespace Client
             this.richTextBox.Editable = false;
             this.richTextBox.Name = "richTextBox";
             this.richTextBox.AcceptsTab = true;
+            this.richTextBox.SizeAllocated += new SizeAllocatedHandler(Scroll2);
             richTextBox.WrapMode = WrapMode.Word;
             this.GtkScrolledWindow.Add(this.richTextBox);
             this.Add(this.GtkScrolledWindow);
@@ -133,22 +133,25 @@ namespace Client
             DrawLine(line);
         }
 
-        [Obsolete]
         public void RedrawText()
         {
             Redraw();
         }
 
-        public void ScrollToBottom()
+        private void Scroll2(object sender, SizeAllocatedArgs e)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
                 throw new Exception("You can't call this function from different thread");
             }
-            lock (richTextBox.Buffer.Text)
+            if (scrollback == null || scrollback.IsDestroyed)
             {
-                TextIter iter = richTextBox.Buffer.EndIter;
-                richTextBox.ScrollToIter(iter, 0, true, 0, 0);
+                Core.DebugLog("Called ScrollToBottom on NULL scrollback");
+                return;
+            }
+            if (scrollback.ScrollingEnabled)
+            {
+                richTextBox.ScrollToIter(richTextBox.Buffer.EndIter, 0, false, 0, 0);
             }
         }
     }

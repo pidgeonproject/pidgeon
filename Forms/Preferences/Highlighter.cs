@@ -25,20 +25,18 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public class Preferences_Ignore : Gtk.Dialog
+    public class Preferences_Hl : Gtk.Dialog
     {
         private global::Gtk.Table table1;
         public global::Gtk.CheckButton checkbutton1;
-        private global::Gtk.ComboBox combobox1;
         private global::Gtk.Entry entry1;
         private global::Gtk.Label label1;
-        private global::Gtk.Label label2;
         private global::Gtk.Button buttonCancel;
         private global::Gtk.Button buttonOk;
 
         public ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
 
-        public Preferences_Ignore()
+        public Preferences_Hl()
         {
             this.Build();
         }
@@ -53,18 +51,15 @@ namespace Client.Forms
         {
             try
             {
-                Ignoring.Ignore.Type type = Ignoring.Ignore.Type.Everything;
-                if (combobox1.Active == 1)
+                Network.Highlighter hl = new Network.Highlighter();
+                hl.enabled = true;
+                hl.simple = !checkbutton1.Active;
+                hl.text = entry1.Text;
+                lock (Configuration.HighlighterList)
                 {
-                    type = Ignoring.Ignore.Type.User;
+                    Configuration.HighlighterList.Add(hl);
                 }
-                Ignoring.Ignore ignore = new Ignoring.Ignore(true, !checkbutton1.Active, entry1.Text, type);
-
-                lock (Ignoring.IgnoreList)
-                {
-                    Ignoring.IgnoreList.Add(ignore);
-                }
-                Core._Main.fPrefs.ReloadIgnores();
+                Core._Main.fPrefs.ReloadHL();
                 this.Hide();
                 Destroy();
             }
@@ -79,7 +74,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
-            this.Title = global::Mono.Unix.Catalog.GetString("Add new ignore");
+            this.Title = global::Mono.Unix.Catalog.GetString("Add new highlight");
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
@@ -105,21 +100,10 @@ namespace Client.Forms
             w2.XOptions = ((global::Gtk.AttachOptions)(4));
             w2.YOptions = ((global::Gtk.AttachOptions)(4));
             // Container child table1.Gtk.Table+TableChild
-            this.combobox1 = global::Gtk.ComboBox.NewText();
-            this.combobox1.Name = "combobox1";
-            this.table1.Add(this.combobox1);
-            global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1[this.combobox1]));
-            w3.TopAttach = ((uint)(2));
-            w3.BottomAttach = ((uint)(3));
-            w3.LeftAttach = ((uint)(1));
-            w3.RightAttach = ((uint)(2));
-            w3.XOptions = ((global::Gtk.AttachOptions)(4));
-            w3.YOptions = ((global::Gtk.AttachOptions)(4));
-            // Container child table1.Gtk.Table+TableChild
             this.entry1 = new global::Gtk.Entry();
             this.entry1.WidthRequest = 620;
             this.entry1.CanFocus = true;
-            this.entry1.Text = "Manager|Idiot";
+            this.entry1.Text = "$nick!$ident@$host.*$name";
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
             this.entry1.InvisibleChar = '●';
@@ -137,16 +121,6 @@ namespace Client.Forms
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.label1]));
             w5.XOptions = ((global::Gtk.AttachOptions)(4));
             w5.YOptions = ((global::Gtk.AttachOptions)(4));
-            // Container child table1.Gtk.Table+TableChild
-            this.label2 = new global::Gtk.Label();
-            this.label2.Name = "label2";
-            this.label2.LabelProp = global::Mono.Unix.Catalog.GetString("Type");
-            this.table1.Add(this.label2);
-            global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1[this.label2]));
-            w6.TopAttach = ((uint)(2));
-            w6.BottomAttach = ((uint)(3));
-            w6.XOptions = ((global::Gtk.AttachOptions)(4));
-            w6.YOptions = ((global::Gtk.AttachOptions)(4));
             w1.Add(this.table1);
             global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(w1[this.table1]));
             w7.Position = 0;

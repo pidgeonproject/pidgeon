@@ -47,7 +47,7 @@ namespace Client
         private string Link = "";
         public bool simple = true;
         private DateTime lastDate;
-        private bool ScrollingEnabled = true;
+        public bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
         public bool isMicro = false;
@@ -58,8 +58,6 @@ namespace Client
         private GLib.TimeoutHandler timer2;
         public RichTBox RT = null;
         public string SelectedLink = null;
-        private int ScrollTime = 0;
-        public bool Scrolling = true;
         private bool destroyed = false;
         private bool running = false;
 
@@ -151,6 +149,7 @@ namespace Client
             this.simpleview.WrapMode = Gtk.WrapMode.Word;
             this.Visible = true;
             this.simpleview.Name = "simpleview";
+            this.simpleview.SizeAllocated += new Gtk.SizeAllocatedHandler(Scroll2);
             this.simpleview.Editable = false;
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
@@ -215,6 +214,18 @@ namespace Client
             }
             ReloadWaiting = true;
             Changed = true;
+        }
+
+        private void Scroll2(object sender, Gtk.SizeAllocatedArgs e)
+        {
+            if (IsDestroyed)
+            {
+                return;
+            }
+            if (ScrollingEnabled)
+            {
+                simpleview.ScrollToIter(simpleview.Buffer.EndIter, 0, false, 0, 0);
+            }
         }
 
         /// <summary>
@@ -316,7 +327,6 @@ namespace Client
             {
                 ContentLines.Clear();
             }
-            RT.Destroy();
             simpleview.Destroy();
             RT = null;
             owner = null;
@@ -333,12 +343,6 @@ namespace Client
                 return true;
             }
             return false;
-        }
-
-        private void ResetScrolling()
-        {
-            ScrollTime = 0;
-            Scrolling = true;
         }
 
         public bool RestoreOffset()
@@ -369,28 +373,6 @@ namespace Client
                 }
                 if (WindowVisible())
                 {
-                    if (ScrollingEnabled && Scrolling)
-                    {
-                        if (ScrollTime < 10)
-                        {
-                            ScrollTime++;
-                            if (simple)
-                            {
-                                lock (simpleview.Buffer.Text)
-                                {
-                                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-                                }
-                            }
-                            if (!simple)
-                            {
-                                RT.ScrollToBottom();
-                            }
-                        }
-                        else
-                        {
-                            Scrolling = false;
-                        }
-                    }
                     lock (UndrawnLines)
                     {
                         if (!ReloadWaiting)

@@ -87,18 +87,12 @@ namespace Client.Forms
         private GTK.Menu enableToolStripMenuItem = new GTK.Menu("Enable");
         private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
         private GTK.Menu disableToolStripMenuItem = new GTK.Menu("Disable");
-        private GTK.Menu addToolStripMenuItem1 = new GTK.Menu("Add");
         private GTK.Menu addToolStripMenuItem = new GTK.Menu("Add");
-        private GTK.Menu addToolStripMenuItem2 = new GTK.Menu("Add");
         private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
         private GTK.Menu deleteToolStripMenuItem = new GTK.Menu("Delete");
         private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
         private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
-        private GTK.Menu deleteToolStripMenuItem1 = new GTK.Menu("Delete");
-        private GTK.Menu deleteToolStripMenuItem2 = new GTK.Menu("Delete");
         private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
-        private GTK.Menu disableToolStripMenuItem1 = new GTK.Menu("Disable");
-        private GTK.Menu enableToolStripMenuItem1 = new GTK.Menu("Enable");
         private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu("Simple");
         private GTK.Menu regexToolStripMenuItem = new GTK.Menu("Regex");
         private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu("Matching text");
@@ -274,15 +268,22 @@ namespace Client.Forms
             {
                 Gtk.Menu menu = new Menu();
 
-                Gtk.MenuItem make = new MenuItem(addToolStripMenuItem2.Text);
-
+                Gtk.MenuItem make = new MenuItem(addToolStripMenuItem.Text);
+                make.Activated += new EventHandler(addToolStripMenuItem2_Click);
                 menu.Append(make);
-
-                Gtk.MenuItem remove = new MenuItem(deleteToolStripMenuItem2.Text);
+                Gtk.MenuItem remove = new MenuItem(deleteToolStripMenuItem.Text);
                 remove.Activated += new EventHandler(deleteToolStripMenuItem2_Click);
                 menu.Append(remove);
 
                 menu.Append(new Gtk.SeparatorMenuItem());
+
+                Gtk.MenuItem m5 = new MenuItem(simpleToolStripMenuItem1.Text);
+                m5.Activated += new EventHandler(simpleToolStripMenuItem1_Click);
+                menu.Append(m5);
+
+                Gtk.MenuItem m6 = new MenuItem(regexToolStripMenuItem.Text);
+                m6.Activated += new EventHandler(regexToolStripMenuItem_Click);
+                menu.Append(m6);
 
                 Gtk.MenuItem m8 = new MenuItem(enableToolStripMenuItem.Text);
                 m8.Activated += new EventHandler(enableToolStripMenuItem1_Click);
@@ -312,22 +313,22 @@ namespace Client.Forms
             {
                 Gtk.Menu menu = new Menu();
 
-                Gtk.MenuItem m3 = new MenuItem(addToolStripMenuItem1.Text);
+                Gtk.MenuItem m3 = new MenuItem(addToolStripMenuItem.Text);
                 m3.Activated += new EventHandler(addToolStripMenuItem_Click);
                 menu.Append(m3);
 
-                Gtk.MenuItem m4 = new MenuItem(deleteToolStripMenuItem1.Text);
+                Gtk.MenuItem m4 = new MenuItem(deleteToolStripMenuItem.Text);
                 m4.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
                 menu.Append(m4);
 
                 menu.Append(new Gtk.SeparatorMenuItem());
 
                 Gtk.MenuItem m5 = new MenuItem(simpleToolStripMenuItem1.Text);
-                m5.Activated += new EventHandler(simpleToolStripMenuItem1_Click);
+                m5.Activated += new EventHandler(simpleToolStripMenuItemIgnore_Click);
                 menu.Append(m5);
 
                 Gtk.MenuItem m6 = new MenuItem(regexToolStripMenuItem.Text);
-                m6.Activated += new EventHandler(regexToolStripMenuItem_Click);
+                m6.Activated += new EventHandler(regexToolStripMenuItemIgnore_Click);
                 menu.Append(m6);
 
                 menu.Append(new Gtk.SeparatorMenuItem());
@@ -751,7 +752,7 @@ namespace Client.Forms
             list_1.AddAttribute(lr1, "text", 0);
             list_2.AddAttribute(lr2, "text", 1);
             list_3.AddAttribute(lr3, "text", 2);
-            list_4.AddAttribute(lr4, "text", 2);
+            list_4.AddAttribute(lr4, "text", 3);
             this.treeview5.AppendColumn(list_1);
             this.treeview5.AppendColumn(list_2);
             this.treeview5.AppendColumn(list_4);

@@ -45,14 +45,19 @@ namespace Client.Forms
             this.Destroy();
         }
 
-        protected virtual void Build()
+        public void Click2(object sender, EventArgs e)
+        {
+            
+        }
+
+        public void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.Title = global::Mono.Unix.Catalog.GetString("Shortcut");
-            this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+            this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
             global::Gtk.VBox w1 = this.VBox;
             w1.Name = "dialog1_VBox";
@@ -155,6 +160,7 @@ namespace Client.Forms
             this.buttonCancel.UseStock = true;
             this.buttonCancel.UseUnderline = true;
             this.buttonCancel.Label = "gtk-cancel";
+            this.buttonCancel.Clicked += new EventHandler(Click1);
             this.AddActionWidget(this.buttonCancel, -6);
             global::Gtk.ButtonBox.ButtonBoxChild w12 = ((global::Gtk.ButtonBox.ButtonBoxChild)(w11[this.buttonCancel]));
             w12.Expand = false;
@@ -165,6 +171,7 @@ namespace Client.Forms
             this.buttonOk.CanFocus = true;
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.UseStock = true;
+            this.buttonOk.Clicked += new EventHandler(Click2);
             this.buttonOk.UseUnderline = true;
             this.buttonOk.Label = "gtk-ok";
             this.AddActionWidget(this.buttonOk, -5);

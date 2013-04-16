@@ -33,7 +33,7 @@ namespace Client.Forms
         public Graphics.PidgeonList ChannelList = null;
         public Graphics.Window Chat = null;
         private Connection fConnection;
-        private Preferences fPrefs;
+        public Preferences fPrefs;
         private bool UpdatedStatus = true;
         SearchItem searchbox = new SearchItem();
         bool done = false;
