@@ -75,6 +75,7 @@ namespace Client.Forms
                 this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
                 this.LoadMoreToScrollbackAction.Activated += new EventHandler(loadToolStripMenuItem_Click);
+                this.FavoriteNetworksAction.Sensitive = false;
                 _Load();
             }
             catch (Exception fail)

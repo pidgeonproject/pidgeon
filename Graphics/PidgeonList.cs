@@ -1036,7 +1036,6 @@ namespace Client.Graphics
                                 }
                             }
                         }
-                        Values.Remove(ref iter);
                         break;
                     case ItemType.Services:
                         ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);

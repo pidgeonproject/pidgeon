@@ -156,7 +156,7 @@ namespace Client.Graphics
                             {
                                 Line = Line.Replace("\r", "");
                             }
-                            Parser.parse(Line);
+                            Parser.parse(Line, parent);
                             if (Line != "")
                             {
                                 lock (history)

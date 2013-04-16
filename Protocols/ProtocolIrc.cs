@@ -175,9 +175,15 @@ namespace Client
                         }
                     }
                 }
+                catch (System.Threading.ThreadAbortException)
+                {
+                    Core.killThread(System.Threading.Thread.CurrentThread);
+                    return;
+                }
                 catch (Exception fail)
                 {
                     Core.handleException(fail);
+                    return;
                 }
             }
         }
@@ -293,13 +299,15 @@ namespace Client
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
                 Core._Main.Status("Disconnected from server " + Server);
-                Exit();
+                _IRCNetwork.flagDisconnect();
+                Connected = false;
             }
             catch (System.IO.IOException)
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
                 Core._Main.Status("Disconnected from server " + Server);
-                Exit();
+                _IRCNetwork.flagDisconnect();
+                Connected = false;
             }
             catch (Exception ex)
             {
@@ -440,8 +448,14 @@ namespace Client
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);
-            deliveryqueue.Abort();
-            keep.Abort();
+            if (deliveryqueue.ThreadState == System.Threading.ThreadState.Running || deliveryqueue.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            {
+                deliveryqueue.Abort();
+            }
+            if (keep.ThreadState == System.Threading.ThreadState.Running || keep.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            {
+                keep.Abort();
+            }
             SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {

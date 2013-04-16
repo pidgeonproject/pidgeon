@@ -760,32 +760,42 @@ namespace Client
             }
         }
 
-        public static int parse(string input)
+        public static int parse(string input, Graphics.Window window = null)
         {
             if (input == "")
             {
                 return 0;
+            }
+            Graphics.Window _window = window;
+            if (window == null)
+            {
+                _window = Core._Main.Chat;
+            }
+            Network network = _window._Network;
+            if (network == null)
+            {
+                network = Core.network;
             }
             if (input.StartsWith(Configuration.CommandPrefix) && !input.StartsWith(Configuration.CommandPrefix + Configuration.CommandPrefix))
             {
                 Core.ProcessCommand(input);
                 return 10;
             }
-            if (Core.network == null)
+            if (network == null)
             {
-                Core._Main.Chat.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);
+                _window.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);
                 return 2;
             }
-            if (Core.network.IsConnected)
+            if (network.IsConnected)
             {
-                if (Core._Main.Chat.writable)
+                if (_window.writable)
                 {
                     if (input.StartsWith(Configuration.CommandPrefix))
                     {
-                        Core.network.Message(input.Substring(1), Core._Main.Chat.name);
+                        network.Message(input.Substring(1), _window.name);
                         return 2;
                     }
-                    Core.network.Message(input, Core._Main.Chat.name);
+                    network.Message(input, _window.name);
                 }
                 return 0;
             }
