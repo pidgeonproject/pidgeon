@@ -85,6 +85,8 @@ namespace Client
             /// What should happen when you scroll a user
             /// </summary>
             public static UserList_MouseClick MiddleClick = UserList_MouseClick.Nothing;
+            public static int Search_X = 80;
+            public static int Search_Y = 900;
         }
 
         /// <summary>

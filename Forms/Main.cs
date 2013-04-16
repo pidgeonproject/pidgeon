@@ -35,13 +35,13 @@ namespace Client.Forms
         private Connection fConnection;
         public Preferences fPrefs;
         private bool UpdatedStatus = true;
-        SearchItem searchbox = new SearchItem();
-        bool done = false;
+        private SearchItem searchbox = new SearchItem();
+        private bool done = false;
         public double progress = 0;
         public bool DisplayingProgress = false;
         public double ProgressMax = 0;
         public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
-        private GLib.TimeoutHandler timer;
+        private GLib.TimeoutHandler timer = null;
         public global::Gtk.HPaned hPaned
         {
             get

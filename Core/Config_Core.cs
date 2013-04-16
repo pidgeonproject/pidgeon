@@ -120,6 +120,10 @@ namespace Client
                     make_node("location.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
                     make_comment("Maximum history", config, xmlnode);
                     make_node("Configuration.Window.history", Configuration.Window.history.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Search left", config, xmlnode);
+                    make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
+                    make_comment("Search top", config, xmlnode);
+                    make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
@@ -583,6 +587,12 @@ namespace Client
                                                     break;
                                                 case "system.enablesimpleviewcache":
                                                     Configuration.Memory.EnableSimpleViewCache = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.Search.Y":
+                                                    Configuration.Window.Search_Y = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.Search.X":
+                                                    Configuration.Window.Search_X = int.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

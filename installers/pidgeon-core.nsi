@@ -63,11 +63,13 @@ SectionIn RO
   ;ADD YOUR OWN FILES HERE...
   file "tcl84.dll"
   file "Pidgeon.exe" 
+  file "gtk-sharp-2.12.20.msi"
+  ExecWait 'msiexec.exe /quiet /package "$INSTDIR\gtk-sharp-2.12.20.msi"'
+  Delete "gtk-sharp-2.12.20.msi"
   ;Store installation folder
   WriteUninstaller "$INSTDIR\Uninstall.exe"
 
 SectionEnd
-
 
 Section "Modules" SecModules
   SetOutPath "$INSTDIR"
@@ -75,7 +77,7 @@ Section "Modules" SecModules
   file /oname=modules\pidgeon_tab.pmod "modules\pidgeon_tab.pmod"
 SectionEnd
 
-Section "Modules" SecFreenode
+Section "Freenode util" SecFreenode
   SetOutPath "$INSTDIR"
   CreateDirectory $INSTDIR\modules
   file /oname=modules\freenode.pmod "modules\freenode.pmod"

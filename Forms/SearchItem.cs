@@ -25,7 +25,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class SearchItem : Gtk.Window
+    public partial class SearchItem : GTK.PidgeonForm
     {   
         private bool NeedReset = false;
         private global::Gtk.HBox hbox1;
@@ -88,6 +88,7 @@ namespace Client.Forms
             this.button2.Name = "button2";
             this.button1.Clicked += new EventHandler(button1_Click);
             this.button2.Clicked += new EventHandler(button2_Click);
+            this.ConfigureEvent += new ConfigureEventHandler(Relocate);
             this.button2.UseUnderline = true;
             this.button2.Label = global::Mono.Unix.Catalog.GetString ("Down");
             this.hbox1.Add (this.button2);
@@ -102,7 +103,7 @@ namespace Client.Forms
             if ((this.Child != null)) {
                 this.Child.ShowAll ();
             }
-            Move (80, 800);
+            Move (Configuration.Window.Search_X, Configuration.Window.Search_Y);
             this.DefaultWidth = 800;
             this.DefaultHeight = 20;
             Init();
@@ -119,7 +120,20 @@ namespace Client.Forms
             Direction = false;
         }
 
-        public SearchItem () : base(Gtk.WindowType.Toplevel)
+        public void Relocate(object sender, ConfigureEventArgs e)
+        {
+            try
+            {
+                Configuration.Window.Search_Y = this.Top;
+                Configuration.Window.Search_X = this.Left;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        public SearchItem ()
         {
             this.Build ();
             messages.Localize(this);
@@ -133,6 +147,8 @@ namespace Client.Forms
                 if (keys.Event.KeyValue == 65293)
                 {
                     SearchRun(Direction);
+                    Configuration.Window.Search_Y = this.Top;
+                    Configuration.Window.Search_X = this.Left;
                 }
             }catch (Exception fail)
             {
