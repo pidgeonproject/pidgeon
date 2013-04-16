@@ -5,22 +5,22 @@
 ;--------------------------------
 ;Include Modern UI
 
-  !include "MUI2.nsh"
+!include "MUI2.nsh"
 
 ;--------------------------------
 ;General
 
-  ;Name and file
-  Name "Pidgeon"
-  OutFile "pidgeon_setup.exe"
+;Name and file
+Name "Pidgeon"
+OutFile "pidgeon_setup.exe"
 
 !define APPNAME "Pidgeon"
 !define DESCRIPTION "Pidgeon client"
 !define COMPANYNAME "Pidgeon"
 # These three must be integers
 !define VERSIONMAJOR 1
-!define VERSIONMINOR 0
-!define VERSIONBUILD 9
+!define VERSIONMINOR 2
+!define VERSIONBUILD 0
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link
@@ -68,23 +68,31 @@ SectionIn RO
 
 SectionEnd
 
+
 Section "Modules" SecModules
   SetOutPath "$INSTDIR"
   CreateDirectory $INSTDIR\modules
   file /oname=modules\pidgeon_tab.pmod "modules\pidgeon_tab.pmod"
 SectionEnd
 
+Section "Modules" SecFreenode
+  SetOutPath "$INSTDIR"
+  CreateDirectory $INSTDIR\modules
+  file /oname=modules\freenode.pmod "modules\freenode.pmod"
+SectionEnd
 ;--------------------------------
 ;Descriptions
 
   ;Language strings
+  LangString DESC_SecModules ${LANG_ENGLISH} "This will install recommended modules for pidgeon, if you won't install this pidgeon will not have so many features."
+  LangString DESC_SecFreenode ${LANG_ENGLISH} "This will install freenode module for pidgeon, that enables some extra features useful on freenode."
   LangString DESC_SecDummy ${LANG_ENGLISH} "This will install the pidgeon client."
-   LangString DESC_SecModules ${LANG_ENGLISH} "This will install recommended modules for pidgeon, if you won't install this pidgeon will not have so many features."
 
   ;Assign language strings to sections
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
     !insertmacro MUI_DESCRIPTION_TEXT ${SecDummy} $(DESC_SecDummy)
     !insertmacro MUI_DESCRIPTION_TEXT ${SecModules} $(DESC_SecModules)
+    !insertmacro MUI_DESCRIPTION_TEXT ${SecFreenode} $(DESC_SecFreenode)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
