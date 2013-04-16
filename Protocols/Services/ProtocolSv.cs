@@ -107,9 +107,9 @@ namespace Client
             {
                 return;
             }
-            catch (Exception)
+            catch (Exception fail)
             {
-                Core.DebugLog("ProtocolSv: Exception in Ping()");
+                Core.handleException(fail, Core.ExceptionKind.Safe);
             }
         }
 

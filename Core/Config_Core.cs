@@ -228,7 +228,7 @@ namespace Client
                             XmlAttribute highlightenabled = config.CreateAttribute("enabled");
                             XmlAttribute highlighttext = config.CreateAttribute("text");
                             XmlAttribute highlightsimple = config.CreateAttribute("simple");
-                            highlightenabled.Value = "true";
+                            highlightenabled.Value = high.enabled.ToString();
                             highlightsimple.Value = high.simple.ToString();
                             highlighttext.Value = high.text;
                             curr.Attributes.Append(highlightsimple);

@@ -43,6 +43,17 @@ namespace Client.Forms
             this.Build();
         }
 
+        public void close(object sender, EventArgs e)
+        {
+            this.Hide();
+            this.Destroy();
+        }
+
+        public void Insert(object sender, EventArgs e)
+        {
+            
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -88,6 +99,7 @@ namespace Client.Forms
             this.entry1 = new global::Gtk.Entry();
             this.entry1.WidthRequest = 620;
             this.entry1.CanFocus = true;
+            this.entry1.Text = "$nick!$ident@$host.*$name";
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
             this.entry1.InvisibleChar = '●';
@@ -130,6 +142,7 @@ namespace Client.Forms
             this.buttonCancel = new global::Gtk.Button();
             this.buttonCancel.CanDefault = true;
             this.buttonCancel.CanFocus = true;
+            this.buttonCancel.Clicked += new EventHandler(close);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.UseStock = true;
             this.buttonCancel.UseUnderline = true;

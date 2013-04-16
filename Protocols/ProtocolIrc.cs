@@ -49,6 +49,9 @@ namespace Client
         /// Network stream
         /// </summary>
         private NetworkStream _networkStream = null;
+        /// <summary>
+        /// SSL
+        /// </summary>
         private SslStream _networkSsl = null;
         /// <summary>
         /// Stream reader for server
@@ -76,7 +79,7 @@ namespace Client
             }
             public List<Message> messages = new List<Message>();
             public List<Message> newmessages = new List<Message>();
-            public ProtocolIrc protocol;
+            public ProtocolIrc protocol = null;
 
             /// <summary>
             /// Send a message to server
@@ -97,81 +100,84 @@ namespace Client
 
             public void Run()
             {
-                while (true)
+                try
                 {
-                    try
+                    while (true)
                     {
-                        if (messages.Count > 0)
+                        try
                         {
-                            lock (messages)
+                            if (messages.Count > 0)
                             {
-                                newmessages.AddRange(messages);
-                                messages.Clear();
-                            }
-                        }
-                        if (newmessages.Count > 0)
-                        {
-                            List<Message> Processed = new List<Message>();
-                            Configuration.Priority highest = Configuration.Priority.Low;
-                            while (newmessages.Count > 0)
-                            {
-                                // we need to get all messages that have been scheduled to be send
                                 lock (messages)
                                 {
-                                    if (messages.Count > 0)
-                                    {
-                                        newmessages.AddRange(messages);
-                                        messages.Clear();
-                                    }
+                                    newmessages.AddRange(messages);
+                                    messages.Clear();
                                 }
-                                highest = Configuration.Priority.Low;
-                                // we need to check the priority we need to handle first
-                                foreach (Message message in newmessages)
+                            }
+                            if (newmessages.Count > 0)
+                            {
+                                List<Message> Processed = new List<Message>();
+                                Configuration.Priority highest = Configuration.Priority.Low;
+                                while (newmessages.Count > 0)
                                 {
-                                    if (message._Priority > highest)
+                                    // we need to get all messages that have been scheduled to be send
+                                    lock (messages)
                                     {
-                                        highest = message._Priority;
-                                        if (message._Priority == Configuration.Priority.High)
+                                        if (messages.Count > 0)
                                         {
-                                            break;
+                                            newmessages.AddRange(messages);
+                                            messages.Clear();
                                         }
                                     }
-                                }
-                                // send highest priority first
-                                foreach (Message message in newmessages)
-                                {
-                                    if (message._Priority >= highest)
+                                    highest = Configuration.Priority.Low;
+                                    // we need to check the priority we need to handle first
+                                    foreach (Message message in newmessages)
                                     {
-                                        Processed.Add(message);
-                                        protocol.Send(message.message);
-                                        System.Threading.Thread.Sleep(1000);
-                                        if (highest != Configuration.Priority.High)
+                                        if (message._Priority > highest)
                                         {
-                                            break;
+                                            highest = message._Priority;
+                                            if (message._Priority == Configuration.Priority.High)
+                                            {
+                                                break;
+                                            }
                                         }
                                     }
-                                }
-                                foreach (Message message in Processed)
-                                {
-                                    if (newmessages.Contains(message))
+                                    // send highest priority first
+                                    foreach (Message message in newmessages)
                                     {
-                                        newmessages.Remove(message);
+                                        if (message._Priority >= highest)
+                                        {
+                                            Processed.Add(message);
+                                            protocol.Send(message.message);
+                                            System.Threading.Thread.Sleep(1000);
+                                            if (highest != Configuration.Priority.High)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    foreach (Message message in Processed)
+                                    {
+                                        if (newmessages.Contains(message))
+                                        {
+                                            newmessages.Remove(message);
+                                        }
                                     }
                                 }
                             }
+                            newmessages.Clear();
+                            System.Threading.Thread.Sleep(200);
                         }
-                        newmessages.Clear();
-                        System.Threading.Thread.Sleep(200);
+                        catch (System.Threading.ThreadAbortException)
+                        {
+                            Core.killThread(System.Threading.Thread.CurrentThread);
+                            return;
+                        }
                     }
-                    catch (System.Threading.ThreadAbortException)
-                    {
-                        Core.killThread(System.Threading.Thread.CurrentThread);
-                        return;
-                    }
-                    catch (Exception fail)
-                    {
-                        Core.handleException(fail);
-                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
                 }
             }
         }
@@ -204,8 +210,9 @@ namespace Client
             {
                 return;
             }
-            catch (Exception)
+            catch (Exception fail)
             {
+                Core.handleException(fail, Core.ExceptionKind.Safe);
                 Core.killThread(System.Threading.Thread.CurrentThread);
             }
         }

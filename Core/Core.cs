@@ -946,14 +946,14 @@ namespace Client
             return protocol;
         }
 
-        public static int handleException(Exception _exception, bool fatal = false)
+        public static int handleException(Exception _exception, ExceptionKind ek)
         {
-            if (IgnoreErrors)
+            if (IgnoreErrors || ek == ExceptionKind.Safe)
             {
                 Console.WriteLine("EXCEPTION: " + _exception.StackTrace);
-                return -2;
+                return 2;
             }
-            if (fatal)
+            if (ek == ExceptionKind.Critical)
             {
                 recovery_fatal = true;
             }
@@ -966,9 +966,22 @@ namespace Client
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
             }
-            while (blocked || fatal)
+            while (blocked || recovery_fatal)
             {
                 Thread.Sleep(100);
+            }
+            return 0;
+        }
+
+        public static int handleException(Exception _exception, bool fatal = false)
+        {
+            if (fatal)
+            {
+                handleException(_exception, ExceptionKind.Critical);
+            }
+            else
+            {
+                handleException(_exception, ExceptionKind.Normal);
             }
             return 0;
         }
@@ -1021,6 +1034,13 @@ namespace Client
                 System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             return true;
+        }
+
+        public enum ExceptionKind
+        {
+            Normal,
+            Critical,
+            Safe,
         }
 
         public enum Platform

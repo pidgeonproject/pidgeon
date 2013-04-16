@@ -250,8 +250,8 @@ namespace Client.Forms
                 load.Activated += new EventHandler(loadModuleFromFileToolStripMenuItem_Click);
                 menu.Append(load);
 
-                MenuItem remove = new MenuItem(disableToolStripMenuItem.Text);
-                remove.Activated += new EventHandler(disableToolStripMenuItem_Click);
+                MenuItem remove = new MenuItem(unloadModuleToolStripMenuItem.Text);
+                remove.Activated += new EventHandler(unloadModuleToolStripMenuItem_Click);
                 menu.Append(remove);
 
                 menu.ShowAll();
@@ -371,12 +371,12 @@ namespace Client.Forms
                 Gtk.Menu menu = new Menu();
 
                 Gtk.MenuItem make = new MenuItem(addToolStripMenuItem.Text);
-
                 menu.Append(make);
 
                 Gtk.MenuItem remove = new MenuItem(deleteToolStripMenuItem.Text);
                 remove.Activated += new EventHandler(deleteToolStripMenuItem_Click);
                 menu.Append(remove);
+                make.Activated += new EventHandler(addToolStripMenuItem1_Click);
 
                 menu.ShowAll();
                 menu.Popup();

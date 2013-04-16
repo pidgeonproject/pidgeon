@@ -39,6 +39,12 @@ namespace Client.Forms
         private global::Gtk.Button buttonCancel;
         private global::Gtk.Button buttonOk;
 
+        public void Click1(object sender, EventArgs e)
+        {
+            this.Hide();
+            this.Destroy();
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);

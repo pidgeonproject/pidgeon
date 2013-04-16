@@ -322,11 +322,21 @@ namespace Client.Forms
         {
             try
             {
-                //ListViewItem item = new ListViewItem();
-                //item.Text = "$nick!$ident@$host.*$name";
-                //item.SubItems.Add("true");
-                //item.SubItems.Add("true");
-                //list.Items.Add(item);
+                Preferences_Ignore dialog = new Preferences_Ignore();
+                dialog.Show();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void addToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Preferences_Shortcut dialog = new Preferences_Shortcut();
+                dialog.Show();
             }
             catch (Exception fail)
             {
@@ -380,16 +390,6 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-        }
-
-        private void addToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            //ShortcutBox sb = new ShortcutBox();
-            //sb.Show();
-            //sb.Left = this.Left + (this.Width / 2);
-            //sb.config = this;
-            //sb.Top = this.Top + (this.Height / 2);
-
         }
 
         private void modifyToolStripMenuItem_Click(object sender, EventArgs e)
