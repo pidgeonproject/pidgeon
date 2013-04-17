@@ -38,7 +38,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx64;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         /// <summary>
         /// Version
         /// </summary>
