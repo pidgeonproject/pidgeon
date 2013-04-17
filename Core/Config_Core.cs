@@ -155,6 +155,8 @@ namespace Client
                     make_node("system.maximumchannelbuffersize", Configuration.Memory.MaximumChannelBufferSize.ToString(), curr, confname, config, xmlnode);
                     make_comment("This disable the simpleview, saving some memory", config, xmlnode);
                     make_node("system.enablesimpleviewcache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
+                    make_comment("This enable a performance profiler", config, xmlnode);
+                    make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
                     // Services
                     make_comment(" ============= SERVICES ============= ", config, xmlnode);
                     make_comment("Size of backlog for services", config, xmlnode);
@@ -593,6 +595,9 @@ namespace Client
                                                     break;
                                                 case "Configuration.Search.X":
                                                     Configuration.Window.Search_X = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.Kernel.Profiler":
+                                                    Configuration.Kernel.Profiler = bool.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }
