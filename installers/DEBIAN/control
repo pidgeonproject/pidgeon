@@ -4,7 +4,7 @@ Section: network
 Priority: optional
 Architecture: all
 Essential: no
-Depends: mono-runtime gtk-sharp2
+Depends: mono-runtime, libgtk2.0-cil, libmono-2.0-1, libmono-addins0.2-cil, libmono-cil-dev, libmono-corlib2.0-cil, libmono-corlib4.0-cil, libmono-csharp4.0-cil, libmono-http4.0-cil, libmono-microsoft-csharp4.0-cil, libmono-security2.0-cil, libmono-security4.0-cil, libmono-system-data-linq2.0-cil, libmono-system-data-linq4.0-cil, libmono-system-drawing4.0-cil, libmono-system-net4.0-cil, libmono-system-runtime4.0-cil, libmono-system-security4.0-cil, libmono-system-web2.0-cil, libmono-system-web4.0-cil, libmono-system-windows-forms4.0-cil, libmono-system-xml4.0-cil, libmono-system2.0-cil, libmono-system4.0-cil, libmono-web4.0-cil, libmono-winforms2.0-cil
 Recommends: mono-complete
 Installed-Size: 1024
 Maintainer: Petr Bena <benapetr@gmail.com>
