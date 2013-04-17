@@ -205,9 +205,24 @@ namespace Client.Graphics
                 e.RetVal = true;
             }
         }
-        
+
+        public bool Update()
+        {
+            if (IsDestroyed)
+            {
+                return false;
+            }
+            Changed(null, null);
+            return true;
+        }
+
         public void Init()
         {
+            if (Configuration.CurrentPlatform == Core.Platform.Linuxx86 || Configuration.CurrentPlatform == Core.Platform.Linuxx64)
+            {
+                GLib.TimeoutHandler timer = new GLib.TimeoutHandler(Update);
+                GLib.Timeout.Add(800, timer);
+            }
             this.scrollback.owner = this;
             this.scrollback.Create();
             this.textbox.Init();
