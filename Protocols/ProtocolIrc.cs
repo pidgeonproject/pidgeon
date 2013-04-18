@@ -102,7 +102,7 @@ namespace Client
             {
                 try
                 {
-                    while (true)
+                    while (protocol.IsConnected)
                     {
                         try
                         {
@@ -182,7 +182,15 @@ namespace Client
                 }
                 catch (Exception fail)
                 {
-                    Core.handleException(fail);
+                    if (protocol.IsConnected)
+                    {
+                        Core.handleException(fail);
+                    }
+                    else
+                    {
+                        // the exception here is ok
+                        Core.handleException(fail, Core.ExceptionKind.Safe);
+                    }
                     return;
                 }
             }
@@ -278,7 +286,7 @@ namespace Client
                 deliveryqueue = new System.Threading.Thread(Messages.Run);
                 deliveryqueue.Start();
 
-                while (_IRCNetwork.IsConnected && !_StreamReader.EndOfStream)
+                while (_IRCNetwork.IsConnected && !_StreamReader.EndOfStream && IsConnected)
                 {
                     while (Core.blocked)
                     {

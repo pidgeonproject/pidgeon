@@ -108,6 +108,8 @@ namespace Client
                     make_node("default.reason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
                     make_comment("Second nick", config, xmlnode);
                     make_node("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
+                    make_comment("CTCP requests are blocked", config, xmlnode);
+                    make_node("Configuration.irc.FirewallCTCP", Configuration.irc.FirewallCTCP.ToString(), curr, confname, config, xmlnode);
                     // Windows
                     make_comment(" ============= WINDOWS ============= ", config, xmlnode);
                     make_comment("Main window is maximized", config, xmlnode);

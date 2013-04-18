@@ -118,6 +118,7 @@ namespace Client
             /// Time of message queue
             /// </summary>
             public static int mq = 1200;
+            public static bool FirewallCTCP = false;
         }
 
         /// <summary>
