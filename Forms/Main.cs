@@ -67,11 +67,11 @@ namespace Client.Forms
                 Core._Main = this;
                 if (Configuration.UserData.TrayIcon)
                 {
-                    icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.pigeon_clip_art_hight.ico"));
+                    icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico"));
                     icon.Visible = true;
                     icon.PopupMenu += new PopupMenuHandler(TrayMenu);
                 }
-                this.Build ();
+                this.Build();
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
                 this.DetachFromMicroChatAction.Activated += new EventHandler(detachFromMicroChatToolStripMenuItem_Click);
@@ -96,6 +96,10 @@ namespace Client.Forms
             Menu menu = new Menu();
             ImageMenuItem menuItemQuit = new ImageMenuItem("Quit");
             Gtk.Image appimg = new Gtk.Image(Stock.Quit, IconSize.Menu);
+            CheckMenuItem notifications = new CheckMenuItem("Enable notifications");
+            menu.Add(notifications);
+            notifications.Active = Configuration.Kernel.Notice;
+            notifications.Activated += new EventHandler(itemNotification);
             if (!this.Visible)
             {
                 MenuItem show = new MenuItem("Show");
@@ -125,6 +129,11 @@ namespace Client.Forms
         private void itemHide(object o, EventArgs e)
         {
             this.Visible = false;
+        }
+
+        private void itemNotification(object o, EventArgs e)
+        {
+            Configuration.Kernel.Notice = !Configuration.Kernel.Notice;
         }
 
         public void _Load()
@@ -254,7 +263,7 @@ namespace Client.Forms
                         rt = true;
                     }
                 }
-                
+
                 e.RetVal = rt;
             }
             catch (Exception fail)
@@ -385,7 +394,7 @@ namespace Client.Forms
                 MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));
                 message.WindowPosition = WindowPosition.Center;
                 message.Title = "Shut down?";
-                ResponseType result = (ResponseType)message.Run ();
+                ResponseType result = (ResponseType)message.Run();
                 if (result != ResponseType.Yes)
                 {
                     message.Destroy();

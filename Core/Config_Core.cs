@@ -159,6 +159,8 @@ namespace Client
                     make_node("system.enablesimpleviewcache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
                     make_comment("This enable a performance profiler", config, xmlnode);
                     make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
+                    make_comment("This change a ring log size", config, xmlnode);
+                    make_node("maximumlog", Configuration.Kernel.MaximalRingLogSize.ToString(), curr, confname, config, xmlnode);
                     // Services
                     make_comment(" ============= SERVICES ============= ", config, xmlnode);
                     make_comment("Size of backlog for services", config, xmlnode);
@@ -603,6 +605,9 @@ namespace Client
                                                     break;
                                                 case "Configuration.irc.FirewallCTCP":
                                                     Configuration.irc.FirewallCTCP = bool.Parse(curr.InnerText);
+                                                    break;
+                                                case "maximumlog":
+                                                    Configuration.Kernel.MaximalRingLogSize = int.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }
