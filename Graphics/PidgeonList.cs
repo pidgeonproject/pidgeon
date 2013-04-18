@@ -1062,14 +1062,7 @@ namespace Client.Graphics
                     Channel channel = (Channel)tv.Model.GetValue(iter, 1);
                     if (ChannelList.ContainsKey(channel))
                     {
-                        if (channel.ChannelWork)
-                        {
-                            channel._Network.Part(channel);
-                        }
-                        else
-                        {
-                            Core._Main.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
-                        }
+                        channel.Part();
                     }
                 }
             }

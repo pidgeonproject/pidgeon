@@ -601,6 +601,9 @@ namespace Client
                                                 case "Configuration.Kernel.Profiler":
                                                     Configuration.Kernel.Profiler = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.irc.FirewallCTCP":
+                                                    Configuration.irc.FirewallCTCP = bool.Parse(curr.InnerText);
+                                                    break;
                                             }
                                         }
                                     }

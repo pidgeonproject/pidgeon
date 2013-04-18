@@ -40,6 +40,24 @@ namespace Client
             }
         }
 
+        public class Profiler
+        {
+            private Stopwatch time = new Stopwatch();
+            public string Function = null;
+
+            public Profiler(string function)
+            {
+                Function = function;
+                time.Start();
+            }
+
+            public void Done()
+            {
+                time.Stop();
+                Core.Ringlog("PROFILER: " + Function + ": " + time.ElapsedMilliseconds.ToString());
+            }
+        }
+
         /// <summary>
         /// This represents a shortcut defined in pidgeon
         /// </summary>

@@ -145,6 +145,8 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                 Client.ContentLine.MessageStyle.System);
 
+                Core._Main.Status("Connecting to " + Server);
+
                 _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
 
                 _StreamWriter = new System.IO.StreamWriter(_networkStream);

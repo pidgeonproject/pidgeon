@@ -145,47 +145,50 @@ namespace Client
                             uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
                         }
                         uc = uc.ToUpper();
-                        switch (uc)
+                        if (!Configuration.irc.FirewallCTCP)
                         {
-                            case "VERSION":
-                                _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
-                                    Configuration.Priority.Low);
-                                break;
-                            case "TIME":
-                                _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
-                                    Configuration.Priority.Low);
-                                break;
-                            case "PING":
-                                if (message.Length > 6)
-                                {
-                                    string time = message.Substring(6);
-                                    if (time.Contains(_Network._Protocol.delimiter))
+                            switch (uc)
+                            {
+                                case "VERSION":
+                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
+                                        Configuration.Priority.Low);
+                                    break;
+                                case "TIME":
+                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
+                                        Configuration.Priority.Low);
+                                    break;
+                                case "PING":
+                                    if (message.Length > 6)
                                     {
-                                        time = message.Substring(0, message.IndexOf(_Network._Protocol.delimiter));
-                                        _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
-                                            Configuration.Priority.Low);
-                                    }
-                                }
-                                break;
-                            case "ACTION":
-                                message = message.Substring("xACTION".Length);
-                                if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
-                                {
-                                    message = message.Substring(0, message.Length - 1);
-                                }
-                                user = _Network.getUser(_nick);
-                                if (user != null)
-                                {
-                                    lock (_Network.PrivateWins)
-                                    {
-                                        if (_Network.PrivateWins.ContainsKey(user))
+                                        string time = message.Substring(6);
+                                        if (time.Contains(_Network._Protocol.delimiter))
                                         {
-                                            WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
-                                                date, !updated_text);
+                                            time = message.Substring(0, message.IndexOf(_Network._Protocol.delimiter));
+                                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
+                                                Configuration.Priority.Low);
                                         }
                                     }
-                                }
-                                break;
+                                    break;
+                                case "ACTION":
+                                    message = message.Substring("xACTION".Length);
+                                    if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                                    {
+                                        message = message.Substring(0, message.Length - 1);
+                                    }
+                                    user = _Network.getUser(_nick);
+                                    if (user != null)
+                                    {
+                                        lock (_Network.PrivateWins)
+                                        {
+                                            if (_Network.PrivateWins.ContainsKey(user))
+                                            {
+                                                WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
+                                                    date, !updated_text);
+                                            }
+                                        }
+                                    }
+                                    break;
+                            }
                         }
                     }
                     if (Configuration.irc.DisplayCtcp)

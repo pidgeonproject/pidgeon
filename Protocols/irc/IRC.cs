@@ -137,7 +137,7 @@ namespace Client
                                 Graphics.Window Chat = c.retrieveWindow();
                                 if (c != null)
                                 {
-                                    if (c.ChannelWork)
+                                    if (!c.partRequested)
                                     {
                                         c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
@@ -179,11 +179,9 @@ namespace Client
         {
             if (Configuration.Kernel.Profiler)
             {
-                System.Diagnostics.Stopwatch stop = new System.Diagnostics.Stopwatch();
-                stop.Start();
+                Core.Profiler profiler = new Core.Profiler("IRC.ProfiledResult()");
                 bool result = Result();
-                stop.Stop();
-                Console.WriteLine("PROFILER IRC.Result() took: " + stop.ElapsedMilliseconds.ToString());
+                profiler.Done();
                 return result;
             }
             return Result();

@@ -162,6 +162,7 @@ namespace Client
             /// Change this to false to disable links to open a browser
             /// </summary>
             public static bool OpenLinkInBrowser = true;
+            public static bool TrayIcon = true;
         }
 
         public class Colors
@@ -193,7 +194,6 @@ namespace Client
             public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode(System.Windows.Forms.Application.ProductVersion);
 
             public static int MaximalRingLogSize = 20000;
-            public static bool SearchRegex = true;
 
             public static bool Debugging = false;
             /// <summary>

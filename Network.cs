@@ -376,7 +376,6 @@ namespace Client
 
         public void Part(Channel channel)
         {
-            channel.ChannelWork = false;
             _Protocol.Part(channel.Name, this);
         }
 

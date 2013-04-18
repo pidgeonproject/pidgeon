@@ -42,6 +42,7 @@ namespace Client.Forms
         public double ProgressMax = 0;
         public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
         private GLib.TimeoutHandler timer = null;
+        public Gtk.StatusIcon icon = null;
         public global::Gtk.HPaned hPaned
         {
             get
@@ -64,6 +65,12 @@ namespace Client.Forms
             try
             {
                 Core._Main = this;
+                if (Configuration.UserData.TrayIcon)
+                {
+                    icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource ("Client.Resources.pigeon_clip_art_hight.ico"));
+                    icon.Visible = true;
+                    icon.PopupMenu += new PopupMenuHandler(TrayMenu);
+                }
                 this.Build ();
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
@@ -82,6 +89,42 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
+        }
+
+        public void TrayMenu(object o, EventArgs args)
+        {
+            Menu menu = new Menu();
+            ImageMenuItem menuItemQuit = new ImageMenuItem("Quit");
+            Gtk.Image appimg = new Gtk.Image(Stock.Quit, IconSize.Menu);
+            if (!this.Visible)
+            {
+                MenuItem show = new MenuItem("Show");
+                menu.Add(show);
+                show.Activated += new EventHandler(itemShow);
+            }
+            else
+            {
+                MenuItem hide = new MenuItem("Hide");
+                hide.Activated += new EventHandler(itemHide);
+                menu.Add(hide);
+            }
+            menu.Add(new Gtk.SeparatorMenuItem());
+            menuItemQuit.Image = appimg;
+            menu.Add(menuItemQuit);
+            // Quit the application when quit has been clicked.
+            menuItemQuit.Activated += new EventHandler(shutDownToolStripMenuItem_Click);
+            menu.ShowAll();
+            menu.Popup();
+        }
+
+        public void itemShow(object o, EventArgs e)
+        {
+            this.Visible = true;
+        }
+
+        private void itemHide(object o, EventArgs e)
+        {
+            this.Visible = false;
         }
 
         public void _Load()

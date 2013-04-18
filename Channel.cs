@@ -116,6 +116,29 @@ namespace Client
         /// Text displayed in the list menu
         /// </summary>
         public string MenuData = null;
+        public bool partRequested = false;
+        /// <summary>
+        /// If this is false the channel is not being used / you aren't in it or you can't access it
+        /// </summary>
+        public bool IsAlive
+        {
+            get
+            {
+                if (!ChannelWork)
+                {
+                    return false;
+                }
+                if (IsDestroyed)
+                {
+                    return false;
+                }
+                if (_Network != null)
+                {
+                    return _Network.IsConnected;
+                }
+                return true;
+            }
+        }
         private bool destroyed = false;
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -197,13 +220,13 @@ namespace Client
                     trimmed = trimmed.Substring(0, space) + Environment.NewLine + trimmed.Substring(space);
                 }
             }
-            if (!ChannelWork)
+            if (!IsAlive)
             {
                 text = "[PARTED CHAN] ";
 
             }
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
-                Environment.NewLine +  "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
+                Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
             MenuData = Core.normalizeHtml(Core.RemoveSpecial(text));
         }
 
@@ -219,6 +242,22 @@ namespace Client
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Part this channel
+        /// </summary>
+        public void Part()
+        {
+            if (IsAlive && _Network != null)
+            {
+                _Network.Part(this);
+                partRequested = true;
+            }
+            else
+            {
+                Core._Main.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
+            }
         }
 
         /// <summary>
@@ -248,6 +287,11 @@ namespace Client
         {
             try
             {
+                Core.Profiler profiler = null;
+                if (Configuration.Kernel.Profiler)
+                {
+                    profiler = new Core.Profiler("Channel.redrawUsers()");
+                }
                 if (IsDestroyed)
                 {
                     return;
@@ -268,6 +312,10 @@ namespace Client
                     {
                         if (Chat.IsDestroyed)
                         {
+                            if (Configuration.Kernel.Profiler)
+                            {
+                                profiler.Done();
+                            }
                             return;
                         }
                         if (Chat.Locked)
@@ -275,6 +323,10 @@ namespace Client
                             Redraw = true;
                             Graphics.PidgeonList.Updated = true;
                             UserListRefreshWait = true;
+                            if (Configuration.Kernel.Profiler)
+                            {
+                                profiler.Done();
+                            }
                             return;
                         }
                         lock (UserList)
@@ -330,10 +382,10 @@ namespace Client
                                 users.Add(nick);
                             }
                         }
-                        
+
                         Chat.UserList.Clear();
-                        
-                        
+
+
                         owners.Sort();
                         admins.Sort();
                         halfop.Sort();
@@ -352,16 +404,19 @@ namespace Client
                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Admin;
                         }
+
                         foreach (User user in oper)
                         {
-                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Op;
                         }
+
                         foreach (User user in halfop)
                         {
                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
                             user.Status = User.ChannelStatus.Halfop;
                         }
+
                         foreach (User user in vs)
                         {
                             Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
@@ -374,11 +429,19 @@ namespace Client
                             user.Status = User.ChannelStatus.Regular;
                         }
                     }
+                    if (Configuration.Kernel.Profiler)
+                    {
+                        profiler.Done();
+                    }
                     return;
                 }
 
                 Redraw = true;
                 Graphics.PidgeonList.Updated = true;
+                if (Configuration.Kernel.Profiler)
+                {
+                    profiler.Done();
+                }
                 return;
             }
             catch (Exception f)
@@ -410,7 +473,7 @@ namespace Client
             {
                 UserList.Clear();
             }
-            
+
             Chat = null;
             ChannelWork = false;
             _Network = null;
@@ -439,7 +502,7 @@ namespace Client
                 }
             }
         }
-        
+
         /// <summary>
         /// This function returns a special user mode for a user that should be in user list (for example % for halfop or @ for operator)
         /// </summary>
