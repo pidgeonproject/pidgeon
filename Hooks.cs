@@ -172,6 +172,22 @@ namespace Client
             public static void AfterConnectToNetwork(Network network)
             {
                 network.isLoaded = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_AfterConnect(network);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook AfterConnectToNetwork(Network network) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return;
             }
 
             /// <summary>
@@ -195,12 +211,46 @@ namespace Client
             /// <returns></returns>
             public static bool BeforeJoin(Network network, string Channel)
             {
-                return true;
+                bool data = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_BeforeJoin(network, Channel))
+                            {
+                                data = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeJoin(Network network,string Channel) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return data;
             }
 
             public static void UserPart(Network network, User user, Channel channel, string message)
             {
-
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_UserPart(network, user, channel, message);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook UserPart(Network network, User user, Channel channel, string message) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return;
             }
 
             public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
@@ -210,7 +260,22 @@ namespace Client
 
             public static void UserTalk(Network network, User user, Channel channel, string message)
             {
-
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_UserTalk(network, user, channel, message);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook UserTalk(Network network, User user, Channel channel, string message) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return;
             }
 
             public static void UserQuit(Network network, User user, string message)

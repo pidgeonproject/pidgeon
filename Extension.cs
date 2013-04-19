@@ -168,14 +168,39 @@ namespace Client
             return true;
         }
 
+        public virtual void Hook_UserPart(Network network, User user, Channel channel, string message)
+        {
+            
+        }
+
         public virtual void Hook_Network(Network network)
         {
             return;
         }
 
+        public virtual void Hook_AfterConnect(Network network)
+        {
+            
+        }
+
         public virtual void Hook_BeforeConnect(Protocol protocol)
         {
             return;
+        }
+
+        public virtual void Hook_UserTalk(Network network, User user, Channel channel, string message)
+        {
+            
+        }
+
+        public virtual bool Hook_BeforeJoin(Network network, string Channel)
+        {
+            return true;
+        }
+
+        public virtual void Hook_UserQuit(Network network, User user, string message)
+        {
+        
         }
 
         public virtual void Hook_Initialise(Client.Forms.Main main)
@@ -207,6 +232,8 @@ namespace Client
         {
             return true;
         }
+
+
 
         /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
