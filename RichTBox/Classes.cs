@@ -43,7 +43,6 @@ namespace Client
             /// <summary>
             /// Box which own this
             /// </summary>
-            private RichTBox Owner = null;
             public Color TextColor = Color.White;
             public Color Backcolor = Color.Black;
             public bool Linked = false;
@@ -59,23 +58,17 @@ namespace Client
             /// <param name="text">Text of this part</param>
             /// <param name="SBAB">Owner</param>
             /// <param name="color">Color of a text</param>
-            public ContentText(string _text, RichTBox SBAB, Color color)
+            public ContentText(string _text, Color color)
             {
                 text = _text;
-                Owner = SBAB;
                 TextColor = color;
-            }
-
-            ~ContentText()
-            {
-                Owner = null;
             }
         }
 
         public class Line
         {
             public List<ContentText> text = new List<ContentText>();
-            private RichTBox owner = null;
+            public Color foreColor = Color.Blue;
 
             public void insertData(ContentText line)
             {
@@ -93,7 +86,7 @@ namespace Client
             {
                 lock (text)
                 {
-                    text.Add(new ContentText(line, owner, owner.ForeColor));
+                    text.Add(new ContentText(line, foreColor));
                 }
             }
 
@@ -111,14 +104,6 @@ namespace Client
                     }
                 }
                 return part;
-            }
-
-            /// <summary>
-            /// When we remove the line we should free the memory allocated for it
-            /// </summary>
-            ~Line()
-            {
-                owner = null;
             }
 
             /// <summary>
@@ -153,19 +138,19 @@ namespace Client
             public Line(RichTBox SBAB)
             {
                 text = new List<ContentText>();
-                owner = SBAB;
+                foreColor = SBAB.foreColor;
             }
 
             public Line()
             {
                 text = new List<ContentText>();
-                owner = null;
+                foreColor = Configuration.CurrentSkin.colordefault;
             }
 
             private void CreateLine(string Text, RichTBox SBAB, Color color)
             {
-                text.Add(new ContentText(Text, SBAB, SBAB.ForeColor));
-                owner = SBAB;
+                text.Add(new ContentText(Text, SBAB.ForeColor));
+                foreColor = SBAB.foreColor;
             }
         }
     }

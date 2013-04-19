@@ -126,6 +126,7 @@ namespace Client
                     make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
                     make_comment("Search top", config, xmlnode);
                     make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
 
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
@@ -618,6 +619,9 @@ namespace Client
                                                     break;
                                                 case "Configuration.Kernel.Profiler_Minimal":
                                                     Configuration.Kernel.Profiler_Minimal = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.UserData.TrayIcon":
+                                                    Configuration.UserData.TrayIcon = bool.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

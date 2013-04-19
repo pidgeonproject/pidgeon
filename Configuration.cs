@@ -163,6 +163,7 @@ namespace Client
             /// </summary>
             public static bool OpenLinkInBrowser = true;
             public static bool TrayIcon = true;
+            public static bool LastSSL = false;
         }
 
         public class Colors

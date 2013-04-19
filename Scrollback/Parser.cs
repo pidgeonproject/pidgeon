@@ -97,7 +97,7 @@ namespace Client
                         if (closed)
                         {
                             text = text.Substring(position, text.Length - position);
-                            Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(text), SBAB, Configuration.CurrentSkin.mrcl[color]);
+                            Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(text), Configuration.CurrentSkin.mrcl[color]);
                             return Link;
                         }
 
@@ -140,7 +140,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Link = "pidgeon://ident/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -158,7 +158,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Link = "pidgeon://text/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -176,7 +176,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Link = "pidgeon://hostname/#" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     Link.TextColor = color;
@@ -208,7 +208,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(separator.ToString()));
                     }
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Link = "pidgeon://join/" + ProtocolIrc.decode_text(link);
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -231,7 +231,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%"));
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Bold = bold;
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -262,7 +262,7 @@ namespace Client
                             link = link.Substring(0, link.IndexOf(prefix));
                         }
                     }
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                     Link.Underline = true;
                     Link.Bold = bold;
                     if (Configuration.Colors.ChangeLinks)
@@ -294,7 +294,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(separator.ToString()));
                     }
                 }
-                Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                 Link.Underline = true;
                 Link.Bold = bold;
                 if (Configuration.Colors.ChangeLinks)
@@ -329,7 +329,7 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString()));
                             }
                         }
-                        Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), SBAB, Configuration.CurrentSkin.link);
+                        Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
                         Link.Underline = true;
                         Link.Bold = bold;
                         if (Configuration.Colors.ChangeLinks)
@@ -385,11 +385,11 @@ namespace Client
                     {
                         if (prefix != '\0')
                         {
-                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine) + prefix.ToString(), SBAB, color);
+                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine) + prefix.ToString(), color);
                         }
                         else
                         {
-                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                         }
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
@@ -420,7 +420,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%USER%"))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -444,7 +444,7 @@ namespace Client
                         tempdata = tempdata.Substring(1);
                     }
 
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Underline = Underlined;
                     lprttext.Bold = Bold;
                     line.insertData(lprttext);
@@ -464,7 +464,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -478,7 +478,7 @@ namespace Client
                     int colorcode = -2;
                     tempdata = tempdata.Substring(1);
                     carret++;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -524,7 +524,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -534,7 +534,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%H%"))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -551,7 +551,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%L%"))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -568,7 +568,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%D%"))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
@@ -590,7 +590,7 @@ namespace Client
                 tempdata = tempdata.Substring(Jump);
                 carret = carret + Jump;
             }
-            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), SBAB, color);
+            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
             lprttext.Underline = Underlined;
             lprttext.Bold = Bold;
             line.insertData(lprttext);

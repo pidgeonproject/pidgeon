@@ -99,7 +99,7 @@ namespace Client
             }
 
             Client.RichTBox.Line text = Parser.FormatLine(Line.text, RT, color);
-            Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, RT, color);
+            Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, color);
             Client.RichTBox.Line line = new Client.RichTBox.Line(RT);
             line.insertData(content);
             line.Merge(text);
