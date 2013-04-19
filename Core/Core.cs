@@ -54,7 +54,10 @@ namespace Client
             public void Done()
             {
                 time.Stop();
-                Core.Ringlog("PROFILER: " + Function + ": " + time.ElapsedMilliseconds.ToString());
+                if (time.ElapsedMilliseconds > Configuration.Kernel.Profiler_Minimal)
+                {
+                    Core.Ringlog("PROFILER: " + Function + ": " + time.ElapsedMilliseconds.ToString());
+                }
             }
         }
 

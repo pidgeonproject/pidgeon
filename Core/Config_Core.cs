@@ -158,6 +158,8 @@ namespace Client
                     make_node("system.maximumchannelbuffersize", Configuration.Memory.MaximumChannelBufferSize.ToString(), curr, confname, config, xmlnode);
                     make_comment("This disable the simpleview, saving some memory", config, xmlnode);
                     make_node("system.enablesimpleviewcache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
+                    make_comment("The minimal value which you want to see profiler results for", config, xmlnode);
+                    make_node("Configuration.Kernel.Profiler_Minimal", Configuration.Kernel.Profiler_Minimal.ToString(), curr, confname, config, xmlnode);
                     make_comment("This enable a performance profiler", config, xmlnode);
                     make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
                     make_comment("This change a ring log size", config, xmlnode);
@@ -613,6 +615,9 @@ namespace Client
                                                     break;
                                                 case "Configuration.Parser.ParserCache":
                                                     Configuration.Parser.ParserCache = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.Kernel.Profiler_Minimal":
+                                                    Configuration.Kernel.Profiler_Minimal = int.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

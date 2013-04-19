@@ -205,6 +205,7 @@ namespace Client
             /// </summary>
             public static bool ShutdownCheck = true;
             public static bool Profiler = false;
+            public static int Profiler_Minimal = 0;
         }
 
         public class Memory
