@@ -72,42 +72,42 @@ namespace Client
                     // Network
                     make_comment(" ============= NETWORK ============= ", config, xmlnode);
                     make_comment("Ident", config, xmlnode);
-                    make_node("network.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
+                    make_node("Configuration.UserData.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
                     make_comment("Message that is displayed when you quit the network", config, xmlnode);
-                    make_node("quitmessage", Configuration.UserData.quit, curr, confname, config, xmlnode);
+                    make_node("Configuration.UserData.quit", Configuration.UserData.quit, curr, confname, config, xmlnode);
                     make_comment("Nickname which is being used on all networks", config, xmlnode);
-                    make_node("network.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
+                    make_node("Configuration.UserData.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
                     // Scrollback
                     make_comment(" ============= SCROLLBACK ============= ", config, xmlnode);
                     make_comment("If this is true, you will see when someone tries to CTCP you", config, xmlnode);
-                    make_node("scrollback.showctcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                     make_comment("Format of user in window", config, xmlnode);
-                    make_node("formats.user", Configuration.Scrollback.format_nick, curr, confname, config, xmlnode);
+                    make_node("Configuration.Scrollback.format_nick", Configuration.Scrollback.format_nick, curr, confname, config, xmlnode);
                     make_comment("Format of date in window", config, xmlnode);
-                    make_node("formats.date", Configuration.Scrollback.format_date, curr, confname, config, xmlnode);
+                    make_node("Configuration.Scrollback.format_date", Configuration.Scrollback.format_date, curr, confname, config, xmlnode);
                     make_comment("Set this to true to automatically whois everyone in channel upon join", config, xmlnode);
                     make_comment("Limit of scrollback size", config, xmlnode);
-                    make_node("scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Scrollback.scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
                     // irc
                     make_comment(" ============= IRC ============= ", config, xmlnode);
-                    make_node("irc.auto.whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to check the channel modes on join", config, xmlnode);
-                    make_node("irc.auto.mode", Configuration.ChannelModes.aggressive_mode.ToString(), curr, confname, config, xmlnode);
-                    make_node("irc.auto.channels", Configuration.ChannelModes.aggressive_channel.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_mode", Configuration.ChannelModes.aggressive_mode.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_channel", Configuration.ChannelModes.aggressive_channel.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to get a list of bans on join", config, xmlnode);
-                    make_node("irc.auto.bans", Configuration.ChannelModes.aggressive_bans.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_bans", Configuration.ChannelModes.aggressive_bans.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to get a list of exception on join", config, xmlnode);
-                    make_node("irc.auto.exception", Configuration.ChannelModes.aggressive_exception.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_exception", Configuration.ChannelModes.aggressive_exception.ToString(), curr, confname, config, xmlnode);
                     make_comment("Set this to true to get a list of invite on join", config, xmlnode);
-                    make_node("irc.auto.invites", Configuration.ChannelModes.aggressive_invites.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.ChannelModes.aggressive_invites", Configuration.ChannelModes.aggressive_invites.ToString(), curr, confname, config, xmlnode);
                     make_comment("If CTCP should be completely ignored", config, xmlnode);
-                    make_node("ignore.ctcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
                     make_comment("Whether all generated commands need to be confirmed", config, xmlnode);
-                    make_node("confirm.all", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.ConfirmAll", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
                     make_comment("Reason for kick / ban", config, xmlnode);
-                    make_node("default.reason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.DefaultReason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
                     make_comment("Second nick", config, xmlnode);
-                    make_node("network.n2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
+                    make_node("Configuration.UserData.Nick2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
                     make_comment("CTCP requests are blocked", config, xmlnode);
                     make_node("Configuration.irc.FirewallCTCP", Configuration.irc.FirewallCTCP.ToString(), curr, confname, config, xmlnode);
                     // Windows
@@ -454,63 +454,82 @@ namespace Client
                                         {
                                             switch (curr.Attributes[0].Value)
                                             {
+                                                case "Configuration.Window.x1":
                                                 case "location.x1":
                                                     Configuration.Window.x1 = int.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Window.window_size":
                                                 case "window.size":
                                                     Configuration.Window.window_size = int.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Window.x4":
                                                 case "location.x4":
                                                     Configuration.Window.x4 = int.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Window.Window_Maximized":
                                                 case "location.maxi":
                                                     Configuration.Window.Window_Maximized = bool.Parse(curr.InnerText);
                                                     break;
                                                 case "timestamp.display":
                                                     Configuration.Scrollback.chat_timestamp = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.UserData.nick":
                                                 case "network.nick":
                                                     Configuration.UserData.nick = curr.InnerText;
                                                     break;
+                                                case "Configuration.UserData.Nick2":
                                                 case "network.n2":
                                                     Configuration.UserData.Nick2 = curr.InnerText;
                                                     break;
+                                                case "Configuration.UserData.ident":
                                                 case "network.ident":
                                                     Configuration.UserData.ident = curr.InnerText;
                                                     break;
+                                                case "Configuration.irc.DisplayCtcp":
                                                 case "scrollback.showctcp":
                                                     Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Scrollback.format_nick":
                                                 case "formats.user":
                                                     Configuration.Scrollback.format_nick = curr.InnerText;
                                                     break;
+                                                case "Configuration.Scrollback.format_date":
                                                 case "formats.date":
                                                     Configuration.Scrollback.format_date = curr.InnerText;
                                                     break;
+                                                case "Configuration.Scrollback.timestamp_mask":
                                                 case "formats.datetime":
                                                     Configuration.Scrollback.timestamp_mask = curr.InnerText;
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_whois":
                                                 case "irc.auto.whois":
                                                     Configuration.ChannelModes.aggressive_whois = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_bans":
                                                 case "irc.auto.bans":
                                                     Configuration.ChannelModes.aggressive_bans = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_exception":
                                                 case "irc.auto.exception":
                                                     Configuration.ChannelModes.aggressive_exception = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_channel":
                                                 case "irc.auto.channels":
                                                     Configuration.ChannelModes.aggressive_channel = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_invites":
                                                 case "irc.auto.invites":
                                                     Configuration.ChannelModes.aggressive_invites = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.ChannelModes.aggressive_mode":
                                                 case "irc.auto.mode":
                                                     Configuration.ChannelModes.aggressive_mode = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.irc.DefaultReason":
                                                 case "network.reason":
                                                     Configuration.irc.DefaultReason = curr.InnerText;
                                                     break;
+                                                case "Configuration.Logs.logs_name":
                                                 case "logs.type":
                                                     Configuration.Logs.logs_name = curr.InnerText;
                                                     break;
@@ -538,21 +557,27 @@ namespace Client
                                                 case "pidgeon.size":
                                                     Configuration.Services.Depth = int.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.UserData.LastNick":
                                                 case "history.nick":
                                                     Configuration.UserData.LastNick = curr.InnerText;
                                                     break;
+                                                case "Configuration.Kernel.NetworkSniff":
                                                 case "sniffer":
                                                     Configuration.Kernel.NetworkSniff = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.UserData.LastHost":
                                                 case "history.host":
                                                     Configuration.UserData.LastHost = curr.InnerText;
                                                     break;
+                                                case "Configuration.Kernel.CheckUpdate":
                                                 case "updater.check":
                                                     Configuration.Kernel.CheckUpdate = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.UserData.LastPort":
                                                 case "history.port":
                                                     Configuration.UserData.LastPort = curr.InnerText;
                                                     break;
+                                                case "Configuration.Parser.Separators":
                                                 case "delimiters":
                                                     List<char> temp = new List<char>();
                                                     foreach (char part in curr.InnerText)
@@ -564,12 +589,15 @@ namespace Client
                                                 case "colors.changelinks":
                                                     Configuration.Colors.ChangeLinks = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Kernel.Debugging":
                                                 case "debugger":
                                                     Configuration.Kernel.Debugging = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Services.UsingCache":
                                                 case "services.usingcache":
                                                     Configuration.Services.UsingCache = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.irc.mq":
                                                 case "message_mq":
                                                     Configuration.irc.mq = int.Parse(curr.InnerText);
                                                     break;
@@ -592,12 +620,15 @@ namespace Client
                                                 case "userdata.openlinkinbrowser":
                                                     Configuration.UserData.OpenLinkInBrowser = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Parser.formatter":
                                                 case "formatter":
                                                     Configuration.Parser.formatter = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Memory.MaximumChannelBufferSize":
                                                 case "system.maximumchannelbuffersize":
                                                     Configuration.Memory.MaximumChannelBufferSize = int.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Memory.EnableSimpleViewCache":
                                                 case "system.enablesimpleviewcache":
                                                     Configuration.Memory.EnableSimpleViewCache = bool.Parse(curr.InnerText);
                                                     break;
@@ -613,6 +644,7 @@ namespace Client
                                                 case "Configuration.irc.FirewallCTCP":
                                                     Configuration.irc.FirewallCTCP = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Kernel.MaximalRingLogSize":
                                                 case "maximumlog":
                                                     Configuration.Kernel.MaximalRingLogSize = int.Parse(curr.InnerText);
                                                     break;
