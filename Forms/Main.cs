@@ -150,12 +150,8 @@ namespace Client.Forms
                 if (Configuration.Window.x4 == 0)
                 {
                     Configuration.Window.window_size = 200;
-                    Configuration.Window.x1 = Height - 80;
-                    Configuration.Window.x4 = 700;
-                    if (Width > 200)
-                    {
-                        Configuration.Window.x4 = 600;
-                    }
+                    Configuration.Window.x1 = Width - 480;
+                    Configuration.Window.x4 = Height - 120;
                 }
                 hpaned1.Position = Configuration.Window.window_size;
                 ChannelList = pidgeonlist1;

@@ -1012,6 +1012,11 @@ namespace Client
                 if (!IgnoreErrors)
                 {
                     IgnoreErrors = true;
+                    if (Configuration.UserData.TrayIcon)
+                    {
+                        _Main.icon.Visible = false;
+                        _Main.icon.Dispose();
+                    }
                     _Main.Visible = false;
                     _Configuration.ConfigSave();
                     try
