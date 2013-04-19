@@ -548,6 +548,7 @@ namespace Client
                                                 case "logs.txt":
                                                     Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.Scrollback.scrollback_plimit":
                                                 case "scrollback_plimit":
                                                     Configuration.Scrollback.scrollback_plimit = int.Parse(curr.InnerText);
                                                     break;
