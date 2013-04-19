@@ -121,6 +121,22 @@ namespace Client
             DefaultFont.Family = Configuration.CurrentSkin.localfont;
         }
 
+        public void InsertLineToStart(Line line, bool drawLine = true)
+        {
+            if (line == null)
+            {
+                throw new Exception("You can't insert null to text box");
+            }
+            lock (Lines)
+            {
+                Lines.Insert(0, line);
+            }
+            if (drawLine)
+            {
+                DrawLineToHead(line);
+            }
+        }
+
         public void InsertLine(Line line, bool drawLine = true)
         {
             if (line == null)

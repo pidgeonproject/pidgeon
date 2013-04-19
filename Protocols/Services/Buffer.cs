@@ -37,6 +37,7 @@ namespace Client.Services
             public string topic = null;
             public bool Changed = true;
             public int menucolor = 0;
+            public bool SortNeeded = false;
 
             public Window()
             {
@@ -55,6 +56,7 @@ namespace Client.Services
                 }
                 lines.AddRange(owner.scrollback.Data);
                 menucolor = owner.MenuColor.ToArgb();
+                SortNeeded = owner.scrollback.SortNeeded;
             }
         }
 
@@ -296,6 +298,7 @@ namespace Client.Services
                 {
                     _windows.Remove(Source);
                 }
+                target.scrollback.SortNeeded = Source.SortNeeded;
             }
 
             public ChannelInfo getChannel(string name)

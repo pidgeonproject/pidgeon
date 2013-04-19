@@ -384,8 +384,6 @@ namespace Client
                         }
 
                         Chat.UserList.Clear();
-
-
                         owners.Sort();
                         admins.Sort();
                         halfop.Sort();

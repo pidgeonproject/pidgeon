@@ -167,12 +167,12 @@ namespace Client
                     {
                         int max = ContentLines.Count;
                         int current = min;
+                        lastDate = ContentLines[max - 1].time;
                         while (current < max)
                         {
-                            RT.InsertLine(CreateLine(ContentLines[current]), false);
-                            current++;
+                            max--;
+                            RT.InsertLineToStart(CreateLine(ContentLines[max]), false);
                         }
-                        lastDate = ContentLines[current - 1].time;
                     }
                 }
 

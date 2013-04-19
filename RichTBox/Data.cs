@@ -93,6 +93,51 @@ namespace Client
             DrawLineToBuffer(line, richTextBox.Buffer);
         }
 
+        private void DrawLineToHead(Line line)
+        {
+            Gtk.TextIter iter = richTextBox.Buffer.StartIter;
+            lock (line.text)
+            {
+                foreach (ContentText text in line.text)
+                {
+                    TextTag format = new TextTag(null);
+
+                    if (text.Bold)
+                    {
+                        format.Weight = Pango.Weight.Heavy;
+                    }
+
+                    if (text.Underline)
+                    {
+                        format.Underline = Pango.Underline.Single;
+                    }
+
+                    if (text.Italic)
+                    {
+
+                    }
+
+                    if (text.Link != null)
+                    {
+                        format.TextEvent += new TextEventHandler(LinkHandler);
+                    }
+                    else
+                    {
+                        format.TextEvent += new TextEventHandler(LinkRm);
+                    }
+
+                    format.Data.Add("link", text.Link);
+                    format.Data.Add("identifier", text.Text);
+                    format.ForegroundGdk = Core.fromColor(text.TextColor);
+                    richTextBox.Buffer.TagTable.Add(format);
+                    format.FontDesc = DefaultFont;
+                    format.SizePoints = Configuration.CurrentSkin.fontsize;
+                    richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
+                }
+            }
+            richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
+        }
+
         public void LinkRm(object sender, TextEventArgs e)
         {
             try

@@ -962,7 +962,7 @@ namespace Client.Graphics
 
                     if (channel.IsAlive)
                     {
-                        Core.DebugLog("Unable to remove channel because it's active: " + channel.Name);
+                        Core._Main.Chat.scrollback.InsertText("Unable to remove channel because it's active, you need to part it: " + channel.Name, ContentLine.MessageStyle.System, false, 0);
                         return;
                     }
 
