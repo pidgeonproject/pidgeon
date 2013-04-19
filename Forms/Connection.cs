@@ -44,6 +44,7 @@ namespace Client.Forms
             store.AppendValues("pidgeon services");
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
+            checkbutton1.Active = Configuration.UserData.LastSSL;
             if (Configuration.UserData.LastPort != "")
             {
                 entry3.Text = Configuration.UserData.LastPort;
@@ -78,6 +79,7 @@ namespace Client.Forms
             try
             {
                 int port = 6667;
+                Configuration.UserData.LastSSL = checkbutton1.Active;
                 if (entry2.Text == "")
                 {
                     GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-2", Core.SelectedLanguage), "Missing params");
