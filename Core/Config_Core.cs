@@ -657,6 +657,9 @@ namespace Client
                                                 case "Configuration.UserData.TrayIcon":
                                                     Configuration.UserData.TrayIcon = bool.Parse(curr.InnerText);
                                                     break;
+                                                case "Configuration.UserData.LastSSL":
+                                                    Configuration.UserData.LastSSL = bool.Parse(curr.InnerText);
+                                                    break;
                                             }
                                         }
                                     }
