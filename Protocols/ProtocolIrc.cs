@@ -475,7 +475,7 @@ namespace Client
         public override bool Open()
         {
             main = new System.Threading.Thread(Start);
-            Core._Main.Status(messages.get("connecting", Core.SelectedLanguage));
+            Core._Main.Status("Connecting to server " + Server + " port " + Port.ToString());
             main.Start();
             Core.SystemThreads.Add(main);
             return true;

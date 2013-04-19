@@ -45,7 +45,7 @@ namespace Client.Services
 
             public Window(Graphics.Window owner)
             {
-                Name = owner.name;
+                Name = owner.WindowName;
                 isChannel = owner.isChannel;
                 isPM = owner.isPM;
                 lines = new List<Client.ContentLine>();

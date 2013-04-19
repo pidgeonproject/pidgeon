@@ -408,7 +408,7 @@ namespace Client
                                 else
                                 {
                                     Services.Buffer.NetworkInfo info = protocol.sBuffer.networkInfo[mq[id]];
-                                    info.recoverWindowText(nw.SystemWindow, nw.SystemWindow.name);
+                                    info.recoverWindowText(nw.SystemWindow, nw.SystemWindow.WindowName);
                                     nw.CModes = info.CModes;
                                     nw.CUModes = info.CUModes;
                                     nw.PModes = info.PModes;
@@ -477,7 +477,7 @@ namespace Client
                                                     Graphics.Window window = xx.retrieveWindow();
                                                     if (xx != null)
                                                     {
-                                                        protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.name);
+                                                        protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.WindowName);
                                                     }
                                                     Services.Buffer.ChannelInfo channel_info = protocol.sBuffer.networkInfo[ID].getChannel(channel);
                                                     if (channel_info != null)

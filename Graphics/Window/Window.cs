@@ -36,11 +36,11 @@ namespace Client.Graphics
         /// <summary>
         /// Name
         /// </summary>
-        public string name = null;
+        public string WindowName = null;
         /// <summary>
         /// Specifies if it's possible to write into this window
         /// </summary>
-        public bool writable = true;
+        public bool isWritable = true;
         /// <summary>
         /// Whether it's a channel or not
         /// </summary>
@@ -50,7 +50,6 @@ namespace Client.Graphics
         /// </summary>
         public bool Locked = false;
         public int locktime = 0;
-        public TreeIter treeNode;
         public System.Drawing.Color MenuColor;
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
@@ -127,7 +126,7 @@ namespace Client.Graphics
             }
             if (Configuration.Kernel.Debugging)
             {
-                Core.DebugLog("Destructor called for window: " + name);
+                Core.DebugLog("Destructor called for window: " + WindowName);
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
@@ -315,7 +314,7 @@ namespace Client.Graphics
 
             if (Configuration.Kernel.Debugging)
             {
-                Core.DebugLog("Destroying " + name);
+                Core.DebugLog("Destroying " + WindowName);
             }
 
             destroyed = true;
@@ -364,7 +363,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.network.Transfer("MODE " + name + " " + mode + " " + user.Nick);
+                        Core.network.Transfer("MODE " + WindowName + " " + mode + " " + user.Nick);
                     }
                 }
             }
@@ -385,7 +384,7 @@ namespace Client.Graphics
             {
                 if (_Network != null)
                 {
-                    Channel chan = _Network.getChannel(name);
+                    Channel chan = _Network.getChannel(WindowName);
                     if (chan != null)
                     {
                         channel = chan;

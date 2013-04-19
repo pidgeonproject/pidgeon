@@ -133,7 +133,12 @@ namespace Client
                     return;
                 }
                 string name = parameter;
-                string b = parameter.Substring(parameter.IndexOf(name) + name.Length);
+                string port = null;
+                if (name.Contains(":"))
+                {
+                    name = name.Substring(0, name.IndexOf(":"));
+                    port = parameter.Substring(name.Length + 1);
+                }
                 int n2;
                 bool ssl = false;
                 if (name == "")
@@ -151,12 +156,12 @@ namespace Client
                     }
                 }
 
-                if (int.TryParse(b, out n2))
+                if (!int.TryParse(port, out n2))
                 {
-                    Core.connectIRC(name, n2, "", ssl);
-                    return;
+                    n2 = 6667;
                 }
-                Core.connectIRC(name);
+                Core.connectIRC(name, n2, "", ssl);
+                return;
             }
 
             public static void nick(string parameter)

@@ -162,7 +162,7 @@ namespace Client.Forms
                 main.Events = ((global::Gdk.EventMask)(256));
                 UserAction.Visible = false;
                 CreateChat(main, null);
-                main.name = "Pidgeon";
+                main.WindowName = "Pidgeon";
                 toolStripStatusNetwork.TooltipText = "windows / channels / pm";
                 Chat = main;
                 main.Redraw();

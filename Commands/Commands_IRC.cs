@@ -46,7 +46,7 @@ namespace Client
                         Graphics.Window window = curr.retrieveWindow();
                         if (window != null)
                         {
-                            Core.network._Protocol.ShowChat(Core.network.SystemWindow + window.name);
+                            Core.network._Protocol.ShowChat(Core.network.SystemWindow + window.WindowName);
                         }
                     }
                     Core.network._Protocol.Join(channel);
@@ -102,14 +102,15 @@ namespace Client
                         Core._Main.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Channel curr = Core.network.RenderedChannel;
-                    if (curr != null)
+                    Graphics.Window window = Core._Main.Chat;
+                    if (window != null)
                     {
-                        Graphics.Window window = curr.retrieveWindow();
-                        if (window != null)
+                        if (window.isChannel || window.isPM)
                         {
-                            Core.network._Protocol.Message2(message, curr.Name);
+                            Core.network._Protocol.Message2(message, window.WindowName);
+                            return;
                         }
+                        Core._Main.Chat.scrollback.InsertText("You can't use this command in this type of window", ContentLine.MessageStyle.System, false);
                     }
                     return;
                 }

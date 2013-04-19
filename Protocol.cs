@@ -158,8 +158,8 @@ namespace Client
             request.window = new Graphics.Window();
             request.focus = focus;
             request.window._Network = network;
-            request.window.name = name;
-            request.window.writable = writable;
+            request.window.WindowName = name;
+            request.window.isWritable = writable;
 
             if (network != null && !name.Contains("!"))
             { 
@@ -199,7 +199,7 @@ namespace Client
                 {
                     if (Core.network != null)
                     {
-                        Core.network.RenderedChannel = Core.network.getChannel(Current.name);
+                        Core.network.RenderedChannel = Core.network.getChannel(Current.WindowName);
                     }
                 }
                 Core._Main.setChannel(name);

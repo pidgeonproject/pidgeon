@@ -857,14 +857,14 @@ namespace Client
             }
             if (network.IsConnected)
             {
-                if (_window.writable)
+                if (_window.isWritable)
                 {
                     if (input.StartsWith(Configuration.CommandPrefix))
                     {
-                        network.Message(input.Substring(1), _window.name);
+                        network.Message(input.Substring(1), _window.WindowName);
                         return 2;
                     }
-                    network.Message(input, _window.name);
+                    network.Message(input, _window.WindowName);
                 }
                 return 0;
             }

@@ -45,14 +45,14 @@ namespace Client
             {
                 throw new Exception("You can't enable logging for a window that has no parent");
             }
-            directory = owner.name.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
+            directory = owner.WindowName.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
             return directory;
         }
 
         public static string _getFileName(Graphics.Window owner, string directory)
         {
             string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
-                Path.DirectorySeparatorChar + owner.name + Path.DirectorySeparatorChar + 
+                Path.DirectorySeparatorChar + owner.WindowName + Path.DirectorySeparatorChar + 
                 DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
             return name;
         }

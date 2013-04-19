@@ -328,7 +328,7 @@ namespace Client.Graphics
                                     case Configuration.TypeOfBan.Host:
                                         if (user.Host != "")
                                         {
-                                            current_ban = "MODE " + name + " +b *!*@" + user.Host;
+                                            current_ban = "MODE " + WindowName + " +b *!*@" + user.Host;
                                             script += current_ban + Environment.NewLine;
                                         }
                                         else
@@ -342,7 +342,7 @@ namespace Client.Graphics
                             {
                                 script += "# can't find a channel for " + user.Nick + " skipping this ban\n";
                             }
-                            string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                            string current_kick = "KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
                             script += current_kick + "\n";
                             if (!Configuration.irc.ConfirmAll)
                             {
@@ -401,7 +401,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        string current_kick = "KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                        string current_kick = "KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
                         script += current_kick + "\n";
                         if (!Configuration.irc.ConfirmAll)
                         {
@@ -463,7 +463,7 @@ namespace Client.Graphics
                                 case Configuration.TypeOfBan.Host:
                                     if (user.Host != "")
                                     {
-                                        mode = "MODE " + name + " +b *!*@" + user.Host;
+                                        mode = "MODE " + WindowName + " +b *!*@" + user.Host;
                                         script += mode + Environment.NewLine;
                                     }
                                     else
@@ -578,7 +578,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.network.Transfer("KICK " + name + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
+                        Core.network.Transfer("KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
                     }
                 }
             }

@@ -438,10 +438,6 @@ namespace Client.Graphics
                     {
                         UserList.Add(user, text);
                     }
-                    if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
-                    {
-                        user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick].treeNode = text;
-                    }
                     Updated = true;
                 }
             }
@@ -454,7 +450,6 @@ namespace Client.Graphics
             {
                 ServiceList.Add(service, text);
             }
-            service.Windows["!root"].treeNode = text;
         }
 
         /// <summary>
@@ -486,10 +481,6 @@ namespace Client.Graphics
                     }
                     channel.TreeNode = text;
                     Graphics.Window xx = channel.retrieveWindow();
-                    if (xx != null)
-                    {
-                        xx.treeNode = text;
-                    }
                 }
             }
         }
@@ -503,7 +494,6 @@ namespace Client.Graphics
                 {
                     ServerList.Add(network, text);
                 }
-                network.SystemWindow.treeNode = text;
                 return;
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
@@ -511,7 +501,6 @@ namespace Client.Graphics
                 TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, null, icon_0);
                 TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
                 tv.ExpandRow(path, true);
-                network.SystemWindow.treeNode = text;
                 ServerList.Add(network, text);
             }
         }

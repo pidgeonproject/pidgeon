@@ -126,7 +126,7 @@ namespace Client
             {
                 if (owner != null)
                 {
-                    Core.DebugLog("Destructor called for scrollback " + owner.name);
+                    Core.DebugLog("Destructor called for scrollback " + owner.WindowName);
                 }
                 else
                 {

@@ -273,7 +273,7 @@ namespace Client
                 {
                     if (this.owner != null && this.owner.isChannel)
                     {
-                        Channel channel = owner._Network.getChannel(owner.name);
+                        Channel channel = owner._Network.getChannel(owner.WindowName);
                         if (channel != null)
                         {
                             User user = channel.userFromName(adds);
@@ -335,11 +335,11 @@ namespace Client
                         mode1e2ToolStripMenuItem.Visible = true;
                         mode1I2ToolStripMenuItem.Visible = true;
                         mode1q2ToolStripMenuItem.Visible = true;
-                        mode1q2ToolStripMenuItem.Text = "/mode " + owner.name + " +q " + content;
-                        mode1I2ToolStripMenuItem.Text = "/mode " + owner.name + " +I " + content;
-                        mode1e2ToolStripMenuItem.Text = "/mode " + owner.name + " +e " + content;
-                        mode1b2ToolStripMenuItem.Text = "/mode " + owner.name + " +b " + content;
-                        kickToolStripMenuItem.Text = "/raw KICK " + owner.name + " " + name + " :" + Configuration.irc.DefaultReason;
+                        mode1q2ToolStripMenuItem.Text = "/mode " + owner.WindowName + " +q " + content;
+                        mode1I2ToolStripMenuItem.Text = "/mode " + owner.WindowName + " +I " + content;
+                        mode1e2ToolStripMenuItem.Text = "/mode " + owner.WindowName + " +e " + content;
+                        mode1b2ToolStripMenuItem.Text = "/mode " + owner.WindowName + " +b " + content;
+                        kickToolStripMenuItem.Text = "/raw KICK " + owner.WindowName + " " + name + " :" + Configuration.irc.DefaultReason;
                         whoisToolStripMenuItem.Text = "/whois " + name;
                         whowasToolStripMenuItem.Text = "/whowas " + name;
                         mode1b2ToolStripMenuItem.Visible = true;
@@ -585,7 +585,7 @@ namespace Client
             {
                 if (owner.isChannel)
                 {
-                    owner._Network._Protocol.Transfer("TOPIC " + owner.name);
+                    owner._Network._Protocol.Transfer("TOPIC " + owner.WindowName);
                 }
             }
             catch (Exception fail)
