@@ -265,6 +265,7 @@ namespace Client
                     Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
                     ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
                 }
+                Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
                 string is64 = " which is a 32 bit system";

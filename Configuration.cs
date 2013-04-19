@@ -264,7 +264,7 @@ namespace Client
             /// <summary>
             /// Directory path
             /// </summary>
-            public static string logs_dir = System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "log";
+            public static string logs_dir = null;
             /// <summary>
             /// Name
             /// </summary>
