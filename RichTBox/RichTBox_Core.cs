@@ -118,9 +118,10 @@ namespace Client
             ForeColor = Configuration.CurrentSkin.colordefault;
             BackColor = Configuration.CurrentSkin.backgroundcolor;
             font = new Font(Configuration.CurrentSkin.localfont, (float)Configuration.CurrentSkin.fontsize);
+            DefaultFont.Family = Configuration.CurrentSkin.localfont;
         }
 
-        public void InsertLine(Line line)
+        public void InsertLine(Line line, bool drawLine = true)
         {
             if (line == null)
             {
@@ -130,7 +131,10 @@ namespace Client
             {
                 Lines.Add(line);
             }
-            DrawLine(line);
+            if (drawLine)
+            {
+                DrawLine(line);
+            }
         }
 
         public void RedrawText()

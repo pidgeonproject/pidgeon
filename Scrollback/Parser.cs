@@ -27,14 +27,68 @@ namespace Client
 {
     class Parser
     {
+        public static Dictionary<string, Client.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
+        public static bool CacheEnabled
+        {
+            get
+            {
+                return Configuration.Parser.ParserCache != 0;
+            }
+        }
+
+        public static Client.RichTBox.Line FromCache(string line)
+        {
+            lock (ParserCache)
+            {
+                if (ParserCache.ContainsKey(line))
+                {
+                    return ParserCache[line];
+                }
+            }
+            return null;
+        }
+
+        public static void ToCache(string line, Client.RichTBox.Line data)
+        {
+            lock (ParserCache)
+            {
+                if (ParserCache.ContainsKey(line))
+                {
+                    return;
+                }
+                // we remove the data from cache by blocks of 100, because doing this per a key would be too slow
+                if (ParserCache.Count > Configuration.Parser.ParserCache + 100)
+                {
+                    List<string> keys = new List<string>();
+                    foreach (string key in ParserCache.Keys)
+                    {
+                        keys.Add(key);
+                        if (keys.Count > 100)
+                        {
+                            break;
+                        }
+                    }
+                    while (ParserCache.Count > Configuration.Parser.ParserCache)
+                    {
+                        foreach (string key in keys)
+                        {
+                            ParserCache.Remove(key);
+                        }
+                    }
+                }
+
+                ParserCache.Add(line, data);
+            }
+        }
+
+        public static char colorchar = (char)3;
+
         public static Client.RichTBox.ContentText color(string text, Client.RichTBox SBAB)
         {
-            char colorchar = (char)3;
-            int color = 0;
-            bool closed = false;
-
             if (text.Contains(colorchar.ToString()))
             {
+                int color = 0;
+                bool closed = false;
                 int position = 0;
                 while (text.Length > position)
                 {
@@ -132,7 +186,6 @@ namespace Client
             }
             return null;
         }
-
 
         public static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
@@ -298,7 +351,18 @@ namespace Client
                 throw new Exception("invalid text");
             }
 
-            Client.RichTBox.Line line = new Client.RichTBox.Line("", SBAB);
+            Client.RichTBox.Line line = null;
+
+            if (CacheEnabled)
+            {
+                line = FromCache(text);
+                if (line != null)
+                {
+                    return line;
+                }
+            }
+
+            line = new Client.RichTBox.Line("", SBAB);
             Client.RichTBox.ContentText lprttext = null;
             string tempdata = text;
             Color color = _style;
@@ -530,6 +594,11 @@ namespace Client
             lprttext.Underline = Underlined;
             lprttext.Bold = Bold;
             line.insertData(lprttext);
+
+            if (CacheEnabled)
+            {
+                ToCache(text, line);
+            }
 
             return line;
         }

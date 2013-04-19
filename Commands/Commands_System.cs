@@ -76,6 +76,16 @@ namespace Client
                 Core.Quit();
             }
 
+            public static void parsercache(string parameter)
+            {
+                int size = Parser.ParserCache.Count;
+                lock (Parser.ParserCache)
+                {
+                    Parser.ParserCache.Clear();
+                }
+                Core._Main.Chat.scrollback.InsertText("Parser cache: cleared " + size.ToString() + " items from mem", ContentLine.MessageStyle.System, false);
+            }
+
             public static void pidgeon_rehash(string parameter)
             {
                 Core.ConfigurationLoad();

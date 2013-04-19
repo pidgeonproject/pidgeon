@@ -126,6 +126,7 @@ namespace Client
                     make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
                     make_comment("Search top", config, xmlnode);
                     make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
+
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
@@ -180,6 +181,7 @@ namespace Client
                     make_node("userdata.openlinkinbrowser", Configuration.UserData.OpenLinkInBrowser.ToString(), curr, confname, config, xmlnode);
                     make_comment(" ============= MISC ============= ", config, xmlnode);
                     make_node("formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
 
                     make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -608,6 +610,9 @@ namespace Client
                                                     break;
                                                 case "maximumlog":
                                                     Configuration.Kernel.MaximalRingLogSize = int.Parse(curr.InnerText);
+                                                    break;
+                                                case "Configuration.Parser.ParserCache":
+                                                    Configuration.Parser.ParserCache = int.Parse(curr.InnerText);
                                                     break;
                                             }
                                         }

@@ -27,6 +27,8 @@ namespace Client
 {
     public partial class RichTBox : Gtk.Bin
     {
+        private Pango.FontDescription DefaultFont = new Pango.FontDescription();
+                    
         private List<Line> Lines = new List<Line>();
 
         public void RemoveLine(int index)
@@ -40,9 +42,9 @@ namespace Client
             }
         }
 
-        private void DrawLine(Line line)
-        { 
-            Gtk.TextIter iter = richTextBox.Buffer.EndIter;
+        private void DrawLineToBuffer(Line line, TextBuffer tb)
+        {
+            Gtk.TextIter iter = tb.EndIter;
             lock (line.text)
             {
                 foreach (ContentText text in line.text)
@@ -75,17 +77,20 @@ namespace Client
 
                     format.Data.Add("link", text.Link);
                     format.Data.Add("identifier", text.Text);
-                    Pango.FontDescription font = new Pango.FontDescription();
-                    font.Family = Configuration.CurrentSkin.localfont;
                     format.ForegroundGdk = Core.fromColor(text.TextColor);
-                    richTextBox.Buffer.TagTable.Add(format);
-                    format.FontDesc = font;
+                    tb.TagTable.Add(format);
+                    format.FontDesc = DefaultFont;
                     format.SizePoints = Configuration.CurrentSkin.fontsize;
-                    richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
-                    iter = richTextBox.Buffer.EndIter;
+                    tb.InsertWithTags(ref iter, text.Text, format);
+                    iter = tb.EndIter;
                 }
             }
-            richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
+            tb.Insert(ref iter, Environment.NewLine);
+        }
+
+        private void DrawLine(Line line)
+        {
+            DrawLineToBuffer(line, richTextBox.Buffer);
         }
 
         public void LinkRm(object sender, TextEventArgs e)
@@ -150,13 +155,12 @@ namespace Client
 
         private void Redraw()
         {
-            System.Diagnostics.Stopwatch profiler = null;
+            Core.Profiler profiler = null;
             if (Configuration.Kernel.Profiler)
             {
-                profiler = new System.Diagnostics.Stopwatch();
-                profiler.Start();
+                profiler = new Core.Profiler("Redraw()");
             }
-            lock (richTextBox.Buffer.Text)
+            lock (richTextBox)
             {
                 richTextBox.Buffer.Text = "";
                 lock (Lines)
@@ -169,8 +173,7 @@ namespace Client
             }
             if (Configuration.Kernel.Profiler)
             {
-                profiler.Stop();
-                Console.WriteLine("PROFILER RichTBox.Redraw() took: " + profiler.ElapsedMilliseconds.ToString());
+                profiler.Done();
             }
         }
     }

@@ -191,6 +191,7 @@ namespace Client
                 commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
                 commands.Add("pidgeon.displaytimers", new Command(Type.System, Generic.displaytmdb));
                 commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
+                commands.Add("pidgeon.memory.clean.parser", new Command(Type.System, Generic.parsercache));
                 commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
                 commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));

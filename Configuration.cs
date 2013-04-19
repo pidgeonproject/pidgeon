@@ -332,6 +332,7 @@ namespace Client
             public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
             public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
             public static bool formatter = true;
+            public static int ParserCache = 2000;
         }
 
         /// <summary>

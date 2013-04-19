@@ -64,9 +64,8 @@ namespace Client
 
         private Client.RichTBox.Line CreateLine(ContentLine Line)
         {
-            ContentLine _c = Line;
             Color color = Configuration.CurrentSkin.fontcolor;
-            switch (_c.style)
+            switch (Line.style)
             {
                 case Client.ContentLine.MessageStyle.Action:
                     color = Configuration.CurrentSkin.miscelancscolor;
@@ -88,7 +87,7 @@ namespace Client
                     color = Configuration.CurrentSkin.joincolor;
                     break;
             }
-            if (_c.notice)
+            if (Line.notice)
             {
                 color = Configuration.CurrentSkin.highlightcolor;
             }
@@ -96,10 +95,10 @@ namespace Client
             string stamp = "";
             if (Configuration.Scrollback.chat_timestamp)
             {
-                stamp = Configuration.Scrollback.format_date.Replace("$1", _c.time.ToString(Configuration.Scrollback.timestamp_mask));
+                stamp = Configuration.Scrollback.format_date.Replace("$1", Line.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
 
-            Client.RichTBox.Line text = Parser.FormatLine(_c.text, RT, color);
+            Client.RichTBox.Line text = Parser.FormatLine(Line.text, RT, color);
             Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, RT, color);
             Client.RichTBox.Line line = new Client.RichTBox.Line(RT);
             line.insertData(content);
@@ -170,7 +169,7 @@ namespace Client
                         int current = min;
                         while (current < max)
                         {
-                            RT.InsertLine(CreateLine(ContentLines[current]));
+                            RT.InsertLine(CreateLine(ContentLines[current]), false);
                             current++;
                         }
                         lastDate = ContentLines[current - 1].time;
