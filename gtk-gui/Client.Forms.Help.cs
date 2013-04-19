@@ -38,12 +38,17 @@ namespace Client.Forms
             w1.X = 20;
             w1.Y = 61;
             // Container child fixed1.Gtk.Fixed+FixedChild
+            Gtk.EventBox eb = new Gtk.EventBox();
+            eb.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Link);
             this.label3 = new global::Gtk.Label ();
             this.label3.Name = "label3";
-            this.label3.LabelProp = "http://pidgeonclient.org/wiki/";
             this.label3.UseUnderline = true;
-            this.fixed1.Add (this.label3);
-            global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [this.label3]));
+            this.label3.ModifyFg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Blue));
+            this.label3.Markup = "<u>http://pidgeonclient.org/wiki/</u>";
+            this.label3.UseUnderline = true;
+            eb.Add(this.label3);
+            this.fixed1.Add (eb);
+            global::Gtk.Fixed.FixedChild w2 = ((global::Gtk.Fixed.FixedChild)(this.fixed1 [eb]));
             w2.X = 20;
             w2.Y = 87;
             // Container child fixed1.Gtk.Fixed+FixedChild

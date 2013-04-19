@@ -34,6 +34,11 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
+
+        public void Link(object sender, EventArgs e)
+        {
+            Hyperlink.OpenLink("http://pidgeonclient.org/wiki/");
+        }
     }
 }
 
