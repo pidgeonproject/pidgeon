@@ -960,10 +960,8 @@ namespace Client.Graphics
                 case ItemType.Channel:
                     Channel channel = (Channel)Item;
 
-                    if (channel.ChannelWork && !channel.dispose)
+                    if (channel.IsAlive)
                     {
-                        channel._Network._Protocol.Part(channel.Name);
-                        channel.dispose = true;
                         Core.DebugLog("Unable to remove channel because it's active: " + channel.Name);
                         return;
                     }
