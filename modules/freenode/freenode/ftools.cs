@@ -70,10 +70,8 @@ namespace Client
                 return;
             }
             string user = text;
-            string reason = Configuration.irc.DefaultReason;
             if (text.Contains(" "))
             {
-                reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
             if (!Core._Main.Chat.isChannel)
