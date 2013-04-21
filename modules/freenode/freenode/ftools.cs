@@ -47,9 +47,9 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
-            Core.network.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
+            Core.network.Transfer("KICK " + Core._Main.Chat.WindowName + " " + user + " :" + reason, Configuration.Priority.High);
         }
 
         public void Op(string text)
@@ -59,7 +59,7 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
         }
 
         public void Quiet(string text)
@@ -70,10 +70,8 @@ namespace Client
                 return;
             }
             string user = text;
-            string reason = Configuration.irc.DefaultReason;
             if (text.Contains(" "))
             {
-                reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
             if (!Core._Main.Chat.isChannel)
@@ -82,7 +80,7 @@ namespace Client
                 return;
             }
             User host = null;
-            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+            Channel curr = Core.network.getChannel(Core._Main.Chat.WindowName);
             if (curr != null)
             {
                 host = curr.userFromName(user);
@@ -90,9 +88,9 @@ namespace Client
                 {
                     if (host.Host != "")
                     {
-                        Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+                        Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
                         System.Threading.Thread.Sleep(100);
-                        Core.network.Transfer("MODE " + Core._Main.Chat.name + " +q *!*@" + host.Host, Configuration.Priority.High);
+                        Core.network.Transfer("MODE " + Core._Main.Chat.WindowName + " +q *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
                     Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
@@ -122,10 +120,10 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
 
-            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+            Channel curr = Core.network.getChannel(Core._Main.Chat.WindowName);
 
                 User host = null;
                 
@@ -136,7 +134,7 @@ namespace Client
                     {
                         if (host.Host != "")
                         {
-                            Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host + "$##fix_your_connection", Configuration.Priority.High);
+                            Core.network.Transfer("MODE " + Core._Main.Chat.WindowName + " +b *!*@" + host.Host + "$##fix_your_connection", Configuration.Priority.High);
                             return;
                         }
                     }
@@ -163,13 +161,13 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
 
-            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+            Channel curr = Core.network.getChannel(Core._Main.Chat.WindowName);
                 if (curr != null)
                 {
-                            Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + user + "$##fix_your_connection", Configuration.Priority.High);
+                            Core.network.Transfer("MODE " + Core._Main.Chat.WindowName + " +b *!*@" + user + "$##fix_your_connection", Configuration.Priority.High);
                             return;
                 }
                 Core._Main.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
@@ -194,11 +192,11 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.name, Configuration.Priority.High);
+            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core._Main.Chat.WindowName, Configuration.Priority.High);
             System.Threading.Thread.Sleep(100);
-            Core.network.Transfer("KICK " + Core._Main.Chat.name + " " + user + " :" + reason, Configuration.Priority.High);
+            Core.network.Transfer("KICK " + Core._Main.Chat.WindowName + " " + user + " :" + reason, Configuration.Priority.High);
             User host = null;
-            Channel curr = Core.network.getChannel(Core._Main.Chat.name);
+            Channel curr = Core.network.getChannel(Core._Main.Chat.WindowName);
             if (curr != null)
             {
                 host = curr.userFromName(user);
@@ -206,7 +204,7 @@ namespace Client
                 {
                     if (host.Host != "")
                     {
-                        Core.network.Transfer("MODE " + Core._Main.Chat.name + " +b *!*@" + host.Host, Configuration.Priority.High);
+                        Core.network.Transfer("MODE " + Core._Main.Chat.WindowName + " +b *!*@" + host.Host, Configuration.Priority.High);
                         return;
                     }
                     Core._Main.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
