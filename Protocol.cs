@@ -398,26 +398,32 @@ namespace Client
         /// </summary>
         public virtual void Exit() 
         {
-            Core._Main.rootToolStripMenuItem_Click(null, null);
-            if (SystemWindow != null)
+            try
             {
-                if (!Windows.ContainsValue(SystemWindow))
+                Core._Main.rootToolStripMenuItem_Click(null, null);
+                if (SystemWindow != null)
                 {
-                    SystemWindow._Destroy();
+                    if (!Windows.ContainsValue(SystemWindow))
+                    {
+                        SystemWindow._Destroy();
+                    }
                 }
+                ClearWins();
+                // we removed lot of memory now, let's clean it
+                System.GC.Collect();
+                Core._Main.setChannel("");
+                Core._Main.Status("Disconnected from " + Server);
+                Core._Main.DisplayingProgress = false;
+                Core._Main.setText("");
             }
-            ClearWins();
-            // we removed lot of memory now, let's clean it
-            System.GC.Collect();
-            Core._Main.setChannel("");
-            Core._Main.Status("Disconnected from " + Server);
-            Core._Main.DisplayingProgress = false;
-            Core._Main.setText("");
-            lock (Core.Connections)
+            finally
             {
-                if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                lock (Core.Connections)
                 {
-                    Core.Connections.Remove(this);
+                    if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                    {
+                        Core.Connections.Remove(this);
+                    }
                 }
             }
         }  
