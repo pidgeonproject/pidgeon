@@ -123,24 +123,9 @@ namespace Client
 
         public class _Scrollback
         {
-            public static string BeforeParser(string Text)
+            public static void LinkHover(string URL, int X, int Y, Graphics.Window window)
             {
-                return Text;
-            }
-
-            public static string BeforeInsertLine(string Text, string Line)
-            {
-                return Text;
-            }
-
-            public static string AfterParser(string Text)
-            {
-                return Text;
-            }
-
-            public static string BeforeLinePartLoad(string Text)
-            {
-                return Text;
+                
             }
 
             public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)

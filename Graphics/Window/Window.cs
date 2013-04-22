@@ -38,10 +38,6 @@ namespace Client.Graphics
         /// </summary>
         public string WindowName = null;
         /// <summary>
-        /// Specifies if it's possible to write into this window
-        /// </summary>
-        public bool isWritable = true;
-        /// <summary>
         /// Whether it's a channel or not
         /// </summary>
         public bool isChannel = false;
@@ -86,6 +82,21 @@ namespace Client.Graphics
             get
             {
                 return destroyed;
+            }
+        }
+
+        /// <summary>
+        /// Specifies if it's possible to write into this window
+        /// </summary>
+        public bool IsWritable
+        {
+            get
+            {
+                if (!IsDestroyed)
+                {
+                    return (isChannel || isPM);
+                }
+                return false;
             }
         }
 

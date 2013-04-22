@@ -51,6 +51,22 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// This is a pointer to internal text box for compatibility reasons
+        /// </summary>
+        public Gtk.TextView richTextBox1
+        {
+            get
+            {
+                return richTextBox;
+            }
+        }
+
+        public TextBox()
+        {
+
+        }
+
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
@@ -74,19 +90,6 @@ namespace Client.Graphics
                 this.Child.ShowAll();
             }
             this.Hide();
-        }
-
-        public Gtk.TextView richTextBox1
-        {
-            get
-            {
-                return richTextBox;
-            }
-        }
-
-        public TextBox()
-        {
-
         }
 
         public void InitStyle()

@@ -261,7 +261,7 @@ namespace Client
                 Ident = Configuration.UserData.ident;
                 if (protocol.GetType() == typeof(ProtocolSv))
                 {
-                    protocol.CreateChat("!" + ServerName, false, this, false, false, "!" + randomuqid + ServerName);
+                    protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName);
                     SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
                     Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
                 }
@@ -467,7 +467,7 @@ namespace Client
                 _channel.Name = channel;
                 Channels.Add(_channel);
                 Core._Main.ChannelList.insertChannel(_channel);
-                Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true, true);
+                Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
                 window.isChannel = true;
                 return _channel;
             }
