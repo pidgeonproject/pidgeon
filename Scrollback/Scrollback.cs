@@ -377,6 +377,18 @@ namespace Client
                     {
                         if (!ReloadWaiting)
                         {
+                            // there are more undrawn lines than we actually want to max. have in scrollback, let's trim it all
+                            if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                            {
+                                ContentLines.Clear();
+                                UndrawnLines.Sort();
+                                while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                {
+                                    UndrawnLines.RemoveAt(0);
+                                }
+                                ReloadWaiting = true;
+                                SortNeeded = true;
+                            }
                             if (UndrawnLines.Count > 0)
                             {
                                 foreach (ContentLine curr in UndrawnLines)
