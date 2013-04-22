@@ -81,7 +81,13 @@ namespace Client
             /// What should happen when you scroll a user
             /// </summary>
             public static UserList_MouseClick MiddleClick = UserList_MouseClick.Nothing;
+            /// <summary>
+            /// Searchbox X
+            /// </summary>
             public static int Search_X = 80;
+            /// <summary>
+            /// Searchbox Y
+            /// </summary>
             public static int Search_Y = 900;
         }
 
@@ -158,7 +164,13 @@ namespace Client
             /// Change this to false to disable links to open a browser
             /// </summary>
             public static bool OpenLinkInBrowser = true;
+            /// <summary>
+            /// Display icon
+            /// </summary>
             public static bool TrayIcon = true;
+            /// <summary>
+            /// Last open connection was ssl or not
+            /// </summary>
             public static bool LastSSL = false;
         }
 
@@ -176,6 +188,9 @@ namespace Client
             /// Network Scan
             /// </summary>
             public static bool NetworkSniff = true;
+            /// <summary>
+            /// Whether the size of window buffer should be displayed in status bar
+            /// </summary>
             public static bool DisplaySizeOfBuffer = true;
             /// <summary>
             /// If updates are allowed
@@ -191,7 +206,9 @@ namespace Client
             public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode(System.Windows.Forms.Application.ProductVersion);
 
             public static int MaximalRingLogSize = 20000;
-
+            /// <summary>
+            /// If debugging is enabled
+            /// </summary>
             public static bool Debugging = false;
             /// <summary>
             /// If values that are being parsed are hidden
@@ -267,9 +284,13 @@ namespace Client
             /// Name
             /// </summary>
             public static string logs_name = "$1_yyMMdd";
-
+            /// <summary>
+            /// Kind of logs produced by services
+            /// </summary>
             public static ServiceLogs ServicesLogs = ServiceLogs.none;
-
+            /// <summary>
+            /// This is dedicated for services properties
+            /// </summary>
             public enum ServiceLogs
             { 
                 full,
@@ -280,6 +301,9 @@ namespace Client
 
         public class Scrollback
         {
+            /// <summary>
+            /// Deprecated but might be used in future
+            /// </summary>
             public static int DynamicSize = 600;
             /// <summary>
             /// Enable this to make bars change the max size when reached
@@ -313,7 +337,9 @@ namespace Client
             /// backlog size
             /// </summary>
             public static int Depth = 600000;
-
+            /// <summary>
+            /// If client ask services for data on connection, this should be true unless you do some crazy stuff
+            /// </summary>
             public static bool Retrieve_Sv = true;
             /// <summary>
             /// Services can store cached traffic to local temp
@@ -337,29 +363,28 @@ namespace Client
         /// Used skin
         /// </summary>
         public static Skin CurrentSkin = new Skin();
-
         /// <summary>
         /// Reload time for scrollback - this is deprecated
         /// </summary>
         public static int reload_time = 100;
-        
         /// <summary>
         /// Shortcuts enabled
         /// </summary>
         public static List<Core.Shortcut> ShortcutKeylist = new List<Core.Shortcut>();
-
         /// <summary>
         /// List of loaded skins
         /// </summary>
         public static List<Skin> SL = new List<Skin>();
-
         /// <summary>
         /// Highlighter list
         /// </summary>
         public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
         
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();
-
+        /// <summary>
+        /// Configuration dedicated for extensions, this is read only and all modifications you make will be lost as you are always working with
+        /// temporary copy
+        /// </summary>
         public static Dictionary<string, string> Extensions
         {
             get

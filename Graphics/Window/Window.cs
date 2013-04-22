@@ -61,6 +61,10 @@ namespace Client.Graphics
         /// </summary>
         public Network _Network = null;
         public bool ignoreChange = false;
+        /// <summary>
+        /// If this is true the side list will assign an icon to this item
+        /// </summary>
+        public bool needIcon = false;
         private Channel channel = null;
         public bool isInitialised = false;
         

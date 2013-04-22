@@ -215,7 +215,9 @@
     </None>
     <None Include="Properties\Resources.resources" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\exclamation-mark-s.png" />
+  </ItemGroup>
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
@@ -236,6 +238,10 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
-  <ItemGroup />
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\hash-s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\at-s.png" />
+  </ItemGroup>
 </Project>

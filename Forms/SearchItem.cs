@@ -183,7 +183,7 @@ namespace Client.Forms
 
             text = Core._Main.Chat.scrollback;
             
-            if (!text.simple)
+            if (!text.IsSimple)
             {
                 tv = text.RT.textView;
             }

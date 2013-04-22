@@ -72,6 +72,16 @@ namespace Client
                         {
                             curr = _Network.WindowCreateNewJoin(channel);
                         }
+                        else
+                        {
+                            curr.ChannelWork = true;
+                            curr.partRequested = false;
+                            Graphics.Window xx = curr.retrieveWindow();
+                            if (xx != null)
+                            {
+                                xx.needIcon = true;
+                            }
+                        }
                         if (updated_text)
                         {
                             if (Configuration.ChannelModes.aggressive_mode)
@@ -135,8 +145,10 @@ namespace Client
                             if (c != null)
                             {
                                 Graphics.Window Chat = c.retrieveWindow();
-                                if (c != null)
+                                c.ChannelWork = false;
+                                if (Chat != null)
                                 {
+                                    Chat.needIcon = true;
                                     if (!c.partRequested)
                                     {
                                         c.ChannelWork = false;
@@ -149,7 +161,6 @@ namespace Client
                                             Client.ContentLine.MessageStyle.Message, !c.temporary_hide, date);
                                     }
                                 }
-                                c.ChannelWork = false;
                                 c.UpdateInfo();
                             }
                         }
@@ -166,6 +177,11 @@ namespace Client
                             {
                                 c.ChannelWork = false;
                                 c.UpdateInfo();
+                                Graphics.Window chat = c.retrieveWindow();
+                                if (chat != null)
+                                {
+                                    chat.needIcon = true;
+                                }
                             }
                         }
                         return false;

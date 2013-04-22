@@ -21,12 +21,19 @@ namespace Client.Forms
 {
     public partial class Notification : GTK.PidgeonForm
     {
+        /// <summary>
+        /// Whether the focus should be returned to textbox after this notification is handled
+        /// </summary>
         public bool focus = false;
         private Gtk.VBox vbox1;
         private Gtk.Label label1;
         private Gtk.HBox hbox1;
         private Gtk.Image image1;
         private Gtk.Label label2;
+        /// <summary>
+        /// This is a root box which all components belong to, you can hook some extra events to it
+        /// </summary>
+        /// Please do not change it to private, that can break some stuff
         public Gtk.EventBox root;
 
         protected virtual void Build()
@@ -110,6 +117,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of notification
+        /// </summary>
         public Notification ()
         {
             this.Build ();
@@ -127,6 +137,9 @@ namespace Client.Forms
             this.DeleteEvent += new Gtk.DeleteEventHandler(Unshow);
         }
 
+        /// <summary>
+        /// Move
+        /// </summary>
         public void Relocate()
         {
             if (this.Width < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width && this.Height < System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height)
@@ -136,6 +149,11 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// This is handler for close event
+        /// </summary>
+        /// <param name="main"></param>
+        /// <param name="xx"></param>
         [GLib.ConnectBefore]
         public void _Remove(object main, Gtk.ButtonPressEventArgs xx)
         {
@@ -149,6 +167,11 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Set the focus to text box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="keys"></param>
         public void focusText(object sender, Gtk.KeyPressEventArgs keys)
         {
             try
@@ -170,6 +193,11 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Hide
+        /// </summary>
+        /// <param name="main"></param>
+        /// <param name="closing"></param>
         public void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try

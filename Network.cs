@@ -325,6 +325,31 @@ namespace Client
         public void flagDisconnect()
         {
             Connected = false;
+            lock (Channels)
+            {
+                foreach (Channel xx in Channels)
+                {
+                    // we need to change the icon to gray in side list
+                    Graphics.Window cw = xx.retrieveWindow();
+                    if (cw != null)
+                    {
+                        cw.needIcon = true;
+                    }
+                    xx.UpdateInfo();
+                }
+            }
+
+            lock (PrivateWins)
+            {
+                foreach (Graphics.Window uw in PrivateWins.Values)
+                {
+                    uw.needIcon = true;
+                }
+            }
+
+            Graphics.PidgeonList.Updated = true;
+
+            SystemWindow.needIcon = true;
         }
 
         /// <summary>
@@ -624,7 +649,7 @@ namespace Client
             {
                 Transfer("QUIT :" + Quit);
             }
-            Connected = false;
+            flagDisconnect();
         }
     }
 }

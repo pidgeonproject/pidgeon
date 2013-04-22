@@ -45,21 +45,44 @@ namespace Client
         public Graphics.Window owner = null;
         private List<ContentLine> UndrawnLines = new List<ContentLine>();
         private string Link = "";
-        public bool simple = true;
+        private bool simple = true;
         private DateTime lastDate;
+        /// <summary>
+        /// If scrolling is enabled
+        /// </summary>
         public bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
         public bool isMicro = false;
         private string LogfilePath = null;
+        /// <summary>
+        /// Whether items in buffer needs to be sorted
+        /// </summary>
         public bool SortNeeded = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        /// <summary>
+        /// Pointer to text box
+        /// </summary>
         public global::Gtk.TextView simpleview;
         private GLib.TimeoutHandler timer2;
+        /// <summary>
+        /// Pointer to RT box
+        /// </summary>
         public RichTBox RT = null;
+        /// <summary>
+        /// URL of link that is currently selected
+        /// </summary>
         public string SelectedLink = null;
         private bool destroyed = false;
         private bool running = false;
+
+        public bool IsSimple
+        {
+            get
+            {
+                return simple;
+            }
+        }
 
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -73,6 +96,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Content
+        /// </summary>
         new public List<ContentLine> Data
         {
             get
@@ -92,18 +118,6 @@ namespace Client
             {
                 return ContentLines.Count;
             }
-        }
-
-        public bool WindowVisible()
-        {
-            if (owner != null)
-            {
-                if (owner != Core._Main.Chat)
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>
@@ -136,7 +150,23 @@ namespace Client
             }
         }
 
-        protected virtual void Build()
+        /// <summary>
+        /// Return true in case the window is visible
+        /// </summary>
+        /// <returns></returns>
+        public bool WindowVisible()
+        {
+            if (owner != null)
+            {
+                if (owner != Core._Main.Chat)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             global::Stetic.BinContainer.Attach(this);
@@ -173,6 +203,9 @@ namespace Client
             this.Hide();
         }
 
+        /// <summary>
+        /// Change the limit of number of max lines
+        /// </summary>
         public void IncreaseLimits()
         {
             if (scrollback_max < ContentLines.Count)
@@ -357,7 +390,7 @@ namespace Client
             return false;
         }
 
-        public bool timer2_Tick()
+        private bool timer2_Tick()
         {
             try
             {
@@ -375,29 +408,33 @@ namespace Client
                 {
                     lock (UndrawnLines)
                     {
-                        if (!ReloadWaiting)
+                        lock (ContentLines)
                         {
-                            // there are more undrawn lines than we actually want to max. have in scrollback, let's trim it all
-                            if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                            if (!ReloadWaiting)
                             {
-                                ContentLines.Clear();
-                                UndrawnLines.Sort();
-                                while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                // there are more undrawn lines than we actually want to max. have in scrollback, let's trim it all
+                                if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
                                 {
-                                    UndrawnLines.RemoveAt(0);
+                                    ContentLines.Sort();
+                                    while (Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
+                                    {
+                                        ContentLines.RemoveAt(0);
+                                    }
+                                    ReloadWaiting = true;
                                 }
-                                ReloadWaiting = true;
-                                SortNeeded = true;
-                            }
-                            if (UndrawnLines.Count > 0)
-                            {
-                                foreach (ContentLine curr in UndrawnLines)
+                                else
                                 {
-                                    InsertLineToText(curr, false);
+                                    if (UndrawnLines.Count > 0)
+                                    {
+                                        foreach (ContentLine curr in UndrawnLines)
+                                        {
+                                            InsertLineToText(curr, false);
+                                        }
+                                    }
                                 }
+                                UndrawnLines.Clear();
                             }
                         }
-                        UndrawnLines.Clear();
                     }
                     if (ReloadWaiting)
                     {

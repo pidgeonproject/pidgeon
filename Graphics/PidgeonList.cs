@@ -46,6 +46,9 @@ namespace Client.Graphics
         public List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         public static bool Updated = false;
+        private Gdk.Pixbuf icon_at2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.at-s.png");
+        private Gdk.Pixbuf icon_22 = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash-s.png");
+        private Gdk.Pixbuf icon_02 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation-mark-s.png");
         private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
         private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
         private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
@@ -241,7 +244,7 @@ namespace Client.Graphics
         /// <summary>
         /// This function removes a reference to user object, it is being called only by destructor of User
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="user">User</param>
         public void RemoveUser(User user)
         {
             lock (queueUsers)
@@ -332,6 +335,18 @@ namespace Client.Graphics
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
+                            if (nw.SystemWindow.needIcon)
+                            {
+                                nw.SystemWindow.needIcon = false;
+                                if (nw.IsConnected)
+                                {
+                                    model.SetValue(iter, 5, icon_0);
+                                }
+                                else
+                                {
+                                    model.SetValue(iter, 5, icon_02);
+                                }
+                            }
                         }
                         break;
                     case ItemType.User:
@@ -350,6 +365,18 @@ namespace Client.Graphics
                         if (window != null && !window.IsDestroyed)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                            if (window.needIcon)
+                            {
+                                window.needIcon = false;
+                                if (user._Network == null || !user._Network.IsConnected)
+                                {
+                                    model.SetValue(iter, 5, icon_at2);
+                                }
+                                else
+                                {
+                                    model.SetValue(iter, 5, icon_at);
+                                }
+                            }
                         }
                         break;
                     case ItemType.Channel:
@@ -367,6 +394,18 @@ namespace Client.Graphics
                         if (window != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                            if (window.needIcon)
+                            {
+                                window.needIcon = false;
+                                if (!channel.IsAlive)
+                                {
+                                    model.SetValue(iter, 5, icon_22);
+                                }
+                                else
+                                {
+                                    model.SetValue(iter, 5, icon_2);
+                                }
+                            }
                         }
                         break;
                     case ItemType.Services:
