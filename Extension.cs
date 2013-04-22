@@ -70,11 +70,23 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Get the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="Default">Default value that should be returned in case that this key doesn't exist</param>
+        /// <returns></returns>
         public string GetConfig(string key, string Default)
         {
-            return Configuration.GetConfig(Name + "." + key);
+            return Configuration.GetConfig(Name + "." + key, Default);
         }
 
+        /// <summary>
+        /// Get the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="Default">Default value that should be returned in case that this key doesn't exist</param>
+        /// <returns></returns>
         public bool GetConfig(string key, bool Default)
         {
             return Configuration.GetConfig(Name + "." + key, Default);

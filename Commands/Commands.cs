@@ -23,10 +23,25 @@ namespace Client
 {
     public partial class Commands
     {
+        /// <summary>
+        /// Alias
+        /// </summary>
         public class CommandLink
         {
+            /// <summary>
+            /// Whether this alias overrides existing command with same name
+            /// </summary>
             public bool Overrides = false;
+            /// <summary>
+            /// Target command
+            /// </summary>
             public string Target = null;
+
+            /// <summary>
+            /// Creates a new alias
+            /// </summary>
+            /// <param name="target">Target command</param>
+            /// <param name="overrides">Overrides</param>
             public CommandLink(string target, bool overrides = false)
             {
                 Target = target;
@@ -34,9 +49,21 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Pidgeon command
+        /// </summary>
         public class Command
         {
+            /// <summary>
+            /// Type
+            /// </summary>
             private Type type;
+
+            private Action<string> action = null;
+
+            /// <summary>
+            /// Return a type
+            /// </summary>
             public Type _Type
             {
                 get
@@ -44,27 +71,36 @@ namespace Client
                     return type;
                 }
             }
-            private Action<string> action = null;
 
             public virtual void Launch(string parameter = null)
             {
                 if (action != null)
                 {
                     action(parameter);
-
                 }
             }
 
+            /// <summary>
+            /// This function is called when command is created
+            /// </summary>
             public virtual void Register()
             {
-                // this function is called when command is created
+                
             }
 
+            /// <summary>
+            /// This function is called when command is created
+            /// </summary>
             public virtual void Unregister()
             {
-                // this function is called when command is deleted
+                
             }
 
+            /// <summary>
+            /// Creates a new instance of command
+            /// </summary>
+            /// <param name="_type"></param>
+            /// <param name="_Action"></param>
             public Command(Type _type, Action<string> _Action = null)
             {
                 type = _type;
@@ -72,6 +108,13 @@ namespace Client
                 Register();
             }
 
+            /// <summary>
+            /// Creates a new instance of command
+            /// </summary>
+            /// <param name="ManualPage"></param>
+            /// <param name="Name"></param>
+            /// <param name="_type"></param>
+            /// <param name="_Action"></param>
             public Command(string ManualPage, string Name, Type _type, Action<string> _Action)
             {
                 type = _type;
@@ -80,6 +123,9 @@ namespace Client
                 Register();
             }
 
+            /// <summary>
+            /// Destructor
+            /// </summary>
             ~Command()
             {
                 Unregister();
@@ -88,18 +134,47 @@ namespace Client
 
         private static Dictionary<string, string> ManualPages = new Dictionary<string, string>();
 
+        /// <summary>
+        /// Type of command
+        /// </summary>
         public enum Type
         {
+            /// <summary>
+            /// System command
+            /// </summary>
             System,
+            /// <summary>
+            /// Services command
+            /// </summary>
             SystemSv,
+            /// <summary>
+            /// Services command
+            /// </summary>
             Services,
+            /// <summary>
+            /// Network command
+            /// </summary>
             Network,
+            /// <summary>
+            /// Plugin command
+            /// </summary>
             Plugin,
+            /// <summary>
+            /// User defined command
+            /// </summary>
             User,
         }
 
+        /// <summary>
+        /// Internal database of all commands
+        /// </summary>
         public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
 
+        /// <summary>
+        /// Register a new manual
+        /// </summary>
+        /// <param name="key">Command</param>
+        /// <param name="value">Manual page</param>
         public static void RegisterManual(string key, string value)
         {
             lock (ManualPages)
@@ -115,6 +190,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Register a new command
+        /// </summary>
+        /// <param name="Name">Name of command</param>
+        /// <param name="command">What is supposed to be ran</param>
         public static void RegisterCommand(string Name, Command command)
         {
             Core.DebugLog("Registering a new command by extension: " + Name);
@@ -123,7 +203,7 @@ namespace Client
                 commands.Add(Name, command);
             }
         }
-
+        
         public static void Initialise()
         {
             try
@@ -212,7 +292,12 @@ namespace Client
             }
         }
 
-        public static bool Proccess(string command)
+        /// <summary>
+        /// Processes a given command
+        /// </summary>
+        /// <param name="command"></param>
+        /// <returns></returns>
+        public static bool Process(string command)
         {
             string[] values = command.Split(' ');
             string parameter = command.Substring(values[0].Length);

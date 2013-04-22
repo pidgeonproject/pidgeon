@@ -40,7 +40,13 @@ namespace Client
     /// </summary>
     public class ChannelParameterMode
     {
+        /// <summary>
+        /// Target of a mode
+        /// </summary>
         public string Target = null;
+        /// <summary>
+        /// Time when it was set
+        /// </summary>
         public string Time = null;
         public string User = null;
     }
@@ -51,11 +57,20 @@ namespace Client
     [Serializable]
     public class Invite : ChannelParameterMode
     {
+        /// <summary>
+        /// Creates a new instance of invite
+        /// </summary>
         public Invite()
         {
             // This empty constructor is here so that we can serialize this
         }
 
+        /// <summary>
+        /// Creates a new instance of invite
+        /// </summary>
+        /// <param name="user">User</param>
+        /// <param name="target">Target</param>
+        /// <param name="time">Time</param>
         public Invite(string user, string target, string time)
         {
 

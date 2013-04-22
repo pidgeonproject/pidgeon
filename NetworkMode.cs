@@ -23,6 +23,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// This class represents a simplest mode that can be present in a channel or network with optional parameter
+    /// </summary>
     public class SimpleMode
     {
         private char _char;
@@ -47,6 +50,10 @@ namespace Client
                 return _Parameter;
             }
         }
+
+        /// <summary>
+        /// Return true in case there is a parameter in this mode
+        /// </summary>
         public bool ContainsParameter
         {
             get
@@ -55,6 +62,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of simple mode
+        /// </summary>
+        /// <param name="mode">Mode</param>
+        /// <param name="parameter">Parameter</param>
         public SimpleMode(char mode, string parameter)
         {
             _char = mode;

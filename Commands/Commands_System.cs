@@ -21,6 +21,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// This class is handling all commands
+    /// </summary>
     public partial class Commands
     {
         private partial class Generic

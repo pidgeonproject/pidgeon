@@ -351,11 +351,26 @@ namespace Client
             public static bool MissingFix = false;
         }
 
+        /// <summary>
+        /// Parser
+        /// </summary>
         public class Parser
         {
+            /// <summary>
+            /// List of all protocols that should be recognized
+            /// </summary>
             public static List<string> Protocols = new List<string> { "http://", "ftp://", "https://", "irc://", "ssh://" };
+            /// <summary>
+            /// List of all separators that should be used
+            /// </summary>
             public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
+            /// <summary>
+            /// Whether all modes should be processed by formatter
+            /// </summary>
             public static bool formatter = true;
+            /// <summary>
+            /// If there is a parser cache (more memory eaten, but less cpu used)
+            /// </summary>
             public static int ParserCache = 2000;
         }
 
@@ -379,7 +394,9 @@ namespace Client
         /// Highlighter list
         /// </summary>
         public static List<Network.Highlighter> HighlighterList = new List<Network.Highlighter>();
-        
+        /// <summary>
+        /// Configuration that is used by external plugins
+        /// </summary>
         private static Dictionary<string, string> ExtensionConfig = new Dictionary<string, string>();
         /// <summary>
         /// Configuration dedicated for extensions, this is read only and all modifications you make will be lost as you are always working with
@@ -401,6 +418,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Set a private config for extensions
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public static void SetConfig(string key, string value)
         {
             lock (ExtensionConfig)
@@ -416,6 +438,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Remove a value from private config
+        /// </summary>
+        /// <param name="key"></param>
         public static void RemoveConfig(string key)
         { 
             lock (ExtensionConfig)
@@ -427,22 +453,43 @@ namespace Client
              }
         }
 
+        /// <summary>
+        /// Set the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public static void SetConfig(string key, bool value)
         {
             SetConfig(key, value.ToString());
         }
 
+        /// <summary>
+        /// Set the configuration value for extension
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="value">Value</param>
         public static void SetConfig(string key, long value)
         {
             SetConfig(key, value.ToString());
         }
 
+        /// <summary>
+        /// Set the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public static void SetConfig(string key, int value)
         {
             SetConfig(key, value.ToString());
         }
 
-        public static string GetConfig(string key)
+        /// <summary>
+        /// Get the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="Default">Default value that should be returned in case that this key doesn't exist</param>
+        /// <returns></returns>
+        public static string GetConfig(string key, string Default)
         {
             lock (ExtensionConfig)
             {
@@ -451,9 +498,15 @@ namespace Client
                     return ExtensionConfig[key];
                 }
             }
-            return null;
+            return Default;
         }
 
+        /// <summary>
+        /// Get the configuration value for extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="Default">Default value that should be returned in case that this key doesn't exist</param>
+        /// <returns></returns>
         public static bool GetConfig(string key, bool Default)
         {
             lock (ExtensionConfig)
@@ -466,6 +519,12 @@ namespace Client
             return Default;
         }
 
+        /// <summary>
+        /// Get the configuration value for extension
+        /// </summary>
+        /// <param name="key">Key</param>
+        /// <param name="Default">Default value that should be returned in case that this key doesn't exist</param>
+        /// <returns></returns>
         public static long GetConfig(string key, long Default)
         {
             lock (ExtensionConfig)

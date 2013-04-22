@@ -552,7 +552,7 @@ namespace Client
                 }
 
                 // in case that it's known command we return
-                if (Commands.Proccess(command))
+                if (Commands.Process(command))
                 {
                     return true;
                 }

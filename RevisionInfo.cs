@@ -23,8 +23,15 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Provides information about repository
+    /// </summary>
     public static class RevisionProvider
     {
+        /// <summary>
+        /// Return a hash and revision ifo
+        /// </summary>
+        /// <returns></returns>
         public static string GetHash()
         {
             try

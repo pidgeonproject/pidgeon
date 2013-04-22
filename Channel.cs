@@ -119,6 +119,9 @@ namespace Client
         /// Text displayed in the list menu
         /// </summary>
         public string MenuData = null;
+        /// <summary>
+        /// Whether part from this channel was requested
+        /// </summary>
         public bool partRequested = false;
         /// <summary>
         /// If this is false the channel is not being used / you aren't in it or you can't access it
@@ -197,7 +200,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Renew the bans
+        /// Renew bans
         /// </summary>
         public void ReloadBans()
         {

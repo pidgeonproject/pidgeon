@@ -190,9 +190,18 @@ namespace Client
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
+        /// <summary>
+        /// Whether user is away
+        /// </summary>
         public bool IsAway = false;
+        /// <summary>
+        /// Whether this network is fully loaded
+        /// </summary>
         public bool isLoaded = false;
         private bool destroyed = false;
+        /// <summary>
+        /// Is connected
+        /// </summary>
         public bool IsConnected
         {
             get
@@ -279,6 +288,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Network()
         {
             if (!IsDestroyed)
