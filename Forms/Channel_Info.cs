@@ -31,16 +31,16 @@ namespace Client.Forms
         public Channel channel = null;
         public List<char> cm = new List<char>();
 
-        private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Except));
+        private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(ChannelBanException));
         private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(SimpleBan));
         private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Invite));
         private List<CheckButton> options = new List<CheckButton>();
 
-        public List<Except> SelectedExcept
+        public List<ChannelBanException> SelectedExcept
         {
             get
             {
-                List<Except> el = new List<Except>();
+                List<ChannelBanException> el = new List<ChannelBanException>();
                 TreeIter iter;
                 TreePath[] path = treeview6.Selection.GetSelectedRows();
                 if (path.Length < 1)
@@ -50,7 +50,7 @@ namespace Client.Forms
                 foreach (TreePath p in path)
                 {
                     treeview6.Model.GetIter(out iter, p);
-                    el.Add((Except)treeview6.Model.GetValue(iter, 3));
+                    el.Add((ChannelBanException)treeview6.Model.GetValue(iter, 3));
                 }
                 return el;
             }
@@ -123,7 +123,7 @@ namespace Client.Forms
                     exceptions.Clear();
                     lock (channel.Exceptions)
                     {
-                        foreach (Except sb in channel.Exceptions)
+                        foreach (ChannelBanException sb in channel.Exceptions)
                         {
                             exceptions.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
@@ -337,7 +337,7 @@ namespace Client.Forms
             {
                 if (SelectedExcept != null)
                 {
-                    foreach (Except ex in SelectedExcept)
+                    foreach (ChannelBanException ex in SelectedExcept)
                     {
                         channel._Network.Transfer("MODE " + channel.Name + " -e " + ex.Target);
                     }

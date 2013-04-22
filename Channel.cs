@@ -21,6 +21,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Channel object
+    /// </summary>
     [Serializable]
     public class Channel
     {
@@ -65,7 +68,7 @@ namespace Client
         /// <summary>
         /// Exception list 
         /// </summary>
-        public List<Except> Exceptions = null;
+        public List<ChannelBanException> Exceptions = null;
         /// <summary>
         /// Window this channel is rendered to, if any
         /// </summary>
@@ -177,6 +180,9 @@ namespace Client
             Chat = null;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Channel()
         {
             if (!destroyed)
@@ -531,6 +537,12 @@ namespace Client
             return "";
         }
 
+        /// <summary>
+        /// Insert ban to a ban list, this will not set a ban to channel, this will only set it into memory of pidgeon
+        /// </summary>
+        /// <param name="ban">Host</param>
+        /// <param name="user">User who set</param>
+        /// <param name="time">Time when it was set</param>
         public void InsertBan(string ban, string user, string time = "0")
         {
             SimpleBan br = new SimpleBan(user, ban, time);

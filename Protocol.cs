@@ -409,8 +409,6 @@ namespace Client
                     }
                 }
                 ClearWins();
-                // we removed lot of memory now, let's clean it
-                System.GC.Collect();
                 Core._Main.setChannel("");
                 Core._Main.Status("Disconnected from " + Server);
                 Core._Main.DisplayingProgress = false;
@@ -425,6 +423,8 @@ namespace Client
                         Core.Connections.Remove(this);
                     }
                 }
+                // we removed lot of memory now, let's clean it
+                System.GC.Collect();
             }
         }  
 

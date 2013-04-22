@@ -22,6 +22,9 @@ namespace Client.Forms
 {
     public partial class Connection : Gtk.Window
     {
+        /// <summary>
+        /// New connection gtk dialog
+        /// </summary>
         public Connection () : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();
