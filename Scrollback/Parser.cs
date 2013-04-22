@@ -857,7 +857,7 @@ namespace Client
             }
             if (network.IsConnected)
             {
-                if (_window.isWritable)
+                if (_window.IsWritable)
                 {
                     if (input.StartsWith(Configuration.CommandPrefix))
                     {

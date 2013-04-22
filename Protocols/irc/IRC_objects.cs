@@ -35,6 +35,9 @@ namespace Client
         }
     }
     
+    /// <summary>
+    /// This is a global interface for channel modes with parameters
+    /// </summary>
     public class ChannelParameterMode
     {
         public string Target = null;
@@ -42,6 +45,9 @@ namespace Client
         public string User = null;
     }
 
+    /// <summary>
+    /// Invite
+    /// </summary>
     [Serializable]
     public class Invite : ChannelParameterMode
     {
@@ -56,10 +62,16 @@ namespace Client
         }
     }
 
+    /// <summary>
+    /// Exception
+    /// </summary>
     [Serializable]
-    public class Except : ChannelParameterMode
+    public class ChannelBanException : ChannelParameterMode
     {
-        public Except()
+        /// <summary>
+        /// Creates a new instance of channel ban exception (xml constructor only)
+        /// </summary>
+        public ChannelBanException()
         {
             // This empty constructor is here so that we can serialize this
         }
@@ -68,11 +80,20 @@ namespace Client
     [Serializable]
     public class SimpleBan : ChannelParameterMode
     {
+        /// <summary>
+        /// Creates a new instance of simple ban (xml constructor only)
+        /// </summary>
         public SimpleBan()
         {
             // This empty constructor is here so that we can serialize this
         }
 
+        /// <summary>
+        /// Creates a new instance of simple ban
+        /// </summary>
+        /// <param name="user">Person who set a ban</param>
+        /// <param name="target">Who is target</param>
+        /// <param name="time">Unix date when it was set</param>
         public SimpleBan(string user, string target, string time)
         {
             Target = target;

@@ -558,7 +558,7 @@ namespace Client
                 }
 
                 // if not we can try to pass it to server
-                if (Core._Main.Chat._Network._Protocol != null)
+                if (Core._Main.Chat != null && !Core._Main.Chat.IsDestroyed && Core._Main.Chat._Network != null && Core._Main.Chat._Network._Protocol != null)
                 {
                     if (_Main.Chat._Network._Protocol.IsConnected)
                     {
@@ -1020,7 +1020,8 @@ namespace Client
                         _Main.icon.Visible = false;
                         _Main.icon.Dispose();
                     }
-                    _Main.Visible = false;
+                    _Main.Hide();
+                    notification.Hide();
                     _Configuration.ConfigSave();
                     try
                     {
@@ -1078,6 +1079,13 @@ namespace Client
             Windowsx86,
             MacOSx64,
             MacOSx86,
+        }
+
+        public enum Status
+        {
+            Running,
+            Frozen,
+            Quiting,
         }
     }
 }

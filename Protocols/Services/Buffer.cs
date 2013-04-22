@@ -94,7 +94,7 @@ namespace Client.Services
             /// <summary>
             /// Exception list 
             /// </summary>
-            public List<Except> Exceptions = null;
+            public List<ChannelBanException> Exceptions = null;
             /// <summary>
             /// If channel output is temporarily hidden
             /// </summary>

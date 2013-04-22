@@ -143,9 +143,8 @@ namespace Client
         /// <param name="name">Identifier of window, should be unique on network level, otherwise you won't be able to locate it</param>
         /// <param name="focus">Whether new window should be immediately focused</param>
         /// <param name="network">Network the window belongs to</param>
-        /// <param name="writable">If true user will be able to send text in window</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
-        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool writable = false, bool channelw = false, string id = null)
+        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null)
         {
             Forms.Main._WindowRequest request = new Forms.Main._WindowRequest();
             if (id == null)
@@ -154,12 +153,10 @@ namespace Client
             }
             request.owner = this;
             request.name = name;
-            request.writable = writable;
             request.window = new Graphics.Window();
             request.focus = focus;
             request.window._Network = network;
             request.window.WindowName = name;
-            request.window.isWritable = writable;
 
             if (network != null && !name.Contains("!"))
             { 
@@ -398,27 +395,33 @@ namespace Client
         /// </summary>
         public virtual void Exit() 
         {
-            Core._Main.rootToolStripMenuItem_Click(null, null);
-            if (SystemWindow != null)
+            try
             {
-                if (!Windows.ContainsValue(SystemWindow))
+                Core._Main.rootToolStripMenuItem_Click(null, null);
+                if (SystemWindow != null)
                 {
-                    SystemWindow._Destroy();
+                    if (!Windows.ContainsValue(SystemWindow))
+                    {
+                        SystemWindow._Destroy();
+                    }
                 }
+                ClearWins();
+                Core._Main.setChannel("");
+                Core._Main.Status("Disconnected from " + Server);
+                Core._Main.DisplayingProgress = false;
+                Core._Main.setText("");
             }
-            ClearWins();
-            // we removed lot of memory now, let's clean it
-            System.GC.Collect();
-            Core._Main.setChannel("");
-            Core._Main.Status("Disconnected from " + Server);
-            Core._Main.DisplayingProgress = false;
-            Core._Main.setText("");
-            lock (Core.Connections)
+            finally
             {
-                if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                lock (Core.Connections)
                 {
-                    Core.Connections.Remove(this);
+                    if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                    {
+                        Core.Connections.Remove(this);
+                    }
                 }
+                // we removed lot of memory now, let's clean it
+                System.GC.Collect();
             }
         }  
 

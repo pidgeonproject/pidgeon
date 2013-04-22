@@ -56,7 +56,6 @@ namespace Client.Forms
             public Graphics.Window window;
             public string name;
             public bool focus;
-            public bool writable;
             public Protocol owner;
         }
 
