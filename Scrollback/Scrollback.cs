@@ -420,7 +420,7 @@ namespace Client
                                     {
                                         ContentLines.RemoveAt(0);
                                     }
-                                    ReloadWaiting = true;
+                                    //ReloadWaiting = true;
                                 }
                                 else
                                 {
@@ -434,11 +434,11 @@ namespace Client
                                                 UndrawnLines.RemoveAt(0);
                                             }
                                         }
-                                        foreach (ContentLine curr in UndrawnLines)
-                                        {
-                                            InsertLineToText(curr, false);
-                                        }
                                     }
+                                }
+                                foreach (ContentLine curr in UndrawnLines)
+                                {
+                                    InsertLineToText(curr, false);
                                 }
                                 UndrawnLines.Clear();
                             }
