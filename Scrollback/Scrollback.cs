@@ -420,20 +420,13 @@ namespace Client
                                     {
                                         ContentLines.RemoveAt(0);
                                     }
-                                    //ReloadWaiting = true;
                                 }
-                                else
+                                if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
                                 {
-                                    if (UndrawnLines.Count > 0)
+                                    UndrawnLines.Sort();
+                                    while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
                                     {
-                                        if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
-                                        {
-                                            UndrawnLines.Sort();
-                                            while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
-                                            {
-                                                UndrawnLines.RemoveAt(0);
-                                            }
-                                        }
+                                        UndrawnLines.RemoveAt(0);
                                     }
                                 }
                                 foreach (ContentLine curr in UndrawnLines)

@@ -120,6 +120,11 @@ namespace Client
 
             Changed = false;
 
+            lock (UndrawnLines)
+            {
+                UndrawnLines.Clear();
+            }
+
             if (owner == null || (owner != null && WindowVisible()))
             {
                 if (Configuration.Memory.MaximumChannelBufferSize != 0)

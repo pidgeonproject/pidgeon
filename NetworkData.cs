@@ -24,9 +24,18 @@ namespace Client
 {
     public class NetworkData
     {
+        /// <summary>
+        /// Information about a single network in a network list
+        /// </summary>
         public class NetworkInfo
         {
+            /// <summary>
+            /// Name of the network
+            /// </summary>
             public string Name = null;
+            /// <summary>
+            /// Server
+            /// </summary>
             public string Server = null;
             public bool SSL = false;
             public ProtocolType protocolType = ProtocolType.IRC;
