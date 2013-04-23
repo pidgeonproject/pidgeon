@@ -83,6 +83,9 @@ namespace Client
         }
     }
 
+    /// <summary>
+    /// Mode
+    /// </summary>
     [Serializable]
     public class NetworkMode
     {

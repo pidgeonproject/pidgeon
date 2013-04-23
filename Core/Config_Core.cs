@@ -27,8 +27,14 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Kernel
+    /// </summary>
     public partial class Core
     {
+        /// <summary>
+        /// This is controlling the system configuration
+        /// </summary>
         public class _Configuration
         {
             private static void make_comment(string text, XmlDocument conf, XmlNode node)
@@ -59,6 +65,10 @@ namespace Client
                 return true;
             }
 
+            /// <summary>
+            /// Save all configuration to a file
+            /// </summary>
+            /// <returns></returns>
             public static bool ConfigSave()
             {
                 try
@@ -319,7 +329,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Conf
+        /// Load all configuration and override the current values
         /// </summary>
         /// <returns></returns>
         public static bool ConfigurationLoad()

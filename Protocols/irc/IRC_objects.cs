@@ -48,6 +48,9 @@ namespace Client
         /// Time when it was set
         /// </summary>
         public string Time = null;
+        /// <summary>
+        /// User who set the ban / invite
+        /// </summary>
         public string User = null;
     }
 

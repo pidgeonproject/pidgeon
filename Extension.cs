@@ -36,11 +36,26 @@ namespace Client
         /// Description of extension
         /// </summary>
         public string Description = "There is no description provided";
+        /// <summary>
+        /// Minimal version of pidgeon required for this extension
+        /// </summary>
         public Version Required = new Version(1, 2, 0);
+        /// <summary>
+        /// Status of extension
+        /// </summary>
         public Status _Status = Status.Loading;
+        /// <summary>
+        /// If this extensions require pidgeon to be restarted in case it's loaded after core
+        /// </summary>
         public bool RequiresReboot = false;
+        /// <summary>
+        /// List of threads associated with this extension
+        /// </summary>
         public List<Thread> _Threads = new List<Thread>();
 
+        /// <summary>
+        /// This function is called on start of extension
+        /// </summary>
         public static void Init()
         {
             return;
@@ -92,24 +107,44 @@ namespace Client
             return Configuration.GetConfig(Name + "." + key, Default);
         }
 
+        /// <summary>
+        /// Change the configuration option for this extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetConfig(string key, string value)
         {
             Configuration.SetConfig(Name + "." + key, value);
             Core._Configuration.ConfigSave();
         }
 
+        /// <summary>
+        /// Change the configuration option for this extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetConfig(string key, bool value)
         {
             Configuration.SetConfig(Name + "." + key, value);
             Core._Configuration.ConfigSave();
         }
 
+        /// <summary>
+        /// Change the configuration option for this extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetConfig(string key, long value)
         {
             Configuration.SetConfig(Name + "." + key, value);
             Core._Configuration.ConfigSave();
         }
 
+        /// <summary>
+        /// Change the configuration option for this extension
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="value"></param>
         public void SetConfig(string key, int value)
         {
             Configuration.SetConfig(Name + "." + key, value);

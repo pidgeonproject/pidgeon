@@ -72,6 +72,10 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Start a command
+            /// </summary>
+            /// <param name="parameter">Parameter of a command</param>
             public virtual void Launch(string parameter = null)
             {
                 if (action != null)
@@ -204,6 +208,9 @@ namespace Client
             }
         }
         
+        /// <summary>
+        /// Load the default commands
+        /// </summary>
         public static void Initialise()
         {
             try

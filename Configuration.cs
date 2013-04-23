@@ -23,6 +23,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Configuration of pidgeon
+    /// </summary>
     public class Configuration
     {
         // Static config
@@ -120,6 +123,9 @@ namespace Client
             /// Time of message queue
             /// </summary>
             public static int mq = 1200;
+            /// <summary>
+            /// If CTCP is blocked for all users
+            /// </summary>
             public static bool FirewallCTCP = false;
         }
 
@@ -174,6 +180,9 @@ namespace Client
             public static bool LastSSL = false;
         }
 
+        /// <summary>
+        /// Colors
+        /// </summary>
         public class Colors
         {
             /// <summary>
@@ -182,6 +191,9 @@ namespace Client
             public static bool ChangeLinks = false;
         }
 
+        /// <summary>
+        /// Kernel
+        /// </summary>
         public class Kernel
         {
             /// <summary>
@@ -204,8 +216,10 @@ namespace Client
             /// Updater
             /// </summary>
             public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode(System.Windows.Forms.Application.ProductVersion);
-
-            public static int MaximalRingLogSize = 20000;
+            /// <summary>
+            /// Maximum size of ringlog
+            /// </summary>
+            public static int MaximalRingLogSize = 200;
             /// <summary>
             /// If debugging is enabled
             /// </summary>
@@ -218,10 +232,19 @@ namespace Client
             /// Require confirmation from user before exiting
             /// </summary>
             public static bool ShutdownCheck = true;
+            /// <summary>
+            /// If profiler is enabled
+            /// </summary>
             public static bool Profiler = false;
+            /// <summary>
+            /// Minimal time for which the debug message is displayed
+            /// </summary>
             public static int Profiler_Minimal = 0;
         }
 
+        /// <summary>
+        /// Memory
+        /// </summary>
         public class Memory
         {
             /// <summary>
@@ -234,6 +257,9 @@ namespace Client
             public static int MaximumChannelBufferSize = 0;
         }
 
+        /// <summary>
+        /// Modes
+        /// </summary>
         public class ChannelModes
         {
             /// <summary>
@@ -262,6 +288,9 @@ namespace Client
             public static bool aggressive_channel = true;
         }
 
+        /// <summary>
+        /// Logs
+        /// </summary>
         public class Logs
         {
             /// <summary>
@@ -293,12 +322,24 @@ namespace Client
             /// </summary>
             public enum ServiceLogs
             { 
+                /// <summary>
+                /// All logs are saved as they are received to windows
+                /// </summary>
                 full,
+                /// <summary>
+                /// Only new text is stored in logs
+                /// </summary>
                 incremental,
-                none
+                /// <summary>
+                /// No logs are stored for this
+                /// </summary>
+                none,
             }
         }
 
+        /// <summary>
+        /// Scrollback
+        /// </summary>
         public class Scrollback
         {
             /// <summary>
@@ -331,6 +372,9 @@ namespace Client
             public static string format_nick = "<$1> ";
         }
 
+        /// <summary>
+        /// Services
+        /// </summary>
         public class Services
         {
             /// <summary>

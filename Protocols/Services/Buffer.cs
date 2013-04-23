@@ -26,10 +26,19 @@ namespace Client.Services
 {
     public class Buffer
     {
+        /// <summary>
+        /// Window
+        /// </summary>
         [Serializable]
         public class Window
         {
+            /// <summary>
+            /// Whether it is channel
+            /// </summary>
             public bool isChannel = false;
+            /// <summary>
+            /// Private message
+            /// </summary>
             public bool isPM = false;
             public List<string> history = new List<string>();
             public List<Client.ContentLine> lines = null;
@@ -39,6 +48,9 @@ namespace Client.Services
             public int menucolor = 0;
             public bool SortNeeded = false;
 
+            /// <summary>
+            /// Creates a new instance of window
+            /// </summary>
             public Window()
             {
 
@@ -60,6 +72,9 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Information data
+        /// </summary>
         [Serializable]
         public class ChannelInfo
         {
@@ -123,9 +138,15 @@ namespace Client.Services
             /// If true the window is considered usable
             /// </summary>
             public bool ChannelWork = false;
+            /// <summary>
+            /// Current mode
+            /// </summary>
             public string mode = "";
         }
 
+        /// <summary>
+        /// Information about a network
+        /// </summary>
         [Serializable]
         public class NetworkInfo
         {
@@ -133,10 +154,25 @@ namespace Client.Services
             /// Mode
             /// </summary>
             public string mode = "+i";
+            /// <summary>
+            /// Current nick
+            /// </summary>
             public string Nick = null;
+            /// <summary>
+            /// Network MQID
+            /// </summary>
             public string NetworkID = null;
+            /// <summary>
+            /// Server
+            /// </summary>
             public string Server = null;
+            /// <summary>
+            /// Last mqid
+            /// </summary>
             public int lastMQID = 0;
+            /// <summary>
+            /// List of parsed data
+            /// </summary>
             public List<int> MQ = new List<int>();
             /// <summary>
             /// User modes
@@ -170,23 +206,51 @@ namespace Client.Services
             /// List of channels
             /// </summary>
             public List<Network.ChannelData> ChannelList = new List<Network.ChannelData>();
-
+            /// <summary>
+            /// Info
+            /// </summary>
             public List<Description> Descriptions = new List<Description>();
+            /// <summary>
+            /// List of windows in system
+            /// </summary>
             public List<Buffer.Window> _windows = new List<Buffer.Window>();
+            /// <summary>
+            /// List of channels in system
+            /// </summary>
             public List<Buffer.ChannelInfo> _channels = new List<Buffer.ChannelInfo>();
+            /// <summary>
+            /// Private wins
+            /// </summary>
             public List<string> PrivateWins = new List<string>();
 
+            /// <summary>
+            /// Description
+            /// </summary>
             [Serializable]
             public class Description
             {
+                /// <summary>
+                /// Char
+                /// </summary>
                 public char Char;
-                public string String;
+                /// <summary>
+                /// Text
+                /// </summary>
+                public string String = null;
 
+                /// <summary>
+                /// Creates a new instance for xml
+                /// </summary>
                 public Description()
                 {
 
                 }
 
+                /// <summary>
+                /// Creates a new instance with data
+                /// </summary>
+                /// <param name="c"></param>
+                /// <param name="s"></param>
                 public Description(char c, string s)
                 {
                     Char = c;
@@ -194,10 +258,25 @@ namespace Client.Services
                 }
             }
 
+            /// <summary>
+            /// Range
+            /// </summary>
             public class Range
             {
+                /// <summary>
+                /// First
+                /// </summary>
                 public int X;
+                /// <summary>
+                /// Last
+                /// </summary>
                 public int Y;
+
+                /// <summary>
+                /// Creates a new instance of range
+                /// </summary>
+                /// <param name="x">X</param>
+                /// <param name="y">Y</param>
                 public Range(int x, int y)
                 {
                     Y = y;
@@ -205,11 +284,19 @@ namespace Client.Services
                 }
             }
 
+            /// <summary>
+            /// Creates a new instance (for xml serialization only)
+            /// </summary>
             public NetworkInfo()
             {
 
             }
 
+            /// <summary>
+            /// retrieve a window info
+            /// </summary>
+            /// <param name="window"></param>
+            /// <returns></returns>
             public Buffer.Window getW(string window)
             {
                 lock (_windows)
@@ -225,11 +312,21 @@ namespace Client.Services
                 return null;
             }
 
+            /// <summary>
+            /// Whether this mqid was parsed
+            /// </summary>
+            /// <param name="id"></param>
+            /// <returns></returns>
             public bool containsMQID(int id)
             {
                 return MQ.Contains(id);
             }
 
+            /// <summary>
+            /// Retrieve a range
+            /// </summary>
+            /// <param name="startindex"></param>
+            /// <returns></returns>
             public Range getRange(int startindex = 0)
             {
                 Range range = null;
@@ -261,6 +358,11 @@ namespace Client.Services
                 return range;
             }
 
+            /// <summary>
+            /// Recover a window
+            /// </summary>
+            /// <param name="target"></param>
+            /// <param name="source"></param>
             public void recoverWindowText(Graphics.Window target, string source)
             {
                 Buffer.Window Source = getW(source);
@@ -343,12 +445,33 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Network / mqid
+        /// </summary>
         public Dictionary<string, string> Networks = new Dictionary<string, string>();
+        /// <summary>
+        /// Network data
+        /// </summary>
         public Dictionary<string, NetworkInfo> networkInfo = new Dictionary<string, NetworkInfo>();
+        /// <summary>
+        /// Protocol this buffer is connected to
+        /// </summary>
         public ProtocolSv protocol = null;
+        /// <summary>
+        /// Whether the buffer is loaded
+        /// </summary>
         public bool Loaded = false;
+        /// <summary>
+        /// Folder
+        /// </summary>
         public string Root = null;
+        /// <summary>
+        /// Index
+        /// </summary>
         private List<string> Data = null;
+        /// <summary>
+        /// Whether the buffer was modified
+        /// </summary>
         public bool Modified = true;
         private bool destroyed = false;
         /// <summary>

@@ -426,6 +426,14 @@ namespace Client
                                 {
                                     if (UndrawnLines.Count > 0)
                                     {
+                                        if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                        {
+                                            UndrawnLines.Sort();
+                                            while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                            {
+                                                UndrawnLines.RemoveAt(0);
+                                            }
+                                        }
                                         foreach (ContentLine curr in UndrawnLines)
                                         {
                                             InsertLineToText(curr, false);

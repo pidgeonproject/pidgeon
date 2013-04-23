@@ -29,6 +29,9 @@ namespace Client
 {
     public partial class Core
     {
+        /// <summary>
+        /// Represent a domain for program
+        /// </summary>
         public class Domain
         {
             AppDomain domain;
@@ -40,17 +43,30 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Profiler
+        /// </summary>
         public class Profiler
         {
             private Stopwatch time = new Stopwatch();
+            /// <summary>
+            /// Function that is being checked
+            /// </summary>
             public string Function = null;
 
+            /// <summary>
+            /// Creates a new instance with name of function
+            /// </summary>
+            /// <param name="function"></param>
             public Profiler(string function)
             {
                 Function = function;
                 time.Start();
             }
 
+            /// <summary>
+            /// Called when profiler is supposed to be stopped
+            /// </summary>
             public void Done()
             {
                 time.Stop();
@@ -66,11 +82,35 @@ namespace Client
         /// </summary>
         public class Shortcut
         {
+            /// <summary>
+            /// Control
+            /// </summary>
             public bool control;
+            /// <summary>
+            /// Alt
+            /// </summary>
             public bool alt;
+            /// <summary>
+            /// Shift
+            /// </summary>
             public bool shift;
+            /// <summary>
+            /// Keycode
+            /// </summary>
             public Gdk.Key keys;
+            /// <summary>
+            /// Execution command
+            /// </summary>
             public string data;
+
+            /// <summary>
+            /// Creates a new instance of shortcut
+            /// </summary>
+            /// <param name="Value"></param>
+            /// <param name="Control"></param>
+            /// <param name="Alt"></param>
+            /// <param name="Shift"></param>
+            /// <param name="Data"></param>
             public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
             {
                 control = Control;
@@ -197,6 +237,7 @@ namespace Client
         /// Extensions loaded in core
         /// </summary>
         public static List<Extension> Extensions = new List<Extension>();
+        public static Status _Status = Status.Running;
         private static DateTime lastActivityTime;
         /// <summary>
         /// Parameters that were retrieved in console
@@ -214,6 +255,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Time for which the user is idle
+        /// </summary>
         public static TimeSpan IdleTime
         {
             get
@@ -233,6 +277,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retrieve a read only copy of ring
+        /// </summary>
         public static List<string> RingBuffer
         {
             get
@@ -470,6 +517,9 @@ namespace Client
                 .Replace(((char)004).ToString(), "");
         }
 
+        /// <summary>
+        /// Flush the ring data
+        /// </summary>
         public static void ClearRingBufferLog()
         {
             lock (Ring)
@@ -526,6 +576,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Draw all text into a scrollback
+        /// </summary>
+        /// <param name="window">Window to which it should be printed</param>
+        /// <param name="write">Whether it should be written to file</param>
         public static void PrintRing(Graphics.Window window, bool write = true)
         {
             lock (Ring)
@@ -704,6 +759,11 @@ namespace Client
             return ":" + random.ToString() + "*";
         }
 
+        /// <summary>
+        /// Editor
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="target"></param>
         public static void ProcessScript(string script, Network target)
         {
             try
@@ -719,11 +779,21 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Remove a special symbols from html
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string normalizeHtml(string text)
         {
             return System.Web.HttpUtility.HtmlEncode(text);
         }
 
+        /// <summary>
+        /// Convert a key to upper case
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static Gdk.Key convertKey(Gdk.Key key)
         {
             switch (key)
@@ -884,6 +954,10 @@ namespace Client
             return Gdk.Key.A;
         }
 
+        /// <summary>
+        /// Load skin
+        /// </summary>
+        /// <returns></returns>
         public static bool LoadSkin()
         {
             Configuration.SL.Clear();
@@ -911,6 +985,14 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Connect to XMPP
+        /// </summary>
+        /// <param name="server">Hostname</param>
+        /// <param name="port">Port</param>
+        /// <param name="password">Password</param>
+        /// <param name="secured">SSL</param>
+        /// <returns></returns>
         public static bool connectXmpp(string server, int port, string password, bool secured = false)
         {
             ProtocolXmpp IM = new ProtocolXmpp();
@@ -918,6 +1000,14 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Connect to quassel
+        /// </summary>
+        /// <param name="server">Hostname</param>
+        /// <param name="port">Port</param>
+        /// <param name="password">Password</param>
+        /// <param name="secured">SSL</param>
+        /// <returns></returns>
         public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
@@ -932,8 +1022,10 @@ namespace Client
         /// <summary>
         /// Connect to pidgeon server
         /// </summary>
-        /// <param name="server"></param>
-        /// <param name="port"></param>
+        /// <param name="server">Hostname</param>
+        /// <param name="port">Port</param>
+        /// <param name="password">Password</param>
+        /// <param name="secured">SSL</param>
         /// <returns></returns>
         public static bool connectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
@@ -951,7 +1043,10 @@ namespace Client
         /// <summary>
         /// Connect to IRC
         /// </summary>
-        /// <param name="server"></param>
+        /// <param name="server">Hostname</param>
+        /// <param name="port">Port</param>
+        /// <param name="password">Password</param>
+        /// <param name="secured">SSL</param>
         /// <returns></returns>
         public static ProtocolIrc connectIRC(string server, int port = 6667, string pw = "", bool secured = false)
         {
@@ -968,6 +1063,12 @@ namespace Client
             return protocol;
         }
 
+        /// <summary>
+        /// See the comments in recovery.cs for explanation how this work
+        /// </summary>
+        /// <param name="_exception"></param>
+        /// <param name="ek"></param>
+        /// <returns></returns>
         public static int handleException(Exception _exception, ExceptionKind ek)
         {
             if (IgnoreErrors || ek == ExceptionKind.Safe)
@@ -1008,8 +1109,13 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Exit
+        /// </summary>
+        /// <returns>true</returns>
         public static bool Quit()
         {
+            _Status = Status.Quiting;
             try
             {
                 if (!IgnoreErrors)
@@ -1064,6 +1170,9 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Type of exception
+        /// </summary>
         public enum ExceptionKind
         {
             Normal,
@@ -1071,20 +1180,53 @@ namespace Client
             Safe,
         }
 
+        /// <summary>
+        /// Platform
+        /// </summary>
         public enum Platform
         {
+            /// <summary>
+            /// Linux
+            /// </summary>
             Linuxx64,
+            /// <summary>
+            /// Linux
+            /// </summary>
             Linuxx86,
+            /// <summary>
+            /// Windows
+            /// </summary>
             Windowsx64,
+            /// <summary>
+            /// Windows
+            /// </summary>
             Windowsx86,
+            /// <summary>
+            /// Mac OS
+            /// </summary>
             MacOSx64,
+            /// <summary>
+            /// Max OS
+            /// </summary>
             MacOSx86,
         }
 
+        /// <summary>
+        /// Which status the core is in
+        /// </summary>
         public enum Status
         {
+            /// <summary>
+            /// Everything is OK
+            /// </summary>
             Running,
+            /// <summary>
+            /// There is exception being handled
+            /// </summary>
             Frozen,
+            /// <summary>
+            /// Terminating
+            /// </summary>
             Quiting,
         }
     }
