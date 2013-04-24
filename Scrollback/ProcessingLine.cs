@@ -106,7 +106,13 @@ namespace Client
             return line;
         }
 
-        public bool Reload(bool fast = false, bool enforce = false)
+        /// <summary>
+        /// Reload all text
+        /// </summary>
+        /// <param name="fast">Whether there should be no</param>
+        /// <param name="enforce"></param>
+        /// <returns></returns>
+        public bool Reload(bool enforce = false)
         {
             if (IsDestroyed)
             {
@@ -387,7 +393,7 @@ namespace Client
                 else
                 {
                     SortNeeded = true;
-                    Reload(false, true);
+                    Reload(true);
                 }
             }
             else

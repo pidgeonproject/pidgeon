@@ -27,6 +27,9 @@ using System.Windows.Forms;
 
 namespace Client
 {
+    /// <summary>
+    /// Scrollback
+    /// </summary>
     [Serializable]
     [System.ComponentModel.ToolboxItem(true)]
     public partial class Scrollback : Gtk.Bin
@@ -53,6 +56,9 @@ namespace Client
         public bool ScrollingEnabled = true;
         private bool ReloadWaiting = false;
         private bool Changed = false;
+        /// <summary>
+        /// MicroChat
+        /// </summary>
         public bool isMicro = false;
         private string LogfilePath = null;
         /// <summary>
@@ -76,6 +82,9 @@ namespace Client
         private bool destroyed = false;
         private bool running = false;
 
+        /// <summary>
+        /// Simple
+        /// </summary>
         public bool IsSimple
         {
             get
@@ -112,6 +121,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Number of lines
+        /// </summary>
         public int Lines
         {
             get
@@ -128,12 +140,19 @@ namespace Client
             ReloadWaiting = true;
         }
 
+        /// <summary>
+        /// Creates a new scrollback instance
+        /// </summary>
+        /// <param name="_ParentWindow"></param>
         public Scrollback(Graphics.Window _ParentWindow)
         {
             this.owner = _ParentWindow;
             ReloadWaiting = true;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Scrollback()
         {
             if (Configuration.Kernel.Debugging)
@@ -211,7 +230,7 @@ namespace Client
             if (scrollback_max < ContentLines.Count)
             {
                 scrollback_max = scrollback_max + 800;
-                Reload(true, true);
+                Reload(true);
             }
         }
 
@@ -285,7 +304,7 @@ namespace Client
                     toggleSimpleLayoutToolStripMenuItem.Checked = false;
                     return;
                 }
-                Reload(true, true);
+                Reload(true);
                 return;
             }
             toggleAdvancedLayoutToolStripMenuItem.Checked = false;
@@ -299,7 +318,7 @@ namespace Client
 
             this.ShowAll();
 
-            Reload(true, true);
+            Reload(true);
         }
 
         public void Create()

@@ -71,39 +71,64 @@ namespace Client
             return controlList;
         }
 
+        public static string Localize(string text)
+        {
+            if (text.StartsWith("[["))
+            {
+                return get(text, Language);
+            }
+            return text;
+        }
+
         public static void Localize(Gtk.Window form)
         {
-                /*lock (form)
+            foreach (Gtk.Widget widget in form.Children)
+            {
+                LocalizeWidget(widget);
+            }
+        }
+
+        public static void LocalizeWidget(Gtk.Widget widget)
+        {
+            if (widget.GetType() == typeof(Gtk.Label))
+            {
+                Gtk.Label label = (Gtk.Label)widget;
+                label.Text = Localize(label.Text);
+            }
+
+            if (widget.GetType() == typeof(Gtk.CheckButton))
+            {
+                Gtk.CheckButton checkButton = (Gtk.CheckButton)widget;
+                checkButton.Label = Localize(checkButton.Label);
+            }
+            LocalizeWChildrens(widget);
+        }
+
+        public static void LocalizeWChildrens(Gtk.Widget widget)
+        {
+            if (widget.GetType() == typeof(Gtk.VBox))
+            {
+                foreach (Gtk.Widget ch in ((Gtk.VBox)widget).Children)
                 {
-                    foreach (Control control in GetControls(form))
-                    {
-                        if (control.Text.StartsWith("[["))
-                        {
-                            control.Text = get(control.Text);
-                        }
-                        if (control.GetType() == typeof(MenuStrip))
-                        {
-                            MenuStrip menu = (MenuStrip)control;
-                            foreach (ToolStripMenuItem item in menu.Items)
-                            {
-                                if (item.Text.StartsWith("[["))
-                                {
-                                    item.Text = get(item.Text);
-                                }
-                                foreach (ToolStripMenuItem item2 in GetMenu(item))
-                                    if (item2.Text.StartsWith("[["))
-                                    {
-                                        item2.Text = get(item2.Text);
-                                    }
-                            }
-                        }
-                    }
+                    LocalizeWidget(ch);
                 }
             }
-            catch (Exception fail)
+
+            if (widget.GetType() == typeof(Gtk.HBox))
             {
-                Core.handleException(fail);
-            } */
+                foreach (Gtk.Widget ch in ((Gtk.HBox)widget).Children)
+                {
+                    LocalizeWidget(ch);
+                }
+            }
+
+            if (widget.GetType() == typeof(Gtk.Table))
+            {
+                foreach (Gtk.Widget ch in ((Gtk.Table)widget).Children)
+                {
+                    LocalizeWidget(ch);
+                }
+            }
         }
 
         /// <summary>

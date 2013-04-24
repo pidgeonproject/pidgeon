@@ -581,45 +581,135 @@ namespace Client
             return Default;
         }
 
+        /// <summary>
+        /// Type of irc ban
+        /// </summary>
         public enum TypeOfBan
         { 
+            /// <summary>
+            /// Matching only user nick
+            /// </summary>
             Nick,
+            /// <summary>
+            /// Matching only user ident
+            /// </summary>
             Ident,
+            /// <summary>
+            /// Matching only user host
+            /// </summary>
             Host,
+            /// <summary>
+            /// Matching only nick and host
+            /// </summary>
             NickHost
         }
 
+        /// <summary>
+        /// Priority of irc message
+        /// </summary>
         public enum Priority
         {
+            /// <summary>
+            /// High
+            /// </summary>
             High = 8,
+            /// <summary>
+            /// Normal
+            /// </summary>
             Normal = 2,
+            /// <summary>
+            /// Low
+            /// </summary>
             Low = 1
         }
 
+        /// <summary>
+        /// Events
+        /// </summary>
         public enum PidgeonList_MouseClick
         {
+            /// <summary>
+            /// Close the window
+            /// </summary>
             Close,
+            /// <summary>
+            /// Disconnect
+            /// </summary>
             Disconnect,
+            /// <summary>
+            /// Ignore
+            /// </summary>
             Nothing
         }
 
+        /// <summary>
+        /// Events
+        /// </summary>
         public enum UserList_MouseClick
         {
+            /// <summary>
+            /// Display a whois of user
+            /// </summary>
             Whois,
+            /// <summary>
+            /// Kick user
+            /// </summary>
             Kick,
+            /// <summary>
+            /// Kick ban
+            /// </summary>
             KickBan,
+            /// <summary>
+            /// Give q
+            /// </summary>
             qop,
+            /// <summary>
+            /// Give a
+            /// </summary>
             aop,
+            /// <summary>
+            /// give o
+            /// </summary>
             op,
+            /// <summary>
+            /// Give h
+            /// </summary>
             hop,
+            /// <summary>
+            /// Give v
+            /// </summary>
             voice,
+            /// <summary>
+            /// Remove q
+            /// </summary>
             deqop,
+            /// <summary>
+            /// Remove a
+            /// </summary>
             deaop,
+            /// <summary>
+            /// Remove o
+            /// </summary>
             deop,
+            /// <summary>
+            /// Remove h
+            /// </summary>
             dehop,
+            /// <summary>
+            /// Remove v
+            /// </summary>
             devoice,
+            /// <summary>
+            /// version
+            /// </summary>
             version,
+            /// <summary>
+            /// ping
+            /// </summary>
             ping,
+            /// <summary>
+            /// ignore
+            /// </summary>
             Nothing
         }
     }

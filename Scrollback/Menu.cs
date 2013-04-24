@@ -523,7 +523,7 @@ namespace Client
                     {
                         ContentLines.Clear();
                         lastDate = DateTime.MinValue;
-                        Reload(true, true);
+                        Reload(true);
                     }
                 }
             }
@@ -571,7 +571,7 @@ namespace Client
                     ContentLines.Sort();
                 }
                 SortNeeded = false;
-                Reload(true, true);
+                Reload(true);
             }
             catch (Exception fail)
             {
