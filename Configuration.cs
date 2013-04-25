@@ -55,6 +55,9 @@ namespace Client
         /// </summary>
         public class Window
         {
+            /// <summary>
+            /// If this is true window will be maximized on start
+            /// </summary>
             public static bool Window_Maximized = true;
             /// <summary>
             /// Window left position

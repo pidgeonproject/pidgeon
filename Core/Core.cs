@@ -36,6 +36,12 @@ namespace Client
         {
             AppDomain domain;
             string name;
+
+            /// <summary>
+            /// Creates a new instance of this class
+            /// </summary>
+            /// <param name="_appDomain"></param>
+            /// <param name="_name"></param>
             public Domain(AppDomain _appDomain, string _name)
             {
                 domain = _appDomain;
@@ -237,6 +243,9 @@ namespace Client
         /// Extensions loaded in core
         /// </summary>
         public static List<Extension> Extensions = new List<Extension>();
+        /// <summary>
+        /// Status of core
+        /// </summary>
         public static Status _Status = Status.Running;
         private static DateTime lastActivityTime;
         /// <summary>
@@ -388,7 +397,6 @@ namespace Client
             return false;
         }
 
-
         /// <summary>
         /// This will reset the activity timer
         /// </summary>
@@ -469,16 +477,33 @@ namespace Client
             System.Windows.Forms.Application.Run(x);
         }
 
+        /// <summary>
+        /// Kill thread or only remove it from system thread table
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="remove"></param>
         public static void killThread(Thread name, bool remove = false)
         {
-            if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
+            if (name == null)
             {
-                name.Abort();
-                Core.DebugLog("Killed thread " + name.Name);
+                return;
+            }
+
+            if (name != Thread.CurrentThread)
+            {
+                if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
+                {
+                    name.Abort();
+                    Core.DebugLog("Killed thread " + name.Name);
+                }
+                else
+                {
+                    Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
+                }
             }
             else
             {
-                Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
+                Core.DebugLog("Ignored request to abort thread from within the same thread " + name.Name);
             }
 
             if (Core.IgnoreErrors)
@@ -1096,6 +1121,12 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Recover from exception
+        /// </summary>
+        /// <param name="_exception"></param>
+        /// <param name="fatal"></param>
+        /// <returns></returns>
         public static int handleException(Exception _exception, bool fatal = false)
         {
             if (fatal)
@@ -1115,9 +1146,14 @@ namespace Client
         /// <returns>true</returns>
         public static bool Quit()
         {
-            _Status = Status.Quiting;
             try
             {
+                if (_Status == Status.Quiting)
+                {
+                    Core.DebugLog("Multiple calls of Core.Quit() ignored");
+                    return false;
+                }
+                _Status = Status.Quiting;
                 if (!IgnoreErrors)
                 {
                     IgnoreErrors = true;
@@ -1145,12 +1181,8 @@ namespace Client
                     {
                         try
                         {
-                            if (th.ThreadState != System.Threading.ThreadState.WaitSleepJoin && th.ThreadState != System.Threading.ThreadState.Running)
-                            {
-                                continue;
-                            }
                             Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
-                            th.Abort();
+                            Core.killThread(th);
                         }
                         catch (Exception fail)
                         {
@@ -1175,8 +1207,17 @@ namespace Client
         /// </summary>
         public enum ExceptionKind
         {
+            /// <summary>
+            /// Normal
+            /// </summary>
             Normal,
+            /// <summary>
+            /// Critical
+            /// </summary>
             Critical,
+            /// <summary>
+            /// Safe
+            /// </summary>
             Safe,
         }
 

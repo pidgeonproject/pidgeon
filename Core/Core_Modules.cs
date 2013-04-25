@@ -29,11 +29,21 @@ namespace Client
 {
     public partial class Core
     {
+        /// <summary>
+        /// Register a new plugin
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         public static bool RegisterPlugin(TclInterpreter plugin)
         {
             return false;
         }
 
+        /// <summary>
+        /// Register a new plugin
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static bool RegisterPlugin(string path)
         {
             try
@@ -116,6 +126,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Register a new plugin
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         public static bool RegisterPlugin(Extension plugin)
         {
             if (plugin._Status == Extension.Status.Loading)

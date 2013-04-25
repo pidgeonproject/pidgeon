@@ -649,19 +649,22 @@ namespace Client
         /// </summary>
         public void Disconnect()
         {
-            if (ParentSv != null)
+            lock (this)
             {
-                ParentSv.Disconnect(this);
+                if (ParentSv != null)
+                {
+                    ParentSv.Disconnect(this);
+                }
+                else if (_Protocol.GetType() == typeof(ProtocolIrc))
+                {
+                    _Protocol.Disconnect();
+                }
+                else
+                {
+                    Transfer("QUIT :" + Quit);
+                }
+                flagDisconnect();
             }
-            else if (_Protocol.GetType() == typeof(ProtocolIrc))
-            {
-                _Protocol.Disconnect();
-            }
-            else
-            {
-                Transfer("QUIT :" + Quit);
-            }
-            flagDisconnect();
         }
     }
 }

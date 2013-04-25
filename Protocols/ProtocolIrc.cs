@@ -400,25 +400,31 @@ namespace Client
 
         public override bool Disconnect()
         {
-            if (IsConnected)
+            // we lock the function so that it can't be called in same time in different thread
+            lock (this)
             {
-                return false;
-            }
-            try
-            {
-                Send("QUIT :" + _IRCNetwork.Quit);
-                _IRCNetwork.flagDisconnect();
-                Connected = false;
-                _StreamWriter.Close();
-                _StreamReader.Close();
-            }
-            catch (System.IO.IOException er)
-            {
-                SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
+                if (IsConnected)
+                {
+                    return false;
+                }
+                try
+                {
+                    Send("QUIT :" + _IRCNetwork.Quit);
+                    _IRCNetwork.flagDisconnect();
+                    Core.killThread(deliveryqueue);
+                    Core.killThread(keep);
+                    _StreamWriter.Close();
+                    _StreamReader.Close();
+                    Connected = false;
+                }
+                catch (System.IO.IOException er)
+                {
+                    SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
             }
             return true;
         }
@@ -449,21 +455,10 @@ namespace Client
             {
                 Disconnect();
             }
-            if (main.ThreadState == System.Threading.ThreadState.Running || main.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
-            {
-                main.Abort();
-            }
+            Core.killThread(main);
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);
-            if (deliveryqueue.ThreadState == System.Threading.ThreadState.Running || deliveryqueue.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
-            {
-                deliveryqueue.Abort();
-            }
-            if (keep.ThreadState == System.Threading.ThreadState.Running || keep.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
-            {
-                keep.Abort();
-            }
             SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.network == _IRCNetwork)
             {

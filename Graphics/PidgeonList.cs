@@ -40,11 +40,17 @@ namespace Client.Graphics
         /// List of channels which are currently in sidebar
         /// </summary>
         public Dictionary<Channel, TreeIter> ChannelList = new Dictionary<Channel, TreeIter>();
+        /// <summary>
+        /// List of all users that are rendered in list
+        /// </summary>
         public Dictionary<User, TreeIter> UserList = new Dictionary<User, TreeIter>();
         private LinkedList<User> queueUsers = new LinkedList<User>();
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
-        public List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
+        private List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
+        /// <summary>
+        /// If this is false the system timer will refresh the list
+        /// </summary>
         public static bool Updated = false;
         private Gdk.Pixbuf icon_at2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.at-s.png");
         private Gdk.Pixbuf icon_22 = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash-s.png");
@@ -61,10 +67,21 @@ namespace Client.Graphics
                                                      typeof(string),
                                                      typeof(Gdk.Pixbuf));
         private GLib.TimeoutHandler timer;
-
+        /// <summary>
+        /// Menu
+        /// </summary>
         public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
+        /// <summary>
+        /// Menu
+        /// </summary>
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
+        /// <summary>
+        /// Menu
+        /// </summary>
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
+        /// <summary>
+        /// Menu
+        /// </summary>
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
         private object ObjectStore = null;
         private TreeIter IterStore;
@@ -85,7 +102,23 @@ namespace Client.Graphics
             }
         }
 
-        protected virtual void Build()
+        /// <summary>
+        /// Creates a new instance of list
+        /// </summary>
+        public PidgeonList()
+        {
+            try
+            {
+                this.Build();
+                this.InitStyle();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             global::Stetic.BinContainer.Attach(this);
@@ -212,6 +245,10 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Remove a server
+        /// </summary>
+        /// <param name="server"></param>
         public void RemoveServer(Network server)
         {
             lock (queueNetwork)
@@ -273,7 +310,7 @@ namespace Client.Graphics
             }
         }
 
-        public void InitStyle()
+        private void InitStyle()
         {
             tv.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
@@ -412,19 +449,6 @@ namespace Client.Graphics
                         (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
                         break;
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        public PidgeonList()
-        {
-            try
-            {
-                this.Build();
-                this.InitStyle();
             }
             catch (Exception fail)
             {
@@ -706,7 +730,7 @@ namespace Client.Graphics
             return true;
         }
 
-        public void RedrawMenu()
+        private void RedrawMenu()
         {
             partToolStripMenuItem.Visible = false;
             joinToolStripMenuItem.Visible = false;
@@ -913,7 +937,7 @@ namespace Client.Graphics
             }
         }
 
-        public void RemoveItem(TreeIter it, object Item, ItemType type)
+        private void RemoveItem(TreeIter it, object Item, ItemType type)
         {
             bool removed = false;
             switch (type)
@@ -1100,10 +1124,25 @@ namespace Client.Graphics
 
         public enum ItemType
         {
+            /// <summary>
+            /// Network
+            /// </summary>
             Server,
+            /// <summary>
+            /// ProtocolSv
+            /// </summary>
             Services,
+            /// <summary>
+            /// System window
+            /// </summary>
             System,
+            /// <summary>
+            /// Channel
+            /// </summary>
             Channel,
+            /// <summary>
+            /// User
+            /// </summary>
             User,
         }
     }

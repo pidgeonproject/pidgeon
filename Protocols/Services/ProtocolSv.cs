@@ -365,11 +365,7 @@ namespace Client
                         remove = n.Key;
                         if (remove != null)
                         {
-                            Core._Main.ChannelList.ServerList.Remove(remove);
-                        }
-                        if (remove != null)
-                        {
-                            Core._Main.ChannelList.RemoveItem(item, remove, Client.Graphics.PidgeonList.ItemType.Server);
+                            Core._Main.ChannelList.RemoveServer(remove);
                         }
                         else
                         {
@@ -426,123 +422,131 @@ namespace Client
         /// </summary>
         public override void Exit()
         {
-            if (IsDestroyed)
+            lock (this)
             {
-                return;
-            }
-            if (IsConnected)
-            {
-                Disconnect();
-            }
-            destroyed = true;
-            int remaining = 0;
-            lock (RemainingJobs)
-            {
-                remaining = RemainingJobs.Count;
-                if (RemainingJobs.Count == 0)
+                if (IsDestroyed)
                 {
-                    FinishedLoading = true;
+                    return;
                 }
-                RemainingJobs.Clear();
-            }
-            Core.DebugLog("Remaining jobs are now cleared");
-            if (sBuffer == null)
-            {
-                Core.DebugLog("Warning sBuffer == null");
-            }
-            if (Configuration.Services.UsingCache && sBuffer != null)
-            {
-                if (FinishedLoading)
+                if (IsConnected)
                 {
-                    Core._Main.Status("Writing the service cache");
-                    sBuffer.Snapshot();
-                    Core._Main.Status("Done");
+                    Disconnect();
+                }
+                int remaining = 0;
+                lock (RemainingJobs)
+                {
+                    remaining = RemainingJobs.Count;
+                    if (RemainingJobs.Count == 0)
+                    {
+                        FinishedLoading = true;
+                    }
+                    RemainingJobs.Clear();
+                }
+                Core.DebugLog("Remaining jobs are now cleared");
+                if (sBuffer == null)
+                {
+                    Core.DebugLog("Warning sBuffer == null");
+                }
+                if (Configuration.Services.UsingCache && sBuffer != null)
+                {
+                    if (FinishedLoading)
+                    {
+                        Core._Main.Status("Writing the service cache");
+                        sBuffer.Snapshot();
+                        Core._Main.Status("Done");
+                    }
+                    else
+                    {
+                        Core.DebugLog("Didn't write the network cache because the services were still waiting on " + remaining.ToString() + " requests");
+                    }
                 }
                 else
                 {
-                    Core.DebugLog("Didn't write the network cache because the services were still waiting on " + remaining.ToString() + " requests");
+                    Core.DebugLog("Didn't write the network cache because it is disallowed");
                 }
-            }
-            else
-            {
-                Core.DebugLog("Didn't write the network cache because it is disallowed");
-            }
-            lock (NetworkList)
-            {
-                foreach (Network network in NetworkList)
+                lock (NetworkList)
                 {
-                    network.Destroy();
-                    if (Core.network == network)
+                    foreach (Network network in NetworkList)
                     {
-                        Core.network = null;
+                        network.Destroy();
+                        if (Core.network == network)
+                        {
+                            Core.network = null;
+                        }
                     }
+                    NetworkList.Clear();
                 }
-                NetworkList.Clear();
-            }
 
-            if (keep != null)
-            {
-                keep.Abort();
-                Core.killThread(keep);
-                keep = null;
-            }
-            
-            if (sBuffer != null)
-            {
-                sBuffer.Destroy();
-            }
-            
-            sBuffer = null;
-            
-            if (_StreamWriter != null) _StreamWriter.Close();
-            if (_StreamReader != null) _StreamReader.Close();
-            _StreamWriter = null;
-            _StreamReader = null;
-            base.Exit();
-        }
-
-        public override bool Disconnect()
-        {
-            if (!IsConnected)
-            {
-                Core.DebugLog("User attempted to disconnect services that are already disconnected");
-                return false;
-            }
-            Connected = false;
-            if (System.Threading.Thread.CurrentThread != main &&
-                (main.ThreadState == System.Threading.ThreadState.WaitSleepJoin || main.ThreadState == System.Threading.ThreadState.Running))
-            {
-                main.Abort();
-            }
-            lock (NetworkList)
-            {
-                foreach (Network network in NetworkList)
+                if (keep != null)
                 {
-                    network.flagDisconnect();
+                    Core.killThread(keep);
+                    keep = null;
                 }
-            }
-            try
-            {
+
+                if (sBuffer != null)
+                {
+                    sBuffer.Destroy();
+                }
+
+                sBuffer = null;
+
                 if (_StreamWriter != null) _StreamWriter.Close();
                 if (_StreamReader != null) _StreamReader.Close();
                 _StreamWriter = null;
                 _StreamReader = null;
+                base.Exit();
+                destroyed = true;
             }
-            catch (System.Net.Sockets.SocketException fail)
+        }
+
+        /// <summary>
+        /// Disconnect from the server
+        /// </summary>
+        /// <returns></returns>
+        public override bool Disconnect()
+        {
+            lock (this)
             {
-                Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
-            }
-            lock (NetworkList)
-            {
-                foreach (Network xx in NetworkList)
+                if (!IsConnected)
                 {
-                    // we need to flag all networks here as disconnected so that it knows we can't use them
-                    xx.flagDisconnect();
+                    Core.DebugLog("User attempted to disconnect services that are already disconnected");
+                    return false;
                 }
-            }
-            if (keep != null && (keep.ThreadState == System.Threading.ThreadState.Running || keep.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
-            {
-                keep.Abort();
+                if (System.Threading.Thread.CurrentThread != main)
+                {
+                    Core.killThread(main);
+                }
+                lock (NetworkList)
+                {
+                    foreach (Network network in NetworkList)
+                    {
+                        network.flagDisconnect();
+                    }
+                }
+                try
+                {
+                    if (_StreamWriter != null) _StreamWriter.Close();
+                    if (_StreamReader != null) _StreamReader.Close();
+                    _StreamWriter = null;
+                    _StreamReader = null;
+                }
+                catch (System.Net.Sockets.SocketException fail)
+                {
+                    Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
+                }
+                lock (NetworkList)
+                {
+                    foreach (Network xx in NetworkList)
+                    {
+                        // we need to flag all networks here as disconnected so that it knows we can't use them
+                        xx.flagDisconnect();
+                    }
+                }
+                if (keep != null)
+                {
+                    Core.killThread(keep);
+                }
+                Connected = false;
             }
             return true;
         }

@@ -29,12 +29,30 @@ namespace Client
 {
     public partial class Core
     {
+        /// <summary>
+        /// Handler of storage
+        /// </summary>
         public class IO
         {
+            /// <summary>
+            /// Line in a file
+            /// </summary>
             public class FileLine
             {
+                /// <summary>
+                /// Name of file
+                /// </summary>
                 public string filename;
+                /// <summary>
+                /// Text
+                /// </summary>
                 public string line;
+
+                /// <summary>
+                /// Creates a new instance of this class
+                /// </summary>
+                /// <param name="File"></param>
+                /// <param name="Line"></param>
                 public FileLine(string File, string Line)
                 {
                     line = Line;
@@ -42,9 +60,12 @@ namespace Client
                 }
             }
 
-            public static List<FileLine> processing = new List<FileLine>();
-            public static List<FileLine> data = new List<FileLine>();
+            private static List<FileLine> processing = new List<FileLine>();
+            private static List<FileLine> data = new List<FileLine>();
 
+            /// <summary>
+            /// Write all data to disk
+            /// </summary>
             public static void Save()
             {
                 lock (processing)
@@ -65,6 +86,9 @@ namespace Client
                 data.Clear();
             }
 
+            /// <summary>
+            /// Load
+            /// </summary>
             public static void Load()
             {
                 try
@@ -94,6 +118,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Insert a line to a file
+            /// </summary>
+            /// <param name="line">Text to be inserted to this file</param>
+            /// <param name="file">File</param>
             public static void InsertText(string line, string file)
             {
                 lock (processing)
@@ -103,6 +132,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retrieve a size in memory of an object
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public static long GetSizeOfObject(object obj)
         {
             var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
@@ -113,6 +147,11 @@ namespace Client
             return size;
         }
 
+        /// <summary>
+        /// Convert a Color to Gdk version
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
         public static Gdk.Color fromColor(System.Drawing.Color color)
         {
             Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);

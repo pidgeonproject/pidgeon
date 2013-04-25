@@ -22,6 +22,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Extension
+    /// </summary>
     public class Extension
     {
         /// <summary>
@@ -151,12 +154,19 @@ namespace Client
             Core._Configuration.ConfigSave();
         }
 
+        /// <summary>
+        /// Delete config from memory
+        /// </summary>
+        /// <param name="key"></param>
         public void RemoveConfig(string key)
         {
             Configuration.RemoveConfig(Name + "." + key);
             Core._Configuration.ConfigSave();
         }
 
+        /// <summary>
+        /// Terminate this extension
+        /// </summary>
         public void Exit()
         {
             try
@@ -210,51 +220,104 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// This hook is started when extension is unloaded
+        /// </summary>
+        /// <returns></returns>
         public virtual bool Hook_Unload()
         {
             return true;
         }
 
+        /// <summary>
+        /// This hook is started when user part from a channel
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <param name="message"></param>
         public virtual void Hook_UserPart(Network network, User user, Channel channel, string message)
         {
             
         }
 
+        /// <summary>
+        /// This hook is started when a network object is created
+        /// </summary>
+        /// <param name="network"></param>
         public virtual void Hook_Network(Network network)
         {
             return;
         }
 
+        /// <summary>
+        /// This hook is started after connection to a network
+        /// </summary>
+        /// <param name="network"></param>
         public virtual void Hook_AfterConnect(Network network)
         {
             
         }
 
+        /// <summary>
+        /// This hook is started before you connect to a protocol
+        /// </summary>
+        /// <param name="protocol"></param>
         public virtual void Hook_BeforeConnect(Protocol protocol)
         {
             return;
         }
 
+        /// <summary>
+        /// This hook is started when user talk in a channel
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <param name="message"></param>
         public virtual void Hook_UserTalk(Network network, User user, Channel channel, string message)
         {
             
         }
 
+        /// <summary>
+        /// This hook is started before pidgeon try to join a channel, return false will abort the action
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="Channel"></param>
+        /// <returns></returns>
         public virtual bool Hook_BeforeJoin(Network network, string Channel)
         {
             return true;
         }
 
+        /// <summary>
+        /// This hook is started when user quit
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="user"></param>
+        /// <param name="message"></param>
         public virtual void Hook_UserQuit(Network network, User user, string message)
         {
         
         }
 
+        /// <summary>
+        /// This hook is started when main form is loaded
+        /// </summary>
+        /// <param name="main"></param>
         public virtual void Hook_Initialise(Client.Forms.Main main)
         {
             return;
         }
 
+        /// <summary>
+        /// This hook is started when tab key is pressed in a text box
+        /// </summary>
+        /// <param name="prev"></param>
+        /// <param name="text"></param>
+        /// <param name="caret"></param>
+        /// <param name="restore"></param>
         public virtual void Hook_InputOnTab(ref string prev, ref string text, ref int caret, ref bool restore)
         {
             return;
@@ -279,8 +342,6 @@ namespace Client
         {
             return true;
         }
-
-
 
         /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
@@ -310,12 +371,30 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Status
+        /// </summary>
         public enum Status
         { 
+            /// <summary>
+            /// Extension is ok
+            /// </summary>
             Active,
+            /// <summary>
+            /// Extensions is loading
+            /// </summary>
             Loading,
+            /// <summary>
+            /// Terminating
+            /// </summary>
             Terminating,
+            /// <summary>
+            /// Terminated
+            /// </summary>
             Terminated,
+            /// <summary>
+            /// Stopped
+            /// </summary>
             Stopped
         }
     }

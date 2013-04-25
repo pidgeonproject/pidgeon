@@ -86,7 +86,7 @@ namespace Client
                     Core.Ringlog("Unable to kill timer " + ID.ToString() + " because it's not running");
                     return false;
                 }
-                th.Abort();
+                Core.killThread(th);
                 Running = false;
                 return true;
             }
