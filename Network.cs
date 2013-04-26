@@ -22,6 +22,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Network
+    /// </summary>
     public class Network
     {
         public class Highlighter
@@ -39,13 +42,31 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Information about the channel
+        /// </summary>
         [Serializable]
         public class ChannelData
         {
+            /// <summary>
+            /// Name
+            /// </summary>
             public string ChannelName = null;
+            /// <summary>
+            /// Number of users
+            /// </summary>
             public int UserCount = 0;
+            /// <summary>
+            /// Topic of a channel
+            /// </summary>
             public string ChannelTopic = null;
 
+            /// <summary>
+            /// Creates a new instance
+            /// </summary>
+            /// <param name="Users"></param>
+            /// <param name="Name"></param>
+            /// <param name="Topic"></param>
             public ChannelData(int Users, string Name, string Topic)
             {
                 ChannelTopic = Topic;

@@ -31,7 +31,11 @@ namespace Client
                     
         private List<Line> Lines = new List<Line>();
 
-        public void RemoveLine(int index)
+        /// <summary>
+        /// Remove a line at specified index
+        /// </summary>
+        /// <param name="index"></param>
+        public void RemoveLine(int index, bool redraw = false)
         {
             lock (Lines)
             {
@@ -39,6 +43,10 @@ namespace Client
                 {
                     Lines.RemoveAt(index);
                 }
+            }
+            if (redraw)
+            {
+                Redraw();
             }
         }
 
@@ -138,7 +146,7 @@ namespace Client
             richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
         }
 
-        public void LinkRm(object sender, TextEventArgs e)
+        private void LinkRm(object sender, TextEventArgs e)
         {
             try
             {
@@ -160,7 +168,7 @@ namespace Client
             }
         }
         
-        public void LinkHandler(object sender, TextEventArgs e)
+        private void LinkHandler(object sender, TextEventArgs e)
         {
             try
             {
@@ -189,6 +197,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Remove all text from box
+        /// </summary>
         public void RemoveText()
         {
             lock (Lines)

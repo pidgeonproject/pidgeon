@@ -22,12 +22,29 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Localization
+    /// </summary>
     public class messages
     {
+        /// <summary>
+        /// Language
+        /// </summary>
         public class container
         {
+            /// <summary>
+            /// ID
+            /// </summary>
             public string language = null;
+            /// <summary>
+            /// Values
+            /// </summary>
             public Dictionary<string, string> Cache;
+
+            /// <summary>
+            /// Creates a new instance of this language container
+            /// </summary>
+            /// <param name="LanguageCode"></param>
             public container(string LanguageCode)
             {
                 language = LanguageCode;
@@ -40,9 +57,12 @@ namespace Client
         /// </summary>
         public static string Language = "en";
 
+        /// <summary>
+        /// List of all loaded data
+        /// </summary>
         public static Dictionary<string, container> data = new Dictionary<string, container>();
 
-        public static List<Control> GetControls(Control form)
+        private static List<Control> GetControls(Control form)
         {
             var controlList = new List<Control>();
 
@@ -55,7 +75,7 @@ namespace Client
             return controlList;
         }
 
-        public static List<ToolStripMenuItem> GetMenu(ToolStripMenuItem form)
+        private static List<ToolStripMenuItem> GetMenu(ToolStripMenuItem form)
         {
             var controlList = new List<ToolStripMenuItem>();
 
@@ -71,6 +91,11 @@ namespace Client
             return controlList;
         }
 
+        /// <summary>
+        /// Convert a text to localized version
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
         public static string Localize(string text)
         {
             if (text.StartsWith("[["))
@@ -80,6 +105,10 @@ namespace Client
             return text;
         }
 
+        /// <summary>
+        /// Convert all controls in a form to localized version
+        /// </summary>
+        /// <param name="form"></param>
         public static void Localize(Gtk.Window form)
         {
             foreach (Gtk.Widget widget in form.Children)
@@ -88,6 +117,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Convert all controls in a widget
+        /// </summary>
+        /// <param name="widget"></param>
         public static void LocalizeWidget(Gtk.Widget widget)
         {
             if (widget.GetType() == typeof(Gtk.Label))
@@ -104,7 +137,7 @@ namespace Client
             LocalizeWChildrens(widget);
         }
 
-        public static void LocalizeWChildrens(Gtk.Widget widget)
+        private static void LocalizeWChildrens(Gtk.Widget widget)
         {
             if (widget.GetType() == typeof(Gtk.VBox))
             {
@@ -152,19 +185,7 @@ namespace Client
             return "";
         }
 
-        public static bool exist(string lang)
-        {
-            lock (data)
-            {
-                if (!data.ContainsKey(lang))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        public static string finalize(string text, List<string> va)
+        private static string finalize(string text, List<string> va)
         {
             string Text = text;
             int position = 0;

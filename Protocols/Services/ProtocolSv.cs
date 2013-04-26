@@ -72,6 +72,10 @@ namespace Client
 
         public string nick = "";
         public bool auth = false;
+        /// <summary>
+        /// This needs to be true when the services are in process of disconnecting
+        /// </summary>
+        private bool disconnecting = false;
         
         public List<string> WaitingNetw = new List<string>();
 
@@ -215,7 +219,7 @@ namespace Client
             }
             catch (System.IO.IOException fail)
             {
-                if (IsConnected)
+                if (IsConnected && !disconnecting)
                 {
                     Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                     Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
@@ -432,6 +436,7 @@ namespace Client
                 {
                     Disconnect();
                 }
+                disconnecting = true;
                 int remaining = 0;
                 lock (RemainingJobs)
                 {
@@ -507,6 +512,7 @@ namespace Client
         {
             lock (this)
             {
+                disconnecting = true;
                 if (!IsConnected)
                 {
                     Core.DebugLog("User attempted to disconnect services that are already disconnected");
@@ -547,6 +553,7 @@ namespace Client
                     Core.killThread(keep);
                 }
                 Connected = false;
+                disconnecting = false;
             }
             return true;
         }

@@ -27,6 +27,9 @@ namespace Client
 {
     public partial class RichTBox : Gtk.Bin
     {
+        /// <summary>
+        /// Pointer
+        /// </summary>
         public Scrollback scrollback = null;
         private Font font;
         private string text = null;
@@ -44,6 +47,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Text
+        /// </summary>
         public string Text
         {
             get
@@ -52,6 +58,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Background
+        /// </summary>
         public System.Drawing.Color BackColor
         {
             set
@@ -65,6 +74,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Foreground
+        /// </summary>
         public System.Drawing.Color ForeColor
         {
             set
@@ -84,7 +96,7 @@ namespace Client
             richTextBox.ModifyText(StateType.Normal, Core.fromColor(ForeColor));
         }
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Graphics.TextBox
@@ -112,6 +124,9 @@ namespace Client
             this.Hide();
         }
 
+        /// <summary>
+        /// Creates a new instance of this class
+        /// </summary>
         public RichTBox()
         {
             this.Build();
@@ -121,6 +136,11 @@ namespace Client
             DefaultFont.Family = Configuration.CurrentSkin.localfont;
         }
 
+        /// <summary>
+        /// Insert a line to top of box
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="drawLine"></param>
         public void InsertLineToStart(Line line, bool drawLine = true)
         {
             if (line == null)
@@ -137,6 +157,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Insert a line
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="drawLine"></param>
         public void InsertLine(Line line, bool drawLine = true)
         {
             if (line == null)

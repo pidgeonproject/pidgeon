@@ -77,6 +77,8 @@ namespace Client.Forms
         // system
         private global::Gtk.CheckButton checkButton_CTCP;
         private global::Gtk.CheckButton checkButton_request;
+        private global::Gtk.CheckButton checkButton_BlockCtcp;
+        private global::Gtk.CheckButton checkButton_DisplayIcon;
 
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         private Gtk.ListStore IgnoreDB = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Ignoring.Ignore));
@@ -788,6 +790,18 @@ namespace Client.Forms
             this.checkButton_CTCP.Label = "Display CTCP";
             this.checkButton_CTCP.DrawIndicator = true;
             this.checkButton_CTCP.UseUnderline = true;
+            this.checkButton_BlockCtcp = new CheckButton();
+            this.checkButton_BlockCtcp.CanFocus = true;
+            this.checkButton_BlockCtcp.Name = "bl";
+            this.checkButton_BlockCtcp.Label = "Block all incoming CTCP requests";
+            this.checkButton_BlockCtcp.DrawIndicator = true;
+            this.checkButton_BlockCtcp.UseUnderline = true;
+            this.checkButton_DisplayIcon = new CheckButton();
+            this.checkButton_DisplayIcon.CanFocus = true;
+            this.checkButton_DisplayIcon.Name = "2";
+            this.checkButton_DisplayIcon.Label = "Display tray";
+            this.checkButton_DisplayIcon.DrawIndicator = true;
+            this.checkButton_DisplayIcon.UseUnderline = true;
             this.vb01.Add(checkButton_CTCP);
             global::Gtk.Box.BoxChild w20 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_CTCP]));
             w20.Position = 1;
