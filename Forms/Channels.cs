@@ -27,10 +27,10 @@ namespace Client.Forms
 {
     public partial class Channels : Gtk.Window
     {
-        public Network network = null;
-        public bool Loaded = false;
+        private Network network = null;
+        private bool Loaded = false;
         private int channels = 0;
-        public List<Network.ChannelData> channelData = new List<Network.ChannelData>();
+        private List<Network.ChannelData> channelData = new List<Network.ChannelData>();
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView treeview8;
         private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(int), typeof(string), typeof(Network.ChannelData)); 
@@ -41,6 +41,9 @@ namespace Client.Forms
         private GTK.Menu listtoclipboard = new GTK.Menu("Copy selected to clipboard");
         private GTK.Menu listtoclipboard2 = new GTK.Menu("Copy selected channel names (separated by space) to clipboard");
         
+        /// <summary>
+        /// Selected channels
+        /// </summary>
         public List<string> Selected
         {
             get
@@ -58,6 +61,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Selected channels and data for these channels
+        /// </summary>
         public List<string> SelectedData
         {
             get
@@ -76,7 +82,13 @@ namespace Client.Forms
             }
         }
 
-        protected virtual void Build()
+        public Channels(Network nw) : base(Gtk.WindowType.Toplevel)
+        {
+            this.Build();
+            this.Init();
+        }
+
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
@@ -112,8 +124,9 @@ namespace Client.Forms
                 e.RetVal = true;
                 Menu(sender, null);
             }
-        }       
-        public void Init()
+        }
+
+        private void Init()
         {
             Gtk.TreeViewColumn name = new Gtk.TreeViewColumn();
             Gtk.TreeViewColumn size = new Gtk.TreeViewColumn();
@@ -140,7 +153,7 @@ namespace Client.Forms
             this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
         }
         
-        public void destroy(object o, Gtk.DeleteEventArgs e)
+        private void destroy(object o, Gtk.DeleteEventArgs e)
         {
             Hide();
             e.RetVal = true;
@@ -174,11 +187,6 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-        }
-                
-        public Channels() : base(Gtk.WindowType.Toplevel)
-        {
-            this.Build ();
         }
 
         private void ToClipboard(object sender, EventArgs e)

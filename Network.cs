@@ -331,9 +331,7 @@ namespace Client
             {
                 if (wChannelList == null)
                 {
-                    wChannelList = new Forms.Channels();
-                    wChannelList.network = this;
-                    wChannelList.Init();
+                    wChannelList = new Forms.Channels(this);
                 }
 
                 wChannelList.Show();

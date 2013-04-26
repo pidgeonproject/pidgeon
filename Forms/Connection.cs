@@ -20,6 +20,9 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Creates a new form
+    /// </summary>
     public partial class Connection : Gtk.Window
     {
         /// <summary>
@@ -64,7 +67,7 @@ namespace Client.Forms
             this.Title = messages.get("connection", Core.SelectedLanguage);
         }
 
-        public void Unshow(object main, Gtk.DeleteEventArgs closing)
+        private void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try
             {

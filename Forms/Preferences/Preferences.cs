@@ -45,8 +45,6 @@ namespace Client.Forms
         /// <summary>
         /// Prepare the control
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Preferences_Load()
         {
             checkbutton2.Active = Configuration.Kernel.CheckUpdate;
@@ -102,25 +100,24 @@ namespace Client.Forms
             ListStore sl = new ListStore(typeof(string));
             ListStore lg = new ListStore(typeof(string));
 
-            combobox1.Sensitive = false;
             combobox2.Model = lg;
-            combobox2.Sensitive = false;
 
             foreach (Skin skin in Configuration.SL)
             {
                 sl.AppendValues(skin.name);
             }
+            combobox1.Model = sl;
             combobox1.Active = 0;
 
             int selectedLanguage = 0;
             int current = 0;
-            foreach (KeyValuePair<string, messages.container> language in messages.data)
+            foreach (string language in messages.data.Keys)
             {
-                if (language.Key == Core.SelectedLanguage)
+                if (language == Core.SelectedLanguage)
                 {
                     selectedLanguage = current;
                 }
-                lg.AppendValues(language.Key);
+                lg.AppendValues(language);
                 current++;
             }
             combobox2.Active = selectedLanguage;
@@ -147,6 +144,9 @@ namespace Client.Forms
             this.hbox1.Add(widget);
         }
 
+        /// <summary>
+        /// Reload the highlight list
+        /// </summary>
         public void ReloadHL()
         {
             Highlights.Clear();
@@ -278,6 +278,7 @@ namespace Client.Forms
                 Configuration.Logs.logs_name = lentry1.Text;
                 Configuration.irc.FirewallCTCP = checkButton_BlockCtcp.Active;
                 Configuration.irc.ConfirmAll = checkButton_request.Active;
+                Core.SelectedLanguage = combobox2.ActiveText;
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
@@ -309,6 +310,9 @@ namespace Client.Forms
             Hide();
         }
 
+        /// <summary>
+        /// Reload the ignore list
+        /// </summary>
         public void ReloadIgnores()
         {
             lock (Ignoring.IgnoreList)

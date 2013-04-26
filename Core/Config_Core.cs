@@ -187,6 +187,7 @@ namespace Client
                     make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
                     make_comment("This change a ring log size", config, xmlnode);
                     make_node("maximumlog", Configuration.Kernel.MaximalRingLogSize.ToString(), curr, confname, config, xmlnode);
+                    make_node("SelectedLanguage", Core.SelectedLanguage.ToString(), curr, confname, config, xmlnode);
                     // Services
                     make_comment(" ============= SERVICES ============= ", config, xmlnode);
                     make_comment("Size of backlog for services", config, xmlnode);
@@ -685,6 +686,9 @@ namespace Client
                                                     case "Configuration.Window.MiddleClick_Side":
                                                         Configuration.Window.MiddleClick_Side = from1(curr.InnerText);
                                                         break;
+                                                    case "SelectedLanguage":
+                                                        Core.SelectedLanguage = curr.InnerText;
+                                                        break;
                                                 }
                                             }
                                         }
@@ -701,6 +705,6 @@ namespace Client
                 }
                 return true;
             }
-        }        
+        }
     }
 }

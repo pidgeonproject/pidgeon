@@ -35,7 +35,7 @@ namespace Client.Forms
             }
         }
 
-        public void Link(object sender, EventArgs e)
+        private void Link(object sender, EventArgs e)
         {
             Hyperlink.OpenLink("http://pidgeonclient.org/wiki/");
         }

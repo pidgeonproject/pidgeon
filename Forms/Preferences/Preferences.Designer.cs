@@ -87,14 +87,14 @@ namespace Client.Forms
 
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
         private GTK.Menu enableToolStripMenuItem = new GTK.Menu("Enable");
-        private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
+        //private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
         private GTK.Menu disableToolStripMenuItem = new GTK.Menu("Disable");
         private GTK.Menu addToolStripMenuItem = new GTK.Menu("Add");
-        private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
+        //private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
         private GTK.Menu deleteToolStripMenuItem = new GTK.Menu("Delete");
         private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
         private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
-        private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
+        //private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
         private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu("Simple");
         private GTK.Menu regexToolStripMenuItem = new GTK.Menu("Regex");
         private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu("Matching text");
@@ -127,6 +127,9 @@ namespace Client.Forms
         private global::Gtk.Button button3;
         private global::Gtk.Button button1;
 
+        /// <summary>
+        /// Selected extensions
+        /// </summary>
         public List<Extension> SelectedExtensions
         {
             get
@@ -147,6 +150,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Selected hl
+        /// </summary>
         public List<Network.Highlighter> SelectedHs
         {
             get
@@ -167,6 +173,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Selected ignore list
+        /// </summary>
         public List<Ignoring.Ignore> SelectedIgnore
         {
             get
@@ -187,6 +196,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Selected shorts
+        /// </summary>
         public List<Core.Shortcut> SelectedShorts
         {
             get
@@ -207,6 +219,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Selected item
+        /// </summary>
         public int SelectedItem
         {
             get
@@ -718,7 +733,7 @@ namespace Client.Forms
             }
         }
 
-        public void CreateLogs()
+        private void CreateLogs()
         {
             this.frame7 = new global::Gtk.Frame();
             this.frame7.Name = "frame1";
@@ -894,7 +909,7 @@ namespace Client.Forms
             this.frame7.ShowAll();
         }
 
-        public void Initialize()
+        private void Initialize()
         {
             this.fExtensions = new global::Gtk.Frame();
             this.fExtensions.Name = "frame1";
