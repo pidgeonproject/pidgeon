@@ -153,8 +153,8 @@ namespace Client
             link = System.Drawing.Color.LightBlue;
             colortalk = System.Drawing.Color.Yellow;
             kickcolor = System.Drawing.Color.White;
-            colorq = System.Drawing.Color.AliceBlue;
-            colora = System.Drawing.Color.Azure;
+            colorq = System.Drawing.Color.LightBlue;
+            colora = System.Drawing.Color.LightCyan;
             coloro = System.Drawing.Color.Yellow;
             colorh = System.Drawing.Color.Cyan;
             colorv = System.Drawing.Color.LightGreen;

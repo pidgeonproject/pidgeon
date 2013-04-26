@@ -320,6 +320,36 @@ namespace Client
                                 }
                                 _Network.DownloadingList = false;
                                 break;
+                            case "307":
+                            case "310":
+                            case "378":
+                            case "671":
+                                if (Configuration.irc.FriendlyWhois)
+                                {
+                                    if (WhoisText(command, parameters, value))
+                                    {
+                                        return true;
+                                    }
+                                }
+                                break;
+                            case "312":
+                                if (Configuration.irc.FriendlyWhois)
+                                {
+                                    if (WhoisSv(command, parameters, value))
+                                    {
+                                        return true;
+                                    }
+                                }
+                                break;
+                            case "319":
+                                if (Configuration.irc.FriendlyWhois)
+                                {
+                                    if (WhoisCh(command, parameters, value))
+                                    {
+                                        return true;
+                                    }
+                                }
+                                break;
                             case "433":
                                 if (!_Network.usingNick2 && Configuration.UserData.Nick2 != "")
                                 {

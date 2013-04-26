@@ -23,8 +23,14 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Ignoring
+    /// </summary>
     public class Ignoring
     {
+        /// <summary>
+        /// Single ignore
+        /// </summary>
         public class Ignore
         {
             /// <summary>
@@ -47,7 +53,14 @@ namespace Client
             /// Type
             /// </summary>
             public Type type = Type.User;
-
+            
+            /// <summary>
+            /// Creates a new instance of ignore
+            /// </summary>
+            /// <param name="enabled"></param>
+            /// <param name="simple"></param>
+            /// <param name="data"></param>
+            /// <param name="_Type"></param>
             public Ignore(bool enabled, bool simple, string data, Type _Type)
             {
                 Enabled = enabled;
@@ -60,15 +73,33 @@ namespace Client
                 Simple = simple;
             }
 
+            /// <summary>
+            /// Type of ignore
+            /// </summary>
             public enum Type
             {
+                /// <summary>
+                /// Everything
+                /// </summary>
                 Everything,
+                /// <summary>
+                /// User
+                /// </summary>
                 User
             }
         }
 
+        /// <summary>
+        /// List of all ignores loaded in program
+        /// </summary>
         public static List<Ignore> IgnoreList = new List<Ignore>();
 
+        /// <summary>
+        /// Checks if any of loaded ignores is matching this text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public static bool Matches(string text, User user = null)
         {
             // we need to walk through list of all ignores to find out

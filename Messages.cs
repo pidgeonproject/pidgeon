@@ -100,7 +100,7 @@ namespace Client
         {
             if (text.StartsWith("[["))
             {
-                return get(text, Language);
+                return get(text, Core.SelectedLanguage);
             }
             return text;
         }

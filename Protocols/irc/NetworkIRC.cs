@@ -264,6 +264,46 @@ namespace Client
             return false;
         }
 
+        private bool WhoisText(string source, string parameters, string value)
+        {
+            if (parameters.Contains(" "))
+            {
+                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+                return true;
+            }
+            return false;
+        }
+
+        private bool WhoisCh(string source, string parameters, string value)
+        {
+            if (parameters.Contains(" "))
+            {
+                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is in channels: " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+                return true;
+            }
+            return false;
+        }
+
+        private bool WhoisSv(string source, string parameters, string value)
+        {
+            if (parameters.Contains(" "))
+            {
+                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                if (!name.Contains(" "))
+                {
+                    Core.DebugLog("Invalid whois record " + parameters);
+                    return false;
+                }
+                string server = name.Substring(name.IndexOf(" ") + 1);
+                name = name.Substring(0, name.IndexOf(" "));
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is using server: " + server + " (" + value + ")", Client.ContentLine.MessageStyle.System, true, date, true);
+                return true;
+            }
+            return false;
+        }
+
         private bool IdleTime(string source, string parameters, string value)
         {
             if (parameters.Contains(" "))

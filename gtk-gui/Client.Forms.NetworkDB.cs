@@ -4,7 +4,7 @@ namespace Client.Forms
 {
     public partial class NetworkDB
     {
-        protected virtual void Build ()
+        private void Build ()
         {
             global::Stetic.Gui.Initialize (this);
             // Widget Client.Forms.NetworkDB

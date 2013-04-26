@@ -13,7 +13,7 @@ namespace Client.Forms
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TextView textview1;
         
-        protected virtual void Build ()
+        private void Build ()
         {
             global::Stetic.Gui.Initialize (this);
             // Widget Client.Forms.Help

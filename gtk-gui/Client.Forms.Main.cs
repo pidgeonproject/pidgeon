@@ -39,44 +39,44 @@ namespace Client.Forms
 		private global::Gtk.Label toolStripInfo;
 		private global::Gtk.ProgressBar toolStripProgressBar1;
 		
-		protected virtual void Build ()
+		private void Build ()
 		{
 			global::Stetic.Gui.Initialize (this);
 			// Widget Client.Forms.Main
 			this.UIManager = new global::Gtk.UIManager ();
 			global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup ("Default");
-			this.FileAction = new global::Gtk.Action ("FileAction", "File", null, null);
+			this.FileAction = new global::Gtk.Action ("FileAction", messages.Localize("[[window-menu-file]]"), null, null);
 			this.FileAction.ShortLabel = "File";
 			w1.Add (this.FileAction, "<Alt>f");
-			this.ShutDownAction = new global::Gtk.Action ("ShutDownAction", "Shut down", null, null);
+			this.ShutDownAction = new global::Gtk.Action ("ShutDownAction", messages.Localize("[[window-menu-quit]]"), null, null);
 			this.ShutDownAction.ShortLabel = "Shut down";
 			w1.Add (this.ShutDownAction, null);
-			this.ToolsAction = new global::Gtk.Action ("ToolsAction", "Tools", null, null);
+			this.ToolsAction = new global::Gtk.Action ("ToolsAction", messages.Localize("[[window-menu-tools]]"), null, null);
 			this.ToolsAction.ShortLabel = "Tools";
 			w1.Add (this.ToolsAction, "<Alt>t");
-			this.MiscAction = new global::Gtk.Action ("MiscAction", "Misc", null, null);
+			this.MiscAction = new global::Gtk.Action ("MiscAction", messages.Localize("[[window-menu-misc]]"), null, null);
 			this.MiscAction.ShortLabel = "Misc";
 			w1.Add (this.MiscAction, null);
-			this.ShowAction = new global::Gtk.Action ("ShowAction", "Show", null, null);
+			this.ShowAction = new global::Gtk.Action ("ShowAction", messages.Localize("[[window-menu-show]]"), null, null);
 			this.ShowAction.ShortLabel = "Show";
 			w1.Add (this.ShowAction, null);
-			this.UserAction = new global::Gtk.Action ("UserAction", "User", null, null);
+			this.UserAction = new global::Gtk.Action ("UserAction", messages.Localize("[[window-menu-user]]"), null, null);
 			this.UserAction.ShortLabel = "User";
 			this.UserAction.Visible = false;
 			w1.Add (this.UserAction, null);
-			this.HelpAction = new global::Gtk.Action ("HelpAction", "Help", null, null);
+			this.HelpAction = new global::Gtk.Action ("HelpAction", messages.Localize("[[window-menu-help]]"), null, null);
 			this.HelpAction.ShortLabel = "Help";
 			w1.Add (this.HelpAction, null);
-			this.AboutAction = new global::Gtk.Action ("AboutAction", "About", null, null);
+			this.AboutAction = new global::Gtk.Action ("AboutAction", messages.Localize("[[window-menu-about]]"), null, null);
 			this.AboutAction.ShortLabel = "About";
 			w1.Add (this.AboutAction, null);
-			this.ContentsAction = new global::Gtk.Action ("ContentsAction", "Contents", null, null);
+            this.ContentsAction = new global::Gtk.Action("ContentsAction", messages.Localize("[[window-menu-contents]]"), null, null);
 			this.ContentsAction.ShortLabel = "Help";
 			w1.Add (this.ContentsAction, "F1");
 			this.RootAction = new global::Gtk.Action ("RootAction", "Root", null, null);
 			this.RootAction.ShortLabel = "Root";
 			w1.Add (this.RootAction, null);
-			this.SearchAction = new global::Gtk.Action ("SearchAction", "Search", null, null);
+			this.SearchAction = new global::Gtk.Action ("SearchAction", messages.Localize("[[window-menu-search]]"), null, null);
 			this.SearchAction.ShortLabel = "Search";
 			w1.Add (this.SearchAction, "<Primary>f");
 			this.SwitchToAdvancedLayoutAction = new global::Gtk.Action ("SwitchToAdvancedLayoutAction", "Switch to advanced layout", null, null);
@@ -143,7 +143,7 @@ namespace Client.Forms
 			this.hpaned1.Name = "hpaned1";
 			this.hpaned1.Position = 183;
 			// Container child hpaned1.Gtk.Paned+PanedChild
-            this.pidgeonlist1 = new global::Client.Graphics.PidgeonList ();
+            this.pidgeonlist1 = new global::Client.Graphics.PidgeonList();
             this.pidgeonlist1.Events = ((global::Gdk.EventMask)(256));
             this.pidgeonlist1.Name = "pidgeonlist1";
 

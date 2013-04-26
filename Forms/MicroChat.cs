@@ -96,7 +96,7 @@ namespace Client.Forms
         }
         
         [GLib.ConnectBefore]
-        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        private void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
         {
             try
             {
