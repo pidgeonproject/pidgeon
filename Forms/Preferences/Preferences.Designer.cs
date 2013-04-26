@@ -812,6 +812,16 @@ namespace Client.Forms
             w60.Position = 1;
             w60.Expand = false;
             w60.Fill = false;
+            this.vb01.Add(checkButton_BlockCtcp);
+            global::Gtk.Box.BoxChild w21 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_BlockCtcp]));
+            w21.Position = 1;
+            w21.Expand = false;
+            w21.Fill = false;
+            this.vb01.Add(checkButton_DisplayIcon);
+            global::Gtk.Box.BoxChild w22 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_DisplayIcon]));
+            w22.Position = 1;
+            w22.Expand = false;
+            w22.Fill = false;
             this.GtkAlignment6.Add(vb01);
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();

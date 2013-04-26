@@ -84,6 +84,8 @@ namespace Client.Forms
             checkbutton1.Active = Configuration.Kernel.Notice;
             lentry2.Text = Configuration.Logs.logs_dir;
             lentry1.Text = Configuration.Logs.logs_name;
+            checkButton_DisplayIcon.Active = Configuration.UserData.TrayIcon;
+            checkButton_BlockCtcp.Active = Configuration.irc.FirewallCTCP;
             switch (Configuration.Logs.ServicesLogs)
             {
                 case Configuration.Logs.ServiceLogs.full:
@@ -260,11 +262,12 @@ namespace Client.Forms
         {
             try
             {
-                Configuration.irc.ConfirmAll = checkButton_request.Active;
                 Configuration.UserData.nick = entry1.Text;
                 Configuration.UserData.quit = entry2.Text;
                 Configuration.UserData.ident = entry3.Text;
                 Configuration.UserData.user = entry4.Text;
+                Configuration.UserData.TrayIcon = checkButton_DisplayIcon.Active;
+                Configuration.UserData.Nick2 = entry5.Text;
                 Configuration.Logs.logs_xml = lcheckbutton3.Active;
                 Configuration.Logs.logs_txt = lcheckbutton1.Active;
                 Configuration.Logs.logs_html = lcheckbutton2.Active;
@@ -273,7 +276,8 @@ namespace Client.Forms
                 Configuration.Kernel.Notice = checkbutton1.Active;
                 Configuration.Logs.logs_dir = lentry2.Text;
                 Configuration.Logs.logs_name = lentry1.Text;
-                Configuration.UserData.Nick2 = entry5.Text;
+                Configuration.irc.FirewallCTCP = checkButton_BlockCtcp.Active;
+                Configuration.irc.ConfirmAll = checkButton_request.Active;
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;

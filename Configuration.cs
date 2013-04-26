@@ -95,6 +95,10 @@ namespace Client
             /// Searchbox Y
             /// </summary>
             public static int Search_Y = 900;
+            /// <summary>
+            /// What should happen when you click a pidgeon list
+            /// </summary>
+            public static PidgeonList_MouseClick MiddleClick_Side = PidgeonList_MouseClick.Close;
         }
 
         /// <summary>

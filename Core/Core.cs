@@ -341,7 +341,7 @@ namespace Client
                     LoadSkin();
                     DebugLog("Loading configuration file");
                     Configuration.Kernel.Debugging = false;
-                    ConfigurationLoad();
+                    Core._Configuration.ConfigurationLoad();
                     if (!Directory.Exists(PermanentTemp))
                     {
                         Directory.CreateDirectory(PermanentTemp);

@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Sockets;
 using System.Xml;
+using System.Threading;
 using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
@@ -342,6 +343,10 @@ namespace Client
             {
                 Core.DebugLog("Unable to parse: " + xx.ToString());
                 Core.Ringlog("Invalid xml: " + dg);
+            }
+            catch (ThreadAbortException)
+            {
+                return true;
             }
             catch (Exception fail)
             {

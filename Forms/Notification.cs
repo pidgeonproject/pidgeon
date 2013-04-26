@@ -19,6 +19,9 @@ using System;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Notification text
+    /// </summary>
     public partial class Notification : GTK.PidgeonForm
     {
         /// <summary>
@@ -36,7 +39,7 @@ namespace Client.Forms
         /// Please do not change it to private, that can break some stuff
         public Gtk.EventBox root;
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.Notification
@@ -101,6 +104,9 @@ namespace Client.Forms
             this.DefaultHeight = 220;
         }
 
+        /// <summary>
+        /// Title
+        /// </summary>
         public Gtk.Label title
         {
             get
@@ -109,6 +115,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Text
+        /// </summary>
         public Gtk.Label text
         {
             get

@@ -91,7 +91,7 @@ namespace Client
 
             public static void pidgeon_rehash(string parameter)
             {
-                Core.ConfigurationLoad();
+                Core._Configuration.ConfigurationLoad();
                 Core._Main.Chat.scrollback.InsertText("Reloaded config", Client.ContentLine.MessageStyle.System, false);
             }
 

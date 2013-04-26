@@ -168,6 +168,19 @@ namespace Client.Graphics
             {
                 Menu(sender, null);
             }
+
+            if (e.Event.Button == 2)
+            {
+                switch (Configuration.Window.MiddleClick_Side)
+                {
+                    case Configuration.PidgeonList_MouseClick.Close:
+                        closeToolStripMenuItem_Click(null, null);
+                        break;
+                    case Configuration.PidgeonList_MouseClick.Disconnect:
+                        disconnectToolStripMenuItem_Click(null, null);
+                        break;
+                }
+            }
         }
 
         [GLib.ConnectBefore]
