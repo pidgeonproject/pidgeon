@@ -81,8 +81,14 @@ namespace Client
 		/// </summary>
         public static bool Parameters()
         {
-			List<string> args = Core.Parameters;
+			List<string> args = new List<string>();
+			foreach (string xx in Core.startup)
+			{
+				args.Add(xx);
+			}
+			
 			List<Parameter> ParameterList = new List<Parameter>();
+			
 			if (args.Count > 0)
 			{
 				List<string> values = null;
@@ -109,6 +115,11 @@ namespace Client
 						values = null;
 					}
 					
+					if (Read)
+					{
+						continue;
+					}
+					
 					if (values == null)
 					{
 						values = new List<string>();
@@ -116,6 +127,7 @@ namespace Client
 					
 					values.Add(  data  );
 				}
+				
 				if (id != null)
 				{
 					ParameterList.Add(new Parameter(id, values));

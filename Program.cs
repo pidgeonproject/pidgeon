@@ -37,13 +37,13 @@ namespace Client
         {
             try
             {
+				Application.Init();
                 GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
                 Core.startup = parameters;
 				if (Terminal.Parameters())
 				{
 	                if (Core.Load())
 	                {
-						Application.Init();
 	                    Core.network = null;
 	                    Core._Main = new Forms.Main();
 	                    Core._Main.Show();
