@@ -84,6 +84,7 @@ namespace Client.Forms
 
         public Channels(Network nw) : base(Gtk.WindowType.Toplevel)
         {
+			network = nw;
             this.Build();
             this.Init();
         }

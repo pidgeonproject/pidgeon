@@ -29,41 +29,113 @@ namespace Client
 {
     public partial class Scrollback
     {
+		/// <summary>
+		/// The toggle advanced layout tool strip menu item.
+		/// </summary>
         public GTK.Menu toggleAdvancedLayoutToolStripMenuItem = new GTK.Menu("Toggle advanced layout");
+		/// <summary>
+		/// The toggle simple layout tool strip menu item.
+		/// </summary>
         public GTK.Menu toggleSimpleLayoutToolStripMenuItem = new GTK.Menu("Toggle simple view");
+		/// <summary>
+		/// The ban tool strip menu item.
+		/// </summary>
         public GTK.Menu banToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The list all channels tool strip menu item.
+		/// </summary>
         public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu("List all channels on this network");
+		/// <summary>
+		/// The retrieve topic tool strip menu item.
+		/// </summary>
         public GTK.Menu retrieveTopicToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The channel tool strip menu item.
+		/// </summary>
         public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The mode1b2 tool strip menu item.
+		/// </summary>
         public GTK.Menu mode1b2ToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The mode1e2 tool strip menu item.
+		/// </summary>
         public GTK.Menu mode1e2ToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The mode1 i2 tool strip menu item.
+		/// </summary>
         public GTK.Menu mode1I2ToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The mode1q2 tool strip menu item.
+		/// </summary>
         public GTK.Menu mode1q2ToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The kick tool strip menu item.
+		/// </summary>
         public GTK.Menu kickToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The whois tool strip menu item.
+		/// </summary>
         public GTK.Menu whoisToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The whowas tool strip menu item.
+		/// </summary>
         public GTK.Menu whowasToolStripMenuItem = new GTK.Menu();
+		/// <summary>
+		/// The tool strip menu item1.
+		/// </summary>
         public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
+		/// <summary>
+		/// The tool strip menu item2.
+		/// </summary>
         public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
+		/// <summary>
+		/// The copy entire window to clip board tool strip menu item.
+		/// </summary>
         public GTK.Menu copyEntireWindowToClipBoardToolStripMenuItem = new GTK.Menu("Copy entire window to clipboard");
+		/// <summary>
+		/// The copy text to clip board tool strip menu item.
+		/// </summary>
         public GTK.Menu copyTextToClipBoardToolStripMenuItem = new GTK.Menu("Copy text to clipboard");
+		/// <summary>
+		/// The scroll tool strip menu item.
+		/// </summary>
         public GTK.Menu scrollToolStripMenuItem = new GTK.Menu("Scroll");
+		/// <summary>
+		/// The open link in browser tool strip menu item.
+		/// </summary>
         public GTK.Menu openLinkInBrowserToolStripMenuItem = new GTK.Menu("Open link in a new browser");
+		/// <summary>
+		/// The copy link to clipboard tool strip menu item.
+		/// </summary>
         public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
 
         public string SelectedUser = null;
 
         private bool CreatingMenu = false;
-
+		
+		/// <summary>
+		/// View type
+		/// </summary>
         public enum ViewType
         {
+			/// <summary>
+			/// Channel
+			/// </summary>
             Channel,
+			/// <summary>
+			/// User
+			/// </summary>
             User,
+			/// <summary>
+			/// link
+			/// </summary>
             Link
         }
 
         [GLib.ConnectBefore]
-        public void CreateMenu_rt(object o, Gtk.PopulatePopupArgs e)
+        private void CreateMenu_rt(object o, Gtk.PopulatePopupArgs e)
         {
             try
             {
@@ -76,7 +148,7 @@ namespace Client
         }
 
         [GLib.ConnectBefore]
-        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        private void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
         {
             try
             {
@@ -88,7 +160,7 @@ namespace Client
             }
         }
 
-        public void CreateMenu(object o, Gtk.PopulatePopupArgs e)
+        private void CreateMenu(object o, Gtk.PopulatePopupArgs e)
         {
             CreatingMenu = true;
             Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
@@ -249,7 +321,7 @@ namespace Client
             CreatingMenu = false;
         }
 
-        public void Click_R(string adds, string data)
+        private void Click_R(string adds, string data)
         {
             try
             {
@@ -300,7 +372,7 @@ namespace Client
             }
         }
 
-        public void ViewLn(string content, ViewType type, string name = "")
+        private void ViewLn(string content, ViewType type, string name = "")
         {
             if (owner != null)
             {
@@ -400,7 +472,7 @@ namespace Client
             }
         }
 
-        public void Click_L(string http)
+        private void Click_L(string http)
         {
             if (http.StartsWith("https://") ||
                 http.StartsWith("http://") ||
