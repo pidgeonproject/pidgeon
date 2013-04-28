@@ -261,7 +261,7 @@ namespace Client
             /// <summary>
             /// Changing this to anything but 0 will trim the channel buffer
             /// </summary>
-            public static int MaximumChannelBufferSize = 0;
+            public static int MaximumChannelBufferSize = 820;
         }
 
         /// <summary>
