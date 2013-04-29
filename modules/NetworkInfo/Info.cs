@@ -15,9 +15,6 @@ namespace Client
             base.Initialise();
         }
 
-        /*
-(16:15:54) :hub.tm-irc.org 292 petan : u = Auditorium mode (/names and /who #channel only show channel ops) [q]
-         * */
         public override void Hook_NetworkInfo(Network network, string command, string parameters, string value)
         {
             if (command == "002")
@@ -70,6 +67,10 @@ namespace Client
                     network.InsertSafeDescription('C', "Disable CTCP. All CTCP messages to the channel, except ACTION, are disallowed");
                     network.InsertSafeDescription('L', "Large ban list.  Increase maximum number of +beIq entries. Only settable by opers");
                     network.InsertSafeDescription('P', "Permanent.  Channel does not disappear when empty.  Only settable by opers");
+                    network.InsertSafeDescription('j', "Join throttle.  Limits number of joins to the channel per time PARAMS: /mode #channel +j count:time");
+                    network.InsertSafeDescription('f', "Forward.  Forwards users who cannot join because of +i, +j, +l or +r.");
+                    network.InsertSafeDescription('k', "Key.  Requires users to issue /join #channel KEY to join");
+                    network.InsertSafeDescription('l', "Limit.  Impose a maximum number of LIMIT people in the channel. PARAMS: /mode #channel +l limit");
                     network.InsertSafeDescription('Q', "Disable forward.  Users cannot be forwarded to the channel (however, new forwards can still be set subject to +F)");
                     network.InsertSafeDescription('F', "Free target.  Anyone may set forwards to this (otherwise ops are necessary)");
                     return;
@@ -111,7 +112,6 @@ namespace Client
                     network.InsertSafeDescription('Q', "Only ulined servers and their users can kick (requires nokicks module)");
                     network.InsertSafeDescription('R', "Blocks unregistered users from joining (requires services account module)");
                     network.InsertSafeDescription('T', "Blocks /NOTICEs to the channel from users who are not at least halfop (requires nonotice module)");
-
                     return;
                 }
 

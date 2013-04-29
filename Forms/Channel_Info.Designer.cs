@@ -132,28 +132,6 @@ namespace Client.Forms
             this.GtkScrolledWindow1.Name = "GtkScrolledWindow1";
             this.GtkScrolledWindow1.ShadowType = ((global::Gtk.ShadowType)(1));
             // Container child GtkScrolledWindow1.Gtk.Container+ContainerChild
-            //this.treeview1 = new global::Gtk.TreeView();
-            //this.treeview1.CanFocus = true;
-            //Gtk.TreeViewColumn enabled = new Gtk.TreeViewColumn();
-            //Gtk.TreeViewColumn character = new Gtk.TreeViewColumn();
-            //Gtk.TreeViewColumn ds = new Gtk.TreeViewColumn();
-            //this.treeview1.AppendColumn(enabled);
-            //this.treeview1.AppendColumn(character);
-            //this.treeview1.AppendColumn(ds);
-            //enabled.Title = "Enabled";
-            //character.Title = "Channel mode";
-            //ds.Title = "Description";
-            //Gtk.CellRendererToggle r_enabled = new CellRendererToggle();
-            //enabled.PackStart(r_enabled, true);
-            //Gtk.CellRendererText r_char = new CellRendererText();
-            //Gtk.CellRendererText r_desc = new CellRendererText();
-            //ds.PackStart(r_desc, true);
-            //character.PackStart(r_char, true);
-            //enabled.AddAttribute(r_enabled, "bool", 0);
-            //character.AddAttribute(r_char, "char", 1);
-            //ds.AddAttribute(r_desc, "text", 2);
-            //this.treeview1.Model = options;
-            //this.treeview1.Name = "treeview1";
             Gtk.Layout f = new Layout(new Adjustment(10, 0, 10000, 10, 10, 10), new Adjustment(10, 0, 100000, 10, 10, 10));
             ReloadModes(ref f);
             this.GtkScrolledWindow1.Add(f);

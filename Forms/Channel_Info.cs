@@ -436,6 +436,25 @@ namespace Client.Forms
             }
         }
 
+        private void InsertMode(char item, ref Gtk.Layout vbox, ref int height)
+        {
+            string de = "unknown mode. Refer to ircd manual (/raw help)";
+            cm.Add(item);
+            if (channel._Network.Descriptions.ContainsKey(item))
+            {
+                de = channel._Network.Descriptions[item];
+            }
+            CheckButton xx = new CheckButton(item.ToString() + " : " + de);
+            xx.Active = channel.ChannelMode._Mode.Contains(item.ToString());
+            xx.Name = item.ToString();
+            options.Add(xx);
+            vbox.Add(xx);
+            global::Gtk.Layout.LayoutChild w1 = ((global::Gtk.Layout.LayoutChild)(vbox[xx]));
+            w1.X = 0;
+            w1.Y = height;
+            height += 20;
+        }
+
         private void ReloadModes(ref Gtk.Layout vbox)
         {
             options.Clear();
@@ -448,23 +467,23 @@ namespace Client.Forms
                 lock (channel.ChannelMode)
                 {
                     int height = 0;
+                    foreach (char item in channel._Network.SModes)
+                    {
+                        if (channel.ChannelMode._Mode.Contains(item.ToString()))
+                        {
+                            InsertMode(item, ref vbox, ref height);
+                        }
+                    }
+                    foreach (char item in channel._Network.XModes)
+                    {
+                        if (channel.ChannelMode._Mode.Contains(item.ToString()))
+                        {
+                            InsertMode(item, ref vbox, ref height);
+                        }
+                    }
                     foreach (char item in channel._Network.CModes)
                     {
-                        string de = "unknown mode. Refer to ircd manual (/raw help)";
-                        cm.Add(item);
-                        if (channel._Network.Descriptions.ContainsKey(item))
-                        {
-                            de = channel._Network.Descriptions[item];
-                        }
-                        CheckButton xx = new CheckButton(item.ToString() + " : " + de);
-                        xx.Active = channel.ChannelMode._Mode.Contains(item.ToString());
-                        xx.Name = item.ToString();
-                        options.Add(xx);
-                        vbox.Add(xx);
-                        global::Gtk.Layout.LayoutChild w1 = ((global::Gtk.Layout.LayoutChild)(vbox[xx]));
-                        w1.X = 0;
-                        w1.Y = height;
-                        height += 20;
+                        InsertMode(item, ref vbox, ref height);
                     }
                     Adjustment ad = new Adjustment(0, 0, height * 100, 10, 20, 20);
                     vbox.SetScrollAdjustments(new Adjustment(10, 0, 10, 10, 10, 10), ad);

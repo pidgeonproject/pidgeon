@@ -382,6 +382,16 @@ namespace Client.Graphics
                             Values.Remove(ref iter);
                             return;
                         }
+                        string info = null;
+                        if (nw.IrcdVersion != null)
+                        {
+                            info = "IRCD version " + nw.IrcdVersion;
+                        }
+                        string nwinfo = (string)model.GetValue(iter, 4);
+                        if (nwinfo != info)
+                        {
+                            model.SetValue(iter, 4, info);
+                        }
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
