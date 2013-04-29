@@ -33,7 +33,8 @@ namespace Client
         /// <summary>
         /// Return a file path without special symbols not supported in windows or linux
         /// </summary>
-        /// <param name="text"></param>
+        /// <param name="owner"></param>
+        /// <param name="directory"></param>
         /// <returns></returns>
         public static string validpath(Graphics.Window owner, string directory)
         {
@@ -49,7 +50,7 @@ namespace Client
             return directory;
         }
 
-        public static string _getFileName(Graphics.Window owner, string directory)
+        private static string _getFileName(Graphics.Window owner, string directory)
         {
             string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
                 Path.DirectorySeparatorChar + owner.WindowName + Path.DirectorySeparatorChar + 
@@ -57,6 +58,13 @@ namespace Client
             return name;
         }
 
+        /// <summary>
+        /// Write message to a file
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="InputStyle"></param>
+        /// <param name="owner"></param>
+        /// <param name="directory"></param>
         public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory)
         {
             try

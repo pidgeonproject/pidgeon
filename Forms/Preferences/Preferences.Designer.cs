@@ -754,7 +754,7 @@ namespace Client.Forms
             this.lcheckbutton1 = new global::Gtk.CheckButton();
             this.lcheckbutton1.CanFocus = true;
             this.lcheckbutton1.Name = "checkbutton1";
-            this.lcheckbutton1.Label = global::Mono.Unix.Catalog.GetString("TXT logs");
+            this.lcheckbutton1.Label = "TXT logs";
             this.lcheckbutton1.DrawIndicator = true;
             this.lcheckbutton1.UseUnderline = true;
             this.ltable2.Add(this.lcheckbutton1);
@@ -768,7 +768,7 @@ namespace Client.Forms
             this.lcheckbutton2 = new global::Gtk.CheckButton();
             this.lcheckbutton2.CanFocus = true;
             this.lcheckbutton2.Name = "checkbutton2";
-            this.lcheckbutton2.Label = global::Mono.Unix.Catalog.GetString("HTML logs");
+            this.lcheckbutton2.Label = "HTML logs";
             this.lcheckbutton2.DrawIndicator = true;
             this.lcheckbutton2.UseUnderline = true;
             this.ltable2.Add(this.lcheckbutton2);
@@ -782,7 +782,7 @@ namespace Client.Forms
             this.lcheckbutton3 = new global::Gtk.CheckButton();
             this.lcheckbutton3.CanFocus = true;
             this.lcheckbutton3.Name = "checkbutton3";
-            this.lcheckbutton3.Label = global::Mono.Unix.Catalog.GetString("XML logs");
+            this.lcheckbutton3.Label = "XML logs";
             this.lcheckbutton3.DrawIndicator = true;
             this.lcheckbutton3.UseUnderline = true;
             this.ltable2.Add(this.lcheckbutton3);
@@ -819,7 +819,7 @@ namespace Client.Forms
             // Container child table2.Gtk.Table+TableChild
             this.llabel1 = new global::Gtk.Label();
             this.llabel1.Name = "label1";
-            this.llabel1.LabelProp = global::Mono.Unix.Catalog.GetString("Path:");
+            this.llabel1.LabelProp = "Path:";
             this.ltable2.Add(this.llabel1);
             global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.ltable2[this.llabel1]));
             w6.XOptions = ((global::Gtk.AttachOptions)(4));
@@ -827,7 +827,7 @@ namespace Client.Forms
             // Container child table2.Gtk.Table+TableChild
             this.llabel2 = new global::Gtk.Label();
             this.llabel2.Name = "label2";
-            this.llabel2.LabelProp = global::Mono.Unix.Catalog.GetString("File name:");
+            this.llabel2.LabelProp = "File name:";
             this.ltable2.Add(this.llabel2);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.ltable2[this.llabel2]));
             w7.TopAttach = ((uint)(1));
@@ -852,7 +852,7 @@ namespace Client.Forms
             this.lvbox3.Name = "vbox3";
             this.lvbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton1 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Enable logs for all text"));
+            this.lradiobutton1 = new global::Gtk.RadioButton("Enable logs for all text");
             this.lradiobutton1.CanFocus = true;
             this.lradiobutton1.Name = "radiobutton1";
             this.lradiobutton1.DrawIndicator = true;
@@ -864,7 +864,7 @@ namespace Client.Forms
             w9.Expand = false;
             w9.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton2 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Append"));
+            this.lradiobutton2 = new global::Gtk.RadioButton("Append");
             this.lradiobutton2.CanFocus = true;
             this.lradiobutton2.Name = "radiobutton2";
             this.lradiobutton2.DrawIndicator = true;
@@ -876,7 +876,7 @@ namespace Client.Forms
             w10.Expand = false;
             w10.Fill = false;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.lradiobutton3 = new global::Gtk.RadioButton(global::Mono.Unix.Catalog.GetString("Disable logs"));
+            this.lradiobutton3 = new global::Gtk.RadioButton("Disable logs");
             this.lradiobutton3.CanFocus = true;
             this.lradiobutton3.Name = "radiobutton3";
             this.lradiobutton3.DrawIndicator = true;
@@ -891,7 +891,7 @@ namespace Client.Forms
             this.lframe1.Add(this.lGtkAlignment);
             this.lGtkLabel1 = new global::Gtk.Label();
             this.lGtkLabel1.Name = "GtkLabel1";
-            this.lGtkLabel1.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Services logs</b>");
+            this.lGtkLabel1.LabelProp = "<b>Services logs</b>";
             this.lGtkLabel1.UseMarkup = true;
             this.lframe1.LabelWidget = this.lGtkLabel1;
             this.vbox2.Add(this.lframe1);
@@ -903,7 +903,7 @@ namespace Client.Forms
             this.frame7.Add(this.GtkAlignment7);
             this.GtkLabel7 = new global::Gtk.Label();
             this.GtkLabel7.Name = "GtkLabel";
-            this.GtkLabel7.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Logs</b>");
+            this.GtkLabel7.LabelProp = "<b>Logs</b>";
             this.GtkLabel7.UseMarkup = true;
             this.frame7.LabelWidget = this.GtkLabel7;
             this.frame7.ShowAll();
@@ -963,7 +963,7 @@ namespace Client.Forms
             this.fExtensions.Add(this.GtkAlignment2);
             this.GtkLabel2 = new global::Gtk.Label();
             this.GtkLabel2.Name = "GtkLabel";
-            this.GtkLabel2.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Extensions</b>");
+            this.GtkLabel2.LabelProp = "<b>Extensions</b>";
             this.GtkLabel2.UseMarkup = true;
             this.fExtensions.LabelWidget = this.GtkLabel2;
             this.fExtensions.ShowAll();
@@ -1010,7 +1010,7 @@ namespace Client.Forms
             this.treeview4.AppendColumn(highlight_stat);
             this.GtkLabel4 = new global::Gtk.Label();
             this.GtkLabel4.Name = "GtkLabel";
-            this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Highlighting</b>");
+            this.GtkLabel4.LabelProp = "<b>Highlighting</b>";
             this.GtkLabel4.UseMarkup = true;
             this.frame4.LabelWidget = this.GtkLabel4;
             this.frame4.ShowAll();
@@ -1051,7 +1051,7 @@ namespace Client.Forms
             this.fKeyboard.Add(this.GtkAlignment3);
             this.GtkLabel3 = new global::Gtk.Label();
             this.GtkLabel3.Name = "GtkLabel";
-            this.GtkLabel3.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Keyboard</b>");
+            this.GtkLabel3.LabelProp = "<b>Keyboard</b>";
             this.GtkLabel3.UseMarkup = true;
             this.fKeyboard.LabelWidget = this.GtkLabel3;
             this.fKeyboard.ShowAll();
@@ -1108,7 +1108,7 @@ namespace Client.Forms
             this.fIgnore.Add(this.GtkAlignment5);
             this.GtkLabel5 = new global::Gtk.Label();
             this.GtkLabel5.Name = "GtkLabel";
-            this.GtkLabel5.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Ignore list</b>");
+            this.GtkLabel5.LabelProp = "<b>Ignore list</b>";
             this.GtkLabel5.UseMarkup = true;
             this.fIgnore.LabelWidget = this.GtkLabel5;
             this.fIgnore.ShowAll();
@@ -1169,7 +1169,7 @@ namespace Client.Forms
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();
             this.GtkLabel6.Name = "GtkLabel";
-            this.GtkLabel6.LabelProp = global::Mono.Unix.Catalog.GetString("<b>System</b>");
+            this.GtkLabel6.LabelProp = "<b>System</b>";
             this.GtkLabel6.UseMarkup = true;
             this.frame6.LabelWidget = this.GtkLabel6;
             this.frame6.ShowAll();

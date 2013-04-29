@@ -28,34 +28,115 @@ namespace Client.Graphics
 {
     public partial class Window : Gtk.Bin
     {
+        /// <summary>
+        /// User list
+        /// </summary>
         public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User), typeof(string));
         // menu
+        /// <summary>
+        /// Version menu
+        /// </summary>
         public GTK.Menu vERSIONToolStripMenuItem = new GTK.Menu("Version");
+        /// <summary>
+        /// Time menu
+        /// </summary>
         public GTK.Menu tIMEToolStripMenuItem = new GTK.Menu("Time");
+        /// <summary>
+        /// Ping menu
+        /// </summary>
         public GTK.Menu pINGToolStripMenuItem = new GTK.Menu("PING");
+        /// <summary>
+        /// Page menu
+        /// </summary>
         public GTK.Menu pAGEToolStripMenuItem = new GTK.Menu("PAGE");
+        /// <summary>
+        /// Message menu
+        /// </summary>
         public GTK.Menu messageToolStripMenuItem = new GTK.Menu("Message");
+        /// <summary>
+        /// Mode menu
+        /// </summary>
         public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
+        /// <summary>
+        /// Kb menu
+        /// </summary>
         public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
+        /// <summary>
+        /// Kick with reason menu
+        /// </summary>
         public GTK.Menu krToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
+        /// <summary>
+        /// +V menu
+        /// </summary>
         public GTK.Menu vToolStripMenuItem = new GTK.Menu(messages.get("give+v", Core.SelectedLanguage));
+        /// <summary>
+        /// +H menu
+        /// </summary>
         public GTK.Menu hToolStripMenuItem = new GTK.Menu(messages.get("give+h", Core.SelectedLanguage));
+        /// <summary>
+        /// +O menu
+        /// </summary>
         public GTK.Menu oToolStripMenuItem = new GTK.Menu(messages.get("give+o", Core.SelectedLanguage));
+        /// <summary>
+        /// +A menu
+        /// </summary>
         public GTK.Menu aToolStripMenuItem = new GTK.Menu(messages.get("give+a", Core.SelectedLanguage));
+        /// <summary>
+        /// +Q menu
+        /// </summary>
         public GTK.Menu qToolStripMenuItem = new GTK.Menu(messages.get("give+q", Core.SelectedLanguage));
+        /// <summary>
+        /// -V menu
+        /// </summary>
         public GTK.Menu vToolStripMenuItem1 = new GTK.Menu(messages.get("give-v", Core.SelectedLanguage));
+        /// <summary>
+        /// -H menu
+        /// </summary>
         public GTK.Menu hToolStripMenuItem1 = new GTK.Menu(messages.get("give-h", Core.SelectedLanguage));
+        /// <summary>
+        /// -O menu
+        /// </summary>
         public GTK.Menu oToolStripMenuItem1 = new GTK.Menu(messages.get("give-o", Core.SelectedLanguage));
+        /// <summary>
+        /// -A menu
+        /// </summary>
         public GTK.Menu aToolStripMenuItem1 = new GTK.Menu(messages.get("give-a", Core.SelectedLanguage));
+        /// <summary>
+        /// -Q menu
+        /// </summary>
         public GTK.Menu qToolStripMenuItem1 = new GTK.Menu(messages.get("give-q", Core.SelectedLanguage));
+        /// <summary>
+        /// Ban
+        /// </summary>
         public GTK.Menu banToolStripMenuItem = new GTK.Menu(messages.get("ban", Core.SelectedLanguage));
+        /// <summary>
+        /// Whois
+        /// </summary>
         public GTK.Menu whoisToolStripMenuItem = new GTK.Menu("Whois");
+        /// <summary>
+        /// Ctcp
+        /// </summary>
         public GTK.Menu ctToolStripMenuItem = new GTK.Menu("CTCP");
+        /// <summary>
+        /// Refresh menu
+        /// </summary>
         public GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
+        /// <summary>
+        /// KickBan menu
+        /// </summary>
         public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu("Kick + Ban");
+        /// <summary>
+        /// Kick menu
+        /// </summary>
         public GTK.Menu kickToolStripMenuItem = new GTK.Menu("Kick");
+        /// <summary>
+        /// Reload menu
+        /// </summary>
         public GTK.Menu synchroToolStripMenuItem = new GTK.Menu("Reload");
         
+        /// <summary>
+        /// List of selected users
+        /// </summary>
         public List<User> SelectedUsers
         {
             get

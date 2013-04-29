@@ -41,7 +41,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize (this);
             // Widget MainWindow
             this.Name = "MainWindow";
-            this.Title = global::Mono.Unix.Catalog.GetString ("Search text");
+            this.Title = "Search text";
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.Resizable = false;
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
@@ -76,7 +76,7 @@ namespace Client.Forms
             this.button1.CanFocus = true;
             this.button1.Name = "button1";
             this.button1.UseUnderline = true;
-            this.button1.Label = global::Mono.Unix.Catalog.GetString ("Up");
+            this.button1.Label = "Up";
             this.hbox1.Add (this.button1);
             global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.button1]));
             w3.Position = 2;
@@ -90,7 +90,7 @@ namespace Client.Forms
             this.button2.Clicked += new EventHandler(button2_Click);
             this.ConfigureEvent += new ConfigureEventHandler(Relocate);
             this.button2.UseUnderline = true;
-            this.button2.Label = global::Mono.Unix.Catalog.GetString ("Down");
+            this.button2.Label = "Down";
             this.hbox1.Add (this.button2);
             this.entry1.KeyPressEvent += new KeyPressEventHandler(enter_press);
             global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.button2]));

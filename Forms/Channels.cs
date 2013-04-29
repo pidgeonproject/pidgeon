@@ -25,6 +25,9 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Channel list
+    /// </summary>
     public partial class Channels : Gtk.Window
     {
         private Network network = null;
@@ -82,6 +85,10 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of this list
+        /// </summary>
+        /// <param name="nw"></param>
         public Channels(Network nw) : base(Gtk.WindowType.Toplevel)
         {
 			network = nw;

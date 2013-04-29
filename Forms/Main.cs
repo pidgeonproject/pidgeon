@@ -25,25 +25,58 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Main
+    /// </summary>
     public partial class Main : Client.GTK.PidgeonForm
     {
+        /// <summary>
+        /// Micro Chat
+        /// </summary>
         public MicroChat micro = null;
         private string StatusBox = "";
+        /// <summary>
+        /// Primary window
+        /// </summary>
         public Graphics.Window main = null;
+        /// <summary>
+        /// Side bar
+        /// </summary>
         public Graphics.PidgeonList ChannelList = null;
+        /// <summary>
+        /// Currently displayed window
+        /// </summary>
         public Graphics.Window Chat = null;
         private Connection fConnection;
+        /// <summary>
+        /// Preferences form
+        /// </summary>
         public Preferences fPrefs;
         private bool UpdatedStatus = true;
         private SearchItem searchbox = new SearchItem();
         private bool done = false;
+        /// <summary>
+        /// Progress
+        /// </summary>
         public double progress = 0;
+        /// <summary>
+        /// Displaying progress
+        /// </summary>
         public bool DisplayingProgress = false;
+        /// <summary>
+        /// Maximum value of progress
+        /// </summary>
         public double ProgressMax = 0;
         public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
         private GLib.TimeoutHandler timer = null;
+        /// <summary>
+        /// Tray icon
+        /// </summary>
         public Gtk.StatusIcon icon = null;
-        public global::Gtk.HPaned hPaned
+        /// <summary>
+        /// pointer
+        /// </summary>
+        public Gtk.HPaned hPaned
         {
             get
             {
@@ -51,14 +84,32 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Window request
+        /// </summary>
         public class _WindowRequest
         {
-            public Graphics.Window window;
-            public string name;
-            public bool focus;
-            public Protocol owner;
+            /// <summary>
+            /// Window handle
+            /// </summary>
+            public Graphics.Window window = null;
+            /// <summary>
+            /// Name
+            /// </summary>
+            public string name = null;
+            /// <summary>
+            /// Focus
+            /// </summary>
+            public bool focus = false;
+            /// <summary>
+            /// Protocol that owns this request
+            /// </summary>
+            public Protocol owner = null;
         }
 
+        /// <summary>
+        /// Creates a main form
+        /// </summary>
         public Main()
         {
             try
@@ -90,7 +141,7 @@ namespace Client.Forms
             }
         }
 
-        public void TrayMenu(object o, EventArgs args)
+        private void TrayMenu(object o, EventArgs args)
         {
             Menu menu = new Menu();
             ImageMenuItem menuItemQuit = new ImageMenuItem("Quit");
@@ -120,7 +171,7 @@ namespace Client.Forms
             menu.Popup();
         }
 
-        public void itemShow(object o, EventArgs e)
+        private void itemShow(object o, EventArgs e)
         {
             this.Visible = true;
         }
@@ -135,7 +186,7 @@ namespace Client.Forms
             Configuration.Kernel.Notice = !Configuration.Kernel.Notice;
         }
 
-        public void _Load()
+        private void _Load()
         {
             try
             {
@@ -194,7 +245,7 @@ namespace Client.Forms
             }
         }
 
-        public void Changed(object sender, EventArgs dt)
+        private void Changed(object sender, EventArgs dt)
         {
             if (done)
             {
@@ -244,6 +295,12 @@ namespace Client.Forms
             UpdatedStatus = true;
         }
 
+        /// <summary>
+        /// Shortcuts
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public static bool ShortcutHandle(object sender, KeyPressEventArgs e)
         {
             bool rt = false;
@@ -268,6 +325,9 @@ namespace Client.Forms
             return rt;
         }
 
+        /// <summary>
+        /// Update the status bar
+        /// </summary>
         public void UpdateStatus()
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
@@ -321,11 +381,19 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Change focus to this window
+        /// </summary>
         public void setFocus()
         {
             GrabFocus();
         }
 
+        /// <summary>
+        /// Change title
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public int setText(string name)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
@@ -377,7 +445,7 @@ namespace Client.Forms
             }
         }
 
-        public void Unshow(object main, Gtk.DeleteEventArgs closing)
+        private void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             try
             {
@@ -550,6 +618,10 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Switches window (thread unsafe)
+        /// </summary>
+        /// <param name="window"></param>
         public void SwitchWindow(Graphics.Window window)
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
@@ -564,6 +636,10 @@ namespace Client.Forms
             Chat = window;
         }
 
+        /// <summary>
+        /// Change a name of currently displayed channel (thread unsafe)
+        /// </summary>
+        /// <param name="channel"></param>
         public void setChannel(string channel)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
@@ -573,19 +649,32 @@ namespace Client.Forms
             toolStripStatusChannel.Text = channel;
         }
 
-        public void rootToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Display a root
+        /// </summary>
+        public void SwitchRoot()
+        {
+            if (Core.network != null)
+            {
+                Core.network.RenderedChannel = null;
+                Core.network._Protocol.Current = main;
+                SwitchWindow(main);
+                return;
+            }
+            main.Visible = true;
+            SwitchWindow(main);
+        }
+
+        /// <summary>
+        /// This function is called when you 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void rootToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
-                if (Core.network != null)
-                {
-                    Core.network.RenderedChannel = null;
-                    Core.network._Protocol.Current = main;
-                    SwitchWindow(main);
-                    return;
-                }
-                main.Visible = true;
-                SwitchWindow(main);
+                SwitchRoot();
             }
             catch (Exception fail)
             {

@@ -55,8 +55,7 @@ namespace Client
             /// <summary>
             /// Creates a new content
             /// </summary>
-            /// <param name="text">Text of this part</param>
-            /// <param name="SBAB">Owner</param>
+            /// <param name="_text">Text of this part</param>
             /// <param name="color">Color of a text</param>
             public ContentText(string _text, Color color)
             {

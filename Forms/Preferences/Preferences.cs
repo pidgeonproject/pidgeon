@@ -215,7 +215,7 @@ namespace Client.Forms
             Switch();
         }
 
-        public void RefreshModules()
+        private void RefreshModules()
         {
             Extensions.Clear();
             foreach (Extension ex in Core.Extensions)
@@ -224,6 +224,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Redraw list
+        /// </summary>
         public void redrawS()
         {
             Keyboard.Clear();
@@ -343,7 +346,6 @@ namespace Client.Forms
             try
             {
                 Preferences_Shortcut dialog = new Preferences_Shortcut();
-                dialog.Build();
                 dialog.Show();
             }
             catch (Exception fail)

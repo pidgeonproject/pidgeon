@@ -525,7 +525,6 @@ namespace Client
         /// Join
         /// </summary>
         /// <param name="channel">Channel name which is supposed to be joined</param>
-        /// <param name="nf">Whether newly created window should be displayed over existing windows</param>
         /// <returns></returns>
         public void Join(string channel)
         {

@@ -35,6 +35,7 @@ namespace Client
         /// Remove a line at specified index
         /// </summary>
         /// <param name="index"></param>
+        /// <param name="redraw"></param>
         public void RemoveLine(int index, bool redraw = false)
         {
             lock (Lines)

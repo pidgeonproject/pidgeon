@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Linq;
 using Gtk;
@@ -50,7 +49,7 @@ namespace Client.Forms
         private global::Gtk.ScrolledWindow GtkScrolledWindow4;
         private global::Gtk.TreeView treeview7;
         private global::Gtk.Label label4;
-        public Gtk.VPaned vpaned01 = null;
+        private Gtk.VPaned vpaned01 = null;
         private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
         private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
         private Client.GTK.Menu reloadToolStripMenuItemb = new Client.GTK.Menu("Reload");
@@ -66,12 +65,12 @@ namespace Client.Forms
         private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
         private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
             this.Name = "MainWindow";
-            this.Title = global::Mono.Unix.Catalog.GetString("Channel properties: " + channel.Name);
+            this.Title = "Channel properties: " + channel.Name;
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child MainWindow.Gtk.Container+ContainerChild
             this.notebook1 = new global::Gtk.Notebook();
@@ -109,10 +108,10 @@ namespace Client.Forms
             this.frame4.Add(this.GtkAlignment3);
             this.GtkLabel = new global::Gtk.Label();
             this.GtkLabel.Name = "GtkLabel";
-            this.GtkLabel.LabelProp = global::Mono.Unix.Catalog.GetString("Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser);
+            this.GtkLabel.LabelProp = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser;
             if (channel.TopicDate == 0)
             {
-                this.GtkLabel.LabelProp = global::Mono.Unix.Catalog.GetString("Topic (information about current topic are not present)");
+                this.GtkLabel.LabelProp = "Topic (information about current topic are not present)";
             }
             this.GtkLabel.UseMarkup = true;
             this.frame4.LabelWidget = this.GtkLabel;
@@ -162,7 +161,7 @@ namespace Client.Forms
             this.frame5.Add(this.GtkAlignment4);
             this.GtkLabel4 = new global::Gtk.Label();
             this.GtkLabel4.Name = "GtkLabel4";
-            this.GtkLabel4.LabelProp = global::Mono.Unix.Catalog.GetString("<b>Channel mode</b>");
+            this.GtkLabel4.LabelProp = "<b>Channel mode</b>";
             this.GtkLabel4.UseMarkup = true;
             this.frame5.LabelWidget = this.GtkLabel4;
             this.vbox1.Add(this.frame5);
@@ -174,7 +173,7 @@ namespace Client.Forms
             this.button1.CanFocus = true;
             this.button1.Name = "button1";
             this.button1.UseUnderline = true;
-            this.button1.Label = global::Mono.Unix.Catalog.GetString("Update");
+            this.button1.Label = "Update";
             this.vbox1.Add(this.button1);
             global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.button1]));
             w9.Position = 2;
@@ -185,7 +184,7 @@ namespace Client.Forms
             // Notebook tab
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t0", Core.SelectedLanguage));
+            this.label1.LabelProp = messages.get("channelinfo-t0", Core.SelectedLanguage);
             this.notebook1.SetTabLabel(this.vpaned01, this.label1);
             this.label1.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
@@ -224,7 +223,7 @@ namespace Client.Forms
             // Notebook tab
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
-            this.label2.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t2", Core.SelectedLanguage));
+            this.label2.LabelProp = messages.get("channelinfo-t2", Core.SelectedLanguage);
             this.notebook1.SetTabLabel(this.GtkScrolledWindow2, this.label2);
             this.label2.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
@@ -264,7 +263,7 @@ namespace Client.Forms
             // Notebook tab
             this.label3 = new global::Gtk.Label();
             this.label3.Name = "label3";
-            this.label3.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t3", Core.SelectedLanguage));
+            this.label3.LabelProp = messages.get("channelinfo-t3", Core.SelectedLanguage);
             this.notebook1.SetTabLabel(this.GtkScrolledWindow3, this.label3);
             this.label3.ShowAll();
             // Container child notebook1.Gtk.Notebook+NotebookChild
@@ -304,7 +303,7 @@ namespace Client.Forms
             // Notebook tab
             this.label4 = new global::Gtk.Label();
             this.label4.Name = "label4";
-            this.label4.LabelProp = global::Mono.Unix.Catalog.GetString(messages.get("channelinfo-t4", Core.SelectedLanguage));
+            this.label4.LabelProp = messages.get("channelinfo-t4", Core.SelectedLanguage);
             this.notebook1.SetTabLabel(this.GtkScrolledWindow4, this.label4);
             this.label4.ShowAll();
             this.WindowPosition = WindowPosition.Center;

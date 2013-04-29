@@ -100,8 +100,14 @@ namespace Client
 
         #endregion
 
+        /// <summary>
+        /// Label that contains the status info
+        /// </summary>
         public System.Windows.Forms.Label lStatus;
-        public System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        /// <summary>
+        /// Update button
+        /// </summary>
         public System.Windows.Forms.Button update;
         private System.Windows.Forms.Timer timer1;
 

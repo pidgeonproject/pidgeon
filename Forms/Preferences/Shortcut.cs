@@ -25,6 +25,9 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Dialog to insert a new shortcut
+    /// </summary>
     public class Preferences_Shortcut : Gtk.Dialog
     {
         private global::Gtk.VBox vbox3;
@@ -40,13 +43,21 @@ namespace Client.Forms
         private global::Gtk.Button buttonOk;
         private Gtk.ListStore keys = new ListStore(typeof(string));
 
-        public void Click1(object sender, EventArgs e)
+        /// <summary>
+        /// Creates a new instance of this box
+        /// </summary>
+        public Preferences_Shortcut()
+        {
+            this.Build();
+        }
+
+        private void Click1(object sender, EventArgs e)
         {
             this.Hide();
             this.Destroy();
         }
 
-        public void Click2(object sender, EventArgs e)
+        private void Click2(object sender, EventArgs e)
         {
             try
             {
@@ -69,7 +80,7 @@ namespace Client.Forms
             }
         }
 
-        public void Build()
+        private void Build()
         {
             keys.AppendValues("a");
             keys.AppendValues("b");
@@ -110,7 +121,7 @@ namespace Client.Forms
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
-            this.Title = global::Mono.Unix.Catalog.GetString("Shortcut");
+            this.Title = "Shortcut";
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
             global::Gtk.VBox w1 = this.VBox;
@@ -127,7 +138,7 @@ namespace Client.Forms
             // Container child hbox1.Gtk.Box+BoxChild
             this.label3 = new global::Gtk.Label();
             this.label3.Name = "label3";
-            this.label3.LabelProp = global::Mono.Unix.Catalog.GetString("Command");
+            this.label3.LabelProp = "Command";
             this.hbox1.Add(this.label3);
             global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.label3]));
             w2.Position = 0;
@@ -155,7 +166,7 @@ namespace Client.Forms
             this.checkbutton2 = new global::Gtk.CheckButton();
             this.checkbutton2.CanFocus = true;
             this.checkbutton2.Name = "checkbutton2";
-            this.checkbutton2.Label = global::Mono.Unix.Catalog.GetString("Ctrl");
+            this.checkbutton2.Label = "Ctrl";
             this.checkbutton2.DrawIndicator = true;
             this.checkbutton2.UseUnderline = true;
             this.hbox2.Add(this.checkbutton2);
@@ -165,7 +176,7 @@ namespace Client.Forms
             this.checkbutton3 = new global::Gtk.CheckButton();
             this.checkbutton3.CanFocus = true;
             this.checkbutton3.Name = "checkbutton3";
-            this.checkbutton3.Label = global::Mono.Unix.Catalog.GetString("Alt");
+            this.checkbutton3.Label = "Alt";
             this.checkbutton3.DrawIndicator = true;
             this.checkbutton3.UseUnderline = true;
             this.hbox2.Add(this.checkbutton3);
@@ -175,7 +186,7 @@ namespace Client.Forms
             this.checkbutton4 = new global::Gtk.CheckButton();
             this.checkbutton4.CanFocus = true;
             this.checkbutton4.Name = "checkbutton4";
-            this.checkbutton4.Label = global::Mono.Unix.Catalog.GetString("Shift");
+            this.checkbutton4.Label = "Shift";
             this.checkbutton4.DrawIndicator = true;
             this.checkbutton4.UseUnderline = true;
             this.hbox2.Add(this.checkbutton4);

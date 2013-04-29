@@ -26,16 +26,34 @@ using Gtk;
 
 namespace Client.Graphics
 {
+    /// <summary>
+    /// Text box
+    /// </summary>
     [System.ComponentModel.ToolboxItem(true)]
     public partial class TextBox : Gtk.Bin
     {
+        /// <summary>
+        /// History
+        /// </summary>
         public List<string> history = null;
+        /// <summary>
+        /// Position
+        /// </summary>
         public int position = 0;
+        /// <summary>
+        /// Previous text
+        /// </summary>
         public string prevtext = "";
-        public string original = "";
+        private string original = "";
+        /// <summary>
+        /// Parent
+        /// </summary>
         public Window parent = null;
-        public bool restore = false;
+        private bool restore = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
+        /// <summary>
+        /// Pointer
+        /// </summary>
         public global::Gtk.TextView richTextBox;
         private bool destroyed = false;
 
@@ -62,12 +80,15 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public TextBox()
         {
 
         }
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Graphics.TextBox
@@ -92,7 +113,7 @@ namespace Client.Graphics
             this.Hide();
         }
 
-        public void InitStyle()
+        private void InitStyle()
         {
             richTextBox.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             richTextBox.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
@@ -267,6 +288,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Destroy
+        /// </summary>
         public void _Destroy()
         {
             if (IsDestroyed)
@@ -279,6 +303,9 @@ namespace Client.Graphics
             this.Destroy();
         }
 
+        /// <summary>
+        /// Init
+        /// </summary>
         public void Init()
         {
             this.Build();
@@ -291,6 +318,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Focus text
+        /// </summary>
         public void setFocus()
         {
             this.richTextBox.GrabFocus();

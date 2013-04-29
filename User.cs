@@ -21,6 +21,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// User
+    /// </summary>
     [Serializable]
     public class User : IComparable
     {
@@ -49,7 +52,13 @@ namespace Client
         /// Nick
         /// </summary>
         public string Nick = null;
+        /// <summary>
+        /// Name
+        /// </summary>
         public string RealName = null;
+        /// <summary>
+        /// Server
+        /// </summary>
         public string Server = null;
         private bool destroyed = false;
         /// <summary>
@@ -122,6 +131,9 @@ namespace Client
             Server = server;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~User()
         {
             // remove reference to network from channel mode that is no longer going to be accessible so that GC can remove it

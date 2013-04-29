@@ -1073,13 +1073,13 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static ProtocolIrc connectIRC(string server, int port = 6667, string pw = "", bool secured = false)
+        public static ProtocolIrc connectIRC(string server, int port = 6667, string password = "", bool secured = false)
         {
             ProtocolIrc protocol = new ProtocolIrc();
             Connections.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
-            protocol.Password = pw;
+            protocol.Password = password;
             protocol.SSL = secured;
             protocol._IRCNetwork = new Network(server, protocol);
             network = protocol._IRCNetwork;

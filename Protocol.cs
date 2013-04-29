@@ -272,6 +272,7 @@ namespace Client
         /// </summary>
         /// <param name="data"></param>
         /// <param name="_priority"></param>
+        /// <param name="network"></param>
         public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null)
         {
             Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
@@ -296,6 +297,7 @@ namespace Client
         /// <param name="text">Message</param>
         /// <param name="to">User or a channel (needs to be prefixed with #)</param>
         /// <param name="_priority">Priority</param>
+        /// <param name="pmsg">Private</param>
         /// <returns></returns>
         public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
@@ -323,6 +325,7 @@ namespace Client
         /// Change nick
         /// </summary>
         /// <param name="_Nick"></param>
+        /// <param name="network"></param>
         /// <returns></returns>
         public virtual int requestNick(string _Nick, Network network = null)
         {
@@ -334,6 +337,7 @@ namespace Client
         /// Parse a command
         /// </summary>
         /// <param name="cm"></param>
+        /// <param name="network"></param>
         /// <returns></returns>
         public virtual bool Command(string cm, Network network = null)
         {
@@ -417,7 +421,7 @@ namespace Client
         {
             try
             {
-                Core._Main.rootToolStripMenuItem_Click(null, null);
+                Core._Main.SwitchRoot();
                 if (SystemWindow != null)
                 {
                     if (!Windows.ContainsValue(SystemWindow))

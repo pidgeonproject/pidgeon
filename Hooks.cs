@@ -88,7 +88,7 @@ namespace Client
             /// <summary>
             /// This hook allow you to call functions before you open connection
             /// </summary>
-            /// <param name="server"></param>
+            /// <param name="protocol"></param>
             public static void BeforeConnect(Protocol protocol)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -150,7 +150,7 @@ namespace Client
         public class _Network
         {
             /// <summary>
-            /// 
+            /// Hook that is triggered when you connect to network
             /// </summary>
             /// <param name="network"></param>
             public static void AfterConnectToNetwork(Network network)

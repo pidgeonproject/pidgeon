@@ -40,12 +40,33 @@ namespace Client.Services
             /// Private message
             /// </summary>
             public bool isPM = false;
+            /// <summary>
+            /// History
+            /// </summary>
             public List<string> history = new List<string>();
+            /// <summary>
+            /// Data
+            /// </summary>
             public List<Client.ContentLine> lines = null;
+            /// <summary>
+            /// Name
+            /// </summary>
             public string Name = null;
+            /// <summary>
+            /// topic
+            /// </summary>
             public string topic = null;
+            /// <summary>
+            /// Changed
+            /// </summary>
             public bool Changed = true;
+            /// <summary>
+            /// Color
+            /// </summary>
             public int menucolor = 0;
+            /// <summary>
+            /// Sort
+            /// </summary>
             public bool SortNeeded = false;
 
             /// <summary>
@@ -56,6 +77,10 @@ namespace Client.Services
 
             }
 
+            /// <summary>
+            /// Creates a new instance of window
+            /// </summary>
+            /// <param name="owner"></param>
             public Window(Graphics.Window owner)
             {
                 Name = owner.WindowName;
@@ -418,16 +443,28 @@ namespace Client.Services
                 return null;
             }
 
+            /// <summary>
+            /// Creates a new instance
+            /// </summary>
+            /// <param name="nick"></param>
             public NetworkInfo(string nick)
             {
                 Nick = nick;
             }
 
+            /// <summary>
+            /// Creates a new instance
+            /// </summary>
+            /// <param name="network"></param>
             public NetworkInfo(Network network)
             {
                 Nick = network.Nickname;
             }
 
+            /// <summary>
+            /// Stores an ID in a list
+            /// </summary>
+            /// <param name="text"></param>
             public void MQID(string text)
             {
                 int mqid = int.Parse(text);
@@ -486,12 +523,21 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="_s"></param>
         public Buffer(ProtocolSv _s)
         {
             Root = Core.PermanentTemp + "buffer_" + _s.Server + Path.DirectorySeparatorChar;
             protocol = _s;
         }
 
+        /// <summary>
+        /// Get uid
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
         public string getUID(string server)
         {
             if (Networks.ContainsKey(server))
@@ -501,6 +547,12 @@ namespace Client.Services
             return null;
         }
 
+        /// <summary>
+        /// Make a buffer for new network
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="network_id"></param>
+        /// <param name="_network"></param>
         public void Make(string network, string network_id, Network _network = null)
         {
             if (Networks.ContainsKey(network))
@@ -517,6 +569,9 @@ namespace Client.Services
             networkInfo.Add(network_id, new NetworkInfo(_network));
         }
 
+        /// <summary>
+        /// read disk
+        /// </summary>
         public void ReadDisk()
         {
             try
@@ -564,12 +619,15 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Remove all data
+        /// </summary>
         public void Clear()
         {
             ClearData();
         }
 
-        public void ClearData()
+        private void ClearData()
         {
             if (Directory.Exists(Root))
             {
@@ -577,7 +635,7 @@ namespace Client.Services
             }
         }
 
-        public static void SerializeNetwork(NetworkInfo line, string file)
+        private static void SerializeNetwork(NetworkInfo line, string file)
         {
             XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
             if (File.Exists(file))
@@ -589,7 +647,7 @@ namespace Client.Services
             writer.Close();
         }
         
-        public static NetworkInfo DeserializeNetwork(string file)
+        private static NetworkInfo DeserializeNetwork(string file)
         {
             XmlDocument document = new XmlDocument();
             TextReader sr = new StreamReader(file);
@@ -602,6 +660,9 @@ namespace Client.Services
             return info;
         }
 
+        /// <summary>
+        /// Write all data to disk
+        /// </summary>
         public void Snapshot()
         {
             lock (protocol.NetworkList)
@@ -693,7 +754,7 @@ namespace Client.Services
             WriteDisk();
         }
 
-        public void Init(object network)
+        private void Init(object network)
         {
             try
             {
@@ -704,6 +765,7 @@ namespace Client.Services
                     return;
                 }
                 NetworkInfo nw = (NetworkInfo)network;
+                nw.MQ.Sort();
                 NetworkInfo.Range range = nw.getRange();
                 while (range != null && !IsDestroyed)
                 {
@@ -721,6 +783,9 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Destroy
+        /// </summary>
         public void Destroy()
         {
             destroyed = true;
@@ -735,6 +800,10 @@ namespace Client.Services
             networkInfo.Clear();
         }
 
+        /// <summary>
+        /// Retrieve a data of network
+        /// </summary>
+        /// <param name="network"></param>
         public void retrieveData(string network)
         {
             lock (networkInfo)
@@ -742,6 +811,11 @@ namespace Client.Services
                 if (networkInfo.ContainsKey(Networks[network]))
                 {
                     System.Threading.Thread th = new System.Threading.Thread(Init);
+                    th.Name = "Services buffer";
+                    lock (Core.SystemThreads)
+                    {
+                        Core.SystemThreads.Add(th);
+                    }
                     th.Start(networkInfo[Networks[network]]);
                 }
             }
@@ -772,6 +846,9 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Write all data to disk
+        /// </summary>
         public void WriteDisk()
         {
             try

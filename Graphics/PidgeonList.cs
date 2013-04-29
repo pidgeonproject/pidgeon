@@ -585,6 +585,7 @@ namespace Client.Graphics
         /// insert network to lv (thread safe)
         /// </summary>
         /// <param name="network"></param>
+        /// <param name="ParentSv"></param>
         public void insertNetwork(Network network, ProtocolSv ParentSv = null)
         {
             if (queueNetwork.Contains(network)) return;
@@ -1024,7 +1025,7 @@ namespace Client.Graphics
                     {
                         if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
                         {
-                            Core._Main.rootToolStripMenuItem_Click(null, null);
+                            Core._Main.SwitchRoot();
                             user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick]._Destroy();
                             user._Network._Protocol.Windows.Remove(user._Network.SystemWindowID + user.Nick);
                         }
@@ -1050,7 +1051,7 @@ namespace Client.Graphics
                         }
                     }
 
-                    Core._Main.rootToolStripMenuItem_Click(null, null);
+                    Core._Main.SwitchRoot();
 
                     lock (channel._Network._Protocol.Windows)
                     {

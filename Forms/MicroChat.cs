@@ -26,13 +26,19 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Micro chat
+    /// </summary>
     public partial class MicroChat : Gtk.Window
     {
+        /// <summary>
+        /// Scrollback
+        /// </summary>
         public Scrollback scrollback_mc = null;
         private Gtk.VBox vbox;
-        public bool OnTop = true;
+        private bool OnTop = true;
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             this.Name = "Client.Forms.MicroChat";
@@ -58,7 +64,7 @@ namespace Client.Forms
             this.Hide();
         }
 
-        public void Close(object sender, DeleteEventArgs e)
+        private void Close(object sender, DeleteEventArgs e)
         {
             e.RetVal = true;
             Hide();
@@ -141,6 +147,9 @@ namespace Client.Forms
             }
         }
         
+        /// <summary>
+        /// Creates a new instance of micro chat
+        /// </summary>
         public MicroChat () : base(Gtk.WindowType.Toplevel)
         {
             this.Build();

@@ -45,7 +45,9 @@ namespace Client.Graphics
         /// Lock the window for any changes
         /// </summary>
         public bool Locked = false;
-        public int locktime = 0;
+        /// <summary>
+        /// Color in menu
+        /// </summary>
         public System.Drawing.Color MenuColor;
         /// <summary>
         /// Deprecated, use _Network._Protocol instead
@@ -55,17 +57,26 @@ namespace Client.Graphics
         /// In case this is true, we are in micro chat
         /// </summary>
         public bool MicroBox = false;
+        /// <summary>
+        /// Private message
+        /// </summary>
         public bool isPM = false;
         /// <summary>
         /// Network that is associated with this window
         /// </summary>
         public Network _Network = null;
+        /// <summary>
+        /// Panels will ignore the changes
+        /// </summary>
         public bool ignoreChange = false;
         /// <summary>
         /// If this is true the side list will assign an icon to this item
         /// </summary>
         public bool needIcon = false;
         private Channel channel = null;
+        /// <summary>
+        /// Whether this window is loaded
+        /// </summary>
         public bool isInitialised = false;
         
         // window
@@ -104,6 +115,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Pointer
+        /// </summary>
         public Scrollback scrollback
         {
             get
@@ -112,6 +126,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Pointer
+        /// </summary>
         public Graphics.TextBox textbox
         {
             get
@@ -120,6 +137,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Creates a new window
+        /// </summary>
         public Window()
         {
             this.scrollback1 = new global::Client.Scrollback();
@@ -132,6 +152,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Destruct
+        /// </summary>
         ~Window()
         {
             if (!IsDestroyed)
@@ -146,7 +169,7 @@ namespace Client.Graphics
             }
         }
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Graphics.Window
@@ -205,7 +228,7 @@ namespace Client.Graphics
             this.Hide();
         }
 
-        public void InitStyle()
+        private void InitStyle()
         {
             listView.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
@@ -220,7 +243,7 @@ namespace Client.Graphics
             }
         }
 
-        public bool Update()
+        private bool Update()
         {
             if (IsDestroyed)
             {
@@ -255,6 +278,9 @@ namespace Client.Graphics
             column1.AddAttribute(renderer, "text", 0);
         }
 
+        /// <summary>
+        /// Create
+        /// </summary>
         public void Create()
         {
             scrollback.channelToolStripMenuItem.Visible = isChannel;
@@ -302,6 +328,10 @@ namespace Client.Graphics
             isInitialised = true;
         }
 
+        /// <summary>
+        /// Redraw window
+        /// </summary>
+        /// <returns></returns>
         public bool Redraw()
         {
             ignoreChange = true;
@@ -320,6 +350,9 @@ namespace Client.Graphics
             return true;
         }
 
+        /// <summary>
+        /// Destroy this instance and release all memory
+        /// </summary>
         public void _Destroy()
         {
             if (IsDestroyed)
@@ -354,7 +387,7 @@ namespace Client.Graphics
             this.Destroy();
         }
         
-        public void Changed(object sender, GLib.NotifyArgs dt)
+        private void Changed(object sender, GLib.NotifyArgs dt)
         {
             try
             {
@@ -370,7 +403,7 @@ namespace Client.Graphics
             }
         }
 
-        bool Mode(string mode)
+        private bool Mode(string mode)
         {
             try
             {
@@ -389,6 +422,10 @@ namespace Client.Graphics
             return true;
         }
 
+        /// <summary>
+        /// Return a channel associated with this window
+        /// </summary>
+        /// <returns></returns>
         public Channel getChannel()
         {
             if (channel != null)

@@ -190,7 +190,7 @@ namespace Client
         /// This method scan all object methods for TclMethod Attribute
         /// and all these methods will be registered as tcl commands
         /// </summary>
-        /// <param name="?">obj with methods</param>
+        /// <param name="obj">obj with methods</param>
         public void registerTclCommandsInObject(object obj)
         {
             foreach (MethodInfo mi in obj.GetType().GetMethods())

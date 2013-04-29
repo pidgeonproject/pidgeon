@@ -539,6 +539,7 @@ namespace Client
         /// <summary>
         /// This function handle the writing to scrollback
         /// </summary>
+        /// <param name="window"></param>
         /// <param name="text"></param>
         /// <param name="InputStyle"></param>
         /// <param name="WriteLog"></param>

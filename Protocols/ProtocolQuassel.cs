@@ -45,15 +45,21 @@ namespace Client
     /// </summary>
     public class ProtocolQuassel : Protocol
     {
-        public System.Threading.Thread _Thread = null;
-        public System.Threading.Thread keep = null;
+        private System.Threading.Thread _Thread = null;
+        private System.Threading.Thread keep = null;
         public DateTime pong = DateTime.Now;
         private System.Net.Sockets.NetworkStream _network ;
         private System.Net.Security.SslStream _networks;
         private System.IO.StreamReader _reader;
         public List<Network> sl = new List<Network>();
         private System.IO.StreamWriter _writer;
+        /// <summary>
+        /// Password
+        /// </summary>
         public string password = "";
+        /// <summary>
+        /// Name
+        /// </summary>
         public string name = "";
         public bool auth = false;
 
