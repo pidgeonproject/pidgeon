@@ -51,13 +51,74 @@ namespace Client
                     network.InsertSafeDescription('S', "Strips mIRC color codes [o]");
                     network.InsertSafeDescription('T', "No NOTICEs allowed in the channel [o]");
                     network.InsertSafeDescription('V', "/INVITE is not allowed [o]");
+                    return;
                 }
 
                 if (value.Contains("running version ircd-seven"))
                 {
                     string version = value.Substring(value.IndexOf("ircd-seven"));
                     network.IrcdVersion = version;
+                    network.InsertSafeDescription('c', "No color.  All color codes in messages are stripped");
+                    network.InsertSafeDescription('i', "A user must be invited to join the channel");
+                    network.InsertSafeDescription('m', "Moderated channel (only +vo users may speak)");
+                    network.InsertSafeDescription('n', "No external messages.  Only channel members may talk in the channel");
+                    network.InsertSafeDescription('p', "Private channel");
+                    network.InsertSafeDescription('r', "Registered users only.  Only users identified to services may join");
+                    network.InsertSafeDescription('t', "Only +o may change the topic");
+                    network.InsertSafeDescription('z', "Op moderated.  Messages blocked by +m, +b and +q are instead sent to ops");
+                    network.InsertSafeDescription('g', "Free invite.  Everyone may invite users.  Significantly weakens +i control");
+                    network.InsertSafeDescription('C', "Disable CTCP. All CTCP messages to the channel, except ACTION, are disallowed");
+                    network.InsertSafeDescription('L', "Large ban list.  Increase maximum number of +beIq entries. Only settable by opers");
+                    network.InsertSafeDescription('P', "Permanent.  Channel does not disappear when empty.  Only settable by opers");
+                    network.InsertSafeDescription('Q', "Disable forward.  Users cannot be forwarded to the channel (however, new forwards can still be set subject to +F)");
+                    network.InsertSafeDescription('F', "Free target.  Anyone may set forwards to this (otherwise ops are necessary)");
+                    return;
+                }
 
+                if (value.Contains("running version InspIRCd"))
+                {
+                    string version = value.Substring(value.IndexOf("InspIRCd"));
+                    network.IrcdVersion = version;
+                    network.InsertSafeDescription('f', "Kicks on text flood equal to or above the specified rate. With *, the user is banned (requires messageflood module)");
+                    network.InsertSafeDescription('c', "Blocks messages containing mIRC color codes");
+                    network.InsertSafeDescription('i', "Makes the channel invite-only");
+                    network.InsertSafeDescription('j', "Limits joins to the specified rate (requires joinflood module)");
+                    network.InsertSafeDescription('k', "Users must specify <key> to join");
+                    network.InsertSafeDescription('l', "Channel may hold at most <number> of users");
+                    network.InsertSafeDescription('m', "Enable moderation. Only users with +v, +h, or +o can speak");
+                    network.InsertSafeDescription('s', "Make channel secret, hiding it in users' whoises and /LIST");
+                    network.InsertSafeDescription('n', "Blocks users who are not members of the channel from messaging it");
+                    network.InsertSafeDescription('p', "Make channel private, hiding it in users' whoises and replacing it with * in /LIST.");
+                    network.InsertSafeDescription('r', "Marks the channel as registered with Services (requires services account module)");
+                    network.InsertSafeDescription('t', "Only +hoaq may change the topic");
+                    network.InsertSafeDescription('z', "Only Clients on a Secure Connection (SSL) can join");
+                    network.InsertSafeDescription('A', "Allows anyone to invite users to the channel (normally only chanops can invite, requires allowinvite module)");
+                    network.InsertSafeDescription('C', "Blocks any CTCPs to the channel (requires noctcp module)");
+                    network.InsertSafeDescription('G', "Filters out all Bad words in messages with <censored>");
+                    network.InsertSafeDescription('M', "Blocks unregistered users from speaking (requires services account module)");
+                    network.InsertSafeDescription('K', "/KNOCK is not allowed");
+                    network.InsertSafeDescription('N', "Prevents users on the channel from chainging nick (requires nonicks module)");
+                    network.InsertSafeDescription('O', "Channel is IRCops only (can only be set by IRCops, requires operchans module)");
+                    network.InsertSafeDescription('S', "Strips mIRC color codes");
+                    network.InsertSafeDescription('u', "Makes the channel an auditorium; normal users only see themselves or themselves and the operators, while operators see all the users (requires auditorium module)");
+                    network.InsertSafeDescription('d', "Blocks messages to a channel from new users until they have been in the channel for [time] seconds (requires delaymsg module).");
+                    network.InsertSafeDescription('w', "Adds basic channel access controls of [flag] to [banmask], via the +w listmode. For example, +w o:R:Brain will op anyone identified to the account 'Brain' on join. (requires autoop module)");
+                    network.InsertSafeDescription('B', "Blocks messages with too many capital letters, as determined by the network configuration (requires blockcaps module)");
+                    network.InsertSafeDescription('D', "Delays join messages from users until they message the channel (requires delayjoin module)");
+                    network.InsertSafeDescription('F', "Blocks nick changes when they equal or exceed the specified rate (requires nickflood module)");
+                    network.InsertSafeDescription('J', "Prevents rejoin after kick for the specified number of seconds. This prevents auto-rejoin (requires kicknorejoin module)");
+                    network.InsertSafeDescription('P', "Makes the channel permanent; Bans, invites, the topic, modes, and such will not be lost when it empties (can only be set by IRCops, requires permchannels module)");
+                    network.InsertSafeDescription('Q', "Only ulined servers and their users can kick (requires nokicks module)");
+                    network.InsertSafeDescription('R', "Blocks unregistered users from joining (requires services account module)");
+                    network.InsertSafeDescription('T', "Blocks /NOTICEs to the channel from users who are not at least halfop (requires nonotice module)");
+
+                    return;
+                }
+
+                if (value.Contains("running version "))
+                {
+                    string version = value.Substring(value.IndexOf("version ") + 8);
+                    network.IrcdVersion = version;
                 }
             }
             base.Hook_NetworkInfo(network, command, parameters, value);

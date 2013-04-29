@@ -447,6 +447,7 @@ namespace Client
                                     nw.UModes = info.UModes;
                                     nw.XModes = info.XModes;
                                     nw.Nickname = info.Nick;
+                                    nw.IrcdVersion = info.Version;
                                     nw.ChannelList.Clear();
                                     nw.ChannelList.AddRange(info.ChannelList);
                                     info.ChannelList.Clear();

@@ -236,6 +236,10 @@ namespace Client.Services
             /// </summary>
             public List<Description> Descriptions = new List<Description>();
             /// <summary>
+            /// IRCD
+            /// </summary>
+            public string Version = null;
+            /// <summary>
             /// List of windows in system
             /// </summary>
             public List<Buffer.Window> _windows = new List<Buffer.Window>();
@@ -688,6 +692,7 @@ namespace Client.Services
                             networkInfo[uid].CUModes = network.CUModes;
                             networkInfo[uid].PModes = network.PModes;
                             networkInfo[uid].mode = network.usermode.ToString();
+                            networkInfo[uid].Version = network.IrcdVersion;
                             networkInfo[uid].SModes = network.SModes;
                             networkInfo[uid].ChannelList = new List<Network.ChannelData>();
                             lock (network.ChannelList)

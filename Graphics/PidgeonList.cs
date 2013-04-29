@@ -563,9 +563,14 @@ namespace Client.Graphics
 
         private void _insertNetwork(Network network)
         {
+            string info = null;
+            if (network.IrcdVersion != null)
+            {
+                info = "IRCD version " + network.IrcdVersion;
+            }
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, null, icon_0);
+                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, info, icon_0);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -574,7 +579,7 @@ namespace Client.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, null, icon_0);
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, icon_0);
                 TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
                 tv.ExpandRow(path, true);
                 ServerList.Add(network, text);
