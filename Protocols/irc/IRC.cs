@@ -281,8 +281,11 @@ namespace Client
                             case "002":
                             case "003":
                             case "004":
+                                Hooks._Network.NetworkInfo(_Network, command, parameters, value);
+                                break;
                             case "005":
                                 Info(command, parameters, value);
+                                Hooks._Network.NetworkInfo(_Network, command, parameters, value);
                                 if (!_Network.isLoaded)
                                 {
                                     Hooks._Network.AfterConnectToNetwork(_Network);

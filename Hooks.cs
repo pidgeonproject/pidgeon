@@ -174,6 +174,26 @@ namespace Client
                 return;
             }
 
+            public static void NetworkInfo(Network network, string command, string parameters, string value)
+            {
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_NetworkInfo(network, command, parameters, value);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook AfterConnectToNetwork(Network network) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return;
+            }
+
             /// <summary>
             /// Events to happen before user is kicked from channel, in case you return false, the kick is ignored
             /// </summary>

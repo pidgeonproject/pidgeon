@@ -234,6 +234,10 @@ namespace Client
         /// Whether this network is fully loaded
         /// </summary>
         public bool isLoaded = false;
+        /// <summary>
+        /// Version of ircd running on this network
+        /// </summary>
+        public string IrcdVersion = null;
         private bool destroyed = false;
         /// <summary>
         /// Is connected
@@ -340,6 +344,27 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Insert a description to list
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="description"></param>
+        public void InsertSafeDescription(char mode, string description)
+        {
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(mode))
+                {
+                    Descriptions.Remove(mode);
+                }
+
+                Descriptions.Add(mode, description);
+            }
+        }
+
+        /// <summary>
+        /// Display server channel list
+        /// </summary>
         public void DisplayChannelWindow()
         {
             try

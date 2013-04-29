@@ -344,6 +344,18 @@ namespace Client
         }
 
         /// <summary>
+        /// This function is called when network send us a network info
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        public virtual void Hook_NetworkInfo(Network network, string command, string parameters, string value)
+        {
+            
+        }
+
+        /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
         public virtual void Initialise()
