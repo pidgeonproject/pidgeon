@@ -34,9 +34,9 @@ namespace Client.Forms
         public new bool Direction = false;
         private global::Gtk.Button button1;
         private global::Gtk.Button button2;
-        public TextIter position;
+        private TextIter position;
         
-        protected virtual void Build ()
+        private void Build ()
         {
             global::Stetic.Gui.Initialize (this);
             // Widget MainWindow
@@ -115,12 +115,12 @@ namespace Client.Forms
             Hide();
         }
 
-        public void Init()
+        private void Init()
         {
             Direction = false;
         }
 
-        public void Relocate(object sender, ConfigureEventArgs e)
+        private void Relocate(object sender, ConfigureEventArgs e)
         {
             try
             {
@@ -140,7 +140,7 @@ namespace Client.Forms
         }
         
         [GLib.ConnectBefore]
-        public void enter_press(object sender, KeyPressEventArgs keys)
+        private void enter_press(object sender, KeyPressEventArgs keys)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace Client.Forms
             }
         }
         
-        public void SearchItem_Keys(object sender, Gtk.KeyPressEventArgs keys)
+        private void SearchItem_Keys(object sender, Gtk.KeyPressEventArgs keys)
         {
             try
             {
@@ -171,7 +171,7 @@ namespace Client.Forms
             }
         }
 
-        public void SearchRun(bool tp)
+        private void SearchRun(bool tp)
         {
             Direction = tp;
             Scrollback text = null;

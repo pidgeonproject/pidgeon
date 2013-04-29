@@ -28,11 +28,26 @@ namespace Client
         /// Host name
         /// </summary>
         public string Host = null;
+        /// <summary>
+        /// Network
+        /// </summary>
         [NonSerialized]
         public Network _Network = null;
+        /// <summary>
+        /// Identifier
+        /// </summary>
         public string Ident = null;
+        /// <summary>
+        /// Channel mode
+        /// </summary>
         public NetworkMode ChannelMode = new NetworkMode();
+        /// <summary>
+        /// Status
+        /// </summary>
         public ChannelStatus Status = ChannelStatus.Regular;
+        /// <summary>
+        /// Nick
+        /// </summary>
         public string Nick = null;
         public string RealName = null;
         public string Server = null;
@@ -113,6 +128,9 @@ namespace Client
             ChannelMode.network = null;
         }
 
+        /// <summary>
+        /// Get a list of all channels this user is in
+        /// </summary>
         public List<Channel> ChannelList
         {
             get
@@ -136,6 +154,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Change a user level according to symbol
+        /// </summary>
+        /// <param name="symbol"></param>
         public void SymbolMode(char symbol)
         {
             if (_Network == null)
@@ -172,6 +194,9 @@ namespace Client
             Host = host;
         }
 
+        /// <summary>
+        /// Destroy
+        /// </summary>
         public void Destroy()
         {
             if (IsDestroyed)
@@ -192,6 +217,24 @@ namespace Client
             return Nick + "!" + Ident + "@" + Host;
         }
 
+        /// <summary>
+        /// Generate full string
+        /// </summary>
+        /// <returns></returns>
+        public string ConvertToInfoString()
+        {
+            if (RealName != null)
+            {
+                return RealName + "\n" + ToString();
+            }
+            return ToString();
+        }
+
+        /// <summary>
+        /// Internal function
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public int CompareTo(object obj)
         {
             if (obj is User)
@@ -201,13 +244,34 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Channel status
+        /// </summary>
         public enum ChannelStatus
         { 
+            /// <summary>
+            /// Owner
+            /// </summary>
             Owner,
+            /// <summary>
+            /// Admin
+            /// </summary>
             Admin,
+            /// <summary>
+            /// Operator
+            /// </summary>
             Op,
+            /// <summary>
+            /// Halfop
+            /// </summary>
             Halfop,
+            /// <summary>
+            /// Voice
+            /// </summary>
             Voice,
+            /// <summary>
+            /// Normal user
+            /// </summary>
             Regular,
         }
     }

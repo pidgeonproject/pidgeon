@@ -22,9 +22,18 @@ using System.Text;
 
 namespace Client.GTK
 {
+    /// <summary>
+    /// Menu
+    /// </summary>
     public class Menu
     {
+        /// <summary>
+        /// Enabled
+        /// </summary>
         public bool Enabled = false;
+        /// <summary>
+        /// Checked
+        /// </summary>
         public bool Checked = false;
         public bool Visible = false;
         public string Text;
@@ -34,14 +43,24 @@ namespace Client.GTK
             Text = null;
         }
 
+        /// <summary>
+        /// Creates menu
+        /// </summary>
+        /// <param name="id"></param>
         public Menu(string id)
         {
             Text = id;
         }
     }
 
+    /// <summary>
+    /// Form
+    /// </summary>
     public class PidgeonForm : Gtk.Window
     {
+        /// <summary>
+        /// Height
+        /// </summary>
         public int Height
         {
             get
@@ -57,6 +76,9 @@ namespace Client.GTK
             }
         }
 
+        /// <summary>
+        /// Width
+        /// </summary>
         public int Width
         {
             get
@@ -72,6 +94,9 @@ namespace Client.GTK
             }
         }   
         
+        /// <summary>
+        /// Position X
+        /// </summary>
         public int Left
         {
             get
@@ -83,6 +108,9 @@ namespace Client.GTK
             }
         }
         
+        /// <summary>
+        /// Position
+        /// </summary>
         public int Top
         {
             get
@@ -94,6 +122,9 @@ namespace Client.GTK
             }
         }
         
+        /// <summary>
+        /// Enabled
+        /// </summary>
         public bool Enabled
         {
             set
@@ -106,6 +137,9 @@ namespace Client.GTK
             }
         }
 
+        /// <summary>
+        /// Creates a new window
+        /// </summary>
         public PidgeonForm() : base(Gtk.WindowType.Toplevel)
         {
             

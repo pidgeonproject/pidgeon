@@ -26,16 +26,22 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Window
+    /// </summary>
     public partial class Channel_Info : Gtk.Window
     {
-        public Channel channel = null;
-        public List<char> cm = new List<char>();
+        private Channel channel = null;
+        private List<char> cm = new List<char>();
 
         private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(ChannelBanException));
         private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(SimpleBan));
         private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Invite));
         private List<CheckButton> options = new List<CheckButton>();
 
+        /// <summary>
+        /// List of selected items
+        /// </summary>
         public List<ChannelBanException> SelectedExcept
         {
             get
@@ -56,6 +62,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// List of selected items
+        /// </summary>
         public List<SimpleBan> SelectedBans
         {
             get
@@ -76,6 +85,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// List of selected items
+        /// </summary>
         public List<Invite> SelectedInvites
         {
             get
@@ -96,12 +108,17 @@ namespace Client.Forms
             }
         }
 
-        public Channel_Info() : base(Gtk.WindowType.Toplevel)
+        /// <summary>
+        /// Creates a new window
+        /// </summary>
+        /// <param name="ch"></param>
+        public Channel_Info(Channel ch) : base(Gtk.WindowType.Toplevel)
         {
-
+            channel = ch;
+            Load();
         }
 
-        public void MenuBans(object sender, Gtk.PopupMenuArgs e)
+        private void MenuBans(object sender, Gtk.PopupMenuArgs e)
         {
             Gtk.Menu menu = new Menu();
             Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
@@ -114,7 +131,7 @@ namespace Client.Forms
             menu.Popup();
         }
 
-        public void ReloadExceptions()
+        private void ReloadExceptions()
         {
             if (channel != null)
             {
@@ -132,7 +149,7 @@ namespace Client.Forms
             }
         }
 
-        public void ReloadBans()
+        private void ReloadBans()
         {
             if (channel != null)
             {
@@ -178,7 +195,7 @@ namespace Client.Forms
             }
         }
 
-        public void ReloadInvites()
+        private void ReloadInvites()
         {
             if (channel != null)
             {
@@ -419,7 +436,7 @@ namespace Client.Forms
             }
         }
 
-        public void ReloadModes(ref Gtk.Layout vbox)
+        private void ReloadModes(ref Gtk.Layout vbox)
         {
             options.Clear();
             if (channel != null)
@@ -457,14 +474,14 @@ namespace Client.Forms
             }
         }
 
-        public void Load()
+        private void Load()
         {
             this.Build();
             this.textview1.WrapMode = WrapMode.Word;
             textview1.Buffer.Text = channel.Topic;
         }
 
-        public static string convertUNIX(string time)
+        private string convertUNIX(string time)
         {
             try
             {

@@ -20,6 +20,9 @@ using System.IO;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Editor
+    /// </summary>
     public partial class ConfigFile : Gtk.Window
     {
         private Gtk.Button button3;
@@ -27,6 +30,9 @@ namespace Client.Forms
         private Gtk.TextView textview1;
         private Gtk.Label label;
         
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public ConfigFile () :  base(Gtk.WindowType.Toplevel)
         {
             try
@@ -41,6 +47,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Load
+        /// </summary>
         public void Load()
         {
             if (!File.Exists(Core.ConfigFile))
@@ -51,7 +60,7 @@ namespace Client.Forms
             Locate();
         }
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.ConfigFile

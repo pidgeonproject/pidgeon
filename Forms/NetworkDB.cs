@@ -21,6 +21,9 @@ namespace Client.Forms
 {
     public partial class NetworkDB : Gtk.Window
     {
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public NetworkDB () : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();

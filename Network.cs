@@ -27,11 +27,26 @@ namespace Client
     /// </summary>
     public class Network
     {
+        /// <summary>
+        /// Highlight
+        /// </summary>
         public class Highlighter
         {
+            /// <summary>
+            /// Is simple
+            /// </summary>
             public bool simple;
+            /// <summary>
+            /// Text
+            /// </summary>
             public string text;
+            /// <summary>
+            /// Enabled
+            /// </summary>
             public bool enabled;
+            /// <summary>
+            /// Expression
+            /// </summary>
             public System.Text.RegularExpressions.Regex regex = null;
 
             public Highlighter()
@@ -425,11 +440,19 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Part
+        /// </summary>
+        /// <param name="channel_name"></param>
         public void Part(string channel_name)
         {
             _Protocol.Part(channel_name, this);
         }
 
+        /// <summary>
+        /// Part
+        /// </summary>
+        /// <param name="channel"></param>
         public void Part(Channel channel)
         {
             _Protocol.Part(channel.Name, this);
@@ -450,6 +473,11 @@ namespace Client
             return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
         }
 
+        /// <summary>
+        /// If such a user is contained in a private message list it will be returned
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public User getUser(string user)
         {
             foreach (User x in PrivateChat)

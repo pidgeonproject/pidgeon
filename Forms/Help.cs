@@ -21,6 +21,9 @@ namespace Client.Forms
 {
     public partial class Help : Gtk.Window
     {
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public Help () : base(Gtk.WindowType.Toplevel)
         {
             try

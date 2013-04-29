@@ -21,20 +21,6 @@ using System.Text;
 
 namespace Client
 {
-    public class UserData
-    {
-        public Gtk.TreeIter iter;
-        public string username;
-        public string hn;
-        
-        public UserData(string Name, Gtk.TreeIter Node, string HostName)
-        {
-            iter = Node;
-            username = Name;
-            hn = HostName;
-        }
-    }
-    
     /// <summary>
     /// This is a global interface for channel modes with parameters
     /// </summary>
@@ -95,6 +81,9 @@ namespace Client
         }
     }
 
+    /// <summary>
+    /// Simplest ban
+    /// </summary>
     [Serializable]
     public class SimpleBan : ChannelParameterMode
     {

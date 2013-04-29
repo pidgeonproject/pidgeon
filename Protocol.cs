@@ -29,6 +29,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Connection
+    /// </summary>
     [Serializable]
     public class Protocol
     {
@@ -85,6 +88,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Whether it is working
+        /// </summary>
         public bool IsConnected
         {
             get
@@ -123,11 +129,17 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
         public Protocol()
         {
             _time = DateTime.Now;
         }
 
+        /// <summary>
+        /// Destructor
+        /// </summary>
         ~Protocol()
         {
             if (Configuration.Kernel.Debugging)
@@ -242,6 +254,14 @@ namespace Client
             return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
         }
         
+        /// <summary>
+        /// This will ignore all certificate issues
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="certificate"></param>
+        /// <param name="chain"></param>
+        /// <param name="sslPolicyErrors"></param>
+        /// <returns></returns>
         public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
@@ -377,7 +397,7 @@ namespace Client
             return;
         }
 
-        public void ClearWins()
+        private void ClearWins()
         {
             lock (Windows)
             {
@@ -425,6 +445,10 @@ namespace Client
             }
         }  
 
+        /// <summary>
+        /// This will connect this protocol
+        /// </summary>
+        /// <returns></returns>
         public virtual bool Open()
         {
             Core.DebugLog("Open() is not implemented");

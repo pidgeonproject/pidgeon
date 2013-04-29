@@ -20,6 +20,9 @@ using System.Collections.Generic;
 
 namespace Client
 {
+    /// <summary>
+    /// Terminal
+    /// </summary>
     public class Terminal
     {
 		private class Parameter

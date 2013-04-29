@@ -118,7 +118,7 @@ namespace Client
             }
         }
 
-        public string getInfo()
+        private string getInfo()
         {
             if (RemainingJobs.Count > 0)
             {
@@ -143,7 +143,7 @@ namespace Client
             return true;
         }
 
-        public void Start()
+        private void Start()
         {
             try
             {
@@ -203,6 +203,7 @@ namespace Client
             try
             {
                 sBuffer = new Services.Buffer(this);
+                Core._Main.Status(getInfo());
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
@@ -255,7 +256,7 @@ namespace Client
             return null;
         }
 
-        public void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
+        private void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
         {
             Datagram line = new Datagram("RAW", data);
             string Pr = "Normal";
@@ -273,12 +274,17 @@ namespace Client
             Deliver(line);
         }
 
+        /// <summary>
+        /// Part a channel
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="network"></param>
         public override void Part(string name, Network network = null)
         {
             Transfer("PART " + name, Configuration.Priority.High, network);
         }
 
-        public bool Process(string dg)
+        private bool Process(string dg)
         {
             try
             {
@@ -568,6 +574,10 @@ namespace Client
             Send(message.ToDocumentXmlText());
         }
 
+        /// <summary>
+        /// Open
+        /// </summary>
+        /// <returns></returns>
         public override bool Open()
         {
             CreateChat("!root", true, null);
@@ -578,6 +588,12 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Request a global nick
+        /// </summary>
+        /// <param name="_Nick"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
         public override int requestNick(string _Nick, Network network = null)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
@@ -702,6 +718,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Join a channel
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="network"></param>
         public override void Join(string name, Network network = null)
         {
             Transfer("JOIN " + name);
@@ -740,8 +761,14 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Current status of services
+        /// </summary>
         public enum Status
         {
+            /// <summary>
+            /// Waiting for a password
+            /// </summary>
             WaitingPW,
             Connected,
         }

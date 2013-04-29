@@ -26,16 +26,16 @@ namespace Client
         /// <summary>
         /// Network
         /// </summary>
-        public Network _Network = null;
+        private Network _Network = null;
         /// <summary>
         /// Protocol of this network
         /// </summary>
-        public Protocol _Protocol = null;
-        public string text;
+        private Protocol _Protocol = null;
+        private string text;
         public DateTime pong;
-        public long date = 0;
-        public bool updated_text = true;
-        public bool isServices = false;
+        private long date = 0;
+        private bool updated_text = true;
+        private bool isServices = false;
 
         private void Ping()
         {
@@ -43,13 +43,20 @@ namespace Client
             return;
         }
         
-        public bool Pong(string source, string parameters, string _value)
+        private bool Pong(string source, string parameters, string _value)
         {
             _Network.Transfer("PONG :" + _value, Configuration.Priority.Low); 
             return true;
         }
         
-        public bool ProcessThis(string source, string[] data, string _value)
+        /// <summary>
+        /// Process a data that affect the current user
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="data"></param>
+        /// <param name="_value"></param>
+        /// <returns></returns>
+        private bool ProcessThis(string source, string[] data, string _value)
         {
             if (source.StartsWith(_Network.Nickname + "!"))
             {
@@ -191,6 +198,10 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Process the line
+        /// </summary>
+        /// <returns></returns>
         public bool ProfiledResult()
         {
             if (Configuration.Kernel.Profiler)
@@ -203,7 +214,7 @@ namespace Client
             return Result();
         }
 
-        public bool Result()
+        private bool Result()
         {
             string last = "";
             try
@@ -267,8 +278,6 @@ namespace Client
                         
                         switch (command)
                         {
-                            case "001":
-                                break;
                             case "002":
                             case "003":
                             case "004":
@@ -322,6 +331,7 @@ namespace Client
                                 break;
                             case "307":
                             case "310":
+                            case "313":
                             case "378":
                             case "671":
                                 if (Configuration.irc.FriendlyWhois)

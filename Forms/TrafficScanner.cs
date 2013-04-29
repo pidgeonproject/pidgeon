@@ -23,16 +23,23 @@ using System.Data;
 using System.Text;
 using Gtk;
 
+// Documentation
+//////////////////////
+// Traffic scanner is allowing you to display all traffic sent within the protocols
+
 namespace Client.Forms
 {
     public partial class TrafficScanner : Gtk.Window
     {
         private List<string> traf = new List<string>();
-        public GLib.TimeoutHandler timer;
+        private GLib.TimeoutHandler timer;
         private bool Enabled = true;
         private GTK.Menu scroll = new GTK.Menu("Scroll");
         private GTK.Menu remove = new GTK.Menu("Delete");
         
+        /// <summary>
+        /// Creates a new instance of scanner
+        /// </summary>
         public TrafficScanner () :  base(Gtk.WindowType.Toplevel)
         {
             try
@@ -56,7 +63,7 @@ namespace Client.Forms
         }
 
         [GLib.ConnectBefore]
-        public void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
+        private void CreateMenu_simple(object o, Gtk.PopulatePopupArgs e)
         {
             try
             {
@@ -79,23 +86,26 @@ namespace Client.Forms
             }
         }
 
-        public void Scroll(object sender, EventArgs e)
+        private void Scroll(object sender, EventArgs e)
         {
             scroll.Checked = !scroll.Checked;
             Enabled = scroll.Checked;
         }
 
-        public void Clear(object sender, EventArgs e)
+        private void Clear(object sender, EventArgs e)
         {
             Clean();
         }
 
-        public void LoadStyle()
+        private void LoadStyle()
         {
             textview2.ModifyBase (StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
             textview2.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
         }
         
+        /// <summary>
+        /// Remove all data from operating memory
+        /// </summary>
         public void Clean()
         {
             lock (traf)
@@ -105,13 +115,13 @@ namespace Client.Forms
             textview2.Buffer.Text = "";
         }
         
-        public void Unshow(object main, Gtk.DeleteEventArgs closing)
+        private void Unshow(object main, Gtk.DeleteEventArgs closing)
         {
             Hide();
             closing.RetVal = true;
         }
         
-        public bool Tick()
+        private bool Tick()
         {
             if (!Enabled)
             {
@@ -145,6 +155,11 @@ namespace Client.Forms
             return true;
         }
         
+        /// <summary>
+        /// Add a line to scanner list
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="Text"></param>
         public void insert(string Server, string Text)
         {
             lock (traf)

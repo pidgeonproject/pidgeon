@@ -122,12 +122,21 @@ namespace Client
             return "+" + _val;
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="MT"></param>
+        /// <param name="_Network"></param>
         public NetworkMode(ModeType MT, Network _Network)
         {
             _ModeType = MT;
             network = _Network;
         }
 
+        /// <summary>
+        /// Creates a new instance
+        /// </summary>
+        /// <param name="DefaultMode"></param>
         public NetworkMode(string DefaultMode)
         {
             ChangeMode(DefaultMode);

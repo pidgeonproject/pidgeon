@@ -402,37 +402,37 @@ namespace Client
 
                         foreach (User user in owners)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Owner;
                         }
 
                         foreach (User user in admins)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Admin;
                         }
 
                         foreach (User user in oper)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Op;
                         }
 
                         foreach (User user in halfop)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Halfop;
                         }
 
                         foreach (User user in vs)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Voice;
                         }
 
                         foreach (User user in users)
                         {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ToString());
+                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
                             user.Status = User.ChannelStatus.Regular;
                         }
                     }
@@ -467,6 +467,7 @@ namespace Client
                 // prevent this from being called multiple times
                 return;
             }
+
             destroyed = true;
 
             if (Configuration.Kernel.Debugging)

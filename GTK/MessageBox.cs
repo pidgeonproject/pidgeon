@@ -22,17 +22,43 @@ using System.Text;
 
 namespace Client.GTK
 {
+    /// <summary>
+    /// MessageBox
+    /// </summary>
     public class MessageBox
     {
+        /// <summary>
+        /// Result of this box
+        /// </summary>
         public ResponseType result;
+        /// <summary>
+        /// Message box
+        /// </summary>
         public MessageDialog Message;
 
+        /// <summary>
+        /// Display a new message box
+        /// </summary>
+        /// <param name="parentWindow">Window this box belongs to</param>
+        /// <param name="messageType">Type of box</param>
+        /// <param name="buttons">Buttons</param>
+        /// <param name="message">Message</param>
+        /// <param name="title">Title</param>
+        /// <returns></returns>
         public static MessageBox Show(Window parentWindow, MessageType messageType, ButtonsType buttons, string message, string title)
         {
             MessageBox mb = new MessageBox(parentWindow, messageType, buttons, message, title);
             return mb;
         }
 
+        /// <summary>
+        /// Creates a new message box
+        /// </summary>
+        /// <param name="parentWindow">Window this box belongs to</param>
+        /// <param name="messageType">Type of box</param>
+        /// <param name="buttons">Buttons</param>
+        /// <param name="message">Value</param>
+        /// <param name="title">Title</param>
         public MessageBox(Window parentWindow, MessageType messageType, ButtonsType buttons, string message, string title)
         {
             Message = new MessageDialog(parentWindow, DialogFlags.Modal, messageType, buttons, false, null);

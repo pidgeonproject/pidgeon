@@ -22,6 +22,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Network
+    /// </summary>
     public class NetworkData
     {
         /// <summary>
@@ -37,7 +40,13 @@ namespace Client
             /// Server
             /// </summary>
             public string Server = null;
+            /// <summary>
+            /// Network is using ssl
+            /// </summary>
             public bool SSL = false;
+            /// <summary>
+            /// Type
+            /// </summary>
             public ProtocolType protocolType = ProtocolType.IRC;
 
             /// <summary>
@@ -50,11 +59,23 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// List of all loaded networks
+        /// </summary>
         public static List<NetworkInfo> Networks = new List<NetworkInfo>();
 
+        /// <summary>
+        /// Protocol type
+        /// </summary>
         public enum ProtocolType
         {
+            /// <summary>
+            /// IRC
+            /// </summary>
             IRC,
+            /// <summary>
+            /// Services
+            /// </summary>
             Services,
             Quassel,
             XMPP,

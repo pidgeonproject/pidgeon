@@ -27,6 +27,11 @@ namespace Client
     {
         class ResponsesSv
         {
+            /// <summary>
+            /// Message
+            /// </summary>
+            /// <param name="curr">Node</param>
+            /// <param name="protocol">Protocol</param>
             public static void sMessage(XmlNode curr, ProtocolSv protocol)
             {
                 string message_nick = curr.Attributes[0].Value;
@@ -95,11 +100,21 @@ namespace Client
                     Client.ContentLine.MessageStyle.User, false);
             }
 
+            /// <summary>
+            /// Load
+            /// </summary>
+            /// <param name="curr">Node</param>
+            /// <param name="protocol">Protocol</param>
             public static void sLoad(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Client.ContentLine.MessageStyle.System, false);
             }
 
+            /// <summary>
+            /// Status
+            /// </summary>
+            /// <param name="curr">Node</param>
+            /// <param name="protocol">Protocol</param>
             public static void sStatus(XmlNode curr, ProtocolSv protocol)
             {
                 switch (curr.InnerText)
@@ -113,6 +128,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Data
+            /// </summary>
+            /// <param name="curr">Node</param>
+            /// <param name="protocol">Protocol</param>
             public static void sData(XmlNode curr, ProtocolSv protocol)
             {
                 long date = 0;
@@ -211,6 +231,11 @@ namespace Client
                 processor.ProfiledResult();
             }
 
+            /// <summary>
+            /// Nick
+            /// </summary>
+            /// <param name="curr">Node</param>
+            /// <param name="protocol">Protocol</param>
             public static void sNick(XmlNode curr, ProtocolSv protocol)
             {
                 Network sv = protocol.retrieveNetwork(curr.Attributes[0].Value);
@@ -222,6 +247,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Connect to irc network
+            /// </summary>
+            /// <param name="curr"></param>
+            /// <param name="protocol"></param>
             public static void sConnect(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;

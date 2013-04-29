@@ -23,7 +23,7 @@ namespace Client
 {
     public class Quassel_Parser
     {
-        string Input = "";
+        private string Input = "";
 
         public void Proccess()
         {
@@ -40,6 +40,9 @@ namespace Client
         }
     }
 
+    /// <summary>
+    /// Quassel protocol
+    /// </summary>
     public class ProtocolQuassel : Protocol
     {
         public System.Threading.Thread _Thread = null;

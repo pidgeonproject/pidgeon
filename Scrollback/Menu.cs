@@ -572,9 +572,7 @@ namespace Client
                 {
                     if (Core.network.RenderedChannel != null)
                     {
-                        Forms.Channel_Info info = new Forms.Channel_Info();
-                        info.channel = Core.network.RenderedChannel;
-                        info.Load();
+                        Forms.Channel_Info info = new Forms.Channel_Info(Core.network.RenderedChannel);
                         info.Show();
                     }
                 }

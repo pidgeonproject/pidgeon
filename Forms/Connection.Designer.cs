@@ -27,7 +27,7 @@ namespace Client.Forms
         private global::Gtk.Image image1;
         private global::Gtk.Button button1;
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.Connection

@@ -28,6 +28,9 @@ namespace Client.Protocols.irc
     {
         private int ParametersPerOneLine = 2;
         private int ModesPerOneLine = 20;
+        /// <summary>
+        /// Prefix of mode
+        /// </summary>
         public string Prefix = "";
         /// <summary>
         /// This buffer contains modes that belong to channel and is only filled up when you rewrite this formatter with custom mode
@@ -41,6 +44,9 @@ namespace Client.Protocols.irc
         private List<SimpleMode> Mode = new List<SimpleMode>();
         private List<SimpleMode> rMode = new List<SimpleMode>();
 
+        /// <summary>
+        /// Return a list of modes
+        /// </summary>
         public List<SimpleMode> getMode
         {
             get
@@ -54,6 +60,9 @@ namespace Client.Protocols.irc
             }
         }
 
+        /// <summary>
+        /// Return a list of modes that are being removed
+        /// </summary>
         public List<SimpleMode> getRemovingMode
         {
             get
@@ -67,14 +76,26 @@ namespace Client.Protocols.irc
             }
         }
 
+        /// <summary>
+        /// Creates new
+        /// </summary>
         public Formatter() {}
 
+        /// <summary>
+        /// Require number of parameters and modes
+        /// </summary>
+        /// <param name="_ParametersPerOneLine"></param>
+        /// <param name="_ModesPerOneLine"></param>
         public Formatter(int _ParametersPerOneLine, int _ModesPerOneLine)
         {
             ParametersPerOneLine = _ParametersPerOneLine;
             ModesPerOneLine = _ModesPerOneLine;
         }
 
+        /// <summary>
+        /// Insert a list of modes to parser
+        /// </summary>
+        /// <param name="mode"></param>
         public void InsertModes(List<SimpleMode> mode)
         {
             lock (Mode)
@@ -201,7 +222,7 @@ namespace Client.Protocols.irc
             }
         }
 
-        public void Format()
+        private void Format()
         {
             string modes = "+";
             if (Removing)
