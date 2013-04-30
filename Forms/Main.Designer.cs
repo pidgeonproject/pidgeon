@@ -24,38 +24,137 @@ namespace Client.Forms
         /// ??
         /// </summary>
         public global::Gtk.UIManager UIManager;
+		/// <summary>
+		/// The file action.
+		/// </summary>
         public global::Gtk.Action FileAction;
+		/// <summary>
+		/// The shut down action.
+		/// </summary>
         public global::Gtk.Action ShutDownAction;
+		/// <summary>
+		/// The tools action.
+		/// </summary>
         public global::Gtk.Action ToolsAction;
+		/// <summary>
+		/// The misc action.
+		/// </summary>
         public global::Gtk.Action MiscAction;
+		/// <summary>
+		/// The show action.
+		/// </summary>
         public global::Gtk.Action ShowAction;
+		/// <summary>
+		/// The user action.
+		/// </summary>
         public global::Gtk.Action UserAction;
+		/// <summary>
+		/// The help action.
+		/// </summary>
         public global::Gtk.Action HelpAction;
+		/// <summary>
+		/// The about action.
+		/// </summary>
         public global::Gtk.Action AboutAction;
+		/// <summary>
+		/// The contents action.
+		/// </summary>
         public global::Gtk.Action ContentsAction;
+		/// <summary>
+		/// The root action.
+		/// </summary>
         public global::Gtk.Action RootAction;
+		/// <summary>
+		/// The search action.
+		/// </summary>
         public global::Gtk.Action SearchAction;
+		/// <summary>
+		/// The switch to advanced layout action.
+		/// </summary>
         public global::Gtk.Action SwitchToAdvancedLayoutAction;
+		/// <summary>
+		/// The configuration file action.
+		/// </summary>
         public global::Gtk.Action ConfigurationFileAction;
+		/// <summary>
+		/// The open new connection action.
+		/// </summary>
         public global::Gtk.Action OpenNewConnectionAction;
+		/// <summary>
+		/// The open new connection action1.
+		/// </summary>
         public global::Gtk.Action OpenNewConnectionAction1;
+		/// <summary>
+		/// The favorite networks action.
+		/// </summary>
         public global::Gtk.Action FavoriteNetworksAction;
+		/// <summary>
+		/// The preferences action.
+		/// </summary>
         public global::Gtk.Action PreferencesAction;
+		/// <summary>
+		/// The packet viewer action.
+		/// </summary>
         public global::Gtk.Action PacketViewerAction;
+		/// <summary>
+		/// The skin editor action.
+		/// </summary>
         public global::Gtk.Action SkinEditorAction;
+		/// <summary>
+		/// The small chat action.
+		/// </summary>
         public global::Gtk.Action SmallChatAction;
+		/// <summary>
+		/// The attach to micro chat action.
+		/// </summary>
         public global::Gtk.Action AttachToMicroChatAction;
+		/// <summary>
+		/// The detach from micro chat action.
+		/// </summary>
         public global::Gtk.Action DetachFromMicroChatAction;
+		/// <summary>
+		/// The load text to scrollback action.
+		/// </summary>
         public global::Gtk.Action LoadTextToScrollbackAction;
+		/// <summary>
+		/// The load more to scrollback action.
+		/// </summary>
         public global::Gtk.Action LoadMoreToScrollbackAction;
+		/// <summary>
+		/// The vbox3.
+		/// </summary>
         public global::Gtk.VBox vbox3;
+		/// <summary>
+		/// The menubar2.
+		/// </summary>
         public global::Gtk.MenuBar menubar2;
+		/// <summary>
+		/// The hpaned1.
+		/// </summary>
         public global::Gtk.HPaned hpaned1;
+		/// <summary>
+		/// The pidgeonlist1.
+		/// </summary>
         public global::Client.Graphics.PidgeonList pidgeonlist1;
+		/// <summary>
+		/// The tool strip.
+		/// </summary>
         public global::Gtk.Statusbar toolStrip;
+		/// <summary>
+		/// The tool strip status network.
+		/// </summary>
         public global::Gtk.Label toolStripStatusNetwork;
+		/// <summary>
+		/// The tool strip status channel.
+		/// </summary>
         public global::Gtk.Label toolStripStatusChannel;
+		/// <summary>
+		/// The tool strip info.
+		/// </summary>
         public global::Gtk.Label toolStripInfo;
+		/// <summary>
+		/// The tool strip progress bar1.
+		/// </summary>
         public global::Gtk.ProgressBar toolStripProgressBar1;
 
         private void Build()
