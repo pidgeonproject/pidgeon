@@ -53,6 +53,10 @@ namespace Client
                 return true;
             }
 
+            /// <summary>
+            /// This function is called during the main form is created, in case you want to register some menu's, this is a good time
+            /// </summary>
+            /// <param name="main"></param>
             public static void Initialise(Client.Forms.Main main)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -237,6 +241,13 @@ namespace Client
                 return data;
             }
 
+            /// <summary>
+            /// User part
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="channel"></param>
+            /// <param name="message"></param>
             public static void UserPart(Network network, User user, Channel channel, string message)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -257,11 +268,26 @@ namespace Client
                 return;
             }
 
+            /// <summary>
+            /// User kick
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="kicker"></param>
+            /// <param name="channel"></param>
+            /// <param name="message"></param>
             public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
             {
 
             }
 
+            /// <summary>
+            /// User talk
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="channel"></param>
+            /// <param name="message"></param>
             public static void UserTalk(Network network, User user, Channel channel, string message)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -282,11 +308,23 @@ namespace Client
                 return;
             }
 
+            /// <summary>
+            /// User quit
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="message"></param>
             public static void UserQuit(Network network, User user, string message)
             {
 
             }
 
+            /// <summary>
+            /// User join
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="channel"></param>
             public static void UserJoin(Network network, User user, Channel channel)
             {
 
@@ -297,11 +335,22 @@ namespace Client
 
             }
 
+            /// <summary>
+            /// Channel topic is changed
+            /// </summary>
+            /// <param name="topic">New topic</param>
+            /// <param name="user">User who changed it</param>
+            /// <param name="network">Network</param>
+            /// <param name="channel">Channel</param>
             public static void ChannelTopic(string topic, User user, Network network, Channel channel)
             {
 
             }
 
+            /// <summary>
+            /// Network is created
+            /// </summary>
+            /// <param name="network"></param>
             public static void CreatingNetwork(Network network)
             {
                 foreach (Extension extension in Core.Extensions)
