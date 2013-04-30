@@ -312,6 +312,23 @@ namespace Client
             return false;
         }
 
+        private bool ChannelBans2(string[] code)
+        {
+            if (code.Length > 4)
+            {
+                Channel channel = _Network.getChannel(code[3]);
+                if (channel != null)
+                {
+                    if (channel.parsing_bans)
+                    {
+                        channel.parsing_bans = false;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         private bool ChannelBans(string[] code)
         {
             if (code.Length > 6)
@@ -319,7 +336,6 @@ namespace Client
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
-                    channel.UpdateInfo();
                     if (channel.Bans == null)
                     {
                         channel.Bans = new List<SimpleBan>();
@@ -329,6 +345,7 @@ namespace Client
                         channel.Bans.Add(new SimpleBan(code[5], code[4], code[6]));
                         Core._Main.Status();
                     }
+                    channel.UpdateInfo();
                 }
             }
             return false;

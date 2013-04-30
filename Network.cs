@@ -383,7 +383,7 @@ namespace Client
         }
 
         /// <summary>
-        /// This will mark the connected
+        /// This will toggle the connection flag to true
         /// </summary>
         public void flagConnection()
         {

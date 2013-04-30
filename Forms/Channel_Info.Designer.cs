@@ -61,9 +61,6 @@ namespace Client.Forms
         private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
         private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu("Refresh");
         private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
-        private Client.GTK.Menu cleanToolStripMenuIteme = new Client.GTK.Menu();
-        private Client.GTK.Menu cleanToolStripMenuItemb = new Client.GTK.Menu();
-        private Client.GTK.Menu cleanToolStripMenuItemi = new Client.GTK.Menu();
 
         private void Build()
         {

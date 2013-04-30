@@ -287,6 +287,7 @@ namespace Client
         /// <param name="WriteLog">Write to a log</param>
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
+        /// <param name="IgnoreUpdate"></param>
         /// <returns></returns>
         private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {

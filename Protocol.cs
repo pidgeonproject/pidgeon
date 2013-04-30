@@ -156,6 +156,8 @@ namespace Client
         /// <param name="focus">Whether new window should be immediately focused</param>
         /// <param name="network">Network the window belongs to</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null)
         {
             Forms.Main._WindowRequest request = new Forms.Main._WindowRequest();

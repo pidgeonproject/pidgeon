@@ -498,6 +498,12 @@ namespace Client
                                         return true;
                                     }
                                     break;
+                                case "368":
+                                    if (ChannelBans2(code))
+                                    {
+                                        return true;
+                                    }
+                                    break;
                             }
                         }
                     }

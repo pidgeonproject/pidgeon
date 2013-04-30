@@ -474,6 +474,7 @@ namespace Client
                 catch (System.IO.IOException er)
                 {
                     SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
+                    Connected = false;
                 }
                 catch (Exception fail)
                 {

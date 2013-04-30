@@ -122,10 +122,14 @@ namespace Client.Forms
         {
             Gtk.Menu menu = new Menu();
             Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
-            reload.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
+            reload.Activated += new EventHandler(retrieveToolStripMenuItem1_Click);
             Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
             delete.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
+            Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
+            refresh.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
             menu.Append(delete);
+            menu.Append(refresh);
+            menu.Append(new SeparatorMenuItem());
             menu.Append(reload);
             menu.ShowAll();
             menu.Popup();
@@ -280,6 +284,21 @@ namespace Client.Forms
             }
         }
 
+        private void retrieveToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (channel != null)
+                {
+                    channel.ReloadBans();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         private void reloadToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             try
@@ -290,16 +309,6 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-        }
-
-        private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void enforceAllToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -369,18 +378,6 @@ namespace Client.Forms
         private void cleanToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
-        }
-
-        private void reloadToolStripMenuItem2_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                channel.ReloadBans();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
         }
 
         private bool timerBans_Tick(object sender, EventArgs e)
