@@ -23,9 +23,11 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-
 namespace Client.Graphics
 {
+    /// <summary>
+    /// Window
+    /// </summary>
     public partial class Window : Gtk.Bin
     {
         /// <summary>
@@ -740,7 +742,7 @@ namespace Client.Graphics
             }
         }
         
-        public void SendCtcp(string message)
+        private void SendCtcp(string message)
         {
             if (isChannel)
             {

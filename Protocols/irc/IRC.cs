@@ -32,10 +32,10 @@ namespace Client
         /// </summary>
         private Protocol _Protocol = null;
         private string text;
-        public DateTime pong;
         private long date = 0;
         private bool updated_text = true;
         private bool isServices = false;
+        public DateTime pong;
 
         private void Ping()
         {

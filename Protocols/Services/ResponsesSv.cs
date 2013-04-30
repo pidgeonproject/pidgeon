@@ -543,7 +543,7 @@ namespace Client
                                         response2.Parameters.Add("channel", channel);
                                         lock (protocol.RemainingJobs)
                                         {
-                                            protocol.RemainingJobs.Add(new ProtocolSv.Work(channel, ProtocolSv.Work.Type.ChannelInfo));
+                                            protocol.RemainingJobs.Add(new ProtocolSv.Request(channel, ProtocolSv.Request.Type.ChannelInfo));
                                         }
                                         protocol.Deliver(response2);
                                     }
@@ -562,10 +562,10 @@ namespace Client
                     {
                         lock (protocol.RemainingJobs)
                         {
-                            ProtocolSv.Work item = null;
-                            foreach (ProtocolSv.Work work in protocol.RemainingJobs)
+                            ProtocolSv.Request item = null;
+                            foreach (ProtocolSv.Request work in protocol.RemainingJobs)
                             {
-                                if (work.type == ProtocolSv.Work.Type.ChannelInfo && curr.Attributes[1].Value == work.Name)
+                                if (work.type == ProtocolSv.Request.Type.ChannelInfo && curr.Attributes[1].Value == work.Name)
                                 {
                                     item = work;
                                 }

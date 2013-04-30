@@ -25,29 +25,32 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Highlight 
+    /// </summary>
     public class Preferences_Hl : Gtk.Dialog
     {
         private global::Gtk.Table table1;
-        public global::Gtk.CheckButton checkbutton1;
+        private global::Gtk.CheckButton checkbutton1;
         private global::Gtk.Entry entry1;
         private global::Gtk.Label label1;
         private global::Gtk.Button buttonCancel;
         private global::Gtk.Button buttonOk;
 
-        public ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
+        private ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
 
         public Preferences_Hl()
         {
             this.Build();
         }
 
-        public void close(object sender, EventArgs e)
+        private void close(object sender, EventArgs e)
         {
             this.Hide();
             this.Destroy();
         }
 
-        public void Insert(object sender, EventArgs e)
+        private void Insert(object sender, EventArgs e)
         {
             try
             {
@@ -69,7 +72,7 @@ namespace Client.Forms
             }
         }
 
-        protected virtual void Build()
+        private void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore

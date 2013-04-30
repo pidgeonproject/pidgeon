@@ -27,34 +27,53 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Client
 {
+    /// <summary>
+    /// Protocol for pidgeon services
+    /// </summary>
     [Serializable]
     public partial class ProtocolSv : Protocol
     {
-        public class Cache
+        private class Cache
         {
+            /// <summary>
+            /// Size
+            /// </summary>
             public double size = 0;
+            /// <summary>
+            /// Current pointer
+            /// </summary>
             public double current = 0;
         }
         
-        public class Work
+        private class Request
         {
+            /// <summary>
+            /// Name
+            /// </summary>
             public string Name = null;
             public Type type = Type.ChannelInfo;
-            public Work(string name, Type Task)
+
+            public Request(string name, Type Task)
             {
                 Name = name;
                 type = Task;
             }
             
+            /// <summary>
+            /// Type
+            /// </summary>
             public enum Type
             {
+                /// <summary>
+                /// Channel info
+                /// </summary>
                 ChannelInfo,
             }
         }
         
-        public System.Threading.Thread main = null;
-        public System.Threading.Thread keep = null;
-        public DateTime pong = DateTime.Now;
+        private System.Threading.Thread main = null;
+        private System.Threading.Thread keep = null;
+        private DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
         private System.IO.StreamReader _StreamReader = null;
@@ -63,22 +82,31 @@ namespace Client
         /// </summary>
         public List<Network> NetworkList = new List<Network>();
         private System.IO.StreamWriter _StreamWriter = null;
+        /// <summary>
+        /// Password
+        /// </summary>
         public string password = "";
-        public List<Cache> cache = new List<Cache>();
-        public Status ConnectionStatus = Status.WaitingPW;
+        private List<Cache> cache = new List<Cache>();
+        private Status ConnectionStatus = Status.WaitingPW;
         private SslStream _networkSsl = null;
+        /// <summary>
+        /// Buffer
+        /// </summary>
         public Services.Buffer sBuffer = null;
-        public List<Work> RemainingJobs = new List<Work>();
+        private List<Request> RemainingJobs = new List<Request>();
+        /// <summary>
+        /// Whether the services have finished loading
+        /// </summary>
         public bool FinishedLoading = false;
-
+        /// <summary>
+        /// Nickname
+        /// </summary>
         public string nick = "";
-        public bool auth = false;
         /// <summary>
         /// This needs to be true when the services are in process of disconnecting
         /// </summary>
         private bool disconnecting = false;
-        
-        public List<string> WaitingNetw = new List<string>();
+        private List<string> WaitingNetw = new List<string>();
 
         /// <summary>
         /// Root window
@@ -98,7 +126,7 @@ namespace Client
             }
         }
 
-        public void _Ping()
+        private void _Ping()
         {
             try
             {

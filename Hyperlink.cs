@@ -22,10 +22,17 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Helper class
+    /// </summary>
     public class Hyperlink
     {
         private static List<string> Links = new List<string>();
 
+        /// <summary>
+        /// Open link
+        /// </summary>
+        /// <param name="ln"></param>
         public static void OpenLink(string ln)
         {
             lock (Links)
@@ -69,6 +76,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Initialize
+        /// </summary>
+        /// <returns></returns>
         public static int Initialize()
         {
             Thread link = new Thread(Exec);

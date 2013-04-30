@@ -30,6 +30,9 @@ namespace Client.Forms
 	/// </summary>
     public partial class ScriptEdit : Gtk.Window
     {
+        /// <summary>
+        /// Network
+        /// </summary>
         public Network network = null;
         private global::Gtk.VBox vbox1;
         private global::Gtk.TextView label1;

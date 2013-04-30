@@ -67,6 +67,9 @@ namespace Client.Forms
         /// Maximum value of progress
         /// </summary>
         public double ProgressMax = 0;
+        /// <summary>
+        /// Request db
+        /// </summary>
         public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
         private GLib.TimeoutHandler timer = null;
         /// <summary>

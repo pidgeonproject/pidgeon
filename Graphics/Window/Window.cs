@@ -253,6 +253,9 @@ namespace Client.Graphics
             return true;
         }
 
+        /// <summary>
+        /// Init
+        /// </summary>
         public void Init()
         {
             if (Configuration.CurrentPlatform == Core.Platform.Linuxx86 || Configuration.CurrentPlatform == Core.Platform.Linuxx64)

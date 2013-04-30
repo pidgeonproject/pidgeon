@@ -72,13 +72,28 @@ namespace Client
 
         class MessagesClass
         {
+            /// <summary>
+            /// Message
+            /// </summary>
             public struct Message
             {
+                /// <summary>
+                /// Priority
+                /// </summary>
                 public Configuration.Priority _Priority;
                 public string message;
             }
+            /// <summary>
+            /// List of all messages that can be processed
+            /// </summary>
             public List<Message> messages = new List<Message>();
+            /// <summary>
+            /// List of all new messages that need to be parsed
+            /// </summary>
             public List<Message> newmessages = new List<Message>();
+            /// <summary>
+            /// Protocol
+            /// </summary>
             public ProtocolIrc protocol = null;
 
             /// <summary>
@@ -196,17 +211,28 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Part
+        /// </summary>
+        /// <param name="name">Channel</param>
+        /// <param name="network"></param>
         public override void Part(string name, Network network = null)
         {
             Transfer("PART " + name, Configuration.Priority.High, network);
         }
 
-        public override void Transfer(string text, Configuration.Priority Pr = Configuration.Priority.Normal, Network network = null)
+        /// <summary>
+        /// Transfer
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="priority"></param>
+        /// <param name="network"></param>
+        public override void Transfer(string text, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
         {
-            Messages.DeliverMessage(text, Pr);
+            Messages.DeliverMessage(text, priority);
         }
 
-        public void _Ping()
+        private void _Ping()
         {
             try
             {
@@ -231,13 +257,14 @@ namespace Client
             }
         }
 
-        public void Start()
+        private void Start()
         {
-            Messages.protocol = this;
-            Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Client.ContentLine.MessageStyle.System);
             try
             {
+                Messages.protocol = this;
+                Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                    Client.ContentLine.MessageStyle.System);
+            
                 if (!SSL)
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -325,6 +352,12 @@ namespace Client
             return;
         }
 
+        /// <summary>
+        /// Command
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
         public override bool Command(string cm, Network network = null)
         {
             try
@@ -368,19 +401,36 @@ namespace Client
             }
         }
 
-        public override int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        /// <summary>
+        /// Send a message either to channel or user
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="priority"></param>
+        /// <param name="pmsg"></param>
+        /// <returns></returns>
+        public override int Message(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            Message(text, to, null, _priority, pmsg);
+            Message(text, to, null, priority, pmsg);
             return 0;
         }
 
-        public override int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        /// <summary>
+        /// Send a message either to channel or user
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="network"></param>
+        /// <param name="priority"></param>
+        /// <param name="pmsg"></param>
+        /// <returns></returns>
+        public override int Message(string text, string to, Network network, Configuration.Priority priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             if (!pmsg)
             {
                 Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
-            Transfer("PRIVMSG " + to + " :" + text, _priority);
+            Transfer("PRIVMSG " + to + " :" + text, priority);
             return 0;
         }
 
@@ -389,15 +439,19 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <param name="to"></param>
-        /// <param name="_priority"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public override int Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
         {
             Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
-            Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
+            Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), priority);
             return 0;
         }
 
+        /// <summary>
+        /// Disconnect
+        /// </summary>
+        /// <returns></returns>
         public override bool Disconnect()
         {
             // we lock the function so that it can't be called in same time in different thread
@@ -429,6 +483,11 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Join
+        /// </summary>
+        /// <param name="name">Channel</param>
+        /// <param name="network"></param>
         public override void Join(string name, Network network = null)
         {
             Transfer("JOIN " + name);
@@ -440,6 +499,9 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Destroy this instance of protocol and release all objects
+        /// </summary>
         public override void Exit()
         {
             if (IsDestroyed)
@@ -467,6 +529,10 @@ namespace Client
             base.Exit();
         }
 
+        /// <summary>
+        /// Connect
+        /// </summary>
+        /// <returns></returns>
         public override bool Open()
         {
             main = new System.Threading.Thread(Start);

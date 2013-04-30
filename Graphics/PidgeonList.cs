@@ -25,6 +25,9 @@ using Gtk;
 
 namespace Client.Graphics
 {
+    /// <summary>
+    /// Menu
+    /// </summary>
     [System.ComponentModel.ToolboxItem(true)]
     public partial class PidgeonList : Gtk.Bin
     {
@@ -1151,6 +1154,9 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// Item
+        /// </summary>
         public enum ItemType
         {
             /// <summary>

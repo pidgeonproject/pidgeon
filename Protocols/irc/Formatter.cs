@@ -270,6 +270,10 @@ namespace Client.Protocols.irc
             }
         }
 
+        /// <summary>
+        /// String
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             lock (Mode)

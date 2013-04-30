@@ -23,6 +23,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// IRC protocol handler
+    /// </summary>
     public partial class ProcessorIRC
     {
         /// <summary>

@@ -212,10 +212,22 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Mode type
+        /// </summary>
         public enum ModeType
         {
+            /// <summary>
+            /// Channel mode
+            /// </summary>
             Channel,
+            /// <summary>
+            /// User mode
+            /// </summary>
             User,
+            /// <summary>
+            /// Network
+            /// </summary>
             Network
         }
     }

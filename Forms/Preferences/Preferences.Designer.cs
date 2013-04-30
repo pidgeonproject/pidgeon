@@ -25,6 +25,9 @@ using Gtk;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Preferences
+    /// </summary>
     public partial class Preferences : Gtk.Window
     {
         private global::Gtk.Frame fExtensions;
@@ -82,7 +85,7 @@ namespace Client.Forms
 
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         private Gtk.ListStore IgnoreDB = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Ignoring.Ignore));
-        public Gtk.ListStore Extensions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Extension));
+        private Gtk.ListStore Extensions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Extension));
         private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(Core.Shortcut));
 
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));

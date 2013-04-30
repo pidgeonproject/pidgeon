@@ -280,6 +280,9 @@ namespace Client.Forms
             return;
         }
         
+        /// <summary>
+        /// Change focus
+        /// </summary>
         public void setFocus()
         {
             entry1.GrabFocus();

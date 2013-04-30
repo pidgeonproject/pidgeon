@@ -11,6 +11,7 @@ window-menu-user=User;
 window-menu-about=About;
 window-menu-contents=Contents;
 window-menu-search=Search;
+window-menu-cf=Configuration file;
 
 // Dialogs
 

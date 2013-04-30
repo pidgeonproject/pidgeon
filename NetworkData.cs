@@ -74,10 +74,20 @@ namespace Client
             /// </summary>
             IRC,
             /// <summary>
+            /// DCC
+            /// </summary>
+            DCC,
+            /// <summary>
             /// Services
             /// </summary>
             Services,
+            /// <summary>
+            /// Quassel
+            /// </summary>
             Quassel,
+            /// <summary>
+            /// XMPP
+            /// </summary>
             XMPP,
         }
     }

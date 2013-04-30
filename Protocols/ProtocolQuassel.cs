@@ -46,12 +46,9 @@ namespace Client
     public class ProtocolQuassel : Protocol
     {
         private System.Threading.Thread _Thread = null;
-        private System.Threading.Thread keep = null;
-        public DateTime pong = DateTime.Now;
         private System.Net.Sockets.NetworkStream _network ;
         private System.Net.Security.SslStream _networks;
         private System.IO.StreamReader _reader;
-        public List<Network> sl = new List<Network>();
         private System.IO.StreamWriter _writer;
         /// <summary>
         /// Password
@@ -61,8 +58,10 @@ namespace Client
         /// Name
         /// </summary>
         public string name = "";
-        public bool auth = false;
 
+        /// <summary>
+        /// Exit
+        /// </summary>
         public override void Exit()
         {
             base.Exit();
@@ -113,6 +112,10 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Connect to quassel core
+        /// </summary>
+        /// <returns></returns>
         public override bool Open()
         {
             _Thread = new System.Threading.Thread(Start);

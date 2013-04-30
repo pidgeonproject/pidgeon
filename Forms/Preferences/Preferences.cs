@@ -27,6 +27,9 @@ namespace Client.Forms
 {
     public partial class Preferences : Gtk.Window
     {
+        /// <summary>
+        /// Creates a new instance of this form
+        /// </summary>
         public Preferences() : base(Gtk.WindowType.Toplevel)
         {
             try

@@ -25,8 +25,14 @@ namespace Client
 {
     public static class Qt
     {
+        /// <summary>
+        /// QMeta Type
+        /// </summary>
         public class QMetaType 
         {
+            /// <summary>
+            /// Type
+            /// </summary>
             public enum Type
             { 
                 Void = 0,
@@ -63,10 +69,6 @@ namespace Client
                 QBrush = 66,
                 QColor = 67,
             }
-
-            int id;
-            string name;
-
         }
 
         /// <summary>

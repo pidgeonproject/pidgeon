@@ -1052,7 +1052,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static bool connectPS(string server, int port = 8222, string password = "xx", bool secured = false)
+        public static ProtocolSv connectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
             ProtocolSv protocol = new ProtocolSv();
             protocol.Server = server;
@@ -1062,7 +1062,7 @@ namespace Client
             protocol.password = password;
             Connections.Add(protocol);
             protocol.Open();
-            return true;
+            return protocol;
         }
 
         /// <summary>

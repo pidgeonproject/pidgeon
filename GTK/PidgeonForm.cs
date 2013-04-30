@@ -35,7 +35,13 @@ namespace Client.GTK
         /// Checked
         /// </summary>
         public bool Checked = false;
+        /// <summary>
+        /// Visible
+        /// </summary>
         public bool Visible = false;
+        /// <summary>
+        /// Text
+        /// </summary>
         public string Text;
 
         public Menu()

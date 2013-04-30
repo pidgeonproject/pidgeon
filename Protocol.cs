@@ -271,9 +271,9 @@ namespace Client
         /// Deliver raw data to server
         /// </summary>
         /// <param name="data"></param>
-        /// <param name="_priority"></param>
+        /// <param name="priority"></param>
         /// <param name="network"></param>
-        public virtual void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null)
+        public virtual void Transfer(string data, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
         {
             Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
         }
@@ -283,11 +283,11 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <param name="to"></param>
-        /// <param name="_priority"></param>
+        /// <param name="priority"></param>
         /// <returns></returns>
-        public virtual int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public virtual int Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
         {
-            Core.DebugLog("Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal) is not implemented");
+            Core.DebugLog("Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal) is not implemented");
             return 2;
         }
 
@@ -296,12 +296,12 @@ namespace Client
         /// </summary>
         /// <param name="text">Message</param>
         /// <param name="to">User or a channel (needs to be prefixed with #)</param>
-        /// <param name="_priority">Priority</param>
+        /// <param name="priority">Priority</param>
         /// <param name="pmsg">Private</param>
         /// <returns></returns>
-        public virtual int Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        public virtual int Message(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            Core.DebugLog("Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false) is not implemented");
+            Core.DebugLog("Message(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal, bool pmsg = false) is not implemented");
             return 2;
         }
 
@@ -311,12 +311,12 @@ namespace Client
         /// <param name="text">Message</param>
         /// <param name="to">User or a channel (needs to be prefixed with #)</param>
         /// <param name="network"></param>
-        /// <param name="_priority"></param>
+        /// <param name="priority"></param>
         /// <param name="pmsg"></param>
         /// <returns></returns>
-        public virtual int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        public virtual int Message(string text, string to, Network network, Configuration.Priority priority = Configuration.Priority.Normal, bool pmsg = false)
         {
-            Core.DebugLog("Message(string text, string to, Network network, Configuration.Priority _priority = "
+            Core.DebugLog("Message(string text, string to, Network network, Configuration.Priority priority = "
                 +"Configuration.Priority.Normal, bool pmsg = false) is not implemented");
             return 2;
         }

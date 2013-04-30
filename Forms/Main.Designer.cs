@@ -200,7 +200,7 @@ namespace Client.Forms
             this.SwitchToAdvancedLayoutAction = new global::Gtk.Action("SwitchToAdvancedLayoutAction", "Switch to advanced layout", null, null);
             this.SwitchToAdvancedLayoutAction.ShortLabel = "Switch to advanced layout";
             w1.Add(this.SwitchToAdvancedLayoutAction, null);
-            this.ConfigurationFileAction = new global::Gtk.Action("ConfigurationFileAction", "Configuration file", null, null);
+            this.ConfigurationFileAction = new global::Gtk.Action("ConfigurationFileAction", messages.Localize("[[window-menu-cf]]"), null, null);
             this.ConfigurationFileAction.ShortLabel = "Configuration file";
             w1.Add(this.ConfigurationFileAction, null);
             this.OpenNewConnectionAction = new global::Gtk.Action("OpenNewConnectionAction", "Open new connection", null, null);
