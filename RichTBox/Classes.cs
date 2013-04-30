@@ -41,15 +41,30 @@ namespace Client
             }
             private string text = null;
             /// <summary>
-            /// Box which own this
+            /// Color
             /// </summary>
             public Color TextColor = Color.White;
+            /// <summary>
+            /// Color
+            /// </summary>
             public Color Backcolor = Color.Black;
+            /// <summary>
+            /// Linked
+            /// </summary>
             public bool Linked = false;
+            /// <summary>
+            /// Bold
+            /// </summary>
             public bool Bold = false;
             public bool Italic = false;
             public bool Underline = false;
+            /// <summary>
+            /// Link
+            /// </summary>
             public string Link = null;
+            /// <summary>
+            /// Whether pop a menu
+            /// </summary>
             public bool menu = false;
 
             /// <summary>
@@ -64,11 +79,21 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Line of text
+        /// </summary>
         public class Line
         {
+            /// <summary>
+            /// Parts
+            /// </summary>
             public List<ContentText> text = new List<ContentText>();
             public Color foreColor = Color.Blue;
 
+            /// <summary>
+            /// Insert data
+            /// </summary>
+            /// <param name="line"></param>
             public void insertData(ContentText line)
             {
                 if (line == null)
@@ -81,6 +106,10 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Insert data
+            /// </summary>
+            /// <param name="line"></param>
             public void insertData(string line)
             {
                 lock (text)

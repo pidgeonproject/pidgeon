@@ -39,6 +39,9 @@ namespace Client.Forms
 
         private ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Client.Forms.Preferences_Hl"/> class.
+		/// </summary>
         public Preferences_Hl()
         {
             this.Build();
