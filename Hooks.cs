@@ -33,6 +33,12 @@ namespace Client
 
             }
 
+            /// <summary>
+            /// Before note
+            /// </summary>
+            /// <param name="caption">Title</param>
+            /// <param name="text">Text</param>
+            /// <returns></returns>
             public static bool BeforeNote(ref string caption, ref string text)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -76,11 +82,19 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Preferences
+            /// </summary>
+            /// <param name="preferences"></param>
             public static void BeforeOptions(ref Forms.Preferences preferences)
             {
 
             }
 
+            /// <summary>
+            /// This is triggered everytime that there is any activity on network
+            /// </summary>
+            /// <param name="network"></param>
             public static void Poke(Network network = null)
             {
                 Core.ResetMainActivityTimer();
@@ -126,6 +140,13 @@ namespace Client
 
         public class _Scrollback
         {
+            /// <summary>
+            /// When you hover over a link
+            /// </summary>
+            /// <param name="URL"></param>
+            /// <param name="X"></param>
+            /// <param name="Y"></param>
+            /// <param name="window"></param>
             public static void LinkHover(string URL, int X, int Y, Graphics.Window window)
             {
                 

@@ -143,10 +143,6 @@ namespace Client
         /// </summary>
         public string channel_prefix = "#";
         /// <summary>
-        /// Specifies if you are connected to network
-        /// </summary>
-        protected bool Connected = false;
-        /// <summary>
         /// List of private message windows
         /// </summary>
         public List<User> PrivateChat = new List<User>();
@@ -238,9 +234,9 @@ namespace Client
         /// Version of ircd running on this network
         /// </summary>
         public string IrcdVersion = null;
-        private bool destroyed = false;
+        private bool Connected = false;
         /// <summary>
-        /// Is connected
+        /// Specifies if you are connected to network
         /// </summary>
         public bool IsConnected
         {
@@ -249,6 +245,7 @@ namespace Client
                 return Connected;
             }
         }
+        private bool isDestroyed = false;
         /// <summary>
         /// This will return true in case object was requested to be disposed
         /// you should never work with objects that return true here
@@ -257,7 +254,7 @@ namespace Client
         {
             get
             {
-                return destroyed;
+                return isDestroyed;
             }
         }
         /// <summary>
@@ -630,7 +627,7 @@ namespace Client
 
             Core.DebugLog("Destroying network " + ServerName);
 
-            destroyed = true;
+            isDestroyed = true;
 
             lock (ChannelList)
             {
