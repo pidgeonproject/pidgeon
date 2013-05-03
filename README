@@ -1,0 +1,20 @@
+== Pidgeon ==
+
+This is a repository for pidgeon client
+
+== How to install ==
+
+=== Linux ===
+Execute
+
+./build.sh
+
+in order to build the application, now you can type
+
+./pidgeon
+
+to start the client
+
+
+=== Windows ===
+There is no automatic script, you need to build all parts in visual studio

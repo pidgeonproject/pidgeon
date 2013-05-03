@@ -15,6 +15,13 @@ fi
 
 xbuild || exit 1
 
+if [ ! -f pidgeon ];then
+	echo "#!/bin/sh" >> pidgeon
+	echo "mono bin/Debug/Pidgeon.exe $*" >> pidgeon
+	chmod a+x pidgeon
+fi
+
 if [ -f buildall.sh ];then
 	sh buildall.sh
 fi
+
