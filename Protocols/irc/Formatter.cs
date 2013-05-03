@@ -104,6 +104,11 @@ namespace Client.Protocols.irc
             }
         }
 
+        /// <summary>
+        /// Changes the content based on buffer
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="network"></param>
         public void RewriteBuffer(string data, Network network)
         {
             lock (Mode)

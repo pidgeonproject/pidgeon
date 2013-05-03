@@ -47,6 +47,9 @@ namespace Client
         /// Whether this server is connected or not
         /// </summary>
         protected bool Connected = false;
+        /// <summary>
+        /// Whether is destroyed
+        /// </summary>
         protected bool destroyed = false;
         /// <summary>
         /// This is a time when this connection was open

@@ -25,8 +25,23 @@ namespace Client
 {
     public partial class ProtocolSv : Protocol
     {
+        /// <summary>
+        /// Smallest data unit
+        /// </summary>
         public class Datagram
         {
+            /// <summary>
+            /// Inner text
+            /// </summary>
+            public string _InnerText;
+            /// <summary>
+            /// Name
+            /// </summary>
+            public string _Datagram;
+            /// <summary>
+            /// Data
+            /// </summary>
+            public Dictionary<string, string> Parameters = new Dictionary<string, string>();
             /// <summary>
             /// Constructor
             /// </summary>
@@ -38,6 +53,11 @@ namespace Client
                 _InnerText = Text;
             }
 
+            /// <summary>
+            /// Load from xml text
+            /// </summary>
+            /// <param name="xml"></param>
+            /// <returns></returns>
             public static Datagram LoadXML(string xml)
             {
                 XmlDocument data = new XmlDocument();
@@ -51,6 +71,11 @@ namespace Client
                 return datagram;
             }
 
+            /// <summary>
+            /// Load from xml node
+            /// </summary>
+            /// <param name="xml"></param>
+            /// <returns></returns>
             public static Datagram LoadXML(XmlNode xml)
             {
                 Datagram datagram = new Datagram(xml.Name, xml.InnerText);
@@ -62,6 +87,10 @@ namespace Client
                 return datagram;
             }
 
+            /// <summary>
+            /// Changes the datagram to xml
+            /// </summary>
+            /// <returns></returns>
             public string ToDocumentXmlText()
             {
                 XmlDocument datagram = new XmlDocument();
@@ -76,10 +105,6 @@ namespace Client
                 datagram.AppendChild(b1);
                 return datagram.InnerXml;
             }
-
-            public string _InnerText;
-            public string _Datagram;
-            public Dictionary<string, string> Parameters = new Dictionary<string, string>();
         }
     }
 }

@@ -49,6 +49,9 @@ namespace Client
             /// </summary>
             public System.Text.RegularExpressions.Regex regex = null;
 
+            /// <summary>
+            /// Creates a new
+            /// </summary>
             public Highlighter()
             {
                 simple = true;
