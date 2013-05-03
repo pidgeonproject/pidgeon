@@ -1026,6 +1026,25 @@ namespace Client
         }
 
         /// <summary>
+        /// Connect to dcc
+        /// </summary>
+        /// <param name="server">Hostname</param>
+        /// <param name="port">Port</param>
+        /// <param name="password">Password</param>
+        /// <param name="secured">SSL</param>
+        /// <returns></returns>
+        public static bool connectDcc(string server, int port, string password, bool secured = false)
+        {
+            ProtocolDCC IM = new ProtocolDCC();
+            IM.Server = server;
+            IM.Port = port;
+            IM.SSL = secured;
+            IM.Open();
+            Connections.Add(IM);
+            return false;
+        }
+
+        /// <summary>
         /// Connect to quassel
         /// </summary>
         /// <param name="server">Hostname</param>
@@ -1039,6 +1058,7 @@ namespace Client
             _quassel.Port = port;
             _quassel.password = password;
             _quassel.Server = server;
+            _quassel.SSL = secured;
             _quassel.Open();
             Connections.Add(_quassel);
             return false;
