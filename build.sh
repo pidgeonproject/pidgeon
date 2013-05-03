@@ -13,4 +13,8 @@ if [ ! -L manualpages ];then
 	ln -s ManualPages manualpages
 fi
 
-xbuild
+xbuild || exit 1
+
+if [ -f buildall.sh ];then
+	sh buildall.sh
+fi

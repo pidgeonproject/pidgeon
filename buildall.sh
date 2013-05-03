@@ -1,8 +1,5 @@
 #!/bin/sh
 
-echo "Building pidgeon"
-xbuild || exit 1
-
 echo "Creating modules"
 mkdir bin/Debug/modules
 original_path=`pwd`
