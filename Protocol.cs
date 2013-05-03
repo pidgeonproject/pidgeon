@@ -30,15 +30,11 @@ using System.Text;
 namespace Client
 {
     /// <summary>
-    /// Connection
+    /// This is lowest level
     /// </summary>
     [Serializable]
-    public class Protocol
+    public class IProtocol
     {
-        /// <summary>
-        /// Character which is separating the special commands (such as CTCP part)
-        /// </summary>
-        public char delimiter = (char)001;
         /// <summary>
         /// Displayed window
         /// </summary>
@@ -51,10 +47,11 @@ namespace Client
         /// Whether this server is connected or not
         /// </summary>
         protected bool Connected = false;
+        protected bool destroyed = false;
         /// <summary>
-        /// If changes to windows should be suppressed (no color changes on new messages)
+        /// This is a time when this connection was open
         /// </summary>
-        public bool SuppressChanges = false;
+        protected DateTime _time;
         /// <summary>
         /// Password for server
         /// </summary>
@@ -71,11 +68,6 @@ namespace Client
         /// Ssl
         /// </summary>
         public bool SSL = false;
-        protected bool destroyed = false;
-        /// <summary>
-        /// This is a time when this connection was open
-        /// </summary>
-        protected DateTime _time;
         
         /// <summary>
         /// Time since you connected to this protocol
@@ -132,7 +124,7 @@ namespace Client
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public Protocol()
+        public IProtocol()
         {
             _time = DateTime.Now;
         }
@@ -140,7 +132,7 @@ namespace Client
         /// <summary>
         /// Destructor
         /// </summary>
-        ~Protocol()
+        ~IProtocol()
         {
             if (Configuration.Kernel.Debugging)
             {
@@ -148,6 +140,123 @@ namespace Client
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
+
+        /// <summary>
+        /// Request window to be shown
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public virtual bool ShowChat(string name)
+        {
+            if (Windows.ContainsKey(name))
+            {
+                Current = Windows[name];
+                Core._Main.SwitchWindow(Current);
+                Current.Redraw();
+                if (Current.isChannel)
+                {
+                    if (Core.network != null)
+                    {
+                        Core.network.RenderedChannel = Core.network.getChannel(Current.WindowName);
+                    }
+                }
+                Core._Main.setChannel(name);
+                if (Current.Making == false)
+                {
+                    Current.textbox.setFocus();
+                }
+                Core._Main.Chat = Windows[name];
+                Current.Making = false;
+                Core._Main.UpdateStatus();
+            }
+            return true;
+        }
+
+        private void ClearWins()
+        {
+            lock (Windows)
+            {
+                foreach (Graphics.Window xx in Windows.Values)
+                {
+                    xx._Destroy();
+                }
+            }
+            Current = null;
+            Windows.Clear();
+        }
+
+        /// <summary>
+        /// Disconnect server
+        /// </summary>
+        public virtual void Exit()
+        {
+            try
+            {
+                Core._Main.SwitchRoot();
+                if (SystemWindow != null)
+                {
+                    if (!Windows.ContainsValue(SystemWindow))
+                    {
+                        SystemWindow._Destroy();
+                    }
+                }
+                ClearWins();
+                Core._Main.setChannel("");
+                Core._Main.Status("Disconnected from " + Server);
+                Core._Main.DisplayingProgress = false;
+                Core._Main.setText("");
+            }
+            finally
+            {
+                lock (Core.Connections)
+                {
+                    if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
+                    {
+                        Core.Connections.Remove(this);
+                    }
+                }
+                // we removed lot of memory now, let's clean it
+                System.GC.Collect();
+            }
+        }
+
+        /// <summary>
+        /// This will connect this protocol
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Open()
+        {
+            Core.DebugLog("Open() is not implemented");
+            return false;
+        }
+
+        /// <summary>
+        /// Deliver raw data to server
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="priority"></param>
+        /// <param name="network"></param>
+        public virtual void Transfer(string data, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
+        {
+            Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
+        }
+    }
+
+
+    /// <summary>
+    /// Connection
+    /// </summary>
+    [Serializable]
+    public class Protocol : IProtocol
+    {
+        /// <summary>
+        /// Character which is separating the special commands (such as CTCP part)
+        /// </summary>
+        public char delimiter = (char)001;
+        /// <summary>
+        /// If changes to windows should be suppressed (no color changes on new messages)
+        /// </summary>
+        public bool SuppressChanges = false;
 
         /// <summary>
         /// Create window
@@ -195,37 +304,6 @@ namespace Client
         }
 
         /// <summary>
-        /// Request window to be shown
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        public virtual bool ShowChat(string name)
-        {
-            if (Windows.ContainsKey(name))
-            {
-                Current = Windows[name];
-                Core._Main.SwitchWindow(Current);
-                Current.Redraw();
-                if (Current.isChannel)
-                {
-                    if (Core.network != null)
-                    {
-                        Core.network.RenderedChannel = Core.network.getChannel(Current.WindowName);
-                    }
-                }
-                Core._Main.setChannel(name);
-                if (Current.Making == false)
-                {
-                    Current.textbox.setFocus();
-                }
-                Core._Main.Chat = Windows[name];
-                Current.Making = false;
-                Core._Main.UpdateStatus();
-            }
-            return true;
-        }
-
-        /// <summary>
         /// Return back the system chars to previous look
         /// </summary>
         /// <param name="text"></param>
@@ -267,17 +345,6 @@ namespace Client
         public static bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
-        }
-        
-        /// <summary>
-        /// Deliver raw data to server
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="priority"></param>
-        /// <param name="network"></param>
-        public virtual void Transfer(string data, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
-        {
-            Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
         }
 
         /// <summary>
@@ -401,64 +468,6 @@ namespace Client
         {
             Core.DebugLog("Part(string name, Network network = null) is not implemented");
             return;
-        }
-
-        private void ClearWins()
-        {
-            lock (Windows)
-            {
-                foreach (Graphics.Window xx in Windows.Values)
-                {
-                    xx._Destroy();
-                }
-            }
-            Current = null;
-            Windows.Clear();
-        }
-
-        /// <summary>
-        /// Disconnect server
-        /// </summary>
-        public virtual void Exit() 
-        {
-            try
-            {
-                Core._Main.SwitchRoot();
-                if (SystemWindow != null)
-                {
-                    if (!Windows.ContainsValue(SystemWindow))
-                    {
-                        SystemWindow._Destroy();
-                    }
-                }
-                ClearWins();
-                Core._Main.setChannel("");
-                Core._Main.Status("Disconnected from " + Server);
-                Core._Main.DisplayingProgress = false;
-                Core._Main.setText("");
-            }
-            finally
-            {
-                lock (Core.Connections)
-                {
-                    if (Core.Connections.Contains(this) && !Core.IgnoreErrors)
-                    {
-                        Core.Connections.Remove(this);
-                    }
-                }
-                // we removed lot of memory now, let's clean it
-                System.GC.Collect();
-            }
-        }  
-
-        /// <summary>
-        /// This will connect this protocol
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool Open()
-        {
-            Core.DebugLog("Open() is not implemented");
-            return false;
         }
     }
 }
