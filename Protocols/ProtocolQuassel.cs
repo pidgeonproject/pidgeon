@@ -106,6 +106,8 @@ namespace Client
 
                 Connected = true;
 
+                Send("hello");
+
                 while (IsConnected && !_StreamReader.EndOfStream)
                 {
                     try
