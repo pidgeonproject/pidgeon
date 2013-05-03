@@ -36,6 +36,10 @@ namespace Client.Graphics
         /// </summary>
         public Dictionary<ProtocolSv, TreeIter> ServiceList = new Dictionary<ProtocolSv, TreeIter>();
         /// <summary>
+        /// Quassel core
+        /// </summary>
+        public Dictionary<ProtocolQuassel, TreeIter> QuasselList = new Dictionary<ProtocolQuassel, TreeIter>();
+        /// <summary>
         /// List of servers which are currently in sidebar
         /// </summary>
         public Dictionary<Network, TreeIter> ServerList = new Dictionary<Network, TreeIter>();
@@ -51,6 +55,7 @@ namespace Client.Graphics
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
         private List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
+        private List<ProtocolQuassel> queueQs = new List<ProtocolQuassel>();
         /// <summary>
         /// If this is false the system timer will refresh the list
         /// </summary>
@@ -541,11 +546,33 @@ namespace Client.Graphics
             }
         }
 
+        private void insertQuassel(ProtocolQuassel service)
+        {
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.QuasselCore, service.SystemWindow, "Root window of quassel", icon_0);
+            lock (QuasselList)
+            {
+                QuasselList.Add(service, text);
+            }
+        }
+
+        /// <summary>
+        /// Insert quassel
+        /// </summary>
+        /// <param name="service"></param>
+        public void InsertQuassel(ProtocolQuassel service)
+        {
+            lock (queueQs)
+            {
+                queueQs.Add(service);
+            }
+            Updated = true;
+        }
+
         /// <summary>
         /// This function insert a service to a list, thread safe
         /// </summary>
         /// <param name="service">Service</param>
-        public void insertSv(ProtocolSv service)
+        public void InsertSv(ProtocolSv service)
         {
             lock (queueProtocol)
             {
@@ -574,7 +601,7 @@ namespace Client.Graphics
             }
         }
 
-        private void _insertNetwork(Network network)
+        private void insertNetwork(Network network)
         {
             string info = null;
             if (network.IrcdVersion != null)
@@ -604,7 +631,7 @@ namespace Client.Graphics
         /// </summary>
         /// <param name="network"></param>
         /// <param name="ParentSv"></param>
-        public void insertNetwork(Network network, ProtocolSv ParentSv = null)
+        public void InsertNetwork(Network network, ProtocolSv ParentSv = null)
         {
             if (queueNetwork.Contains(network)) return;
             lock (queueNetwork)
@@ -639,7 +666,7 @@ namespace Client.Graphics
                 {
                     foreach (Network it in queueNetwork)
                     {
-                        _insertNetwork(it);
+                        insertNetwork(it);
                     }
                     queueNetwork.Clear();
                 }
@@ -652,6 +679,15 @@ namespace Client.Graphics
                         insertChan(item);
                     }
                     queueChannels.Clear();
+                }
+
+                lock (queueQs)
+                {
+                    foreach (ProtocolQuassel item in queueQs)
+                    {
+                        insertQuassel(item);
+                    }
+                    queueQs.Clear();
                 }
 
                 // we sort out all services that are waiting to be inserted to list
@@ -1179,6 +1215,10 @@ namespace Client.Graphics
             /// User
             /// </summary>
             User,
+            /// <summary>
+            /// Quassel
+            /// </summary>
+            QuasselCore,
         }
     }
 }

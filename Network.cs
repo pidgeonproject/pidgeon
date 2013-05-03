@@ -312,13 +312,13 @@ namespace Client
                 {
                     protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName);
                     SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
-                    Core._Main.ChannelList.insertNetwork(this, (ProtocolSv)protocol);
+                    Core._Main.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
                     protocol.CreateChat("!system", true, this);
                     SystemWindow = protocol.Windows["!system"];
-                    Core._Main.ChannelList.insertNetwork(this);
+                    Core._Main.ChannelList.InsertNetwork(this);
                 }
                 Hooks._Network.CreatingNetwork(this);
             }

@@ -186,11 +186,6 @@ namespace Client
 
                 Core._Main.Status("Connecting to " + Server);
 
-                _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
-
-                _StreamWriter = new System.IO.StreamWriter(_networkStream);
-                _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
-
                 if (!SSL)
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -615,8 +610,8 @@ namespace Client
         public override bool Open()
         {
             CreateChat("!root", true, null);
+            Core._Main.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
-            Core._Main.ChannelList.insertSv(this);
             Core.SystemThreads.Add(main);
             main.Start();
             return true;
