@@ -46,9 +46,15 @@ namespace Client.Forms
             ListStore store2 = new ListStore(typeof(string));
             comboboxentry1.Model = store2;
             TreeIter iter = store.AppendValues("irc");
-            store.AppendValues("quassel");
+            if (Configuration.Kernel.Debugging)
+            {
+                store.AppendValues("quassel");
+            }
             store.AppendValues("pidgeon services");
-            store.AppendValues("dcc");
+            if (Configuration.Kernel.Debugging)
+            {
+                store.AppendValues("dcc");
+            }
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
             checkbutton1.Active = Configuration.UserData.LastSSL;
@@ -107,15 +113,15 @@ namespace Client.Forms
                 Configuration.UserData.LastHost = comboboxentry1.ActiveText;
                 Configuration.UserData.LastPort = entry3.Text;
                 Configuration.UserData.LastNick = entry1.Text;
-                switch (combobox1.Active)
+                switch (combobox1.ActiveText)
                 {
-                    case 0:
+                    case "irc":
                         Core.connectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
-                    case 1:
+                    case "quassel":
                         Core.connectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
-                    case 2:
+                    case "pidgeon services":
                         Core.connectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                 }

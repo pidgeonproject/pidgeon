@@ -135,6 +135,12 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Send a raw command to quassel
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
         public override bool Command(string cm, Network network = null)
         {
             Send(cm);

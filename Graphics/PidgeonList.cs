@@ -105,7 +105,7 @@ namespace Client.Graphics
         {
             get
             {
-                return (ServiceList.Count == 0 && ServerList.Count == 0
+                return (ServiceList.Count == 0 && ServerList.Count == 0 && QuasselList.Count == 0
                         && UserList.Count == 0 && ChannelList.Count == 0);
             }
         }
@@ -238,13 +238,14 @@ namespace Client.Graphics
         /// This function removes a reference to channel object, it is being called only by destructor of Channel
         /// </summary>
         /// <param name="channel"></param>
-        public void RemoveChannel(Channel channel)
+        public bool RemoveChannel(Channel channel)
         {
             lock (queueChannels)
             {
                 if (queueChannels.Contains(channel))
                 {
                     queueChannels.Remove(channel);
+                    return true;
                 }
             }
             lock (ChannelList)
@@ -262,21 +263,24 @@ namespace Client.Graphics
                         Core.DebugLog("Can't remove from sidebar because reference isn't present: " + channel.Name);
                     }
                     ChannelList.Remove(channel);
+                    return true;
                 }
             }
+            return false;
         }
 
         /// <summary>
         /// Remove a server
         /// </summary>
         /// <param name="server"></param>
-        public void RemoveServer(Network server)
+        public bool RemoveServer(Network server)
         {
             lock (queueNetwork)
             {
                 if (queueNetwork.Contains(server))
                 {
                     queueNetwork.Remove(server);
+                    return true;
                 }
             }
 
@@ -295,21 +299,58 @@ namespace Client.Graphics
                         Core.DebugLog("Can't remove from sidebar because reference isn't present: " + server.ServerName);
                     }
                     ServerList.Remove(server);
+                    return true;
                 }
             }
+            return false;
+        }
+
+        /// <summary>
+        /// This function removes object, it is being called only by destructor of quassel core
+        /// </summary>
+        /// <param name="user">User</param>
+        public bool RemoveQuassel(ProtocolQuassel protocol)
+        {
+            lock (queueQs)
+            {
+                if (queueQs.Contains(protocol))
+                {
+                    queueQs.Remove(protocol);
+                }
+            }
+            lock (QuasselList)
+            {
+                if (QuasselList.ContainsKey(protocol))
+                {
+                    KeyValuePair<TreeIter, bool> result = getIter(protocol);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
+                    }
+                    QuasselList.Remove(protocol);
+                    return true;
+                }
+            }
+            return false;
         }
 
         /// <summary>
         /// This function removes a reference to user object, it is being called only by destructor of User
         /// </summary>
         /// <param name="user">User</param>
-        public void RemoveUser(User user)
+        public bool RemoveUser(User user)
         {
             lock (queueUsers)
             {
                 if (queueUsers.Contains(user))
                 {
                     queueUsers.Remove(user);
+                    return true;
                 }
             }
             lock (UserList)
@@ -327,8 +368,10 @@ namespace Client.Graphics
                         Core.DebugLog("Can't remove from sidebar because reference isn't present: " + user.Nick);
                     }
                     UserList.Remove(user);
+                    return true;
                 }
             }
+            return false;
         }
 
         private void InitStyle()
@@ -596,7 +639,6 @@ namespace Client.Graphics
                         ChannelList.Add(channel, text);
                     }
                     channel.TreeNode = text;
-                    Graphics.Window xx = channel.retrieveWindow();
                 }
             }
         }
@@ -957,6 +999,13 @@ namespace Client.Graphics
                         disconnectToolStripMenuItem.Visible = true;
                         Core._Main.UpdateStatus();
                         break;
+                    case ItemType.QuasselCore:
+                        ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
+                        closeToolStripMenuItem.Visible = true;
+                        quassel.ShowChat("!root");
+                        Core.network = null;
+                        disconnectToolStripMenuItem.Visible = true;
+                        break;
                     case ItemType.System:
                         break;
                     case ItemType.User:
@@ -1028,6 +1077,15 @@ namespace Client.Graphics
                     }
                     Updated = true;
                     break;
+                case ItemType.QuasselCore:
+                    ProtocolQuassel protocol = (ProtocolQuassel)Item;
+                    protocol.Exit();
+                    lock (QuasselList)
+                    {
+                        removed = RemoveQuassel(protocol);
+                    }
+                    Updated = true;
+                    break;
                 case ItemType.Server:
                     Network network = (Network)Item;
                     if (network.IsConnected)
@@ -1047,9 +1105,7 @@ namespace Client.Graphics
                     }
 
                     Updated = true;
-
-                    RemoveServer(network);
-                    removed = true;
+                    removed = RemoveServer(network);
                     break;
                 case ItemType.User:
                     User user = (User)Item;
@@ -1085,8 +1141,7 @@ namespace Client.Graphics
                         }
                     }
 
-                    RemoveUser(user);
-                    removed = true;
+                    removed = RemoveUser(user);
                     break;
                 case ItemType.Channel:
                     Channel channel = (Channel)Item;
@@ -1116,8 +1171,7 @@ namespace Client.Graphics
                         }
                     }
 
-                    RemoveChannel(channel);
-                    removed = true;
+                    removed = RemoveChannel(channel);
                     break;
             }
 
