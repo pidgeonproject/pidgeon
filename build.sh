@@ -2,7 +2,7 @@
 
 echo "Checking all required packages..."
 
-if [ ! -f `which xbuild` ];then
+if [ "`which xbuild`" = "" ];then
 	echo "mono-xbuild is not installed!"
 	exit 1
 fi
