@@ -13,6 +13,8 @@ if [ ! -L manualpages ];then
 	ln -s ManualPages manualpages
 fi
 
+cp Configuration.unix Configuration.cs
+
 xbuild || exit 1
 
 if [ ! -f pidgeon ];then
