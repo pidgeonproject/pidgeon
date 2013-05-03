@@ -150,7 +150,7 @@ namespace Client
         /// <summary>
         /// List of active networks in system
         /// </summary>
-        public static List<Protocol> Connections = new List<Protocol>();
+        public static List<IProtocol> Connections = new List<IProtocol>();
         /// <summary>
         /// Thread for IO logs
         /// </summary>

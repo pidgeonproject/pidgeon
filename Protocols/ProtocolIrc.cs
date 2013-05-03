@@ -494,6 +494,12 @@ namespace Client
             Transfer("JOIN " + name);
         }
 
+        /// <summary>
+        /// Request nick
+        /// </summary>
+        /// <param name="_Nick"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
         public override int requestNick(string _Nick, Network network = null)
         {
             Transfer("NICK " + _Nick);

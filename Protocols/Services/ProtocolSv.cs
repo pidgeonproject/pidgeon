@@ -157,6 +157,12 @@ namespace Client
             return "";
         }
         
+        /// <summary>
+        /// Send a command to network
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
         public override bool Command(string cm, Network network = null)
         {
             if (cm.StartsWith(" ") != true && cm.Contains(" "))

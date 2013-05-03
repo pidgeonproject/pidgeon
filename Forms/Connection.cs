@@ -48,6 +48,7 @@ namespace Client.Forms
             TreeIter iter = store.AppendValues("irc");
             store.AppendValues("quassel");
             store.AppendValues("pidgeon services");
+            store.AppendValues("dcc");
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
             checkbutton1.Active = Configuration.UserData.LastSSL;

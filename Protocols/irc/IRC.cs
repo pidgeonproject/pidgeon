@@ -35,6 +35,9 @@ namespace Client
         private long date = 0;
         private bool updated_text = true;
         private bool isServices = false;
+        /// <summary>
+        /// Time
+        /// </summary>
         public DateTime pong;
 
         private void Ping()
