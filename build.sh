@@ -17,6 +17,12 @@ if [ "`uname`" = "Linux" ];then
 	cp Configuration.unix Configuration.cs
 fi
 
+sh version.sh
+
+if [ ! -f version.txt ];then
+	echo "Error! unable to create a version file!"
+fi
+
 xbuild || exit 1
 
 if [ ! -f pidgeon ];then
