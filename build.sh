@@ -17,10 +17,11 @@ if [ "`uname`" = "Linux" ];then
 	cp Configuration.unix Configuration.cs
 fi
 
-sh version.sh
+sh update.sh
 
 if [ ! -f version.txt ];then
 	echo "Error! unable to create a version file!"
+	exit 1
 fi
 
 xbuild || exit 1
