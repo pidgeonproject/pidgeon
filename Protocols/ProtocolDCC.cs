@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Client
 {
-    class ProtocolDCC : Protocol
+    class ProtocolDCC : IProtocol
     {
         private Thread thread = null;
         private System.Net.Sockets.NetworkStream _networkStream = null;

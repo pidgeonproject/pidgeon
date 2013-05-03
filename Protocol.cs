@@ -240,6 +240,28 @@ namespace Client
         {
             Core.DebugLog("Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal, Network network = null) is not implemented");
         }
+
+        /// <summary>
+        /// This will disconnect the protocol but leave it in memory
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Disconnect()
+        {
+            Core.DebugLog("Disconnect() is not implemented");
+            return false;
+        }
+
+        /// <summary>
+        /// Parse a command
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
+        public virtual bool Command(string cm, Network network = null)
+        {
+            Core.DebugLog("Command(string cm, Network network = null) is not implemented");
+            return false;
+        }
     }
 
 
@@ -403,18 +425,6 @@ namespace Client
         }
 
         /// <summary>
-        /// Parse a command
-        /// </summary>
-        /// <param name="cm"></param>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        public virtual bool Command(string cm, Network network = null)
-        {
-            Core.DebugLog("Command(string cm, Network network = null) is not implemented");
-            return false;
-        }
-
-        /// <summary>
         /// Write a mode
         /// </summary>
         /// <param name="_x">Mode</param>
@@ -444,16 +454,6 @@ namespace Client
         /// <param name="port">Port</param>
         /// <returns></returns>
         public virtual bool ConnectTo(string server, int port)
-        {
-            Core.DebugLog("Disconnect() is not implemented");
-            return false;
-        }
-
-        /// <summary>
-        /// This will disconnect the protocol but leave it in memory
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool Disconnect()
         {
             Core.DebugLog("Disconnect() is not implemented");
             return false;
