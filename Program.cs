@@ -37,19 +37,19 @@ namespace Client
         {
             try
             {
-				Application.Init();
+                Application.Init();
                 GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
                 Core.startup = parameters;
-				if (Terminal.Parameters())
-				{
-	                if (Core.Load())
-	                {
-	                    Core.network = null;
-	                    Core._Main = new Forms.Main();
-	                    Core._Main.Show();
-	                    Application.Run();
-	                }
-				}
+                if (Terminal.Parameters())
+                {
+                    if (Core.Load())
+                    {
+                        Core.network = null;
+                        Core._Main = new Forms.Main();
+                        Core._Main.Show();
+                        Application.Run();
+                    }
+                }
             }
             catch (System.Threading.ThreadAbortException)
             {

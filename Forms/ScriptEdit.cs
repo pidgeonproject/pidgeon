@@ -25,9 +25,9 @@ using Gtk;
 
 namespace Client.Forms
 {
-	/// <summary>
-	/// Script edit.
-	/// </summary>
+    /// <summary>
+    /// Script edit.
+    /// </summary>
     public partial class ScriptEdit : Gtk.Window
     {
         /// <summary>
@@ -41,13 +41,13 @@ namespace Client.Forms
         private global::Gtk.HBox hbox1;
         private global::Gtk.Button button2;
         private global::Gtk.Button button1;
-		
-		/// <summary>
-		/// Gets the text box1.
-		/// </summary>
-		/// <value>
-		/// The text box1.
-		/// </value>
+        
+        /// <summary>
+        /// Gets the text box1.
+        /// </summary>
+        /// <value>
+        /// The text box1.
+        /// </value>
         public TextView textBox1
         {
             get
@@ -56,9 +56,9 @@ namespace Client.Forms
             }
         }
 
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Client.Forms.ScriptEdit"/> class.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Client.Forms.ScriptEdit"/> class.
+        /// </summary>
         public ScriptEdit() : base(Gtk.WindowType.Toplevel)
         {
             this.Build();
@@ -68,10 +68,10 @@ namespace Client.Forms
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
         }
 
-		/// <summary>
-		/// Releases unmanaged resources and performs other cleanup operations before the
-		/// <see cref="Client.Forms.ScriptEdit"/> is reclaimed by garbage collection.
-		/// </summary>
+        /// <summary>
+        /// Releases unmanaged resources and performs other cleanup operations before the
+        /// <see cref="Client.Forms.ScriptEdit"/> is reclaimed by garbage collection.
+        /// </summary>
         ~ScriptEdit()
         {
             if (Configuration.Kernel.Debugging)
