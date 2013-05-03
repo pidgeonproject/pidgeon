@@ -25,123 +25,123 @@ namespace Client
     /// </summary>
     public class Terminal
     {
-		private class Parameter
-		{
-			/// <summary>
-			/// The parameter.
-			/// </summary>
-			public string parameter;
-			/// <summary>
-			/// Parm
-			/// </summary>
-			public List<string> parm;
-			
-			/// <summary>
-			/// Initializes a new instance of the <see cref="Client.Terminal.Parameter"/> class.
-			/// </summary>
-			/// <param name='_Parameter'>
-			/// Name
-			/// </param>
-			/// <param name='Params'>
-			/// Parameters.
-			/// </param>
-			public Parameter(string _Parameter, List<string> Params)
-			{
-				parameter = _Parameter;
-				parm = Params;
-			}
-		}
-		
-		private static void ShowHelp()
-		{
-			Console.WriteLine("Usage: pidgeon [options] [link]\n"
-			                  + "********************************\n"
-			                  + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
-			                  + "\n"
-			                  + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"
-			                  + "-h (--help) display this help\n"
-			                  + "\n"
-			                  + "for more information see http://pidgeonclient.org/wiki pidgeon is open source.");
-		}
-		
-		private static bool Process(List<Parameter> ls)
-		{
-			foreach (Parameter parameter in ls)
-			{
-				switch(parameter.parameter)
-				{
-				    case "help":
-					    ShowHelp();
-						return true;
-				}
-			}
-			
-			return false;
-		}
-		
-		/// <summary>
-		/// Check the parameters of program, return true if we can continue
-		/// </summary>
+        private class Parameter
+        {
+            /// <summary>
+            /// The parameter.
+            /// </summary>
+            public string parameter;
+            /// <summary>
+            /// Parm
+            /// </summary>
+            public List<string> parm;
+            
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.Terminal.Parameter"/> class.
+            /// </summary>
+            /// <param name='_Parameter'>
+            /// Name
+            /// </param>
+            /// <param name='Params'>
+            /// Parameters.
+            /// </param>
+            public Parameter(string _Parameter, List<string> Params)
+            {
+                parameter = _Parameter;
+                parm = Params;
+            }
+        }
+        
+        private static void ShowHelp()
+        {
+            Console.WriteLine("Usage: pidgeon [options] [link]\n"
+                              + "********************************\n"
+                              + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
+                              + "\n"
+                              + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"
+                              + "-h (--help) display this help\n"
+                              + "\n"
+                              + "for more information see http://pidgeonclient.org/wiki pidgeon is open source.");
+        }
+        
+        private static bool Process(List<Parameter> ls)
+        {
+            foreach (Parameter parameter in ls)
+            {
+                switch(parameter.parameter)
+                {
+                    case "help":
+                        ShowHelp();
+                        return true;
+                }
+            }
+            
+            return false;
+        }
+        
+        /// <summary>
+        /// Check the parameters of program, return true if we can continue
+        /// </summary>
         public static bool Parameters()
         {
-			List<string> args = new List<string>();
-			foreach (string xx in Core.startup)
-			{
-				args.Add(xx);
-			}
-			
-			List<Parameter> ParameterList = new List<Parameter>();
-			
-			if (args.Count > 0)
-			{
-				List<string> values = null;
-				string id = null;
-				string parsed = null;
-				foreach (string data in args)
-				{
-					bool Read = false;
-					switch (data)
-					{
-						case "--help":
-						case "-h":
-							parsed = id;
-							id = "help";
-						    Read = true;
-							break;
-					}
-					
-					if (parsed != null)
-					{
-						Parameter text = new Parameter(parsed, values);
-						ParameterList.Add(text);
-						parsed = null;
-						values = null;
-					}
-					
-					if (Read)
-					{
-						continue;
-					}
-					
-					if (values == null)
-					{
-						values = new List<string>();
-					}
-					
-					values.Add(  data  );
-				}
-				
-				if (id != null)
-				{
-					ParameterList.Add(new Parameter(id, values));
-				}
-				
-				if (Process(ParameterList))
-				{
-					return false;
-				}
-			}
-			return true;
+            List<string> args = new List<string>();
+            foreach (string xx in Core.startup)
+            {
+                args.Add(xx);
+            }
+            
+            List<Parameter> ParameterList = new List<Parameter>();
+            
+            if (args.Count > 0)
+            {
+                List<string> values = null;
+                string id = null;
+                string parsed = null;
+                foreach (string data in args)
+                {
+                    bool Read = false;
+                    switch (data)
+                    {
+                        case "--help":
+                        case "-h":
+                            parsed = id;
+                            id = "help";
+                            Read = true;
+                            break;
+                    }
+                    
+                    if (parsed != null)
+                    {
+                        Parameter text = new Parameter(parsed, values);
+                        ParameterList.Add(text);
+                        parsed = null;
+                        values = null;
+                    }
+                    
+                    if (Read)
+                    {
+                        continue;
+                    }
+                    
+                    if (values == null)
+                    {
+                        values = new List<string>();
+                    }
+                    
+                    values.Add(  data  );
+                }
+                
+                if (id != null)
+                {
+                    ParameterList.Add(new Parameter(id, values));
+                }
+                
+                if (Process(ParameterList))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }

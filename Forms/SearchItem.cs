@@ -25,18 +25,18 @@ using Gtk;
 
 namespace Client.Forms
 {
-	/// <summary>
-	/// Search item.
-	/// </summary>
+    /// <summary>
+    /// Search item.
+    /// </summary>
     public partial class SearchItem : GTK.PidgeonForm
     {   
         private bool NeedReset = false;
         private global::Gtk.HBox hbox1;
         private global::Gtk.Entry entry1;
         //private global::Gtk.CheckButton checkbutton1;
-		/// <summary>
-		/// The direction
-		/// </summary>
+        /// <summary>
+        /// The direction
+        /// </summary>
         public new bool Direction = false;
         private global::Gtk.Button button1;
         private global::Gtk.Button button2;
@@ -138,10 +138,10 @@ namespace Client.Forms
                 Core.handleException(fail);
             }
         }
-		
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Client.Forms.SearchItem"/> class.
-		/// </summary>
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Client.Forms.SearchItem"/> class.
+        /// </summary>
         public SearchItem()
         {
             this.Build();
