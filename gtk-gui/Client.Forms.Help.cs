@@ -47,7 +47,7 @@ namespace Client.Forms
             this.label3.Name = "label3";
             this.label3.UseUnderline = true;
             this.label3.ModifyFg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Blue));
-            this.label3.Markup = "<u>http://pidgeonclient.org/wiki/</u>";
+            this.label3.Markup = "<a href=\"\">http://pidgeonclient.org/wiki/</a>";
             this.label3.UseUnderline = true;
             eb.Add(this.label3);
             this.fixed1.Add (eb);

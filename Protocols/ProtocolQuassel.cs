@@ -77,8 +77,8 @@ namespace Client
         /// </summary>
         public override void Exit()
         {
+            Disconnect();
             base.Exit();
-            return;
         }
 
         private void Start()

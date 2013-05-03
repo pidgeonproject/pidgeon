@@ -134,7 +134,14 @@ namespace Client.Forms
 
         private void cursor(object sender, Gtk.MoveCursorArgs e)
         {
-            Locate();
+            try
+            {
+                Locate();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void Locate()

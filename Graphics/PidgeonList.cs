@@ -308,7 +308,7 @@ namespace Client.Graphics
         /// <summary>
         /// This function removes object, it is being called only by destructor of quassel core
         /// </summary>
-        /// <param name="user">User</param>
+        /// <param name="protocol">Quassel core</param>
         public bool RemoveQuassel(ProtocolQuassel protocol)
         {
             lock (queueQs)
@@ -333,6 +333,40 @@ namespace Client.Graphics
                         Core.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
                     }
                     QuasselList.Remove(protocol);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// This function removes object, it is being called only by destructor of quassel core
+        /// </summary>
+        /// <param name="protocol">Quassel core</param>
+        public bool RemoveServ(ProtocolSv protocol)
+        {
+            lock (queueProtocol)
+            {
+                if (queueProtocol.Contains(protocol))
+                {
+                    queueProtocol.Remove(protocol);
+                }
+            }
+            lock (ServiceList)
+            {
+                if (ServiceList.ContainsKey(protocol))
+                {
+                    KeyValuePair<TreeIter, bool> result = getIter(protocol);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
+                    }
+                    ServiceList.Remove(protocol);
                     return true;
                 }
             }
@@ -1062,28 +1096,13 @@ namespace Client.Graphics
                 case ItemType.Services:
                     ProtocolSv service = (ProtocolSv)Item;
                     service.Exit();
-                    lock (ServiceList)
-                    {
-                        if (ServiceList.ContainsKey(service))
-                        {
-                            lock (Values)
-                            {
-                                TreeIter iter = ServiceList[service];
-                                Values.Remove(ref iter);
-                                removed = true;
-                            }
-                            ServiceList.Remove(service);
-                        }
-                    }
+                    removed = RemoveServ(service);
                     Updated = true;
                     break;
                 case ItemType.QuasselCore:
                     ProtocolQuassel protocol = (ProtocolQuassel)Item;
                     protocol.Exit();
-                    lock (QuasselList)
-                    {
-                        removed = RemoveQuassel(protocol);
-                    }
+                    removed = RemoveQuassel(protocol);
                     Updated = true;
                     break;
                 case ItemType.Server:

@@ -38,9 +38,12 @@ namespace Client.Forms
             }
         }
 
-        private void Link(object sender, EventArgs e)
+        private void Link(object sender, Gtk.ButtonPressEventArgs e)
         {
-            Hyperlink.OpenLink("http://pidgeonclient.org/wiki/");
+            if (e.Event.Button == 1)
+            {
+                Hyperlink.OpenLink("http://pidgeonclient.org/wiki/");
+            }
         }
     }
 }
