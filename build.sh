@@ -13,13 +13,15 @@ if [ ! -L manualpages ];then
 	ln -s ManualPages manualpages
 fi
 
-cp Configuration.unix Configuration.cs
+if [ "`uname`" = "Linux" ];then
+	cp Configuration.unix Configuration.cs
+fi
 
 xbuild || exit 1
 
 if [ ! -f pidgeon ];then
 	echo "#!/bin/sh" >> pidgeon
-	echo "mono bin/Debug/Pidgeon.exe $*" >> pidgeon
+	echo 'mono bin/Debug/Pidgeon.exe $*' >> pidgeon
 	chmod a+x pidgeon
 fi
 
@@ -27,3 +29,5 @@ if [ -f buildall.sh ];then
 	sh buildall.sh
 fi
 
+echo "Everything was built, you can start pidgeon by typing"
+echo "./pidgeon"
