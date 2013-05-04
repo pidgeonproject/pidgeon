@@ -130,7 +130,7 @@ namespace Client
                 UndrawnLines.Clear();
             }
 
-            if (owner == null || (owner != null && WindowVisible()))
+            if (owner == null || (owner != null && WindowVisible()) || !Configuration.Scrollback.DynamicReload)
             {
                 if (Configuration.Memory.MaximumChannelBufferSize != 0)
                 {
@@ -383,7 +383,7 @@ namespace Client
 
             Changed = true;
 
-            if (Thread.CurrentThread == Core._KernelThread && WindowVisible())
+            if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
             {
                 if (!RequireReload(time))
                 {

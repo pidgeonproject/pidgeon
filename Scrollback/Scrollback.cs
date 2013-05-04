@@ -423,7 +423,7 @@ namespace Client
                     // the window was destroyed so we can't work with it
                     return false;
                 }
-                if (WindowVisible())
+                if (WindowVisible() || !Configuration.Scrollback.DynamicReload)
                 {
                     lock (UndrawnLines)
                     {

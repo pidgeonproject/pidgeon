@@ -377,6 +377,10 @@ namespace Client
             /// Format of nick in a scrollback
             /// </summary>
             public static string format_nick = "<$1> ";
+            /// <summary>
+            /// This is experimental
+            /// </summary>
+            public static bool DynamicReload = true;
         }
 
         /// <summary>

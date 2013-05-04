@@ -135,8 +135,10 @@ namespace Client.Forms
                 this.FavoriteNetworksAction.Activated += new EventHandler(favoriteNetworksToolStripMenuItem_Click);
                 this.RootAction.Activated += new EventHandler(rootToolStripMenuItem_Click);
                 this.LoadMoreToScrollbackAction.Activated += new EventHandler(loadToolStripMenuItem_Click);
+                this.SizeAllocated += new SizeAllocatedHandler(resize);
                 this.FavoriteNetworksAction.Sensitive = false;
                 _Load();
+                Status("Welcome to pidgeon");
             }
             catch (Exception fail)
             {
@@ -189,6 +191,23 @@ namespace Client.Forms
             Configuration.Kernel.Notice = !Configuration.Kernel.Notice;
         }
 
+        private void resize(object o, Gtk.SizeAllocatedArgs e)
+        {
+            ResetSize();
+        }
+
+        private void ResetSize()
+        {
+            if (Configuration.Window.x4 == 0)
+            {
+                Configuration.Window.window_size = 200;
+                Configuration.Window.x1 = Width - 420;
+                Configuration.Window.x4 = Height - 80;
+                hpaned1.Position = Configuration.Window.window_size;
+                Chat.Redraw();
+            }
+        }
+
         private void _Load()
         {
             try
@@ -200,11 +219,9 @@ namespace Client.Forms
                 {
                     this.Maximize();
                 }
-                if (Configuration.Window.x4 == 0)
+                else
                 {
-                    Configuration.Window.window_size = 200;
-                    Configuration.Window.x1 = Width - 480;
-                    Configuration.Window.x4 = Height - 120;
+                    ResetSize();
                 }
                 hpaned1.Position = Configuration.Window.window_size;
                 ChannelList = pidgeonlist1;
