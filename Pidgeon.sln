@@ -26,11 +26,16 @@ Global
 		$0.TextStylePolicy = $3
 		$3.FileWidth = 120
 		$3.NoTabsAfterNonTabs = True
+		$3.EolMarker = Unix
 		$3.inheritsSet = VisualStudio
 		$3.inheritsScope = text/plain
 		$3.scope = text/plain
 		$0.TextStylePolicy = $4
-		$4.inheritsSet = null
+		$4.FileWidth = 120
+		$4.NoTabsAfterNonTabs = True
+		$4.EolMarker = Unix
+		$4.inheritsSet = VisualStudio
+		$4.inheritsScope = text/plain
 		$4.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $5
 		$5.inheritsSet = Mono
