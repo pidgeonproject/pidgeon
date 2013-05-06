@@ -196,6 +196,10 @@ namespace Client
             /// Last open connection was ssl or not
             /// </summary>
             public static bool LastSSL = false;
+            /// <summary>
+            /// History
+            /// </summary>
+            public static List<string> History = new List<string>();
         }
 
         /// <summary>

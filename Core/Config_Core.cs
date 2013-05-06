@@ -299,6 +299,18 @@ namespace Client
                     }
                     config.AppendChild(xmlnode);
 
+                    make_comment(" ============= HISTORY ============= ", config, xmlnode);
+                    lock (Commands.aliases)
+                    {
+                        foreach (string Name in Configuration.UserData.History)
+                        {
+                            curr = config.CreateElement("history");
+                            curr.Value = Name;
+                            xmlnode.AppendChild(curr);
+                        }
+                    }
+                    config.AppendChild(xmlnode);
+
                     make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
                     lock (Ignoring.IgnoreList)
                     {
@@ -391,6 +403,10 @@ namespace Client
                         {
                             NetworkData.Networks.Clear();
                         }
+                        lock (Configuration.UserData.History)
+                        {
+                            Configuration.UserData.History.Clear();
+                        }
                         Commands.ClearAliases();
                         foreach (XmlNode node in configuration.ChildNodes)
                         {
@@ -408,6 +424,13 @@ namespace Client
                                         {
                                             Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
                                             continue;
+                                        }
+                                        if (curr.Name == "history")
+                                        {
+                                            lock (Configuration.UserData.History)
+                                            {
+                                                Configuration.UserData.History.Add(curr.Value);
+                                            }
                                         }
                                         if (curr.Name == "alias")
                                         {
