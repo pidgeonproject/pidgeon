@@ -501,6 +501,10 @@ namespace Client.Forms
         {
             try
             {
+                if (time == null)
+                {
+                    return "Unable to read: NULL";
+                }
                 double unixtimestmp = double.Parse(time);
                 return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
             }

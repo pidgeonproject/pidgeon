@@ -691,6 +691,10 @@ namespace Client
             {
                 return;
             }
+            if (Configuration.Media.NotificationSound)
+            {
+                System.Media.SystemSounds.Asterisk.Play();
+            }
             if (_KernelThread == Thread.CurrentThread)
             {
                 if (notification_waiting)

@@ -102,6 +102,17 @@ namespace Client
         }
 
         /// <summary>
+        /// Sounds and video
+        /// </summary>
+        public class Media
+        {
+            /// <summary>
+            /// Play a sound on every note
+            /// </summary>
+            public static bool NotificationSound = false;
+        }
+
+        /// <summary>
         /// Configuration of IRC
         /// </summary>
         public class irc
