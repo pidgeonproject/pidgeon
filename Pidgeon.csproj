@@ -78,7 +78,9 @@
     <EmbeddedResource Include="ManualPages\PidgeonUptime.txt" />
     <EmbeddedResource Include="ManualPages\Server.txt" />
     <EmbeddedResource Include="ManualPages\ServicesClear.txt" />
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Languages\en_english.txt" />
     <EmbeddedResource Include="Languages\cs_czech.txt" />
     <EmbeddedResource Include="Resources\arrow.png" />
@@ -102,8 +104,14 @@
     <Compile Include="Forms\Connection.Designer.cs">
       <DependentUpon>Connection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Help.Designer.cs">
+      <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkDB.Designer.cs">
+      <DependentUpon>NetworkDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Preferences\Highlighter.cs" />
     <Compile Include="Forms\Preferences\Preferences.Designer.cs">
@@ -114,7 +122,9 @@
     <Compile Include="Forms\TrafficScanner.Designer.cs">
       <DependentUpon>TrafficScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="Graphics\PidgeonList\Menu.cs" />
+    <Compile Include="Graphics\PidgeonList\Timer.cs" />
+    <Compile Include="GTK\SteticMono.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />
     <Compile Include="Commands\Commands_Services.cs" />
@@ -181,7 +191,6 @@
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />
     <Compile Include="Forms\Help.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Help.cs" />
     <Compile Include="WinForms\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -193,26 +202,13 @@
     <Compile Include="WinForms\Updater.Designer.cs" />
     <Compile Include="Forms\ConfigFile.cs" />
     <Compile Include="Forms\NetworkDB.cs" />
-    <Compile Include="gtk-gui\Client.Forms.NetworkDB.cs" />
     <Compile Include="Graphics\Window\Window.cs" />
     <Compile Include="Graphics\Window\Window_UserList.cs" />
     <Compile Include="Terminal.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="Resources\50px-IRC_icon.png" />
-    <None Include="Resources\Image1.bmp" />
-    <None Include="Resources\Image1.jpg" />
-    <None Include="Resources\Image2 %281%29.bmp" />
-    <None Include="Resources\Image2.bmp" />
-    <None Include="Resources\Image2.png" />
     <None Include="Resources\Letter S.png" />
-    <None Include="Resources\irc_channel.ico" />
-    <None Include="Resources\regular.bmp" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
-    </None>
     <None Include="Properties\Resources.resources" />
   </ItemGroup>
   <ItemGroup>

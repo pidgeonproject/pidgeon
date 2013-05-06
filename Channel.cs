@@ -205,9 +205,16 @@ namespace Client
         public void ReloadBans()
         {
             parsing_bans = true;
-            lock (Bans)
+            if (Bans == null)
             {
-                Bans.Clear();
+                Bans = new List<SimpleBan>();
+            }
+            else
+            {
+                lock (Bans)
+                {
+                    Bans.Clear();
+                }
             }
             _Network.Transfer("MODE " + Name + " +b");
         }

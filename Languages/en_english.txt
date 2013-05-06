@@ -12,6 +12,7 @@ window-menu-about=About;
 window-menu-contents=Contents;
 window-menu-search=Search;
 window-menu-cf=Configuration file;
+window-menu-root=Display a root window;
 
 // Dialogs
 

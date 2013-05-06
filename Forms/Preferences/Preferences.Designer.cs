@@ -1145,7 +1145,7 @@ namespace Client.Forms
             this.checkButton_DisplayIcon = new CheckButton();
             this.checkButton_DisplayIcon.CanFocus = true;
             this.checkButton_DisplayIcon.Name = "2";
-            this.checkButton_DisplayIcon.Label = "Display tray";
+            this.checkButton_DisplayIcon.Label = "Display tray (restart is needed to change this)";
             this.checkButton_DisplayIcon.DrawIndicator = true;
             this.checkButton_DisplayIcon.UseUnderline = true;
             this.vb01.Add(checkButton_CTCP);

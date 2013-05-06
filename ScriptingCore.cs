@@ -603,20 +603,32 @@ namespace Client
         }
         #endregion
     }
+
+    /// <summary>
+    /// Method
+    /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
     public class TclMethod : Attribute
     {
+        /// <summary>
+        /// Name
+        /// </summary>
         public string name;
+
         public TclMethod() { }
+
         public TclMethod(string name)
         {
             this.name = name;
         }
     }
 
+    /// <summary>
+    /// This is a class for tcl scripting
+    /// </summary>
     public static class ScriptingCore
     {
-        public static bool working;
+        private static bool working;
         private static System.Threading.Thread thread;
 
         public static void Exec()

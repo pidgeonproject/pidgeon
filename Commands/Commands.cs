@@ -139,40 +139,14 @@ namespace Client
         private static Dictionary<string, string> ManualPages = new Dictionary<string, string>();
 
         /// <summary>
-        /// Type of command
-        /// </summary>
-        public enum Type
-        {
-            /// <summary>
-            /// System command
-            /// </summary>
-            System,
-            /// <summary>
-            /// Services command
-            /// </summary>
-            SystemSv,
-            /// <summary>
-            /// Services command
-            /// </summary>
-            Services,
-            /// <summary>
-            /// Network command
-            /// </summary>
-            Network,
-            /// <summary>
-            /// Plugin command
-            /// </summary>
-            Plugin,
-            /// <summary>
-            /// User defined command
-            /// </summary>
-            User,
-        }
-
-        /// <summary>
         /// Internal database of all commands
         /// </summary>
         public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
+
+        /// <summary>
+        /// List of all aliases to commands
+        /// </summary>
+        public static Dictionary<string, CommandLink> aliases = new Dictionary<string, CommandLink>();
 
         /// <summary>
         /// Register a new manual
@@ -191,6 +165,48 @@ namespace Client
                 {
                     ManualPages.Add(key, value);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes an alias
+        /// </summary>
+        /// <param name="name"></param>
+        public static void UnregisterAlias(string name)
+        {
+            lock (aliases)
+            {
+                if (aliases.ContainsKey(name))
+                {
+                    aliases.Remove(name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove all aliases from memory
+        /// </summary>
+        public static void ClearAliases()
+        {
+            lock (aliases)
+            {
+                aliases.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Register a new alias
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="command"></param>
+        /// <param name="overrides"></param>
+        public static void RegisterAlias(string name, string command, bool overrides)
+        {
+            lock (aliases)
+            {
+                UnregisterAlias(name);
+
+                aliases.Add(name, new CommandLink(command, overrides));
             }
         }
 
@@ -268,26 +284,26 @@ namespace Client
                 commands.Add("chanserv", new Command(Type.Network));
                 commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
                 RegisterManual("pidgeon.uptime", Client.Properties.Resources.PidgeonUptime);
-                commands.Add("pidgeon.uptime", new Command(Type.System, Generic.up));
+                commands.Add("pidgeon.uptime", new Command(Type.System, Generic.RetrieveUptime));
                 commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
                 commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
                 commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
                 commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
                 commands.Add("pidgeon.sleep", new Command(Type.System, Generic.sleep));
                 commands.Add("pidgeon.timer", new Command(Type.System, Generic.timer));
-                commands.Add("pidgeon.rehash", new Command(Type.System, Generic.pidgeon_rehash));
+                commands.Add("pidgeon.rehash", new Command(Type.System, Generic.PidgeonRehash));
                 commands.Add("pidgeon.displaytimers", new Command(Type.System, Generic.displaytmdb));
                 commands.Add("pidgeon.batch", new Command(Type.System, Generic.pidgeon_batch));
-                commands.Add("pidgeon.memory.clean.parser", new Command(Type.System, Generic.parsercache));
-                commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.clearring));
+                commands.Add("pidgeon.memory.clean.parser", new Command(Type.System, Generic.ParserCache));
+                commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.ClearRing));
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
-                commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.sniffer));
+                commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.snifferFree));
                 commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
                 commands.Add("pidgeon.ring.file.overwrite", new Command(Type.System, Generic.forced_pidgeon_file));
                 commands.Add("pidgeon.ring.file", new Command(Type.System, Generic.pidgeon_file));
                 RegisterManual("pidgeon.man", Client.Properties.Resources.PidgeonMan);
                 commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
-                commands.Add("pidgeon.module", new Command(Type.System, Generic.module));
+                commands.Add("pidgeon.module", new Command(Type.System, Generic.RegisterModule));
                 RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
                 commands.Add("pidgeon.services.info", new Command(Type.System, Generic.services_cache));
                 commands.Add("pidgeon.services.clear", new Command(Type.System, Generic.services_clear));
@@ -314,6 +330,16 @@ namespace Client
             }
             lock (commands)
             {
+                lock (aliases)
+                {
+                    if (aliases.ContainsKey(values[0]))
+                    {
+                        if (!commands.ContainsKey(values[0]) || aliases[values[0]].Overrides)
+                        {
+                            return Process(aliases[values[0]].Target + " " + parameter);
+                        }
+                    }
+                }
                 if (commands.ContainsKey(values[0]))
                 {
                     // network commands are handled by server
@@ -326,6 +352,37 @@ namespace Client
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Type of command
+        /// </summary>
+        public enum Type
+        {
+            /// <summary>
+            /// System command
+            /// </summary>
+            System,
+            /// <summary>
+            /// Services command
+            /// </summary>
+            SystemSv,
+            /// <summary>
+            /// Services command
+            /// </summary>
+            Services,
+            /// <summary>
+            /// Network command
+            /// </summary>
+            Network,
+            /// <summary>
+            /// Plugin command
+            /// </summary>
+            Plugin,
+            /// <summary>
+            /// User defined command
+            /// </summary>
+            User,
         }
     }
 }

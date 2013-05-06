@@ -28,7 +28,11 @@ namespace Client
     {
         private partial class Generic
         {
-            public static void module(string parameter)
+            /// <summary>
+            /// Register a module
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void RegisterModule(string parameter)
             {
                 if (parameter != "")
                 {
@@ -42,12 +46,16 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
 
-            public static void up(string parameter)
+            public static void RetrieveUptime(string parameter)
             {
                 TimeSpan uptime = DateTime.Now - Core.LoadTime;
                 Core._Main.Chat.scrollback.InsertText(uptime.ToString(), Client.ContentLine.MessageStyle.System, false, 0, true);
             }
 
+            /// <summary>
+            /// Display a manual page
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void man(string parameter)
             {
                 if (parameter != "")
@@ -74,12 +82,20 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
 
+            /// <summary>
+            /// Quit pidgeon
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void pidgeon_quit(string parameter)
             {
                 Core.Quit();
             }
 
-            public static void parsercache(string parameter)
+            /// <summary>
+            /// Clear a parser cache
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void ParserCache(string parameter)
             {
                 int size = Parser.ParserCache.Count;
                 lock (Parser.ParserCache)
@@ -89,12 +105,20 @@ namespace Client
                 Core._Main.Chat.scrollback.InsertText("Parser cache: cleared " + size.ToString() + " items from mem", ContentLine.MessageStyle.System, false);
             }
 
-            public static void pidgeon_rehash(string parameter)
+            /// <summary>
+            /// Rehash pidgeon
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void PidgeonRehash(string parameter)
             {
                 Core._Configuration.ConfigurationLoad();
                 Core._Main.Chat.scrollback.InsertText("Reloaded config", Client.ContentLine.MessageStyle.System, false);
             }
 
+            /// <summary>
+            /// Process a batch file
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void pidgeon_batch(string parameter)
             {
                 if (parameter != "")
@@ -128,6 +152,10 @@ namespace Client
                 return;
             }
 
+            /// <summary>
+            /// Connect to a server
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void server(string parameter)
             {
                 if (parameter == "")
@@ -167,6 +195,10 @@ namespace Client
                 return;
             }
 
+            /// <summary>
+            /// Change nick
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void nick(string parameter)
             {
                 string Nick = parameter;
@@ -190,6 +222,10 @@ namespace Client
                 Core.network._Protocol.requestNick(Nick);
             }
 
+            /// <summary>
+            /// Display timers
+            /// </summary>
+            /// <param name="paramater"></param>
             public static void displaytmdb(string paramater)
             {
                 lock (Core.TimerDB)
@@ -211,12 +247,20 @@ namespace Client
                 }
             }
 
-            public static void clearring(string parameter)
+            /// <summary>
+            /// Clear ring
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void ClearRing(string parameter)
             {
                 Core.ClearRingBufferLog();
                 Core._Main.Chat.scrollback.InsertText("Ring buffer was cleaned", Client.ContentLine.MessageStyle.System, false);
             }
 
+            /// <summary>
+            /// Create a new timer
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void timer(string parameter)
             {
                 try
@@ -244,6 +288,10 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Sleep for specific time
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void sleep(string parameter)
             {
                 int time = 0;
@@ -253,23 +301,39 @@ namespace Client
                 }
             }
 
-            public static void sniffer(string parameter)
+            /// <summary>
+            /// Truncate a sniffer log
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void snifferFree(string parameter)
             {
                 Core.trafficscanner.Clean();
-                Core._Main.Chat.scrollback.InsertText("Sniffer log was truncated", Client.ContentLine.MessageStyle.System, false);
+                Core._Main.Chat.scrollback.InsertText("Sniffer log was cleared", Client.ContentLine.MessageStyle.System, false);
             }
 
+            /// <summary>
+            /// Clean up a mem
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void free(string parameter)
             {
                 System.GC.Collect();
                 Core._Main.Chat.scrollback.InsertText("Memory was cleaned up", Client.ContentLine.MessageStyle.System, false);
             }
 
+            /// <summary>
+            /// Write a ring to logs
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void ring_writetologs(string parameter)
             {
                 Core.PrintRing(Core._Main.Chat, true);
             }
 
+            /// <summary>
+            /// Display ring
+            /// </summary>
+            /// <param name="parameter"></param>
             public static void ring_show(string parameter)
             {
                 Core.PrintRing(Core._Main.Chat, false);
