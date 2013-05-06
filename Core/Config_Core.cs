@@ -279,6 +279,26 @@ namespace Client
                     }
                     config.AppendChild(xmlnode);
 
+                    make_comment(" ============= ALIASES ============= ", config, xmlnode);
+                    lock (Commands.aliases)
+                    {
+                        foreach (KeyValuePair<string, Commands.CommandLink> keys in Commands.aliases)
+                        {
+                            curr = config.CreateElement("alias");
+                            XmlAttribute name = config.CreateAttribute("name");
+                            XmlAttribute target = config.CreateAttribute("target");
+                            XmlAttribute overrides = config.CreateAttribute("overrides");
+                            name.Value = keys.Key;
+                            target.Value = keys.Value.Target;
+                            overrides.Value = keys.Value.Overrides.ToString();
+                            curr.Attributes.Append(name);
+                            curr.Attributes.Append(target);
+                            curr.Attributes.Append(overrides);
+                            xmlnode.AppendChild(curr);
+                        }
+                    }
+                    config.AppendChild(xmlnode);
+
                     make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
                     lock (Ignoring.IgnoreList)
                     {
@@ -371,6 +391,7 @@ namespace Client
                         {
                             NetworkData.Networks.Clear();
                         }
+                        Commands.ClearAliases();
                         foreach (XmlNode node in configuration.ChildNodes)
                         {
                             if (node.Name == "configuration.pidgeon")
@@ -387,6 +408,10 @@ namespace Client
                                         {
                                             Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
                                             continue;
+                                        }
+                                        if (curr.Name == "alias")
+                                        {
+                                            Commands.RegisterAlias(curr.Attributes[0].InnerText, curr.Attributes[1].InnerText, bool.Parse(curr.Attributes[2].InnerText));
                                         }
                                         if (curr.Name == "network")
                                         {

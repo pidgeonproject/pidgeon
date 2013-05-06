@@ -139,40 +139,14 @@ namespace Client
         private static Dictionary<string, string> ManualPages = new Dictionary<string, string>();
 
         /// <summary>
-        /// Type of command
-        /// </summary>
-        public enum Type
-        {
-            /// <summary>
-            /// System command
-            /// </summary>
-            System,
-            /// <summary>
-            /// Services command
-            /// </summary>
-            SystemSv,
-            /// <summary>
-            /// Services command
-            /// </summary>
-            Services,
-            /// <summary>
-            /// Network command
-            /// </summary>
-            Network,
-            /// <summary>
-            /// Plugin command
-            /// </summary>
-            Plugin,
-            /// <summary>
-            /// User defined command
-            /// </summary>
-            User,
-        }
-
-        /// <summary>
         /// Internal database of all commands
         /// </summary>
         public static SortedDictionary<string, Command> commands = new SortedDictionary<string, Command>();
+
+        /// <summary>
+        /// List of all aliases to commands
+        /// </summary>
+        public static Dictionary<string, CommandLink> aliases = new Dictionary<string, CommandLink>();
 
         /// <summary>
         /// Register a new manual
@@ -191,6 +165,48 @@ namespace Client
                 {
                     ManualPages.Add(key, value);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes an alias
+        /// </summary>
+        /// <param name="name"></param>
+        public static void UnregisterAlias(string name)
+        {
+            lock (aliases)
+            {
+                if (aliases.ContainsKey(name))
+                {
+                    aliases.Remove(name);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Remove all aliases from memory
+        /// </summary>
+        public static void ClearAliases()
+        {
+            lock (aliases)
+            {
+                aliases.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Register a new alias
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="command"></param>
+        /// <param name="overrides"></param>
+        public static void RegisterAlias(string name, string command, bool overrides)
+        {
+            lock (aliases)
+            {
+                UnregisterAlias(name);
+
+                aliases.Add(name, new CommandLink(command, overrides));
             }
         }
 
@@ -314,6 +330,16 @@ namespace Client
             }
             lock (commands)
             {
+                lock (aliases)
+                {
+                    if (aliases.ContainsKey(values[0]))
+                    {
+                        if (!commands.ContainsKey(values[0]) || aliases[values[0]].Overrides)
+                        {
+                            return Process(aliases[values[0]].Target + " " + parameter);
+                        }
+                    }
+                }
                 if (commands.ContainsKey(values[0]))
                 {
                     // network commands are handled by server
@@ -326,6 +352,37 @@ namespace Client
                 }
             }
             return false;
+        }
+
+        /// <summary>
+        /// Type of command
+        /// </summary>
+        public enum Type
+        {
+            /// <summary>
+            /// System command
+            /// </summary>
+            System,
+            /// <summary>
+            /// Services command
+            /// </summary>
+            SystemSv,
+            /// <summary>
+            /// Services command
+            /// </summary>
+            Services,
+            /// <summary>
+            /// Network command
+            /// </summary>
+            Network,
+            /// <summary>
+            /// Plugin command
+            /// </summary>
+            Plugin,
+            /// <summary>
+            /// User defined command
+            /// </summary>
+            User,
         }
     }
 }
