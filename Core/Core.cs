@@ -446,6 +446,10 @@ namespace Client
                         PORT = 6667;
                     }
                 }
+                while (network.EndsWith("/"))
+                {
+                    network.Substring(0, network.Length - 1);
+                }
                 ProtocolIrc server = null;
                 foreach (Protocol protocol in Connections)
                 {

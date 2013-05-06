@@ -69,10 +69,6 @@ namespace Client.Forms
         /// </summary>
         public global::Gtk.Action SearchAction;
         /// <summary>
-        /// The switch to advanced layout action.
-        /// </summary>
-        public global::Gtk.Action SwitchToAdvancedLayoutAction;
-        /// <summary>
         /// The configuration file action.
         /// </summary>
         public global::Gtk.Action ConfigurationFileAction;
@@ -191,15 +187,12 @@ namespace Client.Forms
             this.ContentsAction = new global::Gtk.Action("ContentsAction", messages.Localize("[[window-menu-contents]]"), null, null);
             this.ContentsAction.ShortLabel = "Help";
             w1.Add(this.ContentsAction, "F1");
-            this.RootAction = new global::Gtk.Action("RootAction", "Root", null, null);
+            this.RootAction = new global::Gtk.Action("RootAction", messages.Localize("[[window-menu-root]]"), null, null);
             this.RootAction.ShortLabel = "Root";
             w1.Add(this.RootAction, null);
             this.SearchAction = new global::Gtk.Action("SearchAction", messages.Localize("[[window-menu-search]]"), null, null);
             this.SearchAction.ShortLabel = "Search";
             w1.Add(this.SearchAction, "<Primary>f");
-            this.SwitchToAdvancedLayoutAction = new global::Gtk.Action("SwitchToAdvancedLayoutAction", "Switch to advanced layout", null, null);
-            this.SwitchToAdvancedLayoutAction.ShortLabel = "Switch to advanced layout";
-            w1.Add(this.SwitchToAdvancedLayoutAction, null);
             this.ConfigurationFileAction = new global::Gtk.Action("ConfigurationFileAction", messages.Localize("[[window-menu-cf]]"), null, null);
             this.ConfigurationFileAction.ShortLabel = "Configuration file";
             w1.Add(this.ConfigurationFileAction, null);
