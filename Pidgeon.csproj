@@ -98,8 +98,14 @@
     <Compile Include="Forms\Connection.Designer.cs">
       <DependentUpon>Connection.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Help.Designer.cs">
+      <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkDB.Designer.cs">
+      <DependentUpon>NetworkDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Preferences\Highlighter.cs" />
     <Compile Include="Forms\Preferences\Preferences.Designer.cs">
@@ -110,7 +116,9 @@
     <Compile Include="Forms\TrafficScanner.Designer.cs">
       <DependentUpon>TrafficScanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="gtk-gui\generated.cs" />
+    <Compile Include="Graphics\PidgeonList\Menu.cs" />
+    <Compile Include="Graphics\PidgeonList\Timer.cs" />
+    <Compile Include="GTK\SteticMono.cs" />
     <Compile Include="Commands\Commands.cs" />
     <Compile Include="Commands\Commands_IRC.cs" />
     <Compile Include="Commands\Commands_Services.cs" />
@@ -177,7 +185,6 @@
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />
     <Compile Include="Forms\Help.cs" />
-    <Compile Include="gtk-gui\Client.Forms.Help.cs" />
     <Compile Include="WinForms\Recovery.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,7 +196,6 @@
     <Compile Include="WinForms\Updater.Designer.cs" />
     <Compile Include="Forms\ConfigFile.cs" />
     <Compile Include="Forms\NetworkDB.cs" />
-    <Compile Include="gtk-gui\Client.Forms.NetworkDB.cs" />
     <Compile Include="Graphics\Window\Window.cs" />
     <Compile Include="Graphics\Window\Window_UserList.cs" />
     <Compile Include="Terminal.cs" />
