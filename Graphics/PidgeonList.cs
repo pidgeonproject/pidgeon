@@ -785,7 +785,8 @@ namespace Client.Graphics
                     }
 
                     Updated = true;
-                    removed = RemoveServer(network);
+                    removed = true;
+                    RemoveServer(network);
                     break;
                 case ItemType.User:
                     User user = (User)Item;
