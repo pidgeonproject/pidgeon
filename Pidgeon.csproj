@@ -74,7 +74,9 @@
     <EmbeddedResource Include="ManualPages\PidgeonUptime.txt" />
     <EmbeddedResource Include="ManualPages\Server.txt" />
     <EmbeddedResource Include="ManualPages\ServicesClear.txt" />
-    <EmbeddedResource Include="Properties\Resources.resx" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Languages\en_english.txt" />
     <EmbeddedResource Include="Languages\cs_czech.txt" />
     <EmbeddedResource Include="Resources\arrow.png" />
@@ -202,15 +204,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="Resources\50px-IRC_icon.png" />
-    <None Include="Resources\Image1.bmp" />
-    <None Include="Resources\Image1.jpg" />
-    <None Include="Resources\Image2 %281%29.bmp" />
-    <None Include="Resources\Image2.bmp" />
-    <None Include="Resources\Image2.png" />
     <None Include="Resources\Letter S.png" />
-    <None Include="Resources\irc_channel.ico" />
-    <None Include="Resources\regular.bmp" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings1.Designer.cs</LastGenOutput>
