@@ -202,7 +202,7 @@ namespace Client.Forms
             {
                 Configuration.Window.window_size = 200;
                 Configuration.Window.x1 = Width - 420;
-                Configuration.Window.x4 = Height - 80;
+                Configuration.Window.x4 = Height - 120;
                 hpaned1.Position = Configuration.Window.window_size;
                 Chat.Redraw();
             }
