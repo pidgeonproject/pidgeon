@@ -44,13 +44,6 @@ namespace Client.Forms
             ListStore store = new ListStore(typeof(string));
             combobox1.Model = store;
             ListStore store2 = new ListStore(typeof(string));
-            lock (Configuration.UserData.History)
-            {
-                foreach (string nw in Configuration.UserData.History)
-                {
-                    store2.AppendValues(nw);
-                }
-            }
             TreeIter iter = store.AppendValues("irc");
             if (Configuration.Kernel.Debugging)
             {
@@ -77,6 +70,17 @@ namespace Client.Forms
             {
                 TreeIter iter2 = store2.AppendValues(Configuration.UserData.LastHost);
                 this.comboboxentry1.SetActiveIter(iter2);
+            }
+            lock (Configuration.UserData.History)
+            {
+                if (!Configuration.UserData.History.Contains(comboboxentry1.ActiveText.ToLower()))
+                {
+                    Configuration.UserData.History.Add(comboboxentry1.ActiveText);
+                }
+                foreach (string nw in Configuration.UserData.History)
+                {
+                    store2.AppendValues(nw);
+                }
             }
             this.Title = messages.get("connection", Core.SelectedLanguage);
         }
@@ -124,6 +128,7 @@ namespace Client.Forms
                     {
                         Configuration.UserData.History.Add(comboboxentry1.ActiveText);
                     }
+                    ((ListStore)comboboxentry1.Model).AppendValues(comboboxentry1.ActiveText);
                 }
                 Configuration.UserData.LastPort = entry3.Text;
                 Configuration.UserData.LastNick = entry1.Text;
