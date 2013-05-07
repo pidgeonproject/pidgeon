@@ -60,6 +60,14 @@ namespace Client
         /// Server
         /// </summary>
         public string Server = null;
+        /// <summary>
+        /// Away message
+        /// </summary>
+        public string AwayMessage = null;
+        /// <summary>
+        /// User away
+        /// </summary>
+        public bool Away = false;
         private bool destroyed = false;
         /// <summary>
         /// This will return true in case object was requested to be disposed
