@@ -83,6 +83,24 @@ namespace Client.Graphics
                     display = true;
                     menu.Append(disconnect);
                 }
+                if (joinToolStripMenuItem.Visible)
+                {
+                    Gtk.MenuItem join = new MenuItem(joinToolStripMenuItem.Text);
+                    join.Activated += new EventHandler(joinToolStripMenuItem_Click);
+                    display = true;
+                    menu.Append(join);
+                }
+                if (Configuration.Kernel.Debugging)
+                {
+                    if (reconnectToolStripMenuItem.Visible)
+                    {
+                        Gtk.MenuItem reconnect = new MenuItem(reconnectToolStripMenuItem.Text);
+                        reconnect.Activated += new EventHandler(reconnectToolStripMenuItem_Click);
+                        reconnect.Sensitive = reconnectToolStripMenuItem.Enabled;
+                        display = true;
+                        menu.Append(reconnect);
+                    }
+                }
                 if (display)
                 {
                     menu.ShowAll();
@@ -100,6 +118,19 @@ namespace Client.Graphics
             partToolStripMenuItem.Visible = false;
             joinToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
+        }
+
+        private void joinToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TreeIter iter;
+            TreePath[] path = tv.Selection.GetSelectedRows();
+            tv.Model.GetIter(out iter, path[0]);
+            ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+            if (type == ItemType.Channel)
+            {
+                Channel ch = (Channel)tv.Model.GetValue(iter, 1);
+                ch._Network.Join(ch.Name);
+            }
         }
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -191,6 +222,10 @@ namespace Client.Graphics
                         {
                             window.MenuColor = Configuration.CurrentSkin.fontcolor;
                         }
+                        if (!chan.IsAlive)
+                        {
+                            joinToolStripMenuItem.Visible = true;
+                        }
                         partToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
@@ -253,6 +288,37 @@ namespace Client.Graphics
             catch (Exception f)
             {
                 Core.handleException(f);
+            }
+        }
+
+        private void reconnectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                TreeIter iter;
+                TreePath[] path = tv.Selection.GetSelectedRows();
+                if (path.Length > 0)
+                {
+                    tv.Model.GetIter(out iter, path[0]);
+                    object data = tv.Model.GetValue(iter, 1);
+                    ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                    switch (type)
+                    {
+                        case ItemType.QuasselCore:
+                        case ItemType.Services:
+                            Protocol protocol = (Protocol)data;
+                            protocol.Reconnect();
+                            break;
+                        case ItemType.Server:
+                            Network network = (Network)data;
+                            network.Reconnect();
+                            break;
+                    }
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 

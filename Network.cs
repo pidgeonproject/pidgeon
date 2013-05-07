@@ -547,6 +547,24 @@ namespace Client
         }
 
         /// <summary>
+        /// Reconnect a disconnected network
+        /// </summary>
+        public void Reconnect()
+        {
+            if (IsDestroyed)
+            {
+                return;
+            }
+            if (IsConnected)
+            {
+                SystemWindow.scrollback.InsertText(messages.Localize("[[network-reconnect-error-1]]"), ContentLine.MessageStyle.System);
+                return;
+            }
+
+            _Protocol.ReconnectNetwork(this);
+        }
+
+        /// <summary>
         /// Join
         /// </summary>
         /// <param name="channel">Channel name which is supposed to be joined</param>
@@ -563,7 +581,7 @@ namespace Client
         /// Create a new instance of channel window
         /// </summary>
         /// <param name="channel"></param>
-        /// <param name="nf"></param>
+        /// <param name="nf">Don't focus this new window</param>
         /// <returns></returns>
         public Channel WindowCreateNewJoin(string channel, bool nf = false)
         {

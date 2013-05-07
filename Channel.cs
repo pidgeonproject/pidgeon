@@ -142,7 +142,7 @@ namespace Client
                 {
                     return _Network.IsConnected;
                 }
-                return true;
+                return false;
             }
         }
         private bool destroyed = false;

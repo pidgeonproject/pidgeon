@@ -254,6 +254,12 @@ namespace Client
             return false;
         }
 
+        public virtual bool Reconnect()
+        {
+            Core.DebugLog("Reconnect() is not implemented");
+            return false;
+        }
+
         /// <summary>
         /// Parse a command
         /// </summary>
@@ -319,6 +325,7 @@ namespace Client
             {
                 request.window.isChannel = true;
             }
+
             lock (Core._Main.WindowRequests)
             {
                 // Create a request to create this window
@@ -346,6 +353,15 @@ namespace Client
         public static string encode_text(string text)
         {
             return text.Replace("%", "%####%");
+        }
+
+        /// <summary>
+        /// Reconnect
+        /// </summary>
+        /// <param name="network"></param>
+        public virtual void ReconnectNetwork(Network network)
+        {
+            
         }
 
         /// <summary>

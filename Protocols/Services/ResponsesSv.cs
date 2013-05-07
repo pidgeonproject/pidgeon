@@ -88,6 +88,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Incoming raw
+            /// </summary>
+            /// <param name="curr"></param>
+            /// <param name="protocol"></param>
             public static void sRaw(XmlNode curr, ProtocolSv protocol)
             {
                 if (curr.InnerText == "PERMISSIONDENY")
@@ -113,8 +118,8 @@ namespace Client
             /// <summary>
             /// Status
             /// </summary>
-            /// <param name="curr">Node</param>
-            /// <param name="protocol">Protocol</param>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sStatus(XmlNode curr, ProtocolSv protocol)
             {
                 switch (curr.InnerText)
@@ -131,8 +136,8 @@ namespace Client
             /// <summary>
             /// Data
             /// </summary>
-            /// <param name="curr">Node</param>
-            /// <param name="protocol">Protocol</param>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sData(XmlNode curr, ProtocolSv protocol)
             {
                 long date = 0;
@@ -250,8 +255,8 @@ namespace Client
             /// <summary>
             /// Connect to irc network
             /// </summary>
-            /// <param name="curr"></param>
-            /// <param name="protocol"></param>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sConnect(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;
@@ -273,12 +278,22 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Global ident
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sGlobalident(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
                                 new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
             }
 
+            /// <summary>
+            /// Back log data
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sBacklog(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;
@@ -312,6 +327,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// global nick
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sGlobalNick(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.nick = curr.InnerText;
@@ -319,6 +339,11 @@ namespace Client
                     new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
             }
 
+            /// <summary>
+            /// network info
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sNetworkInfo(XmlNode curr, ProtocolSv protocol)
             {
                 bool connected = false;
@@ -349,6 +374,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Error
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sError(XmlNode curr, ProtocolSv protocol)
             {
                 string error = "Error ocurred on services: ";
@@ -379,6 +409,11 @@ namespace Client
                 protocol.SystemWindow.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
             }
 
+            /// <summary>
+            /// This is a parser for command which is received when services send us a list of networks
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sNetworkList(XmlNode curr, ProtocolSv protocol)
             {
                 if (curr.InnerText != "")
@@ -414,6 +449,9 @@ namespace Client
                             nw.Nickname = protocol.nick;
                             protocol.cache.Add(new Cache());
                             protocol.NetworkList.Add(nw);
+                            // we flag the network as connected until we really know that
+                            nw.flagConnection();
+                            // we ask for information about every channel on that network
                             Datagram response = new Datagram("CHANNELINFO");
                             response._InnerText = "LIST";
                             response.Parameters.Add("network", i);
@@ -421,6 +459,7 @@ namespace Client
                             Datagram request = new Datagram("BACKLOGSV");
                             request.Parameters.Add("network", i);
                             request.Parameters.Add("size", Configuration.Services.Depth.ToString());
+                            // we insert this network to a list of waiting networks
                             lock (protocol.WaitingNetw)
                             {
                                 protocol.WaitingNetw.Add(i);
@@ -476,11 +515,21 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Remove server
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sRemove(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.RemoveNetworkFromMemory(curr.InnerText);
             }
 
+            /// <summary>
+            /// Channel info
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)
             {
                 if (curr.InnerText == "")
@@ -638,6 +687,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Auth
+            /// </summary>
+            /// <param name="curr">XmlNode</param>
+            /// <param name="protocol">Protocol which owns this request</param>
             public static void sAuth(XmlNode curr, ProtocolSv protocol)
             {
                 if (curr.InnerText == "INVALID")

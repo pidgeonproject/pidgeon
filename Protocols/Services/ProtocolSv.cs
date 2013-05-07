@@ -598,6 +598,10 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Send a datagram to server
+        /// </summary>
+        /// <param name="message"></param>
         public void Deliver(Datagram message)
         {
             Send(message.ToDocumentXmlText());
