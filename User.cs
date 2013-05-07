@@ -68,6 +68,8 @@ namespace Client
         /// User away
         /// </summary>
         public bool Away = false;
+        public DateTime LastAwayCheck;
+        public DateTime AwayTime;
         private bool destroyed = false;
         /// <summary>
         /// This will return true in case object was requested to be disposed

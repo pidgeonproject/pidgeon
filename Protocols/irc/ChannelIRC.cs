@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Client
 {
@@ -83,6 +82,12 @@ namespace Client
                             {
                                 _user = new User(nick, host, _Network, ident, server);
                             }
+                            _user.LastAwayCheck = DateTime.Now;
+                            if (IsAway)
+                            {
+                                _user.AwayTime = DateTime.Now;
+                            }
+                            _user.Away = IsAway;
                             lock (channel.UserList)
                             {
                                 channel.UserList.Add(_user);
@@ -98,6 +103,12 @@ namespace Client
                                     u.Ident = ident;
                                     u.Host = host;
                                     u.Server = server;
+                                    u.LastAwayCheck = DateTime.Now;
+                                    if (!u.Away && IsAway)
+                                    {
+                                        u.AwayTime = DateTime.Now;
+                                    }
+                                    u.Away = IsAway;
                                     break;
                                 }
                             }

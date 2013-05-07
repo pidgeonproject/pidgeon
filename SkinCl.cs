@@ -46,6 +46,7 @@ namespace Client
         public System.Drawing.Color backgroundcolor;
         public System.Drawing.Color othercolor;
         public System.Drawing.Color colortalk;
+        public System.Drawing.Color coloraway;
         public string name = "Default";
         public System.Drawing.Color link;
         /// <summary>
@@ -159,6 +160,7 @@ namespace Client
             colorh = System.Drawing.Color.Cyan;
             colorv = System.Drawing.Color.LightGreen;
             colordefault = System.Drawing.Color.White;
+            coloraway = System.Drawing.Color.Gray;
             backgroundcolor = System.Drawing.Color.Black;
         }
 

@@ -1,7 +1,9 @@
 #!/bin/sh
 
 echo "Creating modules"
-mkdir "bin/Debug/modules"
+if [ ! -d "/bin/Debug/modules" ];then
+	mkdir "bin/Debug/modules" || exit 1
+fi
 original_path=`pwd`
 echo "Building tab completion"
 cd "modules/pidgeon_tc/pidgeon_tab/pidgeon_tab/"
