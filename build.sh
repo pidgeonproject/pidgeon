@@ -14,8 +14,10 @@ if [ ! -L manualpages ];then
 fi
 
 if [ "`uname`" = "Linux" ];then
-	mv Configuration.cs Configuration.cs.orig
-	cp Configuration.unix Configuration.cs
+	if [ ! -f Configuration.cs.orig ];then
+		mv Configuration.cs Configuration.cs.orig
+		cp Configuration.unix Configuration.cs
+	fi
 fi
 
 sh update.sh
@@ -35,6 +37,8 @@ fi
 
 if [ -f buildall.sh ];then
 	sh buildall.sh
+	else
+	echo "Warning: there is no extension configuration present"
 fi
 
 if [ -f Configuration.cs.orig ]; then
