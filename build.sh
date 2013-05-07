@@ -14,6 +14,7 @@ if [ ! -L manualpages ];then
 fi
 
 if [ "`uname`" = "Linux" ];then
+	mv Configuration.cs Configuration.cs.orig
 	cp Configuration.unix Configuration.cs
 fi
 
@@ -34,6 +35,10 @@ fi
 
 if [ -f buildall.sh ];then
 	sh buildall.sh
+fi
+
+if [ -f Configuration.cs.orig ]; then
+	mv Configuration.cs.orig Configuration.cs
 fi
 
 echo "Everything was built, you can start pidgeon by typing"
