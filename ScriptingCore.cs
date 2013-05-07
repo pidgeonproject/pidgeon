@@ -26,6 +26,10 @@ using System.Reflection;
 
 namespace Client
 {
+    /*
+    /// <summary>
+    /// Tcl api
+    /// </summary>
     public class TclAPI
     {
         [StructLayout(LayoutKind.Sequential)]
@@ -134,7 +138,6 @@ namespace Client
                     string ret = TclAPI.Tcl_GetStringFromObj(obj,ref len);
                     return ret;
                 }
-                */
                 return TclAPI.Tcl_GetStringResult(interp);
             }
         }
@@ -628,7 +631,6 @@ namespace Client
     /// </summary>
     public static class ScriptingCore
     {
-        private static bool working;
         private static System.Threading.Thread thread;
 
         private static void Exec()
@@ -692,4 +694,5 @@ namespace Client
             thread.Start();
         }
     }
+    */
 }

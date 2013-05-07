@@ -30,16 +30,6 @@ namespace Client
         /// <summary>
         /// Register a new plugin
         /// </summary>
-        /// <param name="plugin"></param>
-        /// <returns></returns>
-        public static bool RegisterPlugin(TclInterpreter plugin)
-        {
-            return false;
-        }
-
-        /// <summary>
-        /// Register a new plugin
-        /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
         public static bool RegisterPlugin(string path)

@@ -162,6 +162,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="Text">Text.</param>
+            /// <param name="SBAB">SBA.</param>
             public Line(string Text, RichTBox SBAB)
             {
                 if (SBAB == null)
@@ -171,17 +176,30 @@ namespace Client
                 CreateLine(Text, SBAB, SBAB.ForeColor);
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="Text">Text.</param>
+            /// <param name="SBAB">SBA.</param>
+            /// <param name="color">Color.</param>
             public Line(string Text, RichTBox SBAB, Color color)
             {
                 CreateLine(Text, SBAB, color);
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="SBAB">SBA.</param>
             public Line(RichTBox SBAB)
             {
                 text = new List<ContentText>();
                 foreColor = SBAB.foreColor;
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
             public Line()
             {
                 text = new List<ContentText>();

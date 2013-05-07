@@ -41,6 +41,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Client.Quassel_Parser"/> class.
+        /// </summary>
+        /// <param name="parent">Parent.</param>
+        /// <param name="input">Input.</param>
         public Quassel_Parser(ProtocolQuassel parent, string input)
         { 
             

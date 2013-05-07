@@ -23,6 +23,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Qt
+    /// </summary>
     public static class Qt
     {
         /// <summary>

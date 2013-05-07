@@ -26,6 +26,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Client
 {
+    /// <summary>
+    /// Protocol
+    /// </summary>
     [Serializable]
     public class ProtocolIrc : Protocol
     {
@@ -506,6 +509,10 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Reconnect network
+        /// </summary>
+        /// <param name="network"></param>
         public override void ReconnectNetwork(Network network)
         {
             if (IsConnected)

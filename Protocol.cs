@@ -254,6 +254,10 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Reconnect
+        /// </summary>
+        /// <returns></returns>
         public virtual bool Reconnect()
         {
             Core.DebugLog("Reconnect() is not implemented");
