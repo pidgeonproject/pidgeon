@@ -242,7 +242,6 @@ namespace Client
             if (!IsAlive)
             {
                 text = "[PARTED CHAN] ";
-
             }
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();

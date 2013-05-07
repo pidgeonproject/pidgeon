@@ -23,7 +23,7 @@ namespace Client
 {
     static class Program
     {
-        public static void ExceptionForm(GLib.UnhandledExceptionArgs e)
+        private static void ExceptionForm(GLib.UnhandledExceptionArgs e)
         {
             Core.handleException((Exception)e.ExceptionObject, true);
             Environment.Exit(2);
