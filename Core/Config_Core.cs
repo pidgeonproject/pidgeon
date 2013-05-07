@@ -208,6 +208,7 @@ namespace Client
                     make_comment(" ============= MISC ============= ", config, xmlnode);
                     make_node("formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
 
                     make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -539,6 +540,7 @@ namespace Client
                                                         Configuration.Window.Window_Maximized = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "timestamp.display":
+                                                    case "Configuration.Scrollback.chat_timestamp":
                                                         Configuration.Scrollback.chat_timestamp = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.UserData.nick":
@@ -601,19 +603,20 @@ namespace Client
                                                     case "logs.type":
                                                         Configuration.Logs.logs_name = curr.InnerText;
                                                         break;
-                                                    case "ignore.ctcp":
-                                                        Configuration.irc.DisplayCtcp = bool.Parse(curr.InnerText);
-                                                        break;
                                                     case "logs.html":
+                                                    case "Configuration.Logs.logs_html":
                                                         Configuration.Logs.logs_html = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "logs.dir":
+                                                    case "Configuration.Logs.logs_dir":
                                                         Configuration.Logs.logs_dir = curr.InnerText;
                                                         break;
                                                     case "logs.xml":
+                                                    case "Configuration.Logs.logs_xml":
                                                         Configuration.Logs.logs_xml = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "logs.txt":
+                                                    case "Configuration.Logs.logs_txt":
                                                         Configuration.Logs.logs_txt = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Scrollback.scrollback_plimit":
@@ -621,9 +624,11 @@ namespace Client
                                                         Configuration.Scrollback.scrollback_plimit = int.Parse(curr.InnerText);
                                                         break;
                                                     case "notification.tray":
+                                                    case "Configuration.Kernel.Notice":
                                                         Configuration.Kernel.Notice = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "pidgeon.size":
+                                                    case "Configuration.Services.Depth":
                                                         Configuration.Services.Depth = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.UserData.LastNick":
@@ -656,6 +661,7 @@ namespace Client
                                                         Configuration.Parser.Separators = temp;
                                                         break;
                                                     case "colors.changelinks":
+                                                    case "Configuration.Colors.ChangeLinks":
                                                         Configuration.Colors.ChangeLinks = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Kernel.Debugging":
@@ -671,6 +677,7 @@ namespace Client
                                                         Configuration.irc.mq = int.Parse(curr.InnerText);
                                                         break;
                                                     case "logs.services.log.type":
+                                                    case "Configuration.Logs.ServicesLogs":
                                                         Configuration.Logs.ServiceLogs type = Configuration.Logs.ServiceLogs.none;
                                                         switch (curr.InnerText.ToLower())
                                                         {
@@ -687,6 +694,7 @@ namespace Client
                                                         Configuration.Window.history = int.Parse(curr.InnerText);
                                                         break;
                                                     case "userdata.openlinkinbrowser":
+                                                    case "Configuration.UserData.OpenLinkInBrowser":
                                                         Configuration.UserData.OpenLinkInBrowser = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Parser.formatter":
@@ -702,9 +710,11 @@ namespace Client
                                                         Configuration.Memory.EnableSimpleViewCache = bool.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Search.Y":
+                                                    case "Configuration.Window.Search_Y":
                                                         Configuration.Window.Search_Y = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Search.X":
+                                                    case "Configuration.Window.Search_X":
                                                         Configuration.Window.Search_X = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Kernel.Profiler":
@@ -734,6 +744,8 @@ namespace Client
                                                         break;
                                                     case "SelectedLanguage":
                                                         Core.SelectedLanguage = curr.InnerText;
+                                                        break;
+                                                    case "Configuration.Media.NotificationSound":
                                                         break;
                                                 }
                                             }

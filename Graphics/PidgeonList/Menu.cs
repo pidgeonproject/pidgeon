@@ -149,15 +149,8 @@ namespace Client.Graphics
                         {
                             if (ServerList.ContainsKey(item))
                             {
-                                if (item.IsConnected)
-                                {
-                                    RemoveServer(item);
-                                    item.Disconnect();
-                                }
-                                else
-                                {
-                                    Core._Main.Chat.scrollback.InsertText("Not connected", ContentLine.MessageStyle.System, false);
-                                }
+                                RemoveServer(item);
+                                item.Disconnect();
                             }
                         }
                         break;

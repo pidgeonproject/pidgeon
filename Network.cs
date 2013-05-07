@@ -746,6 +746,11 @@ namespace Client
                 }
                 else if (_Protocol.GetType() == typeof(ProtocolIrc))
                 {
+                    if (!IsConnected)
+                    {
+                        SystemWindow.scrollback.InsertText("You need to be connected in order to disconnect", ContentLine.MessageStyle.System);
+                        return;
+                    }
                     _Protocol.Disconnect();
                 }
                 else
