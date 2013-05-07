@@ -100,17 +100,13 @@ namespace Client
         [NonSerialized]
         public NetworkMode ChannelMode = null;
         /// <summary>
-        /// Whether window needs to be redraw
+        /// Whether window needs to be redrawn
         /// </summary>
         public bool Redraw = false;
         /// <summary>
         /// If true the window is considered usable, in case it's false, the window is flagged as parted channel
         /// </summary>
         public bool ChannelWork = false;
-        /// <summary>
-        /// Tree node
-        /// </summary>
-        public Gtk.TreeIter TreeNode;
         /// <summary>
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>

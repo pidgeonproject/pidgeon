@@ -628,7 +628,6 @@ namespace Client.Graphics
                     {
                         ChannelList.Add(channel, text);
                     }
-                    channel.TreeNode = text;
                 }
             }
         }
