@@ -82,6 +82,7 @@ namespace Client.Forms
             this.lcheckbutton2.Active = Configuration.Logs.logs_html;
             this.checkButton_CTCP.Active = Configuration.irc.DisplayCtcp;
             this.checkButton_request.Active = Configuration.irc.ConfirmAll;
+            this.checkButton_Sounds.Active = Configuration.Media.NotificationSound;
             checkbutton1.Active = Configuration.Kernel.Notice;
             lentry2.Text = Configuration.Logs.logs_dir;
             lentry1.Text = Configuration.Logs.logs_name;
@@ -280,6 +281,7 @@ namespace Client.Forms
                 Configuration.Kernel.CheckUpdate = checkbutton2.Active;
                 Configuration.irc.DisplayCtcp = checkButton_CTCP.Active;
                 Configuration.Kernel.Notice = checkbutton1.Active;
+                Configuration.Media.NotificationSound = checkButton_Sounds.Active;
                 Configuration.Logs.logs_dir = lentry2.Text;
                 Configuration.Logs.logs_name = lentry1.Text;
                 Configuration.irc.FirewallCTCP = checkButton_BlockCtcp.Active;

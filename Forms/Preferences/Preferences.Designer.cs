@@ -82,6 +82,7 @@ namespace Client.Forms
         private global::Gtk.CheckButton checkButton_request;
         private global::Gtk.CheckButton checkButton_BlockCtcp;
         private global::Gtk.CheckButton checkButton_DisplayIcon;
+        private global::Gtk.CheckButton checkButton_Sounds;
 
         private Gtk.ListStore Highlights = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(Network.Highlighter));
         private Gtk.ListStore IgnoreDB = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(string), typeof(Ignoring.Ignore));
@@ -1168,6 +1169,15 @@ namespace Client.Forms
             w22.Position = 1;
             w22.Expand = false;
             w22.Fill = false;
+            this.checkButton_Sounds = new CheckButton("Enable sounds");
+            this.checkButton_Sounds.CanFocus = true;
+            this.checkButton_Sounds.Name = "request2";
+            this.checkButton_Sounds.DrawIndicator = true;
+            this.checkButton_Sounds.UseUnderline = true;
+            global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_Sounds]));
+            w24.Position = 1;
+            w24.Expand = false;
+            w24.Fill = false;
             this.GtkAlignment6.Add(vb01);
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();
