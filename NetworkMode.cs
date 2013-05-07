@@ -72,6 +72,10 @@ namespace Client
             _Parameter = parameter;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="Client.SimpleMode"/>.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Client.SimpleMode"/>.</returns>
         public override string ToString()
         {
             if (ContainsParameter)
@@ -106,6 +110,10 @@ namespace Client
         /// </summary>
         public ModeType _ModeType = ModeType.Network;
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="Client.NetworkMode"/>.
+        /// </summary>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Client.NetworkMode"/>.</returns>
         public override string ToString()
         {
             string _val = "";

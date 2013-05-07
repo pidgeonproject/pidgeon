@@ -25,6 +25,9 @@ using Gtk;
 
 namespace Client
 {
+    /// <summary>
+    /// Rich text box
+    /// </summary>
     public partial class RichTBox : Gtk.Bin
     {
         /// <summary>

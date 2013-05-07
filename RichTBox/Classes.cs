@@ -56,7 +56,13 @@ namespace Client
             /// Bold
             /// </summary>
             public bool Bold = false;
+            /// <summary>
+            /// Italic
+            /// </summary>
             public bool Italic = false;
+            /// <summary>
+            /// Underline
+            /// </summary>
             public bool Underline = false;
             /// <summary>
             /// Link
@@ -88,6 +94,9 @@ namespace Client
             /// Parts
             /// </summary>
             public List<ContentText> text = new List<ContentText>();
+            /// <summary>
+            /// Color
+            /// </summary>
             public Color foreColor = Color.Blue;
 
             /// <summary>
@@ -118,6 +127,10 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Convert to string
+            /// </summary>
+            /// <returns></returns>
             public override string ToString()
             {
                 string part = "";

@@ -631,7 +631,7 @@ namespace Client
         private static bool working;
         private static System.Threading.Thread thread;
 
-        public static void Exec()
+        private static void Exec()
         {
             try
             {
@@ -653,7 +653,7 @@ namespace Client
             }
         }
 
-        public static void GenerateInterp(TclInterpreter interp)
+        private static void GenerateInterp(TclInterpreter interp)
         {
             interp.registerObject(Configuration.ChannelModes.aggressive_bans, "configuration_aggressive_bans");
             interp.registerObject(Configuration.ChannelModes.aggressive_channel, "configuration_aggressive_channel");
@@ -683,7 +683,7 @@ namespace Client
             
         }
 
-        public static void Load()
+        private static void Load()
         {
             working = true;
             thread = new System.Threading.Thread(Exec);

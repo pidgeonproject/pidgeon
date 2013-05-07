@@ -22,10 +22,16 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Quassel parser
+    /// </summary>
     public class Quassel_Parser
     {
         private string Input = "";
 
+        /// <summary>
+        /// Process the message from quassel core
+        /// </summary>
         public void Proccess()
         {
             switch (Input)
