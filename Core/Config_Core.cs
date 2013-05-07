@@ -300,12 +300,12 @@ namespace Client
                     config.AppendChild(xmlnode);
 
                     make_comment(" ============= HISTORY ============= ", config, xmlnode);
-                    lock (Commands.aliases)
+                    lock (Configuration.UserData.History)
                     {
                         foreach (string Name in Configuration.UserData.History)
                         {
                             curr = config.CreateElement("history");
-                            curr.Value = Name;
+                            curr.InnerText = Name;
                             xmlnode.AppendChild(curr);
                         }
                     }
@@ -429,7 +429,7 @@ namespace Client
                                         {
                                             lock (Configuration.UserData.History)
                                             {
-                                                Configuration.UserData.History.Add(curr.Value);
+                                                Configuration.UserData.History.Add(curr.InnerText);
                                             }
                                         }
                                         if (curr.Name == "alias")

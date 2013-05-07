@@ -28,7 +28,7 @@ namespace Client.Forms
         /// <summary>
         /// New connection gtk dialog
         /// </summary>
-        public Connection () : base(Gtk.WindowType.Toplevel)
+        public Connection() : base(Gtk.WindowType.Toplevel)
         {
             this.Build ();
             messages.Localize(this);
@@ -73,13 +73,13 @@ namespace Client.Forms
             }
             lock (Configuration.UserData.History)
             {
-                if (!Configuration.UserData.History.Contains(comboboxentry1.ActiveText.ToLower()))
-                {
-                    Configuration.UserData.History.Add(comboboxentry1.ActiveText);
-                }
                 foreach (string nw in Configuration.UserData.History)
                 {
                     store2.AppendValues(nw);
+                }
+                if (!Configuration.UserData.History.Contains(comboboxentry1.ActiveText.ToLower()))
+                {
+                    Configuration.UserData.History.Add(comboboxentry1.ActiveText);
                 }
             }
             this.Title = messages.get("connection", Core.SelectedLanguage);
