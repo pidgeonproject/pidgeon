@@ -26,6 +26,9 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Client
 {
+    /// <summary>
+    /// Protocol
+    /// </summary>
     [Serializable]
     public class ProtocolIrc : Protocol
     {
@@ -56,7 +59,7 @@ namespace Client
         /// <summary>
         /// Stream reader for server
         /// </summary>
-        private System.IO.StreamReader _StreamReader;
+        private System.IO.StreamReader _StreamReader = null;
         /// <summary>
         /// Network associated with this connection (we have only 1 network in direct connection)
         /// </summary>
@@ -64,7 +67,7 @@ namespace Client
         /// <summary>
         /// Stream writer for server
         /// </summary>
-        private System.IO.StreamWriter _StreamWriter;
+        private System.IO.StreamWriter _StreamWriter = null;
         /// <summary>
         /// Messages
         /// </summary>
@@ -504,6 +507,26 @@ namespace Client
         {
             Transfer("NICK " + _Nick);
             return 0;
+        }
+
+        /// <summary>
+        /// Reconnect network
+        /// </summary>
+        /// <param name="network"></param>
+        public override void ReconnectNetwork(Network network)
+        {
+            if (IsConnected)
+            {
+                Disconnect();
+            }
+            if (main != null)
+            {
+                Core.killThread(main);
+            }
+            main = new System.Threading.Thread(Start);
+            Core._Main.Status("Connecting to server " + Server + " port " + Port.ToString());
+            main.Start();
+            Core.SystemThreads.Add(main);
         }
 
         /// <summary>

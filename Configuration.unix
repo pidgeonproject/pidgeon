@@ -102,6 +102,17 @@ namespace Client
         }
 
         /// <summary>
+        /// Sounds and video
+        /// </summary>
+        public class Media
+        {
+            /// <summary>
+            /// Play a sound on every note
+            /// </summary>
+            public static bool NotificationSound = false;
+        }
+
+        /// <summary>
         /// Configuration of IRC
         /// </summary>
         public class irc
@@ -185,6 +196,10 @@ namespace Client
             /// Last open connection was ssl or not
             /// </summary>
             public static bool LastSSL = false;
+            /// <summary>
+            /// History
+            /// </summary>
+            public static List<string> History = new List<string>();
         }
 
         /// <summary>

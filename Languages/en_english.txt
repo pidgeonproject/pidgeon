@@ -121,6 +121,10 @@ protocol-nick=$1 changed a nickname to $2;
 window-confirm=Do you really want to execute this:$1;
 command-wrong=This command requires $1 parameters;
 
+// Network
+
+network-reconnect-error-1=You can't reconnect a network you are still connected to, disconnect first;
+
 // Obsolete
 
 autocomplete-result=Multiple results found, refine your input please: $1;

@@ -44,6 +44,9 @@ namespace Client.GTK
         /// </summary>
         public string Text;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Client.GTK.Menu"/> class.
+        /// </summary>
         public Menu()
         { 
             Text = null;

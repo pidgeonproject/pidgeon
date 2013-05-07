@@ -56,7 +56,13 @@ namespace Client
             /// Bold
             /// </summary>
             public bool Bold = false;
+            /// <summary>
+            /// Italic
+            /// </summary>
             public bool Italic = false;
+            /// <summary>
+            /// Underline
+            /// </summary>
             public bool Underline = false;
             /// <summary>
             /// Link
@@ -88,6 +94,9 @@ namespace Client
             /// Parts
             /// </summary>
             public List<ContentText> text = new List<ContentText>();
+            /// <summary>
+            /// Color
+            /// </summary>
             public Color foreColor = Color.Blue;
 
             /// <summary>
@@ -118,6 +127,10 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Convert to string
+            /// </summary>
+            /// <returns></returns>
             public override string ToString()
             {
                 string part = "";
@@ -149,6 +162,11 @@ namespace Client
                 }
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="Text">Text.</param>
+            /// <param name="SBAB">SBA.</param>
             public Line(string Text, RichTBox SBAB)
             {
                 if (SBAB == null)
@@ -158,17 +176,30 @@ namespace Client
                 CreateLine(Text, SBAB, SBAB.ForeColor);
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="Text">Text.</param>
+            /// <param name="SBAB">SBA.</param>
+            /// <param name="color">Color.</param>
             public Line(string Text, RichTBox SBAB, Color color)
             {
                 CreateLine(Text, SBAB, color);
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
+            /// <param name="SBAB">SBA.</param>
             public Line(RichTBox SBAB)
             {
                 text = new List<ContentText>();
                 foreColor = SBAB.foreColor;
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// </summary>
             public Line()
             {
                 text = new List<ContentText>();

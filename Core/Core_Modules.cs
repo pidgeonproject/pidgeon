@@ -18,27 +18,15 @@
 using System.IO;
 using System.Threading;
 using System.Net;
-using System.Windows.Forms;
 using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Client
 {
     public partial class Core
     {
-        /// <summary>
-        /// Register a new plugin
-        /// </summary>
-        /// <param name="plugin"></param>
-        /// <returns></returns>
-        public static bool RegisterPlugin(TclInterpreter plugin)
-        {
-            return false;
-        }
-
         /// <summary>
         /// Register a new plugin
         /// </summary>

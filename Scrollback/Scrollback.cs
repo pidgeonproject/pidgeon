@@ -385,30 +385,6 @@ namespace Client
             this.Destroy();
         }
 
-        public bool IncreaseOffset()
-        {
-            if (scrollback_max < ContentLines.Count)
-            {
-                scrollback_max += Configuration.Scrollback.DynamicSize;
-                Changed = true;
-                Reload();
-                return true;
-            }
-            return false;
-        }
-
-        public bool RestoreOffset()
-        {
-            if (scrollback_max != Configuration.Scrollback.scrollback_plimit)
-            {
-                scrollback_max = Configuration.Scrollback.scrollback_plimit;
-                Changed = true;
-                Reload();
-                return true;
-            }
-            return false;
-        }
-
         private bool timer2_Tick()
         {
             try

@@ -18,6 +18,9 @@
 
 namespace Client
 {
+    /// <summary>
+    /// This class is responsible for extension handling
+    /// </summary>
     partial class Recovery
     {
         /// <summary>

@@ -17,11 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
-using System.Linq;
 using Gtk;
 
 namespace Client.Forms
@@ -501,6 +497,10 @@ namespace Client.Forms
         {
             try
             {
+                if (time == null)
+                {
+                    return "Unable to read: NULL";
+                }
                 double unixtimestmp = double.Parse(time);
                 return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
             }

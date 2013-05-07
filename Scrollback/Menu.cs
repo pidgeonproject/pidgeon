@@ -109,8 +109,13 @@ namespace Client
         /// The copy link to clipboard tool strip menu item.
         /// </summary>
         public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
+        /// <summary>
+        /// Join menu
+        /// </summary>
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
-
+        /// <summary>
+        /// Currently selected user
+        /// </summary>
         public string SelectedUser = null;
 
         private bool CreatingMenu = false;

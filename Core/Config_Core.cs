@@ -18,12 +18,10 @@
 using System.IO;
 using System.Threading;
 using System.Net;
-using System.Windows.Forms;
 using System.Xml;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Text;
 
 namespace Client
 {
@@ -299,6 +297,18 @@ namespace Client
                     }
                     config.AppendChild(xmlnode);
 
+                    make_comment(" ============= HISTORY ============= ", config, xmlnode);
+                    lock (Configuration.UserData.History)
+                    {
+                        foreach (string Name in Configuration.UserData.History)
+                        {
+                            curr = config.CreateElement("history");
+                            curr.InnerText = Name;
+                            xmlnode.AppendChild(curr);
+                        }
+                    }
+                    config.AppendChild(xmlnode);
+
                     make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
                     lock (Ignoring.IgnoreList)
                     {
@@ -391,6 +401,10 @@ namespace Client
                         {
                             NetworkData.Networks.Clear();
                         }
+                        lock (Configuration.UserData.History)
+                        {
+                            Configuration.UserData.History.Clear();
+                        }
                         Commands.ClearAliases();
                         foreach (XmlNode node in configuration.ChildNodes)
                         {
@@ -408,6 +422,13 @@ namespace Client
                                         {
                                             Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
                                             continue;
+                                        }
+                                        if (curr.Name == "history")
+                                        {
+                                            lock (Configuration.UserData.History)
+                                            {
+                                                Configuration.UserData.History.Add(curr.InnerText);
+                                            }
                                         }
                                         if (curr.Name == "alias")
                                         {

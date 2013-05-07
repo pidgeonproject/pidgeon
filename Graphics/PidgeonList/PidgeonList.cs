@@ -84,13 +84,17 @@ namespace Client.Graphics
         /// </summary>
         public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
         /// <summary>
-        /// Menu
+        /// join menu
         /// </summary>
         public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         /// <summary>
-        /// Menu
+        /// disconnect menu
         /// </summary>
         public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
+        /// <summary>
+        /// Reconnect menu
+        /// </summary>
+        public GTK.Menu reconnectToolStripMenuItem = new GTK.Menu("Reconnect");
         private object ObjectStore = null;
         private TreeIter IterStore;
         private bool ResultStore = true;
@@ -535,8 +539,15 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(user._Network))
                 {
-                    //text.ImageIndex = 4;
-                    TreeIter text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at);
+                    TreeIter text;
+                    if (user._Network.IsConnected)
+                    {
+                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at);
+                    }
+                    else
+                    {
+                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at2);
+                    }
                     TreePath path = tv.Model.GetPath(ServerList[user._Network]);
                     tv.ExpandRow(path, true);
 
@@ -599,7 +610,17 @@ namespace Client.Graphics
             {
                 if (ServerList.ContainsKey(channel._Network))
                 {
-                    TreeIter text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel, ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
+                    TreeIter text;
+                    if (channel.IsAlive)
+                    {
+                        text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
+                            ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
+                    }
+                    else
+                    {
+                        text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
+                            ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_02);
+                    }
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
 
@@ -607,7 +628,6 @@ namespace Client.Graphics
                     {
                         ChannelList.Add(channel, text);
                     }
-                    channel.TreeNode = text;
                 }
             }
         }
@@ -785,7 +805,8 @@ namespace Client.Graphics
                     }
 
                     Updated = true;
-                    removed = RemoveServer(network);
+                    removed = true;
+                    RemoveServer(network);
                     break;
                 case ItemType.User:
                     User user = (User)Item;

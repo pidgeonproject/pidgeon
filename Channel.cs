@@ -100,17 +100,13 @@ namespace Client
         [NonSerialized]
         public NetworkMode ChannelMode = null;
         /// <summary>
-        /// Whether window needs to be redraw
+        /// Whether window needs to be redrawn
         /// </summary>
         public bool Redraw = false;
         /// <summary>
         /// If true the window is considered usable, in case it's false, the window is flagged as parted channel
         /// </summary>
         public bool ChannelWork = false;
-        /// <summary>
-        /// Tree node
-        /// </summary>
-        public Gtk.TreeIter TreeNode;
         /// <summary>
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>
@@ -142,7 +138,7 @@ namespace Client
                 {
                     return _Network.IsConnected;
                 }
-                return true;
+                return false;
             }
         }
         private bool destroyed = false;
@@ -205,9 +201,16 @@ namespace Client
         public void ReloadBans()
         {
             parsing_bans = true;
-            lock (Bans)
+            if (Bans == null)
             {
-                Bans.Clear();
+                Bans = new List<SimpleBan>();
+            }
+            else
+            {
+                lock (Bans)
+                {
+                    Bans.Clear();
+                }
             }
             _Network.Transfer("MODE " + Name + " +b");
         }
@@ -235,7 +238,6 @@ namespace Client
             if (!IsAlive)
             {
                 text = "[PARTED CHAN] ";
-
             }
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();

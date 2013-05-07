@@ -598,6 +598,10 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// Send a datagram to server
+        /// </summary>
+        /// <param name="message"></param>
         public void Deliver(Datagram message)
         {
             Send(message.ToDocumentXmlText());
@@ -629,6 +633,13 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Self
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="to"></param>
+        /// <param name="_priority"></param>
+        /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
             Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
@@ -636,6 +647,15 @@ namespace Client
             return 0;
         }
 
+        /// <summary>
+        /// Send a message to network
+        /// </summary>
+        /// <param name="text">Text of message</param>
+        /// <param name="to">Who is supposed to receive it</param>
+        /// <param name="network">Network where it is sent</param>
+        /// <param name="_priority">Priority</param>
+        /// <param name="pmsg">Whether it is supposed to be considered a private message</param>
+        /// <returns></returns>
         public override int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
         {
             Datagram message = new Datagram("MESSAGE", text);
@@ -799,6 +819,9 @@ namespace Client
             /// Waiting for a password
             /// </summary>
             WaitingPW,
+            /// <summary>
+            /// Everything work
+            /// </summary>
             Connected,
         }
     }
