@@ -17,10 +17,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
 using System.Data;
-using System.Text;
 using Gtk;
 
 namespace Client.Forms
@@ -1178,6 +1175,7 @@ namespace Client.Forms
             w24.Position = 1;
             w24.Expand = false;
             w24.Fill = false;
+            this.vb01.Add(checkButton_Sounds);
             this.GtkAlignment6.Add(vb01);
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();
