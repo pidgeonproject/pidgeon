@@ -50,11 +50,11 @@ namespace Client
             return directory;
         }
 
-        private static string _getFileName(Graphics.Window owner, string directory)
+        private static string _getFileName(Graphics.Window owner, string directory, DateTime time)
         {
             string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
                 Path.DirectorySeparatorChar + owner.WindowName + Path.DirectorySeparatorChar + 
-                DateTime.Now.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
+                time.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
             return name;
         }
 
@@ -65,7 +65,7 @@ namespace Client
         /// <param name="InputStyle"></param>
         /// <param name="owner"></param>
         /// <param name="directory"></param>
-        public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory)
+        public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory, DateTime time)
         {
             try
             {
@@ -86,22 +86,22 @@ namespace Client
                     string stamp = "";
                     if (Configuration.Scrollback.chat_timestamp)
                     {
-                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
+                        stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText(stamp + Protocol.decode_text(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory) + ".txt");
+                    Core.IO.InsertText(stamp + Protocol.decode_text(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory, time) + ".txt");
                 }
                 if (Configuration.Logs.logs_html)
                 {
                     string stamp = "";
                     if (Configuration.Scrollback.chat_timestamp)
                     {
-                        stamp = Configuration.Scrollback.format_date.Replace("$1", DateTime.Now.ToString(Configuration.Scrollback.timestamp_mask));
+                        stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.decode_text(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory) + ".html");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.decode_text(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
                 }
                 if (Configuration.Logs.logs_xml)
                 {
-                    Core.IO.InsertText("<line time=\"" + DateTime.Now.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.decode_text(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory) + ".xml");
+                    Core.IO.InsertText("<line time=\"" + time.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.decode_text(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory, time) + ".xml");
                 }
             }
             catch (Exception fail)

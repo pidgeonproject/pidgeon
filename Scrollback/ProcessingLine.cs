@@ -18,13 +18,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
+using System.Drawing;
 using System.Text;
+using System.Threading;
+using System.Linq;
 using System.IO;
 using System.Data;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Linq;
 
 namespace Client
 {
@@ -378,7 +377,7 @@ namespace Client
 
             if (WriteLog == true && owner != null && owner._Network != null)
             {
-                LineLogs.Log(text, InputStyle, owner, LogfilePath);
+                LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
             }
 
             Changed = true;
