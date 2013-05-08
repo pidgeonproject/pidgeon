@@ -17,8 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Text;
 
 namespace Client
 {
@@ -61,35 +59,6 @@ namespace Client
         /// List of all loaded data
         /// </summary>
         public static Dictionary<string, container> data = new Dictionary<string, container>();
-
-        private static List<Control> GetControls(Control form)
-        {
-            var controlList = new List<Control>();
-
-            foreach (Control childControl in form.Controls)
-            {
-                // Recurse child controls.
-                controlList.AddRange(GetControls(childControl));
-                controlList.Add(childControl);
-            }
-            return controlList;
-        }
-
-        private static List<ToolStripMenuItem> GetMenu(ToolStripMenuItem form)
-        {
-            var controlList = new List<ToolStripMenuItem>();
-
-            foreach (ToolStripItem childControl in form.DropDownItems)
-            {
-                // Recurse child controls.
-                if (typeof(ToolStripMenuItem) == childControl.GetType())
-                {
-                    controlList.AddRange(GetMenu((ToolStripMenuItem)childControl));
-                    controlList.Add((ToolStripMenuItem)childControl);
-                }
-            }
-            return controlList;
-        }
 
         /// <summary>
         /// Convert a text to localized version
@@ -239,6 +208,13 @@ namespace Client
                         text = "";
                         break;
                     default:
+                        if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
+                        {
+                            if (System.IO.File.Exists(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + text))
+                            {
+                                text = System.IO.File.ReadAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + text);
+                            }
+                        }
                         return "invalid language: " + language;
                 }
                 string value = parse(text, item);
