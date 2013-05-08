@@ -746,6 +746,7 @@ namespace Client
                                                         Core.SelectedLanguage = curr.InnerText;
                                                         break;
                                                     case "Configuration.Media.NotificationSound":
+                                                        Configuration.Media.NotificationSound = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }
