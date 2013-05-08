@@ -1,7 +1,7 @@
 #!/bin/sh
 
 echo "Creating modules"
-if [ ! -d "/bin/Debug/modules" ];then
+if [ ! -d "bin/Debug/modules" ];then
 	mkdir "bin/Debug/modules" || exit 1
 fi
 original_path=`pwd`
