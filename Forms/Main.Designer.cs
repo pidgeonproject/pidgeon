@@ -21,216 +21,202 @@ namespace Client.Forms
     public partial class Main
     {
         /// <summary>
-        /// ??
+        /// File menu
         /// </summary>
-        public global::Gtk.UIManager UIManager;
+        public Gtk.Menu FileMenu = new Gtk.Menu();
         /// <summary>
         /// The file action.
         /// </summary>
-        public global::Gtk.Action FileAction;
+        public Gtk.MenuItem FileAction;
         /// <summary>
         /// The shut down action.
         /// </summary>
-        public global::Gtk.Action ShutDownAction;
+        public Gtk.MenuItem ShutDownAction;
+        /// <summary>
+        /// Tools menu
+        /// </summary>
+        public Gtk.Menu ToolsMenu = new Gtk.Menu();
         /// <summary>
         /// The tools action.
         /// </summary>
-        public global::Gtk.Action ToolsAction;
+        public Gtk.MenuItem ToolsAction;
+        /// <summary>
+        /// Misc
+        /// </summary>
+        public Gtk.Menu MiscMenu = new Gtk.Menu();
         /// <summary>
         /// The misc action.
         /// </summary>
-        public global::Gtk.Action MiscAction;
+        public Gtk.MenuItem MiscAction;
+        /// <summary>
+        /// Show menu
+        /// </summary>
+        public Gtk.Menu ShowMenu = new Gtk.Menu();
         /// <summary>
         /// The show action.
         /// </summary>
-        public global::Gtk.Action ShowAction;
-        /// <summary>
-        /// The user action.
-        /// </summary>
-        public global::Gtk.Action UserAction;
+        public Gtk.MenuItem ShowAction;
         /// <summary>
         /// The help action.
         /// </summary>
-        public global::Gtk.Action HelpAction;
+        public Gtk.MenuItem HelpAction;
         /// <summary>
         /// The about action.
         /// </summary>
-        public global::Gtk.Action AboutAction;
+        public Gtk.MenuItem AboutAction;
         /// <summary>
         /// The contents action.
         /// </summary>
-        public global::Gtk.Action ContentsAction;
+        public Gtk.MenuItem ContentsAction;
+        /// <summary>
+        /// Help menu
+        /// </summary>
+        public Gtk.Menu HelpMenu = new Gtk.Menu();
         /// <summary>
         /// The root action.
         /// </summary>
-        public global::Gtk.Action RootAction;
+        public Gtk.MenuItem RootAction;
         /// <summary>
         /// The search action.
         /// </summary>
-        public global::Gtk.Action SearchAction;
+        public Gtk.MenuItem SearchAction;
         /// <summary>
         /// The configuration file action.
         /// </summary>
-        public global::Gtk.Action ConfigurationFileAction;
+        public Gtk.MenuItem ConfigurationFileAction;
         /// <summary>
         /// The open new connection action.
         /// </summary>
-        public global::Gtk.Action OpenNewConnectionAction;
-        /// <summary>
-        /// The open new connection action1.
-        /// </summary>
-        public global::Gtk.Action OpenNewConnectionAction1;
+        public Gtk.MenuItem OpenNewConnectionAction;
         /// <summary>
         /// The favorite networks action.
         /// </summary>
-        public global::Gtk.Action FavoriteNetworksAction;
+        public Gtk.MenuItem FavoriteNetworksAction;
         /// <summary>
         /// The preferences action.
         /// </summary>
-        public global::Gtk.Action PreferencesAction;
+        public Gtk.MenuItem PreferencesAction;
         /// <summary>
         /// The packet viewer action.
         /// </summary>
-        public global::Gtk.Action PacketViewerAction;
+        public Gtk.MenuItem PacketViewerAction;
         /// <summary>
         /// The skin editor action.
         /// </summary>
-        public global::Gtk.Action SkinEditorAction;
+        public Gtk.MenuItem SkinEditorAction;
         /// <summary>
         /// The small chat action.
         /// </summary>
-        public global::Gtk.Action SmallChatAction;
+        public Gtk.MenuItem SmallChatAction;
         /// <summary>
         /// The attach to micro chat action.
         /// </summary>
-        public global::Gtk.Action AttachToMicroChatAction;
+        public Gtk.MenuItem AttachToMicroChatAction;
         /// <summary>
         /// The detach from micro chat action.
         /// </summary>
-        public global::Gtk.Action DetachFromMicroChatAction;
-        /// <summary>
-        /// The load text to scrollback action.
-        /// </summary>
-        public global::Gtk.Action LoadTextToScrollbackAction;
+        public Gtk.MenuItem DetachFromMicroChatAction;
         /// <summary>
         /// The load more to scrollback action.
         /// </summary>
-        public global::Gtk.Action LoadMoreToScrollbackAction;
+        public Gtk.MenuItem LoadMoreToScrollbackAction;
         /// <summary>
         /// The vbox3.
         /// </summary>
-        public global::Gtk.VBox vbox3;
+        public Gtk.VBox vbox3;
         /// <summary>
         /// The menubar2.
         /// </summary>
-        public global::Gtk.MenuBar menubar2;
+        public Gtk.MenuBar menubar2;
         /// <summary>
         /// The hpaned1.
         /// </summary>
-        public global::Gtk.HPaned hpaned1;
+        public Gtk.HPaned hpaned1;
         /// <summary>
         /// The pidgeonlist1.
         /// </summary>
-        public global::Client.Graphics.PidgeonList pidgeonlist1;
+        public Client.Graphics.PidgeonList pidgeonlist1;
         /// <summary>
         /// The tool strip.
         /// </summary>
-        public global::Gtk.Statusbar toolStrip;
+        public Gtk.Statusbar toolStrip;
         /// <summary>
         /// The tool strip status network.
         /// </summary>
-        public global::Gtk.Label toolStripStatusNetwork;
+        public Gtk.Label toolStripStatusNetwork;
         /// <summary>
         /// The tool strip status channel.
         /// </summary>
-        public global::Gtk.Label toolStripStatusChannel;
+        public Gtk.Label toolStripStatusChannel;
         /// <summary>
         /// The tool strip info.
         /// </summary>
-        public global::Gtk.Label toolStripInfo;
+        public Gtk.Label toolStripInfo;
         /// <summary>
         /// The tool strip progress bar1.
         /// </summary>
-        public global::Gtk.ProgressBar toolStripProgressBar1;
+        public Gtk.ProgressBar toolStripProgressBar1;
 
         private void Build()
         {
             global::Stetic.Gui.Initialize(this);
+            this.menubar2 = new Gtk.MenuBar();
             // Widget Client.Forms.Main
-            this.UIManager = new global::Gtk.UIManager();
-            global::Gtk.ActionGroup w1 = new global::Gtk.ActionGroup("Default");
-            this.FileAction = new global::Gtk.Action("FileAction", messages.Localize("[[window-menu-file]]"), null, null);
-            this.FileAction.ShortLabel = "File";
-            w1.Add(this.FileAction, "<Alt>f");
-            this.ShutDownAction = new global::Gtk.Action("ShutDownAction", messages.Localize("[[window-menu-quit]]"), null, null);
-            this.ShutDownAction.ShortLabel = "Shut down";
-            w1.Add(this.ShutDownAction, null);
-            this.ToolsAction = new global::Gtk.Action("ToolsAction", messages.Localize("[[window-menu-tools]]"), null, null);
-            this.ToolsAction.ShortLabel = "Tools";
-            w1.Add(this.ToolsAction, "<Alt>t");
-            this.MiscAction = new global::Gtk.Action("MiscAction", messages.Localize("[[window-menu-misc]]"), null, null);
-            this.MiscAction.ShortLabel = "Misc";
-            w1.Add(this.MiscAction, null);
-            this.ShowAction = new global::Gtk.Action("ShowAction", messages.Localize("[[window-menu-show]]"), null, null);
-            this.ShowAction.ShortLabel = "Show";
-            w1.Add(this.ShowAction, null);
-            this.UserAction = new global::Gtk.Action("UserAction", messages.Localize("[[window-menu-user]]"), null, null);
-            this.UserAction.ShortLabel = "User";
-            this.UserAction.Visible = false;
-            w1.Add(this.UserAction, null);
-            this.HelpAction = new global::Gtk.Action("HelpAction", messages.Localize("[[window-menu-help]]"), null, null);
-            this.HelpAction.ShortLabel = "Help";
-            w1.Add(this.HelpAction, null);
-            this.AboutAction = new global::Gtk.Action("AboutAction", messages.Localize("[[window-menu-about]]"), null, null);
-            this.AboutAction.ShortLabel = "About";
-            w1.Add(this.AboutAction, null);
-            this.ContentsAction = new global::Gtk.Action("ContentsAction", messages.Localize("[[window-menu-contents]]"), null, null);
-            this.ContentsAction.ShortLabel = "Help";
-            w1.Add(this.ContentsAction, "F1");
-            this.RootAction = new global::Gtk.Action("RootAction", messages.Localize("[[window-menu-root]]"), null, null);
-            this.RootAction.ShortLabel = "Root";
-            w1.Add(this.RootAction, null);
-            this.SearchAction = new global::Gtk.Action("SearchAction", messages.Localize("[[window-menu-search]]"), null, null);
-            this.SearchAction.ShortLabel = "Search";
-            w1.Add(this.SearchAction, "<Primary>f");
-            this.ConfigurationFileAction = new global::Gtk.Action("ConfigurationFileAction", messages.Localize("[[window-menu-cf]]"), null, null);
-            this.ConfigurationFileAction.ShortLabel = "Configuration file";
-            w1.Add(this.ConfigurationFileAction, null);
-            this.OpenNewConnectionAction = new global::Gtk.Action("OpenNewConnectionAction", "Open new connection", null, null);
-            this.OpenNewConnectionAction.ShortLabel = "Open new connection";
-            w1.Add(this.OpenNewConnectionAction, null);
-            this.OpenNewConnectionAction1 = new global::Gtk.Action("OpenNewConnectionAction1", "Open new connection", null, null);
-            this.OpenNewConnectionAction1.ShortLabel = "Open new connection";
-            w1.Add(this.OpenNewConnectionAction1, "<Alt>n");
-            this.FavoriteNetworksAction = new global::Gtk.Action("FavoriteNetworksAction", "Favorite networks", null, null);
-            this.FavoriteNetworksAction.ShortLabel = "Favorite networks";
-            w1.Add(this.FavoriteNetworksAction, null);
-            this.PreferencesAction = new global::Gtk.Action("PreferencesAction", "Preferences", null, null);
-            this.PreferencesAction.ShortLabel = "Preferences";
-            w1.Add(this.PreferencesAction, "<Alt>p");
-            this.PacketViewerAction = new global::Gtk.Action("PacketViewerAction", "Packet viewer", null, null);
-            this.PacketViewerAction.ShortLabel = "Packet viewer";
-            w1.Add(this.PacketViewerAction, "<Primary><Alt>p");
-            this.SkinEditorAction = new global::Gtk.Action("SkinEditorAction", "Skin editor", null, null);
-            this.SkinEditorAction.ShortLabel = "Skin editor";
-            w1.Add(this.SkinEditorAction, null);
-            this.SmallChatAction = new global::Gtk.Action("SmallChatAction", "Small chat", "Open a small window you can configure to contain a text from selected scrollbacks, so that you don't need to have large window open in order to watch channels", null);
-            this.SmallChatAction.ShortLabel = "Small chat";
-            w1.Add(this.SmallChatAction, null);
-            this.AttachToMicroChatAction = new global::Gtk.Action("AttachToMicroChatAction", "Attach to micro chat", null, null);
-            this.AttachToMicroChatAction.ShortLabel = "Attach to micro chat";
-            w1.Add(this.AttachToMicroChatAction, "<Alt>m");
-            this.DetachFromMicroChatAction = new global::Gtk.Action("DetachFromMicroChatAction", "Detach from micro chat", null, null);
-            this.DetachFromMicroChatAction.ShortLabel = "Detach from micro chat";
-            w1.Add(this.DetachFromMicroChatAction, "<Alt>d");
-            this.LoadTextToScrollbackAction = new global::Gtk.Action("LoadTextToScrollbackAction", "Load text to scrollback", null, null);
-            this.LoadTextToScrollbackAction.ShortLabel = "Load text to scrollback";
-            w1.Add(this.LoadTextToScrollbackAction, null);
-            this.LoadMoreToScrollbackAction = new global::Gtk.Action("LoadMoreToScrollbackAction", "Load more to scrollback", "This will load more text to scrollback from cache, by default scrollback contains only few lines for fast loading", null);
-            this.LoadMoreToScrollbackAction.ShortLabel = "Load more to scrollback";
-            w1.Add(this.LoadMoreToScrollbackAction, "<Primary>u");
-            this.UIManager.InsertActionGroup(w1, 0);
-            this.AddAccelGroup(this.UIManager.AccelGroup);
+            ////////////////////// FILE //////////////////////
+            FileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-file]]"));
+            FileAction.Submenu = this.FileMenu;
+            OpenNewConnectionAction = new Gtk.MenuItem("Open new connection");
+            FileAction.Submenu = this.FileMenu;
+            FileMenu.Append(OpenNewConnectionAction);
+            FileMenu.Append(new Gtk.SeparatorMenuItem());
+            FavoriteNetworksAction = new Gtk.MenuItem("Favorite networks");
+            FileMenu.Append(FavoriteNetworksAction);
+            FileMenu.Append(new Gtk.SeparatorMenuItem());
+            PreferencesAction = new Gtk.MenuItem("Preferences");
+            FileMenu.Append(PreferencesAction);
+            FileMenu.Append(new Gtk.SeparatorMenuItem());
+            ShutDownAction = new Gtk.MenuItem(messages.Localize("[[window-menu-quit]]"));
+            FileMenu.Append(ShutDownAction);
+            ////////////////////// TOOLS //////////////////////
+            ToolsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-tools]]"));
+            ToolsAction.Submenu = ToolsMenu;
+            PacketViewerAction = new Gtk.MenuItem("Packet viewer");
+            ToolsMenu.Append(PacketViewerAction);
+            SmallChatAction = new Gtk.MenuItem("Small chat");
+            ToolsMenu.Append(SmallChatAction);
+            ToolsMenu.Append(new Gtk.SeparatorMenuItem());
+            AttachToMicroChatAction = new Gtk.MenuItem("Attach to micro chat");
+            ToolsMenu.Append(AttachToMicroChatAction);
+            DetachFromMicroChatAction = new Gtk.MenuItem("Detach from micro chat");
+            ToolsMenu.Append(DetachFromMicroChatAction);
+            ////////////////////// MISC //////////////////////
+            MiscAction = new Gtk.MenuItem(messages.Localize("[[window-menu-misc]]"));
+            MiscAction.Submenu = MiscMenu;
+            SearchAction = new Gtk.MenuItem(messages.Localize("[[window-menu-search]]"));
+            MiscMenu.Append(SearchAction);
+            LoadMoreToScrollbackAction = new Gtk.MenuItem("Load more to scrollback");
+            MiscMenu.Append(LoadMoreToScrollbackAction);
+            MiscMenu.Append(new Gtk.SeparatorMenuItem());
+            ConfigurationFileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-cf]]"));
+            ////////////////////// SHOW //////////////////////
+            ShowAction = new Gtk.MenuItem(messages.Localize("[[window-menu-show]]"));
+            ShowAction.Submenu = ShowMenu;
+            RootAction = new Gtk.MenuItem(messages.Localize("[[window-menu-root]]"));
+            ShowMenu.Append(RootAction);
+            HelpAction = new Gtk.MenuItem(messages.Localize("[[window-menu-help]]"));
+            HelpAction.Submenu = HelpMenu;
+            MiscMenu.Append(ConfigurationFileAction);
+            AboutAction = new Gtk.MenuItem(messages.Localize("[[window-menu-about]]"));
+            ContentsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-contents]]"));
+            HelpMenu.Append(AboutAction);
+            FavoriteNetworksAction.Sensitive = false;
+            //SkinEditorAction = new Gtk.MenuItem("Skin editor");
+            HelpMenu.Append(ContentsAction);
+            menubar2.Add(this.FileAction);
+            menubar2.Add(this.ToolsAction);
+            menubar2.Add(this.MiscAction);
+            this.menubar2.Add(this.ShowAction);
+            this.menubar2.Add(this.HelpAction);
             this.Name = "Client.Forms.Main";
             this.Title = "Pidgeon Client";
             this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
@@ -240,8 +226,6 @@ namespace Client.Forms
             this.vbox3.Name = "vbox3";
             this.vbox3.Spacing = 6;
             // Container child vbox3.Gtk.Box+BoxChild
-            this.UIManager.AddUiFromString("<ui><menubar name='menubar2'><menu name='FileAction' action='FileAction'><menuitem name='OpenNewConnectionAction1' action='OpenNewConnectionAction1'/><separator/><menuitem name='FavoriteNetworksAction' action='FavoriteNetworksAction'/><separator/><menuitem name='PreferencesAction' action='PreferencesAction'/><separator/><menuitem name='ShutDownAction' action='ShutDownAction'/></menu><menu name='ToolsAction' action='ToolsAction'><menuitem name='PacketViewerAction' action='PacketViewerAction'/><menuitem name='SmallChatAction' action='SmallChatAction'/><separator/><menuitem name='AttachToMicroChatAction' action='AttachToMicroChatAction'/><menuitem name='DetachFromMicroChatAction' action='DetachFromMicroChatAction'/></menu><menu name='MiscAction' action='MiscAction'><menuitem name='SearchAction' action='SearchAction'/><menuitem name='LoadMoreToScrollbackAction' action='LoadMoreToScrollbackAction'/><separator/><menuitem name='ConfigurationFileAction' action='ConfigurationFileAction'/></menu><menu name='ShowAction' action='ShowAction'><menuitem name='RootAction' action='RootAction'/></menu><menu name='HelpAction' action='HelpAction'><menuitem name='AboutAction' action='AboutAction'/><menuitem name='ContentsAction' action='ContentsAction'/></menu></menubar></ui>");
-            this.menubar2 = ((global::Gtk.MenuBar)(this.UIManager.GetWidget("/menubar2")));
             this.menubar2.Name = "menubar2";
             this.vbox3.Add(this.menubar2);
             global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.vbox3[this.menubar2]));
@@ -314,7 +298,7 @@ namespace Client.Forms
             this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.Unshow);
             this.ShutDownAction.Activated += new global::System.EventHandler(this.shutDownToolStripMenuItem_Click);
             this.AboutAction.Activated += new global::System.EventHandler(this.aboutToolStripMenuItem_Click);
-            this.OpenNewConnectionAction1.Activated += new global::System.EventHandler(this.newConnectionToolStripMenuItem_Click_1);
+            this.OpenNewConnectionAction.Activated += new global::System.EventHandler(this.newConnectionToolStripMenuItem_Click_1);
             this.PreferencesAction.Activated += new global::System.EventHandler(this.preferencesToolStripMenuItem_Click);
             this.PacketViewerAction.Activated += new global::System.EventHandler(this.toolStripMenuItem3_Click);
             this.SmallChatAction.Activated += new global::System.EventHandler(this.taskbarBoxToolStripMenuItem_Click);

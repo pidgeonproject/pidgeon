@@ -275,7 +275,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
+                    WindowText(window, messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
                         Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
 
