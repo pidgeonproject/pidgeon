@@ -1,3 +1,4 @@
+REM; exit 0
 REM if defined ProgramFiles(x86) (
 PATH=%PATH%;%ProgramFiles(x86)%\Git\bin
 REM ) else (
