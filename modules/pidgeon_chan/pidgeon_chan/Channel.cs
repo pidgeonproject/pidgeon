@@ -47,6 +47,8 @@ namespace Client
             separator = new Gtk.SeparatorMenuItem();
             main.HelpMenu.Append(separator);
             main.HelpMenu.Append(item);
+            separator.Show();
+            item.Show();
             Core.DebugLog("Registered #pidgeon in menu");
         }
 
