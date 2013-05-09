@@ -161,11 +161,13 @@ namespace Client.Forms
         {
             global::Stetic.Gui.Initialize(this);
             this.menubar2 = new Gtk.MenuBar();
-            // Widget Client.Forms.Main
+            Gtk.AccelGroup agrp = new Gtk.AccelGroup ( );
+            this.AddAccelGroup (agrp);
             ////////////////////// FILE //////////////////////
             FileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-file]]"));
             FileAction.Submenu = this.FileMenu;
             OpenNewConnectionAction = new Gtk.MenuItem("Open new connection");
+            OpenNewConnectionAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.N, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             FileAction.Submenu = this.FileMenu;
             FileMenu.Append(OpenNewConnectionAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
@@ -181,20 +183,25 @@ namespace Client.Forms
             ToolsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-tools]]"));
             ToolsAction.Submenu = ToolsMenu;
             PacketViewerAction = new Gtk.MenuItem("Packet viewer");
+            PacketViewerAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.P, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(PacketViewerAction);
             SmallChatAction = new Gtk.MenuItem("Small chat");
             ToolsMenu.Append(SmallChatAction);
             ToolsMenu.Append(new Gtk.SeparatorMenuItem());
             AttachToMicroChatAction = new Gtk.MenuItem("Attach to micro chat");
+            AttachToMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.M, Gdk.ModifierType.ModifierMask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(AttachToMicroChatAction);
             DetachFromMicroChatAction = new Gtk.MenuItem("Detach from micro chat");
+            DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.ModifierMask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(DetachFromMicroChatAction);
             ////////////////////// MISC //////////////////////
             MiscAction = new Gtk.MenuItem(messages.Localize("[[window-menu-misc]]"));
             MiscAction.Submenu = MiscMenu;
             SearchAction = new Gtk.MenuItem(messages.Localize("[[window-menu-search]]"));
+            SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(SearchAction);
             LoadMoreToScrollbackAction = new Gtk.MenuItem("Load more to scrollback");
+            LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(LoadMoreToScrollbackAction);
             MiscMenu.Append(new Gtk.SeparatorMenuItem());
             ConfigurationFileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-cf]]"));
@@ -210,7 +217,7 @@ namespace Client.Forms
             ContentsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-contents]]"));
             HelpMenu.Append(AboutAction);
             FavoriteNetworksAction.Sensitive = false;
-            //SkinEditorAction = new Gtk.MenuItem("Skin editor");
+            ContentsAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F1, Gdk.ModifierType.None, Gtk.AccelFlags.Visible));
             HelpMenu.Append(ContentsAction);
             menubar2.Add(this.FileAction);
             menubar2.Add(this.ToolsAction);

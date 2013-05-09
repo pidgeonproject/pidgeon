@@ -213,7 +213,7 @@ namespace Client.Forms
             try
             {
                 messages.Localize(this);
-                SkinEditorAction.Sensitive = false;
+                //SkinEditorAction.Sensitive = false;
                 setText("");
                 if (Configuration.Window.Window_Maximized)
                 {
