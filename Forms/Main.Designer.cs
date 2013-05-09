@@ -189,10 +189,10 @@ namespace Client.Forms
             ToolsMenu.Append(SmallChatAction);
             ToolsMenu.Append(new Gtk.SeparatorMenuItem());
             AttachToMicroChatAction = new Gtk.MenuItem("Attach to micro chat");
-            AttachToMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.M, Gdk.ModifierType.ModifierMask, Gtk.AccelFlags.Visible));
+            AttachToMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.M, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(AttachToMicroChatAction);
             DetachFromMicroChatAction = new Gtk.MenuItem("Detach from micro chat");
-            DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.ModifierMask, Gtk.AccelFlags.Visible));
+            DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(DetachFromMicroChatAction);
             ////////////////////// MISC //////////////////////
             MiscAction = new Gtk.MenuItem(messages.Localize("[[window-menu-misc]]"));

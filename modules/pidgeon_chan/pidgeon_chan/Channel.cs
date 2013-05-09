@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Linq;
-using System.Text;
 
 namespace Client
 {
     public class RestrictedModule : Extension
     {
-        public ToolStripMenuItem item = null;
-        public ToolStripSeparator separator = null;
+        public Gtk.MenuItem item = null;
+        public Gtk.SeparatorMenuItem separator = null;
         private Forms.Main _m = null;
 
 
@@ -17,7 +14,7 @@ namespace Client
         {
             Name = "Help";
             Description = "This plugin enable you to open #pidgeon channel from help menu";
-            Version = "1.0.6";
+            Version = "1.2.0";
             base.Initialise();
         }
 
@@ -30,24 +27,14 @@ namespace Client
                     Core.DebugLog("No handle to main");
                     return false;
                 }
-                //lock (_m.helpToolStripMenuItem.DropDownItems)
-                //{
-                //    if (_m.helpToolStripMenuItem.DropDownItems.Contains(item))
-                //    {
-                //        _m.helpToolStripMenuItem.DropDownItems.Remove(item);
-                //    }
-                //    if (_m.helpToolStripMenuItem.DropDownItems.Contains(separator))
-                //    {
-                //        _m.helpToolStripMenuItem.DropDownItems.Remove(separator);
-                //    }
-                //}
-                //_m.menuStrip1.ResumeLayout(false);
-                //_m.menuStrip1.PerformLayout();
+
+                _m.HelpMenu.Remove(separator);
+                _m.HelpMenu.Remove(item);
                 return true;
             }
             catch (Exception fail)
             {
-                //Core.DebugLog(fail.ToString());
+                Core.handleException(fail);
                 return false;
             }
         }
@@ -55,17 +42,11 @@ namespace Client
         public override void Hook_Initialise(Forms.Main main)
         {
             _m = main;
-            item = new ToolStripMenuItem("#pidgeon");
-            item.Size = new System.Drawing.Size(200, 22);
-            item.Text = "#pidgeon";
-            item.Click += new EventHandler(pidgeonToolStripMenuItem_Click);
-            separator = new ToolStripSeparator();
-            separator.Size = new System.Drawing.Size(200, 22);
-            //main.helpToolStripMenuItem.DropDownItems.Add(separator);
-            //main.helpToolStripMenuItem.DropDownItems.Add(item);
-            //_m.menuStrip1.ResumeLayout(false);
-            //_m.menuStrip1.PerformLayout();
-            //_m.Refresh();
+            item = new Gtk.MenuItem("#pidgeon");
+            item.Activated += new EventHandler(pidgeonToolStripMenuItem_Click);
+            separator = new Gtk.SeparatorMenuItem();
+            main.HelpMenu.Append(separator);
+            main.HelpMenu.Append(item);
             Core.DebugLog("Registered #pidgeon in menu");
         }
 
@@ -73,7 +54,7 @@ namespace Client
         {
             foreach (Protocol network in Core.Connections)
             {
-                if (network.ProtocolType == 2)
+                if (network.GetType() == typeof(ProtocolSv))
                 {
                     ProtocolSv sv = (ProtocolSv)network;
                     foreach (Network server in sv.NetworkList)
