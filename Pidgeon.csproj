@@ -83,7 +83,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\en_english.txt" />
     <EmbeddedResource Include="Languages\cs_czech.txt" />
-    <EmbeddedResource Include="Resources\arrow.png" />
+    <None Include="Resources\arrow.png" />
     <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
       <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
     </EmbeddedResource>

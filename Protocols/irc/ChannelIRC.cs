@@ -43,7 +43,7 @@ namespace Client
             return false;
         }
 
-        private bool ParseUser(string[] code)
+        private bool ParseUser(string[] code, string realname)
         {
             if (code.Length > 8)
             {
@@ -52,6 +52,14 @@ namespace Client
                 string host = code[5];
                 string nick = code[7];
                 string server = code[6];
+                if (realname != null & realname.Length > 2)
+                {
+                    realname = realname.Substring(2);
+                }
+                else if (realname == "0 ")
+                {
+                    realname = "";
+                }
                 char mode = '\0';
                 bool IsAway = false;
                 if (code[8].Length > 0)
@@ -83,6 +91,7 @@ namespace Client
                                 _user = new User(nick, host, _Network, ident, server);
                             }
                             _user.LastAwayCheck = DateTime.Now;
+                            _user.RealName = realname;
                             if (IsAway)
                             {
                                 _user.AwayTime = DateTime.Now;
@@ -103,6 +112,7 @@ namespace Client
                                     u.Ident = ident;
                                     u.Host = host;
                                     u.Server = server;
+                                    u.RealName = realname;
                                     u.LastAwayCheck = DateTime.Now;
                                     if (!u.Away && IsAway)
                                     {

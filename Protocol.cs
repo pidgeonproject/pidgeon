@@ -140,7 +140,6 @@ namespace Client
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for connection to: " + Server);
-                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
 
@@ -365,7 +364,7 @@ namespace Client
         /// <param name="network"></param>
         public virtual void ReconnectNetwork(Network network)
         {
-            
+            Core.DebugLog("ReconnectNetwork(Network network) is not implemented");
         }
 
         /// <summary>

@@ -194,6 +194,9 @@ namespace Client
                         case "fontname":
                             localfont = curr.Value;
                             break;
+                        case "size":
+                            fontsize = float.Parse(curr.Value);
+                            break;
                     }
                 }
             }

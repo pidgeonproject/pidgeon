@@ -17,16 +17,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Client
 {
-    class ProtocolXmpp : Protocol
+    class ProtocolXmpp : IProtocol
     {
-        public string username = null;
-        public string password = null;
-
         public class Datagram
         {
             public Datagram(string Name, string Text = "")

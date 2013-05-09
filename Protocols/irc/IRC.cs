@@ -482,7 +482,7 @@ namespace Client
                                     }
                                     break;
                                 case "352":
-                                    if (ParseUser(code))
+                                    if (ParseUser(code, value))
                                     {
                                         return true;
                                     }

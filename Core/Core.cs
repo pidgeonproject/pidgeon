@@ -127,10 +127,17 @@ namespace Client
             }
         }
 
+        private static Thread KernelThread = null;
         /// <summary>
         /// Thread of core
         /// </summary>
-        public static Thread _KernelThread;
+        public static Thread _KernelThread
+        {
+            get
+            {
+                return KernelThread;
+            }
+        }
         /// <summary>
         /// Exact time of system load
         /// </summary>
@@ -214,7 +221,7 @@ namespace Client
         /// <summary>
         /// Path to skin
         /// </summary>
-        public static string SkinPath = "Skin";
+        public static string SkinPath = "skins";
         /// <summary>
         /// Packet scan
         /// </summary>
@@ -310,7 +317,7 @@ namespace Client
         {
             try
             {
-                _KernelThread = System.Threading.Thread.CurrentThread;
+                KernelThread = System.Threading.Thread.CurrentThread;
                 LoadTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;

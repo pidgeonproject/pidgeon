@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
 using System.Data;
 using System.Text;
 using Gtk;
@@ -34,7 +33,7 @@ namespace Client
         /// Pointer
         /// </summary>
         public Scrollback scrollback = null;
-        private Font font;
+        private System.Drawing.Font font;
         private string text = null;
         private System.Drawing.Color foreColor;
         private System.Drawing.Color backColor;
@@ -138,7 +137,7 @@ namespace Client
             this.Build();
             ForeColor = Configuration.CurrentSkin.colordefault;
             BackColor = Configuration.CurrentSkin.backgroundcolor;
-            font = new Font(Configuration.CurrentSkin.localfont, (float)Configuration.CurrentSkin.fontsize);
+            font = new System.Drawing.Font(Configuration.CurrentSkin.localfont, (float)Configuration.CurrentSkin.fontsize);
             DefaultFont.Family = Configuration.CurrentSkin.localfont;
         }
 

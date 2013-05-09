@@ -1171,11 +1171,11 @@ namespace Client.Forms
             this.checkButton_Sounds.Name = "request2";
             this.checkButton_Sounds.DrawIndicator = true;
             this.checkButton_Sounds.UseUnderline = true;
+            this.vb01.Add(checkButton_Sounds);
             global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.vb01[this.checkButton_Sounds]));
             w24.Position = 1;
             w24.Expand = false;
             w24.Fill = false;
-            this.vb01.Add(checkButton_Sounds);
             this.GtkAlignment6.Add(vb01);
             this.frame6.Add(this.GtkAlignment6);
             this.GtkLabel6 = new global::Gtk.Label();
