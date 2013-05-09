@@ -26,16 +26,25 @@ using System.Windows.Forms;
 
 namespace Client
 {
+    /// <summary>
+    /// Form
+    /// </summary>
     public partial class Updater : Form
     {
+        /// <summary>
+        /// Creates new instance of this updater
+        /// </summary>
         public Updater()
         {
             InitializeComponent();
         }
 
-        public static string info = "";
+        private static string info = "";
+        /// <summary>
+        /// Finalize
+        /// </summary>
         public bool finalize = false;
-        public static string temporarydir = "";
+        private static string temporarydir = "";
 
         private void Updater_Load(object sender, EventArgs e)
         {
@@ -69,6 +78,9 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Run
+        /// </summary>
         public static void Run()
         {
             try

@@ -42,6 +42,9 @@ namespace Client
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TextView richTextBox;
 
+        /// <summary>
+        /// Pointer
+        /// </summary>
         public Gtk.TextView textView
         {
             get
@@ -181,6 +184,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Reload text
+        /// </summary>
         public void RedrawText()
         {
             Redraw();

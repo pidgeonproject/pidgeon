@@ -68,7 +68,13 @@ namespace Client
         /// User away
         /// </summary>
         public bool Away = false;
+        /// <summary>
+        /// Check
+        /// </summary>
         public DateTime LastAwayCheck;
+        /// <summary>
+        /// Away time
+        /// </summary>
         public DateTime AwayTime;
         private bool destroyed = false;
         /// <summary>
@@ -245,7 +251,7 @@ namespace Client
         /// <returns></returns>
         public string ConvertToInfoString()
         {
-            if (RealName != null)
+            if (RealName != "" && RealName != null)
             {
                 return RealName + "\n" + ToString();
             }

@@ -22,20 +22,44 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Timer
+    /// </summary>
     public class Timer
     {
+        /// <summary>
+        /// Last
+        /// </summary>
         public class LastID
         {
+            /// <summary>
+            /// Last
+            /// </summary>
             public int last_id = 0;
         }
 
         private static LastID last = new LastID();
+        /// <summary>
+        /// Time
+        /// </summary>
         public int Time = 0;
+        /// <summary>
+        /// Command
+        /// </summary>
         public string Command = null;
+        /// <summary>
+        /// Running
+        /// </summary>
         public bool Running = false;
+        /// <summary>
+        /// Permanent
+        /// </summary>
         public bool Permanent = false;
         private Thread th;
 
+        /// <summary>
+        /// ID
+        /// </summary>
         public int ID
         {
             get
@@ -44,6 +68,12 @@ namespace Client
             }
         }
         private int id = 0;
+
+        /// <summary>
+        /// Creates a new timer
+        /// </summary>
+        /// <param name="_Time"></param>
+        /// <param name="_Command"></param>
         public Timer(int _Time, string _Command)
         {
             lock (last)
@@ -60,6 +90,9 @@ namespace Client
             Core.Ringlog("Created timer " + ID.ToString() + " executing " + Command);
         }
 
+        /// <summary>
+        /// Execute
+        /// </summary>
         public void Execute()
         {
             if (!Running)
@@ -96,7 +129,7 @@ namespace Client
             }
         }
 
-        public void Wait()
+        private void Wait()
         {
             try
             {

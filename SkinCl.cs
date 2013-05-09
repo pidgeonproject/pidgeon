@@ -25,41 +25,109 @@ using System.Data;
 
 namespace Client
 {
+    /// <summary>
+    /// Skin
+    /// </summary>
     public class Skin
     {
-        public System.Xml.XmlDocument data = new System.Xml.XmlDocument();
+        /// <summary>
+        /// Local font
+        /// </summary>
         public string localfont = "Arial";
+        /// <summary>
+        /// Font size
+        /// </summary>
         public float fontsize = 10;
+        /// <summary>
+        /// Join
+        /// </summary>
         public System.Drawing.Color joincolor;
+        /// <summary>
+        /// Kick
+        /// </summary>
         public System.Drawing.Color kickcolor;
+        /// <summary>
+        /// Everything
+        /// </summary>
         public System.Drawing.Color miscelancscolor;
+        /// <summary>
+        /// Hl
+        /// </summary>
         public System.Drawing.Color highlightcolor;
+        /// <summary>
+        /// Self
+        /// </summary>
         public System.Drawing.Color selfcolor;
+        /// <summary>
+        /// Nick
+        /// </summary>
         public System.Drawing.Color changenickcolor;
+        /// <summary>
+        /// Font
+        /// </summary>
         public System.Drawing.Color fontcolor;
+        /// <summary>
+        /// +h
+        /// </summary>
         public System.Drawing.Color colorh;
+        /// <summary>
+        /// Default
+        /// </summary>
         public System.Drawing.Color colordefault;
+        /// <summary>
+        /// +v
+        /// </summary>
         public System.Drawing.Color colorv;
+        /// <summary>
+        /// +q
+        /// </summary>
         public System.Drawing.Color colorq;
+        /// <summary>
+        /// +a
+        /// </summary>
         public System.Drawing.Color colora;
+        /// <summary>
+        /// +o
+        /// </summary>
         public System.Drawing.Color coloro;
+        /// <summary>
+        /// Bg
+        /// </summary>
         public System.Drawing.Color backgroundcolor;
+        /// <summary>
+        /// Other
+        /// </summary>
         public System.Drawing.Color othercolor;
+        /// <summary>
+        /// Color
+        /// </summary>
         public System.Drawing.Color colortalk;
+        /// <summary>
+        /// Color
+        /// </summary>
         public System.Drawing.Color coloraway;
-        public string name = "Default";
+        /// <summary>
+        /// Skin
+        /// </summary>
+        public string Name = "Default";
+        /// <summary>
+        /// Link
+        /// </summary>
         public System.Drawing.Color link;
         /// <summary>
         /// mIRC colors
         /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
+        /// <summary>
+        /// Italic
+        /// </summary>
         public bool italic;
         /// <summary>
         /// Spacing
         /// </summary>
         public int SBABOX_sp = 6;
 
-        public Color colorFromXmlCode(XmlNode code)
+        private Color colorFromXmlCode(XmlNode code)
         {
             Color color = Color.Black;
             try
@@ -76,11 +144,15 @@ namespace Client
             return color;
         }
 
+        /// <summary>
+        /// Creates a new skin
+        /// </summary>
+        /// <param name="path"></param>
         public Skin(string path)
         {
             Core.DebugLog("Loading skin " + path);
             Defaults();
-            name = path;
+            Name = path;
             if (File.Exists(path))
             {
                 XmlDocument configuration = new XmlDocument();
@@ -164,6 +236,9 @@ namespace Client
             backgroundcolor = System.Drawing.Color.Black;
         }
 
+        /// <summary>
+        /// Creates a new skin
+        /// </summary>
         public Skin()
         {
             Defaults();

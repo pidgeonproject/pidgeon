@@ -172,7 +172,7 @@ namespace Client
                     make_comment("Network sniffer", config, xmlnode);
                     make_node("sniffer", Configuration.Kernel.NetworkSniff.ToString(), curr, confname, config, xmlnode);
                     make_comment("Skin", config, xmlnode);
-                    make_node("skin", Configuration.CurrentSkin.name, curr, confname, config, xmlnode);
+                    make_node("skin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
                     make_comment("Whether color codes override the system color for links", config, xmlnode);
                     make_node("colors.changelinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
                     make_comment("Maximum size of scrollback in memory", config, xmlnode);

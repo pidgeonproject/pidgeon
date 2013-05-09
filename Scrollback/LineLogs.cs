@@ -65,6 +65,7 @@ namespace Client
         /// <param name="InputStyle"></param>
         /// <param name="owner"></param>
         /// <param name="directory"></param>
+        /// <param name="time"></param>
         public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory, DateTime time)
         {
             try

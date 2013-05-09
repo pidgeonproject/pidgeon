@@ -108,7 +108,7 @@ namespace Client.Forms
 
             foreach (Skin skin in Configuration.SL)
             {
-                sl.AppendValues(skin.name);
+                sl.AppendValues(skin.Name);
             }
             combobox1.Model = sl;
             combobox1.Active = 0;

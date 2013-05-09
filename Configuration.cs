@@ -262,6 +262,9 @@ namespace Client
             /// Minimal time for which the debug message is displayed
             /// </summary>
             public static int Profiler_Minimal = 0;
+            /// <summary>
+            /// Path of language data files
+            /// </summary>
             public static string Lang = "languages";
         }
 

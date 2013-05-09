@@ -326,6 +326,9 @@ namespace Client
                         case "SMESSAGE":
                             ResponsesSv.sMessage(curr, this);
                             break;
+                        case "SUSERLIST":
+                            ResponsesSv.sUserList(curr, this);
+                            break;
                         case "SLOAD":
                             ResponsesSv.sLoad(curr, this);
                             break;

@@ -321,6 +321,9 @@ namespace Client
             Reload(true);
         }
 
+        /// <summary>
+        /// Create this control, this function exist so that constructor can be called from a different thread
+        /// </summary>
         public void Create()
         {
             Build();
@@ -331,6 +334,9 @@ namespace Client
             Switch(true);
         }
 
+        /// <summary>
+        /// Reload simple
+        /// </summary>
         public void ReloadSimple()
         {
             lock (ContentLines)
@@ -349,6 +355,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Hide menu
+        /// </summary>
         public void HideLn()
         {
             mode1b2ToolStripMenuItem.Visible = false;

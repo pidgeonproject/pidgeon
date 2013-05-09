@@ -29,6 +29,9 @@ namespace Client
 {
     public partial class Recovery : Form
     {
+        /// <summary>
+        /// Creates new
+        /// </summary>
         public Recovery()
         {
             InitializeComponent();

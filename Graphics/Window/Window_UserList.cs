@@ -227,6 +227,11 @@ namespace Client.Graphics
             try
             {
                 User user = (User)model.GetValue(iter, 1);
+                if (user.Away)
+                {
+                    (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.coloraway);
+                    return;
+                }
                 switch (user.Status)
                 {
                     case User.ChannelStatus.Owner:

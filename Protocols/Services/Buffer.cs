@@ -24,6 +24,9 @@ using System.Xml.Serialization;
 
 namespace Client.Services
 {
+    /// <summary>
+    /// Stores info and packets to local disk so that they can be retrieved instead of downloading them
+    /// </summary>
     public class Buffer
     {
         /// <summary>
@@ -432,6 +435,11 @@ namespace Client.Services
                 target.scrollback.SortNeeded = Source.SortNeeded;
             }
 
+            /// <summary>
+            /// Channel from string
+            /// </summary>
+            /// <param name="name"></param>
+            /// <returns></returns>
             public ChannelInfo getChannel(string name)
             {
                 lock (_channels)
@@ -826,6 +834,11 @@ namespace Client.Services
             }
         }
 
+        /// <summary>
+        /// Write list
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="file"></param>
         public static void ListFile(List<string> list, string file)
         {
             StringBuilder data = new StringBuilder("");
@@ -836,6 +849,9 @@ namespace Client.Services
             File.WriteAllText(file, data.ToString());
         }
 
+        /// <summary>
+        /// Display information to current scrollback
+        /// </summary>
         public void PrintInfo()
         {
             if (Core._Main.Chat != null)

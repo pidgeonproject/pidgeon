@@ -1117,6 +1117,26 @@ namespace Client
         }
 
         /// <summary>
+        /// Convert the xml collection to dictionary
+        /// </summary>
+        /// <param name="collection"></param>
+        /// <returns></returns>
+        public static Dictionary<string, string> XmlCollectionToDict(XmlAttributeCollection collection)
+        {
+            Dictionary<string, string> data = new Dictionary<string, string>();
+            int curr = 0;
+            while (curr < collection.Count)
+            {
+                if (!data.ContainsKey(collection[curr].Name))
+                {
+                    data.Add(collection[curr].Name, collection[curr].Value);
+                }
+                curr++;
+            }
+            return data;
+        }
+
+        /// <summary>
         /// See the comments in recovery.cs for explanation how this work
         /// </summary>
         /// <param name="_exception"></param>

@@ -27,6 +27,9 @@ namespace Client
 {
     public partial class RichTBox : Gtk.Bin
     {
+        /// <summary>
+        /// This is a part of text in a line
+        /// </summary>
         public class ContentText
         {
             /// <summary>
@@ -163,7 +166,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="Text">Text.</param>
             /// <param name="SBAB">SBA.</param>
@@ -177,7 +180,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="Text">Text.</param>
             /// <param name="SBAB">SBA.</param>
@@ -188,7 +191,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="SBAB">SBA.</param>
             public Line(RichTBox SBAB)
@@ -198,7 +201,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox+Line"/> class.
+            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
             /// </summary>
             public Line()
             {

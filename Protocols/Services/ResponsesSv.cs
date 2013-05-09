@@ -196,7 +196,7 @@ namespace Client
 
                 ProcessorIRC processor = null;
 
-                if (backlog)
+                if (backlog || range)
                 {
                     if (Core._Main.DisplayingProgress == false)
                     {
@@ -577,7 +577,6 @@ namespace Client
                                                         xx.Topic = channel_info.Topic;
                                                         xx.TopicDate = channel_info.TopicDate;
                                                         xx.TopicUser = channel_info.TopicUser;
-
                                                     }
                                                 }
                                             }
@@ -678,13 +677,77 @@ namespace Client
                                         }
                                     }
                                 }
-
                             }
+                            Datagram response = new Datagram("USERLIST", "INFO");
+                            response.Parameters.Add("network", curr.Attributes[0].Value);
+                            response.Parameters.Add("channel", channel.Name);
+                            protocol.Deliver(response);
                             channel.redrawUsers();
                             channel.UpdateInfo();
                         }
                     }
                 }
+            }
+
+            /// <summary>
+            /// User list including all various information about user
+            /// </summary>
+            /// <param name="curr"></param>
+            /// <param name="protocol"></param>
+            public static void sUserList(XmlNode curr, ProtocolSv protocol)
+            {
+                Dictionary<string, string> userlist = Core.XmlCollectionToDict(curr.Attributes);
+                if (!userlist.ContainsKey("network"))
+                {
+                    Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                    return;
+                }
+                Network nw = protocol.retrieveNetwork(userlist["network"]);
+
+                if (nw == null)
+                {
+                    Core.DebugLog("Invalid network " + curr.Attributes["network"].Value);
+                    return;
+                }
+                
+                if (!userlist.ContainsKey("channel"))
+                {
+                    Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                    return;
+                }
+
+                Channel channel = nw.getChannel(userlist["channel"]);
+
+                int UserCount = int.Parse(userlist["uc"]);
+                int CurrentUser = 0;
+
+                while (CurrentUser < UserCount)
+                {
+                    if (!userlist.ContainsKey("nickname" + CurrentUser.ToString()))
+                    {
+                        Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                        return;
+                    }
+                    User user = channel.userFromName(userlist["nickname" + CurrentUser.ToString()]);
+
+                    if (user == null)
+                    {
+                        continue;
+                    }
+
+                    if (userlist.ContainsKey("away" + CurrentUser.ToString()))
+                    {
+                        user.Away = bool.Parse(userlist["away" + CurrentUser.ToString()]);
+                    }
+
+                    if (userlist.ContainsKey("realname" + CurrentUser.ToString()))
+                    {
+                        user.RealName = userlist["realname" + CurrentUser.ToString()];
+                    }
+                    CurrentUser++;
+                }
+
+                channel.redrawUsers();
             }
 
             /// <summary>
