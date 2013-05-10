@@ -311,15 +311,19 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
-            public static void UserPart(Network network, User user, Channel channel, string message)
+            public static bool UserPart(Network network, User user, Channel channel, string message)
             {
+                bool ok = true;
                 foreach (Extension extension in Core.Extensions)
                 {
                     try
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            extension.Hook_UserPart(network, user, channel, message);
+                            if (!extension.Hook_UserPart(network, user, channel, message))
+                            {
+                                ok = false;
+                            }
                         }
                     }
                     catch (Exception mf)
@@ -328,7 +332,7 @@ namespace Client
                         Core.handleException(mf);
                     }
                 }
-                return;
+                return ok;
             }
 
             /// <summary>
@@ -339,9 +343,9 @@ namespace Client
             /// <param name="kicker"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
-            public static void UserKick(Network network, User user, User kicker, Channel channel, string message)
+            public static bool UserKick(Network network, User user, User kicker, Channel channel, string message)
             {
-
+                return true;
             }
 
             /// <summary>
@@ -351,15 +355,19 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
-            public static void UserTalk(Network network, User user, Channel channel, string message)
+            public static bool UserTalk(Network network, User user, Channel channel, string message)
             {
+                bool ok = true;
                 foreach (Extension extension in Core.Extensions)
                 {
                     try
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            extension.Hook_UserTalk(network, user, channel, message);
+                            if (!extension.Hook_UserTalk(network, user, channel, message))
+                            {
+                                ok = false;
+                            }
                         }
                     }
                     catch (Exception mf)
@@ -368,7 +376,7 @@ namespace Client
                         Core.handleException(mf);
                     }
                 }
-                return;
+                return ok;
             }
 
             /// <summary>
@@ -377,9 +385,30 @@ namespace Client
             /// <param name="network"></param>
             /// <param name="user"></param>
             /// <param name="message"></param>
-            public static void UserQuit(Network network, User user, string message)
+            /// <param name="window"></param>
+            /// <returns></returns>
+            public static bool UserQuit(Network network, User user, string message, Graphics.Window window)
             {
-
+                bool ok = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_UserQuit(network, user, message, window))
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook UserQuit(Network network, User user, string message) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return ok;
             }
 
             /// <summary>
@@ -388,14 +417,41 @@ namespace Client
             /// <param name="network"></param>
             /// <param name="user"></param>
             /// <param name="channel"></param>
-            public static void UserJoin(Network network, User user, Channel channel)
+            public static bool UserJoin(Network network, User user, Channel channel)
             {
-
+                bool ok = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_UserJoin(network, user, channel))
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook UserJoin(Network network, User user, Channel channel) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return ok;
             }
 
-            public static void ChannelInfo(Network network, Channel channel, string Mode)
+            /// <summary>
+            /// Channel mode is printed to a window
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="channel"></param>
+            /// <param name="Mode"></param>
+            /// <returns></returns>
+            public static bool ChannelInfo(Network network, Channel channel, string Mode)
             {
-
+                bool ok = true;
+                return ok;
             }
 
             /// <summary>
@@ -405,9 +461,10 @@ namespace Client
             /// <param name="user">User who changed it</param>
             /// <param name="network">Network</param>
             /// <param name="channel">Channel</param>
-            public static void ChannelTopic(string topic, User user, Network network, Channel channel)
+            public static bool ChannelTopic(string topic, User user, Network network, Channel channel)
             {
-
+                bool ok = true;
+                return ok;
             }
 
             /// <summary>

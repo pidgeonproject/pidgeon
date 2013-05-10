@@ -268,16 +268,18 @@ namespace Client
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
             string chan = parameters.Substring(0, parameters.IndexOf(" "));
             Channel channel = _Network.getChannel(chan);
-            Hooks._Network.UserKick(_Network, new User(user, null, _Network, null), new User(source, _Network), channel, value);
             if (channel != null)
             {
                 Graphics.Window window;
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    WindowText(window, messages.get("userkick", Core.SelectedLanguage,
+                    if (Hooks._Network.UserKick(_Network, new User(user, null, _Network, null), new User(source, _Network), channel, value))
+                    {
+                        WindowText(window, messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
                         Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
+                    }
 
                     if (updated_text && channel.containsUser(user))
                     {
@@ -317,9 +319,12 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    WindowText(window, messages.get("join", Core.SelectedLanguage,
-                        new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
-                        Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
+                    if (Hooks._Network.UserJoin(_Network, channel.userFromName(user), channel))
+                    {
+                        WindowText(window, messages.get("join", Core.SelectedLanguage,
+                            new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
+                            Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
+                    }
                     if (updated_text)
                     {
                         lock (channel.UserList)
@@ -334,7 +339,6 @@ namespace Client
                     channel.UpdateInfo();
                     return true;
                 }
-                Hooks._Network.UserJoin(_Network, channel.userFromName(user), channel);
             }
             return false;
         }

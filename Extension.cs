@@ -236,9 +236,9 @@ namespace Client
         /// <param name="user"></param>
         /// <param name="channel"></param>
         /// <param name="message"></param>
-        public virtual void Hook_UserPart(Network network, User user, Channel channel, string message)
+        public virtual bool Hook_UserPart(Network network, User user, Channel channel, string message)
         {
-            
+            return true;
         }
 
         /// <summary>
@@ -275,9 +275,9 @@ namespace Client
         /// <param name="user"></param>
         /// <param name="channel"></param>
         /// <param name="message"></param>
-        public virtual void Hook_UserTalk(Network network, User user, Channel channel, string message)
+        public virtual bool Hook_UserTalk(Network network, User user, Channel channel, string message)
         {
-            
+            return true;
         }
 
         /// <summary>
@@ -297,9 +297,23 @@ namespace Client
         /// <param name="network"></param>
         /// <param name="user"></param>
         /// <param name="message"></param>
-        public virtual void Hook_UserQuit(Network network, User user, string message)
+        /// <param name="window"></param>
+        /// <returns></returns>
+        public virtual bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window)
         {
-        
+            return true;
+        }
+
+        /// <summary>
+        /// This hook is started when user join to a channel you are in
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public virtual bool Hook_UserJoin(Network network, User user, Channel channel)
+        {
+            return true;
         }
 
         /// <summary>
@@ -363,7 +377,7 @@ namespace Client
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        /// <returns></returns>
+        /// <returns>if false, the notification is not displayed</returns>
         public virtual bool Hook_NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
         {
             return true;

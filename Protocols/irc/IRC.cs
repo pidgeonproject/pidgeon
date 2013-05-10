@@ -56,7 +56,7 @@ namespace Client
         /// Process a data that affect the current user
         /// </summary>
         /// <param name="source"></param>
-        /// <param name="data"></param>
+        /// <param name="_data2"></param>
         /// <param name="_value"></param>
         /// <returns></returns>
         private bool ProcessThis(string source, string[] _data2, string _value)
