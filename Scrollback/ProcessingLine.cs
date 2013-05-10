@@ -315,7 +315,10 @@ namespace Client
 
             if (Matched && owner != null)
             {
-                Core.DisplayNote(text, owner.WindowName);
+                if (Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
+                {
+                    Core.DisplayNote(text, owner.WindowName);
+                }
             }
 
             if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Network != null && owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)

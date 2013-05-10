@@ -356,6 +356,20 @@ namespace Client
         }
 
         /// <summary>
+        /// Called on notification display
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="InputStyle"></param>
+        /// <param name="WriteLog"></param>
+        /// <param name="Date"></param>
+        /// <param name="SuppressPing"></param>
+        /// <returns></returns>
+        public virtual bool Hook_NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
         public virtual void Initialise()

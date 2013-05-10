@@ -84,6 +84,9 @@ namespace Client
                 /// Priority
                 /// </summary>
                 public Configuration.Priority _Priority;
+                /// <summary>
+                /// Message
+                /// </summary>
                 public string message;
             }
             /// <summary>

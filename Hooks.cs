@@ -170,6 +170,41 @@ namespace Client
                     }
                 }
             }
+
+            /// <summary>
+            /// Called on notification display
+            /// </summary>
+            /// <param name="text"></param>
+            /// <param name="InputStyle"></param>
+            /// <param name="WriteLog"></param>
+            /// <param name="Date"></param>
+            /// <param name="SuppressPing"></param>
+            /// <returns></returns>
+            public static bool NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
+            {
+                bool success = true;
+
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
+                            {
+                                success = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook NotificationDisplay() module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+
+                return success;
+            }
         }
 
         public class _Network
