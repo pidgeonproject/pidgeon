@@ -31,20 +31,32 @@ namespace Client
             }
         }
 
-        public override bool Hook_UserJoin(Network network, User user, Channel channel)
+        public override bool Hook_UserJoin(Network network, User user, Channel channel, bool updated)
         {
+            if (!updated)
+            {
+                return true;
+            }
             Message(channel.retrieveWindow(), user.Nick + " joined");
             return false;
         }
 
-        public override bool Hook_UserPart(Network network, User user, Channel channel, string message)
+        public override bool Hook_UserPart(Network network, User user, Channel channel, string message, bool updated)
         {
+            if (!updated)
+            {
+                return true;
+            }
             Message(channel.retrieveWindow(), user.Nick + " parted");
             return false;
         }
 
-        public override bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window)
+        public override bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window, bool updated)
         {
+            if (!updated)
+            {
+                return true;
+            }
             Message(window, user.Nick + " joined");
             return false;
         }

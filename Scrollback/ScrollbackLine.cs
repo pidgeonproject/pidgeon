@@ -6,6 +6,38 @@ using System.Text;
 namespace Client
 {
     /// <summary>
+    /// TextPart
+    /// </summary>
+    public class TextPart
+    {
+        /// <summary>
+        /// Text
+        /// </summary>
+        public string text;
+        /// <summary>
+        /// Date
+        /// </summary>
+        public DateTime date;
+        /// <summary>
+        /// Style
+        /// </summary>
+        public ContentLine.MessageStyle style;
+
+        /// <summary>
+        /// Creates a new instance of text part
+        /// </summary>
+        /// <param name="Text"></param>
+        /// <param name="ms"></param>
+        /// <param name="time"></param>
+        public TextPart(string Text, ContentLine.MessageStyle ms, DateTime time)
+        {
+            date = time;
+            text = Text;
+            style = ms;
+        }
+    }
+
+    /// <summary>
     /// This is a line in scrollback
     /// </summary>
     [Serializable]

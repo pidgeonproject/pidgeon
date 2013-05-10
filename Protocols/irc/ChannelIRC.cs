@@ -319,7 +319,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel))
+                    if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel, updated_text))
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
@@ -400,7 +400,7 @@ namespace Client
                 User delete = null;
                 if (window != null)
                 {
-                    if (Hooks._Network.UserPart(_Network, new User(user, _host, _Network, _ident), channel, value))
+                    if (Hooks._Network.UserPart(_Network, new User(user, _host, _Network, _ident), channel, value, updated_text))
                     {
                         WindowText(window, messages.get("window-p1",
                             Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),

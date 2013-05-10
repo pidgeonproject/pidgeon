@@ -236,7 +236,9 @@ namespace Client
         /// <param name="user"></param>
         /// <param name="channel"></param>
         /// <param name="message"></param>
-        public virtual bool Hook_UserPart(Network network, User user, Channel channel, string message)
+        /// <param name="updated"></param>
+        /// <returns></returns>
+        public virtual bool Hook_UserPart(Network network, User user, Channel channel, string message, bool updated)
         {
             return true;
         }
@@ -275,7 +277,9 @@ namespace Client
         /// <param name="user"></param>
         /// <param name="channel"></param>
         /// <param name="message"></param>
-        public virtual bool Hook_UserTalk(Network network, User user, Channel channel, string message)
+        /// <param name="updated"></param>
+        /// <returns></returns>
+        public virtual bool Hook_UserTalk(Network network, User user, Channel channel, string message, bool updated)
         {
             return true;
         }
@@ -298,8 +302,9 @@ namespace Client
         /// <param name="user"></param>
         /// <param name="message"></param>
         /// <param name="window"></param>
+        /// <param name="updated"></param>
         /// <returns></returns>
-        public virtual bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window)
+        public virtual bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window, bool updated)
         {
             return true;
         }
@@ -310,8 +315,9 @@ namespace Client
         /// <param name="network"></param>
         /// <param name="user"></param>
         /// <param name="channel"></param>
+        /// <param name="updated"></param>
         /// <returns></returns>
-        public virtual bool Hook_UserJoin(Network network, User user, Channel channel)
+        public virtual bool Hook_UserJoin(Network network, User user, Channel channel, bool updated)
         {
             return true;
         }

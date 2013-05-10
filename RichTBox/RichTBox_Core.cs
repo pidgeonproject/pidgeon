@@ -190,6 +190,11 @@ namespace Client
         /// <param name="drawLine"></param>
         public void InsertPart(Line line, bool drawLine = true)
         {
+            if (Core._KernelThread != System.Threading.Thread.CurrentThread)
+            {
+                throw new Exception("You can't call this function from different thread");
+            }
+
             if (line == null)
             {
                 throw new Exception("You can't insert null to text box");
@@ -197,7 +202,7 @@ namespace Client
 
             if (CurrentLine != null)
             {
-                InsertNewline();
+                DrawNewline();
             }
 
             CurrentLine = line;
@@ -208,21 +213,17 @@ namespace Client
         }
 
         /// <summary>
-        /// Insert a newline
-        /// </summary>
-        public void InsertNewline()
-        {
-            DrawNewline();
-            CurrentLine = null;
-        }
-
-        /// <summary>
         /// Insert a part
         /// </summary>
         /// <param name="text"></param>
         /// <param name="drawLine"></param>
         public void InsertPart(ContentText text, bool drawLine = true)
         {
+            if (Core._KernelThread != System.Threading.Thread.CurrentThread)
+            {
+                throw new Exception("You can't call this function from different thread");
+            }
+
             if (text == null)
             {
                 throw new Exception("You can't insert null to text box");
@@ -230,7 +231,7 @@ namespace Client
 
             if (CurrentLine == null)
             {
-                throw new Exception("Current line is null, can't append a string to it");
+                CurrentLine = new Line(this);
             }
 
             CurrentLine.insertData(text);

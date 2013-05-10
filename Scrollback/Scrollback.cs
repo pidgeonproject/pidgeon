@@ -51,6 +51,7 @@ namespace Client
         /// </summary>
         public Graphics.Window owner = null;
         private List<ContentLine> UndrawnLines = new List<ContentLine>();
+        private List<TextPart> UndrawnTextParts = new List<TextPart>();
         private string Link = "";
         private bool simple = true;
         private DateTime lastDate;
@@ -92,9 +93,12 @@ namespace Client
         {
             get
             {
-                if (EndingLine != null)
+                lock (UndrawnTextParts)
                 {
-                    return false;
+                    if (UndrawnTextParts.Count > 0 || EndingLine != null)
+                    {
+                        return false;
+                    }
                 }
                 return true;
             }
@@ -412,6 +416,39 @@ namespace Client
             this.Destroy();
         }
 
+        /// <summary>
+        /// Draw all undrawn parts immediately and clear the array
+        /// </summary>
+        public void FlushParts()
+        {
+            if (!IsEmtpy)
+            {
+                lock (UndrawnTextParts)
+                {
+                    foreach (TextPart curr in UndrawnTextParts)
+                    {
+                        InsertPart(curr.text, curr.style, false, curr.date.ToBinary());
+                    }
+                    UndrawnTextParts.Clear();
+                }
+            }
+        }
+
+        private TextPart NewerPart(DateTime time)
+        {
+            lock (UndrawnTextParts)
+            {
+                foreach (TextPart k in UndrawnTextParts)
+                {
+                    if (k.date < time)
+                    {
+                        return k;
+                    }
+                }
+            }
+            return null;
+        }
+
         private bool timer2_Tick()
         {
             try
@@ -451,9 +488,23 @@ namespace Client
                                         UndrawnLines.RemoveAt(0);
                                     }
                                 }
-                                foreach (ContentLine curr in UndrawnLines)
+                                lock (UndrawnTextParts)
                                 {
-                                    InsertLineToText(curr, false);
+                                    foreach (ContentLine curr in UndrawnLines)
+                                    {
+                                        if (!IsEmtpy)
+                                        {
+                                            TextPart text = NewerPart(curr.time);
+                                            while (text != null)
+                                            {
+                                                InsertPartToText(text.text);
+                                                UndrawnTextParts.Remove(text);
+                                                text = NewerPart(curr.time);
+                                            }
+                                        }
+                                        InsertLineToText(curr, false);
+                                    }
+                                    FlushParts();
                                 }
                                 UndrawnLines.Clear();
                             }

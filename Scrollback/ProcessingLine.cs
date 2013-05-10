@@ -63,33 +63,36 @@ namespace Client
 
         private Client.RichTBox.ContentText CreateText(ContentLine line, string text)
         {
-            Color color = Configuration.CurrentSkin.fontcolor;
-            switch (line.style)
+            Color color = Configuration.CurrentSkin.joincolor;
+            if (line != null)
             {
-                case Client.ContentLine.MessageStyle.Action:
-                    color = Configuration.CurrentSkin.miscelancscolor;
-                    break;
-                case Client.ContentLine.MessageStyle.Kick:
-                    color = Configuration.CurrentSkin.kickcolor;
-                    break;
-                case Client.ContentLine.MessageStyle.System:
-                    color = Configuration.CurrentSkin.miscelancscolor;
-                    break;
-                case Client.ContentLine.MessageStyle.Channel:
-                    color = Configuration.CurrentSkin.colortalk;
-                    break;
-                case Client.ContentLine.MessageStyle.User:
-                    color = Configuration.CurrentSkin.changenickcolor;
-                    break;
-                case Client.ContentLine.MessageStyle.Join:
-                case Client.ContentLine.MessageStyle.Part:
-                    color = Configuration.CurrentSkin.joincolor;
-                    break;
-            }
+                switch (line.style)
+                {
+                    case Client.ContentLine.MessageStyle.Action:
+                        color = Configuration.CurrentSkin.miscelancscolor;
+                        break;
+                    case Client.ContentLine.MessageStyle.Kick:
+                        color = Configuration.CurrentSkin.kickcolor;
+                        break;
+                    case Client.ContentLine.MessageStyle.System:
+                        color = Configuration.CurrentSkin.miscelancscolor;
+                        break;
+                    case Client.ContentLine.MessageStyle.Channel:
+                        color = Configuration.CurrentSkin.colortalk;
+                        break;
+                    case Client.ContentLine.MessageStyle.User:
+                        color = Configuration.CurrentSkin.changenickcolor;
+                        break;
+                    case Client.ContentLine.MessageStyle.Join:
+                    case Client.ContentLine.MessageStyle.Part:
+                        color = Configuration.CurrentSkin.joincolor;
+                        break;
+                }
 
-            if (line.notice)
-            {
-                color = Configuration.CurrentSkin.highlightcolor;
+                if (line.notice)
+                {
+                    color = Configuration.CurrentSkin.highlightcolor;
+                }
             }
 
             return new Client.RichTBox.ContentText(text, color);
@@ -159,9 +162,16 @@ namespace Client
 
             Changed = false;
 
+            Flush();
+
             lock (UndrawnLines)
             {
                 UndrawnLines.Clear();
+            }
+
+            lock (UndrawnTextParts)
+            {
+                UndrawnTextParts.Clear();
             }
 
             if (owner == null || (owner != null && WindowVisible()) || !Configuration.Scrollback.DynamicReload)
@@ -285,29 +295,6 @@ namespace Client
             return false;
         }
 
-        private void InsertNewlineToText()
-        {
-            if (Configuration.Memory.EnableSimpleViewCache && simple)
-            {
-                if (!ScrollingEnabled)
-                {
-                    Changed = true;
-                    return;
-                }
-                Gtk.TextIter iter = simpleview.Buffer.EndIter;
-                simpleview.Buffer.Insert(ref iter, Environment.NewLine);
-                if (ScrollingEnabled)
-                {
-                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-                }
-                Changed = false;
-                return;
-            }
-            RT.InsertNewline();
-
-            Changed = false;
-        }
-
         private void InsertPartToText(string text)
         {
             if (Configuration.Memory.EnableSimpleViewCache && simple)
@@ -387,12 +374,18 @@ namespace Client
         {
             if (!IsEmtpy)
             {
-                lock (ContentLines)
+                if (EndingLine != null)
                 {
-                    ContentLines.Add(EndingLine);
+                    lock (ContentLines)
+                    {
+                        ContentLines.Add(EndingLine);
+                    }
                 }
 
-                InsertNewlineToText();
+                lock (UndrawnTextParts)
+                {
+                    UndrawnTextParts.Add(new TextPart(Environment.NewLine, ContentLine.MessageStyle.Join, DateTime.Now));
+                }
 
                 EndingLine = null;
             }
@@ -410,32 +403,57 @@ namespace Client
         /// <returns></returns>
         public void InsertPart(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
+            DateTime time = DateTime.Now;
+
+            if (Date != 0)
+            {
+                time = DateTime.FromBinary(Date);
+            }
+
             if (EndingLine == null)
             {
-                DateTime time = DateTime.Now;
-
-                if (Date != 0)
-                {
-                    time = DateTime.FromBinary(Date);
-                }
-
                 EndingLine = new ContentLine(InputStyle, text, time, false);
 
-                if (lastDate > time)
+                if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
                 {
-                    Flush();
-                    SortNeeded = true;
-                    Reload(true);
+                    if (lastDate > time)
+                    {
+                        Flush();
+                        SortNeeded = true;
+                        Reload(true);
+                    }
+                    else
+                    {
+                        InsertPartToText(EndingLine);
+                    }
                 }
                 else
                 {
-                    InsertPartToText(EndingLine);
+                    lock (UndrawnTextParts)
+                    {
+                        UndrawnTextParts.Add(new TextPart(Configuration.Scrollback.format_date.Replace("$1",
+                                          time.ToString(Configuration.Scrollback.timestamp_mask)) + text, InputStyle, time));
+                    }
                 }
             }
             else
             {
-                EndingLine.text += text;
-                InsertPartToText(text);
+                lock (EndingLine)
+                {
+                    EndingLine.text += text;
+                }
+
+                if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
+                {
+                    InsertPartToText(text);
+                }
+                else
+                {
+                    lock (UndrawnTextParts)
+                    {
+                        UndrawnTextParts.Add(new TextPart(text, InputStyle, time));
+                    }
+                }
             }
         }
 
@@ -452,7 +470,10 @@ namespace Client
         private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             // we need to finish the previous partial line
-            Flush();
+            if (!IsEmtpy)
+            {
+                Flush();
+            }
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {

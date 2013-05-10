@@ -311,7 +311,9 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
-            public static bool UserPart(Network network, User user, Channel channel, string message)
+            /// <param name="updated"></param>
+            /// <returns></returns>
+            public static bool UserPart(Network network, User user, Channel channel, string message, bool updated)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -320,7 +322,7 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            if (!extension.Hook_UserPart(network, user, channel, message))
+                            if (!extension.Hook_UserPart(network, user, channel, message, updated))
                             {
                                 ok = false;
                             }
@@ -355,7 +357,9 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
-            public static bool UserTalk(Network network, User user, Channel channel, string message)
+            /// <param name="updated"></param>
+            /// <returns></returns>
+            public static bool UserTalk(Network network, User user, Channel channel, string message, bool updated)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -364,7 +368,7 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            if (!extension.Hook_UserTalk(network, user, channel, message))
+                            if (!extension.Hook_UserTalk(network, user, channel, message, updated))
                             {
                                 ok = false;
                             }
@@ -386,8 +390,9 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="message"></param>
             /// <param name="window"></param>
+            /// <param name="updated"></param>
             /// <returns></returns>
-            public static bool UserQuit(Network network, User user, string message, Graphics.Window window)
+            public static bool UserQuit(Network network, User user, string message, Graphics.Window window, bool updated)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -396,7 +401,7 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            if (!extension.Hook_UserQuit(network, user, message, window))
+                            if (!extension.Hook_UserQuit(network, user, message, window, updated))
                             {
                                 ok = false;
                             }
@@ -417,7 +422,9 @@ namespace Client
             /// <param name="network"></param>
             /// <param name="user"></param>
             /// <param name="channel"></param>
-            public static bool UserJoin(Network network, User user, Channel channel)
+            /// <param name="updated"></param>
+            /// <returns></returns>
+            public static bool UserJoin(Network network, User user, Channel channel, bool updated)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -426,7 +433,7 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
-                            if (!extension.Hook_UserJoin(network, user, channel))
+                            if (!extension.Hook_UserJoin(network, user, channel, updated))
                             {
                                 ok = false;
                             }
