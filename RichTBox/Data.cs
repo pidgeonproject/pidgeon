@@ -28,6 +28,8 @@ namespace Client
     public partial class RichTBox : Gtk.Bin
     {
         private Pango.FontDescription DefaultFont = new Pango.FontDescription();
+
+        private Line CurrentLine = null;
                     
         private List<Line> Lines = new List<Line>();
 
@@ -58,48 +60,78 @@ namespace Client
             {
                 foreach (ContentText text in line.text)
                 {
-                    TextTag format = new TextTag(null);
-                    
-                    if (text.Bold)
-                    {
-                        format.Weight = Pango.Weight.Heavy;
-                    }
-
-                    if (text.Underline)
-                    {
-                        format.Underline = Pango.Underline.Single;
-                    }
-
-                    if (text.Italic)
-                    { 
-                        
-                    }
-
-                    if (text.Link != null)
-                    {
-                        format.TextEvent += new TextEventHandler(LinkHandler);
-                    }
-                    else
-                    {
-                        format.TextEvent += new TextEventHandler(LinkRm);
-                    }
-
-                    format.Data.Add("link", text.Link);
-                    format.Data.Add("identifier", text.Text);
-                    format.ForegroundGdk = Core.fromColor(text.TextColor);
-                    tb.TagTable.Add(format);
-                    format.FontDesc = DefaultFont;
-                    format.SizePoints = Configuration.CurrentSkin.fontsize;
-                    tb.InsertWithTags(ref iter, text.Text, format);
-                    iter = tb.EndIter;
+                    DrawPart(text, tb);
                 }
             }
+            iter = tb.EndIter;
             tb.Insert(ref iter, Environment.NewLine);
         }
 
         private void DrawLine(Line line)
         {
             DrawLineToBuffer(line, richTextBox.Buffer);
+        }
+
+        private void DrawPart(Line line)
+        {
+            Gtk.TextIter iter = this.richTextBox.Buffer.EndIter;
+            lock (line.text)
+            {
+                foreach (ContentText text in line.text)
+                {
+                    DrawPart(text);
+                }
+            }
+        }
+
+        private void DrawPart(ContentText text, TextBuffer tb = null)
+        {
+            if (tb == null)
+            {
+                tb = richTextBox.Buffer;
+            }
+
+            Gtk.TextIter iter = tb.EndIter;
+
+            TextTag format = new TextTag(null);
+
+            if (text.Bold)
+            {
+                format.Weight = Pango.Weight.Heavy;
+            }
+
+            if (text.Underline)
+            {
+                format.Underline = Pango.Underline.Single;
+            }
+
+            if (text.Italic)
+            {
+
+            }
+
+            if (text.Link != null)
+            {
+                format.TextEvent += new TextEventHandler(LinkHandler);
+            }
+            else
+            {
+                format.TextEvent += new TextEventHandler(LinkRm);
+            }
+
+            format.Data.Add("link", text.Link);
+            format.Data.Add("identifier", text.Text);
+            format.ForegroundGdk = Core.fromColor(text.TextColor);
+            tb.TagTable.Add(format);
+            format.FontDesc = DefaultFont;
+            format.SizePoints = Configuration.CurrentSkin.fontsize;
+            tb.InsertWithTags(ref iter, text.Text, format);
+        }
+
+        private void DrawNewline()
+        {
+            TextIter endi = richTextBox.Buffer.EndIter;
+            richTextBox.Buffer.Insert(ref endi, Environment.NewLine);
         }
 
         private void DrawLineToHead(Line line)

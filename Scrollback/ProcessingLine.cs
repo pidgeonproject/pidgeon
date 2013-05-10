@@ -61,6 +61,40 @@ namespace Client
             Changed = false;
         }
 
+        private Client.RichTBox.ContentText CreateText(ContentLine line, string text)
+        {
+            Color color = Configuration.CurrentSkin.fontcolor;
+            switch (line.style)
+            {
+                case Client.ContentLine.MessageStyle.Action:
+                    color = Configuration.CurrentSkin.miscelancscolor;
+                    break;
+                case Client.ContentLine.MessageStyle.Kick:
+                    color = Configuration.CurrentSkin.kickcolor;
+                    break;
+                case Client.ContentLine.MessageStyle.System:
+                    color = Configuration.CurrentSkin.miscelancscolor;
+                    break;
+                case Client.ContentLine.MessageStyle.Channel:
+                    color = Configuration.CurrentSkin.colortalk;
+                    break;
+                case Client.ContentLine.MessageStyle.User:
+                    color = Configuration.CurrentSkin.changenickcolor;
+                    break;
+                case Client.ContentLine.MessageStyle.Join:
+                case Client.ContentLine.MessageStyle.Part:
+                    color = Configuration.CurrentSkin.joincolor;
+                    break;
+            }
+
+            if (line.notice)
+            {
+                color = Configuration.CurrentSkin.highlightcolor;
+            }
+
+            return new Client.RichTBox.ContentText(text, color);
+        }
+
         private Client.RichTBox.Line CreateLine(ContentLine Line)
         {
             Color color = Configuration.CurrentSkin.fontcolor;
@@ -86,6 +120,7 @@ namespace Client
                     color = Configuration.CurrentSkin.joincolor;
                     break;
             }
+
             if (Line.notice)
             {
                 color = Configuration.CurrentSkin.highlightcolor;
@@ -241,13 +276,83 @@ namespace Client
             return false;
         }
 
-        bool RequireReload(DateTime date)
+        private bool RequireReload(DateTime date)
         {
             if (date < lastDate)
             {
                 return true;
             }
             return false;
+        }
+
+        private void InsertNewlineToText()
+        {
+            if (Configuration.Memory.EnableSimpleViewCache && simple)
+            {
+                if (!ScrollingEnabled)
+                {
+                    Changed = true;
+                    return;
+                }
+                Gtk.TextIter iter = simpleview.Buffer.EndIter;
+                simpleview.Buffer.Insert(ref iter, Environment.NewLine);
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
+                Changed = false;
+                return;
+            }
+            RT.InsertNewline();
+
+            Changed = false;
+        }
+
+        private void InsertPartToText(string text)
+        {
+            if (Configuration.Memory.EnableSimpleViewCache && simple)
+            {
+                if (!ScrollingEnabled)
+                {
+                    Changed = true;
+                    return;
+                }
+                Gtk.TextIter iter = simpleview.Buffer.EndIter;
+                simpleview.Buffer.Insert(ref iter, Core.RemoveSpecial(text));
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
+                Changed = false;
+                return;
+            }
+            RT.InsertPart(CreateText(EndingLine, text));
+            Changed = false;
+        }
+
+        private void InsertPartToText(ContentLine line)
+        {
+            if (Configuration.Memory.EnableSimpleViewCache && simple)
+            {
+                if (!ScrollingEnabled)
+                {
+                    Changed = true;
+                    return;
+                }
+                Gtk.TextIter iter = simpleview.Buffer.EndIter;
+                simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                                          line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                                          Core.RemoveSpecial(line.text));
+                if (ScrollingEnabled)
+                {
+                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+                }
+                Changed = false;
+                return;
+            }
+            RT.InsertPart(CreateLine(line));
+
+            Changed = false;
         }
 
         /// <summary>
@@ -287,6 +392,8 @@ namespace Client
                     ContentLines.Add(EndingLine);
                 }
 
+                InsertNewlineToText();
+
                 EndingLine = null;
             }
         }
@@ -313,6 +420,17 @@ namespace Client
                 }
 
                 EndingLine = new ContentLine(InputStyle, text, time, false);
+
+                if (lastDate > time)
+                {
+                    Flush();
+                    SortNeeded = true;
+                    Reload(true);
+                }
+                else
+                {
+                    
+                }
             }
             else
             {
@@ -459,7 +577,6 @@ namespace Client
                     ReloadWaiting = true;
                 }
             }
-            EmptyLine = true;
             return false;
         }
     }

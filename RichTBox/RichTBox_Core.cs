@@ -184,6 +184,64 @@ namespace Client
         }
 
         /// <summary>
+        /// Insert a part
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="drawLine"></param>
+        public void InsertPart(Line line, bool drawLine = true)
+        {
+            if (line == null)
+            {
+                throw new Exception("You can't insert null to text box");
+            }
+
+            if (CurrentLine != null)
+            {
+                InsertNewline();
+            }
+
+            CurrentLine = line;
+            if (drawLine)
+            {
+                DrawPart(line);
+            }
+        }
+
+        /// <summary>
+        /// Insert a newline
+        /// </summary>
+        public void InsertNewline()
+        {
+            DrawNewline();
+            CurrentLine = null;
+        }
+
+        /// <summary>
+        /// Insert a part
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="drawLine"></param>
+        public void InsertPart(ContentText text, bool drawLine = true)
+        {
+            if (text == null)
+            {
+                throw new Exception("You can't insert null to text box");
+            }
+
+            if (CurrentLine == null)
+            {
+                throw new Exception("Current line is null, can't append a string to it");
+            }
+
+            CurrentLine.insertData(text);
+
+            if (drawLine)
+            {
+                DrawPart(text);
+            }
+        }
+
+        /// <summary>
         /// Reload text
         /// </summary>
         public void RedrawText()
