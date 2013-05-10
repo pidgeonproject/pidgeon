@@ -401,6 +401,7 @@ namespace Client
         /// <param name="SuppressPing">Suppress ping</param>
         /// <param name="IgnoreUpdate"></param>
         /// <returns></returns>
+        [Experimental]
         public void InsertPart(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             DateTime time = DateTime.Now;

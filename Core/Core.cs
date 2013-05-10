@@ -1326,4 +1326,11 @@ namespace Client
             Quiting,
         }
     }
+
+    /// <summary>
+    /// This is an attribute that should be used for all new functions
+    /// </summary>
+    [Obsolete("This function is experimental and using it may result in errors")]
+    public class Experimental : Attribute
+    { }
 }
