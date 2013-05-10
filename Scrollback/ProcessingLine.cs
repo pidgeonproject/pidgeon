@@ -278,6 +278,48 @@ namespace Client
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, true);
         }
 
+        private void Flush()
+        {
+            if (!IsEmtpy)
+            {
+                lock (ContentLines)
+                {
+                    ContentLines.Add(EndingLine);
+                }
+
+                EndingLine = null;
+            }
+        }
+
+        /// <summary>
+        /// Insert part
+        /// </summary>
+        /// <param name="text">Part of text to insert</param>
+        /// <param name="InputStyle">Style</param>
+        /// <param name="WriteLog">Write this line to a log</param>
+        /// <param name="Date">Date</param>
+        /// <param name="SuppressPing">Suppress ping</param>
+        /// <param name="IgnoreUpdate"></param>
+        /// <returns></returns>
+        public void InsertPart(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        {
+            if (EndingLine == null)
+            {
+                DateTime time = DateTime.Now;
+
+                if (Date != 0)
+                {
+                    time = DateTime.FromBinary(Date);
+                }
+
+                EndingLine = new ContentLine(InputStyle, text, time, false);
+            }
+            else
+            {
+                EndingLine.text += text;
+            }
+        }
+
         /// <summary>
         /// Insert a text to scrollback list
         /// </summary>
@@ -417,6 +459,7 @@ namespace Client
                     ReloadWaiting = true;
                 }
             }
+            EmptyLine = true;
             return false;
         }
     }

@@ -43,6 +43,10 @@ namespace Client
         /// </summary>
         private List<ContentLine> ContentLines = new List<ContentLine>();
         /// <summary>
+        /// Current line buffer
+        /// </summary>
+        private ContentLine EndingLine = null;
+        /// <summary>
         /// Owner window
         /// </summary>
         public Graphics.Window owner = null;
@@ -81,6 +85,20 @@ namespace Client
         public string SelectedLink = null;
         private bool destroyed = false;
         private bool running = false;
+        /// <summary>
+        /// Return true in case that the current line is empty
+        /// </summary>
+        public bool IsEmtpy
+        {
+            get
+            {
+                if (EndingLine != null)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
 
         /// <summary>
         /// Simple
