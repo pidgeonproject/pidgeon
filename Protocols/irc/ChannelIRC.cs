@@ -133,7 +133,7 @@ namespace Client
             return false;
         }
 
-        private bool ParseInfo(string[] code, string[] data)
+        private bool ParseInfo(string[] code, string value)
         {
             if (code.Length > 3)
             {
@@ -145,7 +145,7 @@ namespace Client
                 Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
-                    string[] _chan = data[2].Split(' ');
+                    string[] _chan = value.Split(' ');
                     foreach (var user in _chan)
                     {
                         string _user = user;
@@ -389,7 +389,6 @@ namespace Client
             _ident = source.Substring(source.IndexOf("!") + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@"));
             Channel channel = _Network.getChannel(chan);
-            if (!Hooks._Network.BeforePart(_Network, channel)) { return true; }
             if (channel != null)
             {
                 Graphics.Window window;
@@ -424,6 +423,7 @@ namespace Client
                             }
                             channel.redrawUsers();
                             channel.UpdateInfo();
+                            Hooks._Network.UserPart(_Network, delete, channel, value);
                             return true;
                         }
                         return true;

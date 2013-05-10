@@ -234,6 +234,13 @@ namespace Client
                 return;
             }
 
+            /// <summary>
+            /// Network info, this is called when network send the info
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="command"></param>
+            /// <param name="parameters"></param>
+            /// <param name="value"></param>
             public static void NetworkInfo(Network network, string command, string parameters, string value)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -255,7 +262,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Events to happen before user is kicked from channel, in case you return false, the kick is ignored
+            /// Events to happen before user is kicked from channel by you, in case you return false, the kick is not performed
             /// </summary>
             /// <param name="network">Network</param>
             /// <param name="Source">Performer</param>
@@ -268,7 +275,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Events to happen before joining, if return false, the join is cancelled
+            /// Events to happen before you join a channel, if return false, the join is cancelled
             /// </summary>
             /// <param name="network"></param>
             /// <param name="Channel"></param>
@@ -298,7 +305,7 @@ namespace Client
             }
 
             /// <summary>
-            /// User part
+            /// Even that happens when a user part a existing channel you are in
             /// </summary>
             /// <param name="network"></param>
             /// <param name="user"></param>
@@ -338,7 +345,7 @@ namespace Client
             }
 
             /// <summary>
-            /// User talk
+            /// User talk in a channel
             /// </summary>
             /// <param name="network"></param>
             /// <param name="user"></param>

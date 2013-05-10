@@ -264,6 +264,10 @@ namespace Client
         {
             if (IsAlive && _Network != null)
             {
+                if (!Hooks._Network.BeforePart(_Network, this))
+                {
+                    return;
+                }
                 _Network.Part(this);
                 partRequested = true;
             }
