@@ -429,12 +429,13 @@ namespace Client
                 }
                 else
                 {
-                    
+                    InsertPartToText(EndingLine);
                 }
             }
             else
             {
                 EndingLine.text += text;
+                InsertPartToText(text);
             }
         }
 
@@ -450,6 +451,8 @@ namespace Client
         /// <returns></returns>
         private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
+            // we need to finish the previous partial line
+            Flush();
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {

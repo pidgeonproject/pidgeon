@@ -319,7 +319,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    if (Hooks._Network.UserJoin(_Network, channel.userFromName(user), channel))
+                    if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel))
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
@@ -400,10 +400,13 @@ namespace Client
                 User delete = null;
                 if (window != null)
                 {
-                    WindowText(window, messages.get("window-p1",
-                        Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                        Client.ContentLine.MessageStyle.Part,
-                        !channel.temporary_hide, date, !updated_text);
+                    if (Hooks._Network.UserPart(_Network, new User(user, _host, _Network, _ident), channel, value))
+                    {
+                        WindowText(window, messages.get("window-p1",
+                            Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
+                            Client.ContentLine.MessageStyle.Part,
+                            !channel.temporary_hide, date, !updated_text);
+                    }
 
                     if (updated_text)
                     {
@@ -427,7 +430,6 @@ namespace Client
                             }
                             channel.redrawUsers();
                             channel.UpdateInfo();
-                            Hooks._Network.UserPart(_Network, delete, channel, value);
                             return true;
                         }
                         return true;
