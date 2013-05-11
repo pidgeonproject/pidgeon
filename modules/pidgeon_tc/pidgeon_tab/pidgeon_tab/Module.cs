@@ -46,7 +46,6 @@ namespace Client
 
             lock (Commands.commands)
             {
-
                 foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                 {
                     if (cm.Value._Type == Commands.Type.System || cm.Value._Type == Commands.Type.Plugin)
@@ -256,10 +255,10 @@ namespace Client
                     while (match)
                     {
                         char diff = ' ';
-                        foreach (var item in Results2)
+                        foreach (string item in Results2)
                         {
                             string value = item.ToLower();
-                            if (diff == ' ')
+                            if (diff == ' ' && item.Length > curr)
                             {
                                 orig = item[curr];
                                 diff = value[curr];
