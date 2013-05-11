@@ -45,8 +45,8 @@ namespace Client
                     if (Core.Load())
                     {
                         Core.network = null;
-                        Core._Main = new Forms.Main();
-                        Core._Main.Show();
+                        Core.setMain(new Forms.Main());
+                        Core.SystemForm.Show();
                         Application.Run();
                     }
                 }

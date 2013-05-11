@@ -283,7 +283,7 @@ namespace Client.Graphics
         /// <summary>
         /// Create
         /// </summary>
-        public void Create()
+        private void Create()
         {
             scrollback.channelToolStripMenuItem.Visible = isChannel;
             scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
@@ -404,7 +404,42 @@ namespace Client.Graphics
                 Core.handleException(fail);
             }
         }
-
+  
+        /// <summary>
+        /// Creates the chat
+        /// </summary>
+        /// <param name='WindowOwner'>
+        /// Window owner.
+        /// </param>
+        /// <param name='Focus'>
+        /// Focus.
+        /// </param>
+        /// <exception cref='Exception'>
+        /// Represents errors that occur during application execution.
+        /// </exception>
+        public void CreateChat(Protocol WindowOwner, bool Focus = true)
+        {
+            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+            {
+                throw new Exception("You can't control other windows from non kernel thread");
+            }
+            this.Init();
+            this.Create();
+            this.Visible = true;
+            this._Protocol = WindowOwner;
+            if (Core.SystemForm.Chat != null && Core.SystemForm.Chat.textbox != null)
+            {
+                if (this.textbox.history.Count == 0)
+                {
+                    this.textbox.history.AddRange(Core.SystemForm.Chat.textbox.history);
+                }
+            }
+            if (Focus)
+            {
+                Core.SystemForm.SwitchWindow(this);
+            }
+        }
+        
         private bool Mode(string mode)
         {
             try

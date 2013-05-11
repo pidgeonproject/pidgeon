@@ -201,7 +201,22 @@ namespace Client
         /// <summary>
         /// Main
         /// </summary>
+        [Obsolete]
         public static Forms.Main _Main = null;
+        private static Forms.Main _main = null;
+        /// <summary>
+        /// Gets the system form
+        /// </summary>
+        /// <value>
+        /// The system form.
+        /// </value>
+        public static Forms.Main SystemForm
+        {
+            get
+            {
+                return _main;
+            }
+        }
         /// <summary>
         /// Wheter notification is waiting
         /// </summary>
@@ -308,7 +323,19 @@ namespace Client
                 return rb;
             }
         }
-
+  
+        /// <summary>
+        /// Sets the main
+        /// </summary>
+        /// <param name='form'>
+        /// Form.
+        /// </param>
+        public static void setMain(Forms.Main form)
+        {
+            _Main = form;
+            _main = form;
+        }
+        
         /// <summary>
         /// Load
         /// </summary>

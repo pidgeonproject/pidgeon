@@ -117,7 +117,7 @@ namespace Client.Forms
         {
             try
             {
-                Core._Main = this;
+                Core.setMain(this);
                 if (Configuration.UserData.TrayIcon)
                 {
                     icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico"));
@@ -273,32 +273,15 @@ namespace Client.Forms
         }
 
         /// <summary>
-        /// Create a new chat
+        /// Create a new chat, replaced by Graphics.Window.CreateChat(Protocol, bool)
         /// </summary>
         /// <param name="Chat"></param>
         /// <param name="WindowOwner"></param>
         /// <param name="Focus"></param>
+        [Obsolete]
         public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
         {
-            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
-            {
-                throw new Exception("You can't control other windows from non kernel thread");
-            }
-            Chat.Init();
-            Chat.Create();
-            Chat.Visible = true;
-            Chat._Protocol = WindowOwner;
-            if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
-            {
-                if (Chat.textbox.history.Count == 0)
-                {
-                    Chat.textbox.history.AddRange(Core._Main.Chat.textbox.history);
-                }
-            }
-            if (Focus)
-            {
-                SwitchWindow(Chat);
-            }
+            Chat.CreateChat(WindowOwner, Focus);
         }
 
         /// <summary>
