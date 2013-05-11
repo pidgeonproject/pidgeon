@@ -207,7 +207,7 @@ namespace Client
                     }
 
                     Core.SystemForm.progress = double.Parse(id);
-                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
                         Core.SystemForm.Status(protocol.getInfo());
