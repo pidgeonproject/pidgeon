@@ -45,17 +45,17 @@ namespace Client.Forms
         private global::Gtk.TreeView treeview7;
         private global::Gtk.Label label4;
         private Gtk.VPaned vpaned01 = null;
-        private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
-        private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
+        //private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
+        //private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
         private Client.GTK.Menu reloadToolStripMenuItemb = new Client.GTK.Menu("Reload");
-        private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu("Reload");
-        private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu("Remove");
+        //private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu("Reload");
+        //private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu("Remove");
         private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu("Remove");
-        private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu("Insert");
-        private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu("Insert");
-        private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
+        //private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu("Insert");
+        //private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu("Insert");
+        //private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
         private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu("Refresh");
-        private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
+        //private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
 
         private void Build()
         {

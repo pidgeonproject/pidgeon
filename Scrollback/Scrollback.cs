@@ -199,7 +199,7 @@ namespace Client
         {
             if (owner != null)
             {
-                if (owner != Core._Main.Chat)
+                if (owner != Core.SystemForm.Chat)
                 {
                     return false;
                 }

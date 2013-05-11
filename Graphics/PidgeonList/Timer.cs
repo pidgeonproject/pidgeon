@@ -113,17 +113,17 @@ namespace Client.Graphics
                 }
 
                 // if there are waiting window requests we process them here
-                lock (Core._Main.WindowRequests)
+                lock (Core.SystemForm.WindowRequests)
                 {
-                    foreach (Forms.Main._WindowRequest item in Core._Main.WindowRequests)
+                    foreach (Forms.Main._WindowRequest item in Core.SystemForm.WindowRequests)
                     {
-                        Core._Main.CreateChat(item.window, item.owner, item.focus);
+                        item.window.CreateChat  (item.owner, item.focus);
                         if (item.owner != null && item.focus)
                         {
                             item.owner.ShowChat(item.name);
                         }
                     }
-                    Core._Main.WindowRequests.Clear();
+                    Core.SystemForm.WindowRequests.Clear();
                 }
 
                 lock (queueUsers)

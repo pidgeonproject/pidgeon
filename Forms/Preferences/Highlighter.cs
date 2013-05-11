@@ -37,7 +37,7 @@ namespace Client.Forms
         private global::Gtk.Button buttonCancel;
         private global::Gtk.Button buttonOk;
 
-        private ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
+        //private ListStore list = new ListStore(typeof(string), typeof(Ignoring.Ignore.Type));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Client.Forms.Preferences_Hl"/> class.
@@ -65,7 +65,7 @@ namespace Client.Forms
                 {
                     Configuration.HighlighterList.Add(hl);
                 }
-                Core._Main.fPrefs.ReloadHL();
+                Core.SystemForm.fPrefs.ReloadHL();
                 this.Hide();
                 Destroy();
             }

@@ -169,7 +169,6 @@ namespace Client
                                 {
                                     System.IO.File.Copy(System.Windows.Forms.Application.ExecutablePath, tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
                                 }
-                                System.Diagnostics.Process _pro = new Process();
                                 info = info + "\n\n\n\ntemp2: " + tempdir_ + "^";
                                 info = info + "temp: " + temporarydir + "^";
                                 info = info + "previous: " + System.Windows.Forms.Application.StartupPath;

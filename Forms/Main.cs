@@ -230,7 +230,7 @@ namespace Client.Forms
                 ChannelList.Visible = true;
                 main = new Client.Graphics.Window();
                 main.Events = ((global::Gdk.EventMask)(256));
-                CreateChat(main, null);
+                main.CreateChat(null);
                 main.WindowName = "Pidgeon";
                 toolStripStatusNetwork.TooltipText = "windows / channels / pm";
                 Chat = main;

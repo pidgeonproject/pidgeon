@@ -488,7 +488,7 @@ namespace Client
 
             if (owner != null && owner.MicroBox)
             {
-                Core._Main.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
+                Core.SystemForm.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
             }
 
             bool Matched = false;
@@ -506,7 +506,7 @@ namespace Client
                 }
             }
 
-            if (!IgnoreUpdate && owner != null && owner != Core._Main.Chat && owner._Network != null && owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
+            if (!IgnoreUpdate && owner != null && owner != Core.SystemForm.Chat && owner._Network != null && owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
             {
                 switch (InputStyle)
                 {

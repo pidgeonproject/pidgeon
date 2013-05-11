@@ -74,7 +74,6 @@ namespace Client
 
         private void DrawPart(Line line)
         {
-            Gtk.TextIter iter = this.richTextBox.Buffer.EndIter;
             lock (line.text)
             {
                 foreach (ContentText text in line.text)

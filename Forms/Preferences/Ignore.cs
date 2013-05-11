@@ -72,7 +72,7 @@ namespace Client.Forms
                 {
                     Ignoring.IgnoreList.Add(ignore);
                 }
-                Core._Main.fPrefs.ReloadIgnores();
+                Core.SystemForm.fPrefs.ReloadIgnores();
                 this.Hide();
                 Destroy();
             }

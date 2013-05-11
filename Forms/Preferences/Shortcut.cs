@@ -71,7 +71,7 @@ namespace Client.Forms
                     Configuration.ShortcutKeylist.Add(xx);
                 }
                 this.Hide();
-                Core._Main.fPrefs.redrawS();
+                Core.SystemForm.fPrefs.redrawS();
                 this.Destroy();
             }
             catch (Exception fail)

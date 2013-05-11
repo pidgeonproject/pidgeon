@@ -223,7 +223,7 @@ namespace Client.Graphics
                         closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
                         chan._Network._Protocol.ShowChat(chan._Network.SystemWindowID + chan.Name);
-                        Core._Main.UpdateStatus();
+                        Core.SystemForm.UpdateStatus();
                         break;
                     case ItemType.Server:
                         Network server = (Network)tv.Model.GetValue(iter, 1);
@@ -239,7 +239,7 @@ namespace Client.Graphics
                         Core.network = server;
                         disconnectToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
-                        Core._Main.UpdateStatus();
+                        Core.SystemForm.UpdateStatus();
                         break;
                     case ItemType.Services:
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
@@ -247,7 +247,7 @@ namespace Client.Graphics
                         protocol.ShowChat("!root");
                         Core.network = null;
                         disconnectToolStripMenuItem.Visible = true;
-                        Core._Main.UpdateStatus();
+                        Core.SystemForm.UpdateStatus();
                         break;
                     case ItemType.QuasselCore:
                         ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
@@ -274,7 +274,7 @@ namespace Client.Graphics
                         }
                         us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
                         closeToolStripMenuItem.Visible = true;
-                        Core._Main.UpdateStatus();
+                        Core.SystemForm.UpdateStatus();
                         break;
                 }
             }

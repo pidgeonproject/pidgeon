@@ -185,12 +185,12 @@ namespace Client.Forms
             Direction = tp;
             Scrollback text = null;
             Gtk.TextView tv = null;
-            if (Core._Main.Chat == null || Core._Main.Chat.scrollback == null)
+            if (Core.SystemForm.Chat == null || Core.SystemForm.Chat.scrollback == null)
             {
                 return;
             }
 
-            text = Core._Main.Chat.scrollback;
+            text = Core.SystemForm.Chat.scrollback;
             
             if (!text.IsSimple)
             {

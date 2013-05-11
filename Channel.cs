@@ -273,7 +273,7 @@ namespace Client
             }
             else
             {
-                Core._Main.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
             }
         }
 
@@ -324,7 +324,7 @@ namespace Client
                     List<User> vs = new List<User>();
                     List<User> users = new List<User>();
                     bool Inserted;
-                    Core._Main.UpdateStatus();
+                    Core.SystemForm.UpdateStatus();
                     if (Chat != null && Chat.isInitialised)
                     {
                         if (Chat.IsDestroyed)
@@ -483,7 +483,7 @@ namespace Client
                 Core.DebugLog("Destroying channel " + Name);
             }
 
-            Core._Main.ChannelList.RemoveChannel(this);
+            Core.SystemForm.ChannelList.RemoveChannel(this);
 
             lock (UserList)
             {

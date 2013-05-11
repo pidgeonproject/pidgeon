@@ -181,10 +181,10 @@ namespace Client
         {
             try
             {
-                Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                 Client.ContentLine.MessageStyle.System);
 
-                Core._Main.Status("Connecting to " + Server);
+                Core.SystemForm.Status("Connecting to " + Server);
 
                 if (!SSL)
                 {
@@ -225,14 +225,14 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
             try
             {
                 sBuffer = new Services.Buffer(this);
-                Core._Main.Status(getInfo());
+                Core.SystemForm.Status(getInfo());
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
@@ -252,7 +252,7 @@ namespace Client
             {
                 if (IsConnected && !disconnecting)
                 {
-                    Core._Main.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
                     Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
                     sBuffer = null;
                     Disconnect();
@@ -401,18 +401,16 @@ namespace Client
         {
             network = network.ToLower();
             Network remove = null;
-            Gtk.TreeIter item;
-            lock (Core._Main.ChannelList.ServerList)
+            lock (Core.SystemForm.ChannelList.ServerList)
             {
-                foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core._Main.ChannelList.ServerList)
+                foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core.SystemForm.ChannelList.ServerList)
                 {
                     if (n.Key.ServerName.ToLower() == network)
                     {
-                        item = n.Value;
                         remove = n.Key;
                         if (remove != null)
                         {
-                            Core._Main.ChannelList.RemoveServer(remove);
+                            Core.SystemForm.ChannelList.RemoveServer(remove);
                         }
                         else
                         {
@@ -499,9 +497,9 @@ namespace Client
                 {
                     if (FinishedLoading)
                     {
-                        Core._Main.Status("Writing the service cache");
+                        Core.SystemForm.Status("Writing the service cache");
                         sBuffer.Snapshot();
-                        Core._Main.Status("Done");
+                        Core.SystemForm.Status("Done");
                     }
                     else
                     {
@@ -617,7 +615,7 @@ namespace Client
         public override bool Open()
         {
             CreateChat("!root", true, null);
-            Core._Main.ChannelList.InsertSv(this);
+            Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
             Core.SystemThreads.Add(main);
             main.Start();
@@ -645,7 +643,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
+            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }

@@ -96,7 +96,7 @@ namespace Client
         {
             try
             {
-                Core._Main.Status(messages.get("connecting", Core.SelectedLanguage));
+                Core.SystemForm.Status(messages.get("connecting", Core.SelectedLanguage));
 
                 if (!SSL)
                 {
@@ -184,7 +184,7 @@ namespace Client
         public override bool Open()
         {
             sw = CreateChat("!root", true, null);
-            Core._Main.ChannelList.InsertQuassel(this);
+            Core.SystemForm.ChannelList.InsertQuassel(this);
             _Thread = new System.Threading.Thread(Start);
             _Thread.Name = "Quassel main";
             Core.SystemThreads.Add(_Thread);

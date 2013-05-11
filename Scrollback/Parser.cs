@@ -838,7 +838,7 @@ namespace Client
             Graphics.Window _window = window;
             if (window == null)
             {
-                _window = Core._Main.Chat;
+                _window = Core.SystemForm.Chat;
             }
             Network network = _window._Network;
             if (network == null)

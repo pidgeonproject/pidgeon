@@ -612,7 +612,7 @@ namespace Client.Services
                     {
                         if (network != "")
                         {
-                            Core._Main.Status("Reading disk cache for " + network);
+                            Core.SystemForm.Status("Reading disk cache for " + network);
                             NetworkInfo info = DeserializeNetwork(Root + network);
                             networkInfo.Add(network, info);
                             Networks.Add(info.Server, network);
@@ -854,14 +854,14 @@ namespace Client.Services
         /// </summary>
         public void PrintInfo()
         {
-            if (Core._Main.Chat != null)
+            if (Core.SystemForm.Chat != null)
             {
-                Core._Main.Chat.scrollback.InsertText("Information about cache:", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Information about cache:", Client.ContentLine.MessageStyle.System, false);
                 lock (networkInfo)
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Client.ContentLine.MessageStyle.System, false);
                     }
                 }
             }

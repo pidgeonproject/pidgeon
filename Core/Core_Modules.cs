@@ -94,9 +94,9 @@ namespace Client
                         _plugin.Load();
                         _plugin._Status = Extension.Status.Active;
                         Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
-                        if (Core._Main != null)
+                        if (Core.SystemForm != null)
                         {
-                            Core._Main.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
+                            Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
                         }
                         return true;
                     }
@@ -134,9 +134,9 @@ namespace Client
                 if (plugin.Hook_OnRegister())
                 {
                     plugin.Load();
-                    if (Core._Main != null)
+                    if (Core.SystemForm != null)
                     {
-                        Core._Main.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
                     }
                     return true;
                 }

@@ -153,7 +153,7 @@ namespace Client
             if (Windows.ContainsKey(name))
             {
                 Current = Windows[name];
-                Core._Main.SwitchWindow(Current);
+                Core.SystemForm.SwitchWindow(Current);
                 Current.Redraw();
                 if (Current.isChannel)
                 {
@@ -162,14 +162,14 @@ namespace Client
                         Core.network.RenderedChannel = Core.network.getChannel(Current.WindowName);
                     }
                 }
-                Core._Main.setChannel(name);
+                Core.SystemForm.setChannel(name);
                 if (Current.Making == false)
                 {
                     Current.textbox.setFocus();
                 }
-                Core._Main.Chat = Windows[name];
+                Core.SystemForm.Chat = Windows[name];
                 Current.Making = false;
-                Core._Main.UpdateStatus();
+                Core.SystemForm.UpdateStatus();
             }
             return true;
         }
@@ -194,7 +194,7 @@ namespace Client
         {
             try
             {
-                Core._Main.SwitchRoot();
+                Core.SystemForm.SwitchRoot();
                 if (SystemWindow != null)
                 {
                     if (!Windows.ContainsValue(SystemWindow))
@@ -203,10 +203,10 @@ namespace Client
                     }
                 }
                 ClearWins();
-                Core._Main.setChannel("");
-                Core._Main.Status("Disconnected from " + Server);
-                Core._Main.DisplayingProgress = false;
-                Core._Main.setText("");
+                Core.SystemForm.setChannel("");
+                Core.SystemForm.Status("Disconnected from " + Server);
+                Core.SystemForm.DisplayingProgress = false;
+                Core.SystemForm.setText("");
             }
             finally
             {
@@ -329,10 +329,10 @@ namespace Client
                 request.window.isChannel = true;
             }
 
-            lock (Core._Main.WindowRequests)
+            lock (Core.SystemForm.WindowRequests)
             {
                 // Create a request to create this window
-                Core._Main.WindowRequests.Add(request);
+                Core.SystemForm.WindowRequests.Add(request);
                 Graphics.PidgeonList.Updated = true;
             }
             return request.window;

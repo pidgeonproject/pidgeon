@@ -268,7 +268,7 @@ namespace Client
             try
             {
                 Messages.protocol = this;
-                Core._Main.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                     Client.ContentLine.MessageStyle.System);
             
                 if (!SSL)
@@ -300,7 +300,7 @@ namespace Client
                     Send("PASS " + Password);
                 }
 
-                Core._Main.Status("");
+                Core.SystemForm.Status("");
 
                 keep = new System.Threading.Thread(_Ping);
                 keep.Name = "pinger thread";
@@ -310,7 +310,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core._Main.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -339,14 +339,14 @@ namespace Client
             catch (System.Net.Sockets.SocketException)
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
-                Core._Main.Status("Disconnected from server " + Server);
+                Core.SystemForm.Status("Disconnected from server " + Server);
                 _IRCNetwork.flagDisconnect();
                 Connected = false;
             }
             catch (System.IO.IOException)
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
-                Core._Main.Status("Disconnected from server " + Server);
+                Core.SystemForm.Status("Disconnected from server " + Server);
                 _IRCNetwork.flagDisconnect();
                 Connected = false;
             }
@@ -434,7 +434,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core._Main.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
+                Core.SystemForm.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, priority);
             return 0;
@@ -449,7 +449,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
         {
-            Core._Main.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
+            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), priority);
             return 0;
         }
@@ -527,7 +527,7 @@ namespace Client
                 Core.killThread(main);
             }
             main = new System.Threading.Thread(Start);
-            Core._Main.Status("Connecting to server " + Server + " port " + Port.ToString());
+            Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
             main.Start();
             Core.SystemThreads.Add(main);
         }
@@ -569,7 +569,7 @@ namespace Client
         public override bool Open()
         {
             main = new System.Threading.Thread(Start);
-            Core._Main.Status("Connecting to server " + Server + " port " + Port.ToString());
+            Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
             main.Start();
             Core.SystemThreads.Add(main);
             return true;

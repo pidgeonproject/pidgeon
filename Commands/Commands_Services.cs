@@ -42,7 +42,7 @@ namespace Client
             {
                 if (parameter == "")
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 string name2 = parameter;
@@ -50,22 +50,22 @@ namespace Client
                 int n3;
                 if (name2 == "")
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
-                if (Core._Main.Chat._Protocol == null)
+                if (Core.SystemForm.Chat._Protocol == null)
                 {
                     return;
                 }
-                if (Core._Main.Chat._Protocol.GetType() == typeof(ProtocolSv))
+                if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
                 {
                     if (int.TryParse(b2, out n3))
                     {
-                        Core._Main.Chat._Protocol.ConnectTo(name2, n3);
+                        Core.SystemForm.Chat._Protocol.ConnectTo(name2, n3);
                         return;
                     }
 
-                    Core._Main.Chat._Protocol.ConnectTo(name2, 6667);
+                    Core.SystemForm.Chat._Protocol.ConnectTo(name2, 6667);
                     return;
                 }
             }
@@ -90,7 +90,7 @@ namespace Client
                     foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
                     {
                         f.Delete(true);
-                        Core._Main.Chat.scrollback.InsertText("Removed " + f.Name, Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Removed " + f.Name, Client.ContentLine.MessageStyle.System, false);
                     }
                     return;
                 }
@@ -98,7 +98,7 @@ namespace Client
                 {
                     ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
                     protocol.sBuffer.Clear();
-                    Core._Main.Chat.scrollback.InsertText("Services cache was cleared", Client.ContentLine.MessageStyle.System, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Services cache was cleared", Client.ContentLine.MessageStyle.System, false);
                 }
             }
 
@@ -107,11 +107,11 @@ namespace Client
                 if (parameter != "")
                 {
                     string nick = parameter;
-                    if (Core._Main.Chat._Network._Protocol != null)
+                    if (Core.SystemForm.Chat._Network._Protocol != null)
                     {
-                        if (Core._Main.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
+                        if (Core.SystemForm.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
                         {
-                            Core._Main.Chat._Network._Protocol.requestNick(nick);
+                            Core.SystemForm.Chat._Network._Protocol.requestNick(nick);
                             return;
                         }
                     }
@@ -134,7 +134,7 @@ namespace Client
                     Core.connectPS(parameters[0], port, parameters[1]);
                     return;
                 }
-                Core._Main.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }),
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }),
                     Client.ContentLine.MessageStyle.Message);
             }
         }

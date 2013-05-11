@@ -187,12 +187,12 @@ namespace Client.Forms
             {
                 if (focus)
                 {
-                    Core._Main.setFocus();
-                    if (Core._Main.Chat != null && Core._Main.Chat.textbox != null)
+                    Core.SystemForm.setFocus();
+                    if (Core.SystemForm.Chat != null && Core.SystemForm.Chat.textbox != null)
                     {
                         // workaround because of bugs in GTK#
                         this.Hide();
-                        Core._Main.Chat.textbox.setFocus();
+                        Core.SystemForm.Chat.textbox.setFocus();
                     }
                 }
             }

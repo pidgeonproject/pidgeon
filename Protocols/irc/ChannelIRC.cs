@@ -374,7 +374,7 @@ namespace Client
                     if (!channel.containsBan(code[4]))
                     {
                         channel.Bans.Add(new SimpleBan(code[5], code[4], code[6]));
-                        Core._Main.Status();
+                        Core.SystemForm.Status();
                     }
                     channel.UpdateInfo();
                 }

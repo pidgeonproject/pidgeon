@@ -232,7 +232,7 @@ namespace Client
                 return;
             }
             destroyed = true;
-            Core._Main.ChannelList.RemoveUser(this);
+            Core.SystemForm.ChannelList.RemoveUser(this);
             _Network = null;
         }
 

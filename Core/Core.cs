@@ -34,8 +34,8 @@ namespace Client
         /// </summary>
         public class Domain
         {
-            AppDomain domain;
-            string name;
+            public AppDomain domain;
+            public string name;
 
             /// <summary>
             /// Creates a new instance of this class
@@ -623,11 +623,11 @@ namespace Client
                 System.Diagnostics.Debug.Print(data);
                 if (Configuration.Kernel.Debugging)
                 {
-                    if (Core._Main != null && !Core.blocked)
+                    if (Core.SystemForm != null && !Core.blocked)
                     {
-                        if (Core._Main.main != null)
+                        if (Core.SystemForm.main != null)
                         {
-                            Core._Main.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
+                            Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
                         }
                     }
                 }
@@ -676,15 +676,15 @@ namespace Client
                 }
 
                 // if not we can try to pass it to server
-                if (Core._Main.Chat != null && !Core._Main.Chat.IsDestroyed && Core._Main.Chat._Network != null && Core._Main.Chat._Network._Protocol != null)
+                if (Core.SystemForm.Chat != null && !Core.SystemForm.Chat.IsDestroyed && Core.SystemForm.Chat._Network != null && Core.SystemForm.Chat._Network._Protocol != null)
                 {
-                    if (_Main.Chat._Network._Protocol.IsConnected)
+                    if (SystemForm.Chat._Network._Protocol.IsConnected)
                     {
-                        Core._Main.Chat._Network._Protocol.Command(command);
+                        Core.SystemForm.Chat._Network._Protocol.Command(command);
                         return false;
                     }
                 }
-                _Main.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
                 return false;
             }
             catch (Exception f)
@@ -737,9 +737,9 @@ namespace Client
                     notification.text.Text = notification_data;
                     notification.title.Markup = "<span size='18000'>" + notification_caption + "</span>";
                     notification_waiting = false;
-                    if (Core._Main.Chat != null)
+                    if (Core.SystemForm.Chat != null)
                     {
-                        if (Core._Main.Chat.textbox.richTextBox1.IsFocus)
+                        if (Core.SystemForm.Chat.textbox.richTextBox1.IsFocus)
                         {
                             Focus = true;
                         }
@@ -750,11 +750,11 @@ namespace Client
                         notification.Show();
                         if (Focus)
                         {
-                            Core._Main.setFocus();
-                            if (Core._Main.Chat != null)
+                            Core.SystemForm.setFocus();
+                            if (Core.SystemForm.Chat != null)
                             {
                                 notification.focus = true;
-                                Core._Main.Chat.textbox.setFocus();
+                                Core.SystemForm.Chat.textbox.setFocus();
                             }
                         }
                     }
@@ -1241,10 +1241,10 @@ namespace Client
                     IgnoreErrors = true;
                     if (Configuration.UserData.TrayIcon)
                     {
-                        _Main.icon.Visible = false;
-                        _Main.icon.Dispose();
+                        SystemForm.icon.Visible = false;
+                        SystemForm.icon.Dispose();
                     }
-                    _Main.Hide();
+                    SystemForm.Hide();
                     notification.Hide();
                     _Configuration.ConfigSave();
                     try

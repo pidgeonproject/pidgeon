@@ -830,7 +830,7 @@ namespace Client.Graphics
                     {
                         if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
                         {
-                            Core._Main.SwitchRoot();
+                            Core.SystemForm.SwitchRoot();
                             user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick]._Destroy();
                             user._Network._Protocol.Windows.Remove(user._Network.SystemWindowID + user.Nick);
                         }
@@ -843,7 +843,7 @@ namespace Client.Graphics
 
                     if (channel.IsAlive)
                     {
-                        Core._Main.Chat.scrollback.InsertText("Unable to remove channel because it's active, you need to part it: " + channel.Name, ContentLine.MessageStyle.System, false, 0);
+                        Core.SystemForm.Chat.scrollback.InsertText("Unable to remove channel because it's active, you need to part it: " + channel.Name, ContentLine.MessageStyle.System, false, 0);
                         return;
                     }
 
@@ -855,7 +855,7 @@ namespace Client.Graphics
                         }
                     }
 
-                    Core._Main.SwitchRoot();
+                    Core.SystemForm.SwitchRoot();
 
                     lock (channel._Network._Protocol.Windows)
                     {

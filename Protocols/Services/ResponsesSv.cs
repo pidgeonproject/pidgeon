@@ -197,22 +197,22 @@ namespace Client
 
                 if (backlog || range)
                 {
-                    if (Core._Main.DisplayingProgress == false)
+                    if (Core.SystemForm.DisplayingProgress == false)
                     {
-                        Core._Main.progress = double.Parse(id);
-                        Core._Main.DisplayingProgress = true;
+                        Core.SystemForm.progress = double.Parse(id);
+                        Core.SystemForm.DisplayingProgress = true;
                         protocol.FinishedLoading = false;
                         protocol.SuppressChanges = true;
-                        Core._Main.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
+                        Core.SystemForm.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
-                    Core._Main.progress = double.Parse(id);
-                    Core._Main.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    Core.SystemForm.progress = double.Parse(id);
+                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + " packets from total of " + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
-                        Core._Main.Status(protocol.getInfo());
-                        Core._Main.DisplayingProgress = false;
-                        Core._Main.progress = 0;
+                        Core.SystemForm.Status(protocol.getInfo());
+                        Core.SystemForm.DisplayingProgress = false;
+                        Core.SystemForm.progress = 0;
                         protocol.SuppressChanges = false;
                         if (Configuration.Services.UsingCache && Configuration.Services.MissingFix)
                         {
@@ -305,11 +305,11 @@ namespace Client
                     }
                     if (protocol.WaitingNetw.Count == 0)
                     {
-                        Core._Main.Status(protocol.getInfo());
+                        Core.SystemForm.Status(protocol.getInfo());
                     }
                     else
                     {
-                        Core._Main.Status("Waiting for backlog for " + protocol.WaitingNetw[0]);
+                        Core.SystemForm.Status("Waiting for backlog for " + protocol.WaitingNetw[0]);
                     }
                 }
 
@@ -402,7 +402,7 @@ namespace Client
                 error += "code (" + code + ") description: " + description;
                 if (protocol.SystemWindow == null)
                 {
-                    Core._Main.main.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
+                    Core.SystemForm.main.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
                     return;
                 }
                 protocol.SystemWindow.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
@@ -434,7 +434,7 @@ namespace Client
 
                     if (Configuration.Services.UsingCache)
                     {
-                        Core._Main.Status("Loading disk cache from disk...");
+                        Core.SystemForm.Status("Loading disk cache from disk...");
                         protocol.sBuffer.ReadDisk();
                     }
 
@@ -510,7 +510,7 @@ namespace Client
                         }
                         id++;
                     }
-                    Core._Main.Status("Waiting for services to send us remaining backlog");
+                    Core.SystemForm.Status("Waiting for services to send us remaining backlog");
                 }
             }
 
@@ -621,7 +621,7 @@ namespace Client
                             if (item != null)
                             {
                                 protocol.RemainingJobs.Remove(item);
-                                Core._Main.Status(protocol.getInfo());
+                                Core.SystemForm.Status(protocol.getInfo());
                             }
                         }
                         Channel channel = nw.getChannel(curr.Attributes[1].Value);

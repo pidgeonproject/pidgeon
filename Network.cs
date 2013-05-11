@@ -312,13 +312,13 @@ namespace Client
                 {
                     protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName);
                     SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
-                    Core._Main.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
+                    Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
                     protocol.CreateChat("!system", true, this);
                     SystemWindow = protocol.Windows["!system"];
-                    Core._Main.ChannelList.InsertNetwork(this);
+                    Core.SystemForm.ChannelList.InsertNetwork(this);
                 }
                 Hooks._Network.CreatingNetwork(this);
             }
@@ -540,7 +540,7 @@ namespace Client
         {
             User referenced_user = new User(user, "", this, "");
             PrivateChat.Add(referenced_user);
-            Core._Main.ChannelList.insertUser(referenced_user);
+            Core.SystemForm.ChannelList.insertUser(referenced_user);
             PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true));
             PrivateWins[referenced_user].isPM = true;
             return referenced_user;
@@ -592,7 +592,7 @@ namespace Client
                 RenderedChannel = _channel;
                 _channel.Name = channel;
                 Channels.Add(_channel);
-                Core._Main.ChannelList.insertChannel(_channel);
+                Core.SystemForm.ChannelList.insertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
                 window.isChannel = true;
                 return _channel;
@@ -698,7 +698,7 @@ namespace Client
                 Descriptions.Clear();
             }
 
-            Core._Main.ChannelList.RemoveServer(this);
+            Core.SystemForm.ChannelList.RemoveServer(this);
         }
 
         /// <summary>

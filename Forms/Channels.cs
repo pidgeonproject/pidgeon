@@ -42,7 +42,7 @@ namespace Client.Forms
         private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
         private GTK.Menu downloadListFromServerToolStripMenuItem = new GTK.Menu("Download from server");
         private GTK.Menu listtoclipboard = new GTK.Menu("Copy selected to clipboard");
-        private GTK.Menu listtoclipboard2 = new GTK.Menu("Copy selected channel names (separated by space) to clipboard");
+        //private GTK.Menu listtoclipboard2 = new GTK.Menu("Copy selected channel names (separated by space) to clipboard");
         
         /// <summary>
         /// Selected channels
