@@ -45,11 +45,11 @@ namespace Client
                         return false;
                     }
                     Type[] types = library.GetTypes();
-                    Type type = library.GetType("Client.RestrictedModule");
+                    Type type = typeof(Extension); // = library.GetType("Client.RestrictedModule");
                     Type pluginInfo = null;
                     foreach (Type curr in types)
                     {
-                        if (curr.IsAssignableFrom(type))
+                        if (curr.IsAssignableFrom(type) || curr.BaseType == type)
                         {
                             pluginInfo = curr;
                             break;
