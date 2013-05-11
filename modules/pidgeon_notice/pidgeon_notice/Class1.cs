@@ -5,7 +5,7 @@ using Client;
 
 namespace Client
 {
-    class RestrictedModule : Client.Extension
+    class PidgeonNotice : Client.Extension
     {
         Graphics.Window collector = null;
         Gtk.MenuItem menu;
