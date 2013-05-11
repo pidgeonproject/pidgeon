@@ -49,7 +49,7 @@ namespace Client
                     Type pluginInfo = null;
                     foreach (Type curr in types)
                     {
-                        if (curr.IsAssignableFrom(type) || curr.BaseType == type)
+                        if (curr.BaseType == type)
                         {
                             pluginInfo = curr;
                             break;

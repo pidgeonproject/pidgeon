@@ -6,7 +6,7 @@ using Gtk;
 
 namespace Client
 {
-    public class RestrictedModule : Client.Extension
+    public class PidgeonTc : Client.Extension
     {
         public override void Initialise()
         {

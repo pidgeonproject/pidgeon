@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Client
 {
-    public class RestrictedModule : Extension
+    public class NetworkData : Extension
     {
         public override void Initialise()
         {

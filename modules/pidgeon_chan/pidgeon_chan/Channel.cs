@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Client
 {
-    public class RestrictedModule : Extension
+    public class PidgeonChan : Extension
     {
         public Gtk.MenuItem item = null;
         public Gtk.SeparatorMenuItem separator = null;
