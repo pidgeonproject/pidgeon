@@ -67,11 +67,22 @@ namespace Client
                 {
                     if (_data2[1].Contains("JOIN"))
                     {
+                        string channel = null;
                         if (!updated_text)
                         {
                             return true;
                         }
-                        string channel = _value;
+                        if (_data2.Length > 2)
+                        {
+                            if (_data2[2] != null && _data2[2] != "")
+                            {
+                                channel = _data2[2];
+                            }
+                        }
+                        if (channel == null)
+                        {
+                            channel = _value;
+                        }
                         Channel curr = _Network.getChannel(channel);
                         if (curr == null)
                         {
