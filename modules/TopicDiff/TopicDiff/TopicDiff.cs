@@ -70,7 +70,7 @@ namespace Client
                     word_info += "added: ";
                     foreach (string data in add)
                     {
-                        word_info += data + ", ";
+                        word_info += data + " ";
                     }
                 }
                 if (rm.Count > 0)
@@ -78,7 +78,7 @@ namespace Client
                     word_info += "removed: ";
                     foreach (string data in rm)
                     {
-                        word_info += data + ", ";
+                        word_info += data + " ";
                     }
                 }
             }
