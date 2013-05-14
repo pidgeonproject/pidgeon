@@ -46,7 +46,7 @@ namespace Client
 
             foreach (string word in words_old)
             {
-                if (!topic.Contains(word))
+                if (!words_new.Contains(word))
                 {
                     rm.Add(word);
                 }
@@ -54,7 +54,7 @@ namespace Client
 
             foreach (string word in words_new)
             {
-                if (!old_topic.Contains(word))
+                if (!words_old.Contains(word))
                 {
                     add.Add(word);
                 }
@@ -67,16 +67,16 @@ namespace Client
                 word_info = "";
                 if (words_old.Count > 0)
                 {
-                    word_info += "words removed: ";
-                    foreach (string data in words_old)
+                    word_info += "removed: ";
+                    foreach (string data in rm)
                     {
                         word_info += data + ", ";
                     }
                 }
                 if (words_new.Count > 0)
                 {
-                    word_info += "words inserted: ";
-                    foreach (string data in words_new)
+                    word_info += "added: ";
+                    foreach (string data in add)
                     {
                         word_info += data + ", ";
                     }

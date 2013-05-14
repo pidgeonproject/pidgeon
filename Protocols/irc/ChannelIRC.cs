@@ -448,7 +448,6 @@ namespace Client
             if (channel != null)
             {
                 Graphics.Window window;
-                channel.Topic = value;
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
@@ -458,9 +457,10 @@ namespace Client
                             Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
                             !channel.temporary_hide, date, !updated_text);
                     }
-                    return true;
                 }
+                channel.Topic = value;
                 channel.UpdateInfo();
+                return true;
             }
             return false;
         }
