@@ -62,21 +62,21 @@ namespace Client
 
             string word_info = "No words changed";
 
-            if (words_new.Count > 0 || words_old.Count > 0)
+            if (add.Count > 0 || rm.Count > 0)
             {
                 word_info = "";
-                if (words_old.Count > 0)
+                if (add.Count > 0)
                 {
-                    word_info += "removed: ";
-                    foreach (string data in rm)
+                    word_info += "added: ";
+                    foreach (string data in add)
                     {
                         word_info += data + ", ";
                     }
                 }
-                if (words_new.Count > 0)
+                if (rm.Count > 0)
                 {
-                    word_info += "added: ";
-                    foreach (string data in add)
+                    word_info += "removed: ";
+                    foreach (string data in rm)
                     {
                         word_info += data + ", ";
                     }
