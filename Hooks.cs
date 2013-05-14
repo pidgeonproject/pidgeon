@@ -351,6 +351,41 @@ namespace Client
             }
 
             /// <summary>
+            /// Topic is being changed, topic is a new topic, this event happen before the topic is changed and if false is returned
+            /// the topic change is ignored
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="channel"></param>
+            /// <param name="topic"></param>
+            /// <returns></returns>
+            public static bool Topic(Network network, string user, Channel channel, string topic)
+            {
+                bool success = true;
+
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_Topic(network, user, channel, topic))
+                            {
+                                success = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook Topic(Network network, User user, Channel channel, string topic) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+
+                return success;
+            }
+
+            /// <summary>
             /// User talk in a channel
             /// </summary>
             /// <param name="network"></param>
@@ -462,10 +497,10 @@ namespace Client
             }
 
             /// <summary>
-            /// Channel topic is changed
+            /// Channel topic is retrieved from server
             /// </summary>
-            /// <param name="topic">New topic</param>
-            /// <param name="user">User who changed it</param>
+            /// <param name="topic">Topic</param>
+            /// <param name="user">User who set it</param>
             /// <param name="network">Network</param>
             /// <param name="channel">Channel</param>
             public static bool ChannelTopic(string topic, User user, Network network, Channel channel)

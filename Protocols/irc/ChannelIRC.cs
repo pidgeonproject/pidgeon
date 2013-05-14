@@ -452,9 +452,12 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    WindowText(window, messages.get("channel-topic",
-                        Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
-                        !channel.temporary_hide, date, !updated_text);
+                    if (Hooks._Network.Topic(_Network, source, channel, value))
+                    {
+                        WindowText(window, messages.get("channel-topic",
+                            Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
+                            !channel.temporary_hide, date, !updated_text);
+                    }
                     return true;
                 }
                 channel.UpdateInfo();

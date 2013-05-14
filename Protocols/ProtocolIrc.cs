@@ -487,6 +487,14 @@ namespace Client
                     _IRCNetwork.flagDisconnect();
                     Core.killThread(deliveryqueue);
                     Core.killThread(keep);
+                    if (SSL)
+                    {
+                        _networkSsl.Close();
+                    }
+                    else
+                    {
+                        _networkStream.Close();
+                    }
                     _StreamWriter.Close();
                     _StreamReader.Close();
                     Connected = false;

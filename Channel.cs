@@ -27,9 +27,9 @@ namespace Client
     public class Channel
     {
         /// <summary>
-        /// Name of a channel including the special prefix
+        /// Name of a channel including the special prefix, if it's unknown this variable is null
         /// </summary>
-        public string Name;
+        public string Name = null;
         /// <summary>
         /// Network the channel belongs to
         /// </summary>
@@ -41,7 +41,7 @@ namespace Client
         [NonSerialized]
         public List<User> UserList = new List<User>();
         /// <summary>
-        /// Topic
+        /// Topic, if it's unknown this variable is null
         /// </summary>
         public string Topic = null;
         /// <summary>

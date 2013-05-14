@@ -390,6 +390,20 @@ namespace Client
         }
 
         /// <summary>
+        /// Topic is being changed, this event happen before the topic is changed and if false is returned
+        /// the topic change is ignored
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="user"></param>
+        /// <param name="channel"></param>
+        /// <param name="topic"></param>
+        /// <returns></returns>
+        public virtual bool Hook_Topic(Network network, string userline, Channel channel, string topic)
+        {
+            return true;
+        }
+
+        /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
         public virtual void Initialise()

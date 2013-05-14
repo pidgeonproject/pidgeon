@@ -526,32 +526,31 @@ namespace Client
             {
                 return;
             }
-
-            if (name != Thread.CurrentThread)
+            // we need to lock it here so that we prevent multiple calls of this function at same time
+            lock (SystemThreads)
             {
-                if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
+                if (name != Thread.CurrentThread)
                 {
-                    name.Abort();
-                    Core.DebugLog("Killed thread " + name.Name);
+                    if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
+                    {
+                        name.Abort();
+                        Core.DebugLog("Killed thread " + name.Name);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
+                    }
                 }
                 else
                 {
-                    Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
+                    Core.DebugLog("Ignored request to abort thread from within the same thread " + name.Name);
                 }
-            }
-            else
-            {
-                Core.DebugLog("Ignored request to abort thread from within the same thread " + name.Name);
-            }
 
-            if (Core.IgnoreErrors)
-            {
-                DebugLog("Not removing thread from thread queue " + name.Name + " because system is shutting down");
-                return;
-            }
-
-            lock (SystemThreads)
-            {
+                if (Core.IgnoreErrors)
+                {
+                    DebugLog("Not removing thread from thread queue " + name.Name + " because system is shutting down");
+                    return;
+                }
                 if (SystemThreads.Contains(name))
                 {
                     SystemThreads.Remove(name);
@@ -581,7 +580,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Flush the ring data
+        /// Remove the ring data
         /// </summary>
         public static void ClearRingBufferLog()
         {
@@ -615,8 +614,9 @@ namespace Client
         /// <summary>
         /// Insert text in to debug log
         /// </summary>
-        /// <param name="data">Text to insert</param>
-        public static void DebugLog(string data)
+        /// <param name="data"></param>
+        /// <param name="verbosity"></param>
+        public static void DebugLog(string data, int verbosity)
         {
             try
             {
@@ -637,6 +637,15 @@ namespace Client
             {
                 Core.handleException(er);
             }
+        }
+
+        /// <summary>
+        /// Insert text in to debug log
+        /// </summary>
+        /// <param name="data">Text to insert</param>
+        public static void DebugLog(string data)
+        {
+            DebugLog(data, 1);
         }
 
         /// <summary>
