@@ -243,7 +243,11 @@ namespace Client
                     }
                     if (Valid(text))
                     {
-                        Process(text);
+                        // if this return false the thread must be stopped now
+                        if (!Process(text))
+                        {
+                            return;
+                        }
                         continue;
                     }
                 }
@@ -252,10 +256,18 @@ namespace Client
             {
                 if (IsConnected && !disconnecting)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
-                    Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
-                    sBuffer = null;
-                    Disconnect();
+                    // we need to wrap this in another exception handler because the following functions are easy to throw some
+                    try
+                    {
+                        Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
+                        Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
+                        sBuffer = null;
+                        Disconnect();
+                    }
+                    catch (Exception f1)
+                    {
+                        Core.handleException(f1);
+                    }
                 }
             }
             catch (System.Threading.ThreadAbortException)
@@ -384,7 +396,7 @@ namespace Client
             }
             catch (ThreadAbortException)
             {
-                return true;
+                return false;
             }
             catch (Exception fail)
             {
@@ -728,6 +740,19 @@ namespace Client
             Deliver(request);
         }
 
+        private void SafeDc(string reason)
+        {
+            try
+            {
+                SystemWindow.scrollback.InsertText(reason, Client.ContentLine.MessageStyle.User);
+                Disconnect();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         /// <summary>
         /// Write raw data
         /// </summary>
@@ -747,8 +772,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
-                    Disconnect();
+                    SafeDc(er.Message);
                 }
                 catch (Exception f)
                 {

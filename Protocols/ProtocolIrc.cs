@@ -203,6 +203,11 @@ namespace Client
                 }
                 catch (Exception fail)
                 {
+                    if (protocol == null)
+                    {
+                        Core.handleException(fail);
+                        return;
+                    }
                     if (protocol.IsConnected)
                     {
                         Core.handleException(fail);
@@ -338,17 +343,11 @@ namespace Client
             }
             catch (System.Net.Sockets.SocketException)
             {
-                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
-                Core.SystemForm.Status("Disconnected from server " + Server);
-                _IRCNetwork.flagDisconnect();
-                Connected = false;
+                SafeDc();
             }
             catch (System.IO.IOException)
             {
-                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
-                Core.SystemForm.Status("Disconnected from server " + Server);
-                _IRCNetwork.flagDisconnect();
-                Connected = false;
+                SafeDc();
             }
             catch (Exception ex)
             {
@@ -356,6 +355,21 @@ namespace Client
             }
             Core.killThread(System.Threading.Thread.CurrentThread);
             return;
+        }
+
+        private void SafeDc()
+        {
+            try
+            {
+                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
+                Core.SystemForm.Status("Disconnected from server " + Server);
+                _IRCNetwork.flagDisconnect();
+                Connected = false;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
