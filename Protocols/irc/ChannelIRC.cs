@@ -65,9 +65,9 @@ namespace Client
                 if (code[8].Length > 0)
                 {
                     // if user is away we flag him
-                    if ( code[8].StartsWith("G") )
+                    if (code[8].StartsWith("G"))
                     {
-                       IsAway = true; 
+                        IsAway = true;
                     }
                     mode = code[8][code[8].Length - 1];
                     if (!_Network.UChars.Contains(mode))
@@ -288,6 +288,12 @@ namespace Client
                         if (delete != null)
                         {
                             channel.UserList.Remove(delete);
+                        }
+                        if (delete.IsPidgeon)
+                        {
+                            channel.ChannelWork = false;
+                            Graphics.Window chat = channel.retrieveWindow();
+                            window.needIcon = true;
                         }
                     }
                     channel.redrawUsers();

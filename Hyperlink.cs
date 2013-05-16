@@ -32,7 +32,7 @@ namespace Client
         /// <summary>
         /// Open link
         /// </summary>
-        /// <param name="ln"></param>
+        /// <param name="ln">Link</param>
         public static void OpenLink(string ln)
         {
             lock (Links)

@@ -203,20 +203,7 @@ namespace Client
                 }
                 catch (Exception fail)
                 {
-                    if (protocol == null)
-                    {
-                        Core.handleException(fail);
-                        return;
-                    }
-                    if (protocol.IsConnected)
-                    {
-                        Core.handleException(fail);
-                    }
-                    else
-                    {
-                        // the exception here is ok
-                        Core.handleException(fail, Core.ExceptionKind.Safe);
-                    }
+                    Core.handleException(fail);
                     return;
                 }
             }

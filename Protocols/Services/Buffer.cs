@@ -658,7 +658,7 @@ namespace Client.Services
             xs.Serialize(writer, line);
             writer.Close();
         }
-        
+
         private static NetworkInfo DeserializeNetwork(string file)
         {
             XmlDocument document = new XmlDocument();

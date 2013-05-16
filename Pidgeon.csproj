@@ -98,6 +98,8 @@
     <EmbeddedResource Include="Resources\icon_hash.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\HookArgs.cs" />
+    <Compile Include="Extensions\HookDefs.cs" />
     <Compile Include="Forms\Channel_Info.Designer.cs">
       <DependentUpon>Channel_Info.cs</DependentUpon>
     </Compile>
@@ -138,14 +140,14 @@
     <Compile Include="RichTBox\Classes.cs" />
     <Compile Include="RichTBox\Data.cs" />
     <Compile Include="RichTBox\RichTBox_Core.cs" />
-    <Compile Include="Scrollback\LineLogs.cs" />
-    <Compile Include="Scrollback\Menu.cs" />
-    <Compile Include="Scrollback\Parser.cs" />
-    <Compile Include="Scrollback\ProcessingLine.cs" />
-    <Compile Include="Scrollback\Scrollback.cs" />
+    <Compile Include="RichTBox\Scrollback\LineLogs.cs" />
+    <Compile Include="RichTBox\Scrollback\Menu.cs" />
+    <Compile Include="RichTBox\Scrollback\Parser.cs" />
+    <Compile Include="RichTBox\Scrollback\ProcessingLine.cs" />
+    <Compile Include="RichTBox\Scrollback\Scrollback.cs" />
     <Compile Include="Channel.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Ignoring.cs" />
     <Compile Include="Messages.cs" />
@@ -156,7 +158,7 @@
     <Compile Include="Protocol.cs" />
     <Compile Include="RevisionInfo.cs" />
     <Compile Include="ScriptingCore.cs" />
-    <Compile Include="Scrollback\ScrollbackLine.cs" />
+    <Compile Include="RichTBox\Scrollback\ScrollbackLine.cs" />
     <Compile Include="SkinCl.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Core\Config_Core.cs" />

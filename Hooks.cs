@@ -326,6 +326,16 @@ namespace Client
                             {
                                 ok = false;
                             }
+                            Extension.NetworkPartArgs data = new Extension.NetworkPartArgs();
+                            data.network = network;
+                            data.user = user;
+                            data.channel = channel;
+                            data.updated = updated;
+                            data.message = message;
+                            if (!extension.Hook_UserPart(data))
+                            {
+                                ok = false;
+                            }
                         }
                     }
                     catch (Exception mf)
@@ -369,6 +379,15 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
+                            Extension.TopicArgs data = new Extension.TopicArgs();
+                            data.channel = channel;
+                            data.network = network;
+                            data.Source = user;
+                            data.Topic = topic;
+                            if (!extension.Hook_Topic(data))
+                            {
+                                success = false;
+                            }
                             if (!extension.Hook_Topic(network, user, channel, topic))
                             {
                                 success = false;
@@ -407,6 +426,15 @@ namespace Client
                             {
                                 ok = false;
                             }
+                            Extension.NetworkTextArgs data = new Extension.NetworkTextArgs();
+                            data.network = network;
+                            data.updated = updated;
+                            data.message = message;
+                            data.user = user;
+                            if (!extension.Hook_UserTalk(data))
+                            {
+                                ok = false;
+                            }
                         }
                     }
                     catch (Exception mf)
@@ -440,6 +468,16 @@ namespace Client
                             {
                                 ok = false;
                             }
+                            Extension.NetworkUserQuitArgs data = new Extension.NetworkUserQuitArgs();
+                            data.network = network;
+                            data.user = user;
+                            data.message = message;
+                            data.window = window;
+                            data.updated = updated;
+                            if (!extension.Hook_UserQuit(data))
+                            {
+                                ok = false;
+                            }
                         }
                     }
                     catch (Exception mf)
@@ -468,6 +506,15 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
+                            Extension.NetworkJoinArgs data = new Extension.NetworkJoinArgs();
+                            data.channel = channel;
+                            data.updated = updated;
+                            data.network = network;
+                            data.user = user;
+                            if (!extension.Hook_UserJoin(data))
+                            {
+                                ok = false;
+                            }
                             if (!extension.Hook_UserJoin(network, user, channel, updated))
                             {
                                 ok = false;
