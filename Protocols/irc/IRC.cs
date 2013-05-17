@@ -182,26 +182,6 @@ namespace Client
                         }
                         return true;
                     }
-                    if (_data2[1].Contains("KICK"))
-                    {
-                        string channel = _data2[2];
-                        if (_data2[2].Contains(_Network.channel_prefix))
-                        {
-                            channel = _data2[2];
-                            Channel c = _Network.getChannel(channel);
-                            if (c != null)
-                            {
-                                c.ChannelWork = false;
-                                c.UpdateInfo();
-                                Graphics.Window chat = c.retrieveWindow();
-                                if (chat != null)
-                                {
-                                    chat.needIcon = true;
-                                }
-                            }
-                        }
-                        return false;
-                    }
                 }
             }
             return false;

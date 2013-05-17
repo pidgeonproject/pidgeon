@@ -588,6 +588,24 @@ namespace Client
                     if (_StreamReader != null) _StreamReader.Close();
                     _StreamWriter = null;
                     _StreamReader = null;
+                    if (SSL)
+                    {
+                        if (_networkSsl != null)
+                        {
+                            _networkSsl.Close();
+                            _networkSsl.Dispose();
+                            _networkSsl = null;
+                        }
+                    }
+                    else
+                    {
+                        if (_networkStream != null)
+                        {
+                            _networkStream.Close();
+                            _networkStream.Dispose();
+                            _networkStream = null;
+                        }
+                    }
                 }
                 catch (System.Net.Sockets.SocketException fail)
                 {
