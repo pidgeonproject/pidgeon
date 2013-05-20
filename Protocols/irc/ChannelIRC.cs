@@ -325,7 +325,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel, updated_text))
+                    if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel, updated_text, date))
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
@@ -406,7 +406,7 @@ namespace Client
                 User delete = null;
                 if (window != null)
                 {
-                    if (Hooks._Network.UserPart(_Network, new User(user, _host, _Network, _ident), channel, value, updated_text))
+                    if (Hooks._Network.UserPart(_Network, new User(user, _host, _Network, _ident), channel, value, updated_text, date))
                     {
                         WindowText(window, messages.get("window-p1",
                             Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
@@ -457,7 +457,7 @@ namespace Client
                 window = channel.retrieveWindow();
                 if (window != null)
                 {
-                    if (Hooks._Network.Topic(_Network, source, channel, value))
+                    if (Hooks._Network.Topic(_Network, source, channel, value, date, updated_text))
                     {
                         WindowText(window, messages.get("channel-topic",
                             Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,

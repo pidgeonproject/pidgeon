@@ -313,7 +313,7 @@ namespace Client
             /// <param name="message"></param>
             /// <param name="updated"></param>
             /// <returns></returns>
-            public static bool UserPart(Network network, User user, Channel channel, string message, bool updated)
+            public static bool UserPart(Network network, User user, Channel channel, string message, bool updated, long date)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -332,6 +332,7 @@ namespace Client
                             data.channel = channel;
                             data.updated = updated;
                             data.message = message;
+                            data.date = date;
                             if (!extension.Hook_UserPart(data))
                             {
                                 ok = false;
@@ -369,7 +370,7 @@ namespace Client
             /// <param name="channel"></param>
             /// <param name="topic"></param>
             /// <returns></returns>
-            public static bool Topic(Network network, string user, Channel channel, string topic)
+            public static bool Topic(Network network, string user, Channel channel, string topic, long date, bool updated)
             {
                 bool success = true;
 
@@ -383,6 +384,8 @@ namespace Client
                             data.channel = channel;
                             data.network = network;
                             data.Source = user;
+                            data.date = date;
+                            data.updated = updated;
                             data.Topic = topic;
                             if (!extension.Hook_Topic(data))
                             {
@@ -413,7 +416,7 @@ namespace Client
             /// <param name="message"></param>
             /// <param name="updated"></param>
             /// <returns></returns>
-            public static bool UserTalk(Network network, User user, Channel channel, string message, bool updated)
+            public static bool UserTalk(Network network, User user, Channel channel, string message, bool updated, long date)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -429,6 +432,7 @@ namespace Client
                             Extension.NetworkTextArgs data = new Extension.NetworkTextArgs();
                             data.network = network;
                             data.updated = updated;
+                            data.date = date;
                             data.message = message;
                             data.user = user;
                             if (!extension.Hook_UserTalk(data))
@@ -455,7 +459,7 @@ namespace Client
             /// <param name="window"></param>
             /// <param name="updated"></param>
             /// <returns></returns>
-            public static bool UserQuit(Network network, User user, string message, Graphics.Window window, bool updated)
+            public static bool UserQuit(Network network, User user, string message, Graphics.Window window, bool updated, long date)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -472,6 +476,7 @@ namespace Client
                             data.network = network;
                             data.user = user;
                             data.message = message;
+                            data.date = date;
                             data.window = window;
                             data.updated = updated;
                             if (!extension.Hook_UserQuit(data))
@@ -497,7 +502,7 @@ namespace Client
             /// <param name="channel"></param>
             /// <param name="updated"></param>
             /// <returns></returns>
-            public static bool UserJoin(Network network, User user, Channel channel, bool updated)
+            public static bool UserJoin(Network network, User user, Channel channel, bool updated, long date)
             {
                 bool ok = true;
                 foreach (Extension extension in Core.Extensions)
@@ -510,6 +515,7 @@ namespace Client
                             data.channel = channel;
                             data.updated = updated;
                             data.network = network;
+                            data.date = date;
                             data.user = user;
                             if (!extension.Hook_UserJoin(data))
                             {

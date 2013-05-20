@@ -349,7 +349,7 @@ namespace Client
                         Graphics.Window window = item.retrieveWindow();
                         if (window != null && window.scrollback != null)
                         {
-                            if (Hooks._Network.UserQuit(_Network, target, value, window, updated_text))
+                            if (Hooks._Network.UserQuit(_Network, target, value, window, updated_text, date))
                             {
                                 WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                     new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),

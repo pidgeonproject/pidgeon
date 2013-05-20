@@ -32,6 +32,9 @@ namespace Client
         /// </summary>
         public class HookArgs
         {
+            /// <summary>
+            /// Version
+            /// </summary>
             public string ClientVersion = Configuration.Version.ToString();
         }
 
@@ -44,6 +47,10 @@ namespace Client
             /// Network
             /// </summary>
             public Network network = null;
+            /// <summary>
+            /// This is only needed when bouncer is being used. If this contains 0 you can ignore it, otherwise you should convert it to
+            /// binary time and consider the event to happen in that time.
+            /// </summary>
             public long date = 0;
             /// <summary>
             /// This information is up to date and not retrieved from logs
@@ -96,10 +103,6 @@ namespace Client
         public class NetworkPartArgs : NetworkArgs
         {
             /// <summary>
-            /// Network
-            /// </summary>
-            public Network network = null;
-            /// <summary>
             /// User
             /// </summary>
             public User user = null;
@@ -119,10 +122,6 @@ namespace Client
         public class NetworkJoinArgs : NetworkArgs
         {
             /// <summary>
-            /// Network
-            /// </summary>
-            public Network network = null;
-            /// <summary>
             /// User
             /// </summary>
             public User user = null;
@@ -137,10 +136,6 @@ namespace Client
         /// </summary>
         public class NetworkTextArgs : NetworkArgs
         {
-            /// <summary>
-            /// Network
-            /// </summary>
-            public Network network = null;
             /// <summary>
             /// User
             /// </summary>
@@ -160,10 +155,6 @@ namespace Client
         /// </summary>
         public class NetworkUserQuitArgs : NetworkArgs
         {
-            /// <summary>
-            /// Network
-            /// </summary>
-            public Network network = null;
             /// <summary>
             /// User
             /// </summary>
