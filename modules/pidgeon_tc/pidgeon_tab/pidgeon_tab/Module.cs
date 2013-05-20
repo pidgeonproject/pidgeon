@@ -65,7 +65,7 @@ namespace Client
                     }
                 }
 
-                if (Core._Main.Chat._Protocol != null)
+                if (Core.SystemForm.Chat._Protocol != null)
                 {
                     foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                     {
@@ -90,7 +90,7 @@ namespace Client
                     }
                     if (Results.Count > 1)
                     {
-                        Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                         string part = "";
                         int curr = 0;
                         bool match = true;
@@ -147,10 +147,10 @@ namespace Client
                     if (Core.network.IsConnected)
                     {
 
-                        if (text2.StartsWith(Core._Main.Chat._Network.channel_prefix))
+                        if (text2.StartsWith(Core.SystemForm.Chat._Network.channel_prefix))
                         {
                             List<string> Channels = new List<string>();
-                            foreach (Channel n in Core._Main.Chat._Network.Channels)
+                            foreach (Channel n in Core.SystemForm.Chat._Network.Channels)
                             {
                                 Channels.Add(n.Name);
                             }
@@ -166,7 +166,7 @@ namespace Client
                             }
                             if (Results.Count > 1)
                             {
-                                Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
+                                Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }), ContentLine.MessageStyle.System);
                                 string part = "";
                                 int curr = 0;
                                 bool match = true;
@@ -247,7 +247,7 @@ namespace Client
 
                 if (Results2.Count > 1)
                 {
-                    Core._Main.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System);
                     string part = "";
                     int curr = 0;
                     char orig = ' ';

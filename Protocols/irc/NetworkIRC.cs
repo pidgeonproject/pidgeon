@@ -226,11 +226,11 @@ namespace Client
                             {
                                 message = message.Substring(0, message.Length - 1);
                             }
-                            channel.retrieveWindow().scrollback.InsertText(">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
+                            WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
-                        channel.retrieveWindow().scrollback.InsertText(_Protocol.PRIVMSG(user.Nick, message),
+                        WindowText(window, _Protocol.PRIVMSG(user.Nick, message),
                             Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
                     }
                     channel.UpdateInfo();
@@ -247,7 +247,8 @@ namespace Client
                     {
                         _Network.Private(chan);
                     }
-                    _Protocol.Windows[_Network.SystemWindowID + chan].scrollback.InsertText(_Protocol.PRIVMSG(chan, message),
+                    Graphics.Window w = _Protocol.Windows[_Network.SystemWindowID + chan];
+                    WindowText(w, _Protocol.PRIVMSG(chan, message),
                         Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                 }
                 return true;
@@ -325,7 +326,7 @@ namespace Client
                 name = name.Substring(0, name.IndexOf(" "));
                 idle = idle.Substring(0, idle.IndexOf(" "));
                 DateTime logintime = Network.convertUNIX(uptime);
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + "(" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + " (" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;

@@ -312,6 +312,7 @@ namespace Client
             /// <param name="channel"></param>
             /// <param name="message"></param>
             /// <param name="updated"></param>
+            /// <param name="date"></param>
             /// <returns></returns>
             public static bool UserPart(Network network, User user, Channel channel, string message, bool updated, long date)
             {
@@ -369,6 +370,8 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="topic"></param>
+            /// <param name="date"></param>
+            /// <param name="updated"></param>
             /// <returns></returns>
             public static bool Topic(Network network, string user, Channel channel, string topic, long date, bool updated)
             {
@@ -408,13 +411,14 @@ namespace Client
             }
 
             /// <summary>
-            /// User talk in a channel
+            /// User talk
             /// </summary>
             /// <param name="network"></param>
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="message"></param>
             /// <param name="updated"></param>
+            /// <param name="date"></param>
             /// <returns></returns>
             public static bool UserTalk(Network network, User user, Channel channel, string message, bool updated, long date)
             {
@@ -458,6 +462,7 @@ namespace Client
             /// <param name="message"></param>
             /// <param name="window"></param>
             /// <param name="updated"></param>
+            /// <param name="date"></param>
             /// <returns></returns>
             public static bool UserQuit(Network network, User user, string message, Graphics.Window window, bool updated, long date)
             {
@@ -501,6 +506,7 @@ namespace Client
             /// <param name="user"></param>
             /// <param name="channel"></param>
             /// <param name="updated"></param>
+            /// <param name="date"></param>
             /// <returns></returns>
             public static bool UserJoin(Network network, User user, Channel channel, bool updated, long date)
             {
