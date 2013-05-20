@@ -240,8 +240,6 @@ namespace Client
             {
                 this.Child.ShowAll();
             }
-
-            this.Hide();
         }
 
         /// <summary>

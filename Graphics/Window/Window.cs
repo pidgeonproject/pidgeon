@@ -86,6 +86,53 @@ namespace Client.Graphics
         private global::Gtk.TreeView listView;
         private global::Client.Graphics.TextBox textbox1;
         private bool destroyed = false;
+        private bool hasUserList = true;
+        /// <summary>
+        /// Whether control has a user list
+        /// </summary>
+        public bool HasUserList
+        {
+            get
+            {
+                return hasUserList;
+            }
+            set
+            {
+                if (hasUserList == value)
+                {
+                    return;
+                }
+                hasUserList = value;
+                if (listView != null)
+                {
+                    listView.Visible = hasUserList;
+                }
+            }
+        }
+
+        private bool hasTextBox = true;
+        /// <summary>
+        /// Whether control has a text
+        /// </summary>
+        public bool HasTextBox
+        {
+            set
+            {
+                if (hasTextBox == value)
+                {
+                    // nothing to do
+                    return;
+                }
+                if (textbox != null)
+                {
+                    textbox.Visible = hasTextBox;
+                }
+            }
+            get
+            {
+                return hasTextBox;
+            }
+        }
 
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -224,7 +271,16 @@ namespace Client.Graphics
             {
                 this.Child.ShowAll();
             }
-            this.Hide();
+
+            if (!HasUserList)
+            {
+                listView.Visible = false;
+            }
+
+            if (!hasTextBox)
+            {
+                textbox.Visible = false;
+            }
         }
 
         private void InitStyle()
@@ -438,6 +494,29 @@ namespace Client.Graphics
             {
                 Core.SystemForm.SwitchWindow(this);
             }
+        }
+
+        /// <summary>
+        /// Creates the chat
+        /// </summary>
+        /// <param name='WindowOwner'>
+        /// Window owner.
+        /// </param>
+        /// <param name='Focus'>
+        /// Focus.
+        /// </param>
+        /// <exception cref='Exception'>
+        /// Represents errors that occur during application execution.
+        /// </exception>
+        public void CreateChat(Protocol WindowOwner, bool _HasUserList, bool _HasTextBox, bool Focus = true)
+        {
+            if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+            {
+                throw new Exception("You can't control other windows from non kernel thread");
+            }
+            hasTextBox = _HasTextBox;
+            hasUserList = _HasUserList;
+            CreateChat(WindowOwner, Focus);
         }
         
         private bool Mode(string mode)

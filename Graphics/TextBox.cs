@@ -110,7 +110,6 @@ namespace Client.Graphics
             {
                 this.Child.ShowAll();
             }
-            this.Hide();
         }
 
         private void InitStyle()

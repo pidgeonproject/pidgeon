@@ -27,6 +27,9 @@ namespace Client
 {
     class Parser
     {
+        /// <summary>
+        /// Parser cache
+        /// </summary>
         public static Dictionary<string, Client.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
         public static bool CacheEnabled
         {
@@ -132,7 +135,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_ident(string text, Client.RichTBox SBAB, bool under, bool bold)
+        private static Client.RichTBox.ContentText parse_ident(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%D%") && text.Contains("%/D%"))
             {
@@ -150,7 +153,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_link(string text, Client.RichTBox SBAB, bool under, bool bold)
+        private static Client.RichTBox.ContentText parse_link(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%L%") && text.Contains("%/L%"))
             {
@@ -168,7 +171,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_host(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Client.RichTBox.ContentText parse_host(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%H%") && text.Contains("%/H%"))
             {
@@ -187,7 +190,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.StartsWith("#"))
             {
@@ -222,7 +225,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_name(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Client.RichTBox.ContentText parse_name(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%USER%") && text.Contains("%/USER%"))
             {
@@ -245,7 +248,7 @@ namespace Client
             return null;
         }
 
-        public static Client.RichTBox.ContentText parse_http(string text, Client.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
+        private static Client.RichTBox.ContentText parse_http(string text, Client.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
         {
             string result = text;
             string tempdata = text;
@@ -344,6 +347,13 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Format line
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="SBAB"></param>
+        /// <param name="_style"></param>
+        /// <returns></returns>
         public static Client.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
             if (SBAB == null)
@@ -377,6 +387,7 @@ namespace Client
             while (carret < text.Length)
             {
                 Jump = 1;
+                // we check if the current string is actually some url
                 string protocol = matchesProtocol(tempdata);
                 if (protocol != null)
                 {
@@ -603,7 +614,7 @@ namespace Client
             return line;
         }
 
-        public static bool matchesPrefix(string data, string x)
+        private static bool matchesPrefix(string data, string x)
         {
             foreach (char curr in Configuration.Parser.Separators)
             {
@@ -615,7 +626,7 @@ namespace Client
             return false;
         }
 
-        public static bool matchesAPrefix(string data)
+        private static bool matchesAPrefix(string data)
         {
             foreach (char curr in Configuration.Parser.Separators)
             {
@@ -627,7 +638,7 @@ namespace Client
             return false;
         }
 
-        public static string matchesProtocol(string data)
+        private static string matchesProtocol(string data)
         {
             foreach (string CurrentProtocol in Configuration.Parser.Protocols)
             {
@@ -639,7 +650,7 @@ namespace Client
             return null;
         }
 
-        public static bool matchesSWPrefix(string data, string x)
+        private static bool matchesSWPrefix(string data, string x)
         {
             if (data.StartsWith(x))
             {
@@ -656,7 +667,13 @@ namespace Client
             return false;
         }
 
-        public static char Prefix(string data, string x = null)
+        /// <summary>
+        /// Check if the string start with a prefix or not
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        private static char Prefix(string data, string x = null)
         {
             foreach (char curr in Configuration.Parser.Separators)
             {
@@ -678,157 +695,12 @@ namespace Client
             return '\0';
         }
 
-        public static string link2(string text)
-        {
-            try
-            {
-                string result = text;
-                string templink = text;
-                string tempdata = text;
-                while (matchesPrefix(tempdata, "http://"))
-                {
-                    string separator = Prefix(tempdata, "http://").ToString();
-                    string link = templink.Substring(templink.IndexOf(separator + "http://") + 8);
-                    if (link.Length > 0)
-                    {
-                        if (link.Contains(separator))
-                        {
-                            link = link.Substring(0, link.IndexOf(separator));
-                        }
-                        result = result.Replace(" http://" + link, " <a href=\"http://" + link + "\">http://" + link + "</a>");
-                        templink = templink.Replace(separator + "http://" + link, "");
-                        tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
-                        continue;
-
-                    }
-                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "http://") + 8);
-                }
-                tempdata = result;
-                templink = result;
-                while (matchesPrefix(tempdata, "#"))
-                {
-                    string separator = Prefix(tempdata, "#").ToString();
-                    string link = templink.Substring(templink.IndexOf(separator + "#") + 2);
-                    if (link.Length > 0)
-                    {
-                        if (link.Contains(separator))
-                        {
-                            link = link.Substring(0, link.IndexOf(separator));
-                        }
-                        result = result.Replace(separator + "#" + link, " <a href=\"pidgeon://join#" + link + "\">#" + link + "</a>");
-                        templink = templink.Replace(separator + "#" + link, "");
-                        tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
-                        continue;
-
-                    }
-                    tempdata = tempdata.Substring(tempdata.IndexOf(separator + "#") + 2);
-                }
-                if (result.Contains("%USER%") && result.Contains("%/USER%"))
-                {
-                    string link = result.Substring(templink.IndexOf("%USER%") + 6);
-                    if (link.Length > 0)
-                    {
-                        link = link.Substring(0, link.IndexOf("%/USER%"));
-                        result = result.Replace("%USER%" + link + "%/USER%", "<a href=\"pidgeon://user/#" + link + "\">" + link + "</a>");
-                    }
-                }
-                templink = result;
-                tempdata = result;
-                while (result.Contains("%L%") && result.Contains("%/L%"))
-                {
-                    string link = result.Substring(result.IndexOf("%L%") + 3);
-                    if (link.Length > 0)
-                    {
-                        link = link.Substring(0, link.IndexOf("%/L%"));
-                        result = result.Replace("%L%" + link + "%/L%", "<a href=\"pidgeon://text/#" + link + "\">" + link + "</a>");
-                    }
-                }
-                templink = result;
-                tempdata = result;
-                while (matchesPrefix(tempdata, "https://"))
-                {
-                    string pr = Prefix(tempdata, "https://").ToString();
-                    string link = templink.Substring(templink.IndexOf(pr + "https://") + 9);
-                    if (link.Length > 0)
-                    {
-                        if (link.Contains(pr))
-                        {
-                            link = link.Substring(0, link.IndexOf(pr));
-                        }
-                        result = result.Replace(pr + "https://" + link, " <a href=\"https://" + link + "\">https://" + link + "</a>");
-                        templink = templink.Replace(pr + "https://" + link, "");
-                        tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
-                        continue;
-
-                    }
-                    tempdata = tempdata.Substring(tempdata.IndexOf(pr + "https://") + 9);
-                }
-                char colorchar = (char)3;
-                int color = 0;
-                bool closed = false;
-
-                while (result.Contains(colorchar.ToString()))
-                {
-                    int position = 0;
-                    while (result.Length > position)
-                    {
-                        if (result[position] == colorchar)
-                        {
-                            if (closed)
-                            {
-                                result = result.Remove(position, 1);
-                                result = result.Insert(position, "</FONT>");
-                                closed = false;
-                                break;
-                            }
-
-                            if (!closed)
-                            {
-                                if (result.Length > position + 3)
-                                {
-                                    if (!int.TryParse(result[position + 1].ToString() + result[position + 2].ToString(), out color))
-                                    {
-                                        if (!int.TryParse(result[position + 1].ToString(), out color))
-                                        {
-                                            color = 0;
-                                        }
-                                    }
-                                }
-                                if (color > 9)
-                                {
-                                    if (result.Length > position + 4)
-                                    {
-                                        result = result.Remove(position, 3);
-                                    }
-                                }
-                                else
-                                {
-                                    if (result.Length > position + 3)
-                                    {
-                                        result = result.Remove(position, 2);
-                                    }
-                                }
-                                closed = true;
-                                if (color < 16)
-                                {
-                                    result = result.Insert(position, "<font color=\"" + Configuration.CurrentSkin.mrcl[color].ToArgb().ToString() + "\">");
-                                    break;
-                                }
-                            }
-                        }
-                        position++;
-                    }
-                }
-
-                return result;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-                return "";
-            }
-        }
-
+        /// <summary>
+        /// Process input
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="window"></param>
+        /// <returns></returns>
         public static int parse(string input, Graphics.Window window = null)
         {
             if (input == "")
