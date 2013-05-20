@@ -44,6 +44,12 @@ namespace Client
             /// Network
             /// </summary>
             public Network network = null;
+            public long date = 0;
+            /// <summary>
+            /// This information is up to date and not retrieved from logs
+            /// </summary>
+            public bool updated = false;
+            
         }
 
         /// <summary>
@@ -105,10 +111,6 @@ namespace Client
             /// Message
             /// </summary>
             public string message = null;
-            /// <summary>
-            /// This information is up to date and not retrieved from logs
-            /// </summary>
-            public bool updated = false;
         }
 
         /// <summary>
@@ -128,10 +130,6 @@ namespace Client
             /// Channel
             /// </summary>
             public Channel channel = null;
-            /// <summary>
-            /// This information is up to date and not retrieved from logs
-            /// </summary>
-            public bool updated = false;
         }
 
         /// <summary>
@@ -155,10 +153,6 @@ namespace Client
             /// Message
             /// </summary>
             public string message = null;
-            /// <summary>
-            /// This information is up to date and not retrieved from logs
-            /// </summary>
-            public bool updated = false;
         }
 
         /// <summary>
@@ -178,10 +172,6 @@ namespace Client
             /// Message
             /// </summary>
             public string message = null;
-            /// <summary>
-            /// This information is up to date and not retrieved from logs
-            /// </summary>
-            public bool updated = false;
             /// <summary>
             /// Window
             /// </summary>
