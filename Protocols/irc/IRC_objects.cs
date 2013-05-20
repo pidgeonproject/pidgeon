@@ -62,7 +62,9 @@ namespace Client
         /// <param name="time">Time</param>
         public Invite(string user, string target, string time)
         {
-
+            User = user;
+            Target = target;
+            Time = time;
         }
     }
 

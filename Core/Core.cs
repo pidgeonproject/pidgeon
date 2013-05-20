@@ -34,7 +34,13 @@ namespace Client
         /// </summary>
         public class Domain
         {
+            /// <summary>
+            /// Domain
+            /// </summary>
             public AppDomain domain;
+            /// <summary>
+            /// Name
+            /// </summary>
             public string name;
 
             /// <summary>
@@ -198,11 +204,6 @@ namespace Client
         /// Selected network
         /// </summary>
         public static Network network = null;
-        /// <summary>
-        /// Main
-        /// </summary>
-        [Obsolete]
-        public static Forms.Main _Main = null;
         private static Forms.Main _main = null;
         /// <summary>
         /// Gets the system form
@@ -332,7 +333,6 @@ namespace Client
         /// </param>
         public static void setMain(Forms.Main form)
         {
-            _Main = form;
             _main = form;
         }
         
