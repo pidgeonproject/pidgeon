@@ -300,8 +300,10 @@ namespace Client
         /// <param name="network">Network the window belongs to</param>
         /// <param name="channelw">If true a window will be flagged as channel</param>
         /// <param name="id"></param>
+        /// <param name="hasUserList"></param>
+        /// <param name="hasTextBox"></param>
         /// <returns></returns>
-        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null)
+        public virtual Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null, bool hasUserList = true, bool hasTextBox = true)
         {
             Forms.Main._WindowRequest request = new Forms.Main._WindowRequest();
             if (id == null)
@@ -314,6 +316,8 @@ namespace Client
             request.focus = focus;
             request.window._Network = network;
             request.window.WindowName = name;
+            request.hasUserList = hasUserList;
+            request.hasTextBox = hasTextBox;
 
             if (network != null && !name.Contains("!"))
             { 

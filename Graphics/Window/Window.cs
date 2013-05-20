@@ -102,10 +102,14 @@ namespace Client.Graphics
                 {
                     return;
                 }
-                hasUserList = value;
-                if (listView != null)
+                if (System.Threading.Thread.CurrentThread != Core._KernelThread)
                 {
-                    listView.Visible = hasUserList;
+                    throw new Exception("You can't control other windows from non kernel thread");
+                }
+                hasUserList = value;
+                if (GtkScrolledWindow1 != null)
+                {
+                    this.GtkScrolledWindow1.Visible = hasUserList;
                 }
             }
         }
@@ -122,6 +126,10 @@ namespace Client.Graphics
                 {
                     // nothing to do
                     return;
+                }
+                if (System.Threading.Thread.CurrentThread != Core._KernelThread)
+                {
+                    throw new Exception("You can't control other windows from non kernel thread");
                 }
                 if (textbox != null)
                 {
@@ -274,7 +282,7 @@ namespace Client.Graphics
 
             if (!HasUserList)
             {
-                listView.Visible = false;
+                GtkScrolledWindow1.Visible = false;
             }
 
             if (!hasTextBox)

@@ -108,6 +108,14 @@ namespace Client.Forms
             /// Protocol that owns this request
             /// </summary>
             public Protocol owner = null;
+            /// <summary>
+            /// new window has a user list
+            /// </summary>
+            public bool hasUserList = true;
+            /// <summary>
+            /// Text
+            /// </summary>
+            public bool hasTextBox = true;
         }
 
         /// <summary>
@@ -230,6 +238,7 @@ namespace Client.Forms
                 ChannelList.Visible = true;
                 main = new Client.Graphics.Window();
                 main.Events = ((global::Gdk.EventMask)(256));
+                main.HasUserList = false;
                 main.CreateChat(null);
                 main.WindowName = "Pidgeon";
                 toolStripStatusNetwork.TooltipText = "windows / channels / pm";

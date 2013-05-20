@@ -117,7 +117,7 @@ namespace Client.Graphics
                 {
                     foreach (Forms.Main._WindowRequest item in Core.SystemForm.WindowRequests)
                     {
-                        item.window.CreateChat  (item.owner, item.focus);
+                        item.window.CreateChat(item.owner, item.hasUserList, item.hasTextBox, item.focus);
                         if (item.owner != null && item.focus)
                         {
                             item.owner.ShowChat(item.name);

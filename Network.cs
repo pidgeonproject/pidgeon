@@ -310,14 +310,12 @@ namespace Client
                 Ident = Configuration.UserData.ident;
                 if (protocol.GetType() == typeof(ProtocolSv))
                 {
-                    protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName);
-                    SystemWindow = protocol.Windows["!" + randomuqid + ServerName];
+                    SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
                     Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
                 }
                 else
                 {
-                    protocol.CreateChat("!system", true, this);
-                    SystemWindow = protocol.Windows["!system"];
+                    SystemWindow = protocol.CreateChat("!system", true, this, false, null, false, true);
                     Core.SystemForm.ChannelList.InsertNetwork(this);
                 }
                 Hooks._Network.CreatingNetwork(this);
@@ -541,8 +539,7 @@ namespace Client
             User referenced_user = new User(user, "", this, "");
             PrivateChat.Add(referenced_user);
             Core.SystemForm.ChannelList.insertUser(referenced_user);
-            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true));
-            PrivateWins[referenced_user].HasUserList = false;
+            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true, null, false, true));
             PrivateWins[referenced_user].isPM = true;
             return referenced_user;
         }

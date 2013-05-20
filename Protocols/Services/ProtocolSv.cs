@@ -644,7 +644,7 @@ namespace Client
         /// <returns></returns>
         public override bool Open()
         {
-            CreateChat("!root", true, null);
+            CreateChat("!root", true, null, false, null, false, true);
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
             Core.SystemThreads.Add(main);

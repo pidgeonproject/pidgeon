@@ -14,7 +14,7 @@ namespace Client
         {
             menu = new Gtk.MenuItem("Display notifications");
             collector = new Graphics.Window();
-            main.CreateChat(collector, null, false);
+            collector.CreateChat(null, false);
             menu.Activated += new EventHandler(Display);
             collector.WindowName = "Notifications";
             main.ToolsMenu.Append(menu);
@@ -35,11 +35,11 @@ namespace Client
                 {
                     Core.network.RenderedChannel = null;
                     Core.network._Protocol.Current = collector;
-                    Core._Main.SwitchWindow(collector);
+                    Core.SystemForm.SwitchWindow(collector);
                     return;
                 }
                 collector.Visible = true;
-                Core._Main.SwitchWindow(collector);
+                Core.SystemForm.SwitchWindow(collector);
             }
             catch (Exception fail)
             {
