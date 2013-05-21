@@ -128,10 +128,7 @@ namespace Client
             Color color = Color.Black;
             try
             {
-                if (code.Attributes.Count > 3)
-                {
-                    color = Color.FromArgb(int.Parse(code.Value));
-                }
+                color = System.Drawing.ColorTranslator.FromHtml(code.InnerText);
             }
             catch (Exception fail)
             {
