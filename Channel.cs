@@ -248,13 +248,24 @@ namespace Client
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public bool containsUser(string user)
+        public bool ContainsUser(string user)
         {
-            if (userFromName(user) != null)
+            if (UserFromName(user) != null)
             {
                 return true;
             }
             return false;
+        }
+
+        /// <summary>
+        /// Return true if channel contains the given user name
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public bool containsUser(string user)
+        {
+            return ContainsUser(user);
         }
 
         /// <summary>
@@ -282,7 +293,7 @@ namespace Client
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        public bool containsBan(string host)
+        public bool ContainsBan(string host)
         {
             lock (Bans)
             {
@@ -298,9 +309,20 @@ namespace Client
         }
 
         /// <summary>
+        /// Return true if a channel is matching ban (exact, not a mask)
+        /// </summary>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        [Obsolete]
+        public bool containsBan(string host)
+        {
+            return ContainsBan(host);
+        }
+
+        /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
-        public void redrawUsers()
+        public void RedrawUsers()
         {
             try
             {
@@ -316,7 +338,7 @@ namespace Client
                 if (Core._KernelThread == System.Threading.Thread.CurrentThread)
                 {
                     Redraw = false;
-                    retrieveWindow();
+                    RetrieveWindow();
                     List<User> owners = new List<User>();
                     List<User> admins = new List<User>();
                     List<User> oper = new List<User>();
@@ -464,6 +486,17 @@ namespace Client
                 Core.handleException(f);
             }
         }
+
+        /// <summary>
+        /// Thread safe, redraw all users in the user list in window, if exist
+        /// </summary>
+        [Obsolete]
+        public void redrawUsers()
+        {
+            RedrawUsers();
+        }
+
+
         /// <summary>
         /// Destroy this class, be careful, it can't be used in any way after you
         /// call this
@@ -593,11 +626,22 @@ namespace Client
         }
 
         /// <summary>
+        /// Return user object if specified user exist - replaced UserFromName(string name)
+        /// </summary>
+        /// <param name="name">User name</param>
+        /// <returns></returns>
+        [Obsolete]
+        public User userFromName(string name)
+        {
+            return UserFromName(name);
+        }
+
+        /// <summary>
         /// Return user object if specified user exist
         /// </summary>
         /// <param name="name">User name</param>
         /// <returns></returns>
-        public User userFromName(string name)
+        public User UserFromName(string name)
         {
             foreach (User item in UserList)
             {
@@ -613,7 +657,7 @@ namespace Client
         /// Retrieve window
         /// </summary>
         /// <returns></returns>
-        public Graphics.Window retrieveWindow()
+        public Graphics.Window RetrieveWindow()
         {
             if (Chat == null)
             {
@@ -635,6 +679,16 @@ namespace Client
                 }
             }
             return Chat;
+        }
+
+        /// <summary>
+        /// Retrieve window - replaced by RetrieveWindow()
+        /// </summary>
+        /// <returns></returns>
+        [Obsolete]
+        public Graphics.Window retrieveWindow()
+        {
+            return RetrieveWindow();
         }
     }
 }

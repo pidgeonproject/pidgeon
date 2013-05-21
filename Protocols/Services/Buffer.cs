@@ -721,7 +721,7 @@ namespace Client.Services
                             {
                                 foreach (Channel xx in network.Channels)
                                 {
-                                    Graphics.Window window = xx.retrieveWindow();
+                                    Graphics.Window window = xx.RetrieveWindow();
                                     if (window != null)
                                     {
                                         networkInfo[uid]._windows.Add(new Buffer.Window(window));

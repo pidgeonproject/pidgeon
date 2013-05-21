@@ -474,7 +474,7 @@ namespace Client.Graphics
                         {
                             model.SetValue(iter, 4, channel.MenuData);
                         }
-                        window = channel.retrieveWindow();
+                        window = channel.RetrieveWindow();
                         if (window != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
@@ -614,12 +614,12 @@ namespace Client.Graphics
                     if (channel.IsAlive)
                     {
                         text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
-                            ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_2);
+                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, icon_2);
                     }
                     else
                     {
                         text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
-                            ItemType.Channel, channel.retrieveWindow(), channel.MenuData, icon_02);
+                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, icon_02);
                     }
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);

@@ -399,7 +399,7 @@ namespace Client
                 foreach (Channel xx in Channels)
                 {
                     // we need to change the icon to gray in side list
-                    Graphics.Window cw = xx.retrieveWindow();
+                    Graphics.Window cw = xx.RetrieveWindow();
                     if (cw != null)
                     {
                         cw.needIcon = true;

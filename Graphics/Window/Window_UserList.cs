@@ -707,7 +707,7 @@ namespace Client.Graphics
                     if (item != null)
                     {
                         Locked = false;
-                        item.redrawUsers();
+                        item.RedrawUsers();
                     }
                 }
             }

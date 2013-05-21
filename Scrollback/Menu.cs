@@ -353,7 +353,7 @@ namespace Client
                         Channel channel = owner._Network.getChannel(owner.WindowName);
                         if (channel != null)
                         {
-                            User user = channel.userFromName(adds);
+                            User user = channel.UserFromName(adds);
                             if (user != null)
                             {
                                 if (user.Host != "")

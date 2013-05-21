@@ -172,7 +172,7 @@ namespace Client
                 {
                     foreach (Channel xx in _Network.Channels)
                     {
-                        if (xx.containsUser(Nick))
+                        if (xx.ContainsUser(Nick))
                         {
                             List.Add(xx);
                         }

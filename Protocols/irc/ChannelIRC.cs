@@ -29,7 +29,7 @@ namespace Client
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
-                    Graphics.Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.RetrieveWindow();
                     if (curr != null)
                     {
                         channel.ChannelMode.ChangeMode(code[4]);
@@ -79,7 +79,7 @@ namespace Client
                 {
                     if (updated_text)
                     {
-                        if (!channel.containsUser(nick))
+                        if (!channel.ContainsUser(nick))
                         {
                             User _user = null;
                             if (mode != '\0')
@@ -163,7 +163,7 @@ namespace Client
 
                             lock (channel.UserList)
                             {
-                                User _u = channel.userFromName(_user);
+                                User _u = channel.UserFromName(_user);
                                 if (_u == null && _user != "")
                                 {
                                     channel.UserList.Add(new User(user, "", _Network, ""));
@@ -178,7 +178,7 @@ namespace Client
                             }
                         }
                     }
-                    channel.redrawUsers();
+                    channel.RedrawUsers();
                     channel.UpdateInfo();
                     return true;
                 }
@@ -199,7 +199,7 @@ namespace Client
                 Channel channel = _Network.getChannel(name);
                 if (channel != null)
                 {
-                    Graphics.Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.RetrieveWindow();
                     if (curr != null)
                     {
                         while (curr.scrollback == null)
@@ -224,7 +224,7 @@ namespace Client
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
-                    channel.redrawUsers();
+                    channel.RedrawUsers();
                     if (Configuration.Kernel.HidingParsed && channel.parsing_who)
                     {
                         channel.parsing_who = false;
@@ -249,7 +249,7 @@ namespace Client
                 {
                     channel.TopicDate = int.Parse(time);
                     channel.TopicUser = user;
-                    Graphics.Window curr = channel.retrieveWindow();
+                    Graphics.Window curr = channel.RetrieveWindow();
                     if (curr != null)
                     {
                         WindowText(curr, "Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
@@ -271,7 +271,7 @@ namespace Client
             if (channel != null)
             {
                 Graphics.Window window;
-                window = channel.retrieveWindow();
+                window = channel.RetrieveWindow();
                 if (window != null)
                 {
                     if (Hooks._Network.UserKick(_Network, new User(user, null, _Network, null), new User(source, _Network), channel, value))
@@ -281,10 +281,10 @@ namespace Client
                         Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
                     }
 
-                    if (updated_text && channel.containsUser(user))
+                    if (updated_text && channel.ContainsUser(user))
                     {
                         User delete = null;
-                        delete = channel.userFromName(user);
+                        delete = channel.UserFromName(user);
                         if (delete != null)
                         {
                             channel.UserList.Remove(delete);
@@ -292,11 +292,11 @@ namespace Client
                         if (delete.IsPidgeon)
                         {
                             channel.ChannelWork = false;
-                            Graphics.Window chat = channel.retrieveWindow();
+                            Graphics.Window chat = channel.RetrieveWindow();
                             window.needIcon = true;
                         }
                     }
-                    channel.redrawUsers();
+                    channel.RedrawUsers();
                     channel.UpdateInfo();
                 }
                 return true;
@@ -322,7 +322,7 @@ namespace Client
             if (channel != null)
             {
                 Graphics.Window window;
-                window = channel.retrieveWindow();
+                window = channel.RetrieveWindow();
                 if (window != null)
                 {
                     if (Hooks._Network.UserJoin(_Network, new User(user, _host, _Network, _ident), channel, updated_text, date))
@@ -335,12 +335,12 @@ namespace Client
                     {
                         lock (channel.UserList)
                         {
-                            if (!channel.containsUser(user))
+                            if (!channel.ContainsUser(user))
                             {
                                 channel.UserList.Add(new User(user, _host, _Network, _ident));
                             }
                         }
-                        channel.redrawUsers();
+                        channel.RedrawUsers();
                     }
                     channel.UpdateInfo();
                     return true;
@@ -377,7 +377,7 @@ namespace Client
                     {
                         channel.Bans = new List<SimpleBan>();
                     }
-                    if (!channel.containsBan(code[4]))
+                    if (!channel.ContainsBan(code[4]))
                     {
                         channel.Bans.Add(new SimpleBan(code[5], code[4], code[6]));
                         Core.SystemForm.Status();
@@ -402,7 +402,7 @@ namespace Client
             if (channel != null)
             {
                 Graphics.Window window;
-                window = channel.retrieveWindow();
+                window = channel.RetrieveWindow();
                 User delete = null;
                 if (window != null)
                 {
@@ -416,7 +416,7 @@ namespace Client
 
                     if (updated_text)
                     {
-                        if (channel.containsUser(user))
+                        if (channel.ContainsUser(user))
                         {
                             lock (channel.UserList)
                             {
@@ -434,7 +434,7 @@ namespace Client
                             {
                                 channel.UserList.Remove(delete);
                             }
-                            channel.redrawUsers();
+                            channel.RedrawUsers();
                             channel.UpdateInfo();
                             return true;
                         }
@@ -454,7 +454,7 @@ namespace Client
             if (channel != null)
             {
                 Graphics.Window window;
-                window = channel.retrieveWindow();
+                window = channel.RetrieveWindow();
                 if (window != null)
                 {
                     if (Hooks._Network.Topic(_Network, source, channel, value, date, updated_text))
@@ -498,9 +498,9 @@ namespace Client
                                 if (updated_text)
                                 {
                                     curr.Nick = _new;
-                                    item.redrawUsers();
+                                    item.RedrawUsers();
                                 }
-                                Graphics.Window window = item.retrieveWindow();
+                                Graphics.Window window = item.RetrieveWindow();
                                 if (window != null)
                                 {
                                     WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
@@ -528,7 +528,7 @@ namespace Client
                     if (channel != null)
                     {
                         Graphics.Window window;
-                        window = channel.retrieveWindow();
+                        window = channel.RetrieveWindow();
                         string change = parameters.Substring(parameters.IndexOf(" "));
                         if (window != null)
                         {
@@ -563,7 +563,7 @@ namespace Client
                         {
                             if (_Network.CUModes.Contains(m.Mode) && m.ContainsParameter)
                             {
-                                User flagged_user = channel.userFromName(m.Parameter);
+                                User flagged_user = channel.UserFromName(m.Parameter);
                                 if (flagged_user != null)
                                 {
                                     flagged_user.ChannelMode.ChangeMode("+" + m.Mode);
@@ -598,7 +598,7 @@ namespace Client
                         {
                             if (_Network.CUModes.Contains(m.Mode) && m.ContainsParameter)
                             {
-                                User flagged_user = channel.userFromName(m.Parameter);
+                                User flagged_user = channel.UserFromName(m.Parameter);
                                 if (flagged_user != null)
                                 {
                                     flagged_user.ChannelMode.ChangeMode("-" + m.Mode);
@@ -620,7 +620,7 @@ namespace Client
                             }
                         }
                         channel.UpdateInfo();
-                        channel.redrawUsers();
+                        channel.RedrawUsers();
                         return true;
                     }
                 }

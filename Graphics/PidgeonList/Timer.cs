@@ -96,7 +96,7 @@ namespace Client.Graphics
                             {
                                 chan.Key._Network.Channels.Remove(chan.Key);
                             }
-                            Graphics.Window window = chan.Key.retrieveWindow();
+                            Graphics.Window window = chan.Key.RetrieveWindow();
                             if (window != null)
                             {
                                 window._Destroy();
@@ -141,7 +141,7 @@ namespace Client.Graphics
                     {
                         if (!channel.Key.IsDestroyed && channel.Key.Redraw)
                         {
-                            channel.Key.redrawUsers();
+                            channel.Key.RedrawUsers();
                         }
                     }
                 }

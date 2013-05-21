@@ -216,7 +216,7 @@ namespace Client
                 if (channel != null)
                 {
                     Graphics.Window window;
-                    window = channel.retrieveWindow();
+                    window = channel.RetrieveWindow();
                     if (window != null)
                     {
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
@@ -344,10 +344,10 @@ namespace Client
             {
                 if (item.ChannelWork)
                 {
-                    User target = item.userFromName(user);
+                    User target = item.UserFromName(user);
                     if (target != null)
                     {
-                        Graphics.Window window = item.retrieveWindow();
+                        Graphics.Window window = item.RetrieveWindow();
                         if (window != null && window.scrollback != null)
                         {
                             if (Hooks._Network.UserQuit(_Network, target, value, window, updated_text, date))
@@ -365,7 +365,7 @@ namespace Client
                                 item.UserList.Remove(target);
                             }
                             item.UpdateInfo();
-                            item.redrawUsers();
+                            item.RedrawUsers();
                         }
                     }
                 }

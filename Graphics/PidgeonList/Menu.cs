@@ -210,7 +210,7 @@ namespace Client.Graphics
                     case ItemType.Channel:
                         Channel chan = (Channel)tv.Model.GetValue(iter, 1);
                         Core.network = chan._Network;
-                        window = chan.retrieveWindow();
+                        window = chan.RetrieveWindow();
                         if (window != null)
                         {
                             window.MenuColor = Configuration.CurrentSkin.fontcolor;

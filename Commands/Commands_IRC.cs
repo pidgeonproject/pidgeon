@@ -43,7 +43,7 @@ namespace Client
                     Channel curr = Core.network.getChannel(channel);
                     if (curr != null)
                     {
-                        Graphics.Window window = curr.retrieveWindow();
+                        Graphics.Window window = curr.RetrieveWindow();
                         if (window != null)
                         {
                             Core.network._Protocol.ShowChat(Core.network.SystemWindow + window.WindowName);

@@ -55,13 +55,13 @@ namespace Client
                         Channel target = mn.getChannel(message_target);
                         if (target != null)
                         {
-                            message_window = target.retrieveWindow();
+                            message_window = target.RetrieveWindow();
                         }
                         else
                         {
                             Core.DebugLog("There is no channel " + message_target);
                             target = mn.WindowCreateNewJoin(message_target);
-                            message_window = target.retrieveWindow();
+                            message_window = target.RetrieveWindow();
                         }
                     }
                     else
@@ -553,7 +553,7 @@ namespace Client
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
                                                 if (ID != null && protocol.sBuffer.networkInfo.ContainsKey(ID))
                                                 {
-                                                    Graphics.Window window = xx.retrieveWindow();
+                                                    Graphics.Window window = xx.RetrieveWindow();
                                                     if (xx != null)
                                                     {
                                                         protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.WindowName);
@@ -635,7 +635,7 @@ namespace Client
                                     string us = "";
                                     string ident;
                                     us = user.Substring(0, user.IndexOf("!"));
-                                    if (channel.containsUser(us))
+                                    if (channel.ContainsUser(us))
                                     {
                                         continue;
                                     }
@@ -665,7 +665,7 @@ namespace Client
                                     }
                                     lock (channel.UserList)
                                     {
-                                        if (!channel.containsUser(us))
+                                        if (!channel.ContainsUser(us))
                                         {
                                             User f2 = new User(us, host, nw, ident);
                                             if (user.Contains("+") && !user.StartsWith("+"))
@@ -681,7 +681,7 @@ namespace Client
                             response.Parameters.Add("network", curr.Attributes[0].Value);
                             response.Parameters.Add("channel", channel.Name);
                             protocol.Deliver(response);
-                            channel.redrawUsers();
+                            channel.RedrawUsers();
                             channel.UpdateInfo();
                         }
                     }
@@ -727,7 +727,7 @@ namespace Client
                         Core.DebugLog("Invalid xml:" + curr.InnerXml);
                         return;
                     }
-                    User user = channel.userFromName(userlist["nickname" + CurrentUser.ToString()]);
+                    User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);
 
                     if (user == null)
                     {
@@ -746,7 +746,7 @@ namespace Client
                     CurrentUser++;
                 }
 
-                channel.redrawUsers();
+                channel.RedrawUsers();
             }
 
             /// <summary>

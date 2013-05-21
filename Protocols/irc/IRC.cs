@@ -92,7 +92,7 @@ namespace Client
                         {
                             curr.ChannelWork = true;
                             curr.partRequested = false;
-                            Graphics.Window xx = curr.retrieveWindow();
+                            Graphics.Window xx = curr.RetrieveWindow();
                             if (xx != null)
                             {
                                 xx.needIcon = true;
@@ -160,7 +160,7 @@ namespace Client
                             Channel c = _Network.getChannel(channel);
                             if (c != null)
                             {
-                                Graphics.Window Chat = c.retrieveWindow();
+                                Graphics.Window Chat = c.RetrieveWindow();
                                 c.ChannelWork = false;
                                 if (Chat != null)
                                 {
@@ -381,7 +381,7 @@ namespace Client
                                 if (channel != null)
                                 {
                                     Graphics.Window window;
-                                    window = channel.retrieveWindow();
+                                    window = channel.RetrieveWindow();
                                     if (window != null)
                                     {
                                         window.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
