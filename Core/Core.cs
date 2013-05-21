@@ -1047,8 +1047,7 @@ namespace Client
                     {
                         if (file.EndsWith(".ps"))
                         {
-                            Skin curr = new Skin(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath
-                                + Path.DirectorySeparatorChar + file);
+                            Skin curr = new Skin(file);
                             if (curr == null)
                             {
                                 continue;

@@ -210,6 +210,7 @@ namespace Client
                     make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Kernel.Lang", Configuration.Kernel.Lang, curr, confname, config, xmlnode);
+                    make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
 
                     make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -748,6 +749,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.Media.NotificationSound":
                                                         Configuration.Media.NotificationSound = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.CurrentSkin":
+                                                        Skin.ReloadSkin(curr.InnerText);
                                                         break;
                                                 }
                                             }

@@ -137,8 +137,9 @@ namespace Client
             this.Build();
             ForeColor = Configuration.CurrentSkin.colordefault;
             BackColor = Configuration.CurrentSkin.backgroundcolor;
-            font = new System.Drawing.Font(Configuration.CurrentSkin.localfont, (float)Configuration.CurrentSkin.fontsize);
+            font = new System.Drawing.Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
             DefaultFont.Family = Configuration.CurrentSkin.localfont;
+            //DefaultFont.Size = Configuration.CurrentSkin.fontsize;
         }
 
         /// <summary>

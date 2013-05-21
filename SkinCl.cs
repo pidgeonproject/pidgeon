@@ -37,7 +37,7 @@ namespace Client
         /// <summary>
         /// Font size
         /// </summary>
-        public float fontsize = 10;
+        public int fontsize = 10;
         /// <summary>
         /// Join
         /// </summary>
@@ -122,10 +122,6 @@ namespace Client
         /// Italic
         /// </summary>
         public bool italic;
-        /// <summary>
-        /// Spacing
-        /// </summary>
-        public int SBABOX_sp = 6;
 
         private Color colorFromXmlCode(XmlNode code)
         {
@@ -145,6 +141,26 @@ namespace Client
         }
 
         /// <summary>
+        /// Change a current skin to skin of another name
+        /// </summary>
+        /// <param name="path"></param>
+        public static void ReloadSkin(string path)
+        {
+            lock (Configuration.SL)
+            {
+                foreach (Skin skin in Configuration.SL)
+                {
+                    if (skin.Name == path)
+                    {
+                        Configuration.CurrentSkin = skin;
+                        return;
+                    }
+                }
+            }
+            Core.DebugLog("No such a skin is loaded: " + path);
+        }
+
+        /// <summary>
         /// Creates a new skin
         /// </summary>
         /// <param name="path"></param>
@@ -152,11 +168,16 @@ namespace Client
         {
             Core.DebugLog("Loading skin " + path);
             Defaults();
+            string _p = path;
             Name = path;
-            if (File.Exists(path))
+            if (Name.Contains(Path.DirectorySeparatorChar.ToString()))
+            {
+                Name = Name.Substring(Name.LastIndexOf(Path.DirectorySeparatorChar.ToString()) + 1);
+            }
+            if (File.Exists(_p))
             {
                 XmlDocument configuration = new XmlDocument();
-                configuration.Load(path);
+                configuration.Load(_p);
                 foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                 {
                     switch (curr.Name)
@@ -192,10 +213,10 @@ namespace Client
                             colortalk = colorFromXmlCode(curr);
                             break;
                         case "fontname":
-                            localfont = curr.Value;
+                            localfont = curr.InnerText;
                             break;
                         case "size":
-                            fontsize = float.Parse(curr.Value);
+                            fontsize = int.Parse(curr.InnerText);
                             break;
                     }
                 }

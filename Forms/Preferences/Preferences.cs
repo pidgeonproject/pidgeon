@@ -106,12 +106,20 @@ namespace Client.Forms
 
             combobox2.Model = lg;
 
+            int selectedSkin = 0;
+            int currentSkin = 0;
+
             foreach (Skin skin in Configuration.SL)
             {
+                if (Configuration.CurrentSkin == skin)
+                {
+                    selectedSkin = currentSkin;
+                }
+                currentSkin++;
                 sl.AppendValues(skin.Name);
             }
             combobox1.Model = sl;
-            combobox1.Active = 0;
+            combobox1.Active = selectedSkin;
 
             int selectedLanguage = 0;
             int current = 0;
@@ -287,6 +295,9 @@ namespace Client.Forms
                 Configuration.irc.FirewallCTCP = checkButton_BlockCtcp.Active;
                 Configuration.irc.ConfirmAll = checkButton_request.Active;
                 Core.SelectedLanguage = combobox2.ActiveText;
+
+                Skin.ReloadSkin(combobox1.ActiveText);
+                
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;
