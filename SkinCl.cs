@@ -31,7 +31,7 @@ namespace Client
     public class Skin
     {
         /// <summary>
-        /// Local font
+        /// Local font name or family
         /// </summary>
         public string localfont = "Arial";
         /// <summary>
@@ -39,15 +39,15 @@ namespace Client
         /// </summary>
         public int fontsize = 10;
         /// <summary>
-        /// Join
+        /// Join color
         /// </summary>
         public System.Drawing.Color joincolor;
         /// <summary>
-        /// Kick
+        /// Kick color
         /// </summary>
         public System.Drawing.Color kickcolor;
         /// <summary>
-        /// Everything
+        /// Channel modes and actions
         /// </summary>
         public System.Drawing.Color miscelancscolor;
         /// <summary>
@@ -55,15 +55,11 @@ namespace Client
         /// </summary>
         public System.Drawing.Color highlightcolor;
         /// <summary>
-        /// Self
-        /// </summary>
-        public System.Drawing.Color selfcolor;
-        /// <summary>
-        /// Nick
+        /// Nick change color
         /// </summary>
         public System.Drawing.Color changenickcolor;
         /// <summary>
-        /// Font
+        /// This is a defaul regular color for text
         /// </summary>
         public System.Drawing.Color fontcolor;
         /// <summary>
@@ -71,7 +67,7 @@ namespace Client
         /// </summary>
         public System.Drawing.Color colorh;
         /// <summary>
-        /// Default
+        /// Default color for system menus
         /// </summary>
         public System.Drawing.Color colordefault;
         /// <summary>
@@ -95,10 +91,6 @@ namespace Client
         /// </summary>
         public System.Drawing.Color backgroundcolor;
         /// <summary>
-        /// Other
-        /// </summary>
-        public System.Drawing.Color othercolor;
-        /// <summary>
         /// Color
         /// </summary>
         public System.Drawing.Color colortalk;
@@ -118,10 +110,6 @@ namespace Client
         /// mIRC colors
         /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
-        /// <summary>
-        /// Italic
-        /// </summary>
-        public bool italic;
 
         private Color colorFromXmlCode(XmlNode code)
         {
@@ -186,6 +174,9 @@ namespace Client
                         case "link":
                             link = colorFromXmlCode(curr);
                             break;
+                        case "colordefault":
+                            colordefault = colorFromXmlCode(curr);
+                            break;
                         case "joincolor":
                             joincolor = colorFromXmlCode(curr);
                             break;
@@ -195,17 +186,11 @@ namespace Client
                         case "highlightcolor":
                             highlightcolor = colorFromXmlCode(curr);
                             break;
-                        case "selfcolor":
-                            selfcolor = colorFromXmlCode(curr);
-                            break;
                         case "changenickcolor":
                             changenickcolor = colorFromXmlCode(curr);
                             break;
                         case "backgroundcolor":
                             backgroundcolor = colorFromXmlCode(curr);
-                            break;
-                        case "othercolor":
-                            othercolor = colorFromXmlCode(curr);
                             break;
                         case "colortalk":
                             colortalk = colorFromXmlCode(curr);
@@ -265,7 +250,6 @@ namespace Client
             joincolor = System.Drawing.Color.LightBlue;
             highlightcolor = System.Drawing.Color.LightPink;
             miscelancscolor = System.Drawing.Color.LightGreen;
-            selfcolor = System.Drawing.Color.LightGray;
             changenickcolor = System.Drawing.Color.LightSteelBlue;
             link = System.Drawing.Color.LightBlue;
             colortalk = System.Drawing.Color.Yellow;
