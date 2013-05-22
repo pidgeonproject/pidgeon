@@ -41,6 +41,9 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\Pidgeon.XML</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>pigeon_clip_art_hight.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
       <Package>gtk-sharp-2.0</Package>
@@ -240,6 +243,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\at-s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="pigeon_clip_art_hight.ico" />
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>
