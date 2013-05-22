@@ -1,6 +1,22 @@
-﻿using System;
+﻿/***************************************************************************
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) version 3.                                           *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
+ ***************************************************************************/
+
+using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Client
 {
@@ -13,9 +29,9 @@ namespace Client
             Description = "This extension let you display a diff of change to a topic";
         }
 
-        public override bool Hook_Topic(Network network, string userline, Channel channel, string topic)
+        public override bool Hook_Topic(Extension.TopicArgs _TopicArgs)
         {
-            string old_topic = channel.Topic;
+            string old_topic = _TopicArgs.channel.Topic;
             if (old_topic == null)
             {
                 // there is nothing to make a diff from
@@ -24,9 +40,9 @@ namespace Client
 
             string length_info = "No change in length";
 
-            if (topic.Length != old_topic.Length)
+            if (_TopicArgs.Topic.Length != old_topic.Length)
             {
-                int size = topic.Length - old_topic.Length;
+                int size = _TopicArgs.Topic.Length - old_topic.Length;
                 if (size > 0)
                 {
                     length_info = "New topic has " + size.ToString() + " more characters";
@@ -40,7 +56,7 @@ namespace Client
             List<string> rm = new List<string>();
             List<string> add = new List<string>();
             List<string> words_new = new List<string>();
-            words_new.AddRange(topic.Split('.', ' ', ',', '(', ')'));
+            words_new.AddRange(_TopicArgs.Topic.Split('.', ' ', ',', '(', ')'));
             List<string> words_old = new List<string>();
             words_old.AddRange(old_topic.Split('.', ' ', ',', '(', ')'));
 
@@ -83,13 +99,13 @@ namespace Client
                 }
             }
 
-            Graphics.Window window = channel.retrieveWindow();
+            Graphics.Window window = _TopicArgs.channel.RetrieveWindow();
 
             if (window != null)
             {
-                window.scrollback.InsertText("Topic change: " + length_info + ", " + word_info, ContentLine.MessageStyle.System);
-                window.scrollback.InsertText("Old topic: " + old_topic, ContentLine.MessageStyle.System);
-                window.scrollback.InsertText("New topic: " + topic, ContentLine.MessageStyle.System);
+                window.scrollback.InsertText("Topic change: " + length_info + ", " + word_info, ContentLine.MessageStyle.System, true, _TopicArgs.date);
+                window.scrollback.InsertText("Old topic: " + old_topic, ContentLine.MessageStyle.System, true, _TopicArgs.date);
+                window.scrollback.InsertText("New topic: " + _TopicArgs.Topic, ContentLine.MessageStyle.System, true, _TopicArgs.date);
             }
 
             return true;
