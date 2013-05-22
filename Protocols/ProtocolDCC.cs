@@ -53,12 +53,12 @@ namespace Client
             }
             catch (ThreadAbortException)
             {
-                Core.killThread(thread, true);
+                Core.KillThread(thread, true);
                 return;
             }
             catch (Exception fail)
             {
-                Core.killThread(thread, true);
+                Core.KillThread(thread, true);
                 Core.handleException(fail);
             }
         }

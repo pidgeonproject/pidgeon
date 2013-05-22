@@ -92,7 +92,7 @@ namespace Client.Forms
             w4.Expand = false;
             w4.Fill = false;
             root = new Gtk.EventBox();
-            root.ModifyBg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
+            root.ModifyBg(Gtk.StateType.Normal, Core.FromColor(System.Drawing.Color.Orange));
             root.Add(this.vbox1);
             this.Decorated = false;
             this.Add(root);
@@ -136,7 +136,7 @@ namespace Client.Forms
             this.Title = "Notification";
             this.KeepAbove = true;
             this.Opacity = 0.6;
-            this.ModifyBg(Gtk.StateType.Normal, Core.fromColor(System.Drawing.Color.Orange));
+            this.ModifyBg(Gtk.StateType.Normal, Core.FromColor(System.Drawing.Color.Orange));
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.root.ButtonPressEvent += new Gtk.ButtonPressEventHandler(_Remove);
             this.AllowGrow = false;

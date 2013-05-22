@@ -240,7 +240,7 @@ namespace Client
             }
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
-            MenuData = Core.normalizeHtml(Core.RemoveSpecial(text));
+            MenuData = Core.NormalizeHtml(Core.RemoveSpecial(text));
         }
 
         /// <summary>

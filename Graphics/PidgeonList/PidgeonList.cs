@@ -166,7 +166,7 @@ namespace Client.Graphics
             partToolStripMenuItem.Enabled = true;
             disconnectToolStripMenuItem.Enabled = true;
             closeToolStripMenuItem.Enabled = true;
-            this.tv.ModifyFg(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.fontcolor));
+            this.tv.ModifyFg(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.fontcolor));
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -350,8 +350,8 @@ namespace Client.Graphics
 
         private void InitStyle()
         {
-            tv.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-            tv.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+            tv.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
+            tv.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
         }
 
         private bool feIter(TreeModel model, TreePath path, TreeIter iter)
@@ -419,7 +419,7 @@ namespace Client.Graphics
                         }
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
-                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(nw.SystemWindow.MenuColor);
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(nw.SystemWindow.MenuColor);
                             if (nw.SystemWindow.needIcon)
                             {
                                 nw.SystemWindow.needIcon = false;
@@ -449,7 +449,7 @@ namespace Client.Graphics
                         }
                         if (window != null && !window.IsDestroyed)
                         {
-                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
                             if (window.needIcon)
                             {
                                 window.needIcon = false;
@@ -478,7 +478,7 @@ namespace Client.Graphics
                         window = channel.RetrieveWindow();
                         if (window != null)
                         {
-                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(window.MenuColor);
+                            (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
                             if (window.needIcon)
                             {
                                 window.needIcon = false;
@@ -494,7 +494,7 @@ namespace Client.Graphics
                         }
                         break;
                     case ItemType.Services:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.fromColor(Configuration.CurrentSkin.colordefault);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colordefault);
                         break;
                 }
             }

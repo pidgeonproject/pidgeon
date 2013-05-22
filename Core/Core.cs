@@ -496,7 +496,7 @@ namespace Client
 
                 if (server == null)
                 {
-                    server = connectIRC(network, PORT, "", ssl);
+                    server = ConnectIRC(network, PORT, "", ssl);
                 }
 
                 if (channel != null)
@@ -520,7 +520,7 @@ namespace Client
         /// </summary>
         /// <param name="name"></param>
         /// <param name="remove"></param>
-        public static void killThread(Thread name, bool remove = false)
+        public static void KillThread(Thread name, bool remove = false)
         {
             if (name == null)
             {
@@ -860,7 +860,7 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string normalizeHtml(string text)
+        public static string NormalizeHtml(string text)
         {
             return System.Web.HttpUtility.HtmlEncode(text);
         }
@@ -870,7 +870,7 @@ namespace Client
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public static Gdk.Key convertKey(Gdk.Key key)
+        public static Gdk.Key ConvertKey(Gdk.Key key)
         {
             switch (key)
             {
@@ -1068,7 +1068,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static bool connectXmpp(string server, int port, string password, bool secured = false)
+        public static bool ConnectXmpp(string server, int port, string password, bool secured = false)
         {
             ProtocolXmpp IM = new ProtocolXmpp();
             IM.Open();
@@ -1083,7 +1083,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static bool connectDcc(string server, int port, string password, bool secured = false)
+        public static bool ConnectDcc(string server, int port, string password, bool secured = false)
         {
             ProtocolDCC IM = new ProtocolDCC();
             IM.Server = server;
@@ -1102,7 +1102,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static bool connectQl(string server, int port, string password = "xx", bool secured = false)
+        public static bool ConnectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
             _quassel.Port = port;
@@ -1122,7 +1122,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static ProtocolSv connectPS(string server, int port = 8222, string password = "xx", bool secured = false)
+        public static ProtocolSv ConnectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
             ProtocolSv protocol = new ProtocolSv();
             protocol.Server = server;
@@ -1143,7 +1143,7 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns></returns>
-        public static ProtocolIrc connectIRC(string server, int port = 6667, string password = "", bool secured = false)
+        public static ProtocolIrc ConnectIRC(string server, int port = 6667, string password = "", bool secured = false)
         {
             ProtocolIrc protocol = new ProtocolIrc();
             Connections.Add(protocol);
@@ -1272,7 +1272,7 @@ namespace Client
                         try
                         {
                             Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
-                            Core.killThread(th);
+                            Core.KillThread(th);
                         }
                         catch (Exception fail)
                         {

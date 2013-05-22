@@ -272,7 +272,7 @@ namespace Client
             }
             catch (System.Threading.ThreadAbortException)
             {
-                Core.killThread(System.Threading.Thread.CurrentThread, true);
+                Core.KillThread(System.Threading.Thread.CurrentThread, true);
                 return;
             }
             catch (Exception fail)
@@ -281,7 +281,7 @@ namespace Client
                 {
                     Core.handleException(fail);
                 }
-                Core.killThread(System.Threading.Thread.CurrentThread);
+                Core.KillThread(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -537,7 +537,7 @@ namespace Client
 
                 if (keep != null)
                 {
-                    Core.killThread(keep);
+                    Core.KillThread(keep);
                     keep = null;
                 }
 
@@ -573,7 +573,7 @@ namespace Client
                 }
                 if (System.Threading.Thread.CurrentThread != main)
                 {
-                    Core.killThread(main);
+                    Core.KillThread(main);
                 }
                 lock (NetworkList)
                 {
@@ -621,7 +621,7 @@ namespace Client
                 }
                 if (keep != null)
                 {
-                    Core.killThread(keep);
+                    Core.KillThread(keep);
                 }
                 Connected = false;
                 disconnecting = false;

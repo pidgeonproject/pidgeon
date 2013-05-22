@@ -120,7 +120,7 @@ namespace Client
 
             format.Data.Add("link", text.Link);
             format.Data.Add("identifier", text.Text);
-            format.ForegroundGdk = Core.fromColor(text.TextColor);
+            format.ForegroundGdk = Core.FromColor(text.TextColor);
             tb.TagTable.Add(format);
             format.FontDesc = DefaultFont;
             format.SizePoints = Configuration.CurrentSkin.fontsize;
@@ -168,7 +168,7 @@ namespace Client
 
                     format.Data.Add("link", text.Link);
                     format.Data.Add("identifier", text.Text);
-                    format.ForegroundGdk = Core.fromColor(text.TextColor);
+                    format.ForegroundGdk = Core.FromColor(text.TextColor);
                     richTextBox.Buffer.TagTable.Add(format);
                     format.FontDesc = DefaultFont;
                     format.SizePoints = Configuration.CurrentSkin.fontsize;

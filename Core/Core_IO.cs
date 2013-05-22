@@ -150,7 +150,7 @@ namespace Client
         /// </summary>
         /// <param name="color"></param>
         /// <returns></returns>
-        public static Gdk.Color fromColor(System.Drawing.Color color)
+        public static Gdk.Color FromColor(System.Drawing.Color color)
         {
             Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
             return xx;

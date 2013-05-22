@@ -131,7 +131,7 @@ namespace Client
                     List<string> parameters = new List<string>();
                     parameters.AddRange(parameter.Split(' '));
                     int port = int.Parse(parameters[2]);
-                    Core.connectPS(parameters[0], port, parameters[1]);
+                    Core.ConnectPS(parameters[0], port, parameters[1]);
                     return;
                 }
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }),

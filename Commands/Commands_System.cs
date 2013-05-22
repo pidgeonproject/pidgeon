@@ -191,7 +191,7 @@ namespace Client
                 {
                     n2 = 6667;
                 }
-                Core.connectIRC(name, n2, "", ssl);
+                Core.ConnectIRC(name, n2, "", ssl);
                 return;
             }
 

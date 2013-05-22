@@ -97,8 +97,8 @@ namespace Client
 
         private void colors()
         {
-            richTextBox.ModifyBase(StateType.Normal, Core.fromColor(BackColor));
-            richTextBox.ModifyText(StateType.Normal, Core.fromColor(ForeColor));
+            richTextBox.ModifyBase(StateType.Normal, Core.FromColor(BackColor));
+            richTextBox.ModifyText(StateType.Normal, Core.FromColor(ForeColor));
         }
 
         private void Build()

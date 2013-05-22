@@ -45,5 +45,13 @@ if [ -f Configuration.cs.orig ]; then
 	mv Configuration.cs.orig Configuration.cs
 fi
 
+if [ -d skins ];then
+    if [ ! -d bin/Debug/skins ];then
+        mkdir bin/Debug/skins
+    fi
+
+    cp skins/* bin/Debug/skins
+fi
+
 echo "Everything was built, you can start pidgeon by typing"
 echo "./pidgeon"

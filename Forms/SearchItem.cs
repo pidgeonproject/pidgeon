@@ -213,14 +213,14 @@ namespace Client.Forms
                 if (position.ForwardSearch(entry1.Text, TextSearchFlags.TextOnly, out start, out stop, tv.Buffer.EndIter))
                 {
                     NeedReset = true;
-                    entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.LightGreen));
+                    entry1.ModifyBase(StateType.Normal, Core.FromColor (System.Drawing.Color.LightGreen));
                     position = stop;
                     tv.Buffer.SelectRange (start, stop);
                     tv.ScrollToIter (start, 0, false, 0, 0);
                 } else
                 {
                     NeedReset = true;
-                    entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.Pink));
+                    entry1.ModifyBase(StateType.Normal, Core.FromColor (System.Drawing.Color.Pink));
                 }
             }
             else
@@ -234,13 +234,13 @@ namespace Client.Forms
                 {
                     NeedReset = true;
                     position = start;
-                    entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.LightGreen));
+                    entry1.ModifyBase(StateType.Normal, Core.FromColor (System.Drawing.Color.LightGreen));
                     tv.Buffer.SelectRange (start, stop);
                     tv.ScrollToIter (start, 0, false, 0, 0);
                 } else
                 {
                     NeedReset = true;
-                    entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.Pink));
+                    entry1.ModifyBase(StateType.Normal, Core.FromColor (System.Drawing.Color.Pink));
                 }
             }
         }
@@ -276,7 +276,7 @@ namespace Client.Forms
                 return;
             }
             NeedReset = false;
-            entry1.ModifyBase(StateType.Normal, Core.fromColor (System.Drawing.Color.White));
+            entry1.ModifyBase(StateType.Normal, Core.FromColor (System.Drawing.Color.White));
             return;
         }
         

@@ -191,14 +191,14 @@ namespace Client
                         }
                         catch (System.Threading.ThreadAbortException)
                         {
-                            Core.killThread(System.Threading.Thread.CurrentThread);
+                            Core.KillThread(System.Threading.Thread.CurrentThread);
                             return;
                         }
                     }
                 }
                 catch (System.Threading.ThreadAbortException)
                 {
-                    Core.killThread(System.Threading.Thread.CurrentThread);
+                    Core.KillThread(System.Threading.Thread.CurrentThread);
                     return;
                 }
                 catch (Exception fail)
@@ -251,7 +251,7 @@ namespace Client
             catch (Exception fail)
             {
                 Core.handleException(fail, Core.ExceptionKind.Safe);
-                Core.killThread(System.Threading.Thread.CurrentThread);
+                Core.KillThread(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -340,7 +340,7 @@ namespace Client
             {
                 Core.handleException(ex);
             }
-            Core.killThread(System.Threading.Thread.CurrentThread);
+            Core.KillThread(System.Threading.Thread.CurrentThread);
             return;
         }
 
@@ -472,8 +472,8 @@ namespace Client
                 {
                     Send("QUIT :" + _IRCNetwork.Quit);
                     _IRCNetwork.flagDisconnect();
-                    Core.killThread(deliveryqueue);
-                    Core.killThread(keep);
+                    Core.KillThread(deliveryqueue);
+                    Core.KillThread(keep);
                     if (SSL)
                     {
                         _networkSsl.Close();
@@ -533,7 +533,7 @@ namespace Client
             }
             if (main != null)
             {
-                Core.killThread(main);
+                Core.KillThread(main);
             }
             main = new System.Threading.Thread(Start);
             Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
@@ -559,7 +559,7 @@ namespace Client
             {
                 Disconnect();
             }
-            Core.killThread(main);
+            Core.KillThread(main);
             _IRCNetwork.Destroy();
             Connected = false;
             System.Threading.Thread.Sleep(200);

@@ -320,7 +320,7 @@ namespace Client.Forms
                 foreach (Core.Shortcut shortcut in Configuration.ShortcutKeylist)
                 {
                     if (shortcut.control == (e.Event.State == Gdk.ModifierType.ControlMask)
-                        && shortcut.keys == Core.convertKey(e.Event.Key)) //&& shortcut.alt == )
+                        && shortcut.keys == Core.ConvertKey(e.Event.Key)) //&& shortcut.alt == )
                     {
                         Parser.parse(shortcut.data);
                         rt = true;

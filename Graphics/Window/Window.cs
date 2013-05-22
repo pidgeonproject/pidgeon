@@ -293,8 +293,8 @@ namespace Client.Graphics
 
         private void InitStyle()
         {
-            listView.ModifyBase(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.backgroundcolor));
-            listView.ModifyText(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.colordefault));
+            listView.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
+            listView.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
         }
         
         [GLib.ConnectBefore]

@@ -135,13 +135,13 @@ namespace Client.Forms
                 switch (combobox1.ActiveText)
                 {
                     case "irc":
-                        Core.connectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Core.ConnectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case "quassel":
-                        Core.connectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Core.ConnectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case "pidgeon services":
-                        Core.connectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Core.ConnectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                 }
                 Hide();

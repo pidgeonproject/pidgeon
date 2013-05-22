@@ -142,7 +142,7 @@ namespace Client.Forms
             global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1[this.hbox1]));
             w6.Position = 2;
             w6.Expand = false;
-            this.label1.ModifyBase(StateType.Normal, Core.fromColor(Color.LightGray));
+            this.label1.ModifyBase(StateType.Normal, Core.FromColor(Color.LightGray));
             w6.Fill = false;
             this.Add(this.vbox1);
             if ((this.Child != null))
