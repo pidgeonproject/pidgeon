@@ -166,6 +166,7 @@ namespace Client.Graphics
             partToolStripMenuItem.Enabled = true;
             disconnectToolStripMenuItem.Enabled = true;
             closeToolStripMenuItem.Enabled = true;
+            this.tv.ModifyFg(StateType.Normal, Core.fromColor(Configuration.CurrentSkin.fontcolor));
             if ((this.Child != null))
             {
                 this.Child.ShowAll();

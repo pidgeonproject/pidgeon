@@ -175,6 +175,7 @@ namespace Client
             {
                 XmlDocument configuration = new XmlDocument();
                 configuration.Load(_p);
+                mrcl.Clear();
                 foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                 {
                     switch (curr.Name)
@@ -212,8 +213,30 @@ namespace Client
                         case "fontname":
                             localfont = curr.InnerText;
                             break;
+                        case "fontsize":
                         case "size":
                             fontsize = int.Parse(curr.InnerText);
+                            break;
+                        case "coloraway":
+                            this.coloraway = colorFromXmlCode(curr);
+                            break;
+                        case "colorq":
+                            this.colorq = colorFromXmlCode(curr);
+                            break;
+                        case "colorv":
+                            this.colorv = colorFromXmlCode(curr);
+                            break;
+                        case "colora":
+                            this.colora = colorFromXmlCode(curr);
+                            break;
+                        case "colorh":
+                            this.colorh = colorFromXmlCode(curr);
+                            break;
+                        case "coloro":
+                            this.coloro = colorFromXmlCode(curr);
+                            break;
+                        case "mirc":
+                            this.mrcl.Add(colorFromXmlCode(curr));
                             break;
                     }
                 }
