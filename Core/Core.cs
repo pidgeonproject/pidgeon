@@ -331,7 +331,7 @@ namespace Client
         /// <param name='form'>
         /// Form.
         /// </param>
-        public static void setMain(Forms.Main form)
+        public static void SetMain(Forms.Main form)
         {
             _main = form;
         }
@@ -815,7 +815,7 @@ namespace Client
         /// Get a random unique string (it's not possible to get 2 same strings from this function)
         /// </summary>
         /// <returns></returns>
-        public static string retrieveRandom()
+        public static string RetrieveRandom()
         {
             int random = 0;
             bool lockWasTaken = false;

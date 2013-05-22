@@ -287,7 +287,7 @@ namespace Client
         {
             try
             {
-                randomuqid = Core.retrieveRandom();
+                randomuqid = Core.RetrieveRandom();
                 lock (Descriptions)
                 {
                     Descriptions.Clear();

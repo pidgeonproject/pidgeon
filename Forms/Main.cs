@@ -125,7 +125,7 @@ namespace Client.Forms
         {
             try
             {
-                Core.setMain(this);
+                Core.SetMain(this);
                 if (Configuration.UserData.TrayIcon)
                 {
                     icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico"));
