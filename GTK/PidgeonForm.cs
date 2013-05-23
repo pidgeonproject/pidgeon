@@ -68,6 +68,35 @@ namespace Client.GTK
     public class PidgeonForm : Gtk.Window
     {
         /// <summary>
+        /// Configuration
+        /// </summary>
+        public class Info
+        {
+            /// <summary>
+            /// X 
+            /// </summary>
+            public int X = 0;
+            /// <summary>
+            /// Y
+            /// </summary>
+            public int Y = 0;
+            /// <summary>
+            /// Height
+            /// </summary>
+            public int Height = 0;
+            /// <summary>
+            /// Width
+            /// </summary>
+            public int Width = 0;
+        }
+        public static Dictionary<string, Info> WindowInfo = new Dictionary<string, Info>();
+
+        /// <summary>
+        /// ID of form
+        /// </summary>
+        public string ID = null;
+
+        /// <summary>
         /// Height
         /// </summary>
         public int Height
@@ -152,6 +181,72 @@ namespace Client.GTK
         public PidgeonForm() : base(Gtk.WindowType.Toplevel)
         {
             
+        }
+
+        ~PidgeonForm()
+        {
+            OnResize(null, null);
+        }
+
+        /// <summary>
+        /// Event to happen on resize
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="args"></param>
+        public virtual void OnResize(object o, EventArgs args)
+        {
+            try
+            {
+                if (!WindowInfo.ContainsKey(ID))
+                {
+                    Core.DebugLog("Invalid key for window: " + ID);
+                    return;
+                }
+                Info info = WindowInfo[ID];
+                info.X = this.Left;
+                info.Y = this.Top;
+                info.Width = this.Width;
+                info.Height = this.Height;
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        /// <summary>
+        /// Load conf
+        /// </summary>
+        /// <param name="id"></param>
+        public void LC(string id)
+        {
+            ID = id;
+            lock (WindowInfo)
+            {
+                if (!WindowInfo.ContainsKey(id))
+                {
+                    Info info = new Info();
+                    WindowInfo.Add(id, info);
+                    info.X = this.Left;
+                    info.Y = this.Top;
+                    info.Width = this.Width;
+                    info.Height = this.Height;
+                }
+                else
+                {
+                    this.Move(WindowInfo[id].X, WindowInfo[id].Y);
+                    this.Resize(WindowInfo[id].Width, WindowInfo[id].Height);
+                }
+            }
+            this.ConfigureEvent += new Gtk.ConfigureEventHandler(OnResize);
+        }
+
+        /// <summary>
+        /// Creates a new window
+        /// </summary>
+        public PidgeonForm(string id) : base(Gtk.WindowType.Toplevel)
+        {
+            LC(id);
         }
     }
 }

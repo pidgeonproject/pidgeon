@@ -358,6 +358,33 @@ namespace Client
                             xmlnode.AppendChild(curr);
                         }
                     }
+
+                    config.AppendChild(xmlnode);
+
+                    make_comment(" ============= WINDOWS ============= ", config, xmlnode);
+
+                    lock (GTK.PidgeonForm.WindowInfo)
+                    {
+                        foreach (KeyValuePair<string, GTK.PidgeonForm.Info> xx in GTK.PidgeonForm.WindowInfo)
+                        {
+                            curr = config.CreateElement("window");
+                            XmlAttribute height = config.CreateAttribute("height");
+                            XmlAttribute width = config.CreateAttribute("width");
+                            XmlAttribute x = config.CreateAttribute("x");
+                            XmlAttribute y = config.CreateAttribute("y");
+                            curr.InnerText = xx.Key;
+                            height.Value = xx.Value.Height.ToString();
+                            width.Value = xx.Value.Width.ToString();
+                            x.Value = xx.Value.X.ToString();
+                            y.Value = xx.Value.Y.ToString();
+                            curr.Attributes.Append(x);
+                            curr.Attributes.Append(y);
+                            curr.Attributes.Append(width);
+                            curr.Attributes.Append(height);
+                            xmlnode.AppendChild(curr);
+                        }
+                    }
+
                     config.AppendChild(xmlnode);
 
                     if (Backup(ConfigFile))
