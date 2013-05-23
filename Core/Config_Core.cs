@@ -513,7 +513,7 @@ namespace Client
                                         {
                                             if (curr.Attributes.Count > 2)
                                             {
-                                                Shortcut list = new Shortcut(parseKey(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), bool.Parse(curr.Attributes[2].Value), bool.Parse(curr.Attributes[3].Value));
+                                                Shortcut list = new Shortcut(ParseKey(curr.Attributes[0].Value), bool.Parse(curr.Attributes[1].Value), bool.Parse(curr.Attributes[2].Value), bool.Parse(curr.Attributes[3].Value));
                                                 list.data = curr.InnerText;
                                                 Configuration.ShortcutKeylist.Add(list);
                                             }

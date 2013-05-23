@@ -936,7 +936,7 @@ namespace Client
         /// </summary>
         /// <param name="Key">Key</param>
         /// <returns></returns>
-        public static Gdk.Key parseKey(string Key)
+        public static Gdk.Key ParseKey(string Key)
         {
             switch (Key.ToLower())
             {

@@ -61,7 +61,7 @@ namespace Client.Forms
         {
             try
             {
-                Core.Shortcut xx = new Core.Shortcut(Core.parseKey(combobox2.ActiveText),
+                Core.Shortcut xx = new Core.Shortcut(Core.ParseKey(combobox2.ActiveText),
                     checkbutton2.Active,
                     checkbutton3.Active,
                     checkbutton4.Active,
