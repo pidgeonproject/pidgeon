@@ -75,7 +75,7 @@ namespace Client
                     return;
                 }
             }
-            Core.connectIRC("irc.tm-irc.org");
+            Core.ConnectIRC("irc.tm-irc.org");
             foreach (Protocol network in Core.Connections)
             {
                 if (network.Server == "irc.tm-irc.org")
