@@ -25,7 +25,7 @@ namespace Client.Forms
     /// <summary>
     /// Window
     /// </summary>
-    public partial class Channel_Info : Gtk.Window
+    public partial class Channel_Info : Client.GTK.PidgeonForm
     {
         private Channel channel = null;
         private List<char> cm = new List<char>();
@@ -108,7 +108,7 @@ namespace Client.Forms
         /// Creates a new window
         /// </summary>
         /// <param name="ch"></param>
-        public Channel_Info(Channel ch) : base(Gtk.WindowType.Toplevel)
+        public Channel_Info(Channel ch)
         {
             channel = ch;
             Load();

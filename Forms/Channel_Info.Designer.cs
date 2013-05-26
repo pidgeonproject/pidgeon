@@ -20,7 +20,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class Channel_Info : Gtk.Window
+    public partial class Channel_Info
     {
         private global::Gtk.Notebook notebook1;
         private global::Gtk.VBox vbox1;

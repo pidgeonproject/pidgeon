@@ -134,7 +134,6 @@ namespace Client.Forms
                 }
                 this.Build();
                 this.LC("MainForm");
-                this.ConfigureEvent += new ConfigureEventHandler(this.OnResize);
                 timer = new GLib.TimeoutHandler(updater_Tick);
                 GLib.Timeout.Add(200, timer);
                 this.DetachFromMicroChatAction.Activated += new EventHandler(detachFromMicroChatToolStripMenuItem_Click);

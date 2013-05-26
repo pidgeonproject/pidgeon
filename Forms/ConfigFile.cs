@@ -23,7 +23,7 @@ namespace Client.Forms
     /// <summary>
     /// Editor
     /// </summary>
-    public partial class ConfigFile : Gtk.Window
+    public partial class ConfigFile : Client.GTK.PidgeonForm
     {
         private Gtk.Button button3;
         private Gtk.Button button4;
@@ -33,7 +33,7 @@ namespace Client.Forms
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public ConfigFile () :  base(Gtk.WindowType.Toplevel)
+        public ConfigFile ()
         {
             try
             {

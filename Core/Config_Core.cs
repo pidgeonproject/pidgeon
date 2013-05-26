@@ -459,10 +459,12 @@ namespace Client
                                             {
                                                 Configuration.UserData.History.Add(curr.InnerText);
                                             }
+                                            continue;
                                         }
                                         if (curr.Name == "alias")
                                         {
                                             Commands.RegisterAlias(curr.Attributes[0].InnerText, curr.Attributes[1].InnerText, bool.Parse(curr.Attributes[2].InnerText));
+                                            continue; 
                                         }
                                         if (curr.Name == "network")
                                         {
@@ -490,6 +492,45 @@ namespace Client
                                                 }
                                             }
                                             continue;
+                                        }
+                                        if (curr.Name == "window")
+                                        {
+                                            string name = curr.InnerText;
+                                            GTK.PidgeonForm.Info w = new GTK.PidgeonForm.Info();
+                                            if (curr.Attributes == null)
+                                            {
+                                                continue;
+                                            }
+                                            foreach (XmlAttribute option in curr.Attributes)
+                                            {
+                                                if (curr.Value == null)
+                                                {
+                                                    // invalid config
+                                                    continue;
+                                                }
+                                                switch (option.Name)
+                                                {
+                                                    case "width":
+                                                       w.Width = int.Parse (curr.Value);
+                                                       break;
+                                                    case "height":
+                                                       w.Height = int.Parse (curr.Value);
+                                                       break;
+                                                    case "x":
+                                                       w.X = int.Parse (curr.Value);
+                                                       break;
+                                                    case "y":
+                                                       w.Y = int.Parse (curr.Value);
+                                                       break;
+                                                }
+                                            }
+                                            lock(GTK.PidgeonForm.WindowInfo)
+                                            {
+                                                if (!GTK.PidgeonForm.WindowInfo.ContainsKey(name))
+                                                {
+                                                    GTK.PidgeonForm.WindowInfo.Add(name, w);
+                                                }
+                                            }
                                         }
                                         if (curr.Name == "ignore")
                                         {
