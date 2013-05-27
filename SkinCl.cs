@@ -226,6 +226,10 @@ namespace Client
                     }
                 }
             }
+            if (mrcl.Count < 15)
+            {
+                throw new Exception("The skin doesn't contain all required mirc colors");
+            }
         }
 
         private void Defaults()
