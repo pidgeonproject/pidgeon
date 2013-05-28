@@ -29,7 +29,7 @@ namespace Client.Forms
     /// <summary>
     /// Micro chat
     /// </summary>
-    public partial class MicroChat : Gtk.Window
+    public partial class MicroChat : GTK.PidgeonForm
     {
         /// <summary>
         /// Scrollback
@@ -150,7 +150,7 @@ namespace Client.Forms
         /// <summary>
         /// Creates a new instance of micro chat
         /// </summary>
-        public MicroChat () : base(Gtk.WindowType.Toplevel)
+        public MicroChat ()
         {
             this.Build();
             scrollback_mc.RT.textView.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);

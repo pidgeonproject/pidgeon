@@ -23,14 +23,15 @@ namespace Client.Forms
     /// <summary>
     /// Creates a new form
     /// </summary>
-    public partial class Connection : Gtk.Window
+    public partial class Connection : GTK.PidgeonForm
     {
         /// <summary>
         /// New connection gtk dialog
         /// </summary>
-        public Connection() : base(Gtk.WindowType.Toplevel)
+        public Connection()
         {
             this.Build ();
+            this.LC("ConnectionWindow");
             messages.Localize(this);
             this.entry4.Visibility = false;
             this.DeleteEvent += new DeleteEventHandler(Unshow);

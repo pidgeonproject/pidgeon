@@ -19,12 +19,12 @@ using System;
 
 namespace Client.Forms
 {
-    public partial class Help : Gtk.Window
+    public partial class Help : GTK.PidgeonForm
     {
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public Help () : base(Gtk.WindowType.Toplevel)
+        public Help ()
         {
             try
             {

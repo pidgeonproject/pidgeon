@@ -27,6 +27,11 @@ namespace Client
 {
     class LineLogs
     {
+        private static string validpath(string path)
+        {
+            return path.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
+        }
+
         /// <summary>
         /// Return a file path without special symbols not supported in windows or linux
         /// </summary>
@@ -49,8 +54,8 @@ namespace Client
 
         private static string _getFileName(Graphics.Window owner, string directory, DateTime time)
         {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + 
-                Path.DirectorySeparatorChar + owner.WindowName + Path.DirectorySeparatorChar + 
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + validpath(owner._Network.ServerName) + 
+                Path.DirectorySeparatorChar + validpath(owner.WindowName) + Path.DirectorySeparatorChar + 
                 time.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
             return name;
         }

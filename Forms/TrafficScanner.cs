@@ -27,7 +27,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class TrafficScanner : Gtk.Window
+    public partial class TrafficScanner : GTK.PidgeonForm
     {
         private List<string> traf = new List<string>();
         private GLib.TimeoutHandler timer;
@@ -38,11 +38,12 @@ namespace Client.Forms
         /// <summary>
         /// Creates a new instance of scanner
         /// </summary>
-        public TrafficScanner () :  base(Gtk.WindowType.Toplevel)
+        public TrafficScanner ()
         {
             try
             {
                 this.Build ();
+                this.LC("TrafficScanner");
                 this.textview2.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
                 this.timer = new GLib.TimeoutHandler(Tick);
                 GLib.Timeout.Add (1000, timer);

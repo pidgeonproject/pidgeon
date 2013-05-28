@@ -33,11 +33,12 @@ namespace Client.Forms
         /// <summary>
         /// Creates a new instance
         /// </summary>
-        public ConfigFile ()
+        public ConfigFile()
         {
             try
             {
-                this.Build ();
+                this.Build();
+                this.LC("ConfigFile");
                 this.button3.Activated += new EventHandler(button1_Click);
                 this.button4.Activated += new EventHandler(button2_Click);
             }

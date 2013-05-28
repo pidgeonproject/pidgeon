@@ -28,7 +28,7 @@ namespace Client.Forms
     /// <summary>
     /// Channel list
     /// </summary>
-    public partial class Channels : Gtk.Window
+    public partial class Channels : GTK.PidgeonForm
     {
         private Network network = null;
         private bool Loaded = false;
@@ -89,7 +89,7 @@ namespace Client.Forms
         /// Creates a new instance of this list
         /// </summary>
         /// <param name="nw"></param>
-        public Channels(Network nw) : base(Gtk.WindowType.Toplevel)
+        public Channels(Network nw)
         {
             network = nw;
             this.Build();

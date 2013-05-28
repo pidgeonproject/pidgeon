@@ -28,7 +28,7 @@ namespace Client.Forms
     /// <summary>
     /// Script edit.
     /// </summary>
-    public partial class ScriptEdit : Gtk.Window
+    public partial class ScriptEdit : GTK.PidgeonForm
     {
         /// <summary>
         /// Network
@@ -59,9 +59,10 @@ namespace Client.Forms
         /// <summary>
         /// Initializes a new instance of the <see cref="Client.Forms.ScriptEdit"/> class.
         /// </summary>
-        public ScriptEdit() : base(Gtk.WindowType.Toplevel)
+        public ScriptEdit()
         {
             this.Build();
+            this.LC("ScriptEdit");
             this.button1.Clicked += new EventHandler(button1_Click);
             messages.Localize(this);
             this.button2.Clicked += new EventHandler(button2_Click);

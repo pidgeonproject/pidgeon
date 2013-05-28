@@ -224,6 +224,11 @@ namespace Client
                     string source = command_body;
                     if (command_body.Contains(" :"))
                     {
+                        if (command_body.IndexOf(" :") < 0)
+                        {
+                            Core.DebugLog("Malformed text, probably hacker: " + text);
+                            return false;
+                        }
                         command_body = command_body.Substring(0, command_body.IndexOf(" :"));
                     }
                     source = source.Substring(0, source.IndexOf(" "));

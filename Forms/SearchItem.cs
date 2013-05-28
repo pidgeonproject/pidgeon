@@ -67,17 +67,6 @@ namespace Client.Forms
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.entry1]));
             w1.Position = 0;
             // Container child hbox1.Gtk.Box+BoxChild
-            //this.checkbutton1 = new global::Gtk.CheckButton ();
-            //this.checkbutton1.CanFocus = true;
-            //this.checkbutton1.Name = "checkbutton1";
-            //this.checkbutton1.Label = global::Mono.Unix.Catalog.GetString ("Regular expression");
-            //this.checkbutton1.DrawIndicator = true;
-            //this.checkbutton1.UseUnderline = true;
-            //this.hbox1.Add (this.checkbutton1);
-            //global::Gtk.Box.BoxChild w2 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.checkbutton1]));
-            //w2.Position = 1;
-            //w2.Expand = false;
-            // Container child hbox1.Gtk.Box+BoxChild
             this.button1 = new global::Gtk.Button ();
             this.button1.CanFocus = true;
             this.button1.Name = "button1";
@@ -145,6 +134,7 @@ namespace Client.Forms
         public SearchItem()
         {
             this.Build();
+            this.LC("SearchItem");
             messages.Localize(this);
         }
         

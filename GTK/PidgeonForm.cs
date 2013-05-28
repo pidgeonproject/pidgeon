@@ -92,6 +92,11 @@ namespace Client.GTK
         public static Dictionary<string, Info> WindowInfo = new Dictionary<string, Info>();
 
         /// <summary>
+        /// Timer that handles the resize events
+        /// </summary>
+        public GLib.TimeoutHandler ChangeTimer = null;
+
+        /// <summary>
         /// ID of form
         /// </summary>
         public string ID = null;
@@ -183,6 +188,9 @@ namespace Client.GTK
             
         }
 
+        /// <summary>
+        /// Save the current location of window
+        /// </summary>
         ~PidgeonForm()
         {
             OnResize(null, null);
@@ -197,6 +205,10 @@ namespace Client.GTK
         {
             try
             {
+                if (ID == null)
+                {
+                    return;
+                }
                 if (!WindowInfo.ContainsKey(ID))
                 {
                     Core.DebugLog("Invalid key for window: " + ID);
@@ -212,6 +224,12 @@ namespace Client.GTK
             {
                 Core.handleException(fail);
             }
+        }
+
+        private bool ResizeHandler()
+        {
+            OnResize(null, null);
+            return true;
         }
 
         /// <summary>
@@ -238,7 +256,10 @@ namespace Client.GTK
                     this.Resize(WindowInfo[id].Width, WindowInfo[id].Height);
                 }
             }
+            // **FIXME**
+            this.ChangeTimer = new GLib.TimeoutHandler(ResizeHandler);
             this.ConfigureEvent += new Gtk.ConfigureEventHandler(OnResize);
+            GLib.Timeout.Add(8000, this.ChangeTimer);
         }
 
         /// <summary>

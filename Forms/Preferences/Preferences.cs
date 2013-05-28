@@ -25,12 +25,12 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class Preferences : Gtk.Window
+    public partial class Preferences : GTK.PidgeonForm
     {
         /// <summary>
         /// Creates a new instance of this form
         /// </summary>
-        public Preferences() : base(Gtk.WindowType.Toplevel)
+        public Preferences()
         {
             try
             {

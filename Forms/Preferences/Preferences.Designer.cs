@@ -25,7 +25,7 @@ namespace Client.Forms
     /// <summary>
     /// Preferences
     /// </summary>
-    public partial class Preferences : Gtk.Window
+    public partial class Preferences : GTK.PidgeonForm
     {
         private global::Gtk.Frame fExtensions;
         private global::Gtk.Alignment GtkAlignment2;

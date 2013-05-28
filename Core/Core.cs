@@ -427,6 +427,7 @@ namespace Client
             catch (Exception panic)
             {
                 Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
+                Core.handleException(panic, true);
             }
             return false;
         }
