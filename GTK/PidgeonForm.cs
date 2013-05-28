@@ -205,20 +205,23 @@ namespace Client.GTK
         {
             try
             {
-                if (ID == null)
+                if (Configuration.Window.RememberPosition)
                 {
-                    return;
+                    if (ID == null)
+                    {
+                        return;
+                    }
+                    if (!WindowInfo.ContainsKey(ID))
+                    {
+                        Core.DebugLog("Invalid key for window: " + ID);
+                        return;
+                    }
+                    Info info = WindowInfo[ID];
+                    info.X = this.Left;
+                    info.Y = this.Top;
+                    info.Width = this.Width;
+                    info.Height = this.Height;
                 }
-                if (!WindowInfo.ContainsKey(ID))
-                {
-                    Core.DebugLog("Invalid key for window: " + ID);
-                    return;
-                }
-                Info info = WindowInfo[ID];
-                info.X = this.Left;
-                info.Y = this.Top;
-                info.Width = this.Width;
-                info.Height = this.Height;
             }
             catch (Exception fail)
             {
@@ -239,27 +242,30 @@ namespace Client.GTK
         public void LC(string id)
         {
             ID = id;
-            lock (WindowInfo)
+            if (Configuration.Window.RememberPosition)
             {
-                if (!WindowInfo.ContainsKey(id))
+                lock (WindowInfo)
                 {
-                    Info info = new Info();
-                    WindowInfo.Add(id, info);
-                    info.X = this.Left;
-                    info.Y = this.Top;
-                    info.Width = this.Width;
-                    info.Height = this.Height;
+                    if (!WindowInfo.ContainsKey(id))
+                    {
+                        Info info = new Info();
+                        WindowInfo.Add(id, info);
+                        info.X = this.Left;
+                        info.Y = this.Top;
+                        info.Width = this.Width;
+                        info.Height = this.Height;
+                    }
+                    else
+                    {
+                        this.Move(WindowInfo[id].X, WindowInfo[id].Y);
+                        this.Resize(WindowInfo[id].Width, WindowInfo[id].Height);
+                    }
                 }
-                else
-                {
-                    this.Move(WindowInfo[id].X, WindowInfo[id].Y);
-                    this.Resize(WindowInfo[id].Width, WindowInfo[id].Height);
-                }
+                // **FIXME**
+                this.ChangeTimer = new GLib.TimeoutHandler(ResizeHandler);
+                this.ConfigureEvent += new Gtk.ConfigureEventHandler(OnResize);
+                GLib.Timeout.Add(8000, this.ChangeTimer);
             }
-            // **FIXME**
-            this.ChangeTimer = new GLib.TimeoutHandler(ResizeHandler);
-            this.ConfigureEvent += new Gtk.ConfigureEventHandler(OnResize);
-            GLib.Timeout.Add(8000, this.ChangeTimer);
         }
 
         /// <summary>

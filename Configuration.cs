@@ -99,6 +99,8 @@ namespace Client
             /// What should happen when you click a pidgeon list
             /// </summary>
             public static PidgeonList_MouseClick MiddleClick_Side = PidgeonList_MouseClick.Close;
+            [Experimental]
+            public static bool RememberPosition = false;
         }
 
         /// <summary>

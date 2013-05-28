@@ -148,6 +148,7 @@ namespace Client
                     make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
@@ -820,6 +821,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.CurrentSkin":
                                                         Skin.ReloadSkin(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Window.RememberPosition":
+                                                        Configuration.Window.RememberPosition = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }
