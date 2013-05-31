@@ -187,8 +187,17 @@ namespace Client
                                             {
                                                 WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
                                                     date, !updated_text);
+                                                return true;
+                                            }
+                                            else
+                                            {
+                                                Core.DebugLog("Network " + _Network.ServerName + " doesn't have user (" + _nick + ") ignoring ctcp");
                                             }
                                         }
+                                    }
+                                    else
+                                    {
+                                        Core.DebugLog("Message from unknown user: " + message);
                                     }
                                     break;
                             }
