@@ -214,10 +214,6 @@ namespace Client
 
             }
             user = new User(_nick, _host, _Network, _ident);
-            if (Ignoring.Matches(message, user))
-            {
-                return true;
-            }
             Channel channel = null;
             if (chan.StartsWith(_Network.channel_prefix))
             {
@@ -228,6 +224,13 @@ namespace Client
                     window = channel.RetrieveWindow();
                     if (window != null)
                     {
+                        if (Ignoring.Matches(message, user))
+                        {
+                            if (Hooks._Scrollback.Ignore(window, user, message, updated_text, date))
+                            {
+                                return true;
+                            }
+                        }
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);

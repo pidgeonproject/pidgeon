@@ -152,6 +152,44 @@ namespace Client
                 
             }
 
+            /// <summary>
+            /// When ignore happen
+            /// </summary>
+            /// <param name="window">Window</param>
+            /// <param name="message">Message that was ignored</param>
+            /// <param name="updated"></param>
+            /// <param name="date"></param>
+            /// <returns></returns>
+            public static bool Ignore(Graphics.Window window, User user, string message, bool updated, long date)
+            {
+                bool ok = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            Extension.MessageArgs data = new Extension.MessageArgs();
+                            data.updated = updated;
+                            data.date = date;
+                            data.user = user;
+                            data.text = message;
+                            data.window = window;
+                            if (!extension.Hook_BeforeIgnore(data))
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook Ignore(Graphics.Window window, string message, bool updated, long date) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return ok;
+            }
+
             public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
             {
                 foreach (Extension extension in Core.Extensions)

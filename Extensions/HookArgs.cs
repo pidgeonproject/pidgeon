@@ -39,6 +39,33 @@ namespace Client
         }
 
         /// <summary>
+        /// For a message sent to window
+        /// </summary>
+        public class MessageArgs : HookArgs
+        {
+            /// <summary>
+            /// Window where the message is sent to
+            /// </summary>
+            public Graphics.Window window = null;
+            /// <summary>
+            /// Message content
+            /// </summary>
+            public string text = null;
+            /// <summary>
+            /// Updated
+            /// </summary>
+            public bool updated = false;
+            /// <summary>
+            /// Date
+            /// </summary>
+            public long date = 0;
+            /// <summary>
+            /// If there is a user attached to message it is this one
+            /// </summary>
+            public User user = null;
+        }
+
+        /// <summary>
         /// This is a base for network args
         /// </summary>
         public class NetworkArgs : HookArgs

@@ -88,6 +88,11 @@ namespace Client
 
         }
 
+        public virtual bool Hook_BeforeIgnore(MessageArgs _IgnoreArgs)
+        {
+            return true;
+        }
+
         /// <summary>
         /// This hook is started before you connect to a protocol
         /// </summary>
