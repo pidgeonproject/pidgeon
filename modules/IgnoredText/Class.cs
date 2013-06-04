@@ -33,10 +33,10 @@ namespace Client
         {
             if (_IgnoreArgs.user == null)
             {
-                collector.scrollback.InsertText(_IgnoreArgs.text, ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
+                collector.scrollback.InsertText("{" + _IgnoreArgs.window.WindowName + "}" + _IgnoreArgs.text, ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
                 return true;
             }
-            collector.scrollback.InsertText(_IgnoreArgs.window._Network._Protocol.PRIVMSG(_IgnoreArgs.user.Nick, _IgnoreArgs.text), ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
+            collector.scrollback.InsertText(_IgnoreArgs.window._Network._Protocol.PRIVMSG("{" + _IgnoreArgs.window.WindowName + "}" + _IgnoreArgs.user.Nick, _IgnoreArgs.text), ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
             return true;
         }
 
