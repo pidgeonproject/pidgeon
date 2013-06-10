@@ -140,6 +140,37 @@ namespace Client
                 string uc;
                 if (message.StartsWith(_Protocol.delimiter.ToString()))
                 {
+                    if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
+                    {
+                        message = message.Substring("xACTION".Length);
+                        if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                        {
+                            message = message.Substring(0, message.Length - 1);
+                        }
+                        user = _Network.getUser(_nick);
+                        if (user != null)
+                        {
+                            lock (_Network.PrivateWins)
+                            {
+                                if (_Network.PrivateWins.ContainsKey(user))
+                                {
+                                    WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
+                                        date, !updated_text);
+                                    return true;
+                                }
+                                else
+                                {
+                                    Core.DebugLog("Network " + _Network.ServerName + " doesn't have user (" + _nick + ") ignoring ctcp");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Core.DebugLog("Message from unknown user: " + message);
+                        }
+                        return true;
+                    }
+
                     if (updated_text)
                     {
                         uc = message.Substring(1);
@@ -170,34 +201,6 @@ namespace Client
                                             _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
                                                 Configuration.Priority.Low);
                                         }
-                                    }
-                                    break;
-                                case "ACTION":
-                                    message = message.Substring("xACTION".Length);
-                                    if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
-                                    {
-                                        message = message.Substring(0, message.Length - 1);
-                                    }
-                                    user = _Network.getUser(_nick);
-                                    if (user != null)
-                                    {
-                                        lock (_Network.PrivateWins)
-                                        {
-                                            if (_Network.PrivateWins.ContainsKey(user))
-                                            {
-                                                WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
-                                                    date, !updated_text);
-                                                return true;
-                                            }
-                                            else
-                                            {
-                                                Core.DebugLog("Network " + _Network.ServerName + " doesn't have user (" + _nick + ") ignoring ctcp");
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Core.DebugLog("Message from unknown user: " + message);
                                     }
                                     break;
                             }
@@ -234,7 +237,7 @@ namespace Client
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
-                            if (message.Length > 1)
+                            if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
                             {
                                 message = message.Substring(0, message.Length - 1);
                             }

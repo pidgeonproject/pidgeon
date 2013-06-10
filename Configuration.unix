@@ -99,6 +99,8 @@ namespace Client
             /// What should happen when you click a pidgeon list
             /// </summary>
             public static PidgeonList_MouseClick MiddleClick_Side = PidgeonList_MouseClick.Close;
+            [Experimental]
+            public static bool RememberPosition = false;
         }
 
         /// <summary>
@@ -262,6 +264,9 @@ namespace Client
             /// Minimal time for which the debug message is displayed
             /// </summary>
             public static int Profiler_Minimal = 0;
+            /// <summary>
+            /// Path of language data files
+            /// </summary>
             public static string Lang = "languages";
         }
 
