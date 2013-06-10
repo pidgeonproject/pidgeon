@@ -11,10 +11,19 @@ window-menu-user=Uzivatel;
 window-menu-about=O programu;
 window-menu-contents=Obsah;
 window-menu-search=Hledat;
+window-menu-open=Otevrit nove pripojeni;
+window-menu-favorite=Favorite networks;
+window-menu-viewer=Packet viewer;
+window-menu-chat=Small chat;
+window-menu-chat1=Attach to micro chat;
+window-menu-chat2=Detach from micro chat;
+window-menu-more=Load more to scrollback;
+window-menu-cf=Konfiguracni soubor;
+window-menu-root=Zobrazit koren. okno;
 
 // Dialogs
 
-pidgeon-shut=Opravdu chcete ukoncit?;
+pidgeon-shut=Opravdu chcete pidgeon ukoncit?;
 
 // Error messages
 

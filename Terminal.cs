@@ -54,8 +54,8 @@ namespace Client
         
         private static void ShowHelp()
         {
-            Console.WriteLine("Usage: pidgeon [options] [link]\n"
-                              + "********************************\n"
+            Console.WriteLine("Usage: pidgeon [OPTION...] [link]\n"
+                              + "\n"
                               + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
                               + "\n"
                               + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"

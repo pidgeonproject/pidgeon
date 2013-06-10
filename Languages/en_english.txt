@@ -1,10 +1,17 @@
 ﻿// Main window
 
 window-menu-file=File;
+window-menu-open=Open new connection;
 window-menu-quit=Exit;
 window-menu-conf=Preferences;
 window-menu-help=Help;
 window-menu-tools=Tools;
+window-menu-favorite=Favorite networks;
+window-menu-viewer=Packet viewer;
+window-menu-chat=Small chat;
+window-menu-chat1=Attach to micro chat;
+window-menu-chat2=Detach from micro chat;
+window-menu-more=Load more to scrollback;
 window-menu-misc=Misc;
 window-menu-show=Show;
 window-menu-user=User;
