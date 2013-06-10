@@ -14,7 +14,7 @@ namespace Client
         {
             menu = new Gtk.MenuItem("Display notifications");
             collector = new Graphics.Window();
-            collector.CreateChat(null, false);
+            collector.CreateChat(null, false, false, false);
             menu.Activated += new EventHandler(Display);
             collector.WindowName = "Notifications";
             main.ToolsMenu.Append(menu);

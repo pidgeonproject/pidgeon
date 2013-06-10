@@ -22,7 +22,7 @@ namespace Client
         {
             menu = new Gtk.MenuItem("Display ignored text");
             collector = new Graphics.Window();
-            collector.CreateChat(null, false);
+            collector.CreateChat(null, false, false, false);
             menu.Activated += new EventHandler(Display);
             collector.WindowName = "Ignored";
             main.ToolsMenu.Append(menu);
@@ -33,10 +33,10 @@ namespace Client
         {
             if (_IgnoreArgs.user == null)
             {
-                collector.scrollback.InsertText("{" + _IgnoreArgs.window.WindowName + "}" + _IgnoreArgs.text, ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
+                collector.scrollback.InsertText("{" + _IgnoreArgs.window.WindowName + "} " + _IgnoreArgs.text, ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
                 return true;
             }
-            collector.scrollback.InsertText(_IgnoreArgs.window._Network._Protocol.PRIVMSG("{" + _IgnoreArgs.window.WindowName + "}" + _IgnoreArgs.user.Nick, _IgnoreArgs.text), ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
+            collector.scrollback.InsertText("{" + _IgnoreArgs.window.WindowName + "} " + _IgnoreArgs.window._Network._Protocol.PRIVMSG(_IgnoreArgs.user.Nick, _IgnoreArgs.text), ContentLine.MessageStyle.Message, false, _IgnoreArgs.date, true);
             return true;
         }
 

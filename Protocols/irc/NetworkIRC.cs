@@ -234,7 +234,7 @@ namespace Client
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                         {
                             message = message.Substring("xACTION".Length);
-                            if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                            if (message.Length > 1)
                             {
                                 message = message.Substring(0, message.Length - 1);
                             }
