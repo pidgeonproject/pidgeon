@@ -357,6 +357,7 @@ namespace Client.Graphics
                 whoisToolStripMenuItem.Visible = false;
                 kbToolStripMenuItem.Visible = false;
                 whoisToolStripMenuItem.Visible = false;
+                dccToolStripMenu.Visible = false;
                 ctToolStripMenuItem.Visible = false;
                 refreshToolStripMenuItem.Visible = false;
                 kickBanToolStripMenuItem.Visible = false;
@@ -381,6 +382,7 @@ namespace Client.Graphics
                 whoisToolStripMenuItem.Visible = true;
                 kbToolStripMenuItem.Visible = true;
                 whoisToolStripMenuItem.Visible = true;
+                dccToolStripMenu.Visible = true;
                 ctToolStripMenuItem.Visible = true;
                 messageToolStripMenuItem.Visible = true;
                 refreshToolStripMenuItem.Visible = true;

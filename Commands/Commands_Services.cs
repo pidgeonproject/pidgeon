@@ -107,12 +107,23 @@ namespace Client
                 if (parameter != "")
                 {
                     string nick = parameter;
-                    if (Core.SystemForm.Chat._Network._Protocol != null)
+                    if (Core.SystemForm.Chat._Protocol != null)
                     {
-                        if (Core.SystemForm.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
+                        if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
                         {
-                            Core.SystemForm.Chat._Network._Protocol.requestNick(nick);
+                            Core.SystemForm.Chat._Protocol.requestNick(nick);
                             return;
+                        }
+                    }
+                    if (Core.SystemForm.Chat._Network != null)
+                    {
+                        if (Core.SystemForm.Chat._Network._Protocol != null)
+                        {
+                            if (Core.SystemForm.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
+                            {
+                                Core.SystemForm.Chat._Network._Protocol.requestNick(nick);
+                                return;
+                            }
                         }
                     }
                     return;

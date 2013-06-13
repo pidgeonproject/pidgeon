@@ -22,13 +22,14 @@ using System.Text;
 
 namespace Client
 {
-    class ProtocolDCC : IProtocol
+    public class ProtocolDCC : IProtocol
     {
         private Thread thread = null;
         private System.Net.Sockets.NetworkStream _networkStream = null;
         private System.Net.Security.SslStream _networkSsl = null;
         private System.IO.StreamReader _StreamReader = null;
         private System.IO.StreamWriter _StreamWriter = null;
+        public DCC Dcc = DCC.Chat;
 
         private void main()
         {
@@ -92,6 +93,14 @@ namespace Client
             Core.SystemThreads.Add(thread);
             thread.Start();
             return true;
+        }
+
+        public enum DCC
+        {
+            Chat,
+            SecureChat,
+            File,
+            SecureFile
         }
     }
 }

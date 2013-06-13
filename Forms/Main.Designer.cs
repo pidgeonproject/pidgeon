@@ -166,7 +166,7 @@ namespace Client.Forms
             ////////////////////// FILE //////////////////////
             FileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-file]]"));
             FileAction.Submenu = this.FileMenu;
-            OpenNewConnectionAction = new Gtk.MenuItem("[[window-menu-open]]");
+            OpenNewConnectionAction = new Gtk.MenuItem(messages.Localize("[[window-menu-open]]"));
             OpenNewConnectionAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.N, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             FileAction.Submenu = this.FileMenu;
             FileMenu.Append(OpenNewConnectionAction);

@@ -653,7 +653,7 @@ namespace Client
 
             public static void BeforeMode(Network network)
             {
-
+                return;
             }
         }
     }

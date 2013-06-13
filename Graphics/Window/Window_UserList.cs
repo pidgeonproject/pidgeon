@@ -116,6 +116,22 @@ namespace Client.Graphics
         /// </summary>
         public GTK.Menu whoisToolStripMenuItem = new GTK.Menu("Whois");
         /// <summary>
+        /// DirectCC
+        /// </summary>
+        public GTK.Menu dccToolStripMenu = new GTK.Menu("DCC");
+        /// <summary>
+        /// Secure chat
+        /// </summary>
+        public GTK.Menu dccSChatToolStripMenuItem = new GTK.Menu("Secure chat");
+        /// <summary>
+        /// Chat
+        /// </summary>
+        public GTK.Menu dccChatToolStripMenuItem = new GTK.Menu("Chat");
+        /// <summary>
+        /// File
+        /// </summary>
+        public GTK.Menu dccFileToolStripMenuItem = new GTK.Menu("File");
+        /// <summary>
         /// Ctcp
         /// </summary>
         public GTK.Menu ctToolStripMenuItem = new GTK.Menu("CTCP");
@@ -283,7 +299,24 @@ namespace Client.Graphics
                     message.Activated += new EventHandler(messageToolStripMenuItem_Click);
                     menu.Append(message);
                 }
-                
+
+                if (dccToolStripMenu.Visible)
+                {
+                    Gtk.SeparatorMenuItem separatorX = new Gtk.SeparatorMenuItem();
+                    separatorX.Show();
+                    menu.Append(separatorX);
+                    Gtk.Menu dcc = new Gtk.Menu();
+                    Gtk.MenuItem DCC = new MenuItem("DCC");
+                    DCC.Submenu = dcc;
+                    menu.Append(DCC);
+                    Gtk.MenuItem sc = new MenuItem(this.dccSChatToolStripMenuItem.Text);
+                    sc.Activated += new EventHandler(dccSChatToolStripMenuItem_Click);
+                    dcc.Append(sc);
+                    Gtk.MenuItem nc = new MenuItem(this.dccChatToolStripMenuItem.Text);
+                    nc.Activated += new EventHandler(dccChatToolStripMenuItem_Click);
+                    dcc.Append(nc);
+                }
+
                 if (ctToolStripMenuItem.Visible)
                 {
                     Gtk.SeparatorMenuItem separatorX = new Gtk.SeparatorMenuItem();
@@ -305,7 +338,6 @@ namespace Client.Graphics
                     Gtk.MenuItem dt = new MenuItem(tIMEToolStripMenuItem.Text);
                     dt.Activated += new EventHandler(tIMEToolStripMenuItem_Click);
                     ctcp.Append(dt);
-                    
                 }
                 
                 if (modeToolStripMenuItem.Visible)
@@ -589,6 +621,36 @@ namespace Client.Graphics
                 if (isChannel)
                 {
                     SendCtcp("PAGE");
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void dccChatToolStripMenuItem_Click(object sender,  EventArgs e)
+        {
+            try
+            {
+                if (isChannel)
+                {
+                    SendCtcp("DCC CHAT");
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void dccSChatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (isChannel)
+                {
+                    SendCtcp("DCC SCHAT");
                 }
             }
             catch (Exception fail)
