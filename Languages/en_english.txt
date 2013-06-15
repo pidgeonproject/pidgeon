@@ -25,6 +25,13 @@ window-menu-root=Display a root window;
 
 pidgeon-shut=Do you really want to exit?;
 
+// Buttons
+
+button-ok=OK;
+button-cancel=Cancel;
+button-yes=Yes;
+button-no=No;
+
 // Error messages
 
 invalid-server=This is not a valid server name;
@@ -48,20 +55,19 @@ connecting=Connecting;
 
 // Connection form
 
-connection=Open the new connection;
-connection.1=Please fill in following data;
-server=Server;
-bconnect=Connect to selected server;
-nconnection-start-protocol=Protocol:;
-nconnection-start-server=Address:;
-nconnection-start-port=Port:;
-nconnection-ident=Ident:;
-nconnection-p=Password:;
-nconnection-name=Nick:;
-nconnection-1=You need to fill in username;
-nconnection-2=You need to fill in ident;
-nconnection-3=You need to fill in port;
-nconnection-4=You need to fill in address;
+newconnection-title=Open the new connection;
+newconnection-server=Server;
+newconnection-connect=Connect to selected server;
+newconnection-protocol=Protocol:;
+newconnection-server=Address:;
+newconnection-port=Port:;
+newconnection-ident=Ident:;
+newconnection-password=Password:;
+newconnection-nick=Nick:;
+newconnection-1=You need to fill in username;
+newconnection-2=You need to fill in ident;
+newconnection-3=You need to fill in port;
+newconnection-4=You need to fill in address;
 
 // Window
 
@@ -104,6 +110,15 @@ preferences-al=Second nick;
 preferences-quit=Quit;
 preferences-name=Real name;
 preferences-enforce-ssl=Require ssl on all networks;
+preferences-extensions=Extensions;
+preferences-title=Preferences;
+preferences-irc=IRC;
+preferences-system=System;
+preferences-logs=Logs;
+preferences-highlighting=Highlighting;
+preferences-ignore=Ignore list;
+preferences-keyboard=Keyboard;
+
 
 // Channel info
 

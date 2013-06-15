@@ -49,7 +49,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.Connection
             this.Name = "Client.Forms.Connection";
-            this.Title = "Open a new connection";
+            this.Title = messages.Localize("[[newconnection-title]]");
             this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             this.AllowGrow = false;
@@ -66,7 +66,7 @@ namespace Client.Forms
             this.checkbutton1 = new global::Gtk.CheckButton();
             this.checkbutton1.CanFocus = true;
             this.checkbutton1.Name = "checkbutton1";
-            this.checkbutton1.Label = "Use encrypted connection";
+            this.checkbutton1.Label = message.Localize("[[newconnection-secure]]");
             this.checkbutton1.DrawIndicator = true;
             this.checkbutton1.UseUnderline = true;
             this.table1.Add(this.checkbutton1);
@@ -175,7 +175,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = "Nick:";
+            this.label1.LabelProp = messages.Localize("[[newconnection-nick]]");
             this.table1.Add(this.label1);
             global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table1[this.label1]));
             w9.TopAttach = ((uint)(1));
@@ -185,7 +185,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
-            this.label2.LabelProp = "Ident:";
+            this.label2.LabelProp = messages.Localize("[[newconnection-ident]]");
             this.table1.Add(this.label2);
             global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.table1[this.label2]));
             w10.TopAttach = ((uint)(2));
@@ -195,7 +195,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label3 = new global::Gtk.Label();
             this.label3.Name = "label3";
-            this.label3.LabelProp = "Port:";
+            this.label3.LabelProp = messages.Localize("[[newconnection-port]]");
             this.table1.Add(this.label3);
             global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.table1[this.label3]));
             w11.TopAttach = ((uint)(3));
