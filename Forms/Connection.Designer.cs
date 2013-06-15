@@ -66,7 +66,7 @@ namespace Client.Forms
             this.checkbutton1 = new global::Gtk.CheckButton();
             this.checkbutton1.CanFocus = true;
             this.checkbutton1.Name = "checkbutton1";
-            this.checkbutton1.Label = message.Localize("[[newconnection-secure]]");
+            this.checkbutton1.Label = messages.Localize("[[newconnection-secure]]");
             this.checkbutton1.DrawIndicator = true;
             this.checkbutton1.UseUnderline = true;
             this.table1.Add(this.checkbutton1);
@@ -205,7 +205,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label4 = new global::Gtk.Label();
             this.label4.Name = "label4";
-            this.label4.LabelProp = "Address:";
+            this.label4.LabelProp = messages.Localize("[[newconnection-address]]");
             this.table1.Add(this.label4);
             global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table1[this.label4]));
             w12.TopAttach = ((uint)(4));
