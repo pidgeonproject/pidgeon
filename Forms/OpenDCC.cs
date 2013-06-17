@@ -38,6 +38,35 @@ namespace Client.Forms
         private bool SSL;
         private ProtocolDCC.DCC Type = ProtocolDCC.DCC.Chat;
 
+        private void _click(object sender, EventArgs e)
+        {
+            if (!ListenerMode)
+            {
+                Core.ConnectDcc(Server, (int)Port, null, Type, false, Configuration.UserData.nick, SSL, username);
+                Hide();
+                Destroy();
+                return;
+            }
+            Core.ConnectDcc("localhost", (int)Port, null, Type, true, Configuration.UserData.nick, SSL, username);
+            string message = "CTCP DCC CHAT chat " + Core.GetIP() + " " + Port.ToString();
+            if (Configuration.irc.DisplayCtcp)
+            {
+                network.SystemWindow.scrollback.InsertText("[CTCP] " + username + ": " + message, ContentLine.MessageStyle.User);
+            }
+            network.Transfer("PRIVMSG " + username + " :" + network._Protocol.delimiter + message + network._Protocol.delimiter);
+            Hide();
+            Destroy();
+        }
+
+        /// <summary>
+        /// DCC
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="user"></param>
+        /// <param name="port"></param>
+        /// <param name="Listener"></param>
+        /// <param name="secure"></param>
+        /// <param name="_n"></param>
         public OpenDCC(string server, string user, uint port, bool Listener, bool secure, Network _n)
         {
             Port = port;
@@ -47,6 +76,7 @@ namespace Client.Forms
             SSL = secure;
             ListenerMode = Listener;
             Build();
+            button9.Clicked += new EventHandler(_click);
         }
     }
 }

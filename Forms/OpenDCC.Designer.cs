@@ -182,7 +182,6 @@ namespace Client.Forms
                 this.Child.ShowAll();
             }
             this.DefaultWidth = 296;
-            this.DefaultHeight = 158;
             this.Show();
             //this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
         }
