@@ -83,7 +83,6 @@ namespace Client.Forms
                     Configuration.UserData.History.Add(comboboxentry1.ActiveText);
                 }
             }
-            this.Title = messages.get("connection", Core.SelectedLanguage);
         }
 
         private void Unshow(object main, Gtk.DeleteEventArgs closing)

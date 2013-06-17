@@ -62,6 +62,7 @@ newconnection-protocol=Protocol:;
 newconnection-address=Address:;
 newconnection-port=Port:;
 newconnection-ident=Ident:;
+newconnection-secure=Use encrypted connection;
 newconnection-password=Password:;
 newconnection-nick=Nick:;
 newconnection-1=You need to fill in username;
