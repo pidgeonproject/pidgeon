@@ -635,7 +635,13 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    SendCtcp("DCC CHAT");
+                    foreach (User user in SelectedUsers)
+                    {
+                        if (user.Nick != "")
+                        {
+                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, Configuration.irc.DefaultCTCPPort, true, false, _Network);
+                        }
+                    }
                 }
             }
             catch (Exception fail)
@@ -650,7 +656,13 @@ namespace Client.Graphics
             {
                 if (isChannel)
                 {
-                    SendCtcp("DCC SCHAT");
+                    foreach (User user in SelectedUsers)
+                    {
+                        if (user.Nick != "")
+                        {
+                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, Configuration.irc.DefaultCTCPPort, true, true, _Network);
+                        }
+                    }
                 }
             }
             catch (Exception fail)

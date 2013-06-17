@@ -21,13 +21,22 @@ namespace Client.Forms
 {
     public partial class OpenDCC : Client.GTK.PidgeonForm
     {
+        /// <summary>
+        /// Listener mode
+        /// </summary>
         public bool ListenerMode = false;
-        public string Server = null;
-        public uint Port = 0;
-        public string username = null;
-        public Network network;
-        public bool SSL;
-        public ProtocolDCC.DCC Type = ProtocolDCC.DCC.Chat;
+        /// <summary>
+        /// Server
+        /// </summary>
+        private string Server = null;
+        /// <summary>
+        /// Port
+        /// </summary>
+        private uint Port = 0;
+        private string username = null;
+        private Network network;
+        private bool SSL;
+        private ProtocolDCC.DCC Type = ProtocolDCC.DCC.Chat;
 
         public OpenDCC(string server, string user, uint port, bool Listener, bool secure, Network _n)
         {

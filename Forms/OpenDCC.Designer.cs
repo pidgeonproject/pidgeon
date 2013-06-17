@@ -32,15 +32,25 @@ namespace Client.Forms
         private global::Gtk.Label label8;
         private global::Gtk.Button button9;
 
-
+        /// <summary>
+        /// Build
+        /// </summary>
         protected virtual void Build()
         {
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.Name = "MainWindow";
-            this.Title = "";
+            if (ListenerMode)
+            {
+                this.Title = "Open DCC";
+            }
+            else
+            {
+                this.Title = "Incoming DCC";
+            }
             this.TypeHint = ((global::Gdk.WindowTypeHint)(5));
-            this.WindowPosition = ((global::Gtk.WindowPosition)(4));
+            this.WindowPosition = Gtk.WindowPosition.Center;
             // Container child MainWindow.Gtk.Container+ContainerChild
             this.vbox2 = new global::Gtk.VBox();
             this.vbox2.Name = "vbox2";
@@ -48,7 +58,14 @@ namespace Client.Forms
             // Container child vbox2.Gtk.Box+BoxChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = "Are you sure";
+            if (ListenerMode)
+            {
+                this.label1.LabelProp = "You want to initate a DCC connection to " + username + ". This protocol will reveal your public IP address. Are you sure you want to process this request?";
+            }
+            else
+            {
+                this.label1.LabelProp = "User " + username + " want to connect with you using DCC protocol. This protocol will reveal your public IP address. Are you sure you want to process this request?";
+            }
             this.vbox2.Add(this.label1);
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.label1]));
             w1.Position = 0;
@@ -70,7 +87,22 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label4 = new global::Gtk.Label();
             this.label4.Name = "label4";
-            this.label4.LabelProp = "";
+            switch (Type)
+            {
+                case ProtocolDCC.DCC.Chat:
+                    this.label4.LabelProp = "Chat";
+                    break;
+                case ProtocolDCC.DCC.File:
+                    this.label4.LabelProp = "File";
+                    break;
+                case ProtocolDCC.DCC.SecureChat:
+                    this.label4.LabelProp = "Secure chat";
+                    break;
+                case ProtocolDCC.DCC.SecureFile:
+                    this.label4.LabelProp = "Secure file";
+                    break;
+            }
+            
             this.table1.Add(this.label4);
             global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1[this.label4]));
             w3.LeftAttach = ((uint)(1));
@@ -90,7 +122,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label6 = new global::Gtk.Label();
             this.label6.Name = "label6";
-            this.label6.LabelProp = "";
+            this.label6.LabelProp = Port.ToString();
             this.table1.Add(this.label6);
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.label6]));
             w5.TopAttach = ((uint)(1));
@@ -112,7 +144,14 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label8 = new global::Gtk.Label();
             this.label8.Name = "label8";
-            this.label8.LabelProp = "";
+            if (!ListenerMode)
+            {
+                this.label8.LabelProp = Server;
+            }
+            else
+            {
+                this.label8.LabelProp = Core.GetIP();
+            }
             this.table1.Add(this.label8);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1[this.label8]));
             w7.TopAttach = ((uint)(2));
@@ -142,7 +181,7 @@ namespace Client.Forms
             {
                 this.Child.ShowAll();
             }
-            this.DefaultWidth = 796;
+            this.DefaultWidth = 296;
             this.DefaultHeight = 158;
             this.Show();
             //this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
