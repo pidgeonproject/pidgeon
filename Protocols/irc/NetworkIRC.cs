@@ -178,6 +178,10 @@ namespace Client
                         {
                             uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
                         }
+                        if (uc.Contains(" "))
+                        {
+                            uc = uc.Substring(0, uc.IndexOf(" "));
+                        }
                         uc = uc.ToUpper();
                         if (!Configuration.irc.FirewallCTCP)
                         {

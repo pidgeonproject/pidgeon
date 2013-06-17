@@ -48,7 +48,7 @@ namespace Client.Forms
                 return;
             }
             Core.ConnectDcc("localhost", (int)Port, null, Type, true, Configuration.UserData.nick, SSL, username);
-            string message = "CTCP DCC CHAT chat " + Core.GetIP() + " " + Port.ToString();
+            string message = "DCC CHAT chat " + Core.GetIP() + " " + Port.ToString();
             if (Configuration.irc.DisplayCtcp)
             {
                 network.SystemWindow.scrollback.InsertText("[CTCP] " + username + ": " + message, ContentLine.MessageStyle.User);
