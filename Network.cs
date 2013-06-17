@@ -590,7 +590,7 @@ namespace Client
                 RenderedChannel = _channel;
                 _channel.Name = channel;
                 Channels.Add(_channel);
-                Core.SystemForm.ChannelList.insertChannel(_channel);
+                Core.SystemForm.ChannelList.InsertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
                 window.isChannel = true;
                 return _channel;

@@ -181,6 +181,10 @@ namespace Client
                         uc = uc.ToUpper();
                         if (!Configuration.irc.FirewallCTCP)
                         {
+                            if (Hooks._Network.ParseCTCP(_Network, user, message))
+                            {
+                                return true;
+                            }
                             switch (uc)
                             {
                                 case "VERSION":
@@ -203,6 +207,43 @@ namespace Client
                                         }
                                     }
                                     break;
+                                case "DCC":
+                                    if (message.Length < 5 || !message.Contains(" "))
+                                    {
+                                        Core.DebugLog("Malformed DCC " + message);
+                                        return false;
+                                    }
+                                    if (message.EndsWith(_Protocol.delimiter.ToString()))
+                                    {
+                                        message = message.Substring(0, message.Length - 1);
+                                    }
+                                    string[] list = message.Split(' ');
+                                    if (list.Length < 5)
+                                    {
+                                        Core.DebugLog("Malformed DCC " + message);
+                                        return false;
+                                    }
+                                    string type = list[1];
+                                    uint port = 0;
+                                    if (!uint.TryParse(list[4], out port))
+                                    {
+                                        Core.DebugLog("Malformed DCC " + message);
+                                        return false;
+                                    }
+                                    Forms.OpenDCC form;
+                                    switch (type.ToLower())
+                                    {
+                                        case "send":
+                                            break;
+                                        case "chat":
+                                            form = new Forms.OpenDCC(list[3], _nick, port, false, false, _Network);
+                                            return true;
+                                        case "securechat":
+                                            form = new Forms.OpenDCC(list[3], _nick, port, false, true, _Network);
+                                            return true;
+                                    }
+                                    Core.DebugLog("Malformed DCC " + message);
+                                    return false;
                             }
                         }
                     }

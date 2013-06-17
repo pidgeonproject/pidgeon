@@ -388,6 +388,18 @@ namespace Client
             }
 
             /// <summary>
+            /// If this return true it means that underlying extension or code has processed this CTCP and it can be ignored by irc parser
+            /// </summary>
+            /// <param name="network"></param>
+            /// <param name="user"></param>
+            /// <param name="CTCP"></param>
+            /// <returns></returns>
+            public static bool ParseCTCP(Network network, User user, string CTCP)
+            {
+                return false;
+            }
+
+            /// <summary>
             /// User kick
             /// </summary>
             /// <param name="network"></param>

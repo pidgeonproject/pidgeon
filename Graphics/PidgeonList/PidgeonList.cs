@@ -51,11 +51,16 @@ namespace Client.Graphics
         /// List of all users that are rendered in list
         /// </summary>
         public Dictionary<User, TreeIter> UserList = new Dictionary<User, TreeIter>();
+        /// <summary>
+        /// List of DCC
+        /// </summary>
+        public Dictionary<ProtocolDCC, TreeIter> DirectClientConnectionList = new Dictionary<ProtocolDCC, TreeIter>();
         private LinkedList<User> queueUsers = new LinkedList<User>();
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
         private List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         private List<ProtocolQuassel> queueQs = new List<ProtocolQuassel>();
+        private List<ProtocolDCC> queueDcc = new List<ProtocolDCC>();
         /// <summary>
         /// If this is false the system timer will refresh the list
         /// </summary>
@@ -173,7 +178,42 @@ namespace Client.Graphics
             }
             this.Hide();
         }
-        
+
+        /// <summary>
+        /// This function removes a reference to DCC object, it is being called only by destructor of DCC protocol
+        /// </summary>
+        /// <param name="dcc"></param>
+        public bool RemoveDcc(ProtocolDCC dcc)
+        {
+            lock (queueDcc)
+            {
+                if (queueDcc.Contains(dcc))
+                {
+                    queueDcc.Remove(dcc);
+                    return true;
+                }
+            }
+            lock (DirectClientConnectionList)
+            {
+                if (DirectClientConnectionList.ContainsKey(dcc))
+                {
+                    KeyValuePair<TreeIter, bool> result = getIter(dcc);
+                    if (result.Value)
+                    {
+                        TreeIter tree = result.Key;
+                        Values.Remove(ref tree);
+                    }
+                    else
+                    {
+                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + dcc.Server);
+                    }
+                    this.DirectClientConnectionList.Remove(dcc);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// This function removes a reference to channel object, it is being called only by destructor of Channel
         /// </summary>
@@ -508,7 +548,17 @@ namespace Client.Graphics
         /// Insert a channel to list
         /// </summary>
         /// <param name="channel"></param>
+        [Obsolete]
         public void insertChannel(Channel channel)
+        {
+            InsertChannel(channel);
+        }
+
+        /// <summary>
+        /// Insert a channel to list
+        /// </summary>
+        /// <param name="channel"></param>
+        public void InsertChannel(Channel channel)
         {
             lock (queueChannels)
             {
@@ -518,6 +568,15 @@ namespace Client.Graphics
                 }
                 queueChannels.AddLast(channel);
                 Updated = true;
+            }
+        }
+
+        private void insertDcc(ProtocolDCC protocol)
+        {
+            TreeIter text = Values.AppendValues(protocol.UserName, protocol, ItemType.DCC, protocol.SystemWindow, "DCC connection window", icon_0);
+            lock (DirectClientConnectionList)
+            {
+                this.DirectClientConnectionList.Add(protocol, text);
             }
         }
 
@@ -559,7 +618,7 @@ namespace Client.Graphics
                     Updated = true;
                 }
             }
-        }
+        }  
 
         private void insertService(ProtocolSv service)
         {
@@ -577,6 +636,19 @@ namespace Client.Graphics
             {
                 QuasselList.Add(service, text);
             }
+        }
+
+        /// <summary>
+        /// Insert dcc
+        /// </summary>
+        /// <param name="protocol"></param>
+        public void InsertDcc(ProtocolDCC protocol)
+        {
+            lock (queueDcc)
+            {
+                queueDcc.Add(protocol);
+            }
+            Updated = true;
         }
 
         /// <summary>
@@ -906,6 +978,10 @@ namespace Client.Graphics
             /// Quassel
             /// </summary>
             QuasselCore,
+            /// <summary>
+            /// DCC
+            /// </summary>
+            DCC,
         }
     }
 }

@@ -68,7 +68,7 @@ namespace Client
         /// </summary>
         public int Port = 6667;
         /// <summary>
-        /// Ssl
+        /// Whether the connection is being encrypted or not
         /// </summary>
         public bool SSL = false;
         

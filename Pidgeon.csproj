@@ -120,6 +120,10 @@
     <Compile Include="Forms\NetworkDB.Designer.cs">
       <DependentUpon>NetworkDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\OpenDCC.cs" />
+    <Compile Include="Forms\OpenDCC.Designer.cs">
+      <DependentUpon>OpenDCC.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Preferences\Highlighter.cs" />
     <Compile Include="Forms\Preferences\Preferences.Designer.cs">
       <DependentUpon>Preferences.cs</DependentUpon>

@@ -54,13 +54,15 @@ namespace Client
         /// <param name="dcc">Connection parameter</param>
         /// <param name="remote">Remote ID</param>
         /// <returns></returns>
-        public static bool ConnectDcc(string server, int port, string password, ProtocolDCC.DCC dcc, bool secured = false, string remote = null)
+        public static bool ConnectDcc(string server, int port, string password, ProtocolDCC.DCC dcc, bool Listening, string UserName, bool secured = false, string remote = null)
         {
             ProtocolDCC DC = new ProtocolDCC();
             DC.Server = server;
             DC.Port = port;
             DC.SSL = secured;
+            DC.ListenerMode = Listening;
             DC.Dcc = dcc;
+            DC.UserName = UserName;
             DC.Open();
             Connections.Add(DC);
             return false;

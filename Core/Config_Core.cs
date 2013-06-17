@@ -130,6 +130,9 @@ namespace Client
                     make_node("Configuration.UserData.Nick2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
                     make_comment("CTCP requests are blocked", config, xmlnode);
                     make_node("Configuration.irc.FirewallCTCP", Configuration.irc.FirewallCTCP.ToString(), curr, confname, config, xmlnode);
+                    make_comment("CTCP port", config, xmlnode);
+                    make_node("Configuration.irc.DefaultCTCPPort", Configuration.irc.DefaultCTCPPort.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.CertificateDCC", Configuration.irc.CertificateDCC, curr, confname, config, xmlnode);
                     // Windows
                     make_comment(" ============= WINDOWS ============= ", config, xmlnode);
                     make_comment("Main window is maximized", config, xmlnode);
@@ -824,6 +827,12 @@ namespace Client
                                                         break;
                                                     case "Configuration.Window.RememberPosition":
                                                         Configuration.Window.RememberPosition = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.irc.DefaultCTCPPort":
+                                                        Configuration.irc.DefaultCTCPPort = uint.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.irc.CertificateDCC":
+                                                        Configuration.irc.CertificateDCC = curr.InnerText;
                                                         break;
                                                 }
                                             }

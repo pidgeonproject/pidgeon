@@ -18,23 +18,56 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.IO;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Client
 {
-    public class ProtocolDCC : IProtocol
+    /// <summary>
+    /// DCC
+    /// </summary>
+    public class ProtocolDCC : Protocol
     {
+        /// <summary>
+        /// Name of user who we are supposed to connect to
+        /// </summary>
+        public string UserName = null;
         private Thread thread = null;
         private System.Net.Sockets.NetworkStream _networkStream = null;
         private System.Net.Security.SslStream _networkSsl = null;
         private System.IO.StreamReader _StreamReader = null;
         private System.IO.StreamWriter _StreamWriter = null;
+        /// <summary>
+        /// Whether DCC is in listener mode
+        /// </summary>
+        public bool ListenerMode = false;
+        /// <summary>
+        /// This describes the type of dcc connection
+        /// </summary>
         public DCC Dcc = DCC.Chat;
+        private Graphics.Window systemwindow = null;
+
+        public override Graphics.Window SystemWindow
+        {
+            get
+            {
+                return systemwindow;
+            }
+        }
 
         private void main()
         {
             try
             {
+                if (ListenerMode)
+                {
+                    OpenListener();
+                    return;
+                }
+
                 if (!SSL)
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
@@ -51,6 +84,13 @@ namespace Client
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
+
+                Parse();
+            }
+            catch (IOException fail)
+            {
+                SystemWindow.scrollback.InsertText("Connection closed: " + fail.Message, ContentLine.MessageStyle.System);
+                Disconnect();
             }
             catch (ThreadAbortException)
             {
@@ -62,6 +102,45 @@ namespace Client
                 Core.KillThread(thread, true);
                 Core.handleException(fail);
             }
+        }
+
+        private void Parse()
+        {
+            while (!_StreamReader.EndOfStream)
+            {
+                string text = _StreamReader.ReadLine();
+                SystemWindow.scrollback.InsertText(PRIVMSG(UserName, text), ContentLine.MessageStyle.Message);
+            }
+        }
+
+        private void OpenListener()
+        {
+            SystemWindow.scrollback.InsertText("Opened a listener for CTCP request on port " + Configuration.irc.DefaultCTCPPort.ToString(), ContentLine.MessageStyle.System, false);
+            // open the socket
+            System.Net.Sockets.TcpListener server = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Any, (int)Configuration.irc.DefaultCTCPPort);
+            Connected = true;
+            server.Start();
+            System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
+            string IP = connection.Client.RemoteEndPoint.ToString();
+            systemwindow.scrollback.InsertText("Incoming connection for CTCP request from " + IP, ContentLine.MessageStyle.System);
+
+            if (SSL)
+            {
+                X509Certificate cert = new X509Certificate2(Configuration.irc.CertificateDCC, "pidgeon");
+                System.Net.Security.SslStream _networkSsl = new SslStream(connection.GetStream(), false,
+                    new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
+                _networkSsl.AuthenticateAsServer(cert);
+                _StreamWriter = new StreamWriter(_networkSsl);
+                _StreamReader = new StreamReader(_networkSsl, Encoding.UTF8);
+            }
+            else
+            {
+                System.Net.Sockets.NetworkStream ns = connection.GetStream();
+                _StreamWriter = new StreamWriter(ns);
+                _StreamReader = new StreamReader(ns, Encoding.UTF8);
+            }
+
+            Parse();
         }
 
         /// <summary>
@@ -87,19 +166,40 @@ namespace Client
             base.Exit();
         }
 
+        /// <summary>
+        /// Open the connection to foreign client OR open a local listener
+        /// </summary>
+        /// <returns></returns>
         public override bool Open()
         {
+            systemwindow = CreateChat(UserName, false, null, false, null, false, true);
+            Core.SystemForm.ChannelList.InsertDcc(this);
             thread = new Thread(main);
             Core.SystemThreads.Add(thread);
             thread.Start();
             return true;
         }
 
+        /// <summary>
+        /// Describes the type of dcc connection
+        /// </summary>
         public enum DCC
         {
+            /// <summary>
+            /// Chat
+            /// </summary>
             Chat,
+            /// <summary>
+            /// Secure chat
+            /// </summary>
             SecureChat,
+            /// <summary>
+            /// File
+            /// </summary>
             File,
+            /// <summary>
+            /// Secure file
+            /// </summary>
             SecureFile
         }
     }

@@ -509,15 +509,10 @@ namespace Client.Graphics
         /// <summary>
         /// Creates the chat
         /// </summary>
-        /// <param name='WindowOwner'>
-        /// Window owner.
-        /// </param>
-        /// <param name='Focus'>
-        /// Focus.
-        /// </param>
-        /// <exception cref='Exception'>
-        /// Represents errors that occur during application execution.
-        /// </exception>
+        /// <param name="WindowOwner">Window owner</param>
+        /// <param name="_HasUserList"></param>
+        /// <param name="_HasTextBox"></param>
+        /// <param name="Focus"></param>
         public void CreateChat(Protocol WindowOwner, bool _HasUserList, bool _HasTextBox, bool Focus = true)
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
