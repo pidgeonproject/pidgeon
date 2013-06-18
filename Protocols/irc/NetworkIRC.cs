@@ -228,22 +228,26 @@ namespace Client
                                         return false;
                                     }
                                     string type = list[1];
-                                    uint port = 0;
-                                    if (!uint.TryParse(list[4], out port))
+                                    int port = 0;
+                                    if (!int.TryParse(list[4], out port))
                                     {
                                         Core.DebugLog("Malformed DCC " + message);
                                         return false;
                                     }
-                                    Forms.OpenDCC form;
+                                    if (port < 1)
+                                    {
+                                        Core.DebugLog("Malformed DCC " + message);
+                                        return false;
+                                    }
                                     switch (type.ToLower())
                                     {
                                         case "send":
                                             break;
                                         case "chat":
-                                            form = new Forms.OpenDCC(list[3], _nick, port, false, false, _Network);
+                                            Core.OpenDCC(list[3], port, _nick, false, false, _Network);
                                             return true;
                                         case "securechat":
-                                            form = new Forms.OpenDCC(list[3], _nick, port, false, true, _Network);
+                                            Core.OpenDCC(list[3], port, _nick, false, true, _Network);
                                             return true;
                                     }
                                     Core.DebugLog("Malformed DCC " + message);

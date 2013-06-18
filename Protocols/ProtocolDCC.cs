@@ -50,6 +50,9 @@ namespace Client
         public DCC Dcc = DCC.Chat;
         private Graphics.Window systemwindow = null;
 
+        /// <summary>
+        /// Window of this DCC
+        /// </summary>
         public override Graphics.Window SystemWindow
         {
             get
@@ -85,6 +88,7 @@ namespace Client
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
 
+                Connected = true;
                 Parse();
             }
             catch (IOException fail)
@@ -94,6 +98,7 @@ namespace Client
             }
             catch (ThreadAbortException)
             {
+                Disconnect();
                 Core.KillThread(thread, true);
                 return;
             }
@@ -106,7 +111,7 @@ namespace Client
 
         private void Parse()
         {
-            while (!_StreamReader.EndOfStream)
+            while (!_StreamReader.EndOfStream && IsConnected)
             {
                 string text = _StreamReader.ReadLine();
                 SystemWindow.scrollback.InsertText(PRIVMSG(UserName, text), ContentLine.MessageStyle.Message);
@@ -115,9 +120,9 @@ namespace Client
 
         private void OpenListener()
         {
-            SystemWindow.scrollback.InsertText("Opened a listener for CTCP request on port " + Configuration.irc.DefaultCTCPPort.ToString(), ContentLine.MessageStyle.System, false);
+            SystemWindow.scrollback.InsertText("Opened a listener for CTCP request on port " + Port.ToString(), ContentLine.MessageStyle.System, false);
             // open the socket
-            System.Net.Sockets.TcpListener server = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Any, (int)Configuration.irc.DefaultCTCPPort);
+            System.Net.Sockets.TcpListener server = new System.Net.Sockets.TcpListener(System.Net.IPAddress.Any, Port);
             Connected = true;
             server.Start();
             System.Net.Sockets.TcpClient connection = server.AcceptTcpClient();
@@ -154,6 +159,24 @@ namespace Client
                 return false;
             }
             Connected = false;
+            if (ListenerMode)
+            {
+                lock (Core.LockedPorts)
+                {
+                    if (Core.LockedPorts.Contains((uint)Port))
+                    {
+                        Core.LockedPorts.Remove((uint)Port);
+                    }
+                }
+            }
+            if (!SSL)
+            {
+                _networkStream.Close();
+            }
+            else
+            {
+                _networkSsl.Close();
+            }
             return true;
         }
 
@@ -175,6 +198,7 @@ namespace Client
             systemwindow = CreateChat(UserName, false, null, false, null, false, true);
             Core.SystemForm.ChannelList.InsertDcc(this);
             thread = new Thread(main);
+            thread.Name = "DCC chat " + UserName;
             Core.SystemThreads.Add(thread);
             thread.Start();
             return true;

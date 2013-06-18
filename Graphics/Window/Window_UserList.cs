@@ -639,7 +639,8 @@ namespace Client.Graphics
                     {
                         if (user.Nick != "")
                         {
-                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, Configuration.irc.DefaultCTCPPort, true, false, _Network);
+                            uint port = Core.GetPort();
+                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, port, true, false, _Network);
                         }
                     }
                 }
@@ -660,7 +661,8 @@ namespace Client.Graphics
                     {
                         if (user.Nick != "")
                         {
-                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, Configuration.irc.DefaultCTCPPort, true, true, _Network);
+                            uint port = Core.GetPort();
+                            Forms.OpenDCC form = new Forms.OpenDCC("localhost", user.Nick, port, true, true, _Network);
                         }
                     }
                 }

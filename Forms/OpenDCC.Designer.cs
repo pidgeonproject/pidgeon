@@ -31,6 +31,7 @@ namespace Client.Forms
         private global::Gtk.Label label7;
         private global::Gtk.Label label8;
         private global::Gtk.Button button9;
+        private bool Connected = false;
 
         /// <summary>
         /// Build
@@ -87,7 +88,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label4 = new global::Gtk.Label();
             this.label4.Name = "label4";
-            switch (Type)
+            switch (type)
             {
                 case ProtocolDCC.DCC.Chat:
                     this.label4.LabelProp = "Chat";
@@ -183,7 +184,21 @@ namespace Client.Forms
             }
             this.DefaultWidth = 296;
             this.Show();
-            //this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
+            this.DeleteEvent += new global::Gtk.DeleteEventHandler(this.OnDeleteEvent);
+        }
+
+        private void OnDeleteEvent(Object o, Gtk.DeleteEventArgs e)
+        {
+            if (!Connected && ListenerMode)
+            {
+                lock (Core.LockedPorts)
+                {
+                    if (Core.LockedPorts.Contains(Port))
+                    {
+                        Core.LockedPorts.Remove(Port);
+                    }
+                }
+            }
         }
     }
 }

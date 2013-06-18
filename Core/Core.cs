@@ -204,6 +204,10 @@ namespace Client
         /// Selected network
         /// </summary>
         public static Network network = null;
+        /// <summary>
+        /// List of ports that the dcc is using in this moment
+        /// </summary>
+        public static List<uint> LockedPorts = new List<uint>();
         private static Forms.Main _main = null;
         /// <summary>
         /// Gets the system form
@@ -519,8 +523,8 @@ namespace Client
         /// <summary>
         /// Kill thread or only remove it from system thread table
         /// </summary>
-        /// <param name="name"></param>
-        /// <param name="remove"></param>
+        /// <param name="name">Thread</param>
+        /// <param name="remove">If this is true it will be only removed from system table and not killed</param>
         public static void KillThread(Thread name, bool remove = false)
         {
             if (name == null)
@@ -647,6 +651,39 @@ namespace Client
         public static void DebugLog(string data)
         {
             DebugLog(data, 1);
+        }
+
+        /// <summary>
+        /// Thread safe
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="Port"></param>
+        /// <param name="User"></param>
+        /// <param name="Listener"></param>
+        /// <param name="SSL"></param>
+        /// <param name="network"></param>
+        public static void OpenDCC(string Server, int Port, string User, bool Listener, bool SSL, Network network)
+        {
+            if (KernelThread == Thread.CurrentThread)
+            {
+                Client.Forms.OpenDCC f = new Forms.OpenDCC(Server, User, (uint)Port, Listener, SSL, network);
+                return;
+            }
+            lock (Graphics.PidgeonList.WaitingDCC)
+            {
+                Graphics.PidgeonList.WaitingDCC.Add(new Graphics.PidgeonList.RequestDCC(User, Server, Port, SSL, Listener, network));
+                Graphics.PidgeonList.Updated = true;
+            }
+        }
+
+        /// <summary>
+        /// Thread unsafe
+        /// </summary>
+        /// <param name="requestDCC"></param>
+        public static void OpenDCC(Graphics.PidgeonList.RequestDCC requestDCC)
+        {
+            Client.Forms.OpenDCC f = new Forms.OpenDCC(requestDCC.Server, requestDCC.User, (uint)requestDCC.Port, requestDCC.Listener, requestDCC.SSL, requestDCC.network);
+            return;
         }
 
         /// <summary>
@@ -1059,6 +1096,23 @@ namespace Client
                 }
             }
             return true;
+        }
+
+        /// <summary>
+        /// Return unused port
+        /// </summary>
+        public static uint GetPort()
+        {
+            uint port = Configuration.irc.DefaultCTCPPort;
+            lock (LockedPorts)
+            {
+                while (LockedPorts.Contains(port))
+                {
+                    port++;
+                }
+                LockedPorts.Add(port);
+            }
+            return port;
         }
 
         /// <summary>

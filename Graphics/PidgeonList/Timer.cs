@@ -27,6 +27,34 @@ namespace Client.Graphics
 {
     public partial class PidgeonList : Gtk.Bin
     {
+        /// <summary>
+        /// Represent a request to open a new DCC connection
+        /// </summary>
+        public class RequestDCC
+        {
+            public string User;
+            public string Server;
+            public int Port;
+            public bool Listener;
+            public bool SSL;
+            public Network network;
+
+            public RequestDCC(string user, string server, int port, bool Ssl, bool listener, Network n)
+            {
+                User = user;
+                Server = server;
+                network = n;
+                Port = port;
+                Listener = listener;
+                SSL = Ssl;
+            }
+        }
+
+        /// <summary>
+        /// List of waiting DCC
+        /// </summary>
+        public static List<RequestDCC> WaitingDCC = new List<RequestDCC>();
+
         private bool timer01_Tick()
         {
             try
@@ -45,6 +73,15 @@ namespace Client.Graphics
                 Updated = false;
 
                 tv.ColumnsAutosize();
+
+                lock (queueDcc)
+                {
+                    foreach (ProtocolDCC dcc in queueDcc)
+                    {
+                        insertDcc(dcc);
+                    }
+                    queueDcc.Clear();
+                }
 
                 // we sort out all networks that are waiting to be inserted to list
                 lock (queueNetwork)
@@ -124,6 +161,15 @@ namespace Client.Graphics
                         }
                     }
                     Core.SystemForm.WindowRequests.Clear();
+                }
+
+                lock (WaitingDCC)
+                {
+                    foreach (RequestDCC dcc in WaitingDCC)
+                    {
+                        Core.OpenDCC(dcc);
+                    }
+                    WaitingDCC.Clear();
                 }
 
                 lock (queueUsers)

@@ -19,6 +19,9 @@ using System;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Open form
+    /// </summary>
     public partial class OpenDCC : Client.GTK.PidgeonForm
     {
         /// <summary>
@@ -36,18 +39,18 @@ namespace Client.Forms
         private string username = null;
         private Network network;
         private bool SSL;
-        private ProtocolDCC.DCC Type = ProtocolDCC.DCC.Chat;
+        private ProtocolDCC.DCC type = ProtocolDCC.DCC.Chat;
 
         private void _click(object sender, EventArgs e)
         {
             if (!ListenerMode)
             {
-                Core.ConnectDcc(Server, (int)Port, null, Type, false, Configuration.UserData.nick, SSL, username);
+                Core.ConnectDcc(Server, (int)Port, null, type, false, Configuration.UserData.nick, SSL, username);
                 Hide();
                 Destroy();
                 return;
             }
-            Core.ConnectDcc("localhost", (int)Port, null, Type, true, Configuration.UserData.nick, SSL, username);
+            Core.ConnectDcc("localhost", (int)Port, null, type, true, Configuration.UserData.nick, SSL, username);
             string message = "DCC CHAT chat " + Core.GetIP() + " " + Port.ToString();
             if (Configuration.irc.DisplayCtcp)
             {
@@ -55,6 +58,7 @@ namespace Client.Forms
             }
             network.Transfer("PRIVMSG " + username + " :" + network._Protocol.delimiter + message + network._Protocol.delimiter);
             Hide();
+            Connected = true;
             Destroy();
         }
 
