@@ -651,12 +651,51 @@ namespace Client.Graphics
             }
         }
 
+        /// <summary>
+        /// This function create a new certificate it is basically called only once
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="host"></param>
+        /// <returns></returns>
+        private static void certificate(string name, string host)
+        {
+            byte[] c = Client.Protocols.CertificateMaker.CreateSelfSignCertificatePfx(
+                "CN=" + host, //host name
+                DateTime.Parse("2000-01-01"), //not valid before
+                DateTime.Parse("2020-01-01"), //not valid after
+                "pidgeon"); //password to encrypt key file
+
+            using (System.IO.BinaryWriter binWriter = new System.IO.BinaryWriter(System.IO.File.Open(name, System.IO.FileMode.Create)))
+            {
+                binWriter.Write(c);
+            }
+        }
+
         private void dccSChatToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
             {
                 if (isChannel)
                 {
+                    if (!System.IO.File.Exists(Configuration.irc.CertificateDCC))
+                    {
+                        if (Configuration.CurrentPlatform != Core.Platform.Windowsx64 || Configuration.CurrentPlatform != Core.Platform.Windowsx86)
+                        {
+                            GTK.MessageBox error = new GTK.MessageBox(null, MessageType.Error, ButtonsType.Ok, "Warning: In order to open ssl connection you need to have ssl certificate installed, but you don't have any!", "Certificate error");
+                            return;
+                        }
+                        GTK.MessageBox message = new GTK.MessageBox(null, MessageType.Question, ButtonsType.YesNo, "Warning: In order to open ssl connection you need to have ssl certificate installed, but you don't have any! Do you want to create a self signed certificate now?", "Certificate error");
+                        if (message.result == ResponseType.No)
+                        {
+                            return;
+                        }
+                        certificate(Configuration.irc.CertificateDCC, Core.GetIP());
+                        if (!System.IO.File.Exists(Configuration.irc.CertificateDCC))
+                        {
+                            GTK.MessageBox.Show(null, MessageType.Error, ButtonsType.Ok, "Unable to create a certificate file, the error is in ring log", "Certificate error");
+                            return;
+                        }
+                    }
                     foreach (User user in SelectedUsers)
                     {
                         if (user.Nick != "")

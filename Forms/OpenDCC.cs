@@ -78,12 +78,12 @@ namespace Client.Forms
             Server = server;
             network = _n;
             SSL = secure;
-            ListenerMode = Listener;
-            Build();
             if (SSL)
             {
                 type = ProtocolDCC.DCC.SecureChat;
             }
+            ListenerMode = Listener;
+            Build();
             button9.Clicked += new EventHandler(_click);
         }
     }
