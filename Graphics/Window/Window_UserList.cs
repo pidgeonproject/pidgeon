@@ -681,10 +681,10 @@ namespace Client.Graphics
                     {
                         if (Configuration.CurrentPlatform != Core.Platform.Windowsx64 && Configuration.CurrentPlatform != Core.Platform.Windowsx86)
                         {
-                            GTK.MessageBox error = new GTK.MessageBox(null, MessageType.Error, ButtonsType.Ok, "Warning: In order to open ssl connection you need to have ssl certificate installed, but you don't have any!", "Certificate error");
+                            GTK.MessageBox error = new GTK.MessageBox(null, MessageType.Error, ButtonsType.Ok, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any!", "Certificate error");
                             return;
                         }
-                        GTK.MessageBox message = new GTK.MessageBox(null, MessageType.Question, ButtonsType.YesNo, "Warning: In order to open ssl connection you need to have ssl certificate installed, but you don't have any! Do you want to create a self signed certificate now?", "Certificate error");
+                        GTK.MessageBox message = new GTK.MessageBox(null, MessageType.Question, ButtonsType.YesNo, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any! Do you want to create a self signed certificate now?", "Certificate error");
                         if (message.result == ResponseType.No)
                         {
                             return;

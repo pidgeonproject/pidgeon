@@ -114,6 +114,7 @@ namespace Client
             while (!_StreamReader.EndOfStream && IsConnected)
             {
                 string text = _StreamReader.ReadLine();
+                Core.trafficscanner.insert(Server, text);
                 SystemWindow.scrollback.InsertText(PRIVMSG(UserName, text), ContentLine.MessageStyle.Message);
             }
         }
@@ -209,6 +210,7 @@ namespace Client
             lock (_StreamWriter)
             {
                 SystemWindow.scrollback.InsertText(PRIVMSG(Configuration.UserData.nick, input), ContentLine.MessageStyle.Message);
+                Core.trafficscanner.insert(Server, input);
                 _StreamWriter.WriteLine(input);
                 _StreamWriter.Flush();
             }

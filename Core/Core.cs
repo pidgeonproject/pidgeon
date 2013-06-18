@@ -360,11 +360,12 @@ namespace Client
                 if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
                 {
                     Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
-                    ConfigFile = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length) + "configuration.dat";
+                    ConfigFile = Root + "configuration.dat";
                 }
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
+                Configuration.irc.CertificateDCC = Root + "certificate.pfx";
                 string is64 = " which is a 32 bit system";
                 if (Environment.Is64BitOperatingSystem)
                 {

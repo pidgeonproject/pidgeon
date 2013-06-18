@@ -154,7 +154,7 @@ namespace Client
             /// <summary>
             /// Certificate for ctcp
             /// </summary>
-            public static string CertificateDCC = "certificate.pfx";
+            public static string CertificateDCC = null;
         }
 
         /// <summary>
