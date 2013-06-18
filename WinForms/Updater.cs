@@ -15,6 +15,9 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// updater - this code works only in windows, also it isn't capable to handle modern versions of pidgeon, so we need
+// to implement a lot of new functions here
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -45,6 +48,8 @@ namespace Client
         /// </summary>
         public bool finalize = false;
         private static string temporarydir = "";
+        private static string message = null;
+        private static string link = null;
 
         private void Updater_Load(object sender, EventArgs e)
         {
@@ -105,6 +110,33 @@ namespace Client
                                 string vr = info.Substring(info.IndexOf("version:") + "version:".Length);
                                 vr = vr.Substring(0, vr.IndexOf("^"));
                                 Updater updater = new Updater();
+                                if (info.Contains("message|"))
+                                {
+                                    string[]lines = System.IO.File.ReadAllLines(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
+                                    foreach (string line in lines)
+                                    {
+                                        if (line.StartsWith("link|"))
+                                        {
+                                            link = line.Substring(5);
+                                            continue;
+                                        }
+                                        if (line.StartsWith("message|"))
+                                        {
+                                            message = line.Substring(8);
+                                            continue;
+                                        }
+                                    }
+                                    if (message != null && link != null)
+                                    {
+                                        updater.update.Text = messages.get("update-update");
+                                        updater.lStatus.Text = "New version of pidgeon: " + vr + " is available! " + message;
+                                        updater.update.Enabled = false;
+                                        updater.lUpdateLink.Text = link;
+                                        updater.lUpdateLink.Visible = true;
+                                        System.Windows.Forms.Application.Run(updater);
+                                        return;
+                                    }
+                                }
                                 updater.update.Text = messages.get("update-update");
                                 updater.lStatus.Text = messages.get("update1", Core.SelectedLanguage, new List<string> { vr });
                                 System.Windows.Forms.Application.Run(updater);
@@ -123,6 +155,18 @@ namespace Client
             catch (Exception _t)
             {
                 Core.handleException(_t);
+            }
+        }
+
+        private void UpdateLink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Hyperlink.OpenLink(link);
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 

@@ -363,6 +363,7 @@ namespace Client
                         {
                             if (!extension.Hook_UserPart(network, user, channel, message, updated))
                             {
+                                Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_UserPart(network, user, channel, message, updated)");
                                 ok = false;
                             }
                             Extension.NetworkPartArgs data = new Extension.NetworkPartArgs();
@@ -446,6 +447,7 @@ namespace Client
                             }
                             if (!extension.Hook_Topic(network, user, channel, topic))
                             {
+                                Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_Topic(network, user, channel, topic)");
                                 success = false;
                             }
                         }
@@ -481,6 +483,8 @@ namespace Client
                         {
                             if (!extension.Hook_UserTalk(network, user, channel, message, updated))
                             {
+                                Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete" +
+                                    " function extension.Hook_UserTalk(network, user, channel, message, updated)");
                                 ok = false;
                             }
                             Extension.NetworkTextArgs data = new Extension.NetworkTextArgs();
@@ -525,6 +529,8 @@ namespace Client
                         {
                             if (!extension.Hook_UserQuit(network, user, message, window, updated))
                             {
+                                Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function " +
+                                    "extension.Hook_UserQuit(network, user, message, window, updated)");
                                 ok = false;
                             }
                             Extension.NetworkUserQuitArgs data = new Extension.NetworkUserQuitArgs();
@@ -579,6 +585,8 @@ namespace Client
                             }
                             if (!extension.Hook_UserJoin(network, user, channel, updated))
                             {
+                                Core.DebugLog("Compatibility warning: extension with name " + extension.Name +
+                                    " is using obsolete function extension.Hook_UserJoin(network, user, channel, updated)");
                                 ok = false;
                             }
                         }

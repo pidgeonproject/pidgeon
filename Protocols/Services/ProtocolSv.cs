@@ -236,7 +236,7 @@ namespace Client
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.insert(Server, " >> " + text);
+                    Core.trafficscanner.Insert(Server, " >> " + text);
                     while (Core.blocked)
                     {
                         System.Threading.Thread.Sleep(100);
@@ -784,7 +784,7 @@ namespace Client
                     lock (_StreamWriter)
                     {
                         _StreamWriter.WriteLine(text);
-                        Core.trafficscanner.insert(Server, " << " + text);
+                        Core.trafficscanner.Insert(Server, " << " + text);
                         _StreamWriter.Flush();
                     }
                 }

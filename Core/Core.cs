@@ -365,7 +365,7 @@ namespace Client
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
-                Configuration.irc.CertificateDCC = Root + "certificate.pfx";
+                Configuration.irc.CertificateDCC = Root + "certificate.p12";
                 string is64 = " which is a 32 bit system";
                 if (Environment.Is64BitOperatingSystem)
                 {

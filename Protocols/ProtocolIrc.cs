@@ -318,7 +318,7 @@ namespace Client
                         System.Threading.Thread.Sleep(100);
                     }
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.insert(Server, " >> " + text);
+                    Core.trafficscanner.Insert(Server, " >> " + text);
                     ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
                     processor.ProfiledResult();
                     pong = processor.pong;
@@ -398,7 +398,7 @@ namespace Client
                 lock (_StreamWriter)
                 {
                     _StreamWriter.WriteLine(ms);
-                    Core.trafficscanner.insert(Server, " << " + ms);
+                    Core.trafficscanner.Insert(Server, " << " + ms);
                     _StreamWriter.Flush();
                 }
             }

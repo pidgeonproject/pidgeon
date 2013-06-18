@@ -31,7 +31,7 @@ namespace Client.Forms
     {
         private List<string> traf = new List<string>();
         private GLib.TimeoutHandler timer;
-        private bool Enabled = true;
+        private bool ScannerEnabled = true;
         private GTK.Menu scroll = new GTK.Menu("Scroll");
         private GTK.Menu remove = new GTK.Menu("Delete");
         
@@ -52,7 +52,7 @@ namespace Client.Forms
                 textview2.Buffer.Text = "";
                 LoadStyle();
                 textview2.WrapMode = WrapMode.Char;
-                scroll.Checked = Enabled;
+                scroll.Checked = ScannerEnabled;
                 
                 this.Hide ();
             } catch (Exception fail)
@@ -88,7 +88,7 @@ namespace Client.Forms
         private void Scroll(object sender, EventArgs e)
         {
             scroll.Checked = !scroll.Checked;
-            Enabled = scroll.Checked;
+            ScannerEnabled = scroll.Checked;
         }
 
         private void Clear(object sender, EventArgs e)
@@ -122,7 +122,7 @@ namespace Client.Forms
         
         private bool Tick()
         {
-            if (!Enabled)
+            if (!ScannerEnabled)
             {
                 return true;
             }
@@ -138,7 +138,7 @@ namespace Client.Forms
                     Client.GTK.MessageBox message = new Client.GTK.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
                     if (message.result == ResponseType.No)
                     {
-                        Enabled = false;
+                        ScannerEnabled = false;
                         scroll.Checked = false;
                         return true;
                     }
@@ -159,12 +159,23 @@ namespace Client.Forms
         /// </summary>
         /// <param name="Server"></param>
         /// <param name="Text"></param>
-        public void insert(string Server, string Text)
+        public void Insert(string Server, string Text)
         {
             lock (traf)
             {
                 traf.Add(Server + " " + Text);
             }
+        }
+
+        /// <summary>
+        /// Add a line to scanner list
+        /// </summary>
+        /// <param name="Server"></param>
+        /// <param name="Text"></param>
+        [Obsolete]
+        public void insert(string Server, string Text)
+        {
+            Insert(Server, Text);
         }
     }
 }

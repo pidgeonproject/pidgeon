@@ -88,6 +88,11 @@ namespace Client
 
         }
 
+        /// <summary>
+        /// This hook is started before the item is ignored
+        /// </summary>
+        /// <param name="_IgnoreArgs"></param>
+        /// <returns></returns>
         public virtual bool Hook_BeforeIgnore(MessageArgs _IgnoreArgs)
         {
             return true;

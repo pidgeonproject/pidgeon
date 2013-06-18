@@ -48,6 +48,7 @@ namespace Client
             this.lStatus = new System.Windows.Forms.Label();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.update = new System.Windows.Forms.Button();
+            this.lUpdateLink = new System.Windows.Forms.LinkLabel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -75,6 +76,10 @@ namespace Client
             this.update.Text = "button1";
             this.update.UseVisualStyleBackColor = true;
             this.update.Click += new System.EventHandler(this.update_Click);
+            this.lUpdateLink.Location = new System.Drawing.Point(20, 180);
+            this.lUpdateLink.Visible = false;
+            this.lUpdateLink.Click += new System.EventHandler(this.UpdateLink_Click);
+            this.lUpdateLink.Text = "update";
             // 
             // timer1
             // 
@@ -88,6 +93,7 @@ namespace Client
             this.ClientSize = new System.Drawing.Size(613, 323);
             this.Controls.Add(this.update);
             this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.lUpdateLink);
             this.Controls.Add(this.lStatus);
             this.Name = "Updater";
             this.ShowIcon = false;
@@ -95,7 +101,6 @@ namespace Client
             this.Text = "Updater";
             this.Load += new System.EventHandler(this.Updater_Load);
             this.ResumeLayout(false);
-
         }
 
         #endregion
@@ -105,6 +110,7 @@ namespace Client
         /// </summary>
         public System.Windows.Forms.Label lStatus;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.LinkLabel lUpdateLink;
         /// <summary>
         /// Update button
         /// </summary>

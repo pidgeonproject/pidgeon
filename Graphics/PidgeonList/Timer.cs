@@ -32,13 +32,40 @@ namespace Client.Graphics
         /// </summary>
         public class RequestDCC
         {
+            /// <summary>
+            /// User
+            /// </summary>
             public string User;
+            /// <summary>
+            /// Server
+            /// </summary>
             public string Server;
+            /// <summary>
+            /// Port
+            /// </summary>
             public int Port;
+            /// <summary>
+            /// Listener
+            /// </summary>
             public bool Listener;
+            /// <summary>
+            /// SSL
+            /// </summary>
             public bool SSL;
+            /// <summary>
+            /// Network
+            /// </summary>
             public Network network;
 
+            /// <summary>
+            /// Creates a new instance of request
+            /// </summary>
+            /// <param name="user"></param>
+            /// <param name="server"></param>
+            /// <param name="port"></param>
+            /// <param name="Ssl"></param>
+            /// <param name="listener"></param>
+            /// <param name="n"></param>
             public RequestDCC(string user, string server, int port, bool Ssl, bool listener, Network n)
             {
                 User = user;

@@ -130,7 +130,7 @@ namespace Client
                         }
 
                         text = _StreamReader.ReadLine();
-                        Core.trafficscanner.insert(Server, " >> " + text);
+                        Core.trafficscanner.Insert(Server, " >> " + text);
                         Quassel_Parser parser = new Quassel_Parser(this, text);
                         parser.Proccess();
                     }
@@ -167,7 +167,7 @@ namespace Client
                 if (IsConnected)
                 {
                     _StreamWriter.WriteLine(ms);
-                    Core.trafficscanner.insert(Server, " << " + ms);
+                    Core.trafficscanner.Insert(Server, " << " + ms);
                     _StreamWriter.Flush();
                 }
             }
