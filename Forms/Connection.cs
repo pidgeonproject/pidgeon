@@ -46,15 +46,14 @@ namespace Client.Forms
             combobox1.Model = store;
             ListStore store2 = new ListStore(typeof(string));
             TreeIter iter = store.AppendValues("irc");
+            store.AppendValues("pidgeon services");
+
             if (Configuration.Kernel.Debugging)
             {
                 store.AppendValues("quassel");
-            }
-            store.AppendValues("pidgeon services");
-            if (Configuration.Kernel.Debugging)
-            {
                 store.AppendValues("dcc");
             }
+            
             comboboxentry1.Model = store2;
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
@@ -142,6 +141,9 @@ namespace Client.Forms
                         break;
                     case "pidgeon services":
                         Core.ConnectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        break;
+                    case "dcc":
+                        Core.ConnectDcc(comboboxentry1.ActiveText, port, entry4.Text, ProtocolDCC.DCC.Chat, false, comboboxentry1.ActiveText, checkbutton1.Active);
                         break;
                 }
                 Hide();

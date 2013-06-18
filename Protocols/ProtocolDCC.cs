@@ -158,7 +158,6 @@ namespace Client
             {
                 return false;
             }
-            Connected = false;
             if (ListenerMode)
             {
                 lock (Core.LockedPorts)
@@ -171,12 +170,19 @@ namespace Client
             }
             if (!SSL)
             {
-                _networkStream.Close();
+                if (_networkStream != null)
+                {
+                    _networkStream.Close();
+                }
             }
             else
             {
-                _networkSsl.Close();
+                if (_networkSsl != null)
+                {
+                    _networkSsl.Close();
+                }
             }
+            Connected = false;
             return true;
         }
 

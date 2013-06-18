@@ -62,6 +62,10 @@ namespace Client
             DC.SSL = secured;
             DC.ListenerMode = Listening;
             DC.Dcc = dcc;
+            if (dcc == ProtocolDCC.DCC.Chat && secured)
+            {
+                DC.Dcc = ProtocolDCC.DCC.SecureChat;
+            }
             DC.UserName = UserName;
             DC.Open();
             Connections.Add(DC);
