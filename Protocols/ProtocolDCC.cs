@@ -190,12 +190,33 @@ namespace Client
         }
 
         /// <summary>
+        /// Parser
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public override bool ParseInput(string input)
+        {
+            if (!IsConnected)
+            {
+                return false;
+            }
+            lock (_StreamWriter)
+            {
+                SystemWindow.scrollback.InsertText(PRIVMSG(Configuration.UserData.nick, input), ContentLine.MessageStyle.Message);
+                _StreamWriter.WriteLine(input);
+                _StreamWriter.Flush();
+            }
+            return true;
+        }
+
+        /// <summary>
         /// Open the connection to foreign client OR open a local listener
         /// </summary>
         /// <returns></returns>
         public override bool Open()
         {
             systemwindow = CreateChat(UserName, false, null, false, null, false, true);
+            systemwindow._Protocol = this;
             Core.SystemForm.ChannelList.InsertDcc(this);
             thread = new Thread(main);
             thread.Name = "DCC chat " + UserName;

@@ -49,7 +49,7 @@ namespace Client.Graphics
         /// </summary>
         public System.Drawing.Color MenuColor;
         /// <summary>
-        /// Deprecated, use _Network._Protocol instead
+        /// Protocol associated with this window
         /// </summary>
         public Protocol _Protocol = null;
         /// <summary>

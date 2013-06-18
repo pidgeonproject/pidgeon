@@ -722,6 +722,10 @@ namespace Client
                 Core.ProcessCommand(input);
                 return 10;
             }
+            if (_window._Protocol != null && _window._Protocol.ParseInput(input))
+            {
+                return 12;
+            }
             if (network == null)
             {
                 _window.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);

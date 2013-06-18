@@ -80,6 +80,10 @@ namespace Client.Forms
             SSL = secure;
             ListenerMode = Listener;
             Build();
+            if (SSL)
+            {
+                type = ProtocolDCC.DCC.SecureChat;
+            }
             button9.Clicked += new EventHandler(_click);
         }
     }

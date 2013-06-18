@@ -249,6 +249,14 @@ namespace Client.Graphics
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         break;
+                    case ItemType.DCC:
+                        ProtocolDCC dcc = (ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        closeToolStripMenuItem.Visible = true;
+                        dcc.ShowChat(dcc.SystemWindow.WindowName);
+                        Core.network = null;
+                        disconnectToolStripMenuItem.Visible = true;
+                        Core.SystemForm.UpdateStatus();
+                        break;
                     case ItemType.QuasselCore:
                         ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;

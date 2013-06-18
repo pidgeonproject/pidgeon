@@ -394,6 +394,13 @@ namespace Client.Graphics
             tv.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
         }
 
+        /// <summary>
+        /// This function is foreach of store where the sidebar is located
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="path"></param>
+        /// <param name="iter"></param>
+        /// <returns></returns>
         private bool feIter(TreeModel model, TreePath path, TreeIter iter)
         {
             if (Values.GetValue(iter, 1) == ObjectStore)
@@ -857,6 +864,12 @@ namespace Client.Graphics
                     ProtocolQuassel protocol = (ProtocolQuassel)Item;
                     protocol.Exit();
                     removed = RemoveQuassel(protocol);
+                    Updated = true;
+                    break;
+                case ItemType.DCC:
+                    ProtocolDCC dcc = (ProtocolDCC)Item;
+                    dcc.Exit();
+                    removed = RemoveDcc(dcc);
                     Updated = true;
                     break;
                 case ItemType.Server:

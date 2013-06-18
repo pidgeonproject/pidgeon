@@ -144,6 +144,16 @@ namespace Client
         }
 
         /// <summary>
+        /// This function get an input from user, if it return false, it is handled by core
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public virtual bool ParseInput(string input)
+        {
+            return false;
+        }
+
+        /// <summary>
         /// Request window to be shown
         /// </summary>
         /// <param name="name"></param>
