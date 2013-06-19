@@ -55,7 +55,10 @@ namespace Client
         /// Permanent
         /// </summary>
         public bool Permanent = false;
-        private Thread th;
+        /// <summary>
+        /// Thread for timer system
+        /// </summary>
+        private Thread thread;
 
         /// <summary>
         /// ID
@@ -97,10 +100,10 @@ namespace Client
         {
             if (!Running)
             {
-                th = new Thread(Wait);
-                th.Name = "Timer " + ID.ToString();
+                thread = new Thread(Wait);
+                thread.Name = "Timer " + ID.ToString();
                 Running = true;
-                th.Start();
+                thread.Start();
             }
         }
 
@@ -118,7 +121,7 @@ namespace Client
                     Core.Ringlog("Unable to kill timer " + ID.ToString() + " because it's not running");
                     return false;
                 }
-                Core.KillThread(th);
+                Core.KillThread(thread);
                 Running = false;
                 return true;
             }
