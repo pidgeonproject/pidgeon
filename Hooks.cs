@@ -191,6 +191,13 @@ namespace Client
                 return ok;
             }
 
+            /// <summary>
+            /// This hook is triggered on tab press
+            /// </summary>
+            /// <param name="restore"></param>
+            /// <param name="Text"></param>
+            /// <param name="PrevText"></param>
+            /// <param name="CarretPosition"></param>
             public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
             {
                 foreach (Extension extension in Core.Extensions)
@@ -246,6 +253,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Network
+        /// </summary>
         public class _Network
         {
             /// <summary>
