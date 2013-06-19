@@ -159,6 +159,7 @@ namespace Client
             /// <param name="message">Message that was ignored</param>
             /// <param name="updated"></param>
             /// <param name="date"></param>
+            /// <param name="user"></param>
             /// <returns></returns>
             public static bool Ignore(Graphics.Window window, User user, string message, bool updated, long date)
             {

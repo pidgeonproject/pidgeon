@@ -184,6 +184,7 @@ namespace Client
                 }
             }
             Connected = false;
+            SystemWindow.needIcon = true;
             return true;
         }
 

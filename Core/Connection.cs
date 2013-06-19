@@ -53,6 +53,8 @@ namespace Client
         /// <param name="secured">SSL</param>
         /// <param name="dcc">Connection parameter</param>
         /// <param name="remote">Remote ID</param>
+        /// <param name="Listening"></param>
+        /// <param name="UserName"></param>
         /// <returns></returns>
         public static bool ConnectDcc(string server, int port, string password, ProtocolDCC.DCC dcc, bool Listening, string UserName, bool secured = false, string remote = null)
         {

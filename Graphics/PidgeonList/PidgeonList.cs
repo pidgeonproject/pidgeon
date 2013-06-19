@@ -511,6 +511,25 @@ namespace Client.Graphics
                             }
                         }
                         break;
+                    case ItemType.DCC:
+                        ProtocolDCC dc = (ProtocolDCC)model.GetValue(iter, 1);
+                        if (dc.IsDestroyed)
+                        {
+                            Values.Remove(ref iter);
+                        }
+                        if (dc.SystemWindow.needIcon)
+                        {
+                            dc.SystemWindow.needIcon = false;
+                            if (dc.IsConnected)
+                            {
+                                model.SetValue(iter, 5, icon_0);
+                            }
+                            else
+                            {
+                                model.SetValue(iter, 5, icon_02);
+                            }
+                        }
+                        break;
                     case ItemType.Channel:
                         Channel channel = (Channel)model.GetValue(iter, 1);
                         if (channel.IsDestroyed)

@@ -158,6 +158,10 @@ namespace Client.Graphics
                         ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);
                         services.Disconnect();
                         break;
+                    case ItemType.DCC:
+                        ProtocolDCC pd = (ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        pd.Disconnect();
+                        break;
                 }
             }
             catch (Exception fail)
