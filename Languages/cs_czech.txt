@@ -1,5 +1,8 @@
 ﻿// Main window
 
+window-menu-more=Load more to scrollback;
+window-menu-favorite=Oblibene site;
+window-menu-open=Otevrit pripojeni;
 window-menu-file=Soubor;
 window-menu-quit=Ukoncit;
 window-menu-conf=Nastaveni;
@@ -46,27 +49,38 @@ part1=Server just reported that you left the channel despite you didn't want to,
 part2=Opustil jsi kanal;
 connecting=Pripojuji;
 
+// Obsolete
+
+autocomplete-result=Multiple results found, refine your input please: $1;
+
+// Buttons
+
+button-ok=OK;
+button-cancel=Zrusit;
+button-yes=Ano;
+button-no=Ne;
+
 // Connection form
 
-connection=Open the new connection;
-connection.1=Please fill in following data;
-server=Server;
-bconnect=Connect to selected server;
-nconnection-start-protocol=Protocol:;
-nconnection-start-server=Address:;
-nconnection-start-port=Port:;
-nconnection-ident=Ident:;
-nconnection-p=Password:;
-nconnection-name=Nick:;
-nconnection-1=You need to fill in username;
-nconnection-2=You need to fill in ident;
-nconnection-3=You need to fill in port;
-nconnection-4=You need to fill in address;
+newconnection-title=Otevrit nove pripojeni k server;
+newconnection-server=Server;
+newconnection-connect=Pripojit ke zvolenemu serveru;
+newconnection-protocol=Protokol:;
+newconnection-address=Adresa:;
+newconnection-port=Port:;
+newconnection-ident=Ident:;
+newconnection-secure=Zabezpecene pripojeni;
+newconnection-password=Heslo:;
+newconnection-nick=Nick:;
+newconnection-1=Musite vyplnit nick;
+newconnection-2=Musite vyplnit ident;
+newconnection-3=Musite vyplnit port;
+newconnection-4=Musite vyplnit adresu;
 
 // Window
 
-list=Users;
-list-active-conn=Open connections;
+list=Uzivatele;
+list-active-conn=Pripojeni;
 
 // Scrollback
 
@@ -91,9 +105,9 @@ userctcp=CTCPs;
 // Common
 
 port=Port;
-bclose=Quit;
-type=Protocol;
-secure=Secure;
+bclose=Zavrit;
+type=Protokol;
+secure=Zabezpeceny;
 ban=Ban;
 
 // Preferences
@@ -104,30 +118,13 @@ preferences-al=Second nick;
 preferences-quit=Quit;
 preferences-name=Real name;
 preferences-enforce-ssl=Require ssl on all networks;
+preferences-extensions=Extensions;
+preferences-title=Preferences;
+preferences-irc=IRC;
+preferences-system=System;
+preferences-logs=Logs;
+preferences-highlighting=Highlighting;
+preferences-ignore=Ignore list;
+preferences-keyboard=Keyboard;
 
-// Channel info
 
-channelinfo-ok=Save;
-channelinfo-t0=Preferences;
-channelinfo-t3=Exceptions;
-channelinfo-t2=Invites;
-channelinfo-t4=Bans;
-channel-mode=$1 changed mode $2;
-global-ok=Ok;
-global-cancel=Cancel;
-protocolnewnick=Your nick is now $1;
-update1=There is a new version of pidgeon: $1, click update to continue, or close this window to keep using the previous version.;
-update2=Pidgeon is finishing update, please wait...;
-channel-topic=$1 changed topic to: $2;
-update-update=Update;
-userkick=User $1 kicked $2 from channel with reason: $3;
-pidgeon.globalnick=Your global nick is now $1;
-retrievingdata=Retrieving backlog from $1, got $2 packets from total of $3 datagrams;
-service_error="There is a problem while connecting to $1: $2 occured";
-protocol-nick=$1 changed a nickname to $2;
-window-confirm=Do you really want to execute this:$1;
-command-wrong=This command requires $1 parameters;
-
-// Obsolete
-
-autocomplete-result=Multiple results found, refine your input please: $1;
