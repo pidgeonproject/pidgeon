@@ -132,6 +132,10 @@ namespace Client
             /// </summary>
             public static TypeOfBan DefaultBans = TypeOfBan.Host;
             /// <summary>
+            /// Default CTCP port
+            /// </summary>
+            public static uint DefaultCTCPPort = 64546;
+            /// <summary>
             /// If true, ctcp messages will be printed to window
             /// </summary>
             public static bool DisplayCtcp = true;
@@ -147,6 +151,10 @@ namespace Client
             /// If CTCP is blocked for all users
             /// </summary>
             public static bool FirewallCTCP = false;
+            /// <summary>
+            /// Certificate for ctcp
+            /// </summary>
+            public static string CertificateDCC = null;
         }
 
         /// <summary>
