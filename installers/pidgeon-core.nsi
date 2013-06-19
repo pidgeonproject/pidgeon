@@ -316,7 +316,7 @@ OutFile "pidgeon_setup.exe"
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 2
-!define VERSIONBUILD 0
+!define VERSIONBUILD 
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link
@@ -360,6 +360,9 @@ SectionIn RO
   file "tcl84.dll"
   file "Pidgeon.exe" 
   file "gtk-sharp-2.12.20.msi"
+  CreateDirectory $INSTDIR\skins
+  file /oname=skins\mono.ps "skins\mono.ps"
+  file /oname=skins\cool.ps "skins\cool.ps"
   ExecWait 'msiexec.exe /passive /i "$INSTDIR\gtk-sharp-2.12.20.msi"'
   ;${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$PROGRAMFILES32\GtkSharp\2.12\bin" ; Append  
   ;${EnvVarUpdate} $0 "GTK_BASEPATH" "A" "HKLM" "$PROGRAMFILES32\GtkSharp\2.12\" ; Append  
@@ -374,6 +377,11 @@ Section "Modules" SecModules
   SetOutPath "$INSTDIR"
   CreateDirectory $INSTDIR\modules
   file /oname=modules\pidgeon_tab.pmod "modules\pidgeon_tab.pmod"
+  file /oname=modules\NetworkInfo.pmod "modules\NetworkInfo.pmod"
+  file /oname=modules\pidgeon_chan.pmod "modules\pidgeon_chan.pmod"
+  file /oname=modules\pidgeon_notice.pmod "modules\pidgeon_notice.pmod"
+  file /oname=modules\IgnoredText.pmod "modules\IgnoredText.pmod"
+  file /oname=modules\TopicDiff.pmod "modules\TopicDiff.pmod"
 SectionEnd
 
 Section /o "Freenode util" SecFreenode 
@@ -403,6 +411,7 @@ Section "Uninstall"
 
   ;ADD YOUR OWN FILES HERE...
   ;
+        delete $INSTDIR\modules\NetworkInfo.pmod
 	delete $INSTDIR\modules\pidgeon_tab.pmod
 	delete $INSTDIR\tcl84.dll
 	delete $INSTDIR\Pidgeon.exe
