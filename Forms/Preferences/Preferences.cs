@@ -52,12 +52,6 @@ namespace Client.Forms
         {
             checkbutton2.Active = Configuration.Kernel.CheckUpdate;
             messages.Localize(this);
-            if (Configuration.CurrentPlatform != Core.Platform.Windowsx86 && Configuration.CurrentPlatform != Core.Platform.Windowsx64)
-            {
-                checkbutton2.Active = false;
-                checkbutton2.Sensitive = false;
-            }
-            messages.Localize(this);
             this.DeleteEvent += new DeleteEventHandler(hide);
             button1.Clicked += new EventHandler(bCancel_Click);
             button3.Clicked += new EventHandler(bSave_Click);

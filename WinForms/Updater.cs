@@ -90,7 +90,8 @@ namespace Client
         {
             try
             {
-                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 || Configuration.CurrentPlatform == Core.Platform.Windowsx86)
+                if (Configuration.CurrentPlatform == Core.Platform.Windowsx64 ||Configuration.CurrentPlatform == Core.Platform.Windowsx86 ||
+                    Configuration.CurrentPlatform == Core.Platform.Linuxx64 || Configuration.CurrentPlatform == Core.Platform.Linuxx86)
                 {
                     if (Configuration.Kernel.CheckUpdate)
                     {
