@@ -230,15 +230,33 @@ namespace Client
                 this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
                 this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
                 this.RT.textView.ButtonPressEvent += new Gtk.ButtonPressEventHandler(Click);
+                this.RT.textView.KeyPressEvent += new Gtk.KeyPressEventHandler(PressEvent);
             }
             timer2 = new GLib.TimeoutHandler(timer2_Tick);
             simpleview.ModifyBase(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
             simpleview.ModifyText(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            simpleview.KeyPressEvent += new Gtk.KeyPressEventHandler(PressEvent);
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
+            }
+        }
+
+        private void PressEvent(object sender, Gtk.KeyPressEventArgs e)
+        {
+            try
+            {
+                if (Forms.Main.ShortcutHandle(sender, e))
+                {
+                    e.RetVal = true;
+                    return;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 

@@ -358,7 +358,7 @@ namespace Client
         {
             if (SBAB == null)
             {
-                throw new Exception("invalid text");
+                throw new Exception("NULL reference to richtb");
             }
 
             Client.RichTBox.Line line = null;
