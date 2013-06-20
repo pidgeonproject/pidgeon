@@ -4,7 +4,7 @@ PACKAGE=pidgeon
 prefix=/usr/local
 config=RELEASE_X86
 configurations=" DEBUG_X86 RELEASE_X86"
-common_packages=" glade-sharp-2.0;2.12.10 glib-sharp-2.0;2.12.10 gtk-dotnet-2.0;2.12.10 gtk-sharp-2.0;2.12.10"
+common_packages="glade-sharp-2.0;2.12.10 glib-sharp-2.0;2.12.10 gtk-dotnet-2.0;2.12.10 gtk-sharp-2.0;2.12.10  mono-xbuild"
 
 
 usage ()
