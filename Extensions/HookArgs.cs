@@ -15,6 +15,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// This file contains a definition of all arguments for hooks
+
 using System;
 using System.Collections.Generic;
 using System.Threading;

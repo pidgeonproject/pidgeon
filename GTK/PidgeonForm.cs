@@ -89,6 +89,10 @@ namespace Client.GTK
             /// </summary>
             public int Width = 0;
         }
+
+        /// <summary>
+        /// Information about windows
+        /// </summary>
         public static Dictionary<string, Info> WindowInfo = new Dictionary<string, Info>();
 
         /// <summary>

@@ -15,6 +15,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// This window is being used for ctcp requests for direct connect protocol
+
 using System;
 
 namespace Client.Forms

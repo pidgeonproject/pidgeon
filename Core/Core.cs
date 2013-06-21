@@ -341,7 +341,7 @@ namespace Client
         }
         
         /// <summary>
-        /// Load
+        /// This is a first function that should be called after application start
         /// </summary>
         /// <returns></returns>
         public static bool Load()

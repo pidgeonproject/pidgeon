@@ -21,8 +21,14 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// These functions are called when the event in question happen
+    /// </summary>
     class Hooks
     {
+        /// <summary>
+        /// System hooks
+        /// </summary>
         public class _Sys
         {
             /// <summary>
@@ -101,6 +107,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Protocol hooks
+        /// </summary>
         public class _Protocol
         {
             /// <summary>
@@ -138,6 +147,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Scrollback hooks
+        /// </summary>
         public class _Scrollback
         {
             /// <summary>
@@ -682,6 +694,10 @@ namespace Client
                 return true;
             }
 
+            /// <summary>
+            /// Events to happen before change of mode, if return false the change of mode is ignored
+            /// </summary>
+            /// <param name="network"></param>
             public static void BeforeMode(Network network)
             {
                 return;

@@ -17,9 +17,6 @@
 
 namespace Client.Forms
 {
-    /// <summary>
-    /// Support form
-    /// </summary>
     public partial class Help
     {
         private global::Gtk.Fixed fixed1;

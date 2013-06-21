@@ -19,6 +19,9 @@ using System;
 
 namespace Client.Forms
 {
+    /// <summary>
+    /// Help form
+    /// </summary>
     public partial class Help : GTK.PidgeonForm
     {
         /// <summary>

@@ -15,6 +15,8 @@
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
 
+// This file contains a definition of all hooks for an extension
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -27,6 +29,11 @@ namespace Client
     /// </summary>
     public partial class Extension
     {
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        // Extension related
+        /////////////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
         /// This hook is called on load of extension
         /// </summary>
@@ -46,17 +53,30 @@ namespace Client
         }
 
         /// <summary>
+        /// This hook is called before the extension is loaded
+        /// </summary>
+        /// <returns></returns>
+        public virtual bool Hook_OnRegister()
+        {
+            return true;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        // Channel
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
         /// This hook is started when user part from a channel
         /// </summary>
-        /// <param name="_PartArgs"></param>
-        /// <returns></returns>
+        /// <param name="_PartArgs">Arguments</param>
+        /// <returns>True if OK, False if the part should be ignored</returns>
         public virtual bool Hook_UserPart(NetworkPartArgs _PartArgs)
         {
             return true;
         }
 
         /// <summary>
-        /// This hook is started when user part from a channel
+        /// Use Hook_UserPart(NetworkPartArgs _PartArgs) instead 
         /// </summary>
         /// <param name="network"></param>
         /// <param name="user"></param>
@@ -71,40 +91,24 @@ namespace Client
         }
 
         /// <summary>
-        /// This hook is started when a network object is created
+        /// This hook is started before pidgeon try to join a channel, return false will abort the action
         /// </summary>
         /// <param name="network"></param>
-        public virtual void Hook_Network(Network network)
-        {
-            return;
-        }
-
-        /// <summary>
-        /// This hook is started after connection to a network
-        /// </summary>
-        /// <param name="network"></param>
-        public virtual void Hook_AfterConnect(Network network)
-        {
-
-        }
-
-        /// <summary>
-        /// This hook is started before the item is ignored
-        /// </summary>
-        /// <param name="_IgnoreArgs"></param>
+        /// <param name="Channel"></param>
         /// <returns></returns>
-        public virtual bool Hook_BeforeIgnore(MessageArgs _IgnoreArgs)
+        public virtual bool Hook_BeforeJoin(Network network, string Channel)
         {
             return true;
         }
 
         /// <summary>
-        /// This hook is started before you connect to a protocol
+        /// This hook is started when user quit
         /// </summary>
-        /// <param name="protocol"></param>
-        public virtual void Hook_BeforeConnect(Protocol protocol)
+        /// <param name="_QuitArgs"></param>
+        /// <returns></returns>
+        public virtual bool Hook_UserQuit(NetworkUserQuitArgs _QuitArgs)
         {
-            return;
+            return true;
         }
 
         /// <summary>
@@ -132,29 +136,56 @@ namespace Client
             return true;
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////
+        // Network
+        /////////////////////////////////////////////////////////////////////////////////////
+
         /// <summary>
-        /// This hook is started before pidgeon try to join a channel, return false will abort the action
+        /// This hook is started when a network object is created
         /// </summary>
         /// <param name="network"></param>
-        /// <param name="Channel"></param>
-        /// <returns></returns>
-        public virtual bool Hook_BeforeJoin(Network network, string Channel)
+        public virtual void Hook_Network(Network network)
         {
-            return true;
+            return;
         }
 
         /// <summary>
-        /// This hook is started when user quit
+        /// This hook is started after connection to a network
         /// </summary>
-        /// <param name="_QuitArgs"></param>
+        /// <param name="network"></param>
+        public virtual void Hook_AfterConnect(Network network)
+        {
+
+        }
+
+        /// <summary>
+        /// This function is called when network send us a network info
+        /// </summary>
+        /// <param name="network"></param>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        public virtual void Hook_NetworkInfo(Network network, string command, string parameters, string value)
+        {
+            return;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
+        // Scrollback
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// This hook is started before the item is ignored
+        /// </summary>
+        /// <param name="_IgnoreArgs"></param>
         /// <returns></returns>
-        public virtual bool Hook_UserQuit(NetworkUserQuitArgs _QuitArgs)
+        public virtual bool Hook_BeforeIgnore(MessageArgs _IgnoreArgs)
         {
             return true;
         }
 
         /// <summary>
-        /// This hook is started when user quit
+        /// DEPRECATED Use Hook_UserQuit(NetworkUserQuitArgs _QuitArgs) instead of this
         /// </summary>
         /// <param name="network"></param>
         /// <param name="user"></param>
@@ -192,6 +223,19 @@ namespace Client
             return true;
         }
 
+        /////////////////////////////////////////////////////////////////////////////////////
+        // System
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// This hook is started before you connect to a protocol
+        /// </summary>
+        /// <param name="protocol"></param>
+        public virtual void Hook_BeforeConnect(Protocol protocol)
+        {
+            return;
+        }
+
         /// <summary>
         /// This hook is started when main form is loaded
         /// </summary>
@@ -222,27 +266,6 @@ namespace Client
         public virtual bool Hook_BeforeNote(ref string name, ref string text)
         {
             return true;
-        }
-
-        /// <summary>
-        /// This hook is called before the extension is loaded
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool Hook_OnRegister()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// This function is called when network send us a network info
-        /// </summary>
-        /// <param name="network"></param>
-        /// <param name="command"></param>
-        /// <param name="parameters"></param>
-        /// <param name="value"></param>
-        public virtual void Hook_NetworkInfo(Network network, string command, string parameters, string value)
-        {
-            return;
         }
 
         /// <summary>

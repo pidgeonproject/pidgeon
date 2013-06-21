@@ -20,7 +20,7 @@ using System;
 namespace Client.Forms
 {
     /// <summary>
-    /// Notification text
+    /// Notification window which is displayed in corner of window when user should be alerted of some event
     /// </summary>
     public partial class Notification : GTK.PidgeonForm
     {

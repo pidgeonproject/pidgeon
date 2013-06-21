@@ -88,7 +88,7 @@ namespace Client.Forms
         }
 
         /// <summary>
-        /// Window request
+        /// Window request, this class represent a request to create a new window and is usually done by a thread which can't control windows
         /// </summary>
         public class _WindowRequest
         {
@@ -155,6 +155,11 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// Render a tray menu which is displayed when user click on pidgeon icon in tray only
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="args"></param>
         private void TrayMenu(object o, EventArgs args)
         {
             Menu menu = new Menu();
@@ -185,26 +190,49 @@ namespace Client.Forms
             menu.Popup();
         }
 
+        /// <summary>
+        /// Triggered when use click on "show" in menu
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void itemShow(object o, EventArgs e)
         {
             this.Visible = true;
         }
 
+        /// <summary>
+        /// Triggered when use click on "hide" in menu
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void itemHide(object o, EventArgs e)
         {
             this.Visible = false;
         }
 
+        /// <summary>
+        /// Triggered when use click on Enable notifications in menu
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void itemNotification(object o, EventArgs e)
         {
             Configuration.Kernel.Notice = !Configuration.Kernel.Notice;
         }
 
+        /// <summary>
+        /// This event is triggered everytime when the main window is resized
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void resize(object o, Gtk.SizeAllocatedArgs e)
         {
             ResetSize();
         }
 
+        /// <summary>
+        /// Change the size of window in configuration so that it is used next time as well
+        /// </summary>
         private void ResetSize()
         {
             if (Configuration.Window.x4 == 0)
@@ -217,6 +245,9 @@ namespace Client.Forms
             }
         }
 
+        /// <summary>
+        /// This function is called only once when the application is loaded
+        /// </summary>
         private void _Load()
         {
             try
