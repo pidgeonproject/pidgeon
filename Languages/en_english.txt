@@ -102,6 +102,10 @@ bclose=Quit;
 type=Protocol;
 secure=Secure;
 ban=Ban;
+add=Add;
+delete=Delete;
+enable=Enable;
+disable=Disable;
 
 // Preferences
 
@@ -119,7 +123,10 @@ preferences-logs=Logs;
 preferences-highlighting=Highlighting;
 preferences-ignore=Ignore list;
 preferences-keyboard=Keyboard;
-
+preferences-display-in-tray=Display notifications in tray;
+preferences-notify=Notify when update for pidgeon is available;
+preferences-language=Language;
+preferences-skin=Skin;
 
 // Channel info
 

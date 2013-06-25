@@ -147,7 +147,7 @@ namespace Client.Graphics
             Gtk.TreeViewColumn pict = new Gtk.TreeViewColumn();
             Gtk.CellRendererText Item = new Gtk.CellRendererText();
             Gtk.CellRendererPixbuf icon = new CellRendererPixbuf();
-            Column.Title = messages.get("list-active-conn", messages.Language);
+            Column.Title = messages.get("list-active-conn", Core.SelectedLanguage);
             Column.PackStart(Item, true);
             pict.PackStart(icon, true);
             Column.SetCellDataFunc(Item, UserListRendererTool);

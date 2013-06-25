@@ -18,8 +18,8 @@ window-menu-open=Otevrit nove pripojeni;
 window-menu-favorite=Favorite networks;
 window-menu-viewer=Packet viewer;
 window-menu-chat=Small chat;
-window-menu-chat1=Attach to micro chat;
-window-menu-chat2=Detach from micro chat;
+window-menu-chat1=Pripojit do micro chatu;
+window-menu-chat2=Odpojit od micro chatu;
 window-menu-more=Load more to scrollback;
 window-menu-cf=Konfiguracni soubor;
 window-menu-root=Zobrazit koren. okno;
@@ -32,9 +32,9 @@ pidgeon-shut=Opravdu chcete pidgeon ukoncit?;
 
 invalid-server=Toto neni validni nazev serveru;
 invalid-command=Neplatny prikaz;
-invalid-channel=This is not a valid channel;
-nick-e1=This is not a valid nick;
-error1=You need to be connected;
+invalid-channel=Toto neni platny kanal;
+nick-e1=Toto neni platny nick;
+error1=Nejste pripojeni;
 
 // Status messages
 
@@ -51,7 +51,7 @@ connecting=Pripojuji;
 
 // Obsolete
 
-autocomplete-result=Multiple results found, refine your input please: $1;
+autocomplete-result=Nalezeno vice vysledku vyberte: $1;
 
 // Buttons
 
@@ -62,7 +62,7 @@ button-no=Ne;
 
 // Connection form
 
-newconnection-title=Otevrit nove pripojeni k server;
+newconnection-title=Otevrit nove pripojeni k serveru;
 newconnection-server=Server;
 newconnection-connect=Pripojit ke zvolenemu serveru;
 newconnection-protocol=Protokol:;
@@ -109,22 +109,28 @@ bclose=Zavrit;
 type=Protokol;
 secure=Zabezpeceny;
 ban=Ban;
+enable=Povolit;
+disable=Vypnout;
 
 // Preferences
 
 preferences-nick=Nick;
 preferences-ident=Ident;
-preferences-al=Second nick;
+preferences-al=Druhy nick;
 preferences-quit=Quit;
-preferences-name=Real name;
-preferences-enforce-ssl=Require ssl on all networks;
-preferences-extensions=Extensions;
-preferences-title=Preferences;
+preferences-name=Opravdove jmeno;
+preferences-enforce-ssl=Vyzadovat ssl na vsech sitich;
+preferences-extensions=Rozsireni;
+preferences-title=Nastaveni;
 preferences-irc=IRC;
 preferences-system=System;
-preferences-logs=Logs;
-preferences-highlighting=Highlighting;
-preferences-ignore=Ignore list;
-preferences-keyboard=Keyboard;
+preferences-logs=Logy;
+preferences-highlighting=Zvyrazneni;
+preferences-ignore=Ignorovaci list;
+preferences-keyboard=Klavesnice;
+preferences-display-in-tray=Zobrazit upozorneni v trayi;
+preferences-notify=Notify when update for pidgeon is available;
+preferences-language=Jazyk;
+preferences-skin=Skin;
 
 

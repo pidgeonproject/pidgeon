@@ -87,12 +87,12 @@ namespace Client.Forms
         private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(Core.Shortcut));
 
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
-        private GTK.Menu enableToolStripMenuItem = new GTK.Menu("Enable");
+        private GTK.Menu enableToolStripMenuItem = new GTK.Menu(messages.Localize("[[enable]]"));
         //private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
-        private GTK.Menu disableToolStripMenuItem = new GTK.Menu("Disable");
-        private GTK.Menu addToolStripMenuItem = new GTK.Menu("Add");
+        private GTK.Menu disableToolStripMenuItem = new GTK.Menu(messages.Localize("[[disable]]"));
+        private GTK.Menu addToolStripMenuItem = new GTK.Menu(messages.Localize("[[add]]"));
         //private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
-        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu("Delete");
+        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu(messages.Localize("[[delete]]"));
         private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
         private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
         //private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
@@ -243,7 +243,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget Client.Forms.Preferences
             this.Name = "Client.Forms.Preferences";
-            this.Title = "Preferences";
+            this.Title = messages.Localize("[[preferences-title]]");
             this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.Pigeon_clip_art_hight.png");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             // Container child Client.Forms.Preferences.Gtk.Container+ContainerChild
@@ -286,7 +286,7 @@ namespace Client.Forms
             this.checkbutton1 = new global::Gtk.CheckButton();
             this.checkbutton1.CanFocus = true;
             this.checkbutton1.Name = "checkbutton1";
-            this.checkbutton1.Label = "Display notifications in tray";
+            this.checkbutton1.Label = messages.Localize("[[preferences-display-in-tray]]");
             this.checkbutton1.DrawIndicator = true;
             this.checkbutton1.UseUnderline = true;
             this.table1.Add(this.checkbutton1);
@@ -301,7 +301,7 @@ namespace Client.Forms
             this.checkbutton2 = new global::Gtk.CheckButton();
             this.checkbutton2.CanFocus = true;
             this.checkbutton2.Name = "checkbutton2";
-            this.checkbutton2.Label = "Notify when update for pidgeon is available";
+            this.checkbutton2.Label = messages.Localize("[[preferences-notify]]");
             this.checkbutton2.DrawIndicator = true;
             this.checkbutton2.UseUnderline = true;
             this.table1.Add(this.checkbutton2);
@@ -409,7 +409,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label2 = new global::Gtk.Label();
             this.label2.Name = "label2";
-            this.label2.LabelProp = "Nick";
+            this.label2.LabelProp = messages.Localize("[[preferences-nick]]");
             this.label2.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label2);
             global::Gtk.Table.TableChild w12 = ((global::Gtk.Table.TableChild)(this.table1[this.label2]));
@@ -418,7 +418,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label3 = new global::Gtk.Label();
             this.label3.Name = "label3";
-            this.label3.LabelProp = "Quit";
+            this.label3.LabelProp = messages.Localize("[[preferences-quit]]");
             this.label3.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label3);
             global::Gtk.Table.TableChild w13 = ((global::Gtk.Table.TableChild)(this.table1[this.label3]));
@@ -429,7 +429,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label4 = new global::Gtk.Label();
             this.label4.Name = "label4";
-            this.label4.LabelProp = "Ident";
+            this.label4.LabelProp = messages.Localize("[[preferences-ident]]");
             this.label4.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label4);
             global::Gtk.Table.TableChild w14 = ((global::Gtk.Table.TableChild)(this.table1[this.label4]));
@@ -440,7 +440,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label5 = new global::Gtk.Label();
             this.label5.Name = "label5";
-            this.label5.LabelProp = "Real name";
+            this.label5.LabelProp = messages.Localize("[[preferences-name]]");
             this.label5.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label5);
             global::Gtk.Table.TableChild w15 = ((global::Gtk.Table.TableChild)(this.table1[this.label5]));
@@ -451,7 +451,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label6 = new global::Gtk.Label();
             this.label6.Name = "label6";
-            this.label6.LabelProp = "Second nick";
+            this.label6.LabelProp = messages.Localize("[[preferences-al]]");
             this.label6.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label6);
             global::Gtk.Table.TableChild w16 = ((global::Gtk.Table.TableChild)(this.table1[this.label6]));
@@ -462,7 +462,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label7 = new global::Gtk.Label();
             this.label7.Name = "label7";
-            this.label7.LabelProp = "Language";
+            this.label7.LabelProp = messages.Localize("[[preferences-language]]");
             this.label7.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label7);
             global::Gtk.Table.TableChild w17 = ((global::Gtk.Table.TableChild)(this.table1[this.label7]));
@@ -473,7 +473,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label8 = new global::Gtk.Label();
             this.label8.Name = "label8";
-            this.label8.LabelProp = "Skin";
+            this.label8.LabelProp = messages.Localize("[[preferences-skin]]");
             this.label8.Justify = ((global::Gtk.Justification)(1));
             this.table1.Add(this.label8);
             global::Gtk.Table.TableChild w18 = ((global::Gtk.Table.TableChild)(this.table1[this.label8]));
@@ -507,7 +507,7 @@ namespace Client.Forms
             this.button3.CanFocus = true;
             this.button3.Name = "button3";
             this.button3.UseUnderline = true;
-            this.button3.Label = "OK";
+            this.button3.Label = messages.Localize("[[button-ok]]");
             this.hbox3.Add(this.button3);
             global::Gtk.Box.BoxChild w23 = ((global::Gtk.Box.BoxChild)(this.hbox3[this.button3]));
             w23.Position = 0;
@@ -518,7 +518,7 @@ namespace Client.Forms
             this.button1.CanFocus = true;
             this.button1.Name = "button1";
             this.button1.UseUnderline = true;
-            this.button1.Label = "Cancel";
+            this.button1.Label = messages.Localize("[[button-cancel]]");
             this.hbox3.Add(this.button1);
             global::Gtk.Box.BoxChild w24 = ((global::Gtk.Box.BoxChild)(this.hbox3[this.button1]));
             w24.Position = 1;
