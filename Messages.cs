@@ -51,6 +51,71 @@ namespace Client
         }
 
         /// <summary>
+        /// language cache
+        /// </summary>
+        public class LanguageCache
+        {
+            private static Dictionary<string, string> text = new Dictionary<string, string>();
+
+            /// <summary>
+            /// Download a text for a given language or provide its copy from cache
+            /// </summary>
+            /// <param name="language"></param>
+            /// <returns></returns>
+            public static string GetText(string language)
+            {
+                lock (text)
+                {
+                    if (text.ContainsKey(language))
+                    {
+                        return text[language];
+                    }
+                }
+
+                string value = null;
+
+                if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
+                {
+                    if (System.IO.File.Exists(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language))
+                    {
+                        value = System.IO.File.ReadAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language);
+                        lock (text)
+                        {
+                            text.Add(language, value);
+                            return value;
+                        }
+                    }
+                }
+
+                switch (language)
+                {
+                    case "en":
+                        value = Client.Properties.Resources.en_english;
+                        break;
+                    case "cs":
+                        value = Client.Properties.Resources.cs_czech;
+                        break;
+                }
+
+                if (value == null && text.ContainsKey("en"))
+                {
+                    return text["en"];
+                }
+
+                if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
+                {
+                    System.IO.File.WriteAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language, value);
+                }
+
+                lock (text)
+                {
+                    text.Add(language, value);
+                }
+                return value;
+            }
+        }
+
+        /// <summary>
         /// Default language
         /// </summary>
         public static string Language = "en";
@@ -132,14 +197,32 @@ namespace Client
                 }
             }
         }
-
+        
         /// <summary>
         /// Load all languages
         /// </summary>
         public static void Read()
         {
-            messages.data.Add("en", new messages.container("en"));
-            messages.data.Add("cs", new messages.container("cs"));
+            if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
+            {
+                foreach (string file in System.IO.Directory.GetFileSystemEntries(Configuration.Kernel.Lang, "*", System.IO.SearchOption.TopDirectoryOnly))
+                {
+                    string f = Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + file;
+                    if (System.IO.File.Exists(f))
+                    {
+                        Core.DebugLog("Registering a new language " + f);
+                        messages.data.Add(f, new messages.container(f));
+                    }
+                }
+            }
+            else
+            {
+                messages.data.Add("cs", new messages.container("cs"));
+            }
+            if (!messages.data.ContainsKey("en"))
+            {
+                messages.data.Add("en", new messages.container("en"));
+            }
         }
 
         private static string parse(string text, string name)
@@ -194,29 +277,7 @@ namespace Client
                 {
                     return finalize(data[language].Cache[item], va);
                 }
-                string text = "";
-                switch (language)
-                {
-                    case "en":
-                        text = Client.Properties.Resources.en_english;
-                        break;
-                    case "cs":
-                        text = Client.Properties.Resources.cs_czech;
-                        break;
-                    case "zh":
-                        //text = wmib.Properties.Resources.zh_chinese;
-                        text = "";
-                        break;
-                    default:
-                        if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
-                        {
-                            if (System.IO.File.Exists(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + text))
-                            {
-                                text = System.IO.File.ReadAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + text);
-                            }
-                        }
-                        return "invalid language: " + language;
-                }
+                string text = LanguageCache.GetText(language);
                 string value = parse(text, item);
                 if (value == "")
                 {
