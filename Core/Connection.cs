@@ -36,7 +36,7 @@ namespace Client
         /// <param name="port">Port</param>
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
-        /// <returns></returns>
+        /// <returns>false</returns>
         public static bool ConnectXmpp(string server, int port, string password, bool secured = false)
         {
             ProtocolXmpp IM = new ProtocolXmpp();
@@ -53,9 +53,9 @@ namespace Client
         /// <param name="secured">SSL</param>
         /// <param name="dcc">Connection parameter</param>
         /// <param name="remote">Remote ID</param>
-        /// <param name="Listening"></param>
-        /// <param name="UserName"></param>
-        /// <returns></returns>
+        /// <param name="Listening">Whether DCC should be listening or connect to remote</param>
+        /// <param name="UserName">User name of user you connect to</param>
+        /// <returns>false</returns>
         public static bool ConnectDcc(string server, int port, string password, ProtocolDCC.DCC dcc, bool Listening, string UserName, bool secured = false, string remote = null)
         {
             ProtocolDCC DC = new ProtocolDCC();
@@ -81,7 +81,7 @@ namespace Client
         /// <param name="port">Port</param>
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
-        /// <returns></returns>
+        /// <returns>false</returns>
         public static bool ConnectQl(string server, int port, string password = "xx", bool secured = false)
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
@@ -101,7 +101,7 @@ namespace Client
         /// <param name="port">Port</param>
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
-        /// <returns></returns>
+        /// <returns>Protocol object</returns>
         public static ProtocolSv ConnectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
             ProtocolSv protocol = new ProtocolSv();
@@ -122,7 +122,7 @@ namespace Client
         /// <param name="port">Port</param>
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
-        /// <returns></returns>
+        /// <returns>Protocol object</returns>
         public static ProtocolIrc ConnectIRC(string server, int port = 6667, string password = "", bool secured = false)
         {
             ProtocolIrc protocol = new ProtocolIrc();
@@ -132,7 +132,7 @@ namespace Client
             protocol.Password = password;
             protocol.SSL = secured;
             protocol._IRCNetwork = new Network(server, protocol);
-            network = protocol._IRCNetwork;
+            SelectedNetwork = protocol._IRCNetwork;
             protocol._IRCNetwork._Protocol = protocol;
             protocol.Open();
             return protocol;

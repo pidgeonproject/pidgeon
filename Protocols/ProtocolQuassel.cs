@@ -124,7 +124,7 @@ namespace Client
                     try
                     {
                         string text = null;
-                        while (Core.blocked)
+                        while (Core.IsBlocked)
                         {
                             System.Threading.Thread.Sleep(100);
                         }

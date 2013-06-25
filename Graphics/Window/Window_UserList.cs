@@ -594,7 +594,7 @@ namespace Client.Graphics
                             }
                             if (!Configuration.irc.ConfirmAll)
                             {
-                                Core.network.Transfer(mode, Configuration.Priority.High);
+                                Core.SelectedNetwork.Transfer(mode, Configuration.Priority.High);
                             }
                         }
                         else
@@ -738,7 +738,7 @@ namespace Client.Graphics
                         string nickname = user.Nick;
                         if (nickname != "")
                         {
-                            if (!Core.network._Protocol.Windows.ContainsKey(_Network.SystemWindowID + nickname))
+                            if (!Core.SelectedNetwork._Protocol.Windows.ContainsKey(_Network.SystemWindowID + nickname))
                             {
                                 _Network.Private(nickname);
                             }
@@ -781,7 +781,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.network.Transfer("KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
+                        Core.SelectedNetwork.Transfer("KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
                     }
                 }
             }
@@ -890,7 +890,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.network.Transfer("WHOIS " + user.Nick);
+                        Core.SelectedNetwork.Transfer("WHOIS " + user.Nick);
                     }
                 }
             }

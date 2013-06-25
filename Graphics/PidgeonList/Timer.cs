@@ -86,7 +86,7 @@ namespace Client.Graphics
         {
             try
             {
-                if (Core.notification_waiting)
+                if (Core.NotificationIsNowWaiting)
                 {
                     Core.DisplayNote();
                 }

@@ -167,9 +167,9 @@ namespace Client
                 Current.Redraw();
                 if (Current.isChannel)
                 {
-                    if (Core.network != null)
+                    if (Core.SelectedNetwork != null)
                     {
-                        Core.network.RenderedChannel = Core.network.getChannel(Current.WindowName);
+                        Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.getChannel(Current.WindowName);
                     }
                 }
                 Core.SystemForm.setChannel(name);
@@ -365,8 +365,8 @@ namespace Client
         /// <summary>
         /// Escape system char
         /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="text">Text</param>
+        /// <returns>Escaped text</returns>
         public static string encode_text(string text)
         {
             return text.Replace("%", "%####%");
@@ -375,7 +375,7 @@ namespace Client
         /// <summary>
         /// Reconnect
         /// </summary>
-        /// <param name="network"></param>
+        /// <param name="network">Network</param>
         public virtual void ReconnectNetwork(Network network)
         {
             Core.DebugLog("ReconnectNetwork(Network network) is not implemented");
@@ -384,8 +384,8 @@ namespace Client
         /// <summary>
         /// Format a message to given style selected by skin
         /// </summary>
-        /// <param name="user"></param>
-        /// <param name="text"></param>
+        /// <param name="user">User</param>
+        /// <param name="text">Text</param>
         /// <returns></returns>
         public string PRIVMSG(string user, string text)
         {

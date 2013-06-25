@@ -89,9 +89,9 @@ namespace Client
             }
 
             /// <summary>
-            /// Preferences
+            /// Preferences form is open
             /// </summary>
-            /// <param name="preferences"></param>
+            /// <param name="preferences">Preferences object</param>
             public static void BeforeOptions(ref Forms.Preferences preferences)
             {
 
@@ -153,7 +153,7 @@ namespace Client
         public class _Scrollback
         {
             /// <summary>
-            /// When you hover over a link
+            /// When you hover over a link //fixme
             /// </summary>
             /// <param name="URL"></param>
             /// <param name="X"></param>
@@ -232,12 +232,12 @@ namespace Client
             /// <summary>
             /// Called on notification display
             /// </summary>
-            /// <param name="text"></param>
-            /// <param name="InputStyle"></param>
-            /// <param name="WriteLog"></param>
-            /// <param name="Date"></param>
-            /// <param name="SuppressPing"></param>
-            /// <returns></returns>
+            /// <param name="text">Text of notification form</param>
+            /// <param name="InputStyle">Style of line that is shown</param>
+            /// <param name="WriteLog">Whether it should be written to logs or not</param>
+            /// <param name="Date">Date of line</param>
+            /// <param name="SuppressPing">If this ping should be suppressed or not</param>
+            /// <returns>If true is returned this notification is ignored and not displayed</returns>
             public static bool NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
             {
                 bool success = true;
@@ -273,7 +273,7 @@ namespace Client
             /// <summary>
             /// Hook that is triggered when you connect to network
             /// </summary>
-            /// <param name="network"></param>
+            /// <param name="network">Network</param>
             public static void AfterConnectToNetwork(Network network)
             {
                 network.isLoaded = true;
@@ -298,10 +298,10 @@ namespace Client
             /// <summary>
             /// Network info, this is called when network send the info
             /// </summary>
-            /// <param name="network"></param>
-            /// <param name="command"></param>
-            /// <param name="parameters"></param>
-            /// <param name="value"></param>
+            /// <param name="network">Network</param>
+            /// <param name="command">Command</param>
+            /// <param name="parameters">Parameters</param>
+            /// <param name="value">Values</param>
             public static void NetworkInfo(Network network, string command, string parameters, string value)
             {
                 foreach (Extension extension in Core.Extensions)

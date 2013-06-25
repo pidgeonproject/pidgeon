@@ -213,7 +213,7 @@ namespace Client.Graphics
                 {
                     case ItemType.Channel:
                         Channel chan = (Channel)tv.Model.GetValue(iter, 1);
-                        Core.network = chan._Network;
+                        Core.SelectedNetwork = chan._Network;
                         window = chan.RetrieveWindow();
                         if (window != null)
                         {
@@ -240,7 +240,7 @@ namespace Client.Graphics
                             server.ParentSv.ShowChat("!" + server.SystemWindowID);
                         }
                         server.SystemWindow.MenuColor = Configuration.CurrentSkin.fontcolor;
-                        Core.network = server;
+                        Core.SelectedNetwork = server;
                         disconnectToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
@@ -249,7 +249,7 @@ namespace Client.Graphics
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         protocol.ShowChat("!root");
-                        Core.network = null;
+                        Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         break;
@@ -257,7 +257,7 @@ namespace Client.Graphics
                         ProtocolDCC dcc = (ProtocolDCC)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         dcc.ShowChat(dcc.SystemWindow.WindowName);
-                        Core.network = null;
+                        Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         break;
@@ -265,14 +265,14 @@ namespace Client.Graphics
                         ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         quassel.ShowChat("!root");
-                        Core.network = null;
+                        Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         break;
                     case ItemType.System:
                         break;
                     case ItemType.User:
                         User us = (User)tv.Model.GetValue(iter, 1); ;
-                        Core.network = us._Network;
+                        Core.SelectedNetwork = us._Network;
                         lock (us._Network.PrivateWins)
                         {
                             if (us._Network.PrivateWins.ContainsKey(us))

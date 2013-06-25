@@ -532,7 +532,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.network.Transfer("MODE " + WindowName + " " + mode + " " + user.Nick);
+                        Core.SelectedNetwork.Transfer("MODE " + WindowName + " " + mode + " " + user.Nick);
                     }
                 }
             }

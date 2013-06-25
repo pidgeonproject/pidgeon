@@ -207,19 +207,19 @@ namespace Client
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
                     return;
                 }
-                if (Core.network == null)
+                if (Core.SelectedNetwork == null)
                 {
                     Configuration.UserData.nick = Nick;
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
                     return;
                 }
-                if (!Core.network.IsConnected)
+                if (!Core.SelectedNetwork.IsConnected)
                 {
                     Configuration.UserData.nick = Nick;
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
                     return;
                 }
-                Core.network._Protocol.requestNick(Nick);
+                Core.SelectedNetwork._Protocol.requestNick(Nick);
             }
 
             /// <summary>

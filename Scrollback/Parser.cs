@@ -715,7 +715,7 @@ namespace Client
             Network network = _window._Network;
             if (network == null)
             {
-                network = Core.network;
+                network = Core.SelectedNetwork;
             }
             if (input.StartsWith(Configuration.CommandPrefix) && !input.StartsWith(Configuration.CommandPrefix + Configuration.CommandPrefix))
             {

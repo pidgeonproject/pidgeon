@@ -573,11 +573,11 @@ namespace Client
         {
             try
             {
-                if (Core.network != null)
+                if (Core.SelectedNetwork != null)
                 {
-                    if (Core.network.RenderedChannel != null)
+                    if (Core.SelectedNetwork.RenderedChannel != null)
                     {
-                        Forms.Channel_Info info = new Forms.Channel_Info(Core.network.RenderedChannel);
+                        Forms.Channel_Info info = new Forms.Channel_Info(Core.SelectedNetwork.RenderedChannel);
                         info.Show();
                     }
                 }

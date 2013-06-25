@@ -60,6 +60,9 @@ namespace Client
         /// </summary>
         public class Profiler
         {
+            /// <summary>
+            /// Time
+            /// </summary>
             private Stopwatch time = new Stopwatch();
             /// <summary>
             /// Function that is being checked
@@ -95,15 +98,15 @@ namespace Client
         public class Shortcut
         {
             /// <summary>
-            /// Control
+            /// Control key needs to be pressed in order to execute this
             /// </summary>
             public bool control;
             /// <summary>
-            /// Alt
+            /// Alt key needs to be pressed in order to execute this
             /// </summary>
             public bool alt;
             /// <summary>
-            /// Shift
+            /// Shift key needs to be pressed in order to execute this
             /// </summary>
             public bool shift;
             /// <summary>
@@ -111,17 +114,17 @@ namespace Client
             /// </summary>
             public Gdk.Key keys;
             /// <summary>
-            /// Execution command
+            /// Execution command (it is supposed to be parsed as regular input)
             /// </summary>
             public string data;
 
             /// <summary>
             /// Creates a new instance of shortcut
             /// </summary>
-            /// <param name="Value"></param>
-            /// <param name="Control"></param>
-            /// <param name="Alt"></param>
-            /// <param name="Shift"></param>
+            /// <param name="Value">Keycode</param>
+            /// <param name="Control">Control needs to be pressed in order to execute this</param>
+            /// <param name="Alt">Alt needs to be pressed in order to execute this</param>
+            /// <param name="Shift">Shift needs to be pressed in order to execute this</param>
             /// <param name="Data"></param>
             public Shortcut(Gdk.Key Value, bool Control = false, bool Alt = false, bool Shift = false, string Data = "")
             {
@@ -133,9 +136,12 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Thread which the core is running in
+        /// </summary>
         private static Thread KernelThread = null;
         /// <summary>
-        /// Thread of core
+        /// Thread in which the core is running in, the only thread which can control the GTK objects
         /// </summary>
         public static Thread _KernelThread
         {
@@ -201,13 +207,37 @@ namespace Client
         /// </summary>
         private static List<string> Ring = new List<string>();
         /// <summary>
-        /// Selected network
+        /// Container
         /// </summary>
+        private static Network selectedNetwork = null;
+        /// <summary>
+        /// Selected network, if you are connected to a network and currently displayed window is attached to some,
+        /// this is that network
+        /// </summary>
+        public static Network SelectedNetwork
+        {
+            get
+            {
+                return selectedNetwork;
+            }
+            set
+            {
+                selectedNetwork = value;
+                network = selectedNetwork;
+            }
+        }
+        /// <summary>
+        /// Use SelectedNetwork
+        /// </summary>
+        [Obsolete]
         public static Network network = null;
         /// <summary>
         /// List of ports that the dcc is using in this moment
         /// </summary>
         public static List<uint> LockedPorts = new List<uint>();
+        /// <summary>
+        /// This is a reference to system form, it should be changed only once
+        /// </summary>
         private static Forms.Main _main = null;
         /// <summary>
         /// Gets the system form
@@ -225,17 +255,17 @@ namespace Client
         /// <summary>
         /// Wheter notification is waiting
         /// </summary>
-        public static bool notification_waiting = false;
+        public static bool NotificationIsNowWaiting = false;
         /// <summary>
         /// Data of notification (text)
         /// </summary>
-        private static string notification_data = "";
+        private static string NotificationData = "";
         /// <summary>
-        /// Caption
+        /// Caption of notification
         /// </summary>
-        private static string notification_caption = "";
+        private static string NotificationCaption = "";
         /// <summary>
-        /// This is index of last random number, you should never write or read this value, except for its own function
+        /// This is index of last unique number, you should never write or read this value, except for its own function
         /// </summary>
         private static int randomuq = 0;
         /// <summary>
@@ -243,13 +273,13 @@ namespace Client
         /// </summary>
         public static string SkinPath = "skins";
         /// <summary>
-        /// Packet scan
+        /// This is a reference to scanner window
         /// </summary>
-        public static Forms.TrafficScanner trafficscanner;
+        public static Forms.TrafficScanner trafficscanner = null;
         /// <summary>
-        /// System is blocked - if this is set to true, all subsystems and kernel are supposed to freeze
+        /// System is blocked if this is set to true, all subsystems and kernel are supposed to freeze
         /// </summary>
-        public static bool blocked = false;
+        public static bool IsBlocked = false;
         /// <summary>
         /// Ignore errors - all exceptions and debug logs are ignored and pidgeon is flagged as unstable
         /// </summary>
@@ -257,15 +287,31 @@ namespace Client
         /// <summary>
         /// If this is true the recovery window will not allow to ignore
         /// </summary>
-        public static bool recovery_fatal = false;
+        public static bool RecoveryIsFatal = false;
         /// <summary>
         /// Parameters that were retrieved in console (deprecated)
         /// </summary>
+        [Obsolete]
         public static string[] startup = null;
         /// <summary>
         /// Cache of current params
         /// </summary>
-        private static List<string> startup_params = new List<string>();
+        private static List<string> startupParams = new List<string>();
+        /// <summary>
+        /// Parameters that were retrieved in console
+        /// </summary>
+        public static List<string> StartupParams
+        {
+            get
+            {
+                List<string> data = new List<string>();
+                lock (startupParams)
+                {
+                    data.AddRange(startupParams);
+                }
+                return data;
+            }
+        }
         /// <summary>
         /// Extensions loaded in core
         /// </summary>
@@ -273,23 +319,8 @@ namespace Client
         /// <summary>
         /// Status of core
         /// </summary>
-        public static Status _Status = Status.Running;
+        public static Status _Status = Status.Loading;
         private static DateTime lastActivityTime;
-        /// <summary>
-        /// Parameters that were retrieved in console
-        /// </summary>
-        public static List<string> Parameters
-        {
-            get
-            {
-                List<string> data = new List<string>();
-                lock (startup)
-                {
-                    data.AddRange(startup_params);
-                }
-                return data;
-            }
-        }
 
         /// <summary>
         /// Time for which the user is idle
@@ -303,7 +334,8 @@ namespace Client
         }
 
         /// <summary>
-        /// Location of temporary stuff
+        /// Location of temporary stuff which is not going to be deleted, if you are in need to store some
+        /// permanent cache anywhere, this is a good place
         /// </summary>
         public static string PermanentTemp
         {
@@ -314,7 +346,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Retrieve a read only copy of ring
+        /// Retrieve a read only copy of system ring buffer
         /// </summary>
         public static List<string> RingBuffer
         {
@@ -330,7 +362,7 @@ namespace Client
         }
   
         /// <summary>
-        /// Sets the main
+        /// Sets the reference to system form
         /// </summary>
         /// <param name='form'>
         /// Form.
@@ -346,16 +378,20 @@ namespace Client
         /// <returns></returns>
         public static bool Load()
         {
+            if (Status.Loading != _Status)
+            {
+                throw new Exception("You can't load core multiple times");
+            }
             try
             {
-                KernelThread = System.Threading.Thread.CurrentThread;
+                KernelThread = Thread.CurrentThread;
                 LoadTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
-                foreach (string data in startup)
+                foreach (string data in Program.Parameters)
                 {
-                    startup_params.Add(data);
+                    startupParams.Add(data);
                 }
                 if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
                 {
@@ -421,12 +457,14 @@ namespace Client
                     }
                     ResetMainActivityTimer();
                     Hooks._Sys.AfterCore();
+                    _Status = Status.Running;
                     return true;
                 }
                 Updater _finalisingupdater = new Updater();
                 _finalisingupdater.update.Visible = false;
                 _finalisingupdater.finalize = true;
                 _finalisingupdater.lStatus.Text = messages.get("update2");
+                _Status = Status.Killed;
                 System.Windows.Forms.Application.Run(_finalisingupdater);
             }
             catch (Exception panic)
@@ -446,9 +484,9 @@ namespace Client
         }
 
         /// <summary>
-        /// Connect to irc link
+        /// Parse irc:// this function will connect you using currently active protocol or to services
         /// </summary>
-        /// <param name="text">link</param>
+        /// <param name="text">Link to be parsed</param>
         /// <param name="services"></param>
         public static void ParseLink(string text, ProtocolSv services = null)
         {
@@ -515,7 +553,7 @@ namespace Client
         /// <summary>
         /// Recover from crash
         /// </summary>
-        public static void Recover()
+        private static void Recover()
         {
             Client.Recovery x = new Client.Recovery();
             System.Windows.Forms.Application.Run(x);
@@ -599,7 +637,7 @@ namespace Client
         /// <summary>
         /// Insert a text to log
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">Data</param>
         public static void Ringlog(string data)
         {
             string text = "[" + DateTime.Now.ToString() + "] " + data;
@@ -620,8 +658,8 @@ namespace Client
         /// <summary>
         /// Insert text in to debug log
         /// </summary>
-        /// <param name="data"></param>
-        /// <param name="verbosity"></param>
+        /// <param name="data">Text to insert</param>
+        /// <param name="verbosity">Verbosity (default is 1)</param>
         public static void DebugLog(string data, int verbosity)
         {
             try
@@ -629,7 +667,7 @@ namespace Client
                 System.Diagnostics.Debug.Print(data);
                 if (Configuration.Kernel.Debugging)
                 {
-                    if (Core.SystemForm != null && !Core.blocked)
+                    if (Core.SystemForm != null && !Core.IsBlocked)
                     {
                         if (Core.SystemForm.main != null)
                         {
@@ -779,12 +817,12 @@ namespace Client
             }
             if (_KernelThread == Thread.CurrentThread)
             {
-                if (notification_waiting)
+                if (NotificationIsNowWaiting)
                 {
                     bool Focus = false;
-                    notification.text.Text = notification_data;
-                    notification.title.Markup = "<span size='18000'>" + notification_caption + "</span>";
-                    notification_waiting = false;
+                    notification.text.Text = NotificationData;
+                    notification.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
+                    NotificationIsNowWaiting = false;
                     if (Core.SystemForm.Chat != null)
                     {
                         if (Core.SystemForm.Chat.textbox.richTextBox1.IsFocus)
@@ -814,7 +852,7 @@ namespace Client
         /// Show a notice box, if started from non kernel thread, then it's finalized in that
         /// </summary>
         /// <param name="data">Information</param>
-        /// <param name="caption">Text</param>
+        /// <param name="caption">Name</param>
         public static void DisplayNote(string data, string caption)
         {
             if (Configuration.Kernel.Notice == false)
@@ -822,9 +860,9 @@ namespace Client
                 return;
             }
             data = Protocol.decode_text(Core.RemoveSpecial(data));
-            notification_waiting = true;
-            notification_data = data;
-            notification_caption = caption;
+            NotificationIsNowWaiting = true;
+            NotificationData = data;
+            NotificationCaption = caption;
             if (_KernelThread == Thread.CurrentThread)
             {
                 DisplayNote();
@@ -834,8 +872,8 @@ namespace Client
         /// <summary>
         /// Backup a file
         /// </summary>
-        /// <param name="file"></param>
-        /// <returns></returns>
+        /// <param name="file">File name</param>
+        /// <returns>true</returns>
         public static bool Backup(string file)
         {
             if (File.Exists(file + "~"))
@@ -853,7 +891,7 @@ namespace Client
         /// <summary>
         /// Get a random unique string (it's not possible to get 2 same strings from this function)
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Unique ID</returns>
         public static string RetrieveRandom()
         {
             int random = 0;
@@ -877,8 +915,8 @@ namespace Client
         /// <summary>
         /// Editor
         /// </summary>
-        /// <param name="script"></param>
-        /// <param name="target"></param>
+        /// <param name="script">Script</param>
+        /// <param name="target">Network</param>
         public static void ProcessScript(string script, Network target)
         {
             try
@@ -1170,10 +1208,10 @@ namespace Client
             }
             if (ek == ExceptionKind.Critical)
             {
-                recovery_fatal = true;
+                RecoveryIsFatal = true;
             }
             DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
-            blocked = true;
+            IsBlocked = true;
             recovery_exception = _exception;
             _RecoveryThread = new Thread(Recover);
             _RecoveryThread.Start();
@@ -1181,7 +1219,7 @@ namespace Client
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
             }
-            while (blocked || recovery_fatal)
+            while (IsBlocked || RecoveryIsFatal)
             {
                 Thread.Sleep(100);
             }
@@ -1336,6 +1374,14 @@ namespace Client
             /// Terminating
             /// </summary>
             Quiting,
+            /// <summary>
+            /// Loading
+            /// </summary>
+            Loading,
+            /// <summary>
+            /// Killed
+            /// </summary>
+            Killed,
         }
     }
 

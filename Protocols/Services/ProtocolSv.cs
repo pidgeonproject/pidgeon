@@ -237,7 +237,7 @@ namespace Client
                 {
                     text = _StreamReader.ReadLine();
                     Core.trafficscanner.Insert(Server, " >> " + text);
-                    while (Core.blocked)
+                    while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);
                     }
@@ -527,9 +527,9 @@ namespace Client
                     foreach (Network network in NetworkList)
                     {
                         network.Destroy();
-                        if (Core.network == network)
+                        if (Core.SelectedNetwork == network)
                         {
-                            Core.network = null;
+                            Core.SelectedNetwork = null;
                         }
                     }
                     NetworkList.Clear();
@@ -673,7 +673,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + Core.network.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
+            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + Core.SelectedNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -830,10 +830,10 @@ namespace Client
         {
             if (network == null)
             {
-                if (Core.network != null && NetworkList.Contains(Core.network))
+                if (Core.SelectedNetwork != null && NetworkList.Contains(Core.SelectedNetwork))
                 {
                     Datagram data = new Datagram("RAW", text);
-                    data.Parameters.Add("network", Core.network.ServerName);
+                    data.Parameters.Add("network", Core.SelectedNetwork.ServerName);
                     Deliver(data);
                     return;
                 }

@@ -27,13 +27,13 @@ namespace Client
         {
             public static void services_flush(string parameter)
             {
-                if (Core.network == null)
+                if (Core.SelectedNetwork == null)
                 {
                     return;
                 }
-                if (Core.network._Protocol.GetType() == typeof(ProtocolSv))
+                if (Core.SelectedNetwork._Protocol.GetType() == typeof(ProtocolSv))
                 {
-                    ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
+                    ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
                     protocol.sBuffer.Snapshot();
                 }
             }
@@ -72,20 +72,20 @@ namespace Client
 
             public static void services_cache(string parameter)
             {
-                if (Core.network == null)
+                if (Core.SelectedNetwork == null)
                 {
                     return;
                 }
-                if (Core.network._Protocol.GetType() == typeof(ProtocolSv))
+                if (Core.SelectedNetwork._Protocol.GetType() == typeof(ProtocolSv))
                 {
-                    ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
+                    ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
                     protocol.sBuffer.PrintInfo();
                 }
             }
 
             public static void services_clear(string parameter)
             {
-                if (Core.network == null)
+                if (Core.SelectedNetwork == null)
                 {
                     foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
                     {
@@ -94,9 +94,9 @@ namespace Client
                     }
                     return;
                 }
-                if (Core.network._Protocol.GetType() == typeof(ProtocolSv))
+                if (Core.SelectedNetwork._Protocol.GetType() == typeof(ProtocolSv))
                 {
-                    ProtocolSv protocol = (ProtocolSv)Core.network._Protocol;
+                    ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
                     protocol.sBuffer.Clear();
                     Core.SystemForm.Chat.scrollback.InsertText("Services cache was cleared", Client.ContentLine.MessageStyle.System, false);
                 }
@@ -132,7 +132,7 @@ namespace Client
 
             public static void service_quit(string parameter)
             {
-                Core.network._Protocol.Exit();
+                Core.SelectedNetwork._Protocol.Exit();
             }
 
             public static void pidgeon_service(string parameter)

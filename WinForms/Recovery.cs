@@ -51,7 +51,7 @@ namespace Client
                 {
                     ring += line + "\n";
                 }
-                if (Core.recovery_fatal)
+                if (Core.RecoveryIsFatal)
                 {
                     textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. This is unrecoverable exception, the application has to be terminated now. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
                                         + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
@@ -99,7 +99,7 @@ namespace Client
 
         private void bContinue_Click(object sender, EventArgs e)
         {
-            Core.blocked = false;
+            Core.IsBlocked = false;
             Hide();
             Close();
         }

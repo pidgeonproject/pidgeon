@@ -313,7 +313,7 @@ namespace Client
 
                 while (_IRCNetwork.IsConnected && !_StreamReader.EndOfStream && IsConnected)
                 {
-                    while (Core.blocked)
+                    while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);
                     }
@@ -435,7 +435,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core.SystemForm.Chat.scrollback.InsertText(Core.network._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
+                Core.SystemForm.Chat.scrollback.InsertText(Core.SelectedNetwork._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, priority);
             return 0;
@@ -564,9 +564,9 @@ namespace Client
             Connected = false;
             System.Threading.Thread.Sleep(200);
             SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
-            if (Core.network == _IRCNetwork)
+            if (Core.SelectedNetwork == _IRCNetwork)
             {
-                Core.network = null;
+                Core.SelectedNetwork = null;
             }
             base.Exit();
         }

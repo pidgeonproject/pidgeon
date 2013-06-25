@@ -293,7 +293,7 @@ namespace Client.Forms
                 }
                 done = true;
 
-                foreach (string text in Core.Parameters)
+                foreach (string text in Core.StartupParams)
                 {
                     Core.ParseLink(text);
                 }
@@ -378,15 +378,15 @@ namespace Client.Forms
                 throw new Exception("You can't control other windows from non kernel thread");
             }
             this.toolStripInfo.Text = StatusBox;
-            if (Core.network != null && !Core.network.IsDestroyed)
+            if (Core.SelectedNetwork != null && !Core.SelectedNetwork.IsDestroyed)
             {
-                toolStripStatusNetwork.Text = Core.network.ServerName + "    w/c/p " + Core.network._Protocol.Windows.Count.ToString() + "/" + Core.network.Channels.Count.ToString() + "/" + Core.network.PrivateChat.Count.ToString();
-                if (Core.network.RenderedChannel != null)
+                toolStripStatusNetwork.Text = Core.SelectedNetwork.ServerName + "    w/c/p " + Core.SelectedNetwork._Protocol.Windows.Count.ToString() + "/" + Core.SelectedNetwork.Channels.Count.ToString() + "/" + Core.SelectedNetwork.PrivateChat.Count.ToString();
+                if (Core.SelectedNetwork.RenderedChannel != null)
                 {
                     string info = "";
-                    if (Core.network.RenderedChannel.Bans != null)
+                    if (Core.SelectedNetwork.RenderedChannel.Bans != null)
                     {
-                        info += Core.network.RenderedChannel.Bans.Count.ToString();
+                        info += Core.SelectedNetwork.RenderedChannel.Bans.Count.ToString();
                     }
                     else
                     {
@@ -394,25 +394,25 @@ namespace Client.Forms
                     }
                     info = info + " / ";
 
-                    if (Core.network.RenderedChannel.Invites != null)
+                    if (Core.SelectedNetwork.RenderedChannel.Invites != null)
                     {
-                        info += Core.network.RenderedChannel.Invites.Count.ToString();
+                        info += Core.SelectedNetwork.RenderedChannel.Invites.Count.ToString();
                     }
                     else
                     {
                         info += "??";
                     }
                     info = info + " / ";
-                    if (Core.network.RenderedChannel.Exceptions != null)
+                    if (Core.SelectedNetwork.RenderedChannel.Exceptions != null)
                     {
-                        info += Core.network.RenderedChannel.Exceptions.Count.ToString();
+                        info += Core.SelectedNetwork.RenderedChannel.Exceptions.Count.ToString();
                     }
                     else
                     {
                         info += "??";
                     }
-                    setText(Core.network.RenderedChannel.Name + " - " + Core.network.RenderedChannel.Topic);
-                    toolStripStatusChannel.Text = Core.network.RenderedChannel.Name + " user count: " + Core.network.RenderedChannel.UserList.Count + " channel modes: " + Core.network.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
+                    setText(Core.SelectedNetwork.RenderedChannel.Name + " - " + Core.SelectedNetwork.RenderedChannel.Topic);
+                    toolStripStatusChannel.Text = Core.SelectedNetwork.RenderedChannel.Name + " user count: " + Core.SelectedNetwork.RenderedChannel.UserList.Count + " channel modes: " + Core.SelectedNetwork.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)
@@ -697,10 +697,10 @@ namespace Client.Forms
         /// </summary>
         public void SwitchRoot()
         {
-            if (Core.network != null)
+            if (Core.SelectedNetwork != null)
             {
-                Core.network.RenderedChannel = null;
-                Core.network._Protocol.Current = main;
+                Core.SelectedNetwork.RenderedChannel = null;
+                Core.SelectedNetwork._Protocol.Current = main;
                 SwitchWindow(main);
                 return;
             }

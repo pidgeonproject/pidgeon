@@ -54,7 +54,7 @@ namespace Client
         
         private static void ShowHelp()
         {
-            Console.WriteLine("Usage: pidgeon [OPTION...] [link]\n"
+            Console.WriteLine("Usage: pidgeon [h] [link]\n"
                               + "\n"
                               + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
                               + "\n"
@@ -85,7 +85,7 @@ namespace Client
         public static bool Parameters()
         {
             List<string> args = new List<string>();
-            foreach (string xx in Core.startup)
+            foreach (string xx in Core.StartupParams)
             {
                 args.Add(xx);
             }
