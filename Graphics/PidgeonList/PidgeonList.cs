@@ -18,9 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Text;
 using Gtk;
 
 namespace Client.Graphics
@@ -648,7 +645,8 @@ namespace Client.Graphics
 
         private void insertService(ProtocolSv service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, "Root window of services", icon_0);
+            string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.SSL.ToString() + "]";
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, icon_0);
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
