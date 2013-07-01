@@ -201,7 +201,7 @@ namespace Client.Forms
             SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(SearchAction);
             LoadMoreToScrollbackAction = new Gtk.MenuItem(messages.Localize("[[window-menu-more]]"));
-            LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
+            LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(LoadMoreToScrollbackAction);
             MiscMenu.Append(new Gtk.SeparatorMenuItem());
             ConfigurationFileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-cf]]"));
