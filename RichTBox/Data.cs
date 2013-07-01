@@ -108,6 +108,8 @@ namespace Client
             if (text.Italic)
             {
                 format.Style = Pango.Style.Italic;
+                format.BackgroundGdk = Core.FromColor(text.TextColor);
+                format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.backgroundcolor);
             }
 
             if (text.Link != null)
@@ -121,7 +123,10 @@ namespace Client
 
             format.Data.Add("link", text.Link);
             format.Data.Add("identifier", text.Text);
-            format.ForegroundGdk = Core.FromColor(text.TextColor);
+            if (!text.Italic)
+            {
+                format.ForegroundGdk = Core.FromColor(text.TextColor);
+            }
             tb.TagTable.Add(format);
             format.FontDesc = DefaultFont;
             format.SizePoints = Configuration.CurrentSkin.fontsize;
@@ -157,6 +162,8 @@ namespace Client
                     if (text.Italic)
                     {
                         format.Style = Pango.Style.Italic;
+                        format.BackgroundGdk = Core.FromColor(text.TextColor);
+                        format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.backgroundcolor);
                     }
 
                     if (text.Link != null)
@@ -170,7 +177,10 @@ namespace Client
 
                     format.Data.Add("link", text.Link);
                     format.Data.Add("identifier", text.Text);
-                    format.ForegroundGdk = Core.FromColor(text.TextColor);
+                    if (!text.Italic)
+                    {
+                        format.ForegroundGdk = Core.FromColor(text.TextColor);
+                    }
                     richTextBox.Buffer.TagTable.Add(format);
                     format.FontDesc = DefaultFont;
                     format.SizePoints = Configuration.CurrentSkin.fontsize;
