@@ -96,9 +96,10 @@ namespace Client
 
             if (text.Bold)
             {
-                format.Weight = Pango.Weight.Heavy;
+                format.Weight = Pango.Weight.Bold;
+                format.Underline = Pango.Underline.Double;
             }
-
+            
             if (text.Underline)
             {
                 format.Underline = Pango.Underline.Single;
@@ -106,7 +107,7 @@ namespace Client
 
             if (text.Italic)
             {
-
+                format.Style = Pango.Style.Italic;
             }
 
             if (text.Link != null)
@@ -142,10 +143,11 @@ namespace Client
                 {
                     TextTag format = new TextTag(null);
 
-                    //if (text.Bold)
-                    //{
-                        format.Weight = Pango.Weight.Heavy;
-                    //}
+                    if (text.Bold)
+                    {
+                        format.Weight = Pango.Weight.Bold;
+                        format.Underline = Pango.Underline.Double;
+                    }
 
                     if (text.Underline)
                     {
@@ -154,7 +156,7 @@ namespace Client
 
                     if (text.Italic)
                     {
-
+                        format.Style = Pango.Style.Italic;
                     }
 
                     if (text.Link != null)

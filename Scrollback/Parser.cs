@@ -379,6 +379,7 @@ namespace Client
             string templine = "";
             bool Bold = false;
             bool Underlined = false;
+            bool Italic = false;
             string Link = null;
             int Jump = 0;
 
@@ -405,6 +406,7 @@ namespace Client
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
                         lprttext.TextColor = color;
+                        lprttext.Italic = Italic;
                         if (Link != null)
                         {
                             lprttext.Link = Link;
@@ -434,6 +436,7 @@ namespace Client
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
+                    lprttext.Italic = Italic;
                     line.insertData(lprttext);
                     templine = "";
                     line.insertData(parse_name(tempdata, SBAB, Underlined, Bold, color));
@@ -458,6 +461,7 @@ namespace Client
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Underline = Underlined;
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     line.insertData(lprttext);
                     templine = "";
 
@@ -471,12 +475,39 @@ namespace Client
                         Jump = tempdata.Length;
                     }
                 }
+                else if (tempdata.StartsWith(((char)0016).ToString()))
+                {
+                    tempdata = tempdata.Substring(1);
+                    Jump = 0;
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
+                    lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    Italic = !Italic;
+                    carret++;
+                }
+                else if (tempdata.StartsWith(((char)001).ToString()))
+                {
+                    tempdata = tempdata.Substring(1);
+                    Jump = 0;
+                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
+                    lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
+                    lprttext.Underline = Underlined;
+                    line.insertData(lprttext);
+                    templine = "";
+                    Underlined = !Underlined;
+                    carret++;
+                }
                 else if (tempdata.StartsWith(((char)002).ToString()))
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     templine = "";
@@ -491,6 +522,7 @@ namespace Client
                     carret++;
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     if (tempdata.Length > 1)
@@ -537,6 +569,7 @@ namespace Client
                     Jump = 0;
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     templine = "";
@@ -547,6 +580,7 @@ namespace Client
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     templine = "";
@@ -564,6 +598,7 @@ namespace Client
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     templine = "";
@@ -581,6 +616,7 @@ namespace Client
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                     lprttext.Bold = Bold;
+                    lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
                     line.insertData(lprttext);
                     templine = "";
@@ -603,6 +639,7 @@ namespace Client
             }
             lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
             lprttext.Underline = Underlined;
+            lprttext.Italic = Italic;
             lprttext.Bold = Bold;
             line.insertData(lprttext);
 
