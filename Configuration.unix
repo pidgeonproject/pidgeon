@@ -99,6 +99,9 @@ namespace Client
             /// What should happen when you click a pidgeon list
             /// </summary>
             public static PidgeonList_MouseClick MiddleClick_Side = PidgeonList_MouseClick.Close;
+            /// <summary>
+            /// Whether windows should remember their position
+            /// </summary>
             [Experimental]
             public static bool RememberPosition = false;
         }
@@ -228,6 +231,10 @@ namespace Client
         /// </summary>
         public class Kernel
         {
+            /// <summary>
+            /// Kernel is running in safe mode
+            /// </summary>
+            public static bool Safe = false;
             /// <summary>
             /// Network Scan
             /// </summary>
