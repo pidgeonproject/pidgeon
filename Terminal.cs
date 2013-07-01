@@ -59,9 +59,11 @@ namespace Client
                               + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
                               + "\n"
                               + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"
-                              + "-h (--help) display this help\n"
+                              + "\nParameters:\n\n"
+                              + "  --safe: Start pidgeon in safe mode\n"
+                              + "  -h (--help): display this help\n"
                               + "\n"
-                              + "for more information see http://pidgeonclient.org/wiki pidgeon is open source.");
+                              + "for more information see http://pidgeonclient.org/wiki pidgeon is open source");
         }
         
         private static bool Process(List<Parameter> ls)
@@ -73,6 +75,9 @@ namespace Client
                     case "help":
                         ShowHelp();
                         return true;
+                    case "safe":
+                        Configuration.Kernel.Safe = true;
+                        return false;
                 }
             }
             
@@ -85,7 +90,7 @@ namespace Client
         public static bool Parameters()
         {
             List<string> args = new List<string>();
-            foreach (string xx in Core.StartupParams)
+            foreach (string xx in Program.Parameters)
             {
                 args.Add(xx);
             }
@@ -106,6 +111,11 @@ namespace Client
                         case "-h":
                             parsed = id;
                             id = "help";
+                            Read = true;
+                            break;
+                        case "--safe":
+                            parsed = id;
+                            id = "safe";
                             Read = true;
                             break;
                     }

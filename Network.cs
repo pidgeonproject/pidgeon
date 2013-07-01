@@ -23,7 +23,7 @@ using System.Text;
 namespace Client
 {
     /// <summary>
-    /// Network
+    /// Instance of irc network, this class is typically handled by protocols
     /// </summary>
     public class Network
     {
@@ -106,7 +106,7 @@ namespace Client
         /// </summary>
         public string AwayMessage = null;
         /// <summary>
-        /// User modes
+        /// User modes, these are modes that are applied on network, not channel (invisible, oper)
         /// </summary>
         public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
         /// <summary>
@@ -114,11 +114,11 @@ namespace Client
         /// </summary>
         public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
         /// <summary>
-        /// Channel user modes
+        /// Channel user modes (voiced, op)
         /// </summary>
         public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
         /// <summary>
-        /// Channel modes
+        /// Channel modes (moderated, topic)
         /// </summary>
         public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
         /// <summary>
@@ -140,7 +140,7 @@ namespace Client
         /// <summary>
         /// Check if the info is parsed
         /// </summary>
-        public bool parsed_info = false;
+        public bool ParsedInfo = false;
         /// <summary>
         /// Symbol prefix of channels
         /// </summary>
@@ -196,7 +196,7 @@ namespace Client
         /// <summary>
         /// Specifies whether this network is using SSL connection
         /// </summary>
-        public bool isSecure = false;
+        public bool IsSecure = false;
         /// <summary>
         /// Parent service
         /// </summary>
@@ -279,10 +279,10 @@ namespace Client
         }
 
         /// <summary>
-        /// Create a new network, requires name and protocol type
+        /// Creates a new network, requires name and protocol type
         /// </summary>
-        /// <param name="Server"></param>
-        /// <param name="protocol"></param>
+        /// <param name="Server">Server name</param>
+        /// <param name="protocol">Protocol that own this instance</param>
         public Network(string Server, Protocol protocol)
         {
             try
@@ -422,13 +422,13 @@ namespace Client
         }
 
         /// <summary>
-        /// Removes the char from user.
+        /// Removes the channel symbols (like @ or ~) from user nick
         /// </summary>
         /// <returns>
-        /// The username without char.
+        /// The username without char
         /// </returns>
         /// <param name='username'>
-        /// Username.
+        /// Username
         /// </param>
         public string RemoveCharFromUser(string username)
         {
@@ -444,9 +444,9 @@ namespace Client
         }
 
         /// <summary>
-        /// Retrieve information about given channel
+        /// Retrieve information about given channel from cache of channel list
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="channel">Channel that is about to be resolved</param>
         /// <returns></returns>
         public ChannelData ContainsChannel(string channel)
         {
@@ -464,12 +464,12 @@ namespace Client
         }
 
         /// <summary>
-        /// Part
+        /// Part a given channel
         /// </summary>
-        /// <param name="channel_name"></param>
-        public void Part(string channel_name)
+        /// <param name="ChannelName">Channel name</param>
+        public void Part(string ChannelName)
         {
-            _Protocol.Part(channel_name, this);
+            _Protocol.Part(ChannelName, this);
         }
 
         /// <summary>
@@ -499,8 +499,8 @@ namespace Client
         /// <summary>
         /// If such a user is contained in a private message list it will be returned
         /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
+        /// <param name="user">User nick</param>
+        /// <returns>Instance of user or null if it doesn't exist</returns>
         public User getUser(string user)
         {
             foreach (User x in PrivateChat)
@@ -517,7 +517,7 @@ namespace Client
         /// Retrieve channel
         /// </summary>
         /// <param name="name">String</param>
-        /// <returns></returns>
+        /// <returns>Channel or null if it doesn't exist</returns>
         public Channel getChannel(string name)
         {
             foreach (Channel chan in Channels)
@@ -578,10 +578,10 @@ namespace Client
         /// <summary>
         /// Create a new instance of channel window
         /// </summary>
-        /// <param name="channel"></param>
+        /// <param name="channel">Channel</param>
         /// <param name="nf">Don't focus this new window</param>
-        /// <returns></returns>
-        public Channel WindowCreateNewJoin(string channel, bool nf = false)
+        /// <returns>Instance of channel object</returns>
+        public Channel Channel(string channel, bool nf = false)
         {
             Channel previous = getChannel(channel);
             if (previous == null)
@@ -616,7 +616,7 @@ namespace Client
         /// <summary>
         /// Unregister info for user and channel modes
         /// </summary>
-        /// <param name="key"></param>
+        /// <param name="key">Mode</param>
         /// <returns></returns>
         public bool UnregisterInfo(char key)
         {
@@ -702,9 +702,9 @@ namespace Client
         /// <summary>
         /// Register info for channel info
         /// </summary>
-        /// <param name="key"></param>
-        /// <param name="text"></param>
-        /// <returns></returns>
+        /// <param name="key">Mode</param>
+        /// <param name="text">Text</param>
+        /// <returns>true on success, false if this info already exist</returns>
         public bool RegisterInfo(char key, string text)
         {
             lock (Descriptions)

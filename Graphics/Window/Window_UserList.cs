@@ -282,6 +282,9 @@ namespace Client.Graphics
             {
                 bool display = false;
                 Gtk.Menu menu = new Menu();
+
+                Hooks._Window.BeforeUserMenu(ref menu, this);
+
                 if (whoisToolStripMenuItem.Visible)
                 {
                     display = true;
@@ -415,6 +418,8 @@ namespace Client.Graphics
                     reload.Activated += new EventHandler(synchroToolStripMenuItem_Click);
                     menu.Append(reload);
                 }
+
+                Hooks._Window.AfterUserMenu(ref menu, this);
 
                 if (display)
                 {

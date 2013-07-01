@@ -57,7 +57,7 @@ namespace Client
                 string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
                 xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
                 string[] _mode = xmodes.Split(',');
-                _Network.parsed_info = true;
+                _Network.ParsedInfo = true;
                 if (_mode.Length == 4)
                 {
                     _Network.PModes.Clear();
@@ -140,6 +140,15 @@ namespace Client
                 string uc;
                 if (message.StartsWith(_Protocol.delimiter.ToString()))
                 {
+                    string trimmed = message;
+                    if (trimmed.StartsWith(_Protocol.delimiter.ToString()))
+                    {
+                        trimmed.Substring(1);
+                    }
+                    if (trimmed.Length > 1 && trimmed[trimmed.Length - 1] == _Protocol.delimiter)
+                    {
+                        trimmed.Substring(0, trimmed.Length - 1);
+                    }
                     if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                     {
                         message = message.Substring("xACTION".Length);
@@ -212,16 +221,17 @@ namespace Client
                                     }
                                     break;
                                 case "DCC":
+                                    string message2 = message;
                                     if (message.Length < 5 || !message.Contains(" "))
                                     {
                                         Core.DebugLog("Malformed DCC " + message);
                                         return false;
                                     }
-                                    if (message.EndsWith(_Protocol.delimiter.ToString()))
+                                    if (message2.EndsWith(_Protocol.delimiter.ToString()))
                                     {
-                                        message = message.Substring(0, message.Length - 1);
+                                        message2 = message2.Substring(0, message2.Length - 1);
                                     }
-                                    string[] list = message.Split(' ');
+                                    string[] list = message2.Split(' ');
                                     if (list.Length < 5)
                                     {
                                         Core.DebugLog("Malformed DCC " + message);
@@ -231,12 +241,12 @@ namespace Client
                                     int port = 0;
                                     if (!int.TryParse(list[4], out port))
                                     {
-                                        Core.DebugLog("Malformed DCC " + message);
+                                        Core.DebugLog("Malformed DCC " + message2);
                                         return false;
                                     }
                                     if (port < 1)
                                     {
-                                        Core.DebugLog("Malformed DCC " + message);
+                                        Core.DebugLog("Malformed DCC " + message2);
                                         return false;
                                     }
                                     switch (type.ToLower())
@@ -250,14 +260,14 @@ namespace Client
                                             Core.OpenDCC(list[3], port, _nick, false, true, _Network);
                                             return true;
                                     }
-                                    Core.DebugLog("Malformed DCC " + message);
+                                    Core.DebugLog("Malformed DCC " + message2);
                                     return false;
                             }
                         }
                     }
                     if (Configuration.irc.DisplayCtcp)
                     {
-                        WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + message,
+                        WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + trimmed,
                             Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                         return true;
                     }

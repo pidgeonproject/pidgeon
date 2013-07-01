@@ -86,7 +86,7 @@ namespace Client
                         Channel curr = _Network.getChannel(channel);
                         if (curr == null)
                         {
-                            curr = _Network.WindowCreateNewJoin(channel);
+                            curr = _Network.Channel(channel, true);
                         }
                         else
                         {

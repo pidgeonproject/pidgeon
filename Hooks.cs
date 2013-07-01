@@ -36,7 +36,7 @@ namespace Client
             /// </summary>
             public static void AfterCore()
             {
-
+                Events._System.TriggerAfterCore(null, null);
             }
 
             /// <summary>
@@ -47,6 +47,12 @@ namespace Client
             /// <returns></returns>
             public static bool BeforeNote(ref string caption, ref string text)
             {
+                Extension.BeforeNoteArgs e = new Extension.BeforeNoteArgs();
+                e.Caption = caption;
+                e.Text = text;
+                Events._System.TriggerBeforeNote(null, e);
+                caption = e.Caption;
+                text = e.Text;
                 foreach (Extension extension in Core.Extensions)
                 {
                     try
@@ -71,6 +77,9 @@ namespace Client
             /// <param name="main"></param>
             public static void Initialise(Client.Forms.Main main)
             {
+                Extension.SystemInitialiseArgs e = new Extension.SystemInitialiseArgs();
+                e.Main = main;
+                Events._System.TriggerInitialise(null, e);
                 foreach (Extension extension in Core.Extensions)
                 {
                     try
@@ -94,7 +103,9 @@ namespace Client
             /// <param name="preferences">Preferences object</param>
             public static void BeforeOptions(ref Forms.Preferences preferences)
             {
-
+                Extension.BeforeOptionsArgs e = new Extension.BeforeOptionsArgs();
+                e.Window = preferences;
+                Events._System.TriggerBeforeOptions(null, e);
             }
 
             /// <summary>
@@ -104,6 +115,34 @@ namespace Client
             public static void Poke(Network network = null)
             {
                 Core.ResetMainActivityTimer();
+            }
+        }
+
+        /// <summary>
+        /// Window
+        /// </summary>
+        public class _Window
+        {
+            /// <summary>
+            /// This is called before the user menu is shown
+            /// </summary>
+            /// <param name="Menu"></param>
+            /// <param name="Window"></param>
+            /// <returns></returns>
+            public static bool BeforeUserMenu(ref Gtk.Menu Menu, Graphics.Window Window)
+            {
+                return true;
+            }
+
+            /// <summary>
+            /// This is called before the user menu is shown
+            /// </summary>
+            /// <param name="Menu"></param>
+            /// <param name="Window"></param>
+            /// <returns></returns>
+            public static bool AfterUserMenu(ref Gtk.Menu Menu, Graphics.Window Window)
+            {
+                return true;
             }
         }
 

@@ -389,6 +389,10 @@ namespace Client
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
+                if (Configuration.Kernel.Safe)
+                {
+                    Ringlog("Running in safe mode");
+                }
                 foreach (string data in Program.Parameters)
                 {
                     startupParams.Add(data);
@@ -409,7 +413,7 @@ namespace Client
                 }
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
-                messages.Read();
+                messages.Read(Configuration.Kernel.Safe);
                 trafficscanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
@@ -421,11 +425,18 @@ namespace Client
                     {
                         Directory.CreateDirectory(PermanentTemp);
                     }
-                    DebugLog("Running updater");
-                    ThUp = new Thread(Updater.Run);
-                    ThUp.Name = "pidgeon service";
-                    ThUp.Start();
-                    SystemThreads.Add(ThUp);
+                    if (Configuration.Kernel.Safe)
+                    {
+                        DebugLog("Not running updater in safe mode");
+                    }
+                    else
+                    {
+                        DebugLog("Running updater");
+                        ThUp = new Thread(Updater.Run);
+                        ThUp.Name = "pidgeon service";
+                        ThUp.Start();
+                        SystemThreads.Add(ThUp);
+                    }
                     DebugLog("Loading log writer thread");
                     Thread_logs = new Thread(IO.Load);
                     Thread_logs.Name = "Logs";
@@ -436,18 +447,25 @@ namespace Client
                     notification = new Forms.Notification();
                     //DebugLog("Loading scripting core");
                     //ScriptingCore.Load();
-                    DebugLog("Loading extensions");
-                    Extension.Init();
-                    DebugLog("Loading http");
-                    Hyperlink.Initialize();
-                    if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
+                    if (Configuration.Kernel.Safe)
                     {
-                        foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
+                        DebugLog("Skipping load of extensions");
+                    }
+                    else
+                    {
+                        DebugLog("Loading extensions");
+                        Extension.Init();
+                        if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                         {
-                            DebugLog("Registering plugin " + dll);
-                            RegisterPlugin(dll);
+                            foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
+                            {
+                                DebugLog("Registering plugin " + dll);
+                                RegisterPlugin(dll);
+                            }
                         }
                     }
+                    DebugLog("Loading http");
+                    Hyperlink.Initialize();
                     if (!File.Exists(ConfigFile))
                     {
                         Network.Highlighter simple = new Network.Highlighter();
@@ -1115,21 +1133,28 @@ namespace Client
         {
             Configuration.SL.Clear();
             Configuration.SL.Add(new Skin());
-            DebugLog("Loading skins");
-            if (Directory.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath))
+            if (Configuration.Kernel.Safe)
             {
-                string[] skin = Directory.GetFiles(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath);
+                DebugLog("Skipping load of skins because of safe mode");
+            }
+            else
+            {
+                DebugLog("Loading skins");
+                if (Directory.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath))
                 {
-                    foreach (string file in skin)
+                    string[] skin = Directory.GetFiles(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath);
                     {
-                        if (file.EndsWith(".ps"))
+                        foreach (string file in skin)
                         {
-                            Skin curr = new Skin(file);
-                            if (curr == null)
+                            if (file.EndsWith(".ps"))
                             {
-                                continue;
+                                Skin curr = new Skin(file);
+                                if (curr == null)
+                                {
+                                    continue;
+                                }
+                                Configuration.SL.Add(curr);
                             }
-                            Configuration.SL.Add(curr);
                         }
                     }
                 }

@@ -232,6 +232,10 @@ namespace Client
         public class Kernel
         {
             /// <summary>
+            /// Kernel is running in safe mode
+            /// </summary>
+            public static bool Safe = false;
+            /// <summary>
             /// Network Scan
             /// </summary>
             public static bool NetworkSniff = true;

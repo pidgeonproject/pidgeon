@@ -60,7 +60,7 @@ namespace Client
                         else
                         {
                             Core.DebugLog("There is no channel " + message_target);
-                            target = mn.WindowCreateNewJoin(message_target);
+                            target = mn.Channel(message_target);
                             message_window = target.RetrieveWindow();
                         }
                     }
@@ -547,7 +547,7 @@ namespace Client
                                     {
                                         if (nw.getChannel(channel) == null)
                                         {
-                                            Channel xx = nw.WindowCreateNewJoin(channel, true);
+                                            Channel xx = nw.Channel(channel, true);
                                             if (Configuration.Services.UsingCache)
                                             {
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);

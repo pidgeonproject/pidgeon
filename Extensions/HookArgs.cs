@@ -68,6 +68,43 @@ namespace Client
         }
 
         /// <summary>
+        /// For hook related to before note
+        /// </summary>
+        public class BeforeNoteArgs : HookArgs
+        {
+            /// <summary>
+            /// Text
+            /// </summary>
+            public string Text = null;
+            /// <summary>
+            /// Caption
+            /// </summary>
+            public string Caption = null;
+        }
+
+        /// <summary>
+        /// Arguments that are used for before options
+        /// </summary>
+        public class BeforeOptionsArgs : HookArgs
+        {
+            /// <summary>
+            /// Preferences window
+            /// </summary>
+            public Forms.Preferences Window = null;
+        }
+
+        /// <summary>
+        /// System form init args
+        /// </summary>
+        public class SystemInitialiseArgs : HookArgs
+        {
+            /// <summary>
+            /// Main
+            /// </summary>
+            public Forms.Main Main = null;
+        }
+
+        /// <summary>
         /// This is a base for network args
         /// </summary>
         public class NetworkArgs : HookArgs

@@ -201,8 +201,14 @@ namespace Client
         /// <summary>
         /// Load all languages
         /// </summary>
-        public static void Read()
+        public static void Read(bool SafeMode = false)
         {
+            if (SafeMode)
+            {
+                Core.DebugLog("Loading only built-in english, because of safe mode");
+                messages.data.Add("en", new messages.container("en"));
+                return;
+            }
             if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
             {
                 foreach (string file in System.IO.Directory.GetFileSystemEntries(Configuration.Kernel.Lang, "*", System.IO.SearchOption.TopDirectoryOnly))
