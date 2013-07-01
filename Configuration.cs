@@ -213,6 +213,10 @@ namespace Client
             /// History
             /// </summary>
             public static List<string> History = new List<string>();
+            /// <summary>
+            /// Switch a window of channel after join. When this is enabled the window of channel you joined or was forced to join will be switched to.
+            /// </summary>
+            public static bool SwitchWindowOnJoin = false;
         }
 
         /// <summary>
