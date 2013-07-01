@@ -143,11 +143,11 @@ namespace Client
                     string trimmed = message;
                     if (trimmed.StartsWith(_Protocol.delimiter.ToString()))
                     {
-                        trimmed.Substring(1);
+                        trimmed = trimmed.Substring(1);
                     }
                     if (trimmed.Length > 1 && trimmed[trimmed.Length - 1] == _Protocol.delimiter)
                     {
-                        trimmed.Substring(0, trimmed.Length - 1);
+                        trimmed = trimmed.Substring(0, trimmed.Length - 1);
                     }
                     if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
                     {
