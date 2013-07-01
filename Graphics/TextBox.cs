@@ -242,6 +242,24 @@ namespace Client.Graphics
                             return;
                         }
                         break;
+                    case Gdk.Key.U:
+                    case Gdk.Key.u:
+                        if (control)
+                        {
+                            richTextBox1.Buffer.Text += (((char)001).ToString());
+                            e.RetVal = true;
+                            return;
+                        }
+                        break;
+                    case Gdk.Key.R:
+                    case Gdk.Key.r:
+                        if (control)
+                        {
+                            richTextBox1.Buffer.Text += (((char)0016).ToString());
+                            e.RetVal = true;
+                            return;
+                        }
+                        break;
                     case Gdk.Key.k:
                     case Gdk.Key.K:
                         if (control)

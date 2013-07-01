@@ -142,10 +142,10 @@ namespace Client
                 {
                     TextTag format = new TextTag(null);
 
-                    if (text.Bold)
-                    {
+                    //if (text.Bold)
+                    //{
                         format.Weight = Pango.Weight.Heavy;
-                    }
+                    //}
 
                     if (text.Underline)
                     {
