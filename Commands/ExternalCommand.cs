@@ -67,27 +67,13 @@ namespace Client
             };
 
             Core.DebugLog("Starting a process " + Command);
-
             p.Start();
-
             Core.DebugLog("Writing standard input to " + Command);
-
             p.StandardInput.Write(Text);
-
             Core.DebugLog("Reading standard error from " + Command);
-
-            if (!p.StandardError.EndOfStream)
-            {
-                Data += p.StandardError.ReadToEnd();
-            }
-
+            Data += p.StandardError.ReadToEnd();
             Core.DebugLog("Reading standard output from " + Command);
-
-            if (!p.StandardOutput.EndOfStream)
-            {
-                Data += p.StandardOutput.ReadToEnd();
-            }
-            
+            Data += p.StandardOutput.ReadToEnd();
             return Data;
         }
     }

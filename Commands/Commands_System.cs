@@ -43,8 +43,12 @@ namespace Client
 
                     foreach (string line in output)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(line, ContentLine.MessageStyle.System);
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            Core.SystemForm.Chat.scrollback.InsertText(line, ContentLine.MessageStyle.System);
+                        }
                     }
+                    return;
                 }
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
