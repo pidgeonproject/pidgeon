@@ -49,6 +49,7 @@ namespace Client
                     FileName = Command,
                     Arguments = Parameters,
                     UseShellExecute = false,
+                    RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
                 }
