@@ -101,6 +101,7 @@
     <EmbeddedResource Include="Resources\icon_hash.png" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ExternalCommand.cs" />
     <Compile Include="Core\Connection.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />

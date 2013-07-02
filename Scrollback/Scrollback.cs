@@ -144,6 +144,25 @@ namespace Client
         }
 
         /// <summary>
+        /// Text
+        /// </summary>
+        public string Text
+        {
+            get
+            {
+                string text = "";
+                lock (ContentLines)
+                {
+                    foreach (ContentLine _line in ContentLines)
+                    {
+                        text += Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine;
+                    }
+                }
+                return text;
+            }
+        }
+
+        /// <summary>
         /// Number of lines
         /// </summary>
         public int Lines

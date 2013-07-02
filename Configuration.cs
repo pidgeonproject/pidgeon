@@ -287,6 +287,10 @@ namespace Client
             /// Path of language data files
             /// </summary>
             public static string Lang = "languages";
+            /// <summary>
+            /// Path of external handler
+            /// </summary>
+            public static string ExternalHandler = "";
         }
 
         /// <summary>
