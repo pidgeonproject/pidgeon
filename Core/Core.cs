@@ -471,6 +471,7 @@ namespace Client
                         if (Configuration.CurrentPlatform == Platform.Linuxx86 || Configuration.CurrentPlatform == Platform.Linuxx64)
                         {
                             Commands.RegisterAlias("grep", "pidgeon.term grep", false);
+                            Commands.RegisterAlias("shell", "pidgeon.term2in", false);
                         }
                         Network.Highlighter simple = new Network.Highlighter();
                         simple.enabled = true;

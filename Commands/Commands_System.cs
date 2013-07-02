@@ -74,7 +74,7 @@ namespace Client
                         }
                         if (!string.IsNullOrEmpty(line))
                         {
-                            Core.SystemForm.Chat.textbox.Buffer += line;
+                            Core.SystemForm.Chat.textbox.Buffer += line + Environment.NewLine;
                         }
                     }
                     return;
