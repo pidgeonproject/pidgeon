@@ -52,6 +52,31 @@ namespace Client.Graphics
         /// </summary>
         public global::Gtk.TextView richTextBox;
         private bool destroyed = false;
+        private string buffer = null;
+        private bool Processing = false;
+
+        /// <summary>
+        /// This is a buffer containing the current content of input box
+        /// </summary>
+        public string Buffer
+        {
+            get
+            {
+                if (!Processing)
+                {
+                    return richTextBox.Buffer.Text;
+                }
+                return buffer;
+            }
+            set
+            {
+                if (!Processing)
+                {
+                    richTextBox.Buffer.Text = value;
+                }
+                buffer = value;
+            }
+        }
 
         /// <summary>
         /// This will return true in case object was requested to be disposed
@@ -164,6 +189,7 @@ namespace Client.Graphics
                 // enter
                 if (e.Event.KeyValue == 65293)
                 {
+                    Processing = true;
                     List<string> input = new List<string>();
                     if (richTextBox1.Buffer.Text.Contains("\n"))
                     {
@@ -191,6 +217,7 @@ namespace Client.Graphics
                         original = "";
                         richTextBox1.Buffer.Text = "";
                         position = history.Count;
+                        Processing = false;
                         e.RetVal = true;
                         return;
                     }
@@ -204,6 +231,11 @@ namespace Client.Graphics
                     }
                     original = "";
                     richTextBox1.Buffer.Text = "";
+                    if (buffer != null)
+                    {
+                        richTextBox.Buffer.Text = buffer;
+                        buffer = null;
+                    }
                     position = history.Count;
                     e.RetVal = true;
                     return;
@@ -297,6 +329,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
+                Processing = false;
                 Core.handleException(fail);
             }
         }

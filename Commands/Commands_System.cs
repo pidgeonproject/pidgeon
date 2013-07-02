@@ -68,9 +68,13 @@ namespace Client
 
                     foreach (string line in output)
                     {
+                        if (Core.SystemForm.Chat.textbox.Buffer == null)
+                        {
+                            Core.SystemForm.Chat.textbox.Buffer = "";
+                        }
                         if (!string.IsNullOrEmpty(line))
                         {
-                            Core.SystemForm.Chat.textbox.richTextBox.Buffer.Text += line;
+                            Core.SystemForm.Chat.textbox.Buffer += line;
                         }
                     }
                     return;
