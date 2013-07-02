@@ -53,6 +53,31 @@ namespace Client
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
 
+            public static void External2Text(string parameter)
+            {
+                if (parameter != "")
+                {
+                    string args = "";
+                    if (parameter.Contains(" "))
+                    {
+                        args = parameter.Substring(parameter.IndexOf(" "));
+                        parameter = parameter.Substring(0, parameter.IndexOf(" "));
+                    }
+                    ExternalCommand c = new ExternalCommand(Core.SystemForm.Chat, parameter, args);
+                    string[] output = c.Execute().Split('\n');
+
+                    foreach (string line in output)
+                    {
+                        if (!string.IsNullOrEmpty(line))
+                        {
+                            Core.SystemForm.Chat.textbox.richTextBox.Buffer.Text += line;
+                        }
+                    }
+                    return;
+                }
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+            }
+
             /// <summary>
             /// Register a module
             /// </summary>

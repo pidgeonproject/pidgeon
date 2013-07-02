@@ -298,7 +298,8 @@ namespace Client
                 commands.Add("pidgeon.memory.clean.ring", new Command(Type.System, Generic.ClearRing));
                 commands.Add("pidgeon.memory.clean.gc", new Command(Type.System, Generic.free));
                 commands.Add("pidgeon.memory.clean.traffic", new Command(Type.System, Generic.snifferFree));
-                commands.Add("pidgeon.term", new Command(Type.System, Generic.External)); 
+                commands.Add("pidgeon.term", new Command(Type.System, Generic.External));
+                commands.Add("pidgeon.term2in", new Command(Type.System, Generic.External2Text));
                 commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
                 commands.Add("pidgeon.ring.file.overwrite", new Command(Type.System, Generic.forced_pidgeon_file));
                 commands.Add("pidgeon.ring.file", new Command(Type.System, Generic.pidgeon_file));
