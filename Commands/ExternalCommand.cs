@@ -70,6 +70,7 @@ namespace Client
             p.Start();
             Core.DebugLog("Writing standard input to " + Command);
             p.StandardInput.Write(Text);
+            p.StandardInput.Close();
             Core.DebugLog("Reading standard error from " + Command);
             Data += p.StandardError.ReadToEnd();
             Core.DebugLog("Reading standard output from " + Command);

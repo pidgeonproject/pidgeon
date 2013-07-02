@@ -468,6 +468,10 @@ namespace Client
                     Hyperlink.Initialize();
                     if (!File.Exists(ConfigFile))
                     {
+                        if (Configuration.CurrentPlatform == Platform.Linuxx86 || Configuration.CurrentPlatform == Platform.Linuxx64)
+                        {
+                            Commands.RegisterAlias("grep", "pidgeon.term grep", false);
+                        }
                         Network.Highlighter simple = new Network.Highlighter();
                         simple.enabled = true;
                         simple.text = "$nick";
