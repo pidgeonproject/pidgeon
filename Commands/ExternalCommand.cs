@@ -31,8 +31,14 @@ namespace Client
         private string Data = "";
         private string Command;
         private string Parameters;
-        public string Text;
+        private string Text;
 
+        /// <summary>
+        /// Creates an external command
+        /// </summary>
+        /// <param name="Window">Window the input / output should be used of</param>
+        /// <param name="command">Command</param>
+        /// <param name="parameters">Parameters</param>
         public ExternalCommand(Graphics.Window Window, string command, string parameters)
         {
             Command = command;
@@ -40,6 +46,10 @@ namespace Client
             Text = Window.scrollback.Text;
         }
 
+        /// <summary>
+        /// Start the command
+        /// </summary>
+        /// <returns></returns>
         public string Execute()
         {
             Process p = new Process
@@ -49,6 +59,7 @@ namespace Client
                     FileName = Command,
                     Arguments = Parameters,
                     UseShellExecute = false,
+                    RedirectStandardError = true,
                     RedirectStandardInput = true,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
