@@ -127,7 +127,23 @@ namespace Client
 
         public class _Scrollback
         {
-            
+            public delegate void LinkMouseHoverHandler(object sender, Extension.MouseHoverArgs e);
+            public static event LinkMouseHoverHandler OnMouseHover;
+
+            public static void MouseHover(object sender, Extension.MouseHoverArgs e)
+            {
+                try
+                {
+                    if (OnMouseHover != null)
+                    {
+                        OnMouseHover(sender, e);
+                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
+            }
         }
     }
 }

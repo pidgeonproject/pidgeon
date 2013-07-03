@@ -286,10 +286,10 @@ namespace Client
         /// Topic is being changed, this event happen before the topic is changed and if false is returned
         /// the topic change is ignored - this function is obsolete, use Hook_Topic(TopicArgs _TopicArgs)
         /// </summary>
-        /// <param name="network"></param>
-        /// <param name="userline"></param>
-        /// <param name="channel"></param>
-        /// <param name="topic"></param>
+        /// <param name="network">Network</param>
+        /// <param name="userline">Line of text</param>
+        /// <param name="channel">Channel</param>
+        /// <param name="topic">Topic</param>
         /// <returns></returns>
         [Obsolete]
         public virtual bool Hook_Topic(Network network, string userline, Channel channel, string topic)

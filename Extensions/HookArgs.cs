@@ -234,5 +234,21 @@ namespace Client
             /// </summary>
             public Graphics.Window window = null;
         }
+
+        public class MouseHoverArgs : HookArgs
+        {
+            /// <summary>
+            /// Window
+            /// </summary>
+            public Graphics.Window Window = null;
+            /// <summary>
+            /// X
+            /// </summary>
+            public int X = 0;
+            /// <summary>
+            /// Y
+            /// </summary>
+            public int Y = 0;
+        }
     }
 }
