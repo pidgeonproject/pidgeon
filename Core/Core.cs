@@ -513,6 +513,7 @@ namespace Client
         /// <param name="services"></param>
         public static void ParseLink(string text, ProtocolSv services = null)
         {
+            DebugLog("Parsing " + text);
             if (text.StartsWith("irc://"))
             {
                 text = text.Substring("irc://".Length);
@@ -549,7 +550,7 @@ namespace Client
                 }
                 while (network.EndsWith("/"))
                 {
-                    network.Substring(0, network.Length - 1);
+                    network = network.Substring(0, network.Length - 1);
                 }
                 ProtocolIrc server = null;
                 foreach (Protocol protocol in Connections)

@@ -40,7 +40,7 @@ namespace Client
             }
 
             /// <summary>
-            /// Before note
+            /// Before a notification is displayed on screen
             /// </summary>
             /// <param name="caption">Title</param>
             /// <param name="text">Text</param>
