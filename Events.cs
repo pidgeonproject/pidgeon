@@ -20,6 +20,9 @@ using System.Collections.Generic;
 
 namespace Client
 {
+    /// <summary>
+    /// This is similar to hooks but is more flexible
+    /// </summary>
     class Events
     {
         /// <summary>

@@ -464,7 +464,7 @@ namespace Client
             // we lock the function so that it can't be called in same time in different thread
             lock (this)
             {
-                if (IsConnected)
+                if (!IsConnected)
                 {
                     return false;
                 }
@@ -548,9 +548,9 @@ namespace Client
         {
             if (IsDestroyed)
             {
-                throw new Exception("This object is already removed");
+                Core.DebugLog("This object is already destroyed " + Server);
+                return;
             }
-            destroyed = true;
             if (!Hooks._Network.BeforeExit(_IRCNetwork))
             {
                 return;
@@ -568,6 +568,7 @@ namespace Client
             {
                 Core.SelectedNetwork = null;
             }
+            destroyed = true;
             base.Exit();
         }
 
