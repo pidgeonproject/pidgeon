@@ -235,6 +235,9 @@ namespace Client
             public Graphics.Window window = null;
         }
 
+        /// <summary>
+        /// These arguments are used for mouse
+        /// </summary>
         public class MouseHoverArgs : HookArgs
         {
             /// <summary>

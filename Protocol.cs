@@ -30,7 +30,9 @@ using System.Text;
 namespace Client
 {
     /// <summary>
-    /// This is lowest level
+    /// This is lowest level of protocol interface
+    /// 
+    /// Every protocol is inherited from this class. Protocols are handling connections to various servers using own protocols.
     /// </summary>
     [Serializable]
     public class IProtocol
@@ -41,6 +43,8 @@ namespace Client
         public Graphics.Window Current = null;
         /// <summary>
         /// Windows
+        /// 
+        /// This is a list of all windows that are associated with this protocol
         /// </summary>
         public Dictionary<string, Graphics.Window> Windows = new Dictionary<string, Graphics.Window>();
         /// <summary>

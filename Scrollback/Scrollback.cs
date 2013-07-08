@@ -35,7 +35,9 @@ namespace Client
     public partial class Scrollback : Gtk.Bin
     {
         /// <summary>
-        /// Maximal size of text
+        /// Maximal number of lines, if this number is exceeded, the text may be trimmed at some occasions
+        /// 
+        /// However given the fact that text is appended, this trimming may not happen very often
         /// </summary>
         private int scrollback_max = Configuration.Scrollback.scrollback_plimit;
         /// <summary>
@@ -44,22 +46,45 @@ namespace Client
         private List<ContentLine> ContentLines = new List<ContentLine>();
         /// <summary>
         /// Current line buffer
+        /// 
+        /// This is used when a line without line ending is being created. You can append to this buffer and once the line is finished, the whole
+        /// line is then inserted instead of just a part of it.
         /// </summary>
         private ContentLine EndingLine = null;
         /// <summary>
         /// Owner window
         /// </summary>
         public Graphics.Window owner = null;
+        /// <summary>
+        /// Lines that are waiting to be written because they were inserted from different thread
+        /// </summary>
         private List<ContentLine> UndrawnLines = new List<ContentLine>();
         private List<TextPart> UndrawnTextParts = new List<TextPart>();
+        /// <summary>
+        /// When you hover over a link it's added in this buffer so that you can retrieve it when you click mouse
+        /// </summary>
         private string Link = "";
+        /// <summary>
+        /// Simple mode
+        /// </summary>
         private bool simple = true;
+        /// <summary>
+        /// This is a newest value of time of a line of text, in case a new line of text has lower value, it needs to be inserted
+        /// to middle instead of end, so that append function can't be used and whole text box needs to be redrawn
+        /// </summary>
         private DateTime lastDate;
         /// <summary>
-        /// If scrolling is enabled
+        /// If scrolling is enabled, if this is false the chat will not be scrolled when new line is inserted
         /// </summary>
         public bool ScrollingEnabled = true;
+        /// <summary>
+        /// This means the scrollback is waiting for reload, because there was a modification that requires it called from
+        /// different thread
+        /// </summary>
         private bool ReloadWaiting = false;
+        /// <summary>
+        /// In case that a scrollback was changed from different thread and a change was not written
+        /// </summary>
         private bool Changed = false;
         /// <summary>
         /// MicroChat

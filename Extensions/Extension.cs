@@ -218,7 +218,11 @@ namespace Client
         /// </summary>
         public virtual void Initialise()
         {
-            return;
+            if (Name == "Unknown extension")
+            {
+                _Status = Status.Stopped;
+                throw new Exception("Extension had no Initialise() function and was terminated");
+            }
         }
 
         /// <summary>
