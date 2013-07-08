@@ -154,6 +154,8 @@ namespace Client
                     make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
@@ -839,6 +841,18 @@ namespace Client
                                                         break;
                                                     case "Configuration.UserData.SwitchWindowOnJoin":
                                                         Configuration.UserData.SwitchWindowOnJoin = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Window.DoubleClick":
+                                                        if (!Enum.TryParse<Configuration.UserList_MouseClick>(curr.InnerText, out Configuration.Window.DoubleClick))
+                                                        {
+                                                            Configuration.Window.DoubleClick = Configuration.UserList_MouseClick.Nothing;
+                                                        }
+                                                        break;
+                                                    case "Configuration.Window.MiddleClick":
+                                                        if (!Enum.TryParse<Configuration.UserList_MouseClick>(curr.InnerText, out Configuration.Window.MiddleClick))
+                                                        {
+                                                            Configuration.Window.MiddleClick = Configuration.UserList_MouseClick.Nothing;
+                                                        }
                                                         break;
                                                 }
                                             }

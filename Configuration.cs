@@ -82,7 +82,7 @@ namespace Client
             /// <summary>
             /// What should happen when you doubleclick a user
             /// </summary>
-            public static UserList_MouseClick DoubleClick = UserList_MouseClick.Nothing;
+            public static UserList_MouseClick DoubleClick = UserList_MouseClick.SendMsg;
             /// <summary>
             /// What should happen when you scroll a user
             /// </summary>
@@ -702,6 +702,10 @@ namespace Client
         /// </summary>
         public enum UserList_MouseClick
         {
+            /// <summary>
+            /// Message
+            /// </summary>
+            SendMsg,
             /// <summary>
             /// Display a whois of user
             /// </summary>

@@ -180,6 +180,11 @@ namespace Client.Graphics
                 Menu(sender, null);
             }
 
+            if (e.Event.Button == 1 && e.Event.Type == Gdk.EventType.TwoButtonPress)
+            {
+                Click(Configuration.Window.DoubleClick);
+            }
+
             if (e.Event.Button == 2)
             {
                 Click(Configuration.Window.MiddleClick);
@@ -234,6 +239,9 @@ namespace Client.Graphics
                     break;
                 case Configuration.UserList_MouseClick.Whois:
                     this.whoisToolStripMenuItem_Click(null, null);
+                    break;
+                case Configuration.UserList_MouseClick.SendMsg:
+                    this.messageToolStripMenuItem_Click(null, null);
                     break;
             }
         }
