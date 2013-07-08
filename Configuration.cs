@@ -158,6 +158,10 @@ namespace Client
             /// Certificate for ctcp
             /// </summary>
             public static string CertificateDCC = null;
+            /// <summary>
+            /// Display a response for every ctcp message
+            /// </summary>
+            public static bool ShowReplyForCTCP = true;
         }
 
         /// <summary>

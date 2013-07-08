@@ -135,6 +135,8 @@ namespace Client
                     make_comment("CTCP port", config, xmlnode);
                     make_node("Configuration.irc.DefaultCTCPPort", Configuration.irc.DefaultCTCPPort.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.irc.CertificateDCC", Configuration.irc.CertificateDCC, curr, confname, config, xmlnode);
+                    make_comment("Whether the response should be displayed", config, xmlnode);
+                    make_node("Configuration.irc.ShowReplyForCTCP", Configuration.irc.ShowReplyForCTCP.ToString(), curr, confname, config, xmlnode);
                     // Windows
                     make_comment(" ============= WINDOWS ============= ", config, xmlnode);
                     make_comment("Main window is maximized", config, xmlnode);
@@ -853,6 +855,9 @@ namespace Client
                                                         {
                                                             Configuration.Window.MiddleClick = Configuration.UserList_MouseClick.Nothing;
                                                         }
+                                                        break;
+                                                    case "Configuration.irc.ShowReplyForCTCP":
+                                                        Configuration.irc.ShowReplyForCTCP = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

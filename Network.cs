@@ -539,7 +539,7 @@ namespace Client
             User referenced_user = new User(user, "", this, "");
             PrivateChat.Add(referenced_user);
             Core.SystemForm.ChannelList.insertUser(referenced_user);
-            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, true, this, true, null, false, true));
+            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this, true, null, false, true));
             PrivateWins[referenced_user].isPM = true;
             return referenced_user;
         }

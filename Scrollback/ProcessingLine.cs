@@ -29,6 +29,30 @@ namespace Client
 {
     public partial class Scrollback
     {
+        /// <summary>
+        /// This is a line for logs
+        /// </summary>
+        class LI
+        {
+            /// <summary>
+            /// Text to be written to log file
+            /// </summary>
+            public string text;
+            /// <summary>
+            /// Style
+            /// </summary>
+            public ContentLine.MessageStyle style;
+            /// <summary>
+            /// Time when the log was supposed to be written
+            /// </summary>
+            public DateTime date;
+        }
+
+        /// <summary>
+        /// This is a container for logs that couldn't be written yet, it exist because the window can be used before it's fully
+        /// created and in that case the first logs are not logged but dropped, so in that case we hold them in here
+        /// </summary>
+        private List<LI> logs = new List<LI>();
         private void InsertLineToText(ContentLine line, bool Draw = true)
         {
             if (Configuration.Memory.EnableSimpleViewCache && simple)
@@ -563,9 +587,39 @@ namespace Client
                 }
             }
 
-            if (WriteLog == true && owner != null && owner._Network != null)
+            if (WriteLog == true)
             {
-                LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
+                if (owner != null && owner._Network != null)
+                {
+                    if (logs.Count > 0)
+                    {
+                        lock (logs)
+                        {
+                            foreach (LI item in logs)
+                            {
+                                LineLogs.Log(item.text, item.style, owner, LogfilePath, item.date);
+                            }
+                            logs.Clear();
+                        }
+                    }
+                    LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
+                }
+                else
+                {
+                    LI item = new LI();
+                    item.text = text;
+                    item.style = InputStyle;
+                    item.date = time;
+                    lock (logs)
+                    {
+                        if (logs.Count > 100)
+                        {
+                            Core.DebugLog("Buffer overflow: more than 100 items waiting to be written to log: auto flushing");
+                            logs.Clear();
+                        }
+                        logs.Add(item);
+                    }
+                }
             }
 
             Changed = true;
