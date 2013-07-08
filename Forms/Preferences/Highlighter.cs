@@ -80,7 +80,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
-            this.Title = "Add new highlight";
+            this.Title = messages.Localize("[[preferences-highlighter-add]]");
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
@@ -96,7 +96,7 @@ namespace Client.Forms
             this.checkbutton1 = new global::Gtk.CheckButton();
             this.checkbutton1.CanFocus = true;
             this.checkbutton1.Name = "checkbutton1";
-            this.checkbutton1.Label = "Regex";
+            this.checkbutton1.Label = messages.Localize("[[preferences-highlighter-regex]]");
             this.checkbutton1.DrawIndicator = true;
             this.checkbutton1.UseUnderline = true;
             this.table1.Add(this.checkbutton1);
@@ -122,7 +122,7 @@ namespace Client.Forms
             // Container child table1.Gtk.Table+TableChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
-            this.label1.LabelProp = "Text";
+            this.label1.LabelProp = messages.Localize("[[preferences-highlighter-text]]");
             this.table1.Add(this.label1);
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.label1]));
             w5.XOptions = ((global::Gtk.AttachOptions)(4));

@@ -47,14 +47,14 @@ namespace Client.Forms
         private Gtk.VPaned vpaned01 = null;
         //private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
         //private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
-        private Client.GTK.Menu reloadToolStripMenuItemb = new Client.GTK.Menu("Reload");
+        private Client.GTK.Menu reloadToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[channelinfo-reload]]"));
         //private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu("Reload");
         //private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu("Remove");
-        private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu("Remove");
+        private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[channelinfo-remove]]"));
         //private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu("Insert");
         //private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu("Insert");
         //private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
-        private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu("Refresh");
+        private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[common-refresh]]"));
         //private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
 
         private void Build()
@@ -62,7 +62,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
             this.Name = "MainWindow";
-            this.Title = "Channel properties: " + channel.Name;
+            this.Title = messages.Localize("[[channelinfo-title]]") + ": " + channel.Name;
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child MainWindow.Gtk.Container+ContainerChild
             this.notebook1 = new global::Gtk.Notebook();
@@ -103,7 +103,7 @@ namespace Client.Forms
             this.GtkLabel.LabelProp = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser;
             if (channel.TopicDate == 0)
             {
-                this.GtkLabel.LabelProp = "Topic (information about current topic are not present)";
+                this.GtkLabel.LabelProp = "Topic (information about current topic isn't present)";
             }
             this.GtkLabel.UseMarkup = true;
             this.frame4.LabelWidget = this.GtkLabel;

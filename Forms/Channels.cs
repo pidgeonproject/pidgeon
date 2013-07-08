@@ -36,7 +36,7 @@ namespace Client.Forms
         private List<Network.ChannelData> channelData = new List<Network.ChannelData>();
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView treeview8;
-        private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(int), typeof(string), typeof(Network.ChannelData)); 
+        private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(uint), typeof(string), typeof(Network.ChannelData)); 
         private GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
         private GTK.Menu knockToolStripMenuItem = new GTK.Menu("Knock");
         private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");

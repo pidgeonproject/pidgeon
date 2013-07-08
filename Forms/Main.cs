@@ -163,9 +163,9 @@ namespace Client.Forms
         private void TrayMenu(object o, EventArgs args)
         {
             Menu menu = new Menu();
-            ImageMenuItem menuItemQuit = new ImageMenuItem("Quit");
+            ImageMenuItem menuItemQuit = new ImageMenuItem(messages.Localize("[[common-quit]]"));
             Gtk.Image appimg = new Gtk.Image(Stock.Quit, IconSize.Menu);
-            CheckMenuItem notifications = new CheckMenuItem("Enable notifications");
+            CheckMenuItem notifications = new CheckMenuItem(messages.Localize("[[tray-en]]"));
             menu.Add(notifications);
             notifications.Active = Configuration.Kernel.Notice;
             notifications.Activated += new EventHandler(itemNotification);
@@ -273,7 +273,7 @@ namespace Client.Forms
                 main.HasUserList = false;
                 main.CreateChat(null);
                 main.WindowName = "Pidgeon";
-                toolStripStatusNetwork.TooltipText = "windows / channels / pm";
+                toolStripStatusNetwork.TooltipText = messages.Localize("[[main-wcp]]");
                 Chat = main;
                 main.Redraw();
                 Chat.Making = false;

@@ -20,6 +20,7 @@ window-menu-contents=Contents;
 window-menu-search=Search;
 window-menu-cf=Configuration file;
 window-menu-root=Display a root window;
+main-wcp=windows / channels / pm;
 
 // Dialogs
 
@@ -31,6 +32,22 @@ button-ok=OK;
 button-cancel=Cancel;
 button-yes=Yes;
 button-no=No;
+
+// Common
+
+common-refresh=Refresh;
+common-quit=Exit;
+global-ok=Ok;
+global-cancel=Cancel;
+port=Port;
+bclose=Quit;
+type=Protocol;
+secure=Secure;
+ban=Ban;
+add=Add;
+delete=Delete;
+enable=Enable;
+disable=Disable;
 
 // Error messages
 
@@ -95,18 +112,6 @@ mode=Change mode;
 protocol-quit=$1 has quit [$2];
 userctcp=CTCPs;
 
-// Common
-
-port=Port;
-bclose=Quit;
-type=Protocol;
-secure=Secure;
-ban=Ban;
-add=Add;
-delete=Delete;
-enable=Enable;
-disable=Disable;
-
 // Preferences
 
 preferences-nick=Nick;
@@ -128,16 +133,29 @@ preferences-notify=Notify when update for pidgeon is available;
 preferences-language=Language;
 preferences-skin=Skin;
 
+preferences-highlighter-add=Add new highlight;
+preferences-highlighter-regex=Regex;
+preferences-highlighter-text=Text;
+
 // Channel info
 
+channelinfo-title=Channel properties;
 channelinfo-ok=Save;
 channelinfo-t0=Preferences;
 channelinfo-t3=Exceptions;
 channelinfo-t2=Invites;
 channelinfo-t4=Bans;
+channelinfo-reload=Reload;
+channelinfo-remove=Remove;
 channel-mode=$1 changed mode $2;
-global-ok=Ok;
-global-cancel=Cancel;
+
+// Tray
+
+tray-en=Enable notifications;
+
+
+// Other
+
 protocolnewnick=Your nick is now $1;
 update1=There is a new version of pidgeon: $1, click update to continue, or close this window to keep using the previous version.;
 update2=Pidgeon is finishing update, please wait...;

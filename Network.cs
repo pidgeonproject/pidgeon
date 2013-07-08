@@ -61,7 +61,9 @@ namespace Client
         }
 
         /// <summary>
-        /// Information about the channel
+        /// Information about the channel for list
+        /// 
+        /// This is not a class for channels, only the list
         /// </summary>
         [Serializable]
         public class ChannelData
@@ -73,7 +75,7 @@ namespace Client
             /// <summary>
             /// Number of users
             /// </summary>
-            public int UserCount = 0;
+            public uint UserCount = 0;
             /// <summary>
             /// Topic of a channel
             /// </summary>
@@ -82,10 +84,10 @@ namespace Client
             /// <summary>
             /// Creates a new instance
             /// </summary>
-            /// <param name="Users"></param>
+            /// <param name="Users">Number of users</param>
             /// <param name="Name"></param>
             /// <param name="Topic"></param>
-            public ChannelData(int Users, string Name, string Topic)
+            public ChannelData(uint Users, string Name, string Topic)
             {
                 ChannelTopic = Topic;
                 UserCount = Users;
