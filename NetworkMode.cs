@@ -27,6 +27,9 @@ namespace Client
     /// </summary>
     public class SimpleMode
     {
+        /// <summary>
+        /// Character of this mode
+        /// </summary>
         private char _char;
         private string _Parameter = null;
         /// <summary>

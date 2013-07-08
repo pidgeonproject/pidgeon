@@ -22,6 +22,9 @@ namespace Client
 {
     /// <summary>
     /// Channel object
+    ///
+    /// Every channel that is open in pidgeon except for list should be made of this class, it is serializable because at some
+    /// point we want to allow it to be copied to various domains
     /// </summary>
     [Serializable]
     public class Channel

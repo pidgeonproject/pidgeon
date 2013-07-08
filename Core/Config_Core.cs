@@ -27,9 +27,6 @@ using System.Diagnostics;
 
 namespace Client
 {
-    /// <summary>
-    /// Kernel
-    /// </summary>
     public partial class Core
     {
         /// <summary>

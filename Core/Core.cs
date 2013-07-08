@@ -27,6 +27,9 @@ using System.Text;
 
 namespace Client
 {
+    /// <summary>
+    /// Basically most elementar stuff the application consist of and that doesn't belong to some other class
+    /// </summary>
     public partial class Core
     {
         /// <summary>
