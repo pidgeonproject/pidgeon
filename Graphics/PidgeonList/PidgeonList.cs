@@ -616,6 +616,37 @@ namespace Client.Graphics
             Updated = true;
         }
 
+        /// <summary>
+        /// Select a window in menu
+        /// </summary>
+        /// <param name="window"></param>
+        /// <returns></returns>
+        public bool ReselectWindow(Graphics.Window window)
+        {
+            // first we need to find an item this window belongs to
+            if (window == null)
+            {
+                return false;
+            }
+
+            lock (ChannelList)
+            {
+                foreach (Channel channel in ChannelList.Keys)
+                {
+                    if (channel.RetrieveWindow() == window)
+                    {
+                        KeyValuePair<TreeIter, bool> result = getIter(channel);
+                        if (result.Value)
+                        {
+                            tv.Selection.SelectIter(result.Key);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+
         private void _insertUser(User user)
         {
             lock (ServerList)

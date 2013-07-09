@@ -90,7 +90,8 @@ namespace Client
     }
 
     /// <summary>
-    /// Mode
+    /// Every mode can be represented by this, it can even contain multiple modes in 1 container
+    /// Supports both channel and user modes and prefixes
     /// </summary>
     [Serializable]
     public class NetworkMode

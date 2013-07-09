@@ -543,6 +543,10 @@ namespace Client
             Core.SystemForm.ChannelList.insertUser(referenced_user);
             PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this, true, null, false, true));
             PrivateWins[referenced_user].isPM = true;
+            if (Configuration.UserData.SwitchWindowOnJoin)
+            {
+                Core.SystemForm.ChannelList.ReselectWindow(PrivateWins[referenced_user]);
+            }
             return referenced_user;
         }
 
@@ -595,6 +599,10 @@ namespace Client
                 Core.SystemForm.ChannelList.InsertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
                 window.isChannel = true;
+                if (!nf)
+                {
+                    Core.SystemForm.ChannelList.ReselectWindow(window);
+                }
                 return _channel;
             }
             else
