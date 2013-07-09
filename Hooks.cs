@@ -116,6 +116,15 @@ namespace Client
             {
                 Core.ResetMainActivityTimer();
             }
+
+            /// <summary>
+            /// This is called before a connection window is finished in building
+            /// </summary>
+            /// <param name="window"></param>
+            public static void Connection(Forms.Connection window)
+            {
+                return;
+            }
         }
 
         /// <summary>
@@ -129,7 +138,7 @@ namespace Client
             /// <param name="Menu"></param>
             /// <param name="Window"></param>
             /// <returns></returns>
-            public static bool BeforeUserMenu(ref Gtk.Menu Menu, Graphics.Window Window)
+            public static bool BeforeUserMenu(Gtk.Menu Menu, Graphics.Window Window)
             {
                 return true;
             }
@@ -140,7 +149,7 @@ namespace Client
             /// <param name="Menu"></param>
             /// <param name="Window"></param>
             /// <returns></returns>
-            public static bool AfterUserMenu(ref Gtk.Menu Menu, Graphics.Window Window)
+            public static bool AfterUserMenu(Gtk.Menu Menu, Graphics.Window Window)
             {
                 return true;
             }

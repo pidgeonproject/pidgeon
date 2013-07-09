@@ -38,6 +38,10 @@ namespace Client
             /// Version
             /// </summary>
             public string ClientVersion = Configuration.Version.ToString();
+            /// <summary>
+            /// This is optional return value
+            /// </summary>
+            public bool ReturnValue = false;
         }
 
         /// <summary>
@@ -252,6 +256,21 @@ namespace Client
             /// Y
             /// </summary>
             public int Y = 0;
+        }
+
+        /// <summary>
+        /// Before user menu is shown
+        /// </summary>
+        public class BeforeUserMenuArgs : HookArgs
+        {
+            /// <summary>
+            /// Menu which is about to be displayed
+            /// </summary>
+            public Gtk.Menu menu = null;
+            /// <summary>
+            /// Window the menu belongs to
+            /// </summary>
+            public Graphics.Window window = null;
         }
     }
 }

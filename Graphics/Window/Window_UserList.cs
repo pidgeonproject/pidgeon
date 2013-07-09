@@ -291,7 +291,7 @@ namespace Client.Graphics
                 bool display = false;
                 Gtk.Menu menu = new Menu();
 
-                Hooks._Window.BeforeUserMenu(ref menu, this);
+                Hooks._Window.BeforeUserMenu(menu, this);
 
                 if (whoisToolStripMenuItem.Visible)
                 {
@@ -427,7 +427,7 @@ namespace Client.Graphics
                     menu.Append(reload);
                 }
 
-                Hooks._Window.AfterUserMenu(ref menu, this);
+                Hooks._Window.AfterUserMenu(menu, this);
 
                 if (display)
                 {

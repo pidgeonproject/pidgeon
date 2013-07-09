@@ -123,6 +123,55 @@ namespace Client
             }
         }
 
+        public class _Window
+        {
+            /// <summary>
+            /// Handler for this event
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            public delegate void BeforeUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
+            public static event BeforeUserMenuHandler BeforeUserMenu;
+
+            public static void TriggerBeforeUserMenu(object sender, Extension.BeforeUserMenuArgs e)
+            {
+                try
+                {
+                    if (BeforeUserMenu != null)
+                    {
+                        BeforeUserMenu(sender, e);
+                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
+            }
+
+            /// <summary>
+            /// Handler for this event
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            public delegate void AfterUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
+            public static event AfterUserMenuHandler AfterUserMenu;
+
+            public static void TriggerAfterUserMenu(object sender, Extension.BeforeUserMenuArgs e)
+            {
+                try
+                {
+                    if (AfterUserMenu != null)
+                    {
+                        AfterUserMenu(sender, e);
+                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
+            }
+        }
+
         public class _Protocol
         {
         

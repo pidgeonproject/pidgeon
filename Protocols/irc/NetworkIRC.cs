@@ -385,7 +385,16 @@ namespace Client
         /// <returns></returns>
         private bool WhoisLoad(string source, string parameters, string value)
         {
-            WindowText(_Network.SystemWindow, "Start of WHOIS record for " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+            if (!parameters.Contains(" "))
+            {
+                return false;
+            }
+            string[] user = parameters.Split(' ');
+            if (user.Length > 3)
+            {
+                string host = user[1] + "!" + user[2] + "@" + user[3];
+                WindowText(_Network.SystemWindow, "Start of WHOIS record for " + host + " " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+            }
             return true;
         }
 
