@@ -341,10 +341,28 @@ namespace Client
                                 }
                             }
                             break;
+                        case "311":
+                            if (Configuration.irc.FriendlyWhois)
+                            {
+                                if (WhoisLoad(command, parameters, value))
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
                         case "312":
                             if (Configuration.irc.FriendlyWhois)
                             {
                                 if (WhoisSv(command, parameters, value))
+                                {
+                                    return true;
+                                }
+                            }
+                            break;
+                        case "318":
+                            if (Configuration.irc.FriendlyWhois)
+                            {
+                                if (WhoisFn(command, parameters, value))
                                 {
                                     return true;
                                 }

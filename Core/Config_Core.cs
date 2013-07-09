@@ -134,6 +134,8 @@ namespace Client
                     make_node("Configuration.irc.CertificateDCC", Configuration.irc.CertificateDCC, curr, confname, config, xmlnode);
                     make_comment("Whether the response should be displayed", config, xmlnode);
                     make_node("Configuration.irc.ShowReplyForCTCP", Configuration.irc.ShowReplyForCTCP.ToString(), curr, confname, config, xmlnode);
+                    make_comment("If this is true the whois records will be parsed and changed", config, xmlnode);
+                    make_node("Configuration.irc.FriendlyWhois", Configuration.irc.FriendlyWhois.ToString(), curr, confname, config, xmlnode);
                     // Windows
                     make_comment(" ============= WINDOWS ============= ", config, xmlnode);
                     make_comment("Main window is maximized", config, xmlnode);
@@ -855,6 +857,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.irc.ShowReplyForCTCP":
                                                         Configuration.irc.ShowReplyForCTCP = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.irc.FriendlyWhois":
+                                                        Configuration.irc.FriendlyWhois = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

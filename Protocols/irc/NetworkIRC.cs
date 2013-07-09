@@ -376,6 +376,39 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Parsing the first line of whois
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool WhoisLoad(string source, string parameters, string value)
+        {
+            WindowText(_Network.SystemWindow, "Start of WHOIS record for " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+            return true;
+        }
+
+        /// <summary>
+        /// Parsing last line of whois
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        private bool WhoisFn(string source, string parameters, string value)
+        {
+            WindowText(_Network.SystemWindow, "END OF WHOIS for " + parameters, Client.ContentLine.MessageStyle.System, true, date, true);
+            return true;
+        }
+
+        /// <summary>
+        /// Parsing the channels of whois
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool WhoisCh(string source, string parameters, string value)
         {
             if (parameters.Contains(" "))
@@ -387,6 +420,13 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Parsing the line of whois text
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool WhoisSv(string source, string parameters, string value)
         {
             if (parameters.Contains(" "))
