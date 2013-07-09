@@ -73,6 +73,13 @@ namespace Client
             return true;
         }
 
+        /// <summary>
+        /// This command is sent by IRC server when you join a channel, it contains some basic information including list of users
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool ChannelData(string command, string parameters, string value)
         {
             string channel_name = parameters.Substring(parameters.IndexOf(" ") + 1);
@@ -110,6 +117,13 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// This is called for PRIVMSG from server
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="parameters"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private bool ProcessPM(string source, string parameters, string value)
         {
             string _nick = "{unknown nick}";
@@ -180,6 +194,8 @@ namespace Client
                         return true;
                     }
 
+                    string reply = null;
+
                     if (updated_text)
                     {
                         uc = message.Substring(1);
@@ -201,11 +217,13 @@ namespace Client
                             switch (uc)
                             {
                                 case "VERSION":
-                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/",
+                                    reply = "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/";
+                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + reply,
                                         Configuration.Priority.Low);
                                     break;
                                 case "TIME":
-                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "TIME " + DateTime.Now.ToString(),
+                                    reply = "TIME " + DateTime.Now.ToString();
+                                    _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + reply,
                                         Configuration.Priority.Low);
                                     break;
                                 case "PING":
@@ -214,8 +232,9 @@ namespace Client
                                         string time = message.Substring(6);
                                         if (time.Contains(_Network._Protocol.delimiter))
                                         {
+                                            reply = "PING " + time;
                                             time = message.Substring(0, message.IndexOf(_Network._Protocol.delimiter));
-                                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + "PING " + time,
+                                            _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + reply,
                                                 Configuration.Priority.Low);
                                         }
                                     }
@@ -269,7 +288,11 @@ namespace Client
                     {
                         WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + trimmed,
                             Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
-                        return true;
+                    }
+                    if (Configuration.irc.ShowReplyForCTCP && reply != null)
+                    {
+                        WindowText(_Network.SystemWindow, "CTCP response to (" + _nick + ") " + reply,
+                            Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
                     }
                     return true;
                 }
