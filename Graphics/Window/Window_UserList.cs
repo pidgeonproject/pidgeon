@@ -790,11 +790,25 @@ namespace Client.Graphics
         {
             try
             {
+                if (!isChannel)
+                {
+                    return;
+                }
+                string script = "";
                 if (isChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        Core.SelectedNetwork.Transfer("KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason);
+                        string current_kick = "KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                        script += current_kick + "\n";
+                        if (!Configuration.irc.ConfirmAll)
+                        {
+                            _Network.Transfer(current_kick, Configuration.Priority.High);
+                        }
+                    }
+                    if (Configuration.irc.ConfirmAll)
+                    {
+                        Core.ProcessScript(script, _Network);
                     }
                 }
             }
@@ -806,19 +820,48 @@ namespace Client.Graphics
 
         private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            try
+            if (isChannel)
             {
-                if (isChannel)
+                try
                 {
-                    foreach (User user in SelectedUsers)
+                    string script = "";
+                    if (isChannel)
                     {
-                        //string reason = Configuration.irc.DefaultReason;
+                        foreach (User user in SelectedUsers)
+                        {
+                            string current_ban = "";
+                            Channel _channel = getChannel();
+                            if (_channel != null)
+                            {
+                                switch (Configuration.irc.DefaultBans)
+                                {
+                                    case Configuration.TypeOfBan.Host:
+                                        if (user.Host != "")
+                                        {
+                                            current_ban = "MODE " + WindowName + " +b *!*@" + user.Host;
+                                            script += current_ban + Environment.NewLine;
+                                        }
+                                        else
+                                        {
+                                            script += "# can't find hostname for " + user.Nick + " skipping this ban\n";
+                                        }
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                script += "# can't find a channel for " + user.Nick + " skipping this ban\n";
+                            }
+                            string current_kick = "KICK " + WindowName + " " + user.Nick + " :" + Configuration.irc.DefaultReason;
+                            script += current_kick + "\n";
+                        }
+                        Core.ProcessScript(script, _Network);
                     }
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
             }
         }
 

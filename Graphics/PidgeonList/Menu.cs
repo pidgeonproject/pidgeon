@@ -202,6 +202,11 @@ namespace Client.Graphics
                 RedrawMenu();
                 TreeIter iter;
                 TreePath[] path = tv.Selection.GetSelectedRows();
+                if (path.Length < 1)
+                {
+                    Core.DebugLog("items_AfterSelect(object sender, RowActivatedArgs e): GetSelectedRows returned 0 value");
+                    return;
+                }
                 tv.Model.GetIter(out iter, path[0]);
                 Hooks._Sys.Poke();
                 Window window = null;
@@ -268,7 +273,7 @@ namespace Client.Graphics
                     case ItemType.System:
                         break;
                     case ItemType.User:
-                        User us = (User)tv.Model.GetValue(iter, 1); ;
+                        User us = (User)tv.Model.GetValue(iter, 1);
                         Core.SelectedNetwork = us._Network;
                         lock (us._Network.PrivateWins)
                         {

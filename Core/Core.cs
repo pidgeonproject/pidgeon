@@ -1287,6 +1287,7 @@ namespace Client
         {
             try
             {
+                Core.DebugLog("User requested a shut down");
                 if (_Status == Status.Quiting)
                 {
                     Core.DebugLog("Multiple calls of Core.Quit() ignored");

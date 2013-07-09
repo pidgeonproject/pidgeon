@@ -331,8 +331,8 @@ namespace Client.Graphics
             this.textbox.Init();
             this.Build();
             this.InitStyle();
-            kbToolStripMenuItem.Enabled = false;
-            krToolStripMenuItem.Enabled = false;
+            kbToolStripMenuItem.Enabled = true;
+            krToolStripMenuItem.Enabled = true;
             Gtk.TreeViewColumn column1 = new TreeViewColumn();
             listView.TooltipColumn = 2;
             column1.Title = (messages.get("list", Core.SelectedLanguage));
@@ -370,14 +370,14 @@ namespace Client.Graphics
                 messageToolStripMenuItem.Enabled = true;
                 banToolStripMenuItem.Enabled = true;
                 whoisToolStripMenuItem.Enabled = true;
-                kbToolStripMenuItem.Enabled = false;
+                kbToolStripMenuItem.Enabled = true;
                 whoisToolStripMenuItem.Enabled = true;
                 ctToolStripMenuItem.Enabled = true;
                 refreshToolStripMenuItem.Enabled = true;
                 kickBanToolStripMenuItem.Enabled = true;
                 modeToolStripMenuItem.Enabled = true;
                 kickToolStripMenuItem.Enabled = true;
-                krToolStripMenuItem.Enabled = false;
+                krToolStripMenuItem.Enabled = true;
                 banToolStripMenuItem.Visible = true;
                 whoisToolStripMenuItem.Visible = true;
                 kbToolStripMenuItem.Visible = true;
