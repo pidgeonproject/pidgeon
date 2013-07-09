@@ -230,7 +230,7 @@ namespace Client.Graphics
                         chan._Network.RenderedChannel = chan;
                         chan._Network._Protocol.ShowChat(chan._Network.SystemWindowID + chan.Name);
                         Core.SystemForm.UpdateStatus();
-                        break;
+                        return;
                     case ItemType.Server:
                         Network server = (Network)tv.Model.GetValue(iter, 1);
                         if (server.ParentSv == null)
@@ -246,7 +246,7 @@ namespace Client.Graphics
                         disconnectToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
-                        break;
+                        return;
                     case ItemType.Services:
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
@@ -254,7 +254,7 @@ namespace Client.Graphics
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
-                        break;
+                        return;
                     case ItemType.DCC:
                         ProtocolDCC dcc = (ProtocolDCC)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
@@ -262,16 +262,16 @@ namespace Client.Graphics
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
-                        break;
+                        return;
                     case ItemType.QuasselCore:
                         ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         quassel.ShowChat("!root");
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
-                        break;
+                        return;
                     case ItemType.System:
-                        break;
+                        return;
                     case ItemType.User:
                         User us = (User)tv.Model.GetValue(iter, 1);
                         Core.SelectedNetwork = us._Network;
@@ -289,7 +289,7 @@ namespace Client.Graphics
                         us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
                         closeToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
-                        break;
+                        return;
                 }
             }
             catch (Exception f)

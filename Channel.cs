@@ -672,12 +672,15 @@ namespace Client
                 {
                     throw new Exception("Protocol is NULL for " + _Network.ServerName);
                 }
-                foreach (var curr in _Network._Protocol.Windows)
+                lock (_Network._Protocol.Windows)
                 {
-                    if (curr.Key == _Network.SystemWindowID + Name)
+                    foreach (var curr in _Network._Protocol.Windows)
                     {
-                        this.Chat = curr.Value;
-                        return curr.Value;
+                        if (curr.Key == _Network.SystemWindowID + Name)
+                        {
+                            this.Chat = curr.Value;
+                            return curr.Value;
+                        }
                     }
                 }
             }

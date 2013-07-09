@@ -164,26 +164,29 @@ namespace Client
         /// <returns></returns>
         public virtual bool ShowChat(string name)
         {
-            if (Windows.ContainsKey(name))
+            lock (Windows)
             {
-                Current = Windows[name];
-                Core.SystemForm.SwitchWindow(Current);
-                Current.Redraw();
-                if (Current.isChannel)
+                if (Windows.ContainsKey(name))
                 {
-                    if (Core.SelectedNetwork != null)
+                    Current = Windows[name];
+                    Core.SystemForm.SwitchWindow(Current);
+                    Current.Redraw();
+                    if (Current.isChannel)
                     {
-                        Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.getChannel(Current.WindowName);
+                        if (Core.SelectedNetwork != null)
+                        {
+                            Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.getChannel(Current.WindowName);
+                        }
                     }
+                    Core.SystemForm.setChannel(name);
+                    if (Current.Making == false)
+                    {
+                        Current.textbox.setFocus();
+                    }
+                    Core.SystemForm.Chat = Windows[name];
+                    Current.Making = false;
+                    Core.SystemForm.UpdateStatus();
                 }
-                Core.SystemForm.setChannel(name);
-                if (Current.Making == false)
-                {
-                    Current.textbox.setFocus();
-                }
-                Core.SystemForm.Chat = Windows[name];
-                Current.Making = false;
-                Core.SystemForm.UpdateStatus();
             }
             return true;
         }
