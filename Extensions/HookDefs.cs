@@ -171,6 +171,30 @@ namespace Client
         }
 
         /////////////////////////////////////////////////////////////////////////////////////
+        // Window
+        /////////////////////////////////////////////////////////////////////////////////////
+
+        /// <summary>
+        /// This hook is called right before the menu is displayed
+        /// </summary>
+        /// <param name="_MenuArgs"></param>
+        /// <returns></returns>
+        public virtual bool Hook_AfterUserMenu(BeforeUserMenuArgs _MenuArgs)
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// This hook is called before the menu is created
+        /// </summary>
+        /// <param name="_MenuArgs"></param>
+        /// <returns></returns>
+        public virtual bool Hook_BeforeUserMenu(BeforeUserMenuArgs _MenuArgs)
+        {
+            return true;
+        }
+
+        /////////////////////////////////////////////////////////////////////////////////////
         // Scrollback
         /////////////////////////////////////////////////////////////////////////////////////
 

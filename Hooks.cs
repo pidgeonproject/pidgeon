@@ -140,7 +140,30 @@ namespace Client
             /// <returns></returns>
             public static bool BeforeUserMenu(Gtk.Menu Menu, Graphics.Window Window)
             {
-                return true;
+                Extension.BeforeUserMenuArgs e = new Extension.BeforeUserMenuArgs();
+                e.menu = Menu;
+                e.window = Window;
+                Events._Window.TriggerBeforeUserMenu(null, e);
+                bool ok = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_BeforeUserMenu(e))
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeUserMenu(Gtk.Menu Menu, Graphics.Window Window) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return ok;
             }
 
             /// <summary>
@@ -151,7 +174,30 @@ namespace Client
             /// <returns></returns>
             public static bool AfterUserMenu(Gtk.Menu Menu, Graphics.Window Window)
             {
-                return true;
+                Extension.BeforeUserMenuArgs e = new Extension.BeforeUserMenuArgs();
+                e.menu = Menu;
+                e.window = Window;
+                Events._Window.TriggerBeforeUserMenu(null, e);
+                bool ok = true;
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            if (!extension.Hook_AfterUserMenu(e))
+                            {
+                                ok = false;
+                            }
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook AfterUserMenu(Gtk.Menu Menu, Graphics.Window Window) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+                return ok;
             }
         }
 
