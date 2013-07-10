@@ -1,6 +1,6 @@
 == Pidgeon ==
 
-This is a repository for pidgeon client
+This is a repository for pidgeon client see http://pidgeonclient.org for more
 
 == How to install ==
 
@@ -17,4 +17,4 @@ to start the client
 
 
 === Windows ===
-There is no automatic script, you need to build all parts in visual studio
+There is no automatic script, you need to build all parts in visual studio, or monodevelop
