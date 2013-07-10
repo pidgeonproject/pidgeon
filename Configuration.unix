@@ -82,7 +82,7 @@ namespace Client
             /// <summary>
             /// What should happen when you doubleclick a user
             /// </summary>
-            public static UserList_MouseClick DoubleClick = UserList_MouseClick.Nothing;
+            public static UserList_MouseClick DoubleClick = UserList_MouseClick.SendMsg;
             /// <summary>
             /// What should happen when you scroll a user
             /// </summary>
@@ -158,6 +158,10 @@ namespace Client
             /// Certificate for ctcp
             /// </summary>
             public static string CertificateDCC = null;
+            /// <summary>
+            /// Display a response for every ctcp message
+            /// </summary>
+            public static bool ShowReplyForCTCP = true;
         }
 
         /// <summary>
@@ -287,6 +291,10 @@ namespace Client
             /// Path of language data files
             /// </summary>
             public static string Lang = "languages";
+            /// <summary>
+            /// Path of external handler
+            /// </summary>
+            public static string ExternalHandler = "";
         }
 
         /// <summary>
@@ -698,6 +706,10 @@ namespace Client
         /// </summary>
         public enum UserList_MouseClick
         {
+            /// <summary>
+            /// Message
+            /// </summary>
+            SendMsg,
             /// <summary>
             /// Display a whois of user
             /// </summary>
