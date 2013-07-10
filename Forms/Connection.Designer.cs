@@ -273,6 +273,7 @@ namespace Client.Forms
             }
             this.DefaultWidth = 927;
             this.DefaultHeight = 320;
+            Hooks._Sys.Connection(this);
             this.Show();
         }
     }

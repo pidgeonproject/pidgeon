@@ -263,6 +263,7 @@ namespace Client.Forms
                 {
                     ResetSize();
                 }
+                throw new Exception();
                 hpaned1.Position = Configuration.Window.window_size;
                 ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;

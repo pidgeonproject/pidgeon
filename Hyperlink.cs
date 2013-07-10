@@ -47,28 +47,25 @@ namespace Client
             {
                 while (true)
                 {
-                    try
+                    if (Links.Count > 0)
                     {
-                        if (Links.Count > 0)
+                        List<string> list = new List<string>();
+                        lock (Links)
                         {
-                            List<string> list = new List<string>();
-                            lock (Links)
-                            {
-                                list.AddRange(Links);
-                                Links.Clear();
-                            }
-                            foreach (string ln in list)
-                            {
-                                System.Diagnostics.Process.Start(ln);
-                            }
+                            list.AddRange(Links);
+                            Links.Clear();
                         }
-                        Thread.Sleep(200);
+                        foreach (string ln in list)
+                        {
+                            System.Diagnostics.Process.Start(ln);
+                        }
                     }
-                    catch (ThreadAbortException)
-                    {
-                        return;
-                    }
+                    Thread.Sleep(200);
                 }
+            }
+            catch (ThreadAbortException)
+            {
+                return;
             }
             catch (Exception fail)
             {

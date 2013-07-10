@@ -101,11 +101,26 @@ namespace Client
             /// Preferences form is open
             /// </summary>
             /// <param name="preferences">Preferences object</param>
-            public static void BeforeOptions(ref Forms.Preferences preferences)
+            public static void BeforeOptions(Forms.Preferences preferences)
             {
                 Extension.BeforeOptionsArgs e = new Extension.BeforeOptionsArgs();
                 e.Window = preferences;
                 Events._System.TriggerBeforeOptions(null, e);
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            extension.Hook_BeforeOptions(preferences);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeOptions(Forms.Preferences preferences) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
             }
 
             /// <summary>
@@ -237,7 +252,7 @@ namespace Client
             /// <param name="command"></param>
             public static void BeforeCommand(Protocol protocol, string command)
             {
-
+                return;
             }
         }
 

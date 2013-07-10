@@ -252,6 +252,13 @@ namespace Client
         /////////////////////////////////////////////////////////////////////////////////////
 
         /// <summary>
+        /// This hook is called before the option form is displayed
+        /// </summary>
+        /// <param name="window"></param>
+        public virtual void Hook_BeforeOptions(Forms.Preferences window)
+        {}
+
+        /// <summary>
         /// This hook is started before you connect to a protocol
         /// </summary>
         /// <param name="protocol"></param>
