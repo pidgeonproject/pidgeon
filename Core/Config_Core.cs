@@ -861,6 +861,9 @@ namespace Client
                                                     case "Configuration.irc.FriendlyWhois":
                                                         Configuration.irc.FriendlyWhois = bool.Parse(curr.InnerText);
                                                         break;
+                                                    case "Configuration.irc.DetailedVersion":
+                                                        Configuration.irc.DetailedVersion = bool.Parse(curr.InnerText);
+                                                        break;
                                                 }
                                             }
                                         }

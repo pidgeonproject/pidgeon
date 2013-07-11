@@ -162,6 +162,7 @@ namespace Client
             /// Display a response for every ctcp message
             /// </summary>
             public static bool ShowReplyForCTCP = true;
+            public static bool DetailedVersion = false;
         }
 
         /// <summary>

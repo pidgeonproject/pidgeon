@@ -78,6 +78,7 @@ namespace Client
             this.update.Click += new System.EventHandler(this.update_Click);
             this.lUpdateLink.Location = new System.Drawing.Point(20, 180);
             this.lUpdateLink.Visible = false;
+            this.lUpdateLink.AutoSize = true;
             this.lUpdateLink.Click += new System.EventHandler(this.UpdateLink_Click);
             this.lUpdateLink.Text = "update";
             // 

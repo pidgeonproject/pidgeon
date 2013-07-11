@@ -22,7 +22,7 @@ using System.Text;
 namespace Client
 {
     /// <summary>
-    /// User
+    /// User, Every user on irc has instance of this class for every channel they are in
     /// </summary>
     [Serializable]
     public class User : IComparable
@@ -73,6 +73,81 @@ namespace Client
         /// </summary>
         public DateTime LastAwayCheck;
         /// <summary>
+        /// Primary chan
+        /// </summary>
+        private Channel Channel = null;
+        /// <summary>
+        /// Return true if user is owner of a channel
+        /// </summary>
+        public bool IsOwner
+        {
+            get
+            {
+                if (ChannelMode._Mode.Contains("q"))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        /// <summary>
+        /// Return true if user is admin of a channel
+        /// </summary>
+        public bool IsAdmin
+        {
+            get
+            {
+                if (ChannelMode._Mode.Contains("a"))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        /// <summary>
+        /// Return true if user is op of a channel
+        /// </summary>
+        public bool IsOp
+        {
+            get
+            {
+                if (ChannelMode._Mode.Contains("o"))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        /// <summary>
+        /// Return true if user is half_operator of a channel
+        /// </summary>
+        public bool IsHalfop
+        {
+            get
+            {
+                if (ChannelMode._Mode.Contains("h"))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        /// <summary>
+        /// Return true if user is voiced in this channel
+        /// </summary>
+        public bool IsVoiced
+        {
+            get
+            {
+                if (ChannelMode._Mode.Contains("v"))
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Away time
         /// </summary>
         public DateTime AwayTime;
@@ -101,10 +176,36 @@ namespace Client
         }
 
         /// <summary>
+        /// Get a list of all channels this user is in
+        /// </summary>
+        public List<Channel> ChannelList
+        {
+            get
+            {
+                List<Channel> List = new List<Channel>();
+                if (_Network == null)
+                {
+                    return null;
+                }
+                lock (_Network.Channels)
+                {
+                    foreach (Channel xx in _Network.Channels)
+                    {
+                        if (xx.ContainsUser(Nick))
+                        {
+                            List.Add(xx);
+                        }
+                    }
+                }
+                return List;
+            }
+        }
+
+        /// <summary>
         /// Creates a new user
         /// </summary>
         /// <param name="user">user!ident@hostname</param>
-        /// <param name="network"></param>
+        /// <param name="network">Network this class belongs to</param>
         public User(string user, Network network)
         {
             if (!user.Contains("@") || !user.Contains("!"))
@@ -148,38 +249,28 @@ namespace Client
         }
 
         /// <summary>
+        /// Creates a new user
+        /// </summary>
+        /// <param name="nick">Nick</param>
+        /// <param name="host">Host</param>
+        /// <param name="network">Network</param>
+        /// <param name="ident">Ident</param>
+        /// <param name="server">Server</param>
+        /// <param name="channel">Channel</param>
+        public User(string nick, string host, Network network, string ident, string server, Channel channel)
+        {
+            this.Server = server;
+            this.Channel = channel;
+            MakeUser(nick, host, network, ident);
+        }
+
+        /// <summary>
         /// Destructor
         /// </summary>
         ~User()
         {
             // remove reference to network from channel mode that is no longer going to be accessible so that GC can remove it
             ChannelMode.network = null;
-        }
-
-        /// <summary>
-        /// Get a list of all channels this user is in
-        /// </summary>
-        public List<Channel> ChannelList
-        {
-            get
-            {
-                List<Channel> List = new List<Channel>();
-                if (_Network == null)
-                {
-                    return null;
-                }
-                lock (_Network.Channels)
-                {
-                    foreach (Channel xx in _Network.Channels)
-                    {
-                        if (xx.ContainsUser(Nick))
-                        {
-                            List.Add(xx);
-                        }
-                    }
-                }
-                return List;
-            }
         }
 
         /// <summary>
@@ -231,9 +322,10 @@ namespace Client
             {
                 return;
             }
-            destroyed = true;
+            channel = null;
             Core.SystemForm.ChannelList.RemoveUser(this);
             _Network = null;
+            destroyed = true;
         }
 
         /// <summary>
