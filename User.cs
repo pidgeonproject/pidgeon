@@ -75,7 +75,7 @@ namespace Client
         /// <summary>
         /// Primary chan
         /// </summary>
-        private Channel Channel = null;
+        public Channel Channel = null;
         /// <summary>
         /// Return true if user is owner of a channel
         /// </summary>
@@ -322,7 +322,7 @@ namespace Client
             {
                 return;
             }
-            channel = null;
+            Channel = null;
             Core.SystemForm.ChannelList.RemoveUser(this);
             _Network = null;
             destroyed = true;
