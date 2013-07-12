@@ -532,8 +532,8 @@ namespace Client
                 if (network.Contains("#"))
                 {
                     channel = network.Substring(network.IndexOf("#"));
+                    network = network.Substring(0, network.IndexOf("#"));
                 }
-                network = network.Substring(0, network.IndexOf("#"));
                 if (network.Contains(":"))
                 {
                     string port = network.Substring(network.IndexOf(":") + 1);
