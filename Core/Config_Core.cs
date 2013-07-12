@@ -453,6 +453,14 @@ namespace Client
                             {
                                 foreach (XmlNode curr in node.ChildNodes)
                                 {
+                                    if (curr.Name == "history")
+                                    {
+                                        lock (Configuration.UserData.History)
+                                        {
+                                            Configuration.UserData.History.Add(curr.InnerText);
+                                        }
+                                        continue;
+                                    }
                                     if (curr.Attributes == null)
                                     {
                                         continue;
@@ -462,14 +470,6 @@ namespace Client
                                         if (curr.Name.StartsWith("extension."))
                                         {
                                             Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
-                                            continue;
-                                        }
-                                        if (curr.Name == "history")
-                                        {
-                                            lock (Configuration.UserData.History)
-                                            {
-                                                Configuration.UserData.History.Add(curr.InnerText);
-                                            }
                                             continue;
                                         }
                                         if (curr.Name == "alias")
