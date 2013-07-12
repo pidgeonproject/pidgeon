@@ -307,6 +307,8 @@ namespace Client
                 commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
                 commands.Add("pidgeon.module", new Command(Type.System, Generic.RegisterModule));
                 RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
+                commands.Add("pidgeon.link", new Command(Type.System, Generic.Link));
+                //RegisterManual("pidgeon.link", Client.Properties.Resources.PidgeonModule);
                 commands.Add("pidgeon.services.info", new Command(Type.System, Generic.services_cache));
                 commands.Add("pidgeon.services.clear", new Command(Type.System, Generic.services_clear));
                 commands.Add("pidgeon.services.flush", new Command(Type.System, Generic.services_flush));

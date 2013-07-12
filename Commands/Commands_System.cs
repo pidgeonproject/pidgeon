@@ -53,6 +53,25 @@ namespace Client
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
             }
 
+            /// <summary>
+            /// Open a link
+            /// </summary>
+            /// <param name="parameter"></param>
+            public static void Link(string parameter)
+            {
+                if (parameter != "")
+                {
+                    if (Core.SystemForm.Chat._Network != null && Core.SystemForm.Chat._Network.ParentSv != null)
+                    {
+                        Core.ParseLink(parameter, Core.SystemForm.Chat._Network.ParentSv);
+                        return;
+                    }
+                    Core.ParseLink(parameter);
+                    return;
+                }
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+            }
+
             public static void External2Text(string parameter)
             {
                 if (parameter != "")

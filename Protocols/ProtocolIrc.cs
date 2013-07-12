@@ -285,12 +285,13 @@ namespace Client
 
                 Connected = true;
 
-                Send("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName);
-                Send("NICK " + _IRCNetwork.Nickname);
                 if (Password != "")
                 {
                     Send("PASS " + Password);
                 }
+
+                Send("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName);
+                Send("NICK " + _IRCNetwork.Nickname);
 
                 Core.SystemForm.Status("");
 
