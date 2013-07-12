@@ -218,6 +218,10 @@ namespace Client
                             {
                                 case "VERSION":
                                     reply = "VERSION " + Configuration.Version + " http://pidgeonclient.org/wiki/";
+                                    if (Configuration.irc.DetailedVersion)
+                                    {
+                                        reply += " build: " + RevisionProvider.GetHash() + " operating system " + Environment.OSVersion.ToString();
+                                    }
                                     _Network.Transfer("NOTICE " + _nick + " :" + _Protocol.delimiter.ToString() + reply,
                                         Configuration.Priority.Low);
                                     break;
