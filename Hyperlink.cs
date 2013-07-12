@@ -41,6 +41,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Function that handles the queue of links
+        /// </summary>
         private static void Exec()
         {
             try

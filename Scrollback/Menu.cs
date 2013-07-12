@@ -457,23 +457,30 @@ namespace Client
         [GLib.ConnectBefore]
         private void Click(object sender, Gtk.ButtonPressEventArgs e)
         {
-            if (e.Event.Button == 3)
+            try
             {
-                if (SelectedLink != null && SelectedUser != null)
+                if (e.Event.Button == 3)
                 {
-                    Click_R(SelectedUser, SelectedLink);
+                    if (SelectedLink != null && SelectedUser != null)
+                    {
+                        Click_R(SelectedUser, SelectedLink);
+                    }
+                }
+                if (e.Event.Button == 1)
+                {
+                    if (SelectedLink != null)
+                    {
+                        Click_L(SelectedLink);
+                    }
+                }
+                if (owner != null)
+                {
+                    owner.textbox.setFocus();
                 }
             }
-            if (e.Event.Button == 1)
+            catch (Exception fail)
             {
-                if (SelectedLink != null)
-                {
-                    Click_L(SelectedLink);
-                }
-            }
-            if (owner != null)
-            {
-                owner.textbox.setFocus();
+                Core.handleException(fail);
             }
         }
 
@@ -496,6 +503,19 @@ namespace Client
                 {
                     MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
+            }
+            if (http.StartsWith("irc://"))
+            {
+                if (owner != null)
+                {
+                    if (owner._Network != null && owner._Network.ParentSv != null)
+                    {
+                        Core.ParseLink(http, owner._Network.ParentSv);
+                        return;
+                    }
+                }
+                Core.ParseLink(http);
+                return;
             }
             if (http.StartsWith("pidgeon://"))
             {
