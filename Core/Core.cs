@@ -555,6 +555,33 @@ namespace Client
                 {
                     network = network.Substring(0, network.Length - 1);
                 }
+                if (services != null)
+                {
+                    lock (services.NetworkList)
+                    {
+                        foreach (Network sv in services.NetworkList)
+                        {
+                            if (sv.ServerName == network)
+                            {
+                                sv.Join(channel);
+                                return;
+                            }
+                        }
+                    }
+                    services.ConnectTo(network, PORT);
+                    lock (services.NetworkList)
+                    {
+                        foreach (Network sv in services.NetworkList)
+                        {
+                            if (sv.ServerName == network)
+                            {
+                                sv.Join(channel);
+                                return;
+                            }
+                        }
+                    }
+                    return;
+                }
                 ProtocolIrc server = null;
                 foreach (Protocol protocol in Connections)
                 {

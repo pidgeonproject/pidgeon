@@ -497,6 +497,19 @@ namespace Client
                     MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
+            if (http.StartsWith("irc://"))
+            {
+                if (owner != null)
+                {
+                    if (owner._Network != null && owner._Network.ParentSv != null)
+                    {
+                        Core.ParseLink(http, owner._Network.ParentSv);
+                        return;
+                    }
+                }
+                Core.ParseLink(http);
+                return;
+            }
             if (http.StartsWith("pidgeon://"))
             {
                 string command = http.Substring("pidgeon://".Length);
