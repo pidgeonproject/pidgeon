@@ -755,7 +755,6 @@ namespace Client.Graphics
                             {
                                 _Network.Private(nickname);
                             }
-                            _Network._Protocol.ShowChat(_Network.SystemWindowID + nickname);
                         }
                     }
                 }
