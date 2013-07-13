@@ -27,6 +27,7 @@ cp *.cs $temp
 cp *cmd $temp
 cp *.unix $temp
 cp *.txt $temp
+cp -r GTK $temp/GTK
 cp -r modules $temp/modules
 cp -r Core $temp/Core
 cp -r Commands $temp/Commands
