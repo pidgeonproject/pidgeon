@@ -31,6 +31,11 @@ namespace Client
         {
             switch(variable)
             {
+                case "$PidgeonVersion":
+                    return System.Windows.Forms.Application.ProductVersion.ToString();
+                case "$PidgeonUptime":
+                    TimeSpan uptime = DateTime.Now - Core.LoadTime;
+                    return uptime.ToString();
                 case "$Connected":
                     if (window._Network != null)
                     {
