@@ -10,13 +10,19 @@ if [ ! -d /usr/share/pidgeon ]; then
   mkdir /usr/share/pidgeon
 fi
 
-if [ ! -d /usr/share/pidgeon/skins ]; then
-  mkdir /usr/share/pidgeon/skins
+if [ -d /usr/share/pidgeon/skins ]; then
+  echo "Cleaning old skins"
+  rm -vr /usr/share/pidgeon/skins
 fi
 
-if [ ! -d "/usr/share/pidgeon/modules" ]; then
-  mkdir "/usr/share/pidgeon/modules"
+mkdir /usr/share/pidgeon/skins
+
+if [ -d "/usr/share/pidgeon/modules" ]; then
+  echo "Cleaning old modules"
+  rm -vr "/usr/share/pidgeon/modules"
 fi
+
+mkdir "/usr/share/pidgeon/modules"
 
 echo "Copying the binaries to /usr/share"
 
