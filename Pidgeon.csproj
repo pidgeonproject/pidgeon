@@ -103,7 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ExternalCommand.cs" />
+    <Compile Include="Commands\Commands_Sc.cs" />
     <Compile Include="Core\Connection.cs" />
+    <Compile Include="Core\Eval.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
     <Compile Include="Extensions\HookDefs.cs" />
