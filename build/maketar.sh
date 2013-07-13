@@ -46,7 +46,8 @@ cp -r skins $temp/skins
 echo "Copying makefiles"
 cp -r build $temp/build
 cp *sh $temp
-cp Makefile $temp
+cp configure $temp
+cp Makefile* $temp
 
 echo "Replacing update.sh with dummy file"
 echo "#!/bin/sh" > $temp/update.sh
