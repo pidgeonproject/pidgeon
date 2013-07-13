@@ -8,9 +8,9 @@ fi
 echo "Enter a version (for example 1.2.4.0)":
 read v
 
-temp=/tmp/pidgeon-$v.orig
+temp=/tmp/pidgeon_$v.orig
 
-if [ -d /tmp/pidgeon-$v.orig ];then
+if [ -d /tmp/pidgeon_$v.orig ];then
   echo "Remove $temp before this"
   exit 1
 fi
@@ -54,11 +54,12 @@ echo "#!/bin/sh" > $temp/update.sh
 
 echo "Creating a tarball"
 
-cd /tmp
-tar -zcf $temp.tar.gz pidgeon-$v.orig || exit 1
+cd $temp
+tar -zcf pidgeon_$v.orig.tar.gz * || exit 1
+mv pidgeon_$v.orig.tar.gz /tmp
 
 echo "Cleaning up temp"
 
 rm -rf $temp
 
-echo "Done, your tarball is at $temp.tar.gz"
+echo "Done, your tarball is at /tmp/pidgeon_$vpidgeon_$v.orig.tar.gz"
