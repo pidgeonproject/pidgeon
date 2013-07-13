@@ -33,6 +33,7 @@ cp -r Commands $temp/Commands
 cp -r Resources $temp/Resources
 cp -r Extensions $temp/Extensions
 cp -r WinForms $temp/WinForms
+cp -r Languages $temp/Languages
 cp -r Graphics $temp/Graphics
 cp -r Forms $temp/Forms
 cp -r ManualPages $temp/ManualPages
