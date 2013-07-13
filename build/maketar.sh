@@ -24,6 +24,7 @@ echo "Copying all source codes"
 cp Pidgeon.csproj $temp
 cp *sln $temp
 cp *.cs $temp
+cp *cmd $temp
 cp *.unix $temp
 cp *.txt $temp
 cp -r modules $temp/modules
