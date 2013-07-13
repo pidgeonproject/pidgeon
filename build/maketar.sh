@@ -20,7 +20,7 @@ mkdir $temp || exit 1
 echo "Copying all source codes"
 cp Pidgeon.csproj $temp
 cp *sln $temp
-cp *cs $temp
+cp *.cs $temp
 cp -r modules $temp/modules
 cp -r Core $temp/Core
 cp -r Commands $temp/Commands
