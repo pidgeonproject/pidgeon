@@ -1,6 +1,6 @@
 all:
 	./build.sh
 clean:
-	./clean.sh
+	./build/clean.sh
 install:
-	./install.sh
+	./build/install.sh

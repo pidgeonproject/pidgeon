@@ -29,6 +29,7 @@ echo "Copying the binaries to /usr/share"
 cp -v bin/Release/modules/* "/usr/share/pidgeon/modules"
 cp -v bin/Release/skins/* "/usr/share/pidgeon/skins"
 cp -v bin/Release/Pidgeon.exe "/usr/share/pidgeon"
+cp -v bin/Release/Pidgeon.XML "/usr/share/pidgeon"
 
 echo "Creating a terminal launcher in /usr/bin"
 
