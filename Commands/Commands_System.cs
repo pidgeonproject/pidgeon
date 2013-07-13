@@ -28,6 +28,10 @@ namespace Client
     {
         private partial class Generic
         {
+            public static void If(string parameter)
+            {
+                
+            }
             public static void External(string parameter)
             {
                 if (parameter != "")
