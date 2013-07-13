@@ -1,5 +1,11 @@
 #!/bin/sh
 
+p="/p:Configuration=Release"
+
+if [ "$1" = "--debug" ]; then
+    p="/p:Configuration=Debug"
+fi
+
 echo "Checking all required packages..."
 
 if [ "`which xbuild`" = "" ];then
@@ -27,7 +33,7 @@ if [ ! -f version.txt ];then
 	exit 1
 fi
 
-xbuild || exit 1
+xbuild "$p" || exit 1
 
 if [ ! -f pidgeon ];then
 	echo "#!/bin/sh" >> pidgeon
@@ -36,7 +42,7 @@ if [ ! -f pidgeon ];then
 fi
 
 if [ -f buildall.sh ];then
-	sh buildall.sh
+	sh buildall.sh "$p"
 	else
 	echo "Warning: there is no extension configuration present"
 fi
