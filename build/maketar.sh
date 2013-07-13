@@ -17,10 +17,15 @@ fi
 
 mkdir $temp || exit 1
 
+echo "Generating version.txt"
+sh update.sh
+
 echo "Copying all source codes"
 cp Pidgeon.csproj $temp
 cp *sln $temp
 cp *.cs $temp
+cp *.unix $temp
+cp *.txt $temp
 cp -r modules $temp/modules
 cp -r Core $temp/Core
 cp -r Commands $temp/Commands
@@ -40,9 +45,16 @@ cp -r build $temp/build
 cp *sh $temp
 cp Makefile $temp
 
+echo "Replacing update.sh with dummy file"
+echo "#!/bin/sh" > $temp/update.sh
+
 echo "Creating a tarball"
 
 cd /tmp
 tar -zcf $temp.tar.gz pidgeon-$v.orig || exit 1
+
+echo "Cleaning up temp"
+
+rm -rf $temp
 
 echo "Done, your tarball is at $temp.tar.gz"
