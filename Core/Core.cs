@@ -246,7 +246,7 @@ namespace Client
         /// Gets the system form
         /// </summary>
         /// <value>
-        /// The system form.
+        /// The system form
         /// </value>
         public static Forms.Main SystemForm
         {
