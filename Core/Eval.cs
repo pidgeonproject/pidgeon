@@ -114,6 +114,7 @@ namespace Client
                     case 1:
                         return (BufferA != BufferB).ToString().ToLower();
                     case 2:
+                        Core.DebugLog("Evaluating " + BufferA + " == " + BufferB);
                         return (BufferA == BufferB).ToString().ToLower();
                 }
             }
