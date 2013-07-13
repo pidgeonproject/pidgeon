@@ -1,0 +1,5 @@
+pidgeon (1.2.5.0-1) stable; urgency=low
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Peter Bena <benapetr@gmail.com>  Sat, 13 Jul 2013 17:06:39 +0200

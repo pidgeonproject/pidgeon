@@ -1,0 +1,15 @@
+Source: pidgeon
+Section: net
+Priority: extra
+Maintainer: Peter Bena <benapetr@gmail.com>
+Build-Depends: debhelper (>= 8.0.0), mono-xbuild, mono-runtime, libgtk2.0-cil, libmono-2.0-1, libmono-addins0.2-cil, libmono-cil-dev, libmono-corlib2.0-cil, libmono-corlib4.0-cil, libmono-csharp4.0-cil, libmono-http4.0-cil, libmono-microsoft-csharp4.0-cil, libmono-security2.0-cil, libmono-security4.0-cil, libmono-system-data-linq2.0-cil, libmono-system-data-linq4.0-cil, libmono-system-drawing4.0-cil, libmono-system-net4.0-cil, libmono-system-runtime4.0-cil, libmono-system-security4.0-cil, libmono-system-web2.0-cil, libmono-system-web4.0-cil, libmono-system-windows-forms4.0-cil, libmono-system-xml4.0-cil, libmono-system2.0-cil, libmono-system4.0-cil, libmono-web4.0-cil, libmono-winforms2.0-cil
+Standards-Version: 3.9.2
+Homepage: http://pidgeonclient.org/
+#Vcs-Git: git://git.debian.org/collab-maint/pidgeon.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/pidgeon.git;a=summary
+
+Package: pidgeon
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, mono-runtime, libgtk2.0-cil, libmono-2.0-1, libmono-addins0.2-cil, libmono-cil-dev, libmono-corlib2.0-cil, libmono-corlib4.0-cil, libmono-csharp4.0-cil, libmono-http4.0-cil, libmono-microsoft-csharp4.0-cil, libmono-security2.0-cil, libmono-security4.0-cil, libmono-system-data-linq2.0-cil, libmono-system-data-linq4.0-cil, libmono-system-drawing4.0-cil, libmono-system-net4.0-cil, libmono-system-runtime4.0-cil, libmono-system-security4.0-cil, libmono-system-web2.0-cil, libmono-system-web4.0-cil, libmono-system-windows-forms4.0-cil, libmono-system-xml4.0-cil, libmono-system2.0-cil, libmono-system4.0-cil, libmono-web4.0-cil, libmono-winforms2.0-cil
+Description: Pidgeon client is advanced IRC client
+ This package will install pidgeon IRC client, with default plugins
