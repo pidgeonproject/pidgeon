@@ -75,7 +75,10 @@ namespace Client
         /// Whether the connection is being encrypted or not
         /// </summary>
         public bool SSL = false;
-        
+        /// <summary>
+        /// Encoding
+        /// </summary>
+        public Encoding NetworkEncoding = Configuration.irc.NetworkEncoding;
         /// <summary>
         /// Time since you connected to this protocol
         /// </summary>

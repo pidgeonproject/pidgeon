@@ -163,6 +163,7 @@ namespace Client
             /// </summary>
             public static bool ShowReplyForCTCP = true;
             public static bool DetailedVersion = false;
+            public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
         }
 
         /// <summary>

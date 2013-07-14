@@ -222,6 +222,7 @@ namespace Client
                     make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Kernel.Lang", Configuration.Kernel.Lang, curr, confname, config, xmlnode);
                     make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
+                    make_node("Configuration.irc.NetworkEncoding", Configuration.irc.NetworkEncoding.ToString(), curr, confname, config, xmlnode);
 
                     make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -864,6 +865,23 @@ namespace Client
                                                         break;
                                                     case "Configuration.irc.DetailedVersion":
                                                         Configuration.irc.DetailedVersion = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.irc.NetworkEncoding":
+                                                        switch (curr.InnerText)
+                                                        {
+                                                            case "ASCIIEncoding":
+                                                                Configuration.irc.NetworkEncoding = System.Text.Encoding.ASCII;
+                                                                break;
+                                                            case "UTF32Encoding":
+                                                                Configuration.irc.NetworkEncoding = System.Text.Encoding.UTF32;
+                                                                break;
+                                                            case "UnicodeEncoding":
+                                                                Configuration.irc.NetworkEncoding = System.Text.Encoding.Unicode;
+                                                                break;
+                                                            case "UTF7Encoding":
+                                                                Configuration.irc.NetworkEncoding = System.Text.Encoding.UTF7;
+                                                                break;
+                                                        }
                                                         break;
                                                 }
                                             }
