@@ -928,7 +928,7 @@ namespace Client.Graphics
                         {
                             if (ServerList.ContainsKey(network))
                             {
-                                ServerList.Remove(network);
+                                RemoveServer(network);
                             }
                         }
                         network.Disconnect();
