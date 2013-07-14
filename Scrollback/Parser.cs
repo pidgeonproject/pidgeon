@@ -260,9 +260,11 @@ namespace Client
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
                     {
-                        if (link.Contains(prefix))
+                        // store a new separator to buffer in case link is not end
+                        char sepa = Prefix(link);
+                        if (sepa != '\0')
                         {
-                            link = link.Substring(0, link.IndexOf(prefix));
+                            link = link.Substring(0, link.IndexOf(sepa.ToString()));
                         }
                     }
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
@@ -283,18 +285,10 @@ namespace Client
                 string link = result.Substring(7);
                 if (link.Length > 0)
                 {
-                    char separator = ' ';
-                    foreach (char xx in Configuration.Parser.Separators)
+                    char sepa = Prefix(link);
+                    if (sepa != '\0')
                     {
-                        if (link.Contains(xx.ToString()))
-                        {
-                            separator = xx;
-                            break;
-                        }
-                    }
-                    if (link.Contains(separator.ToString()))
-                    {
-                        link = link.Substring(0, link.IndexOf(separator.ToString()));
+                        link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
                 Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
