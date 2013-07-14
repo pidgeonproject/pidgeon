@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freenode", "freenode\freenode.csproj", "{9B23E4A5-B5C1-49F5-BF32-6E7C463DE730}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "freenode", "freenode.csproj", "{9B23E4A5-B5C1-49F5-BF32-6E7C463DE730}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

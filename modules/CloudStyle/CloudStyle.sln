@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStyle", "CloudStyle\CloudStyle.csproj", "{0CF32AF6-0891-4E94-AAA3-BBC81418B779}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CloudStyle", "CloudStyle.csproj", "{0CF32AF6-0891-4E94-AAA3-BBC81418B779}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

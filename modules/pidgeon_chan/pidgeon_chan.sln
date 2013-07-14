@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C# Express 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pidgeon_chan", "pidgeon_chan\pidgeon_chan.csproj", "{CE47DD8B-007A-4F4A-B55B-74AB191FC1D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pidgeon_chan", "pidgeon_chan.csproj", "{CE47DD8B-007A-4F4A-B55B-74AB191FC1D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
