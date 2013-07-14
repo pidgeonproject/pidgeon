@@ -7,3 +7,6 @@ fi
 if [ -d bin ];then
 rm -rf bin
 fi
+
+rm -rf modules/*/bin
+rm -rf modules/*/obj
