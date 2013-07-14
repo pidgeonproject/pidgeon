@@ -266,8 +266,8 @@ namespace Client
                 if (!SSL)
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
-                    _StreamWriter = new System.IO.StreamWriter(_networkStream, NetworkEncoding);
-                    _StreamReader = new System.IO.StreamReader(_networkStream, NetworkEncoding);
+                    _StreamWriter = new System.IO.StreamWriter(_networkStream);
+                    _StreamReader = new System.IO.StreamReader(_networkStream);
                 }
 
                 if (SSL)
@@ -276,8 +276,8 @@ namespace Client
                     _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
                     _networkSsl.AuthenticateAsClient(Server);
-                    _StreamWriter = new System.IO.StreamWriter(_networkSsl, NetworkEncoding);
-                    _StreamReader = new System.IO.StreamReader(_networkSsl, NetworkEncoding);
+                    _StreamWriter = new System.IO.StreamWriter(_networkSsl);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl);
                 }
 
                 Hooks._Protocol.BeforeConnect(this);
