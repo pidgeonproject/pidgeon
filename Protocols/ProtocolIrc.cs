@@ -1,20 +1,17 @@
-﻿/***************************************************************************
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) version 3.                                           *
- *                                                                         *
- *   This program is distributed in the hope that it will be useful,       *
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
- *   GNU General Public License for more details.                          *
- *                                                                         *
- *   You should have received a copy of the GNU General Public License     *
- *   along with this program; if not, write to the                         *
- *   Free Software Foundation, Inc.,                                       *
- *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
- ***************************************************************************/
+﻿//  This program is free software; you can redistribute it and/or modify
+//  it under the terms of the GNU General Public License as published by
+//  the Free Software Foundation; either version 2 of the License, or   
+//  (at your option) version 3.                                         
 
+//  This program is distributed in the hope that it will be useful,     
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of      
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
+//  GNU General Public License for more details.                        
+
+//  You should have received a copy of the GNU General Public License   
+//  along with this program; if not, write to the                       
+//  Free Software Foundation, Inc.,                                     
+//  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 using System;
 using System.Collections.Generic;
@@ -72,6 +69,10 @@ namespace Client
         /// Messages
         /// </summary>
         private MessagesClass Messages = new MessagesClass();
+        /// <summary>
+        /// Loging in using sasl
+        /// </summary>
+        public bool UsingSasl = false;
 
         class MessagesClass
         {
@@ -267,7 +268,7 @@ namespace Client
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
                     _StreamWriter = new System.IO.StreamWriter(_networkStream);
-                    _StreamReader = new System.IO.StreamReader(_networkStream);
+                    _StreamReader = new System.IO.StreamReader(_networkStream, NetworkEncoding);
                 }
 
                 if (SSL)
@@ -277,7 +278,7 @@ namespace Client
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
                     _networkSsl.AuthenticateAsClient(Server);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
-                    _StreamReader = new System.IO.StreamReader(_networkSsl);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl, NetworkEncoding);
                 }
 
                 Hooks._Protocol.BeforeConnect(this);
