@@ -14,17 +14,17 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-//#define EAGLES
-
-#if EAGLES
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using Eagle;
 
 namespace Client
 {
-
+    public partial class PidgeonScript
+    {
+        private static Dictionary<string, PidgeonScript> Scripts = new Dictionary<string, PidgeonScript> ();
+        public string Name = null;
+        public string Text = null;
+    }
 }
 
-#endif

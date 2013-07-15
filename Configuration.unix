@@ -162,6 +162,8 @@ namespace Client
             /// Display a response for every ctcp message
             /// </summary>
             public static bool ShowReplyForCTCP = true;
+            public static bool DetailedVersion = false;
+            public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
         }
 
         /// <summary>

@@ -922,6 +922,18 @@ namespace Client.Graphics
                     break;
                 case ItemType.Server:
                     Network network = (Network)Item;
+                    if (network.ParentSv != null)
+                    {
+                        lock (ServerList)
+                        {
+                            if (ServerList.ContainsKey(network))
+                            {
+                                RemoveServer(network);
+                            }
+                        }
+                        network.Disconnect();
+                        return;
+                    }
                     network._Protocol.Exit();
 
                     lock (Core.Connections)

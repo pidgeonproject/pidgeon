@@ -58,6 +58,9 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="Eagle">
+      <HintPath>Eagle.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Web" />
@@ -103,7 +106,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\ExternalCommand.cs" />
+    <Compile Include="Commands\Commands_Sc.cs" />
     <Compile Include="Core\Connection.cs" />
+    <Compile Include="Core\Eval.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
     <Compile Include="Extensions\HookDefs.cs" />

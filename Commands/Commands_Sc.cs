@@ -14,17 +14,42 @@
  *   Free Software Foundation, Inc.,                                       *
  *   51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.         *
  ***************************************************************************/
-//#define EAGLES
 
-#if EAGLES
 using System;
 using System.Collections.Generic;
-using System.Threading;
-using Eagle;
+using System.Text;
 
 namespace Client
 {
-
+    /// <summary>
+    /// This class is handling all commands
+    /// </summary>
+    public partial class Commands
+    {
+        private partial class Generic
+        {
+            public static void If(string parameter)
+            {
+               if (parameter.Contains("\""))
+               {
+                   string text = parameter.Substring(parameter.IndexOf("\"") + 1);
+                   if (text.Contains("\""))
+                   {
+                       string command = text.Substring(text.IndexOf("\"") + 1);
+                       while (command.StartsWith(" "))
+                       {
+                           command=command.Substring(1);
+                       }
+                       text = text.Substring(0, text.IndexOf("\""));
+                       if (Core.EvaluateText(text) == "true")
+                       {
+                           Parser.parse(command);
+                       }
+                       return;
+                   }
+               }
+               Core.SystemForm.Chat.scrollback.InsertText("Invalid expression", ContentLine.MessageStyle.System);
+            }
+        }
+    }
 }
-
-#endif

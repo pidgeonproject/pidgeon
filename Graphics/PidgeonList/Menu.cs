@@ -142,14 +142,7 @@ namespace Client.Graphics
                 {
                     case ItemType.Server:
                         Network item = (Network)tv.Model.GetValue(iter, 1);
-                        lock (ServerList)
-                        {
-                            if (ServerList.ContainsKey(item))
-                            {
-                                RemoveServer(item);
-                                item.Disconnect();
-                            }
-                        }
+                        item.Disconnect();
                         break;
                     case ItemType.Services:
                         ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);

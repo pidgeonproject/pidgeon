@@ -312,6 +312,7 @@ namespace Client
                 commands.Add("pidgeon.services.info", new Command(Type.System, Generic.services_cache));
                 commands.Add("pidgeon.services.clear", new Command(Type.System, Generic.services_clear));
                 commands.Add("pidgeon.services.flush", new Command(Type.System, Generic.services_flush));
+                commands.Add("pidgeon.sc.if", new Command(Type.System, Generic.If));
             }
             catch (Exception fail)
             {

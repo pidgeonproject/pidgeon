@@ -260,9 +260,11 @@ namespace Client
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
                     {
-                        if (link.Contains(prefix))
+                        // store a new separator to buffer in case link is not end
+                        char sepa = Prefix(link);
+                        if (sepa != '\0')
                         {
-                            link = link.Substring(0, link.IndexOf(prefix));
+                            link = link.Substring(0, link.IndexOf(sepa.ToString()));
                         }
                     }
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
@@ -283,18 +285,10 @@ namespace Client
                 string link = result.Substring(7);
                 if (link.Length > 0)
                 {
-                    char separator = ' ';
-                    foreach (char xx in Configuration.Parser.Separators)
+                    char sepa = Prefix(link);
+                    if (sepa != '\0')
                     {
-                        if (link.Contains(xx.ToString()))
-                        {
-                            separator = xx;
-                            break;
-                        }
-                    }
-                    if (link.Contains(separator.ToString()))
-                    {
-                        link = link.Substring(0, link.IndexOf(separator.ToString()));
+                        link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
                 Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.decode_text(link), Configuration.CurrentSkin.link);
@@ -392,15 +386,19 @@ namespace Client
                 string protocol = matchesProtocol(tempdata);
                 if (protocol != null)
                 {
+                    // check if there is a prefix character that is a symbol which separates the url
                     char prefix = Prefix(tempdata, protocol);
-                    if (templine != "")
+                    if (templine != "" || prefix != '\0')
                     {
+                        // if there is a text in buffer from previous call, we need to build it
                         if (prefix != '\0')
                         {
+                            // we append the prefix to previous text because it must not be a part of url
                             lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine) + prefix.ToString(), color);
                         }
                         else
                         {
+                            // there was no prefix
                             lprttext = new Client.RichTBox.ContentText(ProtocolIrc.decode_text(templine), color);
                         }
                         lprttext.Underline = Underlined;
@@ -416,15 +414,19 @@ namespace Client
                     }
                     if (prefix != '\0')
                     {
+                        // now we need to create a hyperlink we parse it using the prefix
                         line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, color, protocol, prefix.ToString()));
                     }
                     else
                     {
+                        // create a hyperlink not using the prefix
                         line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, color, protocol));
                     }
-                    if (matchesAPrefix(tempdata.Substring(1)))
+                    string temp01 = tempdata.Substring(1);
+                    // we check if there is another separator in the rest of link
+                    if (matchesAPrefix(temp01))
                     {
-                        Jump = tempdata.Substring(1).IndexOf(Prefix(tempdata.Substring(1))) + 1;
+                        Jump = temp01.IndexOf(Prefix(temp01)) + 1;
                     }
                     else
                     {

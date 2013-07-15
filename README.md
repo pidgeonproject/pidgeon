@@ -15,6 +15,10 @@ On linux:
 # enter the folder where you downloaded the source code and execute
 
 ./build.sh
+
+#or in order to install pidgeon system wise
+
+make && make install
 ```
 
 Compiling extensions:
