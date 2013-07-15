@@ -49,10 +49,10 @@ namespace Client
         {
             try
             {
-                if (Core.network != null)
+                if (Core.SelectedNetwork != null)
                 {
-                    Core.network.RenderedChannel = null;
-                    Core.network._Protocol.Current = collector;
+                    Core.SelectedNetwork.RenderedChannel = null;
+                    Core.SelectedNetwork._Protocol.Current = collector;
                     Core.SystemForm.SwitchWindow(collector);
                     return;
                 }

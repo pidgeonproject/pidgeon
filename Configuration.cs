@@ -39,7 +39,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Linuxx86;
         /// <summary>
         /// Version
         /// </summary>
@@ -161,7 +161,7 @@ namespace Client
             /// </summary>
             public static bool ShowReplyForCTCP = true;
             public static bool DetailedVersion = false;
-            public static System.Text.Encoding Encoding = System.Text.UTF8Encoding;
+            public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
         }
 
         /// <summary>
