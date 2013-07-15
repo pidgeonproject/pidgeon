@@ -222,6 +222,7 @@ namespace Client
                     make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Kernel.Lang", Configuration.Kernel.Lang, curr, confname, config, xmlnode);
                     make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
+                    make_node("Configuration.Parser.InputTrim", Configuration.Parser.InputTrim.ToString(), curr, confname, config, xmlnode);
 
                     make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                     foreach (KeyValuePair<string, string> data in Configuration.Extensions)
@@ -864,6 +865,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.irc.DetailedVersion":
                                                         Configuration.irc.DetailedVersion = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Parser.InputTrim":
+                                                        Configuration.Parser.InputTrim = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

@@ -476,6 +476,10 @@ namespace Client
             /// If there is a parser cache (more memory eaten, but less cpu used)
             /// </summary>
             public static int ParserCache = 2000;
+            /// <summary>
+            /// Whitespace on beginning and end of every line
+            /// </summary>
+            public static bool InputTrim = true;
         }
 
         /// <summary>

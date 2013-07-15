@@ -744,6 +744,10 @@ namespace Client
             {
                 return 0;
             }
+            if (Configuration.Parser.InputTrim)
+            {
+                input = input.Trim();
+            }
             Graphics.Window _window = window;
             if (window == null)
             {
