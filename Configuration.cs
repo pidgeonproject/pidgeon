@@ -38,6 +38,8 @@ namespace Client
         public static readonly string CommandPrefix = "/";
         /// <summary>
         /// Platform
+        /// 
+        /// This option is there so that we can disable certain features which are not available on some platforms
         /// </summary>
         public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         /// <summary>

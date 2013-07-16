@@ -102,7 +102,7 @@ namespace Client.Graphics
                 if (highlightToolStripMenuItem.Visible)
                 {
                     Gtk.CheckMenuItem notification = new CheckMenuItem(highlightToolStripMenuItem.Text);
-                    notification.Sensitive = highlightToolStripMenuItem.Enabled;
+                    notification.Sensitive = Configuration.Kernel.Notice;
                     notification.Activated += new EventHandler(notificationToolStripMenuItem_Click);
                     display = true;
                     if (SelectedWindow != null)
@@ -170,8 +170,6 @@ namespace Client.Graphics
             partToolStripMenuItem.Visible = false;
             joinToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
-            soundsToolStripMenuItem.Visible = false;
-            highlightToolStripMenuItem.Visible = false;
         }
 
         private void soundsToolStripMenuItem_Click(object sender, EventArgs e)
