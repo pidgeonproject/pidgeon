@@ -75,26 +75,6 @@ namespace Client.Graphics
                                                      typeof(string),
                                                      typeof(Gdk.Pixbuf));
         private GLib.TimeoutHandler timer;
-        /// <summary>
-        /// Menu
-        /// </summary>
-        public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
-        /// <summary>
-        /// Menu
-        /// </summary>
-        public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
-        /// <summary>
-        /// join menu
-        /// </summary>
-        public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
-        /// <summary>
-        /// disconnect menu
-        /// </summary>
-        public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
-        /// <summary>
-        /// Reconnect menu
-        /// </summary>
-        public GTK.Menu reconnectToolStripMenuItem = new GTK.Menu("Reconnect");
         private object ObjectStore = null;
         private TreeIter IterStore;
         private bool ResultStore = true;

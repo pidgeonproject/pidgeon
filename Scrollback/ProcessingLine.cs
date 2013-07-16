@@ -520,7 +520,7 @@ namespace Client
                 Matched = Match(text);
             }
 
-            if (Matched && owner != null)
+            if (Matched && owner != null && owner.Highlights)
             {
                 if (Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
                 {

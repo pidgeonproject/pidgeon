@@ -75,6 +75,14 @@ namespace Client.Graphics
         /// Whether this window is loaded
         /// </summary>
         public bool isInitialised = false;
+        /// <summary>
+        /// Turning this to false will disable notifications for this window
+        /// </summary>
+        public bool Highlights = true;
+        /// <summary>
+        /// Sound notifications are enabled in here
+        /// </summary>
+        public bool Sounds = true;
         
         // window
         private global::Gtk.VPaned vpaned1;

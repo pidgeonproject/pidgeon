@@ -863,7 +863,7 @@ namespace Client
             {
                 return;
             }
-            if (Configuration.Media.NotificationSound)
+            if (Configuration.Media.NotificationSound && SystemForm.Chat.Sounds)
             {
                 System.Media.SystemSounds.Asterisk.Play();
             }
