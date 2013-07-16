@@ -53,6 +53,13 @@ namespace Client
             return null; 
         }
 
+        /// <summary>
+        /// This function will take a text and make a condition from it. Returns either text "True" or "False" or returns the same text
+        /// as you provided to it when it's not understood
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="w"></param>
+        /// <returns></returns>
         public static string EvaluateText(string text, Graphics.Window w = null)
         {
             Core.DebugLog("expression: " + text);

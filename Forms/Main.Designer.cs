@@ -28,7 +28,7 @@ namespace Client.Forms
         /// <summary>
         /// The shut down action.
         /// </summary>
-        public Gtk.MenuItem ShutDownAction;
+        public Gtk.ImageMenuItem ShutDownAction;
         /// <summary>
         /// Tools menu
         /// </summary>
@@ -56,11 +56,11 @@ namespace Client.Forms
         /// <summary>
         /// The help action.
         /// </summary>
-        public Gtk.MenuItem HelpAction;
+        public Gtk.ImageMenuItem HelpAction;
         /// <summary>
         /// The about action.
         /// </summary>
-        public Gtk.MenuItem AboutAction;
+        public Gtk.ImageMenuItem AboutAction;
         /// <summary>
         /// The contents action.
         /// </summary>
@@ -84,7 +84,7 @@ namespace Client.Forms
         /// <summary>
         /// The open new connection action.
         /// </summary>
-        public Gtk.MenuItem OpenNewConnectionAction;
+        public Gtk.ImageMenuItem OpenNewConnectionAction;
         /// <summary>
         /// The favorite networks action.
         /// </summary>
@@ -92,7 +92,7 @@ namespace Client.Forms
         /// <summary>
         /// The preferences action.
         /// </summary>
-        public Gtk.MenuItem PreferencesAction;
+        public Gtk.ImageMenuItem PreferencesAction;
         /// <summary>
         /// The packet viewer action.
         /// </summary>
@@ -108,15 +108,15 @@ namespace Client.Forms
         /// <summary>
         /// The attach to micro chat action.
         /// </summary>
-        public Gtk.MenuItem AttachToMicroChatAction;
+        public Gtk.ImageMenuItem AttachToMicroChatAction;
         /// <summary>
         /// The detach from micro chat action.
         /// </summary>
-        public Gtk.MenuItem DetachFromMicroChatAction;
+        public Gtk.ImageMenuItem DetachFromMicroChatAction;
         /// <summary>
         /// The load more to scrollback action.
         /// </summary>
-        public Gtk.MenuItem LoadMoreToScrollbackAction;
+        public Gtk.ImageMenuItem LoadMoreToScrollbackAction;
         /// <summary>
         /// The vbox3.
         /// </summary>
@@ -163,18 +163,20 @@ namespace Client.Forms
             ////////////////////// FILE //////////////////////
             FileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-file]]"));
             FileAction.Submenu = this.FileMenu;
-            OpenNewConnectionAction = new Gtk.MenuItem(messages.Localize("[[window-menu-open]]"));
+            OpenNewConnectionAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-open]]"));
             OpenNewConnectionAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.N, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
+            OpenNewConnectionAction.Image = new Gtk.Image(Gtk.Stock.Connect, Gtk.IconSize.Menu);
             FileAction.Submenu = this.FileMenu;
             FileMenu.Append(OpenNewConnectionAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
             FavoriteNetworksAction = new Gtk.MenuItem(messages.Localize("[[window-menu-favorite]]"));
             FileMenu.Append(FavoriteNetworksAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
-            PreferencesAction = new Gtk.MenuItem(messages.Localize("[[window-menu-conf]]"));
+            PreferencesAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-conf]]"));
+            PreferencesAction.Image = new Gtk.Image(Gtk.Stock.Preferences, Gtk.IconSize.Menu);
             FileMenu.Append(PreferencesAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
-            ShutDownAction = new Gtk.MenuItem(messages.Localize("[[window-menu-quit]]"));
+            ShutDownAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-quit]]"));
             FileMenu.Append(ShutDownAction);
             ////////////////////// TOOLS //////////////////////
             ToolsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-tools]]"));
@@ -185,10 +187,10 @@ namespace Client.Forms
             SmallChatAction = new Gtk.MenuItem(messages.Localize("[[window-menu-chat]]"));
             ToolsMenu.Append(SmallChatAction);
             ToolsMenu.Append(new Gtk.SeparatorMenuItem());
-            AttachToMicroChatAction = new Gtk.MenuItem(messages.Localize("[[window-menu-chat1]]"));
+            AttachToMicroChatAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-chat1]]"));
             AttachToMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.M, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(AttachToMicroChatAction);
-            DetachFromMicroChatAction = new Gtk.MenuItem(messages.Localize("[[window-menu-chat2]]"));
+            DetachFromMicroChatAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-chat2]]"));
             DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(DetachFromMicroChatAction);
             ////////////////////// MISC //////////////////////
@@ -197,7 +199,7 @@ namespace Client.Forms
             SearchAction = new Gtk.MenuItem(messages.Localize("[[window-menu-search]]"));
             SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(SearchAction);
-            LoadMoreToScrollbackAction = new Gtk.MenuItem(messages.Localize("[[window-menu-more]]"));
+            LoadMoreToScrollbackAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-more]]"));
             LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(LoadMoreToScrollbackAction);
             MiscMenu.Append(new Gtk.SeparatorMenuItem());
@@ -207,10 +209,11 @@ namespace Client.Forms
             ShowAction.Submenu = ShowMenu;
             RootAction = new Gtk.MenuItem(messages.Localize("[[window-menu-root]]"));
             ShowMenu.Append(RootAction);
-            HelpAction = new Gtk.MenuItem(messages.Localize("[[window-menu-help]]"));
+            HelpAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-help]]"));
             HelpAction.Submenu = HelpMenu;
             MiscMenu.Append(ConfigurationFileAction);
-            AboutAction = new Gtk.MenuItem(messages.Localize("[[window-menu-about]]"));
+            AboutAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-about]]"));
+            AboutAction.Image = new Gtk.Image(Gtk.Stock.About, Gtk.IconSize.Menu);
             ContentsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-contents]]"));
             HelpMenu.Append(AboutAction);
             FavoriteNetworksAction.Sensitive = false;
