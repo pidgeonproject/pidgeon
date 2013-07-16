@@ -90,12 +90,12 @@ namespace Client.Graphics
                 if (soundsToolStripMenuItem.Visible)
                 {
                     Gtk.CheckMenuItem sounds = new CheckMenuItem(soundsToolStripMenuItem.Text);
-                    sounds.Sensitive = Configuration.Media.NotificationSound;
-                    sounds.Activated += new EventHandler(soundsToolStripMenuItem_Click);
                     if (SelectedWindow != null)
                     {
                         sounds.Active = SelectedWindow.Sounds;
                     }
+                    sounds.Sensitive = Configuration.Media.NotificationSound;
+                    sounds.Activated += new EventHandler(soundsToolStripMenuItem_Click);
                     display = true;
                     menu.Append(sounds);
                 }
@@ -103,12 +103,12 @@ namespace Client.Graphics
                 {
                     Gtk.CheckMenuItem notification = new CheckMenuItem(highlightToolStripMenuItem.Text);
                     notification.Sensitive = Configuration.Kernel.Notice;
-                    notification.Activated += new EventHandler(notificationToolStripMenuItem_Click);
-                    display = true;
                     if (SelectedWindow != null)
                     {
                         notification.Active = SelectedWindow.Highlights;
                     }
+                    notification.Activated += new EventHandler(notificationToolStripMenuItem_Click);
+                    display = true;
                     menu.Append(notification);
                 }
                 if (partToolStripMenuItem.Visible)
