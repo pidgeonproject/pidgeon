@@ -39,7 +39,7 @@ namespace Client
         /// <summary>
         /// Platform
         /// </summary>
-        public static readonly Core.Platform CurrentPlatform = Core.Platform.Linuxx86;
+        public static readonly Core.Platform CurrentPlatform = Core.Platform.Windowsx86;
         /// <summary>
         /// Version
         /// </summary>
@@ -160,7 +160,13 @@ namespace Client
             /// Display a response for every ctcp message
             /// </summary>
             public static bool ShowReplyForCTCP = true;
+            /// <summary>
+            /// Whether the version should be displayed with details
+            /// </summary>
             public static bool DetailedVersion = false;
+            /// <summary>
+            /// Encoding
+            /// </summary>
             public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
         }
 
@@ -287,6 +293,10 @@ namespace Client
             /// Minimal time for which the debug message is displayed
             /// </summary>
             public static int Profiler_Minimal = 0;
+            /// <summary>
+            /// Write a dump of kernel error to file
+            /// </summary>
+            public static bool KernelDump = true;
             /// <summary>
             /// Path of language data files
             /// </summary>

@@ -172,7 +172,28 @@ namespace Client
 
         public class _Protocol
         {
-        
+            /// <summary>
+            /// Handler for this event
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            public delegate void BeforeConnectHandler(object sender, Extension.NetworkInfo e);
+            public static event BeforeConnectHandler BeforeConnect;
+
+            public static void TriggerBeforeConnect(object sender, Extension.NetworkInfo e)
+            {
+                try
+                {
+                    if (BeforeConnect != null)
+                    {
+                        BeforeConnect(sender, e);
+                    }
+                }
+                catch (Exception fail)
+                {
+                    Core.handleException(fail);
+                }
+            }
         }
 
         public class _Scrollback

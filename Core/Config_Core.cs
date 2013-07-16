@@ -215,6 +215,7 @@ namespace Client
                     make_node("Configuration.UserData.LastSSL", Configuration.UserData.LastSSL.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.UserData.SwitchWindowOnJoin", Configuration.UserData.SwitchWindowOnJoin.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.irc.DetailedVersion", Configuration.irc.DetailedVersion.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Kernel.KernelDump", Configuration.Kernel.KernelDump.ToString(), curr, confname, config, xmlnode);
                     make_comment(" ============= MISC ============= ", config, xmlnode);
                     make_node("Configuration.Parser.formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
@@ -884,6 +885,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.Parser.InputTrim":
                                                         Configuration.Parser.InputTrim = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Kernel.KernelDump":
+                                                        Configuration.Kernel.KernelDump = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

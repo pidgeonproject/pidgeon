@@ -73,7 +73,7 @@ namespace Client
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
                     _StreamWriter = new System.IO.StreamWriter(_networkStream);
-                    _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
+                    _StreamReader = new System.IO.StreamReader(_networkStream, NetworkEncoding);
                 }
 
                 if (SSL)
@@ -83,7 +83,7 @@ namespace Client
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
                     _networkSsl.AuthenticateAsClient(Server);
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
-                    _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
+                    _StreamReader = new System.IO.StreamReader(_networkSsl, NetworkEncoding);
                 }
 
                 Connected = true;

@@ -1272,6 +1272,44 @@ namespace Client
             DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             IsBlocked = true;
             recovery_exception = _exception;
+            if (Configuration.Kernel.KernelDump)
+            {
+                Core.DebugLog("Generating report");
+                string dump = "KERNEL DUMP\n\n";
+                dump += "Time: " + DateTime.Now.ToString() + "\n";
+                dump += "Version: " + Application.ProductVersion + RevisionProvider.GetHash() + "\n";
+                dump += "Extensions: " + "\n";
+                lock (Extensions)
+                {
+                    foreach (Extension xx in Extensions)
+                    {
+                        dump += "  " + xx.Name + " version: " + xx.Version + " status: " + xx._Status.ToString() + "\n";
+                    }
+                }
+                dump += "Exception: " + _exception.Message + "\n";
+                dump += "Source: " + _exception.Source + "\n";
+                dump += "Stack trace: " + _exception.StackTrace + "\n";
+                if (_exception.InnerException != null)
+                {
+                    dump += "Inner: " + _exception.InnerException.ToString() + "\n";
+                }
+                dump += "Thread name: " + Thread.CurrentThread.Name + "\n";
+                dump += "Is kernel: " + (Thread.CurrentThread != _KernelThread).ToString() + "\n";
+                dump += "Ring log:\n";
+                foreach (string line in RingBuffer)
+                {
+                    dump += line + "\n";
+                }
+                dump += "That's all folks";
+                int current = 0;
+                string file = Root + "dump__" + current.ToString();
+                while (File.Exists(file))
+                {
+                    current++;
+                    file = Root + "dump__" + current.ToString();
+                }
+                File.WriteAllText(file, dump);
+            }
             _RecoveryThread = new Thread(Recover);
             _RecoveryThread.Start();
             if (Thread.CurrentThread != _KernelThread)

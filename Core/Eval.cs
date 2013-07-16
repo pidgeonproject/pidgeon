@@ -22,6 +22,12 @@ namespace Client
 {
     public partial class Core
     {
+        /// <summary>
+        /// Return a value of variable if it exist
+        /// </summary>
+        /// <param name="variable"></param>
+        /// <param name="window"></param>
+        /// <returns></returns>
         public static string EvaluateVariable(string variable, Graphics.Window window)
         {
             switch(variable)
@@ -49,7 +55,7 @@ namespace Client
 
         public static string EvaluateText(string text, Graphics.Window w = null)
         {
-            Core.DebugLog("if: " + text);
+            Core.DebugLog("expression: " + text);
             if (w == null)
             {
                 w = SystemForm.Chat;
