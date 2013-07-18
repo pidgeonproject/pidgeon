@@ -155,7 +155,7 @@ namespace Client
                     make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
 #pragma warning disable
                     make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
-#pragma warning enable
+#pragma warning restore
                     make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
                     // Logs
@@ -836,8 +836,10 @@ namespace Client
                                                         Skin.ReloadSkin(curr.InnerText);
                                                         break;
                                                     case "Configuration.Window.RememberPosition":
+#pragma warning disable
                                                         Configuration.Window.RememberPosition = bool.Parse(curr.InnerText);
                                                         break;
+#pragma warning restore
                                                     case "Configuration.irc.DefaultCTCPPort":
                                                         Configuration.irc.DefaultCTCPPort = uint.Parse(curr.InnerText);
                                                         break;

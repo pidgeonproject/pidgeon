@@ -226,7 +226,7 @@ namespace Client
                 selectedNetwork = value;
             #pragma warning disable
                 network = selectedNetwork;
-            #pragma warning enable
+            #pragma warning restore
             }
         }
         /// <summary>

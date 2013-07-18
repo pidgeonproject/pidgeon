@@ -497,7 +497,7 @@ namespace Client
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_UserPart(network, user, channel, message, updated)");
                                 ok = false;
                             }
-#pragma warning enable
+#pragma warning restore
                             Extension.NetworkPartArgs data = new Extension.NetworkPartArgs();
                             data.network = network;
                             data.user = user;
@@ -583,7 +583,7 @@ namespace Client
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_Topic(network, user, channel, topic)");
                                 success = false;
                             }
-#pragma warning enable
+#pragma warning restore
                         }
                     }
                     catch (Exception mf)
@@ -622,7 +622,7 @@ namespace Client
                                     " function extension.Hook_UserTalk(network, user, channel, message, updated)");
                                 ok = false;
                             }
-#pragma warning enable
+#pragma warning restore
                             Extension.NetworkTextArgs data = new Extension.NetworkTextArgs();
                             data.network = network;
                             data.updated = updated;
@@ -670,7 +670,7 @@ namespace Client
                                     "extension.Hook_UserQuit(network, user, message, window, updated)");
                                 ok = false;
                             }
-#pragma warning enable
+#pragma warning restore
                             Extension.NetworkUserQuitArgs data = new Extension.NetworkUserQuitArgs();
                             data.network = network;
                             data.user = user;
