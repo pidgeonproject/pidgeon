@@ -44,6 +44,14 @@ namespace Client
 
             List<string> commands = new List<string>();
 
+            lock (Commands.aliases)
+            {
+                foreach (KeyValuePair<string, Commands.CommandLink> item in Commands.aliases)
+                {
+                    commands.Add(item.Key);
+                }
+            }
+
             lock (Commands.commands)
             {
                 foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
@@ -54,7 +62,7 @@ namespace Client
                     }
                 }
 
-                if (Core.network != null && Core.network.IsConnected)
+                if (Core.SelectedNetwork != null && Core.SelectedNetwork.IsConnected)
                 {
                     foreach (KeyValuePair<string, Commands.Command> cm in Commands.commands)
                     {
@@ -136,15 +144,15 @@ namespace Client
                     }
                 }
 
-                if (Core.network == null)
+                if (Core.SelectedNetwork == null)
                     return;
 
                 ////
 
 
-                if (text2.StartsWith(Core.network.channel_prefix))
+                if (text2.StartsWith(Core.SelectedNetwork.channel_prefix))
                 {
-                    if (Core.network.IsConnected)
+                    if (Core.SelectedNetwork.IsConnected)
                     {
 
                         if (text2.StartsWith(Core.SystemForm.Chat._Network.channel_prefix))
@@ -220,10 +228,10 @@ namespace Client
 
                 List<string> Results2 = new List<string>();
                 string Resd2 = "";
-                if (Core.network.RenderedChannel == null) { return; }
-                lock (Core.network.RenderedChannel.UserList)
+                if (Core.SelectedNetwork.RenderedChannel == null) { return; }
+                lock (Core.SelectedNetwork.RenderedChannel.UserList)
                 {
-                    foreach (var item in Core.network.RenderedChannel.UserList)
+                    foreach (var item in Core.SelectedNetwork.RenderedChannel.UserList)
                     {
                         if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                         {
@@ -282,8 +290,6 @@ namespace Client
                     text = result;
                     caret = result.Length;
                     prev = result;
-
-
                     return;
                 }
             }
