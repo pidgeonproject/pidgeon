@@ -153,7 +153,9 @@ namespace Client
                     make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
+#pragma warning disable
                     make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
+#pragma warning enable
                     make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
                     // Logs

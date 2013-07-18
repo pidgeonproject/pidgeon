@@ -424,6 +424,7 @@ namespace Client
         /// <param name="IgnoreUpdate"></param>
         /// <returns></returns>
         [Experimental]
+        [Obsolete("This function is experimental and using it may result in errors")]
         public void InsertPart(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             DateTime time = DateTime.Now;

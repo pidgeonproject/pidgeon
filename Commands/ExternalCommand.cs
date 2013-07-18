@@ -25,7 +25,7 @@ namespace Client
     /// </summary>
     class ExternalCommand
     {
-        private string Temp = Path.GetTempFileName();
+        //private string Temp = Path.GetTempFileName();
         private string Data = "";
         private string Command;
         private string Parameters;

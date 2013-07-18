@@ -103,6 +103,7 @@ namespace Client
             /// Whether windows should remember their position
             /// </summary>
             [Experimental]
+            [Obsolete("This function is experimental and using it may result in errors")]
             public static bool RememberPosition = false;
         }
 
