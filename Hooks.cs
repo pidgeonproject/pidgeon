@@ -491,11 +491,13 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
+#pragma warning disable
                             if (!extension.Hook_UserPart(network, user, channel, message, updated))
                             {
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_UserPart(network, user, channel, message, updated)");
                                 ok = false;
                             }
+#pragma warning enable
                             Extension.NetworkPartArgs data = new Extension.NetworkPartArgs();
                             data.network = network;
                             data.user = user;
@@ -575,11 +577,13 @@ namespace Client
                             {
                                 success = false;
                             }
+#pragma warning disable
                             if (!extension.Hook_Topic(network, user, channel, topic))
                             {
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function extension.Hook_Topic(network, user, channel, topic)");
                                 success = false;
                             }
+#pragma warning enable
                         }
                     }
                     catch (Exception mf)
@@ -611,12 +615,14 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
+#pragma warning disable
                             if (!extension.Hook_UserTalk(network, user, channel, message, updated))
                             {
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete" +
                                     " function extension.Hook_UserTalk(network, user, channel, message, updated)");
                                 ok = false;
                             }
+#pragma warning enable
                             Extension.NetworkTextArgs data = new Extension.NetworkTextArgs();
                             data.network = network;
                             data.updated = updated;
@@ -657,12 +663,14 @@ namespace Client
                     {
                         if (extension._Status == Extension.Status.Active)
                         {
+#pragma warning disable
                             if (!extension.Hook_UserQuit(network, user, message, window, updated))
                             {
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name + " is using obsolete function " +
                                     "extension.Hook_UserQuit(network, user, message, window, updated)");
                                 ok = false;
                             }
+#pragma warning enable
                             Extension.NetworkUserQuitArgs data = new Extension.NetworkUserQuitArgs();
                             data.network = network;
                             data.user = user;

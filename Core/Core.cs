@@ -224,7 +224,9 @@ namespace Client
             set
             {
                 selectedNetwork = value;
+            #pragma warning disable
                 network = selectedNetwork;
+            #pragma warning enable
             }
         }
         /// <summary>
