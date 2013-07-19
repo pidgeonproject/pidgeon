@@ -14,11 +14,11 @@ On linux:
 ```
 # enter the folder where you downloaded the source code and execute
 
-./build.sh
+make
 
 #or in order to install pidgeon system wise
 
-make && make install
+make && sudo make install
 ```
 
 Compiling extensions:

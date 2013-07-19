@@ -6,3 +6,5 @@ clean:
 	./build/clean.sh
 install:
 	./build/install.sh
+uninstall:
+	./build/uninstall.sh
