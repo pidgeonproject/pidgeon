@@ -29,6 +29,15 @@ namespace Client
         /// Parser cache
         /// </summary>
         public static Dictionary<string, Client.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
+
+        /// <summary>
+        /// This characted will change the color of text (it is standard of mirc)
+        /// </summary>
+        public static char colorchar = (char)3;
+
+        /// <summary>
+        /// Return if cache is enabled or not
+        /// </summary>
         public static bool CacheEnabled
         {
             get
@@ -37,6 +46,11 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Retrieve a parsed line from a cache
+        /// </summary>
+        /// <param name="line"></param>
+        /// <returns></returns>
         public static Client.RichTBox.Line FromCache(string line)
         {
             lock (ParserCache)
@@ -49,6 +63,11 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Store a string to parser cache
+        /// </summary>
+        /// <param name="line"></param>
+        /// <param name="data"></param>
         public static void ToCache(string line, Client.RichTBox.Line data)
         {
             lock (ParserCache)
@@ -82,8 +101,12 @@ namespace Client
             }
         }
 
-        public static char colorchar = (char)3;
-
+        /// <summary>
+        /// Change the color of text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="SBAB"></param>
+        /// <returns></returns>
         public static Client.RichTBox.ContentText color(string text, Client.RichTBox SBAB)
         {
             if (text.Contains(colorchar.ToString()))
@@ -133,6 +156,15 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Parse ident from a text
+        /// </summary>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_ident(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%D%") && text.Contains("%/D%"))
@@ -151,6 +183,15 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Parse link from a text
+        /// </summary>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_link(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%L%") && text.Contains("%/L%"))
@@ -169,6 +210,15 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Find a hostname
+        /// </summary>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_host(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%H%") && text.Contains("%/H%"))
@@ -188,6 +238,15 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Parse channel
+        /// </summary>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.StartsWith("#"))
@@ -223,6 +282,15 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Function find a username in a string and make a link from it so that we can click on it in scrollback
+        /// </summary>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_name(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%USER%") && text.Contains("%/USER%"))
@@ -246,6 +314,17 @@ namespace Client
             return null;
         }
 
+        /// <summary>
+        /// Parse http
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="SBAB"></param>
+        /// <param name="under"></param>
+        /// <param name="bold"></param>
+        /// <param name="color"></param>
+        /// <param name="CurrentProtocol"></param>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
         private static Client.RichTBox.ContentText parse_http(string text, Client.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
         {
             string result = text;
@@ -255,6 +334,7 @@ namespace Client
                 if (tempdata.Contains(prefix + CurrentProtocol))
                 {
                     string link = result.Substring(result.IndexOf(CurrentProtocol) + CurrentProtocol.Length);
+                    // remove a leading char which we used to parse the link
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
                     {
@@ -651,6 +731,12 @@ namespace Client
             return line;
         }
 
+        /// <summary>
+        /// Check if string starts with combination of prefix and string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="x"></param>
+        /// <returns></returns>
         private static bool matchesPrefix(string data, string x)
         {
             foreach (char curr in Configuration.Parser.Separators)
@@ -663,6 +749,11 @@ namespace Client
             return false;
         }
 
+        /// <summary>
+        /// Check if string starts with a prefix
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         private static bool matchesAPrefix(string data)
         {
             foreach (char curr in Configuration.Parser.Separators)
@@ -687,16 +778,22 @@ namespace Client
             return null;
         }
 
-        private static bool matchesSWPrefix(string data, string x)
+        /// <summary>
+        /// Check if string starts with another string or combination of that string and one of separators
+        /// </summary>
+        /// <param name="Original">Text to check for occurence of prefix</param>
+        /// <param name="Prefix"></param>
+        /// <returns>True if string contains the prefix or false in case it doesn't contain any of them</returns>
+        private static bool matchesSWPrefix(string Original, string Prefix)
         {
-            if (data.StartsWith(x))
+            if (Original.StartsWith(Prefix))
             {
                 return true;
             }
 
             foreach (char curr in Configuration.Parser.Separators)
             {
-                if (data.StartsWith(curr.ToString() + x))
+                if (Original.StartsWith(curr.ToString() + Prefix))
                 {
                     return true;
                 }
@@ -705,31 +802,43 @@ namespace Client
         }
 
         /// <summary>
-        /// Check if the string start with a prefix or not
+        /// Check if the string start with a prefix or not and if it does it return the symbol which is most close to beginning of string
         /// </summary>
         /// <param name="data"></param>
         /// <param name="x"></param>
         /// <returns></returns>
         private static char Prefix(string data, string x = null)
         {
+            char rv = '\0';
+            int size = 99999999;
             foreach (char curr in Configuration.Parser.Separators)
             {
                 if (x != null)
                 {
                     if (data.Contains(curr.ToString() + x))
                     {
-                        return curr;
+                        int ps = data.IndexOf(curr.ToString() + x);
+                        if (ps < size)
+                        {
+                            rv = curr;
+                            size = ps;
+                        }
                     }
                 }
                 else
                 {
                     if (data.Contains(curr.ToString()))
                     {
-                        return curr;
+                        int ps = data.IndexOf(curr.ToString());
+                        if (ps < size)
+                        {
+                            rv = curr;
+                            size = ps;
+                        }
                     }
                 }
             }
-            return '\0';
+            return rv;
         }
 
         /// <summary>

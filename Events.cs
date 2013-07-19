@@ -36,6 +36,11 @@ namespace Client
             public delegate void AfterCoreHandler(object sender, EventArgs e);
             public static event AfterCoreHandler AfterCore;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerAfterCore(object sender, EventArgs e)
             {
                 try
@@ -59,6 +64,11 @@ namespace Client
             public delegate void BeforeNoteHandler(object sender, Extension.BeforeNoteArgs e);
             public static event BeforeNoteHandler BeforeNote;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerBeforeNote(object sender, Extension.BeforeNoteArgs e)
             {
                 try
@@ -82,6 +92,11 @@ namespace Client
             public delegate void InitialiseHandler(object sender, Extension.SystemInitialiseArgs e);
             public static event InitialiseHandler Initialise;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerInitialise(object sender, Extension.SystemInitialiseArgs e)
             {
                 try
@@ -105,6 +120,11 @@ namespace Client
             public delegate void BeforeOptionsHandler(object sender, Extension.BeforeOptionsArgs e);
             public static event BeforeOptionsHandler BeforeOptions;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerBeforeOptions(object sender, Extension.BeforeOptionsArgs e)
             {
                 try
@@ -131,6 +151,11 @@ namespace Client
             public delegate void BeforeUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
             public static event BeforeUserMenuHandler BeforeUserMenu;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerBeforeUserMenu(object sender, Extension.BeforeUserMenuArgs e)
             {
                 try
@@ -154,6 +179,11 @@ namespace Client
             public delegate void AfterUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
             public static event AfterUserMenuHandler AfterUserMenu;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerAfterUserMenu(object sender, Extension.BeforeUserMenuArgs e)
             {
                 try
@@ -180,6 +210,11 @@ namespace Client
             public delegate void BeforeConnectHandler(object sender, Extension.NetworkInfo e);
             public static event BeforeConnectHandler BeforeConnect;
 
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public static void TriggerBeforeConnect(object sender, Extension.NetworkInfo e)
             {
                 try
@@ -201,7 +236,12 @@ namespace Client
             public delegate void LinkMouseHoverHandler(object sender, Extension.MouseHoverArgs e);
             public static event LinkMouseHoverHandler OnMouseHover;
 
-            public static void MouseHover(object sender, Extension.MouseHoverArgs e)
+            /// <summary>
+            /// This function is called by a related handler and should not be called anywhere else
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
+            public static void TriggerMouseHover(object sender, Extension.MouseHoverArgs e)
             {
                 try
                 {

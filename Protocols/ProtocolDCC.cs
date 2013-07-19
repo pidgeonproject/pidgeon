@@ -33,6 +33,9 @@ namespace Client
         /// Name of user who we are supposed to connect to
         /// </summary>
         public string UserName = null;
+        /// <summary>
+        /// Thread in which the connection is running
+        /// </summary>
         private Thread thread = null;
         private System.Net.Sockets.NetworkStream _networkStream = null;
         private System.Net.Security.SslStream _networkSsl = null;
