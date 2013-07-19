@@ -76,7 +76,7 @@ namespace Client.Forms
         /// <summary>
         /// The search action.
         /// </summary>
-        public Gtk.MenuItem SearchAction;
+        public Gtk.ImageMenuItem SearchAction;
         /// <summary>
         /// The configuration file action.
         /// </summary>
@@ -88,7 +88,7 @@ namespace Client.Forms
         /// <summary>
         /// The favorite networks action.
         /// </summary>
-        public Gtk.MenuItem FavoriteNetworksAction;
+        public Gtk.ImageMenuItem FavoriteNetworksAction;
         /// <summary>
         /// The preferences action.
         /// </summary>
@@ -97,10 +97,6 @@ namespace Client.Forms
         /// The packet viewer action.
         /// </summary>
         public Gtk.MenuItem PacketViewerAction;
-        /// <summary>
-        /// The skin editor action.
-        /// </summary>
-        public Gtk.MenuItem SkinEditorAction;
         /// <summary>
         /// The small chat action.
         /// </summary>
@@ -169,7 +165,7 @@ namespace Client.Forms
             FileAction.Submenu = this.FileMenu;
             FileMenu.Append(OpenNewConnectionAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
-            FavoriteNetworksAction = new Gtk.MenuItem(messages.Localize("[[window-menu-favorite]]"));
+            FavoriteNetworksAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-favorite]]"));
             FileMenu.Append(FavoriteNetworksAction);
             FileMenu.Append(new Gtk.SeparatorMenuItem());
             PreferencesAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-conf]]"));
@@ -188,15 +184,18 @@ namespace Client.Forms
             ToolsMenu.Append(SmallChatAction);
             ToolsMenu.Append(new Gtk.SeparatorMenuItem());
             AttachToMicroChatAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-chat1]]"));
+            AttachToMicroChatAction.Image = new Gtk.Image(Gtk.Stock.Add, Gtk.IconSize.Menu);
             AttachToMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.M, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(AttachToMicroChatAction);
             DetachFromMicroChatAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-chat2]]"));
+            DetachFromMicroChatAction.Image = new Gtk.Image(Gtk.Stock.Remove, Gtk.IconSize.Menu);
             DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(DetachFromMicroChatAction);
             ////////////////////// MISC //////////////////////
             MiscAction = new Gtk.MenuItem(messages.Localize("[[window-menu-misc]]"));
             MiscAction.Submenu = MiscMenu;
-            SearchAction = new Gtk.MenuItem(messages.Localize("[[window-menu-search]]"));
+            SearchAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-search]]"));
+            SearchAction.Image = new Gtk.Image(Gtk.Stock.Find, Gtk.IconSize.Menu);
             SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
             MiscMenu.Append(SearchAction);
             LoadMoreToScrollbackAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-more]]"));

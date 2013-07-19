@@ -64,6 +64,8 @@ namespace Client.Forms
 
         /// <summary>
         /// Selected channels and data for these channels
+        /// 
+        /// This will return the list of channels as text
         /// </summary>
         public List<string> SelectedData
         {

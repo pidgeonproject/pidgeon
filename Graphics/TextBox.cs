@@ -141,6 +141,7 @@ namespace Client.Graphics
         {
             try
             {
+                Hooks._Sys.Poke();
                 prevtext = richTextBox1.Buffer.Text;
             }
             catch (Exception fail)
