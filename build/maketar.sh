@@ -54,9 +54,9 @@ echo "#!/bin/sh" > $temp/update.sh
 
 echo "Creating a tarball"
 
-cd $temp
-tar -zcf pidgeon_$v.orig.tar.gz * || exit 1
-mv pidgeon_$v.orig.tar.gz /tmp
+#cd $temp
+cd /tmp
+tar -zcf pidgeon_$v.orig.tar.gz pidgeon_$v.orig || exit 1
 
 echo "Cleaning up temp"
 

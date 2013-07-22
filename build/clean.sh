@@ -10,3 +10,4 @@ fi
 
 rm -rf modules/*/bin
 rm -rf modules/*/obj
+rm -f pidgeon
