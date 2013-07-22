@@ -166,6 +166,7 @@ namespace Client
         private void CreateMenu(object o, Gtk.PopulatePopupArgs e)
         {
             CreatingMenu = true;
+            Hooks._Scrollback.BeforeMenu(owner, this, e.Menu);
             Gtk.SeparatorMenuItem separator1 = new Gtk.SeparatorMenuItem();
             separator1.Show();
             e.Menu.Append(separator1);
@@ -313,6 +314,9 @@ namespace Client
                 retrieve.Activated += new EventHandler(retrieveTopicToolStripMenuItem_Click);
                 e.Menu.Append(retrieve);
             }
+
+            Hooks._Scrollback.AfterMenu(owner, this, e.Menu);
+
             Gtk.MenuItem copy = new Gtk.MenuItem(copyTextToClipBoardToolStripMenuItem.Text);
             copy.Activated += new EventHandler(copyTextToClipBoardToolStripMenuItem_Click);
             copy.Show();

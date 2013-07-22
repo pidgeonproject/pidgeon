@@ -311,6 +311,64 @@ namespace Client
             }
 
             /// <summary>
+            /// Called before menu
+            /// </summary>
+            /// <param name="Window"></param>
+            /// <param name="_Scrollback"></param>
+            /// <param name="_Menu"></param>
+            public static void BeforeMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu)
+            {
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            Extension.ScrollbackArgs sc = new Extension.ScrollbackArgs();
+                            sc.scrollback = _Scrollback;
+                            sc.window = Window;
+                            sc.menu = _Menu;
+                            extension.Hook_BeforeTextMenu(sc);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook BeforeMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// Menu
+            /// </summary>
+            /// <param name="Window"></param>
+            /// <param name="_Scrollback"></param>
+            /// <param name="_Menu"></param>
+            public static void AfterMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu)
+            {
+                foreach (Extension extension in Core.Extensions)
+                {
+                    try
+                    {
+                        if (extension._Status == Extension.Status.Active)
+                        {
+                            Extension.ScrollbackArgs sc = new Extension.ScrollbackArgs();
+                            sc.window = Window;
+                            sc.scrollback = _Scrollback;
+                            sc.menu = _Menu;
+                            extension.Hook_AfterTextMenu(sc);
+                        }
+                    }
+                    catch (Exception mf)
+                    {
+                        Core.DebugLog("Error in hook Ignore(Graphics.Window window, string message, bool updated, long date) module " + extension.Name);
+                        Core.handleException(mf);
+                    }
+                }
+            }
+
+            /// <summary>
             /// This hook is triggered on tab press
             /// </summary>
             /// <param name="restore"></param>

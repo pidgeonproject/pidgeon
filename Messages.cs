@@ -26,7 +26,7 @@ namespace Client
         /// <summary>
         /// Language
         /// </summary>
-        public class container
+        public class LanguageContainer
         {
             /// <summary>
             /// ID
@@ -41,7 +41,7 @@ namespace Client
             /// Creates a new instance of this language container
             /// </summary>
             /// <param name="LanguageCode"></param>
-            public container(string LanguageCode)
+            public LanguageContainer(string LanguageCode)
             {
                 language = LanguageCode;
                 Cache = new Dictionary<string, string>();
@@ -121,7 +121,7 @@ namespace Client
         /// <summary>
         /// List of all loaded data
         /// </summary>
-        public static Dictionary<string, container> data = new Dictionary<string, container>();
+        public static Dictionary<string, LanguageContainer> data = new Dictionary<string, LanguageContainer>();
 
         /// <summary>
         /// Convert a text to localized version
@@ -204,7 +204,7 @@ namespace Client
             if (SafeMode)
             {
                 Core.DebugLog("Loading only built-in english, because of safe mode");
-                messages.data.Add("en", new messages.container("en"));
+                messages.data.Add("en", new messages.LanguageContainer("en"));
                 return;
             }
             if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
@@ -215,17 +215,17 @@ namespace Client
                     if (System.IO.File.Exists(f))
                     {
                         Core.DebugLog("Registering a new language " + f);
-                        messages.data.Add(f, new messages.container(f));
+                        messages.data.Add(f, new messages.LanguageContainer(f));
                     }
                 }
             }
             else
             {
-                messages.data.Add("cs", new messages.container("cs"));
+                messages.data.Add("cs", new messages.LanguageContainer("cs"));
             }
             if (!messages.data.ContainsKey("en"))
             {
-                messages.data.Add("en", new messages.container("en"));
+                messages.data.Add("en", new messages.LanguageContainer("en"));
             }
         }
 

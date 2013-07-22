@@ -207,6 +207,24 @@ namespace Client
         }
 
         /// <summary>
+        /// This is called on display of menu
+        /// </summary>
+        /// <param name="Args"></param>
+        public virtual void Hook_AfterTextMenu(ScrollbackArgs Args)
+        {
+
+        }
+
+        /// <summary>
+        /// This is called on display of menu
+        /// </summary>
+        /// <param name="Args"></param>
+        public virtual void Hook_BeforeTextMenu(ScrollbackArgs Args)
+        {
+            
+        }
+
+        /// <summary>
         /// DEPRECATED Use Hook_UserQuit(NetworkUserQuitArgs _QuitArgs) instead of this
         /// </summary>
         /// <param name="network"></param>

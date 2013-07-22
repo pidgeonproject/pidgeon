@@ -197,6 +197,31 @@ namespace Client
         }
 
         /// <summary>
+        /// Retrieve selected text
+        /// </summary>
+        public string SelectedText
+        {
+            get
+            {
+                Gtk.TextIter a;
+                Gtk.TextIter b;
+                if (IsSimple)
+                {
+                    if (simpleview.Buffer.GetSelectionBounds(out a, out b))
+                    {
+                        return simpleview.Buffer.GetText(a, b, false);
+                    }
+                    return null;
+                }
+                if (RT.textView.Buffer.GetSelectionBounds(out a, out b))
+                {
+                    return RT.textView.Buffer.GetText(a, b, false);
+                }
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Creates a new scrollback instance
         /// </summary>
         public Scrollback()

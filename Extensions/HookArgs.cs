@@ -270,5 +270,24 @@ namespace Client
             /// </summary>
             public Graphics.Window window = null;
         }
+
+        /// <summary>
+        /// Scrollback menu
+        /// </summary>
+        public class ScrollbackArgs : HookArgs
+        {
+            /// <summary>
+            /// Menu which is about to be displayed
+            /// </summary>
+            public Gtk.Menu menu = null;
+            /// <summary>
+            /// Window the menu belongs to
+            /// </summary>
+            public Graphics.Window window = null;
+            /// <summary>
+            /// Scrollback
+            /// </summary>
+            public Scrollback scrollback = null;
+        }
     }
 }
