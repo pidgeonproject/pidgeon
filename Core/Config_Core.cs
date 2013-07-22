@@ -158,6 +158,7 @@ namespace Client
 #pragma warning restore
                     make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
                     make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.NotifyPrivate", Configuration.Window.NotifyPrivate.ToString(), curr, confname, config, xmlnode);
                     // Logs
                     make_comment(" ============= LOGS ============= ", config, xmlnode);
                     make_comment("Where the logs are being saved", config, xmlnode);
@@ -892,6 +893,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.Kernel.KernelDump":
                                                         Configuration.Kernel.KernelDump = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Window.NotifyPrivate":
+                                                        Configuration.Window.NotifyPrivate = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

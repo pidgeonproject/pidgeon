@@ -105,6 +105,10 @@ namespace Client
             [Experimental]
             [Obsolete("This function is experimental and using it may result in errors")]
             public static bool RememberPosition = false;
+            /// <summary>
+            /// Receive a notification for every private message, except for currently active window
+            /// </summary>
+            public static bool NotifyPrivate = true;
         }
 
         /// <summary>
