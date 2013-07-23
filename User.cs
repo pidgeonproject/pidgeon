@@ -199,6 +199,49 @@ namespace Client
             }
         }
 
+        private char ChannelSymbol = '\0';
+
+        public string ChannelPrefix
+        {
+            get
+            {
+                if (ChannelSymbol != '\0')
+                {
+                    return ChannelSymbol.ToString();
+                }
+                if (ChannelMode._Mode.Count > 0)
+                {
+                    int i = 100;
+                    char c = '0';
+                    lock (_Network.CUModes)
+                    {
+                        foreach (char mode in _Network.CUModes)
+                        {
+                            if (ChannelMode._Mode.Contains(mode.ToString()))
+                            {
+                                if (_Network.CUModes.IndexOf(mode) < i)
+                                {
+                                    i = _Network.CUModes.IndexOf(mode);
+                                    c = mode;
+                                }
+                            }
+                        }
+                    }
+                    if (c != '0')
+                    {
+                        ChannelSymbol = _Network.UChars[i];
+                        return ChannelSymbol.ToString();
+                    }
+                }
+                return "";
+            }
+        }
+
+        public void ResetMode()
+        {
+            ChannelSymbol = '\0';
+        }
+
         /// <summary>
         /// Creates a new user
         /// </summary>
@@ -291,6 +334,7 @@ namespace Client
             {
                 char mode = _Network.CUModes[_Network.UChars.IndexOf(symbol)];
                 ChannelMode.ChangeMode("+" + mode.ToString());
+                ResetMode();
             }
         }
         

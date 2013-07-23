@@ -328,8 +328,16 @@ namespace Client
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }
-                        WindowText(window, _Protocol.PRIVMSG(user.Nick, message),
+                        if (!Configuration.irc.DisplayMode)
+                        {
+                            WindowText(window, _Protocol.PRIVMSG(user.Nick, message),
                             Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                        }
+                        else
+                        {
+                            WindowText(window, _Protocol.PRIVMSG(user.ChannelPrefix + user.Nick, message),
+                            Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                        }
                     }
                     channel.UpdateInfo();
                     return true;

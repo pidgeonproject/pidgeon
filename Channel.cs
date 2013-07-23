@@ -372,7 +372,7 @@ namespace Client
                         }
                         lock (UserList)
                         {
-                            foreach (var nick in UserList)
+                            foreach (User nick in UserList)
                             {
                                 Inserted = false;
                                 if (nick.ChannelMode._Mode.Count > 0)
@@ -561,27 +561,7 @@ namespace Client
         /// <returns></returns>
         private string uchr(User nick)
         {
-            if (nick.ChannelMode._Mode.Count < 1)
-            {
-                return "";
-            }
-            lock (_Network.CUModes)
-            {
-                foreach (char mode in _Network.CUModes)
-                {
-                    int _m;
-                    if (nick.ChannelMode._Mode.Contains(mode.ToString()))
-                    {
-                        _m = _Network.CUModes.IndexOf(mode);
-                        if (_Network.UChars.Count >= _m)
-                        {
-                            return _Network.UChars[_m].ToString();
-                        }
-                        break;
-                    }
-                }
-            }
-            return "";
+            return nick.ChannelPrefix;
         }
 
         /// <summary>

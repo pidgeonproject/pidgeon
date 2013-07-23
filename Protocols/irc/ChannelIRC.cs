@@ -564,6 +564,7 @@ namespace Client
                                 if (flagged_user != null)
                                 {
                                     flagged_user.ChannelMode.ChangeMode("+" + m.Mode);
+                                    flagged_user.ResetMode();
                                 }
                             }
 
@@ -593,6 +594,7 @@ namespace Client
                                 if (flagged_user != null)
                                 {
                                     flagged_user.ChannelMode.ChangeMode("-" + m.Mode);
+                                    flagged_user.ResetMode();
                                 }
                             }
 

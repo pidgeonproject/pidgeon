@@ -670,6 +670,7 @@ namespace Client
                                             if (user.Contains("+") && !user.StartsWith("+"))
                                             {
                                                 f2.ChannelMode.ChangeMode(user.Substring(user.IndexOf("+")));
+                                                f2.ResetMode();
                                             }
                                             channel.UserList.Add(f2);
                                         }

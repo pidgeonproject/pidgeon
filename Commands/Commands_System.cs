@@ -26,6 +26,31 @@ namespace Client
     {
         private partial class Generic
         {
+            public static void LinkCmd(string parameter)
+            {
+                if (parameter == "")
+                {
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                    return;
+                }
+
+                if (!parameter.Contains(" "))
+                {
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                    return;
+                }
+
+                string alias = parameter.Substring(0, parameter.IndexOf(" "));
+                string command = parameter.Substring(parameter.IndexOf(" ") + 1);
+
+                lock (aliases)
+                {
+                    aliases.Add(alias, new CommandLink(command));
+                }
+
+                Core._Configuration.ConfigSave();
+            }
+
             public static void External(string parameter)
             {
                 if (parameter != "")
