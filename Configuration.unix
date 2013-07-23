@@ -38,6 +38,8 @@ namespace Client
         public static readonly string CommandPrefix = "/";
         /// <summary>
         /// Platform
+        /// 
+        /// This option is there so that we can disable certain features which are not available on some platforms
         /// </summary>
         public static readonly Core.Platform CurrentPlatform = Core.Platform.Linuxx86;
         /// <summary>
@@ -101,7 +103,12 @@ namespace Client
             /// Whether windows should remember their position
             /// </summary>
             [Experimental]
+            [Obsolete("This function is experimental and using it may result in errors")]
             public static bool RememberPosition = false;
+            /// <summary>
+            /// Receive a notification for every private message, except for currently active window
+            /// </summary>
+            public static bool NotifyPrivate = true;
         }
 
         /// <summary>
@@ -168,6 +175,7 @@ namespace Client
             /// Encoding
             /// </summary>
             public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
+            public static bool DisplayMode = false;
         }
 
         /// <summary>
@@ -439,6 +447,10 @@ namespace Client
             /// This is experimental
             /// </summary>
             public static bool DynamicReload = true;
+            /// <summary>
+            /// This option will double underline bold
+            /// </summary>
+            public static bool UnderlineBold = true;
         }
 
         /// <summary>

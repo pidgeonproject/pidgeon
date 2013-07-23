@@ -92,6 +92,8 @@ namespace Client
 
             TextTag format = new TextTag(null);
 
+            format.FontDesc = DefaultFont;
+
             if (text.Bold)
             {
                 format.Weight = Pango.Weight.Bold;
@@ -126,7 +128,6 @@ namespace Client
                 format.ForegroundGdk = Core.FromColor(text.TextColor);
             }
             tb.TagTable.Add(format);
-            format.FontDesc = DefaultFont;
             format.SizePoints = Configuration.CurrentSkin.fontsize;
             tb.InsertWithTags(ref iter, text.Text, format);
         }
@@ -149,7 +150,10 @@ namespace Client
                     if (text.Bold)
                     {
                         format.Weight = Pango.Weight.Bold;
-                        format.Underline = Pango.Underline.Double;
+                        if (Configuration.Scrollback.UnderlineBold)
+                        {
+                            format.Underline = Pango.Underline.Double;
+                        }
                     }
 
                     if (text.Underline)

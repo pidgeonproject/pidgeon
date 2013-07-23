@@ -447,6 +447,10 @@ namespace Client
             /// This is experimental
             /// </summary>
             public static bool DynamicReload = true;
+            /// <summary>
+            /// This option will double underline bold
+            /// </summary>
+            public static bool UnderlineBold = true;
         }
 
         /// <summary>
