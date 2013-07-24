@@ -272,9 +272,14 @@ namespace Client
 
                     switch (command)
                     {
+                        case "001":
                         case "002":
                         case "003":
                         case "004":
+                            if (!_Network.IsConnected)
+                            {
+                                _Network.flagConnection();
+                            }
                             Hooks._Network.NetworkInfo(_Network, command, parameters, value);
                             break;
                         case "005":

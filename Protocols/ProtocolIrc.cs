@@ -13,6 +13,7 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+using System.Threading;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -32,15 +33,15 @@ namespace Client
         /// <summary>
         /// Thread in which the connection to server is handled
         /// </summary>
-        public System.Threading.Thread main = null;
+        public Thread main = null;
         /// <summary>
         /// Thread which is handling the delivery of data
         /// </summary>
-        public System.Threading.Thread deliveryqueue = null;
+        public Thread deliveryqueue = null;
         /// <summary>
         /// Thread which is keeping the connection online
         /// </summary>
-        public System.Threading.Thread keep = null;
+        public Thread keep = null;
         /// <summary>
         /// Time of last ping
         /// </summary>
@@ -124,7 +125,12 @@ namespace Client
             {
                 try
                 {
-                    while (protocol.IsConnected)
+                    // give the ircd some time to process the authentication before sending messages
+                    while (!protocol._IRCNetwork.IsConnected)
+                    {
+                        System.Threading.Thread.Sleep(1000);
+                    }
+                    while (protocol.IsConnected && protocol._IRCNetwork.IsConnected)
                     {
                         try
                         {
@@ -188,19 +194,14 @@ namespace Client
                                 }
                             }
                             newmessages.Clear();
-                            System.Threading.Thread.Sleep(200);
+                            Thread.Sleep(200);
                         }
-                        catch (System.Threading.ThreadAbortException)
+                        catch (ThreadAbortException)
                         {
                             Core.KillThread(System.Threading.Thread.CurrentThread);
                             return;
                         }
                     }
-                }
-                catch (System.Threading.ThreadAbortException)
-                {
-                    Core.KillThread(System.Threading.Thread.CurrentThread);
-                    return;
                 }
                 catch (Exception fail)
                 {
@@ -235,13 +236,17 @@ namespace Client
         {
             try
             {
+                while (!_IRCNetwork.IsConnected)
+                {
+                    Thread.Sleep(1000);
+                }
                 while (_IRCNetwork.IsConnected && IsConnected)
                 {
                     Transfer("PING :" + _IRCNetwork._Protocol.Server, Configuration.Priority.High);
-                    System.Threading.Thread.Sleep(24000);
+                    Thread.Sleep(24000);
                 }
             }
-            catch (System.Threading.ThreadAbortException)
+            catch (ThreadAbortException)
             {
                 return;
             }
@@ -282,21 +287,20 @@ namespace Client
                 }
 
                 Hooks._Protocol.BeforeConnect(this);
-                _IRCNetwork.flagConnection();
 
                 Connected = true;
 
                 if (Password != "")
                 {
-                    Send("PASS " + Password);
+                    Transfer("PASS " + Password, Configuration.Priority.High);
                 }
 
-                Send("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName);
-                Send("NICK " + _IRCNetwork.Nickname);
+                Transfer("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName, Configuration.Priority.High);
+                Transfer("NICK " + _IRCNetwork.Nickname, Configuration.Priority.High);
 
                 Core.SystemForm.Status("");
 
-                keep = new System.Threading.Thread(_Ping);
+                keep = new Thread(_Ping);
                 keep.Name = "pinger thread";
                 keep.Start();
                 Core.SystemThreads.Add(keep);
@@ -326,7 +330,7 @@ namespace Client
                     pong = processor.pong;
                 }
             }
-            catch (System.Threading.ThreadAbortException)
+            catch (ThreadAbortException)
             {
                 return;
             }
@@ -564,7 +568,7 @@ namespace Client
             Core.KillThread(main);
             _IRCNetwork.Destroy();
             Connected = false;
-            System.Threading.Thread.Sleep(200);
+            Thread.Sleep(200);
             SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
             if (Core.SelectedNetwork == _IRCNetwork)
             {
@@ -580,7 +584,7 @@ namespace Client
         /// <returns></returns>
         public override bool Open()
         {
-            main = new System.Threading.Thread(Start);
+            main = new Thread(Start);
             Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
             main.Start();
             Core.SystemThreads.Add(main);
