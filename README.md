@@ -19,6 +19,10 @@ make
 #or in order to install pidgeon system wise
 
 make && sudo make install
+
+#to uninstall
+
+sudo make uninstall
 ```
 
 Compiling extensions:
