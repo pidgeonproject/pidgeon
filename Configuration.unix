@@ -450,7 +450,7 @@ namespace Client
             /// <summary>
             /// This option will double underline bold
             /// </summary>
-            public static bool UnderlineBold = true;
+            public static bool UnderlineBold = false;
         }
 
         /// <summary>

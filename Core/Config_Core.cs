@@ -106,6 +106,8 @@ namespace Client
                     make_comment("Set this to true to automatically whois everyone in channel upon join", config, xmlnode);
                     make_comment("Limit of scrollback size", config, xmlnode);
                     make_node("Configuration.Scrollback.scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                    make_comment("This will underline the bold text so that you can see also bold invisible chars", config, xmlnode);
+                    make_node("Configuration.Scrollback.UnderlineBold", Configuration.Scrollback.UnderlineBold.ToString(), curr, confname, config, xmlnode);
                     // irc
                     make_comment(" ============= IRC ============= ", config, xmlnode);
                     make_node("Configuration.ChannelModes.aggressive_whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
@@ -900,6 +902,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.irc.DisplayMode":
                                                         Configuration.irc.DisplayMode = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Scrollback.UnderlineBold":
+
                                                         break;
                                                 }
                                             }
