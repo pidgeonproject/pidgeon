@@ -319,6 +319,10 @@ namespace Client
 
                 while (!_StreamReader.EndOfStream && IsConnected)
                 {
+                    if (!_IRCNetwork.IsConnected)
+                    {
+                        _IRCNetwork.flagConnection();
+                    }
                     while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);

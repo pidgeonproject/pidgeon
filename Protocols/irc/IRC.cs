@@ -1,4 +1,4 @@
-//  This program is free software; you can redistribute it and/or modify
+﻿//  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or   
 //  (at your option) version 3.                                         
@@ -276,10 +276,6 @@ namespace Client
                         case "002":
                         case "003":
                         case "004":
-                            if (!_Network.IsConnected)
-                            {
-                                _Network.flagConnection();
-                            }
                             Hooks._Network.NetworkInfo(_Network, command, parameters, value);
                             break;
                         case "005":
