@@ -17,7 +17,12 @@ if [ ! -d "bin/$2/modules" ];then
 	mkdir "bin/$2/modules" || exit 1
 fi
 original_path=`pwd`
+echo "Creating search"
 echo "Building tab completion"
+cd "modules/SearchText/"
+xbuild $1 && mv bin/$2/SearchData.dll "$original_path/bin/$2/modules/search.pmod"
+cd "$original_path"
+echo "Creating tab completion"
 cd "modules/pidgeon_tc/"
 xbuild $1 && mv bin/$2/pidgeon_tab.dll "$original_path/bin/$2/modules/pidgeon_tc.pmod"
 cd "$original_path"
