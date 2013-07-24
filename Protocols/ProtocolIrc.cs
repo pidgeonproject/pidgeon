@@ -317,7 +317,7 @@ namespace Client
                 deliveryqueue = new System.Threading.Thread(Messages.Run);
                 deliveryqueue.Start();
 
-                while (_IRCNetwork.IsConnected && !_StreamReader.EndOfStream && IsConnected)
+                while (!_StreamReader.EndOfStream && IsConnected)
                 {
                     while (Core.IsBlocked)
                     {
