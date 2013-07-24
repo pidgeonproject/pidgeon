@@ -203,6 +203,11 @@ namespace Client
                         }
                     }
                 }
+                catch (ThreadAbortException)
+                {
+                    Core.KillThread(System.Threading.Thread.CurrentThread);
+                    return;
+                }
                 catch (Exception fail)
                 {
                     Core.handleException(fail);
