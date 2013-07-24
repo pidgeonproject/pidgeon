@@ -356,7 +356,7 @@ namespace Client
                     Graphics.Window w = _Protocol.Windows[_Network.SystemWindowID + chan];
                     WindowText(w, _Protocol.PRIVMSG(chan, message),
                         Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
-                    if (Configuration.Kernel.Notice && Configuration.Window.NotifyPrivate)
+                    if (Configuration.Kernel.Notice && Configuration.Window.NotifyPrivate && w.Highlights)
                     {
                         if (Core.SystemForm.Chat != w)
                         {
