@@ -97,7 +97,10 @@ namespace Client
             if (text.Bold)
             {
                 format.Weight = Pango.Weight.Bold;
-                format.Underline = Pango.Underline.Double;
+                if (Configuration.Scrollback.UnderlineBold)
+                {
+                    format.Underline = Pango.Underline.Double;
+                }
             }
             
             if (text.Underline)
@@ -147,6 +150,8 @@ namespace Client
                 {
                     TextTag format = new TextTag(null);
 
+                    format.FontDesc = DefaultFont;
+
                     if (text.Bold)
                     {
                         format.Weight = Pango.Weight.Bold;
@@ -184,7 +189,6 @@ namespace Client
                         format.ForegroundGdk = Core.FromColor(text.TextColor);
                     }
                     richTextBox.Buffer.TagTable.Add(format);
-                    format.FontDesc = DefaultFont;
                     format.SizePoints = Configuration.CurrentSkin.fontsize;
                     richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
                 }
