@@ -1,4 +1,4 @@
-//  This program is free software; you can redistribute it and/or modify
+﻿//  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or   
 //  (at your option) version 3.                                         
@@ -292,11 +292,11 @@ namespace Client
 
                 if (Password != "")
                 {
-                    Transfer("PASS " + Password, Configuration.Priority.High);
+                    Send("PASS " + Password);
                 }
 
-                Transfer("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName, Configuration.Priority.High);
-                Transfer("NICK " + _IRCNetwork.Nickname, Configuration.Priority.High);
+                Send("USER " + _IRCNetwork.Ident + " 8 * :" + _IRCNetwork.UserName);
+                Send("NICK " + _IRCNetwork.Nickname);
 
                 Core.SystemForm.Status("");
 
