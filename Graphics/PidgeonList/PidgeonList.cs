@@ -426,6 +426,11 @@ namespace Client.Graphics
                 {
                     case ItemType.Server:
                         Network nw = (Network)model.GetValue(iter, 1);
+                        if (nw == null)
+                        {
+                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL network");
+                            return;
+                        }
                         if (nw.IsDestroyed)
                         {
                             Values.Remove(ref iter);
@@ -437,7 +442,7 @@ namespace Client.Graphics
                             info = "IRCD version " + nw.IrcdVersion;
                         }
                         string nwinfo = (string)model.GetValue(iter, 4);
-                        if (nwinfo != info)
+                        if (nwinfo != info && info != null)
                         {
                             model.SetValue(iter, 4, info);
                         }
@@ -460,6 +465,11 @@ namespace Client.Graphics
                         break;
                     case ItemType.User:
                         User user = (User)model.GetValue(iter, 1);
+                        if (user == null)
+                        {
+                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL user");
+                            return;
+                        }
                         if (user.IsDestroyed)
                         {
                             Values.Remove(ref iter);
@@ -490,6 +500,11 @@ namespace Client.Graphics
                         break;
                     case ItemType.DCC:
                         ProtocolDCC dc = (ProtocolDCC)model.GetValue(iter, 1);
+                        if (dc == null)
+                        {
+                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL dc");
+                            return;
+                        }
                         if (dc.IsDestroyed)
                         {
                             Values.Remove(ref iter);
@@ -509,6 +524,11 @@ namespace Client.Graphics
                         break;
                     case ItemType.Channel:
                         Channel channel = (Channel)model.GetValue(iter, 1);
+                        if (channel == null)
+                        {
+                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL channel");
+                            return;
+                        }
                         if (channel.IsDestroyed)
                         {
                             Values.Remove(ref iter);
