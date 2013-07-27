@@ -877,16 +877,16 @@ namespace Client
                                                     case "Configuration.irc.NetworkEncoding":
                                                         switch (curr.InnerText)
                                                         {
-                                                            case "ASCIIEncoding":
+                                                            case "System.Text.Encoding.ASCIIEncoding":
                                                                 Configuration.irc.NetworkEncoding = System.Text.Encoding.ASCII;
                                                                 break;
-                                                            case "UTF32Encoding":
+                                                            case "System.Text.Encoding.UTF32Encoding":
                                                                 Configuration.irc.NetworkEncoding = System.Text.Encoding.UTF32;
                                                                 break;
-                                                            case "UnicodeEncoding":
+                                                            case "System.Text.Encoding.UnicodeEncoding":
                                                                 Configuration.irc.NetworkEncoding = System.Text.Encoding.Unicode;
                                                                 break;
-                                                            case "UTF7Encoding":
+                                                            case "System.Text.Encoding.UTF7Encoding":
                                                                 Configuration.irc.NetworkEncoding = System.Text.Encoding.UTF7;
                                                                 break;
                                                         }
