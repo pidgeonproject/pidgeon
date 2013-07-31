@@ -1290,6 +1290,7 @@ namespace Client
                 }
                 dump += "Exception: " + _exception.Message + "\n";
                 dump += "Source: " + _exception.Source + "\n";
+                dump += "Status: " + _Status.ToString() + "\n";
                 dump += "Stack trace: " + _exception.StackTrace + "\n";
                 if (_exception.InnerException != null)
                 {
