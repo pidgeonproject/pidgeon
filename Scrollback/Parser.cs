@@ -254,7 +254,11 @@ namespace Client
                 string link = text.Substring(text.IndexOf("#"));
                 if (link.Length > 0)
                 {
-                    char separator = ' ';
+                    char separator = Prefix(link);
+                    if (separator != '\0')
+                    {
+                        link = link.Substring(0, link.IndexOf(separator.ToString()));
+                    }
                     foreach (char xx in Configuration.Parser.Separators)
                     {
                         if (link.Contains(xx.ToString()))
