@@ -324,6 +324,16 @@ namespace Client
                             {
                                 message = message.Substring(0, message.Length - 1);
                             }
+                            if (isServices)
+                            {
+                                // suppress highlight is it's own message
+                                if (_nick == _Network.Nickname)
+                                {
+                                    WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
+                                        !channel.temporary_hide, date, true);
+                                    return true;
+                                }
+                            }
                             WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;

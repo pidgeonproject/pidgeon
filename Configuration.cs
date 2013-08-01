@@ -175,6 +175,9 @@ namespace Client
             /// Encoding
             /// </summary>
             public static Encoding NetworkEncoding = System.Text.Encoding.UTF8;
+            /// <summary>
+            /// Display user mode in text
+            /// </summary>
             public static bool DisplayMode = false;
         }
 

@@ -201,6 +201,9 @@ namespace Client
 
         private char ChannelSymbol = '\0';
 
+        /// <summary>
+        /// This is a symbol that user has before his name in a channel (for example voiced user would have + on most networks)
+        /// </summary>
         public string ChannelPrefix
         {
             get
@@ -237,6 +240,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Reset the user mode back to none
+        /// </summary>
         public void ResetMode()
         {
             ChannelSymbol = '\0';

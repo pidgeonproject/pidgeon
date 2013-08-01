@@ -163,7 +163,6 @@ namespace Client
         /// <param name="SBAB">Rich text box</param>
         /// <param name="under">If text is underlined or not</param>
         /// <param name="bold">If text is bold or not</param>
-        /// <param name="color">Color</param>
         /// <returns></returns>
         private static Client.RichTBox.ContentText parse_ident(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
@@ -190,7 +189,6 @@ namespace Client
         /// <param name="SBAB">Rich text box</param>
         /// <param name="under">If text is underlined or not</param>
         /// <param name="bold">If text is bold or not</param>
-        /// <param name="color">Color</param>
         /// <returns></returns>
         private static Client.RichTBox.ContentText parse_link(string text, Client.RichTBox SBAB, bool under, bool bold)
         {
