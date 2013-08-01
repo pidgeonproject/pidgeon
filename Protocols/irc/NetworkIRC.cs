@@ -326,7 +326,6 @@ namespace Client
                             }
                             if (isServices)
                             {
-                                // suppress highlight is it's own message
                                 if (_nick == _Network.Nickname)
                                 {
                                     WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
