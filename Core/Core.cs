@@ -1279,6 +1279,7 @@ namespace Client
                 Core.DebugLog("Generating report");
                 string dump = "KERNEL DUMP\n\n";
                 dump += "Time: " + DateTime.Now.ToString() + "\n";
+                dump += "Status: " + _Status.ToString() + "\n";
                 dump += "Version: " + Application.ProductVersion + RevisionProvider.GetHash() + "\n";
                 dump += "Extensions: " + "\n";
                 lock (Extensions)
