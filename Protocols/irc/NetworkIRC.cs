@@ -479,6 +479,16 @@ namespace Client
             return false;
         }
 
+        private bool Invite(string source, string parameters, string value)
+        {
+            WindowText(_Network.SystemWindow, "INVITE: " + source + " invites you to join " + value + " (click on channel name to join)", Client.ContentLine.MessageStyle.System, true, date, true);
+            if (!Configuration.irc.IgnoreInvites)
+            {
+                Core.DisplayNote("Invitation", source + " invites you to join " + value);
+            }
+            return true;
+        }
+
         private bool IdleTime(string source, string parameters, string value)
         {
             if (parameters.Contains(" "))

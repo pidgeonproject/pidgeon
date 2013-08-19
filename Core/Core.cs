@@ -859,7 +859,7 @@ namespace Client
         /// <summary>
         /// Finalize displaying of notice box or show the last displayed box
         /// </summary>
-        public static void DisplayNote()
+        private static void DisplayNote()
         {
             if (Configuration.Kernel.Notice == false)
             {

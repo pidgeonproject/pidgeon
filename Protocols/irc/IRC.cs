@@ -419,6 +419,12 @@ namespace Client
                                 return true;
                             }
                             break;
+                        case "INVITE":
+                            if (Invite(source, parameters, value))
+                            {
+                                return true;
+                            }
+                            break;
                         case "PRIVMSG":
                             if (ProcessPM(source, parameters, value))
                             {

@@ -179,6 +179,10 @@ namespace Client
             /// Display user mode in text
             /// </summary>
             public static bool DisplayMode = false;
+            /// <summary>
+            /// If this is false the invitations will not trigger any notification
+            /// </summary>
+            public static bool IgnoreInvites = false;
         }
 
         /// <summary>
