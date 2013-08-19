@@ -140,7 +140,7 @@ namespace Client.Forms
                     {
                         foreach (ChannelBanException sb in channel.Exceptions)
                         {
-                            exceptions.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
+                            exceptions.AppendValues(sb.Target, Core.ConvertFromUNIXToString(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -158,7 +158,7 @@ namespace Client.Forms
                     {
                         foreach (SimpleBan sb in channel.Bans)
                         {
-                            bans.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
+                            bans.AppendValues(sb.Target, Core.ConvertFromUNIXToString(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -204,7 +204,7 @@ namespace Client.Forms
                     {
                         foreach (Invite sb in channel.Invites)
                         {
-                            invites.AppendValues(sb.Target, convertUNIX(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
+                            invites.AppendValues(sb.Target, Core.ConvertFromUNIXToString(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
                     }
                 }
@@ -489,23 +489,6 @@ namespace Client.Forms
             this.Build();
             this.textview1.WrapMode = WrapMode.Word;
             textview1.Buffer.Text = channel.Topic;
-        }
-
-        private string convertUNIX(string time)
-        {
-            try
-            {
-                if (time == null)
-                {
-                    return "Unable to read: NULL";
-                }
-                double unixtimestmp = double.Parse(time);
-                return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
-            }
-            catch (Exception)
-            {
-                return "Unable to read: " + time;
-            }
         }
     }
 }

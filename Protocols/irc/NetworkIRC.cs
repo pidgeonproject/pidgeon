@@ -496,7 +496,7 @@ namespace Client
                 string uptime = idle.Substring(idle.IndexOf(" ") + 1);
                 name = name.Substring(0, name.IndexOf(" "));
                 idle = idle.Substring(0, idle.IndexOf(" "));
-                DateTime logintime = Network.convertUNIX(uptime);
+                DateTime logintime = Core.ConvertFromUNIX(uptime);
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + " (" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }

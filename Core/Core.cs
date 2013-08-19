@@ -224,9 +224,9 @@ namespace Client
             set
             {
                 selectedNetwork = value;
-            #pragma warning disable
+#pragma warning disable
                 network = selectedNetwork;
-            #pragma warning restore
+#pragma warning restore
             }
         }
         /// <summary>
@@ -363,7 +363,7 @@ namespace Client
                 return rb;
             }
         }
-  
+
         /// <summary>
         /// Sets the reference to system form
         /// </summary>
@@ -374,7 +374,7 @@ namespace Client
         {
             _main = form;
         }
-        
+
         /// <summary>
         /// This is a first function that should be called after application start
         /// </summary>
@@ -1232,6 +1232,69 @@ namespace Client
                 }
             }
             return localIP;
+        }
+
+        /// <summary>
+        /// Convert a date to unix one
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static double ConvertDateToUnix(DateTime time)
+        {
+            DateTime EPOCH = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            TimeSpan span = (time - EPOCH);
+            return span.TotalSeconds;
+        }
+
+        /// <summary>
+        /// Convert a unix timestamp to human readable time
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static string ConvertFromUNIXToString(string time)
+        {
+            try
+            {
+                if (time == null)
+                {
+                    return "Unable to read: NULL";
+                }
+                double unixtimestmp = double.Parse(time);
+                return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp).ToString();
+            }
+            catch (Exception)
+            {
+                return "Unable to read: " + time;
+            }
+        }
+
+        /// <summary>
+        /// Return a DateTime object from unix time
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static DateTime ConvertFromUNIX(string time)
+        {
+            if (time == null)
+            {
+                throw new Exception("Provided time was NULL");
+            }
+            double unixtimestmp = double.Parse(time);
+            return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(unixtimestmp);
+        }
+
+        /// <summary>
+        /// Return a DateTime object from unix time
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        public static DateTime ConvertFromUNIX(double time)
+        {
+            if (time == null)
+            {
+                throw new Exception("Provided time was NULL");
+            }
+            return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(time);
         }
 
         /// <summary>

@@ -250,7 +250,7 @@ namespace Client
                     Graphics.Window curr = channel.RetrieveWindow();
                     if (curr != null)
                     {
-                        WindowText(curr, "Topic by: " + user + " date " + Network.convertUNIX(time).ToString(),
+                        WindowText(curr, "Topic by: " + user + " date " + Core.ConvertFromUNIXToString(time).ToString(),
                             Client.ContentLine.MessageStyle.Channel, !channel.temporary_hide, date, !updated_text);
                         return true;
                     }
@@ -462,6 +462,11 @@ namespace Client
                     }
                 }
                 channel.Topic = value;
+                if (updated_text)
+                {
+                    channel.TopicDate = (int)Core.ConvertDateToUnix(DateTime.Now);
+                    channel.TopicUser = source;
+                }
                 channel.UpdateInfo();
                 return true;
             }

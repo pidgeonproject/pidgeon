@@ -779,12 +779,14 @@ namespace Client
                             {
                                 ok = false;
                             }
+#pragma warning disable
                             if (!extension.Hook_UserJoin(network, user, channel, updated))
                             {
                                 Core.DebugLog("Compatibility warning: extension with name " + extension.Name +
                                     " is using obsolete function extension.Hook_UserJoin(network, user, channel, updated)");
                                 ok = false;
                             }
+#pragma warning restore
                         }
                     }
                     catch (Exception mf)
