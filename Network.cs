@@ -486,6 +486,7 @@ namespace Client
         /// </summary>
         /// <param name="time">timestamp</param>
         /// <returns></returns>
+        [Obsolete]
         public static DateTime convertUNIX(string time)
         {
             double unixtimestmp = 0;

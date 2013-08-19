@@ -98,7 +98,7 @@ namespace Client.Forms
             this.frame4.Add(this.GtkAlignment3);
             this.GtkLabel = new global::Gtk.Label();
             this.GtkLabel.Name = "GtkLabel";
-            this.GtkLabel.LabelProp = "Topic was last set on " + Network.convertUNIX(channel.TopicDate.ToString()) + " by " + channel.TopicUser;
+            this.GtkLabel.LabelProp = "Topic was last set on " + Core.ConvertFromUNIXToString(channel.TopicDate.ToString()) + " by " + channel.TopicUser;
             if (channel.TopicDate == 0)
             {
                 this.GtkLabel.LabelProp = "Topic (information about current topic isn't present)";

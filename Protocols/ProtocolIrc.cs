@@ -365,7 +365,24 @@ namespace Client
             {
                 SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
                 Core.SystemForm.Status("Disconnected from server " + Server);
-                _IRCNetwork.flagDisconnect();
+                if (_IRCNetwork != null)
+                {
+                    _IRCNetwork.flagDisconnect();
+                }
+                if (SSL)
+                {
+                    if (_networkSsl != null)
+                    {
+                        _networkSsl.Close();
+                    }
+                }
+                else
+                {
+                    if (_networkStream != null)
+                    {
+                        _networkStream.Close();
+                    }
+                }
                 Connected = false;
             }
             catch (Exception fail)
@@ -479,7 +496,7 @@ namespace Client
             // we lock the function so that it can't be called in same time in different thread
             lock (this)
             {
-                if (!IsConnected)
+                if (!IsConnected || _IRCNetwork == null)
                 {
                     return false;
                 }
