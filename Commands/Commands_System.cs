@@ -319,7 +319,7 @@ namespace Client
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
                     return;
                 }
-                Core.SelectedNetwork._Protocol.requestNick(Nick);
+                Core.SelectedNetwork._Protocol.RequestNick(Nick);
             }
 
             /// <summary>

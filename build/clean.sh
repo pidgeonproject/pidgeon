@@ -1,13 +1,13 @@
 #!/bin/sh
 
 if [ -d obj ];then
-rm -rf obj
+rm -vrf obj
 fi
 
 if [ -d bin ];then
-rm -rf bin
+rm -vrf bin
 fi
 
-rm -rf modules/*/bin
-rm -rf modules/*/obj
-rm -f pidgeon
+rm -vrf modules/*/bin
+rm -vrf modules/*/obj
+rm -vf pidgeon

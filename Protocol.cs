@@ -206,7 +206,7 @@ namespace Client
         }
 
         /// <summary>
-        /// Disconnect server
+        /// Release all memory associated with this object and destroy it
         /// </summary>
         public virtual void Exit()
         {
@@ -365,7 +365,7 @@ namespace Client
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        public static string decode_text(string text)
+        public static string DecodeText(string text)
         {
             return text.Replace("%####%", "%");
         }
@@ -375,7 +375,7 @@ namespace Client
         /// </summary>
         /// <param name="text">Text</param>
         /// <returns>Escaped text</returns>
-        public static string encode_text(string text)
+        public static string EncodeText(string text)
         {
             return text.Replace("%", "%####%");
         }
@@ -397,7 +397,7 @@ namespace Client
         /// <returns></returns>
         public string PRIVMSG(string user, string text)
         {
-            return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + encode_text(text);
+            return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + EncodeText(text);
         }
         
         /// <summary>
@@ -462,7 +462,7 @@ namespace Client
         /// <param name="_Nick"></param>
         /// <param name="network"></param>
         /// <returns></returns>
-        public virtual int requestNick(string _Nick, Network network = null)
+        public virtual int RequestNick(string _Nick, Network network = null)
         {
             Core.DebugLog("requestNick(string _Nick, Network network = null) is not implemented");
             return 2;

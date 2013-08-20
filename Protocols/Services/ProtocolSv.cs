@@ -656,7 +656,7 @@ namespace Client
         /// <param name="_Nick"></param>
         /// <param name="network"></param>
         /// <returns></returns>
-        public override int requestNick(string _Nick, Network network = null)
+        public override int RequestNick(string _Nick, Network network = null)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
             return 0;

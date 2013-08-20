@@ -484,7 +484,7 @@ namespace Client
             WindowText(_Network.SystemWindow, "INVITE: " + source + " invites you to join " + value + " (click on channel name to join)", Client.ContentLine.MessageStyle.System, true, date, true);
             if (!Configuration.irc.IgnoreInvites)
             {
-                Core.DisplayNote("Invitation", source + " invites you to join " + value);
+                Core.DisplayNote(source + " invites you to join " + value, "Invitation");
             }
             return true;
         }

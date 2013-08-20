@@ -109,7 +109,7 @@ namespace Client
                     {
                         if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
                         {
-                            Core.SystemForm.Chat._Protocol.requestNick(nick);
+                            Core.SystemForm.Chat._Protocol.RequestNick(nick);
                             return;
                         }
                     }
@@ -119,7 +119,7 @@ namespace Client
                         {
                             if (Core.SystemForm.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
                             {
-                                Core.SystemForm.Chat._Network._Protocol.requestNick(nick);
+                                Core.SystemForm.Chat._Network._Protocol.RequestNick(nick);
                                 return;
                             }
                         }

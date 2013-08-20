@@ -913,7 +913,7 @@ namespace Client
             {
                 return;
             }
-            data = Protocol.decode_text(Core.RemoveSpecial(data));
+            data = Protocol.DecodeText(Core.RemoveSpecial(data));
             NotificationIsNowWaiting = true;
             NotificationData = data;
             NotificationCaption = caption;
