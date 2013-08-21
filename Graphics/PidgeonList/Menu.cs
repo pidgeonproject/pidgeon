@@ -292,7 +292,7 @@ namespace Client.Graphics
                         if (window != null)
                         {
                             SelectedWindow = window;
-                            window.MenuColor = Configuration.CurrentSkin.fontcolor;
+                            window.MenuColor = Configuration.CurrentSkin.FontColor;
                         }
                         if (!chan.IsAlive)
                         {
@@ -314,7 +314,7 @@ namespace Client.Graphics
                         {
                             server.ParentSv.ShowChat("!" + server.SystemWindowID);
                         }
-                        server.SystemWindow.MenuColor = Configuration.CurrentSkin.fontcolor;
+                        server.SystemWindow.MenuColor = Configuration.CurrentSkin.FontColor;
                         SelectedWindow = server.SystemWindow;
                         Core.SelectedNetwork = server;
                         disconnectToolStripMenuItem.Visible = true;
@@ -362,7 +362,7 @@ namespace Client.Graphics
                         if (window != null)
                         {
                             SelectedWindow = window;
-                            window.MenuColor = Configuration.CurrentSkin.fontcolor;
+                            window.MenuColor = Configuration.CurrentSkin.FontColor;
                         }
                         us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
                         closeToolStripMenuItem.Visible = true;

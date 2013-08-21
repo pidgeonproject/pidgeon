@@ -31,7 +31,7 @@ namespace Client
         public static Dictionary<string, Client.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
 
         /// <summary>
-        /// This characted will change the color of text (it is standard of mirc)
+        /// This character will change the color of text (it is standard of mirc)
         /// </summary>
         public static char colorchar = (char)3;
 
@@ -172,7 +172,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://ident/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -198,7 +198,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://text/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -225,7 +225,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%"));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://hostname/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.TextColor = color;
@@ -270,7 +270,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(separator.ToString()));
                     }
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://join/" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -302,7 +302,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%"));
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Bold = bold;
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -319,11 +319,11 @@ namespace Client
         /// <summary>
         /// Parse http
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="SBAB"></param>
-        /// <param name="under"></param>
-        /// <param name="bold"></param>
-        /// <param name="color"></param>
+        /// <param name="text">Text to scan</param>
+        /// <param name="SBAB">Rich text box</param>
+        /// <param name="under">If text is underlined or not</param>
+        /// <param name="bold">If text is bold or not</param>
+        /// <param name="color">Color</param>
         /// <param name="CurrentProtocol"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
@@ -347,7 +347,7 @@ namespace Client
                             link = link.Substring(0, link.IndexOf(sepa.ToString()));
                         }
                     }
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Underline = true;
                     Link.Bold = bold;
                     if (Configuration.Colors.ChangeLinks)
@@ -371,7 +371,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
-                Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                 Link.Underline = true;
                 Link.Bold = bold;
                 if (Configuration.Colors.ChangeLinks)
@@ -406,7 +406,7 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString()));
                             }
                         }
-                        Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.link);
+                        Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                         Link.Underline = true;
                         Link.Bold = bold;
                         if (Configuration.Colors.ChangeLinks)

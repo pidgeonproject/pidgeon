@@ -31,27 +31,39 @@ namespace Client
         /// <summary>
         /// Local font name or family
         /// </summary>
-        public string localfont = "Arial";
+        public string LocalFont = "Arial";
+        /// <summary>
+        /// This is a string that /me is prefixed with
+        /// </summary>
+        public string Message2 = ">>>>>>";
         /// <summary>
         /// Font size
         /// </summary>
-        public int fontsize = 10;
+        public int FontSize = 10;
+        /// <summary>
+        /// Size of channel list
+        /// </summary>
+        public int ChannelListFontSize = 12000;
+        /// <summary>
+        /// Size of user list
+        /// </summary>
+        public int UserListFontSize = 9000;
         /// <summary>
         /// Join color
         /// </summary>
-        public System.Drawing.Color joincolor;
+        public System.Drawing.Color JoinColor;
         /// <summary>
         /// Kick color
         /// </summary>
-        public System.Drawing.Color kickcolor;
+        public System.Drawing.Color KickColor;
         /// <summary>
         /// Channel modes and actions
         /// </summary>
-        public System.Drawing.Color miscelancscolor;
+        public System.Drawing.Color MiscelancsColor;
         /// <summary>
         /// Hl
         /// </summary>
-        public System.Drawing.Color highlightcolor;
+        public System.Drawing.Color HighlightColor;
         /// <summary>
         /// Nick change color
         /// </summary>
@@ -59,43 +71,43 @@ namespace Client
         /// <summary>
         /// This is a defaul regular color for text
         /// </summary>
-        public System.Drawing.Color fontcolor;
+        public System.Drawing.Color FontColor;
         /// <summary>
         /// +h
         /// </summary>
-        public System.Drawing.Color colorh;
+        public System.Drawing.Color ColorH;
         /// <summary>
         /// Default color for system menus
         /// </summary>
-        public System.Drawing.Color colordefault;
+        public System.Drawing.Color ColorDefault;
         /// <summary>
         /// +v
         /// </summary>
-        public System.Drawing.Color colorv;
+        public System.Drawing.Color ColorV;
         /// <summary>
         /// +q
         /// </summary>
-        public System.Drawing.Color colorq;
+        public System.Drawing.Color ColorQ;
         /// <summary>
         /// +a
         /// </summary>
-        public System.Drawing.Color colora;
+        public System.Drawing.Color ColorA;
         /// <summary>
         /// +o
         /// </summary>
-        public System.Drawing.Color coloro;
+        public System.Drawing.Color ColorO;
         /// <summary>
         /// Bg
         /// </summary>
-        public System.Drawing.Color backgroundcolor;
+        public System.Drawing.Color BackgroundColor;
         /// <summary>
         /// Color
         /// </summary>
-        public System.Drawing.Color colortalk;
+        public System.Drawing.Color ColorTalk;
         /// <summary>
         /// Color
         /// </summary>
-        public System.Drawing.Color coloraway;
+        public System.Drawing.Color ColorAway;
         /// <summary>
         /// Skin
         /// </summary>
@@ -103,7 +115,7 @@ namespace Client
         /// <summary>
         /// Link
         /// </summary>
-        public System.Drawing.Color link;
+        public System.Drawing.Color LinkColor;
         /// <summary>
         /// mIRC colors
         /// </summary>
@@ -164,62 +176,71 @@ namespace Client
                 mrcl.Clear();
                 foreach (XmlNode curr in configuration.ChildNodes[0].ChildNodes)
                 {
-                    switch (curr.Name)
+                    switch (curr.Name.ToLower())
                     { 
                         case "fontcolor":
-                            fontcolor = colorFromXmlCode(curr);
+                            FontColor = colorFromXmlCode(curr);
                             break;
                         case "link":
-                            link = colorFromXmlCode(curr);
+                            LinkColor = colorFromXmlCode(curr);
                             break;
                         case "colordefault":
-                            colordefault = colorFromXmlCode(curr);
+                            ColorDefault = colorFromXmlCode(curr);
                             break;
                         case "joincolor":
-                            joincolor = colorFromXmlCode(curr);
+                            JoinColor = colorFromXmlCode(curr);
                             break;
                         case "miscelancscolor":
-                            miscelancscolor = colorFromXmlCode(curr);
+                            MiscelancsColor = colorFromXmlCode(curr);
                             break;
                         case "highlightcolor":
-                            highlightcolor = colorFromXmlCode(curr);
+                            HighlightColor = colorFromXmlCode(curr);
                             break;
                         case "changenickcolor":
                             changenickcolor = colorFromXmlCode(curr);
                             break;
                         case "backgroundcolor":
-                            backgroundcolor = colorFromXmlCode(curr);
+                            BackgroundColor = colorFromXmlCode(curr);
                             break;
                         case "colortalk":
-                            colortalk = colorFromXmlCode(curr);
+                            ColorTalk = colorFromXmlCode(curr);
                             break;
                         case "fontname":
-                            localfont = curr.InnerText;
+                            LocalFont = curr.InnerText;
                             break;
                         case "fontsize":
                         case "size":
-                            fontsize = int.Parse(curr.InnerText);
+                            FontSize = int.Parse(curr.InnerText);
                             break;
                         case "coloraway":
-                            this.coloraway = colorFromXmlCode(curr);
+                            this.ColorAway = colorFromXmlCode(curr);
                             break;
                         case "colorq":
-                            this.colorq = colorFromXmlCode(curr);
+                            this.ColorQ = colorFromXmlCode(curr);
                             break;
                         case "colorv":
-                            this.colorv = colorFromXmlCode(curr);
+                            this.ColorV = colorFromXmlCode(curr);
                             break;
                         case "colora":
-                            this.colora = colorFromXmlCode(curr);
+                            this.ColorA = colorFromXmlCode(curr);
                             break;
                         case "colorh":
-                            this.colorh = colorFromXmlCode(curr);
+                            this.ColorH = colorFromXmlCode(curr);
                             break;
                         case "coloro":
-                            this.coloro = colorFromXmlCode(curr);
+                            this.ColorO = colorFromXmlCode(curr);
                             break;
                         case "mirc":
                             this.mrcl.Add(colorFromXmlCode(curr));
+                            break;
+                        case "message":
+                            this.Message2 = curr.InnerText;
+                            break;
+                        case "channelsize":
+                            this.ChannelListFontSize = int.Parse(curr.InnerText);
+                            break;
+                        case "usersize":
+                            this.UserListFontSize = int.Parse(curr.InnerText);
                             break;
                     }
                 }
@@ -248,22 +269,22 @@ namespace Client
             mrcl.Add(System.Drawing.Color.LightPink);
             mrcl.Add(System.Drawing.Color.Gray);
             mrcl.Add(System.Drawing.Color.LightGoldenrodYellow);
-            fontcolor = System.Drawing.Color.White;
-            joincolor = System.Drawing.Color.LightBlue;
-            highlightcolor = System.Drawing.Color.LightPink;
-            miscelancscolor = System.Drawing.Color.LightGreen;
+            FontColor = System.Drawing.Color.White;
+            JoinColor = System.Drawing.Color.LightBlue;
+            HighlightColor = System.Drawing.Color.LightPink;
+            MiscelancsColor = System.Drawing.Color.LightGreen;
             changenickcolor = System.Drawing.Color.LightSteelBlue;
-            link = System.Drawing.Color.LightBlue;
-            colortalk = System.Drawing.Color.Yellow;
-            kickcolor = System.Drawing.Color.White;
-            colorq = System.Drawing.Color.LightBlue;
-            colora = System.Drawing.Color.LightCyan;
-            coloro = System.Drawing.Color.Yellow;
-            colorh = System.Drawing.Color.Cyan;
-            colorv = System.Drawing.Color.LightGreen;
-            colordefault = System.Drawing.Color.White;
-            coloraway = System.Drawing.Color.Gray;
-            backgroundcolor = System.Drawing.Color.Black;
+            LinkColor = System.Drawing.Color.LightBlue;
+            ColorTalk = System.Drawing.Color.Yellow;
+            KickColor = System.Drawing.Color.White;
+            ColorQ = System.Drawing.Color.LightBlue;
+            ColorA = System.Drawing.Color.LightCyan;
+            ColorO = System.Drawing.Color.Yellow;
+            ColorH = System.Drawing.Color.Cyan;
+            ColorV = System.Drawing.Color.LightGreen;
+            ColorDefault = System.Drawing.Color.White;
+            ColorAway = System.Drawing.Color.Gray;
+            BackgroundColor = System.Drawing.Color.Black;
         }
 
         /// <summary>
@@ -272,6 +293,14 @@ namespace Client
         public Skin()
         {
             Defaults();
+        }
+
+        /// <summary>
+        /// Save a skin
+        /// </summary>
+        public void Save()
+        {
+            
         }
 
         /// <summary>

@@ -133,10 +133,10 @@ namespace Client
         public RichTBox()
         {
             this.Build();
-            ForeColor = Configuration.CurrentSkin.colordefault;
-            BackColor = Configuration.CurrentSkin.backgroundcolor;
-            font = new System.Drawing.Font(Configuration.CurrentSkin.localfont, Configuration.CurrentSkin.fontsize);
-            DefaultFont.Family = Configuration.CurrentSkin.localfont;
+            ForeColor = Configuration.CurrentSkin.ColorDefault;
+            BackColor = Configuration.CurrentSkin.BackgroundColor;
+            font = new System.Drawing.Font(Configuration.CurrentSkin.LocalFont, Configuration.CurrentSkin.FontSize);
+            DefaultFont.Family = Configuration.CurrentSkin.LocalFont;
             //DefaultFont.Size = Configuration.CurrentSkin.fontsize;
         }
 

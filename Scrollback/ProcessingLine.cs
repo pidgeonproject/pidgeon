@@ -85,35 +85,35 @@ namespace Client
 
         private Client.RichTBox.ContentText CreateText(ContentLine line, string text)
         {
-            Color color = Configuration.CurrentSkin.joincolor;
+            Color color = Configuration.CurrentSkin.JoinColor;
             if (line != null)
             {
                 switch (line.style)
                 {
                     case Client.ContentLine.MessageStyle.Action:
-                        color = Configuration.CurrentSkin.miscelancscolor;
+                        color = Configuration.CurrentSkin.MiscelancsColor;
                         break;
                     case Client.ContentLine.MessageStyle.Kick:
-                        color = Configuration.CurrentSkin.kickcolor;
+                        color = Configuration.CurrentSkin.KickColor;
                         break;
                     case Client.ContentLine.MessageStyle.System:
-                        color = Configuration.CurrentSkin.miscelancscolor;
+                        color = Configuration.CurrentSkin.MiscelancsColor;
                         break;
                     case Client.ContentLine.MessageStyle.Channel:
-                        color = Configuration.CurrentSkin.colortalk;
+                        color = Configuration.CurrentSkin.ColorTalk;
                         break;
                     case Client.ContentLine.MessageStyle.User:
                         color = Configuration.CurrentSkin.changenickcolor;
                         break;
                     case Client.ContentLine.MessageStyle.Join:
                     case Client.ContentLine.MessageStyle.Part:
-                        color = Configuration.CurrentSkin.joincolor;
+                        color = Configuration.CurrentSkin.JoinColor;
                         break;
                 }
 
                 if (line.notice)
                 {
-                    color = Configuration.CurrentSkin.highlightcolor;
+                    color = Configuration.CurrentSkin.HighlightColor;
                 }
             }
 
@@ -122,33 +122,33 @@ namespace Client
 
         private Client.RichTBox.Line CreateLine(ContentLine Line)
         {
-            Color color = Configuration.CurrentSkin.fontcolor;
+            Color color = Configuration.CurrentSkin.FontColor;
             switch (Line.style)
             {
                 case Client.ContentLine.MessageStyle.Action:
-                    color = Configuration.CurrentSkin.miscelancscolor;
+                    color = Configuration.CurrentSkin.MiscelancsColor;
                     break;
                 case Client.ContentLine.MessageStyle.Kick:
-                    color = Configuration.CurrentSkin.kickcolor;
+                    color = Configuration.CurrentSkin.KickColor;
                     break;
                 case Client.ContentLine.MessageStyle.System:
-                    color = Configuration.CurrentSkin.miscelancscolor;
+                    color = Configuration.CurrentSkin.MiscelancsColor;
                     break;
                 case Client.ContentLine.MessageStyle.Channel:
-                    color = Configuration.CurrentSkin.colortalk;
+                    color = Configuration.CurrentSkin.ColorTalk;
                     break;
                 case Client.ContentLine.MessageStyle.User:
                     color = Configuration.CurrentSkin.changenickcolor;
                     break;
                 case Client.ContentLine.MessageStyle.Join:
                 case Client.ContentLine.MessageStyle.Part:
-                    color = Configuration.CurrentSkin.joincolor;
+                    color = Configuration.CurrentSkin.JoinColor;
                     break;
             }
 
             if (Line.notice)
             {
-                color = Configuration.CurrentSkin.highlightcolor;
+                color = Configuration.CurrentSkin.HighlightColor;
             }
 
             string stamp = "";
@@ -535,27 +535,27 @@ namespace Client
                 {
                     case ContentLine.MessageStyle.Kick:
                     case ContentLine.MessageStyle.System:
-                        owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
+                        owner.MenuColor = Configuration.CurrentSkin.HighlightColor;
                         break;
                     case ContentLine.MessageStyle.Message:
-                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
+                        if (owner.MenuColor != Configuration.CurrentSkin.HighlightColor)
                         {
-                            owner.MenuColor = Configuration.CurrentSkin.colortalk;
+                            owner.MenuColor = Configuration.CurrentSkin.ColorTalk;
                         }
                         break;
                     case ContentLine.MessageStyle.Action:
-                        if (owner.MenuColor != Configuration.CurrentSkin.colortalk && owner.MenuColor != Configuration.CurrentSkin.highlightcolor)
+                        if (owner.MenuColor != Configuration.CurrentSkin.ColorTalk && owner.MenuColor != Configuration.CurrentSkin.HighlightColor)
                         {
-                            owner.MenuColor = Configuration.CurrentSkin.miscelancscolor;
+                            owner.MenuColor = Configuration.CurrentSkin.MiscelancsColor;
                         }
                         break;
                     case ContentLine.MessageStyle.Part:
                     case ContentLine.MessageStyle.Channel:
                     case ContentLine.MessageStyle.User:
                     case ContentLine.MessageStyle.Join:
-                        if (owner.MenuColor != Configuration.CurrentSkin.highlightcolor && owner.MenuColor != Configuration.CurrentSkin.miscelancscolor && owner.MenuColor != Configuration.CurrentSkin.colortalk)
+                        if (owner.MenuColor != Configuration.CurrentSkin.HighlightColor && owner.MenuColor != Configuration.CurrentSkin.MiscelancsColor && owner.MenuColor != Configuration.CurrentSkin.ColorTalk)
                         {
-                            owner.MenuColor = Configuration.CurrentSkin.joincolor;
+                            owner.MenuColor = Configuration.CurrentSkin.JoinColor;
                         }
                         break;
                 }
@@ -564,7 +564,7 @@ namespace Client
 
                 if (Matched)
                 {
-                    owner.MenuColor = Configuration.CurrentSkin.highlightcolor;
+                    owner.MenuColor = Configuration.CurrentSkin.HighlightColor;
                 }
             }
 

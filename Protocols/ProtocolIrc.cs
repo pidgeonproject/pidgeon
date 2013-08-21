@@ -482,7 +482,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
+            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), priority);
             return 0;
         }

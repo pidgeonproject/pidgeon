@@ -112,7 +112,7 @@ namespace Client
             {
                 format.Style = Pango.Style.Italic;
                 format.BackgroundGdk = Core.FromColor(text.TextColor);
-                format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.backgroundcolor);
+                format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.BackgroundColor);
             }
 
             if (text.Link != null)
@@ -131,7 +131,7 @@ namespace Client
                 format.ForegroundGdk = Core.FromColor(text.TextColor);
             }
             tb.TagTable.Add(format);
-            format.SizePoints = Configuration.CurrentSkin.fontsize;
+            format.SizePoints = Configuration.CurrentSkin.FontSize;
             tb.InsertWithTags(ref iter, text.Text, format);
         }
 
@@ -170,7 +170,7 @@ namespace Client
                     {
                         format.Style = Pango.Style.Italic;
                         format.BackgroundGdk = Core.FromColor(text.TextColor);
-                        format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.backgroundcolor);
+                        format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.BackgroundColor);
                     }
 
                     if (text.Link != null)
@@ -189,7 +189,7 @@ namespace Client
                         format.ForegroundGdk = Core.FromColor(text.TextColor);
                     }
                     richTextBox.Buffer.TagTable.Add(format);
-                    format.SizePoints = Configuration.CurrentSkin.fontsize;
+                    format.SizePoints = Configuration.CurrentSkin.FontSize;
                     richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
                 }
             }

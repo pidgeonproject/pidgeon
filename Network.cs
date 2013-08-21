@@ -216,7 +216,7 @@ namespace Client
         /// <summary>
         /// If the system already attempted to change the nick
         /// </summary>
-        public bool usingNick2 = false;
+        public bool UsingNick2 = false;
         /// <summary>
         /// Pointer to channel window
         /// </summary>

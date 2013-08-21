@@ -300,8 +300,8 @@ namespace Client
                 this.RT.textView.KeyPressEvent += new Gtk.KeyPressEventHandler(PressEvent);
             }
             timer2 = new GLib.TimeoutHandler(timer2_Tick);
-            simpleview.ModifyBase(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
-            simpleview.ModifyText(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            simpleview.ModifyBase(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            simpleview.ModifyText(Gtk.StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
             simpleview.KeyPressEvent += new Gtk.KeyPressEventHandler(PressEvent);
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);

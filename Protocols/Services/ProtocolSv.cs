@@ -567,6 +567,7 @@ namespace Client
                 if (!IsConnected)
                 {
                     Core.DebugLog("User attempted to disconnect services that are already disconnected");
+                    disconnecting = false;
                     return false;
                 }
                 if (System.Threading.Thread.CurrentThread != main)
@@ -671,7 +672,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(">>>>>>" + Core.SelectedNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
+            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }

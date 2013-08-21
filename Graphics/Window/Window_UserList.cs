@@ -251,28 +251,28 @@ namespace Client.Graphics
                 User user = (User)model.GetValue(iter, 1);
                 if (user.Away)
                 {
-                    (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.coloraway);
+                    (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorAway);
                     return;
                 }
                 switch (user.Status)
                 {
                     case User.ChannelStatus.Owner:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colorq);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorQ);
                         break;
                     case User.ChannelStatus.Admin:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colora);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorA);
                         break;
                     case User.ChannelStatus.Op:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.coloro);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorO);
                         break;
                     case User.ChannelStatus.Voice:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colorv);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorV);
                         break;
                     case User.ChannelStatus.Regular:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colordefault);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorDefault);
                         break;
                     case User.ChannelStatus.Halfop:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colorh);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorH);
                         break;
                 }
             }

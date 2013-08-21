@@ -624,6 +624,11 @@ namespace Client
             {
                 return;
             }
+            if (name == KernelThread)
+            {
+                DebugLog("Refusing to kill kernel thread >:-(");
+                return;
+            }
             // we need to lock it here so that we prevent multiple calls of this function at same time
             lock (SystemThreads)
             {
@@ -1290,10 +1295,6 @@ namespace Client
         /// <returns></returns>
         public static DateTime ConvertFromUNIX(double time)
         {
-            if (time == null)
-            {
-                throw new Exception("Provided time was NULL");
-            }
             return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(time);
         }
 

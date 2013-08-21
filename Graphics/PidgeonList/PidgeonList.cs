@@ -148,7 +148,10 @@ namespace Client.Graphics
             closeToolStripMenuItem.Enabled = true;
             soundsToolStripMenuItem.Visible = true;
             highlightToolStripMenuItem.Visible = true;
-            this.tv.ModifyFg(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.fontcolor));
+            Pango.FontDescription font = new Pango.FontDescription();
+            font.Size = Configuration.CurrentSkin.ChannelListFontSize;
+            tv.ModifyFont(font);
+            this.tv.ModifyFg(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.FontColor));
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -367,8 +370,8 @@ namespace Client.Graphics
 
         private void InitStyle()
         {
-            tv.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
-            tv.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            tv.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            tv.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
         }
 
         /// <summary>
@@ -557,7 +560,7 @@ namespace Client.Graphics
                         }
                         break;
                     case ItemType.Services:
-                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.colordefault);
+                        (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.ColorDefault);
                         break;
                 }
             }

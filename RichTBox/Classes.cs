@@ -204,7 +204,7 @@ namespace Client
             public Line()
             {
                 text = new List<ContentText>();
-                foreColor = Configuration.CurrentSkin.colordefault;
+                foreColor = Configuration.CurrentSkin.ColorDefault;
             }
 
             private void CreateLine(string Text, RichTBox SBAB, Color color)

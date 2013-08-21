@@ -133,8 +133,8 @@ namespace Client.Graphics
 
         private void InitStyle()
         {
-            richTextBox.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
-            richTextBox.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            richTextBox.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            richTextBox.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e)

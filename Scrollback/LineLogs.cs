@@ -98,7 +98,7 @@ namespace Client
                     {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.fontsize.ToString() + "px\" face=" + Configuration.CurrentSkin.localfont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
+                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.FontSize.ToString() + "px\" face=" + Configuration.CurrentSkin.LocalFont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
                 }
                 if (Configuration.Logs.logs_xml)
                 {

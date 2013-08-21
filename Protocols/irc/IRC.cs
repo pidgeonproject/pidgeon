@@ -377,9 +377,9 @@ namespace Client
                             }
                             break;
                         case "433":
-                            if (!_Network.usingNick2 && Configuration.UserData.Nick2 != "")
+                            if (!_Network.UsingNick2 && Configuration.UserData.Nick2 != "")
                             {
-                                _Network.usingNick2 = true;
+                                _Network.UsingNick2 = true;
                                 _Network.Transfer("NICK " + Configuration.UserData.Nick2, Configuration.Priority.High);
                                 _Network.Nickname = Configuration.UserData.Nick2;
                             }

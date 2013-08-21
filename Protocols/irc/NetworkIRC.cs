@@ -175,7 +175,7 @@ namespace Client
                             {
                                 if (_Network.PrivateWins.ContainsKey(user))
                                 {
-                                    WindowText(_Network.PrivateWins[user], ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
+                                    WindowText(_Network.PrivateWins[user], Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
                                         date, !updated_text);
                                     return true;
                                 }
@@ -328,12 +328,12 @@ namespace Client
                             {
                                 if (_nick == _Network.Nickname)
                                 {
-                                    WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
+                                    WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
                                         !channel.temporary_hide, date, true);
                                     return true;
                                 }
                             }
-                            WindowText(window, ">>>>>>" + _nick + message, Client.ContentLine.MessageStyle.Action,
+                            WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
                                 !channel.temporary_hide, date, !updated_text);
                             return true;
                         }

@@ -204,7 +204,7 @@ namespace Client.Graphics
         {
             this.scrollback1 = new global::Client.Scrollback();
             this.textbox1 = new global::Client.Graphics.TextBox();
-            MenuColor = Configuration.CurrentSkin.colordefault;
+            MenuColor = Configuration.CurrentSkin.ColorDefault;
             textbox1.parent = this;
             if (textbox1.history == null)
             {
@@ -262,6 +262,9 @@ namespace Client.Graphics
             this.listView.ButtonPressEvent += new ButtonPressEventHandler(Ignore);
             this.listView.PopupMenu += new PopupMenuHandler(Menu);
             this.listView.Name = "listView";
+            Pango.FontDescription font = new Pango.FontDescription();
+            font.Size = Configuration.CurrentSkin.UserListFontSize;
+            listView.ModifyFont(font);
             this.listView.Selection.Mode = SelectionMode.Multiple;
             this.GtkScrolledWindow1.Add(this.listView);
             this.hpaned1.Add(this.GtkScrolledWindow1);
@@ -299,8 +302,8 @@ namespace Client.Graphics
 
         private void InitStyle()
         {
-            listView.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
-            listView.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            listView.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            listView.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
         }
         
         [GLib.ConnectBefore]

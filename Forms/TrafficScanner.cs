@@ -96,8 +96,8 @@ namespace Client.Forms
 
         private void LoadStyle()
         {
-            textview2.ModifyBase (StateType.Normal, Core.FromColor(Configuration.CurrentSkin.backgroundcolor));
-            textview2.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.colordefault));
+            textview2.ModifyBase (StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            textview2.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
         }
         
         /// <summary>
