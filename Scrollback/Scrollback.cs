@@ -108,7 +108,15 @@ namespace Client
         /// </summary>
         public string SelectedLink = null;
         private bool destroyed = false;
+        /// <summary>
+        /// Font used by simple view
+        /// </summary>
+        public Pango.FontDescription Font = new Pango.FontDescription();
         private bool running = false;
+        /// <summary>
+        /// If this is true scrolling will be automatically enabled after some delay
+        /// </summary>
+        private bool EnableScrolling = false;
         /// <summary>
         /// Return true in case that the current line is empty
         /// </summary>
@@ -235,6 +243,8 @@ namespace Client
         /// <param name="_ParentWindow"></param>
         public Scrollback(Graphics.Window _ParentWindow)
         {
+            Font.Family = Configuration.CurrentSkin.LocalFont;
+            Font.Size = Configuration.CurrentSkin.FontSize;
             this.owner = _ParentWindow;
             ReloadWaiting = true;
         }
@@ -256,6 +266,27 @@ namespace Client
                 }
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
+        }
+
+        /// <summary>
+        /// This will modify a size of all scrollbacks and text areas using the given value
+        /// </summary>
+        /// <param name="adjustment"></param>
+        public void ResizeText(int adjustment)
+        {
+            if (Configuration.CurrentSkin.FontSize + adjustment < 1)
+            {
+                return;
+            }
+
+            Configuration.CurrentSkin.FontSize = Configuration.CurrentSkin.FontSize + adjustment;
+            Font.Size = Configuration.CurrentSkin.FontSize;
+            simpleview.ModifyFont(Font);
+            RT.DefaultFont.Size = Configuration.CurrentSkin.FontSize;
+            //RT.textView.ModifyFont(RT.DefaultFont);
+            ScrollingEnabled = false;
+            Reload(true);
+            EnableScrolling = true;
         }
 
         /// <summary>
@@ -289,6 +320,7 @@ namespace Client
             this.simpleview.Name = "simpleview";
             this.simpleview.SizeAllocated += new Gtk.SizeAllocatedHandler(Scroll2);
             this.simpleview.Editable = false;
+            this.simpleview.ModifyFont(Font);
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox();
@@ -599,6 +631,11 @@ namespace Client
                         {
                             ReloadWaiting = false;
                         }
+                    }
+                    if (EnableScrolling)
+                    {
+                        EnableScrolling = false;
+                        ScrollingEnabled = true;
                     }
                 }
             }

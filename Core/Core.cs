@@ -208,6 +208,10 @@ namespace Client
         /// </summary>
         private static List<string> Ring = new List<string>();
         /// <summary>
+        /// If user is holding ctrl key
+        /// </summary>
+        public static bool HoldingCtrl = false;
+        /// <summary>
         /// Container
         /// </summary>
         private static Network selectedNetwork = null;

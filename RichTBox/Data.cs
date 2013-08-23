@@ -25,7 +25,10 @@ namespace Client
 {
     public partial class RichTBox : Gtk.Bin
     {
-        private Pango.FontDescription DefaultFont = new Pango.FontDescription();
+        /// <summary>
+        /// This is a font used for all text
+        /// </summary>
+        public Pango.FontDescription DefaultFont = new Pango.FontDescription();
 
         private Line CurrentLine = null;
                     
@@ -131,7 +134,7 @@ namespace Client
                 format.ForegroundGdk = Core.FromColor(text.TextColor);
             }
             tb.TagTable.Add(format);
-            format.SizePoints = Configuration.CurrentSkin.FontSize;
+            //format.SizePoints = Configuration.CurrentSkin.FontSize;
             tb.InsertWithTags(ref iter, text.Text, format);
         }
 
@@ -189,7 +192,7 @@ namespace Client
                         format.ForegroundGdk = Core.FromColor(text.TextColor);
                     }
                     richTextBox.Buffer.TagTable.Add(format);
-                    format.SizePoints = Configuration.CurrentSkin.FontSize;
+                    //format.SizePoints = Configuration.CurrentSkin.FontSize;
                     richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
                 }
             }

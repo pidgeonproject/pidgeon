@@ -151,11 +151,31 @@ namespace Client.Graphics
         }
 
         [GLib.ConnectBefore]
+        private void KeyRelease(object sender, KeyReleaseEventArgs e)
+        {
+            try
+            {
+                if (e.Event.Key == Gdk.Key.Control_L || e.Event.Key == Gdk.Key.Control_R)
+                {
+                    Core.HoldingCtrl = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        [GLib.ConnectBefore]
         private void _Enter(object sender, KeyPressEventArgs e)
         {
             try
             {
                 Hooks._Sys.Poke();
+                if (e.Event.Key == Gdk.Key.Control_L || e.Event.Key == Gdk.Key.Control_R)
+                {
+                    Core.HoldingCtrl = true;
+                }
                 if (Forms.Main.ShortcutHandle(sender, e))
                 {
                     e.RetVal = true;
@@ -357,6 +377,7 @@ namespace Client.Graphics
         {
             this.Build();
             this.InitStyle();
+            richTextBox.KeyReleaseEvent += new KeyReleaseEventHandler(KeyRelease);
             richTextBox.Buffer.Changed += new EventHandler(richTextBox1_TextChanged);
             richTextBox.KeyPressEvent += new KeyPressEventHandler(_Enter);
             if (history == null)

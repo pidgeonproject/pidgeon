@@ -63,7 +63,7 @@ namespace Client
         /// <summary>
         /// Font size
         /// </summary>
-        public int FontSize = 10;
+        public int FontSize = 9000;
         /// <summary>
         /// Size of channel list
         /// </summary>

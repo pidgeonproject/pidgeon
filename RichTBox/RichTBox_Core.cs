@@ -31,7 +31,6 @@ namespace Client
         /// Pointer
         /// </summary>
         public Scrollback scrollback = null;
-        private System.Drawing.Font font;
         private string text = null;
         private System.Drawing.Color foreColor;
         private System.Drawing.Color backColor;
@@ -118,6 +117,9 @@ namespace Client
             this.richTextBox.AcceptsTab = true;
             this.richTextBox.SizeAllocated += new SizeAllocatedHandler(Scroll2);
             richTextBox.WrapMode = WrapMode.Word;
+            this.richTextBox.KeyPressEvent += new KeyPressEventHandler(Down);
+            this.richTextBox.KeyReleaseEvent += new KeyReleaseEventHandler(Up);
+            this.richTextBox.ScrollEvent += new ScrollEventHandler(Scroll);
             this.GtkScrolledWindow.Add(this.richTextBox);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
@@ -135,9 +137,40 @@ namespace Client
             this.Build();
             ForeColor = Configuration.CurrentSkin.ColorDefault;
             BackColor = Configuration.CurrentSkin.BackgroundColor;
-            font = new System.Drawing.Font(Configuration.CurrentSkin.LocalFont, Configuration.CurrentSkin.FontSize);
             DefaultFont.Family = Configuration.CurrentSkin.LocalFont;
-            //DefaultFont.Size = Configuration.CurrentSkin.fontsize;
+            DefaultFont.Size = Configuration.CurrentSkin.FontSize;
+        }
+
+        [GLib.ConnectBefore]
+        private void Up(object sender, KeyReleaseEventArgs e)
+        {
+            try
+            {
+                if (e.Event.Key == Gdk.Key.Control_R || e.Event.Key == Gdk.Key.Control_L)
+                {
+                    Core.HoldingCtrl = false;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void Down(object sender, KeyPressEventArgs e)
+        {
+            try
+            {
+                if (e.Event.Key == Gdk.Key.Control_R || e.Event.Key == Gdk.Key.Control_L)
+                {
+                    Core.HoldingCtrl = true;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         /// <summary>
@@ -158,6 +191,30 @@ namespace Client
             if (drawLine)
             {
                 DrawLineToHead(line);
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void Scroll(object sender, ScrollEventArgs e)
+        {
+            try
+            {
+                if (Core.HoldingCtrl)
+                {
+                    if (e.Event.Direction == Gdk.ScrollDirection.Up)
+                    {
+                        scrollback.ResizeText(400);
+                    }
+                    else
+                    {
+                        scrollback.ResizeText(-400);
+                    }
+                    e.RetVal = true;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
