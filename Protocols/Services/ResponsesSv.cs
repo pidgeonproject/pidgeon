@@ -140,6 +140,7 @@ namespace Client
             {
                 long date = 0;
                 bool backlog = false;
+                bool IsBacklog = false;
                 string MQID = null;
                 bool range = false;
                 string id = "";
@@ -205,10 +206,12 @@ namespace Client
                         Core.SystemForm.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
+                    IsBacklog = true;
                     Core.SystemForm.progress = double.Parse(id);
                     Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
+                        IsBacklog = false;
                         Core.SystemForm.Status(protocol.getInfo());
                         Core.SystemForm.DisplayingProgress = false;
                         Core.SystemForm.progress = 0;
@@ -227,10 +230,12 @@ namespace Client
                         }
                     }
                     processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
+                    processor.IsBacklog = IsBacklog;
                     processor.ProfiledResult();
                     return;
                 }
                 processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
+                processor.IsBacklog = IsBacklog;
                 processor.ProfiledResult();
             }
 

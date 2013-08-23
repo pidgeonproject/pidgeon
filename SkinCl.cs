@@ -29,6 +29,30 @@ namespace Client
     public class Skin
     {
         /// <summary>
+        /// Icon of at symbol used for PM
+        /// </summary>
+        public Gdk.Pixbuf Icon_ShadowAt = Gdk.Pixbuf.LoadFromResource("Client.Resources.at-s.png");
+        /// <summary>
+        /// Icon #
+        /// </summary>
+        public Gdk.Pixbuf Icon_ShadowHash = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash-s.png");
+        /// <summary>
+        /// Icon !
+        /// </summary>
+        public Gdk.Pixbuf Icon_ShadowMark = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation-mark-s.png");
+        /// <summary>
+        /// Icon @
+        /// </summary>
+        public Gdk.Pixbuf Icon_At = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
+        /// <summary>
+        /// Icon #
+        /// </summary>
+        public Gdk.Pixbuf Icon_Hash = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
+        /// <summary>
+        /// Icon !
+        /// </summary>
+        public Gdk.Pixbuf Icon_ExclamationMark = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
+        /// <summary>
         /// Local font name or family
         /// </summary>
         public string LocalFont = "Arial";
@@ -241,6 +265,24 @@ namespace Client
                             break;
                         case "usersize":
                             this.UserListFontSize = int.Parse(curr.InnerText);
+                            break;
+                        case "icon_at":
+                            this.Icon_At = new Gdk.Pixbuf(curr.InnerText);
+                            break;
+                        case "icon_exclamationmark":
+                            this.Icon_ExclamationMark = new Gdk.Pixbuf(curr.InnerText);
+                            break;
+                        case "icon_shadowmark":
+                            this.Icon_ShadowMark = new Gdk.Pixbuf(curr.InnerText);
+                            break;
+                        case "icon_shadowhash":
+                            this.Icon_ShadowHash = new Gdk.Pixbuf(curr.InnerText);
+                            break;
+                        case "icon_shadowat":
+                            this.Icon_ShadowAt = new Gdk.Pixbuf(curr.InnerText);
+                            break;
+                        case "icon_hash":
+                            this.Icon_Hash = new Gdk.Pixbuf(curr.InnerText);
                             break;
                     }
                 }

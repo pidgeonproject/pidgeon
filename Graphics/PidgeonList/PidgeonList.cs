@@ -60,12 +60,6 @@ namespace Client.Graphics
         /// If this is false the system timer will refresh the list
         /// </summary>
         public static bool Updated = false;
-        private Gdk.Pixbuf icon_at2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.at-s.png");
-        private Gdk.Pixbuf icon_22 = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash-s.png");
-        private Gdk.Pixbuf icon_02 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation-mark-s.png");
-        private Gdk.Pixbuf icon_at = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
-        private Gdk.Pixbuf icon_2 = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
-        private Gdk.Pixbuf icon_0 = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView tv;
         private Gtk.TreeStore Values = new TreeStore(typeof(string),
@@ -457,11 +451,11 @@ namespace Client.Graphics
                                 nw.SystemWindow.needIcon = false;
                                 if (nw.IsConnected)
                                 {
-                                    model.SetValue(iter, 5, icon_0);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
                                 }
                                 else
                                 {
-                                    model.SetValue(iter, 5, icon_02);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowMark);
                                 }
                             }
                         }
@@ -492,11 +486,11 @@ namespace Client.Graphics
                                 window.needIcon = false;
                                 if (user._Network == null || !user._Network.IsConnected)
                                 {
-                                    model.SetValue(iter, 5, icon_at2);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowAt);
                                 }
                                 else
                                 {
-                                    model.SetValue(iter, 5, icon_at);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_At);
                                 }
                             }
                         }
@@ -517,11 +511,11 @@ namespace Client.Graphics
                             dc.SystemWindow.needIcon = false;
                             if (dc.IsConnected)
                             {
-                                model.SetValue(iter, 5, icon_0);
+                                model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
                             }
                             else
                             {
-                                model.SetValue(iter, 5, icon_02);
+                                model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowMark);
                             }
                         }
                         break;
@@ -550,11 +544,11 @@ namespace Client.Graphics
                                 window.needIcon = false;
                                 if (!channel.IsAlive)
                                 {
-                                    model.SetValue(iter, 5, icon_22);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowHash);
                                 }
                                 else
                                 {
-                                    model.SetValue(iter, 5, icon_2);
+                                    model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_Hash);
                                 }
                             }
                         }
@@ -599,7 +593,7 @@ namespace Client.Graphics
 
         private void insertDcc(ProtocolDCC protocol)
         {
-            TreeIter text = Values.AppendValues(protocol.UserName, protocol, ItemType.DCC, protocol.SystemWindow, "DCC connection window", icon_0);
+            TreeIter text = Values.AppendValues(protocol.UserName, protocol, ItemType.DCC, protocol.SystemWindow, "DCC connection window", Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (DirectClientConnectionList)
             {
                 this.DirectClientConnectionList.Add(protocol, text);
@@ -659,11 +653,11 @@ namespace Client.Graphics
                     TreeIter text;
                     if (user._Network.IsConnected)
                     {
-                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at);
+                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_At);
                     }
                     else
                     {
-                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, icon_at2);
+                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_ShadowAt);
                     }
                     TreePath path = tv.Model.GetPath(ServerList[user._Network]);
                     tv.ExpandRow(path, true);
@@ -680,7 +674,7 @@ namespace Client.Graphics
         private void insertService(ProtocolSv service)
         {
             string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.SSL.ToString() + "]";
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, icon_0);
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
@@ -689,7 +683,7 @@ namespace Client.Graphics
 
         private void insertQuassel(ProtocolQuassel service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.QuasselCore, service.SystemWindow, "Root window of quassel", icon_0);
+            TreeIter text = Values.AppendValues(service.Server, service, ItemType.QuasselCore, service.SystemWindow, "Root window of quassel", Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (QuasselList)
             {
                 QuasselList.Add(service, text);
@@ -745,12 +739,12 @@ namespace Client.Graphics
                     if (channel.IsAlive)
                     {
                         text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
-                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, icon_2);
+                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, Configuration.CurrentSkin.Icon_Hash);
                     }
                     else
                     {
                         text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
-                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, icon_02);
+                            ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, Configuration.CurrentSkin.Icon_ShadowHash);
                     }
                     TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
                     tv.ExpandRow(path, true);
@@ -772,7 +766,7 @@ namespace Client.Graphics
             }
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, info, icon_0);
+                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -781,7 +775,7 @@ namespace Client.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, icon_0);
+                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
                 TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
                 tv.ExpandRow(path, true);
                 ServerList.Add(network, text);

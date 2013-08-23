@@ -34,6 +34,11 @@ namespace Client
         private bool updated_text = true;
         private bool isServices = false;
         /// <summary>
+        /// If true the information is considered to be a backlog from irc bouncer and will not be processed
+        /// in some special parts of irc protocol like part or join
+        /// </summary>
+        public bool IsBacklog = false;
+        /// <summary>
         /// Time
         /// </summary>
         public DateTime pong;
@@ -66,6 +71,10 @@ namespace Client
                     if (_data2[1].Contains("JOIN"))
                     {
                         string channel = null;
+                        if (IsBacklog)
+                        {
+                            return true;
+                        }
                         if (!updated_text)
                         {
                             return true;

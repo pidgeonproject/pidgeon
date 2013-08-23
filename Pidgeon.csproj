@@ -97,7 +97,7 @@
     <EmbeddedResource Include="Resources\at.png" />
     <EmbeddedResource Include="Resources\darknetwork.png" />
     <EmbeddedResource Include="Resources\exclamation mark.png" />
-    <EmbeddedResource Include="Resources\hash.png" />
+    <None Include="Resources\hash.png" />
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight.png" />
     <EmbeddedResource Include="Resources\Pigeon_clip_art_hight_mini.png" />
     <EmbeddedResource Include="version.txt" />

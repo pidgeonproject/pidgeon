@@ -295,7 +295,7 @@ namespace Client
 
                 Connected = true;
 
-                if (Password != "")
+                if (Password != null && Password != "")
                 {
                     Send("PASS " + Password);
                 }

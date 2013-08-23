@@ -641,7 +641,10 @@ namespace Client
                     }
                     else
                     {
-                        Core.DebugLog("Ignored request to abort thread in " + name.ThreadState.ToString() + name.Name);
+                        Core.DebugLog("Ignored request to abort thread in "
+                            + name.ThreadState.ToString()
+                            + " "
+                            + name.Name);
                     }
                 }
                 else
