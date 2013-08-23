@@ -580,6 +580,10 @@ namespace Client
                 }
                 if (WindowVisible() || !Configuration.Scrollback.DynamicReload)
                 {
+                    if (Font.Size != Configuration.CurrentSkin.FontSize)
+                    {
+                        ResizeText(0);
+                    }
                     lock (UndrawnLines)
                     {
                         lock (ContentLines)
