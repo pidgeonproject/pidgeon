@@ -475,6 +475,7 @@ namespace Client
                     Hyperlink.Initialize();
                     if (!File.Exists(ConfigFile))
                     {
+                        Commands.RegisterAlias("j", "join", false);
                         if (Configuration.CurrentPlatform == Platform.Linuxx86 || Configuration.CurrentPlatform == Platform.Linuxx64)
                         {
                             Commands.RegisterAlias("grep", "pidgeon.term grep", false);
