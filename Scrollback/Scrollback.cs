@@ -321,6 +321,7 @@ namespace Client
             this.simpleview.SizeAllocated += new Gtk.SizeAllocatedHandler(Scroll2);
             this.simpleview.Editable = false;
             this.simpleview.ModifyFont(Font);
+            this.simpleview.ScrollEvent += new Gtk.ScrollEventHandler(Scroll);
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox();
@@ -489,6 +490,30 @@ namespace Client
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
                 }
+            }
+        }
+
+        [GLib.ConnectBefore]
+        private void Scroll(object sender, Gtk.ScrollEventArgs e)
+        {
+            try
+            {
+                if (Core.HoldingCtrl)
+                {
+                    if (e.Event.Direction == Gdk.ScrollDirection.Up)
+                    {
+                        ResizeText(400);
+                    }
+                    else
+                    {
+                        ResizeText(-400);
+                    }
+                    e.RetVal = true;
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
             }
         }
 
