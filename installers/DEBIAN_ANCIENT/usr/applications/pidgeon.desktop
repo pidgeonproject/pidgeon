@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Pidgeon irc client
+Comment=Start a pidgeon irc client
+Keywords=irc;
+Exec=/usr/bin/pidgeon
+Terminal=false
+Type=Application
+Icon=/usr/share/pidgeon/pidgeon.ico
+Categories=Internet;
+StartupNotify=false

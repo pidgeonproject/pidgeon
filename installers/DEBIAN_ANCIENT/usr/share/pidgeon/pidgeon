@@ -1,0 +1,11 @@
+#!/bin/sh
+
+latest=1.2.5.0
+
+if [ ! -f "/usr/share/pidgeon/pidgeon_$latest" ];then
+  echo "You are missing the pidgeon binaries!!"
+  exit 800
+fi
+
+mono "/usr/share/pidgeon/pidgeon_$latest" $*
+exit 0
