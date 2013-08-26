@@ -534,6 +534,15 @@ namespace Client
                     network = network.Substring(1);
                     ssl = true;
                 }
+                if (network.Contains("/"))
+                {
+                    channel = network.Substring(network.IndexOf("/") + 1);
+                    if (!channel.StartsWith("#"))
+                    {
+                        channel = "#" + channel;
+                    }
+                    network = network.Substring(0, network.IndexOf("/"));
+                }
                 if (network.Contains("#"))
                 {
                     channel = network.Substring(network.IndexOf("#"));
