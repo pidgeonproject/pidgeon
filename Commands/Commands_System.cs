@@ -287,6 +287,12 @@ namespace Client
                     }
                 }
 
+                if (Uri.CheckHostName(name) == UriHostNameType.Unknown)
+                {
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    return;
+                }
+
                 if (!int.TryParse(port, out n2))
                 {
                     n2 = 6667;

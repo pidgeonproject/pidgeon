@@ -85,7 +85,7 @@ newconnection-nick=Nick:;
 newconnection-1=You need to fill in username;
 newconnection-2=You need to fill in ident;
 newconnection-3=You need to fill in port;
-newconnection-4=You need to fill in address;
+newconnection-4=You need to fill in correct address;
 
 // Window
 

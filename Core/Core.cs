@@ -565,7 +565,7 @@ namespace Client
                         PORT = 6667;
                     }
                 }
-                while (network.EndsWith("/"))
+                while (network.Contains("/"))
                 {
                     network = network.Substring(0, network.Length - 1);
                 }

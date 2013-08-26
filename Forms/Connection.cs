@@ -116,6 +116,11 @@ namespace Client.Forms
                     GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-1", Core.SelectedLanguage), "Missing params");
                     return;
                 }
+                if (Uri.CheckHostName(comboboxentry1.ActiveText) == UriHostNameType.Unknown)
+                {
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-4", Core.SelectedLanguage), "Missing params");
+                    return;
+                }
                 Configuration.UserData.nick = entry1.Text;
                 Configuration.UserData.ident = entry2.Text;
                 Configuration.UserData.LastHost = comboboxentry1.ActiveText;
