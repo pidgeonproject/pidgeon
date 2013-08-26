@@ -103,22 +103,22 @@ namespace Client.Forms
                 Configuration.UserData.LastSSL = checkbutton1.Active;
                 if (entry2.Text == "")
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-2", Core.SelectedLanguage), "Missing params");
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-2", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (entry3.Text == "" || !int.TryParse(entry3.Text, out port))
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-3", Core.SelectedLanguage), "Missing params");
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-3", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (entry1.Text == "")
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-1", Core.SelectedLanguage), "Missing params");
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-1", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (Uri.CheckHostName(comboboxentry1.ActiveText) == UriHostNameType.Unknown)
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("nconnection-4", Core.SelectedLanguage), "Missing params");
+                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-4", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 Configuration.UserData.nick = entry1.Text;
