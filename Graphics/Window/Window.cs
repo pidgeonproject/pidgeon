@@ -414,13 +414,13 @@ namespace Client.Graphics
             ignoreChange = true;
             if (hpaned1 != null)
             {
-                if (this.hpaned1.Position != Configuration.Window.x1)
+                if (this.hpaned1.Position != Configuration.Window.TextboxLeft)
                 {
-                    hpaned1.Position = Configuration.Window.x1;
+                    hpaned1.Position = Configuration.Window.TextboxLeft;
                 }
-                if (this.vpaned1.Position != Configuration.Window.x4)
+                if (this.vpaned1.Position != Configuration.Window.SidebarLeft)
                 {
-                    vpaned1.Position = Configuration.Window.x4;
+                    vpaned1.Position = Configuration.Window.SidebarLeft;
                 }
             }
             ignoreChange = false;
@@ -470,8 +470,8 @@ namespace Client.Graphics
             {
                 if (Making == false && ignoreChange == false)
                 {
-                    Configuration.Window.x1 = hpaned1.Position;
-                    Configuration.Window.x4 = vpaned1.Position;
+                    Configuration.Window.TextboxLeft = hpaned1.Position;
+                    Configuration.Window.SidebarLeft = vpaned1.Position;
                 }
             }
             catch (Exception fail)

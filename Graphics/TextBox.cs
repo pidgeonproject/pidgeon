@@ -227,7 +227,7 @@ namespace Client.Graphics
                             {
                                 lock (history)
                                 {
-                                    while (history.Count > Configuration.Window.history)
+                                    while (history.Count > Configuration.Window.History)
                                     {
                                         history.RemoveAt(0);
                                     }

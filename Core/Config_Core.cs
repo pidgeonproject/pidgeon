@@ -143,13 +143,13 @@ namespace Client
                     make_comment("Main window is maximized", config, xmlnode);
                     make_node("Configuration.Window.Window_Maximized", Configuration.Window.Window_Maximized.ToString(), curr, confname, config, xmlnode);
                     make_comment("Size of main win", config, xmlnode);
-                    make_node("Configuration.Window.window_size", Configuration.Window.window_size.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.window_size", Configuration.Window.WindowSize.ToString(), curr, confname, config, xmlnode);
                     make_comment("Location of slide bar", config, xmlnode);
-                    make_node("Configuration.Window.x1", Configuration.Window.x1.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.x1", Configuration.Window.TextboxLeft.ToString(), curr, confname, config, xmlnode);
                     make_comment("Location of slide bar", config, xmlnode);
-                    make_node("Configuration.Window.x4", Configuration.Window.x4.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.x4", Configuration.Window.SidebarLeft.ToString(), curr, confname, config, xmlnode);
                     make_comment("Maximum history", config, xmlnode);
-                    make_node("Configuration.Window.history", Configuration.Window.history.ToString(), curr, confname, config, xmlnode);
+                    make_node("Configuration.Window.history", Configuration.Window.History.ToString(), curr, confname, config, xmlnode);
                     make_comment("Search left", config, xmlnode);
                     make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
                     make_comment("Search top", config, xmlnode);
@@ -614,15 +614,15 @@ namespace Client
                                                 {
                                                     case "Configuration.Window.x1":
                                                     case "location.x1":
-                                                        Configuration.Window.x1 = int.Parse(curr.InnerText);
+                                                        Configuration.Window.TextboxLeft = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Window.window_size":
                                                     case "window.size":
-                                                        Configuration.Window.window_size = int.Parse(curr.InnerText);
+                                                        Configuration.Window.WindowSize = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Window.x4":
                                                     case "location.x4":
-                                                        Configuration.Window.x4 = int.Parse(curr.InnerText);
+                                                        Configuration.Window.SidebarLeft = int.Parse(curr.InnerText);
                                                         break;
                                                     case "Configuration.Window.Window_Maximized":
                                                     case "location.maxi":
@@ -780,7 +780,7 @@ namespace Client
                                                         Configuration.Logs.ServicesLogs = type;
                                                         break;
                                                     case "Configuration.Window.history":
-                                                        Configuration.Window.history = int.Parse(curr.InnerText);
+                                                        Configuration.Window.History = int.Parse(curr.InnerText);
                                                         break;
                                                     case "userdata.openlinkinbrowser":
                                                     case "Configuration.UserData.OpenLinkInBrowser":

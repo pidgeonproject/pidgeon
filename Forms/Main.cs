@@ -233,12 +233,12 @@ namespace Client.Forms
         /// </summary>
         private void ResetSize()
         {
-            if (Configuration.Window.x4 == 0)
+            if (Configuration.Window.SidebarLeft == 0)
             {
-                Configuration.Window.window_size = 200;
-                Configuration.Window.x1 = Width - 420;
-                Configuration.Window.x4 = Height - 120;
-                hpaned1.Position = Configuration.Window.window_size;
+                Configuration.Window.WindowSize = 200;
+                Configuration.Window.TextboxLeft = Width - 420;
+                Configuration.Window.SidebarLeft = Height - 120;
+                hpaned1.Position = Configuration.Window.WindowSize;
                 Chat.Redraw();
             }
         }
@@ -261,7 +261,7 @@ namespace Client.Forms
                 {
                     ResetSize();
                 }
-                hpaned1.Position = Configuration.Window.window_size;
+                hpaned1.Position = Configuration.Window.WindowSize;
                 ChannelList = pidgeonlist1;
                 toolStripProgressBar1.Visible = false;
                 micro = new MicroChat();
@@ -307,7 +307,7 @@ namespace Client.Forms
         {
             if (done)
             {
-                Configuration.Window.window_size = hpaned1.Position;
+                Configuration.Window.WindowSize = hpaned1.Position;
             }
         }
 
@@ -561,11 +561,11 @@ namespace Client.Forms
                     toolStripProgressBar1.Visible = DisplayingProgress;
                 }
 
-                if (hpaned1.Position != Configuration.Window.window_size)
+                if (hpaned1.Position != Configuration.Window.WindowSize)
                 {
                     if (done)
                     {
-                        Configuration.Window.window_size = hpaned1.Position;
+                        Configuration.Window.WindowSize = hpaned1.Position;
                     }
                 }
 
