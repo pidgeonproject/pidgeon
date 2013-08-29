@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client.GTK
+namespace Client.PidgeonGtkToolkit
 {
     /// <summary>
     /// Menu
@@ -43,7 +43,7 @@ namespace Client.GTK
         public string Text;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client.GTK.Menu"/> class.
+        /// Initializes a new instance of the <see cref="Client.PidgeonGtkToolkit.Menu"/> class.
         /// </summary>
         public Menu()
         { 

@@ -223,10 +223,10 @@ namespace Client
                         }
                         foreach (Channel i in server.Channels)
                         {
-                            i.temporary_hide = false;
-                            i.parsing_xe = false;
-                            i.parsing_bans = false;
-                            i.parsing_who = false;
+                            i.TemporarilyHidden = false;
+                            i.IsParsingExceptionData = false;
+                            i.IsParsingBanData = false;
+                            i.IsParsingWhoData = false;
                         }
                     }
                     processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
@@ -323,9 +323,9 @@ namespace Client
                     protocol.cache[protocol.NetworkList.IndexOf(server)].size = int.Parse(curr.InnerText);
                     foreach (Channel i in server.Channels)
                     {
-                        i.parsing_who = true;
-                        i.parsing_bans = true;
-                        i.temporary_hide = true;
+                        i.IsParsingWhoData = true;
+                        i.IsParsingBanData = true;
+                        i.TemporarilyHidden = true;
                     }
                 }
             }
@@ -570,13 +570,13 @@ namespace Client
                                                         xx.ChannelWork = channel_info.ChannelWork;
                                                         xx.Invites = channel_info.Invites;
                                                         xx.Name = channel_info.Name;
-                                                        xx.parsing_bans = channel_info.parsing_bans;
-                                                        xx.parsing_wh = channel_info.parsing_wh;
-                                                        xx.parsing_who = channel_info.parsing_who;
+                                                        xx.IsParsingBanData = channel_info.parsing_bans;
+                                                        xx.IsParsingWhoisData = channel_info.parsing_wh;
+                                                        xx.IsParsingWhoData = channel_info.parsing_who;
                                                         xx.ChannelMode = new NetworkMode(channel_info.mode);
-                                                        xx.parsing_xe = channel_info.parsing_xe;
+                                                        xx.IsParsingExceptionData = channel_info.parsing_xe;
                                                         xx.Redraw = channel_info.Redraw;
-                                                        xx.temporary_hide = channel_info.temporary_hide;
+                                                        xx.TemporarilyHidden = channel_info.temporary_hide;
                                                         xx.Topic = channel_info.Topic;
                                                         xx.TopicDate = channel_info.TopicDate;
                                                         xx.TopicUser = channel_info.TopicUser;

@@ -45,14 +45,14 @@ namespace Client.Forms
         private Gtk.VPaned vpaned01 = null;
         //private Client.GTK.Menu deleteToolStripMenuItemi = new Client.GTK.Menu("Remove");
         //private Client.GTK.Menu reloadToolStripMenuItemi = new Client.GTK.Menu("Reload");
-        private Client.GTK.Menu reloadToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[channelinfo-reload]]"));
+        private Client.PidgeonGtkToolkit.Menu reloadToolStripMenuItemb = new Client.PidgeonGtkToolkit.Menu(messages.Localize("[[channelinfo-reload]]"));
         //private Client.GTK.Menu reloadToolStripMenuIteme = new Client.GTK.Menu("Reload");
         //private Client.GTK.Menu deleteToolStripMenuIteme = new Client.GTK.Menu("Remove");
-        private Client.GTK.Menu deleteToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[channelinfo-remove]]"));
+        private Client.PidgeonGtkToolkit.Menu deleteToolStripMenuItemb = new Client.PidgeonGtkToolkit.Menu(messages.Localize("[[channelinfo-remove]]"));
         //private Client.GTK.Menu insertToolStripMenuItemb = new Client.GTK.Menu("Insert");
         //private Client.GTK.Menu insertToolStripMenuIteme = new Client.GTK.Menu("Insert");
         //private Client.GTK.Menu refreshToolStripMenuItemi = new Client.GTK.Menu("Refresh");
-        private Client.GTK.Menu refreshToolStripMenuItemb = new Client.GTK.Menu(messages.Localize("[[common-refresh]]"));
+        private Client.PidgeonGtkToolkit.Menu refreshToolStripMenuItemb = new Client.PidgeonGtkToolkit.Menu(messages.Localize("[[common-refresh]]"));
         //private Client.GTK.Menu refreshToolStripMenuIteme = new Client.GTK.Menu("Refresh");
 
         private void Build()

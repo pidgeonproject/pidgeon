@@ -78,23 +78,23 @@ namespace Client
         /// <summary>
         /// If channel output is temporarily hidden
         /// </summary>
-        public bool temporary_hide = false;
+        public bool TemporarilyHidden = false;
         /// <summary>
         /// If true the channel is processing the /who data
         /// </summary>
-        public bool parsing_who = false;
+        public bool IsParsingWhoData = false;
         /// <summary>
         /// If true the channel is processing ban data
         /// </summary>
-        public bool parsing_bans = false;
+        public bool IsParsingBanData = false;
         /// <summary>
         /// If true the channel is processing exception data
         /// </summary>
-        public bool parsing_xe = false;
+        public bool IsParsingExceptionData = false;
         /// <summary>
         /// If true the channel is processing whois data
         /// </summary>
-        public bool parsing_wh = false;
+        public bool IsParsingWhoisData = false;
         /// <summary>
         /// Channel mode
         /// </summary>
@@ -201,7 +201,7 @@ namespace Client
         /// </summary>
         public void ReloadBans()
         {
-            parsing_bans = true;
+            IsParsingBanData = true;
             if (Bans == null)
             {
                 Bans = new List<SimpleBan>();
@@ -264,7 +264,7 @@ namespace Client
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced with ContainsUser, will be removed in Pidgeon 1.2.80")]
         public bool containsUser(string user)
         {
             return ContainsUser(user);
@@ -315,7 +315,7 @@ namespace Client
         /// </summary>
         /// <param name="host"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced with ContainsBan, will be removed in Pidgeon 1.2.80")]
         public bool containsBan(string host)
         {
             return ContainsBan(host);

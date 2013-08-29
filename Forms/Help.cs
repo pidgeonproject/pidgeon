@@ -20,7 +20,7 @@ namespace Client.Forms
     /// <summary>
     /// Help form
     /// </summary>
-    public partial class Help : GTK.PidgeonForm
+    public partial class Help : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Creates a new instance

@@ -137,6 +137,7 @@ namespace Client
             }
         }
 
+        private static Process KernelProc = null;
         /// <summary>
         /// Thread which the core is running in
         /// </summary>
@@ -396,6 +397,7 @@ namespace Client
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
+                KernelProc = Process.GetCurrentProcess();
                 if (Configuration.Kernel.Safe)
                 {
                     Ringlog("Running in safe mode");
@@ -997,10 +999,12 @@ namespace Client
         {
             try
             {
-                Forms.ScriptEdit edit = new Forms.ScriptEdit();
-                edit.textBox1.Buffer.Text += script;
-                edit.network = target;
-                edit.Show();
+                using (Forms.ScriptEdit edit = new Forms.ScriptEdit())
+                {
+                    edit.textBox1.Buffer.Text += script;
+                    edit.network = target;
+                    edit.Show();
+                }
             }
             catch (Exception fail)
             {
@@ -1484,7 +1488,10 @@ namespace Client
             catch (Exception fail)
             {
                 Console.WriteLine(fail.StackTrace.ToString());
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
+                if (KernelProc != null)
+                {
+                    KernelProc.Kill();
+                }
             }
             return true;
         }

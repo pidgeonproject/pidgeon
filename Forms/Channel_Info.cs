@@ -23,7 +23,7 @@ namespace Client.Forms
     /// <summary>
     /// Window
     /// </summary>
-    public partial class Channel_Info : Client.GTK.PidgeonForm
+    public partial class Channel_Info : Client.PidgeonGtkToolkit.PidgeonForm
     {
         private Channel channel = null;
         private List<char> cm = new List<char>();
@@ -325,7 +325,7 @@ namespace Client.Forms
                     }
                     if (Configuration.Parser.formatter)
                     {
-                        Protocols.irc.Formatter formatter = new Protocols.irc.Formatter(20, 4);
+                        Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter(20, 4);
                         formatter.Prefix = "MODE " + channel.Name + " ";
                         formatter.Removing = true;
                         formatter.InsertModes(mode);
@@ -378,7 +378,7 @@ namespace Client.Forms
         {
             try
             {
-                if (!channel.parsing_bans)
+                if (!channel.IsParsingBanData)
                 {
                     ReloadBans();
                     return false;

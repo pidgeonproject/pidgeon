@@ -21,7 +21,7 @@ namespace Client.Forms
     /// <summary>
     /// Creates a new form
     /// </summary>
-    public partial class Connection : GTK.PidgeonForm
+    public partial class Connection : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// New connection gtk dialog
@@ -103,22 +103,22 @@ namespace Client.Forms
                 Configuration.UserData.LastSSL = checkbutton1.Active;
                 if (entry2.Text == "")
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-2", Core.SelectedLanguage), "Missing params");
+                    PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-2", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (entry3.Text == "" || !int.TryParse(entry3.Text, out port))
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-3", Core.SelectedLanguage), "Missing params");
+                    PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-3", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (entry1.Text == "")
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-1", Core.SelectedLanguage), "Missing params");
+                    PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-1", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 if (Uri.CheckHostName(comboboxentry1.ActiveText) == UriHostNameType.Unknown)
                 {
-                    GTK.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-4", Core.SelectedLanguage), "Missing params");
+                    PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-4", Core.SelectedLanguage), "Missing params");
                     return;
                 }
                 Configuration.UserData.nick = entry1.Text;

@@ -30,87 +30,87 @@ namespace Client
         /// <summary>
         /// The toggle advanced layout tool strip menu item.
         /// </summary>
-        public GTK.Menu toggleAdvancedLayoutToolStripMenuItem = new GTK.Menu("Toggle advanced layout");
+        public PidgeonGtkToolkit.Menu toggleAdvancedLayoutToolStripMenuItem = new PidgeonGtkToolkit.Menu("Toggle advanced layout");
         /// <summary>
         /// The toggle simple layout tool strip menu item.
         /// </summary>
-        public GTK.Menu toggleSimpleLayoutToolStripMenuItem = new GTK.Menu("Toggle simple view");
+        public PidgeonGtkToolkit.Menu toggleSimpleLayoutToolStripMenuItem = new PidgeonGtkToolkit.Menu("Toggle simple view");
         /// <summary>
         /// The ban tool strip menu item.
         /// </summary>
-        public GTK.Menu banToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu banToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The list all channels tool strip menu item.
         /// </summary>
-        public GTK.Menu listAllChannelsToolStripMenuItem = new GTK.Menu("List all channels on this network");
+        public PidgeonGtkToolkit.Menu listAllChannelsToolStripMenuItem = new PidgeonGtkToolkit.Menu("List all channels on this network");
         /// <summary>
         /// The retrieve topic tool strip menu item.
         /// </summary>
-        public GTK.Menu retrieveTopicToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu retrieveTopicToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The channel tool strip menu item.
         /// </summary>
-        public GTK.Menu channelToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu channelToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The mode1b2 tool strip menu item.
         /// </summary>
-        public GTK.Menu mode1b2ToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu mode1b2ToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The mode1e2 tool strip menu item.
         /// </summary>
-        public GTK.Menu mode1e2ToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu mode1e2ToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The mode1 i2 tool strip menu item.
         /// </summary>
-        public GTK.Menu mode1I2ToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu mode1I2ToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The mode1q2 tool strip menu item.
         /// </summary>
-        public GTK.Menu mode1q2ToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu mode1q2ToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The kick tool strip menu item.
         /// </summary>
-        public GTK.Menu kickToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu kickToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The whois tool strip menu item.
         /// </summary>
-        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu whoisToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The whowas tool strip menu item.
         /// </summary>
-        public GTK.Menu whowasToolStripMenuItem = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu whowasToolStripMenuItem = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The tool strip menu item1.
         /// </summary>
-        public GTK.Menu toolStripMenuItem1 = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu toolStripMenuItem1 = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The tool strip menu item2.
         /// </summary>
-        public GTK.Menu toolStripMenuItem2 = new GTK.Menu();
+        public PidgeonGtkToolkit.Menu toolStripMenuItem2 = new PidgeonGtkToolkit.Menu();
         /// <summary>
         /// The copy entire window to clip board tool strip menu item.
         /// </summary>
-        public GTK.Menu copyEntireWindowToClipBoardToolStripMenuItem = new GTK.Menu("Copy entire window to clipboard");
+        public PidgeonGtkToolkit.Menu copyEntireWindowToClipBoardToolStripMenuItem = new PidgeonGtkToolkit.Menu("Copy entire window to clipboard");
         /// <summary>
         /// The copy text to clip board tool strip menu item.
         /// </summary>
-        public GTK.Menu copyTextToClipBoardToolStripMenuItem = new GTK.Menu("Copy text to clipboard");
+        public PidgeonGtkToolkit.Menu copyTextToClipBoardToolStripMenuItem = new PidgeonGtkToolkit.Menu("Copy text to clipboard");
         /// <summary>
         /// The scroll tool strip menu item.
         /// </summary>
-        public GTK.Menu scrollToolStripMenuItem = new GTK.Menu("Scroll");
+        public PidgeonGtkToolkit.Menu scrollToolStripMenuItem = new PidgeonGtkToolkit.Menu("Scroll");
         /// <summary>
         /// The open link in browser tool strip menu item.
         /// </summary>
-        public GTK.Menu openLinkInBrowserToolStripMenuItem = new GTK.Menu("Open link in a new browser");
+        public PidgeonGtkToolkit.Menu openLinkInBrowserToolStripMenuItem = new PidgeonGtkToolkit.Menu("Open link in a new browser");
         /// <summary>
         /// The copy link to clipboard tool strip menu item.
         /// </summary>
-        public GTK.Menu copyLinkToClipboardToolStripMenuItem = new GTK.Menu("Copy link to clipboard");
+        public PidgeonGtkToolkit.Menu copyLinkToClipboardToolStripMenuItem = new PidgeonGtkToolkit.Menu("Copy link to clipboard");
         /// <summary>
         /// Join menu
         /// </summary>
-        public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
+        public PidgeonGtkToolkit.Menu joinToolStripMenuItem = new PidgeonGtkToolkit.Menu("Join");
         /// <summary>
         /// Currently selected user
         /// </summary>
@@ -614,7 +614,7 @@ namespace Client
         {
             try
             {
-                if ((GTK.MessageBox.Show(null, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "Do you really want to clear this window", "Warning").result == Gtk.ResponseType.Yes))
+                if ((PidgeonGtkToolkit.MessageBox.Show(null, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "Do you really want to clear this window", "Warning").result == Gtk.ResponseType.Yes))
                 {
                     lock (ContentLines)
                     {

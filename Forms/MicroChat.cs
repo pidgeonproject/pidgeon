@@ -24,7 +24,7 @@ namespace Client.Forms
     /// <summary>
     /// Micro chat
     /// </summary>
-    public partial class MicroChat : GTK.PidgeonForm
+    public partial class MicroChat : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Scrollback

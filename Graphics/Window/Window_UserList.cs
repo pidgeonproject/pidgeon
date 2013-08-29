@@ -36,119 +36,119 @@ namespace Client.Graphics
         /// <summary>
         /// Version menu
         /// </summary>
-        public GTK.Menu vERSIONToolStripMenuItem = new GTK.Menu("Version");
+        public PidgeonGtkToolkit.Menu vERSIONToolStripMenuItem = new PidgeonGtkToolkit.Menu("Version");
         /// <summary>
         /// Time menu
         /// </summary>
-        public GTK.Menu tIMEToolStripMenuItem = new GTK.Menu("Time");
+        public PidgeonGtkToolkit.Menu tIMEToolStripMenuItem = new PidgeonGtkToolkit.Menu("Time");
         /// <summary>
         /// Ping menu
         /// </summary>
-        public GTK.Menu pINGToolStripMenuItem = new GTK.Menu("PING");
+        public PidgeonGtkToolkit.Menu pINGToolStripMenuItem = new PidgeonGtkToolkit.Menu("PING");
         /// <summary>
         /// Page menu
         /// </summary>
-        public GTK.Menu pAGEToolStripMenuItem = new GTK.Menu("PAGE");
+        public PidgeonGtkToolkit.Menu pAGEToolStripMenuItem = new PidgeonGtkToolkit.Menu("PAGE");
         /// <summary>
         /// Message menu
         /// </summary>
-        public GTK.Menu messageToolStripMenuItem = new GTK.Menu("Message");
+        public PidgeonGtkToolkit.Menu messageToolStripMenuItem = new PidgeonGtkToolkit.Menu("Message");
         /// <summary>
         /// Mode menu
         /// </summary>
-        public GTK.Menu modeToolStripMenuItem = new GTK.Menu(messages.get("mode", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu modeToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("mode", Core.SelectedLanguage));
         /// <summary>
         /// Kb menu
         /// </summary>
-        public GTK.Menu kbToolStripMenuItem = new GTK.Menu(messages.get("kickban+text", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu kbToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("kickban+text", Core.SelectedLanguage));
         /// <summary>
         /// Kick with reason menu
         /// </summary>
-        public GTK.Menu krToolStripMenuItem = new GTK.Menu(messages.get("kick-text", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu krToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("kick-text", Core.SelectedLanguage));
         /// <summary>
         /// +V menu
         /// </summary>
-        public GTK.Menu vToolStripMenuItem = new GTK.Menu(messages.get("give+v", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu vToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+v", Core.SelectedLanguage));
         /// <summary>
         /// +H menu
         /// </summary>
-        public GTK.Menu hToolStripMenuItem = new GTK.Menu(messages.get("give+h", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu hToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+h", Core.SelectedLanguage));
         /// <summary>
         /// +O menu
         /// </summary>
-        public GTK.Menu oToolStripMenuItem = new GTK.Menu(messages.get("give+o", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu oToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+o", Core.SelectedLanguage));
         /// <summary>
         /// +A menu
         /// </summary>
-        public GTK.Menu aToolStripMenuItem = new GTK.Menu(messages.get("give+a", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu aToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+a", Core.SelectedLanguage));
         /// <summary>
         /// +Q menu
         /// </summary>
-        public GTK.Menu qToolStripMenuItem = new GTK.Menu(messages.get("give+q", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu qToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+q", Core.SelectedLanguage));
         /// <summary>
         /// -V menu
         /// </summary>
-        public GTK.Menu vToolStripMenuItem1 = new GTK.Menu(messages.get("give-v", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu vToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-v", Core.SelectedLanguage));
         /// <summary>
         /// -H menu
         /// </summary>
-        public GTK.Menu hToolStripMenuItem1 = new GTK.Menu(messages.get("give-h", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu hToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-h", Core.SelectedLanguage));
         /// <summary>
         /// -O menu
         /// </summary>
-        public GTK.Menu oToolStripMenuItem1 = new GTK.Menu(messages.get("give-o", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu oToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-o", Core.SelectedLanguage));
         /// <summary>
         /// -A menu
         /// </summary>
-        public GTK.Menu aToolStripMenuItem1 = new GTK.Menu(messages.get("give-a", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu aToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-a", Core.SelectedLanguage));
         /// <summary>
         /// -Q menu
         /// </summary>
-        public GTK.Menu qToolStripMenuItem1 = new GTK.Menu(messages.get("give-q", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu qToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-q", Core.SelectedLanguage));
         /// <summary>
         /// Ban
         /// </summary>
-        public GTK.Menu banToolStripMenuItem = new GTK.Menu(messages.get("ban", Core.SelectedLanguage));
+        public PidgeonGtkToolkit.Menu banToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("ban", Core.SelectedLanguage));
         /// <summary>
         /// Whois
         /// </summary>
-        public GTK.Menu whoisToolStripMenuItem = new GTK.Menu("Whois");
+        public PidgeonGtkToolkit.Menu whoisToolStripMenuItem = new PidgeonGtkToolkit.Menu("Whois");
         /// <summary>
         /// DirectCC
         /// </summary>
-        public GTK.Menu dccToolStripMenu = new GTK.Menu("DCC");
+        public PidgeonGtkToolkit.Menu dccToolStripMenu = new PidgeonGtkToolkit.Menu("DCC");
         /// <summary>
         /// Secure chat
         /// </summary>
-        public GTK.Menu dccSChatToolStripMenuItem = new GTK.Menu("Secure chat");
+        public PidgeonGtkToolkit.Menu dccSChatToolStripMenuItem = new PidgeonGtkToolkit.Menu("Secure chat");
         /// <summary>
         /// Chat
         /// </summary>
-        public GTK.Menu dccChatToolStripMenuItem = new GTK.Menu("Chat");
+        public PidgeonGtkToolkit.Menu dccChatToolStripMenuItem = new PidgeonGtkToolkit.Menu("Chat");
         /// <summary>
         /// File
         /// </summary>
-        public GTK.Menu dccFileToolStripMenuItem = new GTK.Menu("File");
+        public PidgeonGtkToolkit.Menu dccFileToolStripMenuItem = new PidgeonGtkToolkit.Menu("File");
         /// <summary>
         /// Ctcp
         /// </summary>
-        public GTK.Menu ctToolStripMenuItem = new GTK.Menu("CTCP");
+        public PidgeonGtkToolkit.Menu ctToolStripMenuItem = new PidgeonGtkToolkit.Menu("CTCP");
         /// <summary>
         /// Refresh menu
         /// </summary>
-        public GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
+        public PidgeonGtkToolkit.Menu refreshToolStripMenuItem = new PidgeonGtkToolkit.Menu("Refresh");
         /// <summary>
         /// KickBan menu
         /// </summary>
-        public GTK.Menu kickBanToolStripMenuItem = new GTK.Menu("Kick + Ban");
+        public PidgeonGtkToolkit.Menu kickBanToolStripMenuItem = new PidgeonGtkToolkit.Menu("Kick + Ban");
         /// <summary>
         /// Kick menu
         /// </summary>
-        public GTK.Menu kickToolStripMenuItem = new GTK.Menu("Kick");
+        public PidgeonGtkToolkit.Menu kickToolStripMenuItem = new PidgeonGtkToolkit.Menu("Kick");
         /// <summary>
         /// Reload menu
         /// </summary>
-        public GTK.Menu synchroToolStripMenuItem = new GTK.Menu("Reload");
+        public PidgeonGtkToolkit.Menu synchroToolStripMenuItem = new PidgeonGtkToolkit.Menu("Reload");
         
         /// <summary>
         /// List of selected users
@@ -692,10 +692,10 @@ namespace Client.Graphics
                     {
                         if (Configuration.CurrentPlatform != Core.Platform.Windowsx64 && Configuration.CurrentPlatform != Core.Platform.Windowsx86)
                         {
-                            new GTK.MessageBox(null, MessageType.Error, ButtonsType.Ok, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any! In order to create it use command openssl pkcs12.", "Certificate error");
+                            new PidgeonGtkToolkit.MessageBox(null, MessageType.Error, ButtonsType.Ok, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any! In order to create it use command openssl pkcs12.", "Certificate error");
                             return;
                         }
-                        GTK.MessageBox message = new GTK.MessageBox(null, MessageType.Question, ButtonsType.YesNo, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any! Do you want to create a self signed certificate now?", "Certificate error");
+                        PidgeonGtkToolkit.MessageBox message = new PidgeonGtkToolkit.MessageBox(null, MessageType.Question, ButtonsType.YesNo, "Warning: In order to open ssl connection you need to have ssl certificate installed in " + Configuration.irc.CertificateDCC + ", but you don't have any! Do you want to create a self signed certificate now?", "Certificate error");
                         if (message.result == ResponseType.No)
                         {
                             return;
@@ -703,7 +703,7 @@ namespace Client.Graphics
                         certificate(Configuration.irc.CertificateDCC, Core.GetIP());
                         if (!System.IO.File.Exists(Configuration.irc.CertificateDCC))
                         {
-                            GTK.MessageBox.Show(null, MessageType.Error, ButtonsType.Ok, "Unable to create a certificate file, the error is in ring log", "Certificate error");
+                            PidgeonGtkToolkit.MessageBox.Show(null, MessageType.Error, ButtonsType.Ok, "Unable to create a certificate file, the error is in ring log", "Certificate error");
                             return;
                         }
                     }

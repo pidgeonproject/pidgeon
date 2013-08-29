@@ -41,6 +41,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\Pidgeon.XML</DocumentationFile>
     <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>Profiler.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>pigeon_clip_art_hight.ico</ApplicationIcon>

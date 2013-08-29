@@ -23,7 +23,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class Preferences : GTK.PidgeonForm
+    public partial class Preferences : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Creates a new instance of this form

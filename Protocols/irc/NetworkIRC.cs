@@ -329,23 +329,23 @@ namespace Client
                                 if (_nick == _Network.Nickname)
                                 {
                                     WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
-                                        !channel.temporary_hide, date, true);
+                                        !channel.TemporarilyHidden, date, true);
                                     return true;
                                 }
                             }
                             WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
-                                !channel.temporary_hide, date, !updated_text);
+                                !channel.TemporarilyHidden, date, !updated_text);
                             return true;
                         }
                         if (!Configuration.irc.DisplayMode)
                         {
                             WindowText(window, _Protocol.PRIVMSG(user.Nick, message),
-                            Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                         else
                         {
                             WindowText(window, _Protocol.PRIVMSG(user.ChannelPrefix + user.Nick, message),
-                            Client.ContentLine.MessageStyle.Message, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                     }
                     channel.UpdateInfo();
@@ -536,7 +536,7 @@ namespace Client
                                 WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                     new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                                     Client.ContentLine.MessageStyle.Join,
-                                    !item.temporary_hide, date, !updated_text);
+                                    !item.TemporarilyHidden, date, !updated_text);
                             }
                         }
                         if (updated_text)

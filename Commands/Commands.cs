@@ -107,7 +107,8 @@ namespace Client
             {
                 type = _type;
                 action = _Action;
-                Register();
+                // this function can't be called here, we need to post init the command constructor somewhere else in code
+                //Register();
             }
 
             /// <summary>
@@ -122,7 +123,7 @@ namespace Client
                 type = _type;
                 action = _Action;
                 RegisterManual(Name, ManualPage);
-                Register();
+                //Register();
             }
 
             /// <summary>

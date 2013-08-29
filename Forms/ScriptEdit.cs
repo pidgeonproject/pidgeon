@@ -26,7 +26,7 @@ namespace Client.Forms
     /// <summary>
     /// Script edit.
     /// </summary>
-    public partial class ScriptEdit : GTK.PidgeonForm
+    public partial class ScriptEdit : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Network

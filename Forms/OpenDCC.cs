@@ -22,7 +22,7 @@ namespace Client.Forms
     /// <summary>
     /// Open form
     /// </summary>
-    public partial class OpenDCC : Client.GTK.PidgeonForm
+    public partial class OpenDCC : Client.PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Listener mode

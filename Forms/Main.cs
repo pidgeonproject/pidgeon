@@ -26,7 +26,7 @@ namespace Client.Forms
     /// <summary>
     /// Main
     /// </summary>
-    public partial class Main : Client.GTK.PidgeonForm
+    public partial class Main : Client.PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Micro Chat

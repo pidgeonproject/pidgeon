@@ -26,7 +26,7 @@ namespace Client.Forms
     /// <summary>
     /// Search item.
     /// </summary>
-    public partial class SearchItem : GTK.PidgeonForm
+    public partial class SearchItem : PidgeonGtkToolkit.PidgeonForm
     {   
         private bool NeedReset = false;
         private global::Gtk.HBox hbox1;

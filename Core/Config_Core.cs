@@ -382,9 +382,9 @@ namespace Client
 
                     make_comment(" ============= WINDOWS ============= ", config, xmlnode);
 
-                    lock (GTK.PidgeonForm.WindowInfo)
+                    lock (PidgeonGtkToolkit.PidgeonForm.WindowInfo)
                     {
-                        foreach (KeyValuePair<string, GTK.PidgeonForm.Info> xx in GTK.PidgeonForm.WindowInfo)
+                        foreach (KeyValuePair<string, PidgeonGtkToolkit.PidgeonForm.Info> xx in PidgeonGtkToolkit.PidgeonForm.WindowInfo)
                         {
                             curr = config.CreateElement("window");
                             XmlAttribute height = config.CreateAttribute("height");
@@ -515,7 +515,7 @@ namespace Client
                                         if (curr.Name == "window")
                                         {
                                             string name = curr.InnerText;
-                                            GTK.PidgeonForm.Info w = new GTK.PidgeonForm.Info();
+                                            PidgeonGtkToolkit.PidgeonForm.Info w = new PidgeonGtkToolkit.PidgeonForm.Info();
                                             if (curr.Attributes == null)
                                             {
                                                 continue;
@@ -543,11 +543,11 @@ namespace Client
                                                        break;
                                                 }
                                             }
-                                            lock(GTK.PidgeonForm.WindowInfo)
+                                            lock(PidgeonGtkToolkit.PidgeonForm.WindowInfo)
                                             {
-                                                if (!GTK.PidgeonForm.WindowInfo.ContainsKey(name))
+                                                if (!PidgeonGtkToolkit.PidgeonForm.WindowInfo.ContainsKey(name))
                                                 {
-                                                    GTK.PidgeonForm.WindowInfo.Add(name, w);
+                                                    PidgeonGtkToolkit.PidgeonForm.WindowInfo.Add(name, w);
                                                 }
                                             }
                                         }

@@ -20,7 +20,7 @@ namespace Client.Forms
     /// <summary>
     /// Notification window which is displayed in corner of window when user should be alerted of some event
     /// </summary>
-    public partial class Notification : GTK.PidgeonForm
+    public partial class Notification : PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Whether the focus should be returned to textbox after this notification is handled

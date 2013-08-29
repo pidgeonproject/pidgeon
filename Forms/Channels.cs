@@ -26,7 +26,7 @@ namespace Client.Forms
     /// <summary>
     /// Channel list
     /// </summary>
-    public partial class Channels : GTK.PidgeonForm
+    public partial class Channels : PidgeonGtkToolkit.PidgeonForm
     {
         private Network network = null;
         private bool Loaded = false;
@@ -35,11 +35,11 @@ namespace Client.Forms
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView treeview8;
         private Gtk.ListStore data = new Gtk.ListStore(typeof(string), typeof(uint), typeof(string), typeof(Network.ChannelData)); 
-        private GTK.Menu refreshToolStripMenuItem = new GTK.Menu("Refresh");
-        private GTK.Menu knockToolStripMenuItem = new GTK.Menu("Knock");
-        private GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
-        private GTK.Menu downloadListFromServerToolStripMenuItem = new GTK.Menu("Download from server");
-        private GTK.Menu listtoclipboard = new GTK.Menu("Copy selected to clipboard");
+        private PidgeonGtkToolkit.Menu refreshToolStripMenuItem = new PidgeonGtkToolkit.Menu("Refresh");
+        private PidgeonGtkToolkit.Menu knockToolStripMenuItem = new PidgeonGtkToolkit.Menu("Knock");
+        private PidgeonGtkToolkit.Menu joinToolStripMenuItem = new PidgeonGtkToolkit.Menu("Join");
+        private PidgeonGtkToolkit.Menu downloadListFromServerToolStripMenuItem = new PidgeonGtkToolkit.Menu("Download from server");
+        private PidgeonGtkToolkit.Menu listtoclipboard = new PidgeonGtkToolkit.Menu("Copy selected to clipboard");
         //private GTK.Menu listtoclipboard2 = new GTK.Menu("Copy selected channel names (separated by space) to clipboard");
         
         /// <summary>

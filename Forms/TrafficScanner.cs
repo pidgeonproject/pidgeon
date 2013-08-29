@@ -25,13 +25,13 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class TrafficScanner : GTK.PidgeonForm
+    public partial class TrafficScanner : PidgeonGtkToolkit.PidgeonForm
     {
         private List<string> traf = new List<string>();
         private GLib.TimeoutHandler timer;
         private bool ScannerEnabled = true;
-        private GTK.Menu scroll = new GTK.Menu("Scroll");
-        private GTK.Menu remove = new GTK.Menu("Delete");
+        private PidgeonGtkToolkit.Menu scroll = new PidgeonGtkToolkit.Menu("Scroll");
+        private PidgeonGtkToolkit.Menu remove = new PidgeonGtkToolkit.Menu("Delete");
         
         /// <summary>
         /// Creates a new instance of scanner
@@ -133,7 +133,7 @@ namespace Client.Forms
             {
                 if (traf.Count > 800)
                 {
-                    Client.GTK.MessageBox message = new Client.GTK.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
+                    Client.PidgeonGtkToolkit.MessageBox message = new Client.PidgeonGtkToolkit.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
                     if (message.result == ResponseType.No)
                     {
                         ScannerEnabled = false;

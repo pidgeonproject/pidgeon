@@ -136,10 +136,12 @@ namespace Client
         public static long GetSizeOfObject(object obj)
         {
             var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            var ms = new MemoryStream();
-            bf.Serialize(ms, obj);
-            var size = ms.Length;
-            ms.Dispose();
+            long size = 0;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                size = ms.Length;
+            }
             return size;
         }
 

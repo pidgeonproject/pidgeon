@@ -114,13 +114,13 @@ namespace Client
 
                             if (Configuration.ChannelModes.aggressive_exception)
                             {
-                                curr.parsing_xe = true;
+                                curr.IsParsingExceptionData = true;
                                 _Network.Transfer("MODE " + channel + " +e", Configuration.Priority.Low);
                             }
 
                             if (Configuration.ChannelModes.aggressive_bans)
                             {
-                                curr.parsing_bans = true;
+                                curr.IsParsingBanData = true;
                                 _Network.Transfer("MODE " + channel + " +b", Configuration.Priority.Low);
                             }
 
@@ -131,7 +131,7 @@ namespace Client
 
                             if (Configuration.ChannelModes.aggressive_channel)
                             {
-                                curr.parsing_who = true;
+                                curr.IsParsingWhoData = true;
                                 _Network.Transfer("WHO " + channel, Configuration.Priority.Low);
                             }
                         }
@@ -176,12 +176,12 @@ namespace Client
                                     {
                                         c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.temporary_hide, date);
+                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                     else
                                     {
                                         Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.temporary_hide, date);
+                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                 }
                                 c.UpdateInfo();

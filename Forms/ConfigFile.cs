@@ -21,7 +21,7 @@ namespace Client.Forms
     /// <summary>
     /// Editor
     /// </summary>
-    public partial class ConfigFile : Client.GTK.PidgeonForm
+    public partial class ConfigFile : Client.PidgeonGtkToolkit.PidgeonForm
     {
         private Gtk.Button button3;
         private Gtk.Button button4;
@@ -161,7 +161,7 @@ namespace Client.Forms
             }
             catch (Exception reason)
             {
-                GTK.MessageBox.Show(this, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok, "Error found: " + reason.Message, "Invalid config");
+                PidgeonGtkToolkit.MessageBox.Show(this, Gtk.MessageType.Warning, Gtk.ButtonsType.Ok, "Error found: " + reason.Message, "Invalid config");
                 return false;
             }
         }

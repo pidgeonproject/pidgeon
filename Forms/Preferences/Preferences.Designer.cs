@@ -23,7 +23,7 @@ namespace Client.Forms
     /// <summary>
     /// Preferences
     /// </summary>
-    public partial class Preferences : GTK.PidgeonForm
+    public partial class Preferences : PidgeonGtkToolkit.PidgeonForm
     {
         private global::Gtk.Frame fExtensions;
         private global::Gtk.Alignment GtkAlignment2;
@@ -85,19 +85,19 @@ namespace Client.Forms
         private Gtk.ListStore Keyboard = new Gtk.ListStore(typeof(string), typeof(string), typeof(Core.Shortcut));
 
         private Gtk.ListStore item = new Gtk.ListStore(typeof(string), typeof(int));
-        private GTK.Menu enableToolStripMenuItem = new GTK.Menu(messages.Localize("[[enable]]"));
+        private PidgeonGtkToolkit.Menu enableToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.Localize("[[enable]]"));
         //private GTK.Menu simpleToolStripMenuItem = new GTK.Menu("Simple");
-        private GTK.Menu disableToolStripMenuItem = new GTK.Menu(messages.Localize("[[disable]]"));
-        private GTK.Menu addToolStripMenuItem = new GTK.Menu(messages.Localize("[[add]]"));
+        private PidgeonGtkToolkit.Menu disableToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.Localize("[[disable]]"));
+        private PidgeonGtkToolkit.Menu addToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.Localize("[[add]]"));
         //private GTK.Menu modifyToolStripMenuItem = new GTK.Menu("Modify");
-        private GTK.Menu deleteToolStripMenuItem = new GTK.Menu(messages.Localize("[[delete]]"));
-        private GTK.Menu loadModuleFromFileToolStripMenuItem = new GTK.Menu("Load from a file");
-        private GTK.Menu unloadModuleToolStripMenuItem = new GTK.Menu("Unload");
+        private PidgeonGtkToolkit.Menu deleteToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.Localize("[[delete]]"));
+        private PidgeonGtkToolkit.Menu loadModuleFromFileToolStripMenuItem = new PidgeonGtkToolkit.Menu("Load from a file");
+        private PidgeonGtkToolkit.Menu unloadModuleToolStripMenuItem = new PidgeonGtkToolkit.Menu("Unload");
         //private GTK.Menu createToolStripMenuItem = new GTK.Menu("Create");
-        private GTK.Menu simpleToolStripMenuItem1 = new GTK.Menu("Simple");
-        private GTK.Menu regexToolStripMenuItem = new GTK.Menu("Regex");
-        private GTK.Menu matchingTextInWindowToolStripMenuItem = new GTK.Menu("Matching text");
-        private GTK.Menu matchingOnlyUserStringToolStripMenuItem = new GTK.Menu("Matching user");
+        private PidgeonGtkToolkit.Menu simpleToolStripMenuItem1 = new PidgeonGtkToolkit.Menu("Simple");
+        private PidgeonGtkToolkit.Menu regexToolStripMenuItem = new PidgeonGtkToolkit.Menu("Regex");
+        private PidgeonGtkToolkit.Menu matchingTextInWindowToolStripMenuItem = new PidgeonGtkToolkit.Menu("Matching text");
+        private PidgeonGtkToolkit.Menu matchingOnlyUserStringToolStripMenuItem = new PidgeonGtkToolkit.Menu("Matching user");
         private global::Gtk.VBox vbox1;
         private global::Gtk.HBox hbox1;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;

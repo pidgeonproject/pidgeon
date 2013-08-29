@@ -28,31 +28,31 @@ namespace Client.Graphics
         /// <summary>
         /// Sounds
         /// </summary>
-        public GTK.Menu soundsToolStripMenuItem = new GTK.Menu("Enable sound");
+        public PidgeonGtkToolkit.Menu soundsToolStripMenuItem = new PidgeonGtkToolkit.Menu("Enable sound");
         /// <summary>
         /// Notifications
         /// </summary>
-        public GTK.Menu highlightToolStripMenuItem = new GTK.Menu("Enable notifications for this window");
+        public PidgeonGtkToolkit.Menu highlightToolStripMenuItem = new PidgeonGtkToolkit.Menu("Enable notifications for this window");
         /// <summary>
         /// Menu
         /// </summary>
-        public GTK.Menu partToolStripMenuItem = new GTK.Menu("Part");
+        public PidgeonGtkToolkit.Menu partToolStripMenuItem = new PidgeonGtkToolkit.Menu("Part");
         /// <summary>
         /// Menu
         /// </summary>
-        public GTK.Menu closeToolStripMenuItem = new GTK.Menu("Close");
+        public PidgeonGtkToolkit.Menu closeToolStripMenuItem = new PidgeonGtkToolkit.Menu("Close");
         /// <summary>
         /// join menu
         /// </summary>
-        public GTK.Menu joinToolStripMenuItem = new GTK.Menu("Join");
+        public PidgeonGtkToolkit.Menu joinToolStripMenuItem = new PidgeonGtkToolkit.Menu("Join");
         /// <summary>
         /// disconnect menu
         /// </summary>
-        public GTK.Menu disconnectToolStripMenuItem = new GTK.Menu("Disconnect");
+        public PidgeonGtkToolkit.Menu disconnectToolStripMenuItem = new PidgeonGtkToolkit.Menu("Disconnect");
         /// <summary>
         /// Reconnect menu
         /// </summary>
-        public GTK.Menu reconnectToolStripMenuItem = new GTK.Menu("Reconnect");
+        public PidgeonGtkToolkit.Menu reconnectToolStripMenuItem = new PidgeonGtkToolkit.Menu("Reconnect");
         /// <summary>
         /// Window that is selected now
         /// </summary>

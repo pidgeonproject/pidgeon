@@ -122,7 +122,7 @@ namespace Client
                             }
                         }
                     }
-                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.IsParsingWhoData)
                     {
                         return true;
                     }
@@ -223,12 +223,12 @@ namespace Client
                 if (channel != null)
                 {
                     channel.RedrawUsers();
-                    if (Configuration.Kernel.HidingParsed && channel.parsing_who)
+                    if (Configuration.Kernel.HidingParsed && channel.IsParsingWhoData)
                     {
-                        channel.parsing_who = false;
+                        channel.IsParsingWhoData = false;
                         return true;
                     }
-                    channel.parsing_who = false;
+                    channel.IsParsingWhoData = false;
                     channel.UpdateInfo();
                 }
             }
@@ -251,7 +251,7 @@ namespace Client
                     if (curr != null)
                     {
                         WindowText(curr, "Topic by: " + user + " date " + Core.ConvertFromUNIXToString(time).ToString(),
-                            Client.ContentLine.MessageStyle.Channel, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, date, !updated_text);
                         return true;
                     }
                     channel.UpdateInfo();
@@ -276,7 +276,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
-                        Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
+                        Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
 
                     if (updated_text && channel.ContainsUser(user))
@@ -326,7 +326,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
-                            Client.ContentLine.MessageStyle.Join, !channel.temporary_hide, date, !updated_text);
+                            Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
                     if (updated_text)
                     {
@@ -353,9 +353,9 @@ namespace Client
                 Channel channel = _Network.getChannel(code[3]);
                 if (channel != null)
                 {
-                    if (channel.parsing_bans)
+                    if (channel.IsParsingBanData)
                     {
-                        channel.parsing_bans = false;
+                        channel.IsParsingBanData = false;
                         return true;
                     }
                 }
@@ -408,7 +408,7 @@ namespace Client
                         WindowText(window, messages.get("window-p1",
                             Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
                             Client.ContentLine.MessageStyle.Part,
-                            !channel.temporary_hide, date, !updated_text);
+                            !channel.TemporarilyHidden, date, !updated_text);
                     }
 
                     if (updated_text)
@@ -458,7 +458,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("channel-topic",
                             Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
-                            !channel.temporary_hide, date, !updated_text);
+                            !channel.TemporarilyHidden, date, !updated_text);
                     }
                 }
                 channel.Topic = value;
@@ -507,7 +507,7 @@ namespace Client
                                 {
                                     WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
                                         new List<string> { nick, _new }), Client.ContentLine.MessageStyle.Channel,
-                                        !item.temporary_hide, date, !updated_text);
+                                        !item.TemporarilyHidden, date, !updated_text);
                                 }
                             }
                         }
@@ -536,7 +536,7 @@ namespace Client
                         {
                             WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
                                 new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }),
-                                Client.ContentLine.MessageStyle.Action, !channel.temporary_hide, date, !updated_text);
+                                Client.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
                         }
 
                         if (!updated_text)
@@ -549,7 +549,7 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        Client.Protocols.irc.Formatter formatter = new Protocols.irc.Formatter();
+                        Client.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
 
                         while (change.EndsWith(" ") && change.Length > 1)
                         {
