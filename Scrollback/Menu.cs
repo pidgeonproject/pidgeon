@@ -358,7 +358,7 @@ namespace Client
                             User user = channel.UserFromName(adds);
                             if (user != null)
                             {
-                                if (user.Host != "")
+                                if (!string.IsNullOrEmpty(user.Host))
                                 {
                                     ViewLn("*@" + user.Host, ViewType.User, adds);
                                     return;
@@ -422,7 +422,7 @@ namespace Client
                         whoisToolStripMenuItem.Text = "/whois " + name;
                         whowasToolStripMenuItem.Text = "/whowas " + name;
                         mode1b2ToolStripMenuItem.Visible = true;
-                        if (name == "")
+                        if (string.IsNullOrEmpty(name))
                         {
                             kickToolStripMenuItem.Visible = false;
                             whoisToolStripMenuItem.Visible = false;

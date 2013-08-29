@@ -373,7 +373,7 @@ namespace Client.Forms
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Exception("You can't control other windows from non kernel thread");
+                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
             }
             this.toolStripInfo.Text = StatusBox;
             if (Core.SelectedNetwork != null && !Core.SelectedNetwork.IsDestroyed)
@@ -439,7 +439,7 @@ namespace Client.Forms
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Exception("This function can be called only from kernel thread");
+                throw new Core.PidgeonException("This function can be called only from kernel thread");
             }
             this.Title = "Pidgeon Client v 1.2 " + name;
             return 2;
@@ -667,7 +667,7 @@ namespace Client.Forms
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Exception("You can't control other windows from non kernel thread");
+                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
             }
             if (hpaned1.Child2 != null)
             {
@@ -685,7 +685,7 @@ namespace Client.Forms
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Exception("This function can be called only from kernel thread");
+                throw new Core.PidgeonException("This function can be called only from kernel thread");
             }
             toolStripStatusChannel.Text = channel;
         }

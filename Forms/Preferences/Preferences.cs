@@ -445,7 +445,7 @@ namespace Client.Forms
                 Gtk.FileChooserDialog dialog = new FileChooserDialog("Load module", this, FileChooserAction.Open, "Cancel", ResponseType.Cancel, "Open", ResponseType.Accept);
                 if (dialog.Run() == (int)ResponseType.Accept)
                 {
-                    if (dialog.Filename != "")
+                    if (!string.IsNullOrEmpty(dialog.Filename))
                     {
                         Core.RegisterPlugin(dialog.Filename);
                     }

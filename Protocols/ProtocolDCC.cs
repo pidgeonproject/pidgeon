@@ -27,7 +27,7 @@ namespace Client
     /// <summary>
     /// DCC
     /// </summary>
-    public class ProtocolDCC : Protocol
+    public class ProtocolDCC : Protocol, IDisposable
     {
         /// <summary>
         /// Name of user who we are supposed to connect to
@@ -40,6 +40,7 @@ namespace Client
         private System.Net.Sockets.NetworkStream _networkStream = null;
         private System.Net.Security.SslStream _networkSsl = null;
         private System.IO.StreamReader _StreamReader = null;
+        private object StreamLock = new object();
         private System.IO.StreamWriter _StreamWriter = null;
         /// <summary>
         /// Whether DCC is in listener mode
@@ -199,6 +200,25 @@ namespace Client
         }
 
         /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        public void Dispose()
+        {
+            if (_StreamReader != null)
+            {
+                _StreamReader.Dispose();
+            }
+            if (_networkSsl != null)
+            {
+                _networkSsl.Dispose();
+            }
+            if (_StreamWriter != null)
+            {
+                _StreamWriter.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Parser
         /// </summary>
         /// <param name="input"></param>
@@ -209,7 +229,7 @@ namespace Client
             {
                 return false;
             }
-            lock (_StreamWriter)
+            lock (StreamLock)
             {
                 SystemWindow.scrollback.InsertText(PRIVMSG(Configuration.UserData.nick, input), ContentLine.MessageStyle.Message);
                 Core.trafficscanner.Insert(Server, input);

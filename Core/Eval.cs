@@ -78,7 +78,7 @@ namespace Client
                 {
                     break;
                 }
-                if (part == "")
+                if (string.IsNullOrEmpty(part))
                 {
                     continue;
                 }
@@ -106,7 +106,7 @@ namespace Client
                                 Status = 2;
                                 continue;
                         }
-                        throw new Exception("Unable to parse the statement, expected operator (==, !=, >, <)");
+                        throw new Core.PidgeonException("Unable to parse the statement, expected operator (==, !=, >, <)");
                     case 2:
                        if (part.StartsWith("$"))
                         {

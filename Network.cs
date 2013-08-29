@@ -23,7 +23,7 @@ namespace Client
     /// <summary>
     /// Instance of irc network, this class is typically handled by protocols
     /// </summary>
-    public class Network
+    public class Network : IDisposable
     {
         /// <summary>
         /// Highlight
@@ -644,6 +644,15 @@ namespace Client
         /// Destroy this class, be careful, it can't be used in any way after you
         /// call this
         /// </summary>
+        public void Dispose()
+        {
+            Destroy();
+        }
+
+        /// <summary>
+        /// Destroy this class, be careful, it can't be used in any way after you
+        /// call this
+        /// </summary>
         public void Destroy()
         {
             if (IsDestroyed)
@@ -734,7 +743,7 @@ namespace Client
         /// <param name="_priority"></param>
         public void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            if (data != "")
+            if (!string.IsNullOrEmpty(data))
             {
                 _Protocol.Transfer(data, _priority, this);
             }

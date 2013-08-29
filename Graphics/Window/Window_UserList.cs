@@ -457,7 +457,7 @@ namespace Client.Graphics
                                 switch (Configuration.irc.DefaultBans)
                                 {
                                     case Configuration.TypeOfBan.Host:
-                                        if (user.Host != "")
+                                        if (!string.IsNullOrEmpty(user.Host))
                                         {
                                             current_ban = "MODE " + WindowName + " +b *!*@" + user.Host;
                                             script += current_ban + Environment.NewLine;
@@ -592,7 +592,7 @@ namespace Client.Graphics
                             switch (Configuration.irc.DefaultBans)
                             {
                                 case Configuration.TypeOfBan.Host:
-                                    if (user.Host != "")
+                                    if (!string.IsNullOrEmpty(user.Host))
                                     {
                                         mode = "MODE " + WindowName + " +b *!*@" + user.Host;
                                         script += mode + Environment.NewLine;
@@ -648,7 +648,7 @@ namespace Client.Graphics
                 {
                     foreach (User user in SelectedUsers)
                     {
-                        if (user.Nick != "")
+                        if (!string.IsNullOrEmpty(user.Nick))
                         {
                             uint port = Core.GetPort();
                             new Forms.OpenDCC("localhost", user.Nick, port, true, false, _Network);
@@ -709,7 +709,7 @@ namespace Client.Graphics
                     }
                     foreach (User user in SelectedUsers)
                     {
-                        if (user.Nick != "")
+                        if (!string.IsNullOrEmpty(user.Nick))
                         {
                             uint port = Core.GetPort();
                             new Forms.OpenDCC("localhost", user.Nick, port, true, true, _Network);
@@ -747,7 +747,7 @@ namespace Client.Graphics
                     foreach (User user in SelectedUsers)
                     {
                         string nickname = user.Nick;
-                        if (nickname != "")
+                        if (string.IsNullOrEmpty(nickname))
                         {
                             if (!Core.SelectedNetwork._Protocol.Windows.ContainsKey(_Network.SystemWindowID + nickname))
                             {
@@ -833,7 +833,7 @@ namespace Client.Graphics
                                 switch (Configuration.irc.DefaultBans)
                                 {
                                     case Configuration.TypeOfBan.Host:
-                                        if (user.Host != "")
+                                        if (!string.IsNullOrEmpty(user.Host))
                                         {
                                             current_ban = "MODE " + WindowName + " +b *!*@" + user.Host;
                                             script += current_ban + Environment.NewLine;

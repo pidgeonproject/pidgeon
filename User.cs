@@ -312,15 +312,6 @@ namespace Client
         }
 
         /// <summary>
-        /// Destructor
-        /// </summary>
-        ~User()
-        {
-            // remove reference to network from channel mode that is no longer going to be accessible so that GC can remove it
-            ChannelMode.network = null;
-        }
-
-        /// <summary>
         /// Change a user level according to symbol
         /// </summary>
         /// <param name="symbol"></param>
@@ -347,7 +338,7 @@ namespace Client
         private void MakeUser(string nick, string host, Network network, string ident)
         {
             _Network = network;
-            if (nick != "")
+            if (!string.IsNullOrEmpty(nick))
             {
                 char prefix = nick[0];
                 if (network.UChars.Contains(prefix))
@@ -391,7 +382,7 @@ namespace Client
         /// <returns></returns>
         public string ConvertToInfoString()
         {
-            if (RealName != "" && RealName != null)
+            if (!string.IsNullOrEmpty(RealName))
             {
                 return RealName + "\n" + ToString();
             }

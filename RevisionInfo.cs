@@ -37,14 +37,16 @@ namespace Client
                 using (var stream = Assembly.GetExecutingAssembly()
                                             .GetManifestResourceStream(
                                             "Client" + "." + "version.txt"))
-                using (var reader = new StreamReader(stream))
                 {
-                    string result = reader.ReadLine();
-                    if (!reader.EndOfStream)
+                    using (var reader = new StreamReader(stream))
                     {
-                        result += " [" + reader.ReadLine() + "]";
+                        string result = reader.ReadLine();
+                        if (!reader.EndOfStream)
+                        {
+                            result += " [" + reader.ReadLine() + "]";
+                        }
+                        return result;
                     }
-                    return result;
                 }
             }
             catch (Exception fail)

@@ -712,7 +712,11 @@ namespace Client
             /// <summary>
             /// Low
             /// </summary>
-            Low = 1
+            Low = 1,
+            /// <summary>
+            /// Lowest
+            /// </summary>
+            None = 0
         }
 
         /// <summary>

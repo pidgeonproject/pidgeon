@@ -172,7 +172,7 @@ namespace Client
             {
                 if (SBAB == null)
                 {
-                    throw new Exception("SBAB must not be null");
+                    throw new Core.PidgeonException("SBAB must not be null");
                 }
                 CreateLine(Text, SBAB, SBAB.ForeColor);
             }

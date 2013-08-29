@@ -56,15 +56,15 @@ namespace Client.Forms
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
             checkbutton1.Active = Configuration.UserData.LastSSL;
-            if (Configuration.UserData.LastPort != "")
+            if (!string.IsNullOrEmpty(Configuration.UserData.LastPort))
             {
                 entry3.Text = Configuration.UserData.LastPort;
             }
-            if (Configuration.UserData.LastNick != "")
+            if (!string.IsNullOrEmpty(Configuration.UserData.LastNick))
             {
                 entry1.Text = Configuration.UserData.LastNick;
             }
-            if (Configuration.UserData.LastHost != "")
+            if (!string.IsNullOrEmpty(Configuration.UserData.LastHost))
             {
                 TreeIter iter2 = store2.AppendValues(Configuration.UserData.LastHost);
                 this.comboboxentry1.SetActiveIter(iter2);
@@ -101,17 +101,17 @@ namespace Client.Forms
             {
                 int port = 6667;
                 Configuration.UserData.LastSSL = checkbutton1.Active;
-                if (entry2.Text == "")
+                if (string.IsNullOrEmpty(entry2.Text))
                 {
                     PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-2", Core.SelectedLanguage), "Missing params");
                     return;
                 }
-                if (entry3.Text == "" || !int.TryParse(entry3.Text, out port))
+                if (string.IsNullOrEmpty(entry3.Text) || !int.TryParse(entry3.Text, out port))
                 {
                     PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-3", Core.SelectedLanguage), "Missing params");
                     return;
                 }
-                if (entry1.Text == "")
+                if (string.IsNullOrEmpty(entry1.Text))
                 {
                     PidgeonGtkToolkit.MessageBox.Show(this, MessageType.Warning, ButtonsType.Ok, messages.get("newconnection-1", Core.SelectedLanguage), "Missing params");
                     return;

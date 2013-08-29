@@ -79,343 +79,336 @@ namespace Client
             /// <returns></returns>
             public static bool ConfigSave()
             {
-                try
-                {
-                    System.Xml.XmlDocument config = new System.Xml.XmlDocument();
-                    XmlComment notice = config.CreateComment("This is a configuration file of pidgeon client, see http://pidgeonclient.org/wiki/Help:Configuration");
-                    config.AppendChild(notice);
-                    System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
-                    System.Xml.XmlNode curr = null;
-                    XmlAttribute confname = null;
-                    // Network
-                    make_comment(" ============= NETWORK ============= ", config, xmlnode);
-                    make_comment("Ident", config, xmlnode);
-                    make_node("Configuration.UserData.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
-                    make_comment("Message that is displayed when you quit the network", config, xmlnode);
-                    make_node("Configuration.UserData.quit", Configuration.UserData.quit, curr, confname, config, xmlnode);
-                    make_comment("Nickname which is being used on all networks", config, xmlnode);
-                    make_node("Configuration.UserData.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
-                    // Scrollback
-                    make_comment(" ============= SCROLLBACK ============= ", config, xmlnode);
-                    make_comment("If this is true, you will see when someone tries to CTCP you", config, xmlnode);
-                    make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Format of user in window", config, xmlnode);
-                    make_node("Configuration.Scrollback.format_nick", Configuration.Scrollback.format_nick, curr, confname, config, xmlnode);
-                    make_comment("Format of date in window", config, xmlnode);
-                    make_node("Configuration.Scrollback.format_date", Configuration.Scrollback.format_date, curr, confname, config, xmlnode);
-                    make_comment("Set this to true to automatically whois everyone in channel upon join", config, xmlnode);
-                    make_comment("Limit of scrollback size", config, xmlnode);
-                    make_node("Configuration.Scrollback.scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
-                    make_comment("This will underline the bold text so that you can see also bold invisible chars", config, xmlnode);
-                    make_node("Configuration.Scrollback.UnderlineBold", Configuration.Scrollback.UnderlineBold.ToString(), curr, confname, config, xmlnode);
-                    // irc
-                    make_comment(" ============= IRC ============= ", config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Set this to true to check the channel modes on join", config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_mode", Configuration.ChannelModes.aggressive_mode.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_channel", Configuration.ChannelModes.aggressive_channel.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Set this to true to get a list of bans on join", config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_bans", Configuration.ChannelModes.aggressive_bans.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Set this to true to get a list of exception on join", config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_exception", Configuration.ChannelModes.aggressive_exception.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Set this to true to get a list of invite on join", config, xmlnode);
-                    make_node("Configuration.ChannelModes.aggressive_invites", Configuration.ChannelModes.aggressive_invites.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If CTCP should be completely ignored", config, xmlnode);
-                    make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Whether all generated commands need to be confirmed", config, xmlnode);
-                    make_node("Configuration.irc.ConfirmAll", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Reason for kick / ban", config, xmlnode);
-                    make_node("Configuration.irc.DefaultReason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
-                    make_comment("Second nick", config, xmlnode);
-                    make_node("Configuration.UserData.Nick2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
-                    make_comment("CTCP requests are blocked", config, xmlnode);
-                    make_node("Configuration.irc.FirewallCTCP", Configuration.irc.FirewallCTCP.ToString(), curr, confname, config, xmlnode);
-                    make_comment("CTCP port", config, xmlnode);
-                    make_node("Configuration.irc.DefaultCTCPPort", Configuration.irc.DefaultCTCPPort.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.CertificateDCC", Configuration.irc.CertificateDCC, curr, confname, config, xmlnode);
-                    make_comment("Whether the response should be displayed", config, xmlnode);
-                    make_node("Configuration.irc.ShowReplyForCTCP", Configuration.irc.ShowReplyForCTCP.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If this is true the whois records will be parsed and changed", config, xmlnode);
-                    make_node("Configuration.irc.FriendlyWhois", Configuration.irc.FriendlyWhois.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.DisplayMode", Configuration.irc.DisplayMode.ToString(), curr, confname, config, xmlnode);
-                    // Windows
-                    make_comment(" ============= WINDOWS ============= ", config, xmlnode);
-                    make_comment("Main window is maximized", config, xmlnode);
-                    make_node("Configuration.Window.Window_Maximized", Configuration.Window.Window_Maximized.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Size of main win", config, xmlnode);
-                    make_node("Configuration.Window.window_size", Configuration.Window.WindowSize.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Location of slide bar", config, xmlnode);
-                    make_node("Configuration.Window.x1", Configuration.Window.TextboxLeft.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Location of slide bar", config, xmlnode);
-                    make_node("Configuration.Window.x4", Configuration.Window.SidebarLeft.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Maximum history", config, xmlnode);
-                    make_node("Configuration.Window.history", Configuration.Window.History.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Search left", config, xmlnode);
-                    make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Search top", config, xmlnode);
-                    make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
+                System.Xml.XmlDocument config = new System.Xml.XmlDocument();
+                XmlComment notice = config.CreateComment("This is a configuration file of pidgeon client, see http://pidgeonclient.org/wiki/Help:Configuration");
+                config.AppendChild(notice);
+                System.Xml.XmlNode xmlnode = config.CreateElement("configuration.pidgeon");
+                System.Xml.XmlNode curr = null;
+                XmlAttribute confname = null;
+                // Network
+                make_comment(" ============= NETWORK ============= ", config, xmlnode);
+                make_comment("Ident", config, xmlnode);
+                make_node("Configuration.UserData.ident", Configuration.UserData.ident, curr, confname, config, xmlnode);
+                make_comment("Message that is displayed when you quit the network", config, xmlnode);
+                make_node("Configuration.UserData.quit", Configuration.UserData.quit, curr, confname, config, xmlnode);
+                make_comment("Nickname which is being used on all networks", config, xmlnode);
+                make_node("Configuration.UserData.nick", Configuration.UserData.nick, curr, confname, config, xmlnode);
+                // Scrollback
+                make_comment(" ============= SCROLLBACK ============= ", config, xmlnode);
+                make_comment("If this is true, you will see when someone tries to CTCP you", config, xmlnode);
+                make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                make_comment("Format of user in window", config, xmlnode);
+                make_node("Configuration.Scrollback.format_nick", Configuration.Scrollback.format_nick, curr, confname, config, xmlnode);
+                make_comment("Format of date in window", config, xmlnode);
+                make_node("Configuration.Scrollback.format_date", Configuration.Scrollback.format_date, curr, confname, config, xmlnode);
+                make_comment("Set this to true to automatically whois everyone in channel upon join", config, xmlnode);
+                make_comment("Limit of scrollback size", config, xmlnode);
+                make_node("Configuration.Scrollback.scrollback_plimit", Configuration.Scrollback.scrollback_plimit.ToString(), curr, confname, config, xmlnode);
+                make_comment("This will underline the bold text so that you can see also bold invisible chars", config, xmlnode);
+                make_node("Configuration.Scrollback.UnderlineBold", Configuration.Scrollback.UnderlineBold.ToString(), curr, confname, config, xmlnode);
+                // irc
+                make_comment(" ============= IRC ============= ", config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_whois", Configuration.ChannelModes.aggressive_whois.ToString(), curr, confname, config, xmlnode);
+                make_comment("Set this to true to check the channel modes on join", config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_mode", Configuration.ChannelModes.aggressive_mode.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_channel", Configuration.ChannelModes.aggressive_channel.ToString(), curr, confname, config, xmlnode);
+                make_comment("Set this to true to get a list of bans on join", config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_bans", Configuration.ChannelModes.aggressive_bans.ToString(), curr, confname, config, xmlnode);
+                make_comment("Set this to true to get a list of exception on join", config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_exception", Configuration.ChannelModes.aggressive_exception.ToString(), curr, confname, config, xmlnode);
+                make_comment("Set this to true to get a list of invite on join", config, xmlnode);
+                make_node("Configuration.ChannelModes.aggressive_invites", Configuration.ChannelModes.aggressive_invites.ToString(), curr, confname, config, xmlnode);
+                make_comment("If CTCP should be completely ignored", config, xmlnode);
+                make_node("Configuration.irc.DisplayCtcp", Configuration.irc.DisplayCtcp.ToString(), curr, confname, config, xmlnode);
+                make_comment("Whether all generated commands need to be confirmed", config, xmlnode);
+                make_node("Configuration.irc.ConfirmAll", Configuration.irc.ConfirmAll.ToString(), curr, confname, config, xmlnode);
+                make_comment("Reason for kick / ban", config, xmlnode);
+                make_node("Configuration.irc.DefaultReason", Configuration.irc.DefaultReason, curr, confname, config, xmlnode);
+                make_comment("Second nick", config, xmlnode);
+                make_node("Configuration.UserData.Nick2", Configuration.UserData.Nick2, curr, confname, config, xmlnode);
+                make_comment("CTCP requests are blocked", config, xmlnode);
+                make_node("Configuration.irc.FirewallCTCP", Configuration.irc.FirewallCTCP.ToString(), curr, confname, config, xmlnode);
+                make_comment("CTCP port", config, xmlnode);
+                make_node("Configuration.irc.DefaultCTCPPort", Configuration.irc.DefaultCTCPPort.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.irc.CertificateDCC", Configuration.irc.CertificateDCC, curr, confname, config, xmlnode);
+                make_comment("Whether the response should be displayed", config, xmlnode);
+                make_node("Configuration.irc.ShowReplyForCTCP", Configuration.irc.ShowReplyForCTCP.ToString(), curr, confname, config, xmlnode);
+                make_comment("If this is true the whois records will be parsed and changed", config, xmlnode);
+                make_node("Configuration.irc.FriendlyWhois", Configuration.irc.FriendlyWhois.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.irc.DisplayMode", Configuration.irc.DisplayMode.ToString(), curr, confname, config, xmlnode);
+                // Windows
+                make_comment(" ============= WINDOWS ============= ", config, xmlnode);
+                make_comment("Main window is maximized", config, xmlnode);
+                make_node("Configuration.Window.Window_Maximized", Configuration.Window.Window_Maximized.ToString(), curr, confname, config, xmlnode);
+                make_comment("Size of main win", config, xmlnode);
+                make_node("Configuration.Window.window_size", Configuration.Window.WindowSize.ToString(), curr, confname, config, xmlnode);
+                make_comment("Location of slide bar", config, xmlnode);
+                make_node("Configuration.Window.x1", Configuration.Window.TextboxLeft.ToString(), curr, confname, config, xmlnode);
+                make_comment("Location of slide bar", config, xmlnode);
+                make_node("Configuration.Window.x4", Configuration.Window.SidebarLeft.ToString(), curr, confname, config, xmlnode);
+                make_comment("Maximum history", config, xmlnode);
+                make_node("Configuration.Window.history", Configuration.Window.History.ToString(), curr, confname, config, xmlnode);
+                make_comment("Search left", config, xmlnode);
+                make_node("Configuration.Search.X", Configuration.Window.Search_X.ToString(), curr, confname, config, xmlnode);
+                make_comment("Search top", config, xmlnode);
+                make_node("Configuration.Search.Y", Configuration.Window.Search_Y.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.UserData.TrayIcon", Configuration.UserData.TrayIcon.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Window.MiddleClick_Side", Configuration.Window.MiddleClick_Side.ToString(), curr, confname, config, xmlnode);
 #pragma warning disable
-                    make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Window.RememberPosition", Configuration.Window.RememberPosition.ToString(), curr, confname, config, xmlnode);
 #pragma warning restore
-                    make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Window.NotifyPrivate", Configuration.Window.NotifyPrivate.ToString(), curr, confname, config, xmlnode);
-                    // Logs
-                    make_comment(" ============= LOGS ============= ", config, xmlnode);
-                    make_comment("Where the logs are being saved", config, xmlnode);
-                    make_node("Configuration.Logs.logs_dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
-                    make_comment("Type of logs to save", config, xmlnode);
-                    make_node("Configuration.Logs.logs_name", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
-                    make_comment("If you want to save logs in html", config, xmlnode);
-                    make_node("Configuration.Logs.logs_html", Configuration.Logs.logs_html.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If you want to save logs in XML", config, xmlnode);
-                    make_node("Configuration.Logs.logs_xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If you want to save logs in TXT", config, xmlnode);
-                    make_node("Configuration.Logs.logs_txt", Configuration.Logs.logs_txt.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Logs.ServicesLogs", Configuration.Logs.ServicesLogs.ToString(), curr, confname, config, xmlnode);
-                    // System
-                    make_comment(" ============= SYSTEM ============= ", config, xmlnode);
-                    make_comment("Check for updates (recommended)", config, xmlnode);
-                    make_node("Configuration.Kernel.CheckUpdate", Configuration.Kernel.CheckUpdate.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If pidgeon is running in debug mode", config, xmlnode);
-                    make_node("Configuration.Kernel.Debugging", Configuration.Kernel.Debugging.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If notification are displayed", config, xmlnode);
-                    make_node("Configuration.Kernel.Notice", Configuration.Kernel.Notice.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Network sniffer", config, xmlnode);
-                    make_node("Configuration.Kernel.NetworkSniff", Configuration.Kernel.NetworkSniff.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Skin", config, xmlnode);
-                    make_node("Configuration.CurrentSkin.Name", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
-                    make_comment("Whether color codes override the system color for links", config, xmlnode);
-                    make_node("Configuration.Colors.ChangeLinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Maximum size of scrollback in memory", config, xmlnode);
-                    make_node("Configuration.Memory.MaximumChannelBufferSize", Configuration.Memory.MaximumChannelBufferSize.ToString(), curr, confname, config, xmlnode);
-                    make_comment("This disable the simpleview, saving some memory", config, xmlnode);
-                    make_node("Configuration.Memory.EnableSimpleViewCache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
-                    make_comment("The minimal value which you want to see profiler results for", config, xmlnode);
-                    make_node("Configuration.Kernel.Profiler_Minimal", Configuration.Kernel.Profiler_Minimal.ToString(), curr, confname, config, xmlnode);
-                    make_comment("This enable a performance profiler", config, xmlnode);
-                    make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
-                    make_comment("This change a ring log size", config, xmlnode);
-                    make_node("Configuration.Kernel.MaximalRingLogSize", Configuration.Kernel.MaximalRingLogSize.ToString(), curr, confname, config, xmlnode);
-                    make_node("SelectedLanguage", Core.SelectedLanguage.ToString(), curr, confname, config, xmlnode);
-                    // Services
-                    make_comment(" ============= SERVICES ============= ", config, xmlnode);
-                    make_comment("Size of backlog for services", config, xmlnode);
-                    make_node("Configuration.Services.Depth", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
-                    make_comment("If services are using local cache (incomparably faster)", config, xmlnode);
-                    make_node("services.usingcache", Configuration.Services.UsingCache.ToString(), curr, confname, config, xmlnode);
-                    // Histories
-                    make_comment(" ============= USER ============= ", config, xmlnode);
-                    make_comment("Last nickname you used", config, xmlnode);
-                    make_node("Configuration.UserData.LastNick", Configuration.UserData.LastNick, curr, confname, config, xmlnode);
-                    make_comment("Last host you used", config, xmlnode);
-                    make_node("Configuration.UserData.LastHost", Configuration.UserData.LastHost, curr, confname, config, xmlnode);
-                    make_comment("Last host you connected to", config, xmlnode);
-                    make_node("Configuration.UserData.LastPort", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
-                    make_comment("Change this to false in order to disable clickable browser links", config, xmlnode);
-                    make_node("Configuration.UserData.OpenLinkInBrowser", Configuration.UserData.OpenLinkInBrowser.ToString(), curr, confname, config, xmlnode);
-                    make_comment("SSL", config, xmlnode);
-                    make_node("Configuration.UserData.LastSSL", Configuration.UserData.LastSSL.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.UserData.SwitchWindowOnJoin", Configuration.UserData.SwitchWindowOnJoin.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.DetailedVersion", Configuration.irc.DetailedVersion.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Kernel.KernelDump", Configuration.Kernel.KernelDump.ToString(), curr, confname, config, xmlnode);
-                    make_comment(" ============= MISC ============= ", config, xmlnode);
-                    make_node("Configuration.Parser.formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.Kernel.Lang", Configuration.Kernel.Lang, curr, confname, config, xmlnode);
-                    make_node("Configuration.Parser.InputTrim", Configuration.Parser.InputTrim.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.NetworkEncoding", Configuration.irc.NetworkEncoding.ToString(), curr, confname, config, xmlnode);
-                    make_node("Configuration.irc.IgnoreInvites", Configuration.irc.IgnoreInvites.ToString(), curr, confname, config, xmlnode);
-                    make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
-                    foreach (KeyValuePair<string, string> data in Configuration.Extensions)
-                    {
-                        make_node("extension." + data.Key, data.Value, curr, confname, config, xmlnode);
-                    }
-
-                    string separators = "";
-                    make_comment(" ============= SEPARATORS ============= ", config, xmlnode);
-                    foreach (char separator in Configuration.Parser.Separators)
-                    {
-                        separators = separators + separator.ToString();
-                    }
-                    make_node("delimiters", separators, curr, confname, config, xmlnode);
-
-                    make_comment(" ============= PROTOCOLS ============= ", config, xmlnode);
-                    lock (Configuration.Parser.Protocols)
-                    {
-                        foreach (string xx in Configuration.Parser.Protocols)
-                        {
-                            curr = config.CreateElement("protocol");
-                            curr.InnerText = xx;
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-
-                    make_comment(" ============= NETWORKS ============= ", config, xmlnode);
-                    lock (NetworkData.Networks)
-                    {
-                        foreach (NetworkData.NetworkInfo ni in NetworkData.Networks)
-                        {
-                            curr = config.CreateElement("network");
-                            XmlAttribute name = config.CreateAttribute("name");
-                            XmlAttribute server = config.CreateAttribute("server");
-                            XmlAttribute ssl = config.CreateAttribute("ssl");
-                            XmlAttribute type = config.CreateAttribute("type");
-                            type.Value = ni.protocolType.ToString();
-                            name.Value = ni.Name;
-                            server.Value = ni.Server;
-                            ssl.Value = ni.SSL.ToString();
-                            curr.Attributes.Append(name);
-                            curr.Attributes.Append(server);
-                            curr.Attributes.Append(type);
-                            curr.Attributes.Append(ssl);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= HIGHLIGHTERS ============= ", config, xmlnode);
-                    lock (Configuration.HighlighterList)
-                    {
-                        foreach (Network.Highlighter high in Configuration.HighlighterList)
-                        {
-                            curr = config.CreateElement("list");
-                            XmlAttribute highlightenabled = config.CreateAttribute("enabled");
-                            XmlAttribute highlighttext = config.CreateAttribute("text");
-                            XmlAttribute highlightsimple = config.CreateAttribute("simple");
-                            highlightenabled.Value = high.enabled.ToString();
-                            highlightsimple.Value = high.simple.ToString();
-                            highlighttext.Value = high.text;
-                            curr.Attributes.Append(highlightsimple);
-                            curr.Attributes.Append(highlighttext);
-                            curr.Attributes.Append(highlightenabled);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= ALIASES ============= ", config, xmlnode);
-                    lock (Commands.aliases)
-                    {
-                        foreach (KeyValuePair<string, Commands.CommandLink> keys in Commands.aliases)
-                        {
-                            curr = config.CreateElement("alias");
-                            XmlAttribute name = config.CreateAttribute("name");
-                            XmlAttribute target = config.CreateAttribute("target");
-                            XmlAttribute overrides = config.CreateAttribute("overrides");
-                            name.Value = keys.Key;
-                            target.Value = keys.Value.Target;
-                            overrides.Value = keys.Value.Overrides.ToString();
-                            curr.Attributes.Append(name);
-                            curr.Attributes.Append(target);
-                            curr.Attributes.Append(overrides);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= HISTORY ============= ", config, xmlnode);
-                    lock (Configuration.UserData.History)
-                    {
-                        foreach (string Name in Configuration.UserData.History)
-                        {
-                            curr = config.CreateElement("history");
-                            curr.InnerText = Name;
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
-                    lock (Ignoring.IgnoreList)
-                    {
-                        foreach (Ignoring.Ignore ci in Ignoring.IgnoreList)
-                        {
-                            curr = config.CreateElement("ignore");
-                            XmlAttribute enabled = config.CreateAttribute("enabled");
-                            XmlAttribute simple = config.CreateAttribute("simple");
-                            XmlAttribute text = config.CreateAttribute("text");
-                            XmlAttribute type = config.CreateAttribute("type");
-                            enabled.Value = ci.Enabled.ToString();
-                            simple.Value = ci.Simple.ToString();
-                            text.Value = ci.Text;
-                            type.Value = ci.type.ToString();
-                            curr.Attributes.Append(enabled);
-                            curr.Attributes.Append(simple);
-                            curr.Attributes.Append(text);
-                            curr.Attributes.Append(type);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= SHORTCUTS ============= ", config, xmlnode);
-
-                    lock (Configuration.ShortcutKeylist)
-                    {
-                        foreach (Shortcut RR in Configuration.ShortcutKeylist)
-                        {
-                            curr = config.CreateElement("shortcut");
-                            XmlAttribute name = config.CreateAttribute("name");
-                            XmlAttribute ctrl = config.CreateAttribute("ctrl");
-                            XmlAttribute alt = config.CreateAttribute("alt");
-                            XmlAttribute shift = config.CreateAttribute("shift");
-                            curr.InnerText = RR.data;
-                            name.Value = RR.keys.ToString();
-                            shift.Value = RR.shift.ToString();
-                            ctrl.Value = RR.control.ToString();
-                            alt.Value = RR.alt.ToString();
-                            curr.Attributes.Append(name);
-                            curr.Attributes.Append(ctrl);
-                            curr.Attributes.Append(alt);
-                            curr.Attributes.Append(shift);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-
-                    config.AppendChild(xmlnode);
-
-                    make_comment(" ============= WINDOWS ============= ", config, xmlnode);
-
-                    lock (PidgeonGtkToolkit.PidgeonForm.WindowInfo)
-                    {
-                        foreach (KeyValuePair<string, PidgeonGtkToolkit.PidgeonForm.Info> xx in PidgeonGtkToolkit.PidgeonForm.WindowInfo)
-                        {
-                            curr = config.CreateElement("window");
-                            XmlAttribute height = config.CreateAttribute("height");
-                            XmlAttribute width = config.CreateAttribute("width");
-                            XmlAttribute x = config.CreateAttribute("x");
-                            XmlAttribute y = config.CreateAttribute("y");
-                            curr.InnerText = xx.Key;
-                            height.Value = xx.Value.Height.ToString();
-                            width.Value = xx.Value.Width.ToString();
-                            x.Value = xx.Value.X.ToString();
-                            y.Value = xx.Value.Y.ToString();
-                            curr.Attributes.Append(x);
-                            curr.Attributes.Append(y);
-                            curr.Attributes.Append(width);
-                            curr.Attributes.Append(height);
-                            xmlnode.AppendChild(curr);
-                        }
-                    }
-
-                    config.AppendChild(xmlnode);
-
-                    if (Backup(ConfigFile))
-                    {
-                        config.Save(ConfigFile);
-                    }
-                    File.Delete(ConfigFile + "~");
-                }
-                catch (Exception t)
+                make_node("Configuration.Window.DoubleClick", Configuration.Window.DoubleClick.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Window.MiddleClick", Configuration.Window.MiddleClick.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Window.NotifyPrivate", Configuration.Window.NotifyPrivate.ToString(), curr, confname, config, xmlnode);
+                // Logs
+                make_comment(" ============= LOGS ============= ", config, xmlnode);
+                make_comment("Where the logs are being saved", config, xmlnode);
+                make_node("Configuration.Logs.logs_dir", Configuration.Logs.logs_dir, curr, confname, config, xmlnode);
+                make_comment("Type of logs to save", config, xmlnode);
+                make_node("Configuration.Logs.logs_name", Configuration.Logs.logs_name, curr, confname, config, xmlnode);
+                make_comment("If you want to save logs in html", config, xmlnode);
+                make_node("Configuration.Logs.logs_html", Configuration.Logs.logs_html.ToString(), curr, confname, config, xmlnode);
+                make_comment("If you want to save logs in XML", config, xmlnode);
+                make_node("Configuration.Logs.logs_xml", Configuration.Logs.logs_xml.ToString(), curr, confname, config, xmlnode);
+                make_comment("If you want to save logs in TXT", config, xmlnode);
+                make_node("Configuration.Logs.logs_txt", Configuration.Logs.logs_txt.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Logs.ServicesLogs", Configuration.Logs.ServicesLogs.ToString(), curr, confname, config, xmlnode);
+                // System
+                make_comment(" ============= SYSTEM ============= ", config, xmlnode);
+                make_comment("Check for updates (recommended)", config, xmlnode);
+                make_node("Configuration.Kernel.CheckUpdate", Configuration.Kernel.CheckUpdate.ToString(), curr, confname, config, xmlnode);
+                make_comment("If pidgeon is running in debug mode", config, xmlnode);
+                make_node("Configuration.Kernel.Debugging", Configuration.Kernel.Debugging.ToString(), curr, confname, config, xmlnode);
+                make_comment("If notification are displayed", config, xmlnode);
+                make_node("Configuration.Kernel.Notice", Configuration.Kernel.Notice.ToString(), curr, confname, config, xmlnode);
+                make_comment("Network sniffer", config, xmlnode);
+                make_node("Configuration.Kernel.NetworkSniff", Configuration.Kernel.NetworkSniff.ToString(), curr, confname, config, xmlnode);
+                make_comment("Skin", config, xmlnode);
+                make_node("Configuration.CurrentSkin.Name", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
+                make_comment("Whether color codes override the system color for links", config, xmlnode);
+                make_node("Configuration.Colors.ChangeLinks", Configuration.Colors.ChangeLinks.ToString(), curr, confname, config, xmlnode);
+                make_comment("Maximum size of scrollback in memory", config, xmlnode);
+                make_node("Configuration.Memory.MaximumChannelBufferSize", Configuration.Memory.MaximumChannelBufferSize.ToString(), curr, confname, config, xmlnode);
+                make_comment("This disable the simpleview, saving some memory", config, xmlnode);
+                make_node("Configuration.Memory.EnableSimpleViewCache", Configuration.Memory.EnableSimpleViewCache.ToString(), curr, confname, config, xmlnode);
+                make_comment("The minimal value which you want to see profiler results for", config, xmlnode);
+                make_node("Configuration.Kernel.Profiler_Minimal", Configuration.Kernel.Profiler_Minimal.ToString(), curr, confname, config, xmlnode);
+                make_comment("This enable a performance profiler", config, xmlnode);
+                make_node("Configuration.Kernel.Profiler", Configuration.Kernel.Profiler.ToString(), curr, confname, config, xmlnode);
+                make_comment("This change a ring log size", config, xmlnode);
+                make_node("Configuration.Kernel.MaximalRingLogSize", Configuration.Kernel.MaximalRingLogSize.ToString(), curr, confname, config, xmlnode);
+                make_node("SelectedLanguage", Core.SelectedLanguage.ToString(), curr, confname, config, xmlnode);
+                // Services
+                make_comment(" ============= SERVICES ============= ", config, xmlnode);
+                make_comment("Size of backlog for services", config, xmlnode);
+                make_node("Configuration.Services.Depth", Configuration.Services.Depth.ToString(), curr, confname, config, xmlnode);
+                make_comment("If services are using local cache (incomparably faster)", config, xmlnode);
+                make_node("services.usingcache", Configuration.Services.UsingCache.ToString(), curr, confname, config, xmlnode);
+                // Histories
+                make_comment(" ============= USER ============= ", config, xmlnode);
+                make_comment("Last nickname you used", config, xmlnode);
+                make_node("Configuration.UserData.LastNick", Configuration.UserData.LastNick, curr, confname, config, xmlnode);
+                make_comment("Last host you used", config, xmlnode);
+                make_node("Configuration.UserData.LastHost", Configuration.UserData.LastHost, curr, confname, config, xmlnode);
+                make_comment("Last host you connected to", config, xmlnode);
+                make_node("Configuration.UserData.LastPort", Configuration.UserData.LastPort, curr, confname, config, xmlnode);
+                make_node("Configuration.irc.mq", Configuration.irc.mq.ToString(), curr, confname, config, xmlnode);
+                make_comment("Change this to false in order to disable clickable browser links", config, xmlnode);
+                make_node("Configuration.UserData.OpenLinkInBrowser", Configuration.UserData.OpenLinkInBrowser.ToString(), curr, confname, config, xmlnode);
+                make_comment("SSL", config, xmlnode);
+                make_node("Configuration.UserData.LastSSL", Configuration.UserData.LastSSL.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.UserData.SwitchWindowOnJoin", Configuration.UserData.SwitchWindowOnJoin.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.irc.DetailedVersion", Configuration.irc.DetailedVersion.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Kernel.KernelDump", Configuration.Kernel.KernelDump.ToString(), curr, confname, config, xmlnode);
+                make_comment(" ============= MISC ============= ", config, xmlnode);
+                make_node("Configuration.Parser.formatter", Configuration.Parser.formatter.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Parser.ParserCache", Configuration.Parser.ParserCache.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Media.NotificationSound", Configuration.Media.NotificationSound.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Kernel.Lang", Configuration.Kernel.Lang, curr, confname, config, xmlnode);
+                make_node("Configuration.Parser.InputTrim", Configuration.Parser.InputTrim.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
+                make_node("Configuration.irc.NetworkEncoding", Configuration.irc.NetworkEncoding.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.irc.IgnoreInvites", Configuration.irc.IgnoreInvites.ToString(), curr, confname, config, xmlnode);
+                make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
+                foreach (KeyValuePair<string, string> data in Configuration.Extensions)
                 {
-                    Core.handleException(t);
+                    make_node("extension." + data.Key, data.Value, curr, confname, config, xmlnode);
                 }
+
+                string separators = "";
+                make_comment(" ============= SEPARATORS ============= ", config, xmlnode);
+                foreach (char separator in Configuration.Parser.Separators)
+                {
+                    separators = separators + separator.ToString();
+                }
+                make_node("delimiters", separators, curr, confname, config, xmlnode);
+
+                make_comment(" ============= PROTOCOLS ============= ", config, xmlnode);
+                lock (Configuration.Parser.Protocols)
+                {
+                    foreach (string xx in Configuration.Parser.Protocols)
+                    {
+                        curr = config.CreateElement("protocol");
+                        curr.InnerText = xx;
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+
+                make_comment(" ============= NETWORKS ============= ", config, xmlnode);
+                lock (NetworkData.Networks)
+                {
+                    foreach (NetworkData.NetworkInfo ni in NetworkData.Networks)
+                    {
+                        curr = config.CreateElement("network");
+                        XmlAttribute name = config.CreateAttribute("name");
+                        XmlAttribute server = config.CreateAttribute("server");
+                        XmlAttribute ssl = config.CreateAttribute("ssl");
+                        XmlAttribute type = config.CreateAttribute("type");
+                        type.Value = ni.protocolType.ToString();
+                        name.Value = ni.Name;
+                        server.Value = ni.Server;
+                        ssl.Value = ni.SSL.ToString();
+                        curr.Attributes.Append(name);
+                        curr.Attributes.Append(server);
+                        curr.Attributes.Append(type);
+                        curr.Attributes.Append(ssl);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= HIGHLIGHTERS ============= ", config, xmlnode);
+                lock (Configuration.HighlighterList)
+                {
+                    foreach (Network.Highlighter high in Configuration.HighlighterList)
+                    {
+                        curr = config.CreateElement("list");
+                        XmlAttribute highlightenabled = config.CreateAttribute("enabled");
+                        XmlAttribute highlighttext = config.CreateAttribute("text");
+                        XmlAttribute highlightsimple = config.CreateAttribute("simple");
+                        highlightenabled.Value = high.enabled.ToString();
+                        highlightsimple.Value = high.simple.ToString();
+                        highlighttext.Value = high.text;
+                        curr.Attributes.Append(highlightsimple);
+                        curr.Attributes.Append(highlighttext);
+                        curr.Attributes.Append(highlightenabled);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= ALIASES ============= ", config, xmlnode);
+                lock (Commands.aliases)
+                {
+                    foreach (KeyValuePair<string, Commands.CommandLink> keys in Commands.aliases)
+                    {
+                        curr = config.CreateElement("alias");
+                        XmlAttribute name = config.CreateAttribute("name");
+                        XmlAttribute target = config.CreateAttribute("target");
+                        XmlAttribute overrides = config.CreateAttribute("overrides");
+                        name.Value = keys.Key;
+                        target.Value = keys.Value.Target;
+                        overrides.Value = keys.Value.Overrides.ToString();
+                        curr.Attributes.Append(name);
+                        curr.Attributes.Append(target);
+                        curr.Attributes.Append(overrides);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= HISTORY ============= ", config, xmlnode);
+                lock (Configuration.UserData.History)
+                {
+                    foreach (string Name in Configuration.UserData.History)
+                    {
+                        curr = config.CreateElement("history");
+                        curr.InnerText = Name;
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= IGNORE LIST ============= ", config, xmlnode);
+                lock (Ignoring.IgnoreList)
+                {
+                    foreach (Ignoring.Ignore ci in Ignoring.IgnoreList)
+                    {
+                        curr = config.CreateElement("ignore");
+                        XmlAttribute enabled = config.CreateAttribute("enabled");
+                        XmlAttribute simple = config.CreateAttribute("simple");
+                        XmlAttribute text = config.CreateAttribute("text");
+                        XmlAttribute type = config.CreateAttribute("type");
+                        enabled.Value = ci.Enabled.ToString();
+                        simple.Value = ci.Simple.ToString();
+                        text.Value = ci.Text;
+                        type.Value = ci.type.ToString();
+                        curr.Attributes.Append(enabled);
+                        curr.Attributes.Append(simple);
+                        curr.Attributes.Append(text);
+                        curr.Attributes.Append(type);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= SHORTCUTS ============= ", config, xmlnode);
+
+                lock (Configuration.ShortcutKeylist)
+                {
+                    foreach (Shortcut RR in Configuration.ShortcutKeylist)
+                    {
+                        curr = config.CreateElement("shortcut");
+                        XmlAttribute name = config.CreateAttribute("name");
+                        XmlAttribute ctrl = config.CreateAttribute("ctrl");
+                        XmlAttribute alt = config.CreateAttribute("alt");
+                        XmlAttribute shift = config.CreateAttribute("shift");
+                        curr.InnerText = RR.data;
+                        name.Value = RR.keys.ToString();
+                        shift.Value = RR.shift.ToString();
+                        ctrl.Value = RR.control.ToString();
+                        alt.Value = RR.alt.ToString();
+                        curr.Attributes.Append(name);
+                        curr.Attributes.Append(ctrl);
+                        curr.Attributes.Append(alt);
+                        curr.Attributes.Append(shift);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+
+                config.AppendChild(xmlnode);
+
+                make_comment(" ============= WINDOWS ============= ", config, xmlnode);
+
+                lock (PidgeonGtkToolkit.PidgeonForm.WindowInfo)
+                {
+                    foreach (KeyValuePair<string, PidgeonGtkToolkit.PidgeonForm.Info> xx in PidgeonGtkToolkit.PidgeonForm.WindowInfo)
+                    {
+                        curr = config.CreateElement("window");
+                        XmlAttribute height = config.CreateAttribute("height");
+                        XmlAttribute width = config.CreateAttribute("width");
+                        XmlAttribute x = config.CreateAttribute("x");
+                        XmlAttribute y = config.CreateAttribute("y");
+                        curr.InnerText = xx.Key;
+                        height.Value = xx.Value.Height.ToString();
+                        width.Value = xx.Value.Width.ToString();
+                        x.Value = xx.Value.X.ToString();
+                        y.Value = xx.Value.Y.ToString();
+                        curr.Attributes.Append(x);
+                        curr.Attributes.Append(y);
+                        curr.Attributes.Append(width);
+                        curr.Attributes.Append(height);
+                        xmlnode.AppendChild(curr);
+                    }
+                }
+
+                config.AppendChild(xmlnode);
+
+                if (Backup(ConfigFile))
+                {
+                    config.Save(ConfigFile);
+                }
+                File.Delete(ConfigFile + "~");
                 return false;
             }
 
@@ -483,7 +476,7 @@ namespace Client
                                         if (curr.Name == "alias")
                                         {
                                             Commands.RegisterAlias(curr.Attributes[0].InnerText, curr.Attributes[1].InnerText, bool.Parse(curr.Attributes[2].InnerText));
-                                            continue; 
+                                            continue;
                                         }
                                         if (curr.Name == "network")
                                         {
@@ -530,20 +523,20 @@ namespace Client
                                                 switch (option.Name)
                                                 {
                                                     case "width":
-                                                       w.Width = int.Parse (curr.Value);
-                                                       break;
+                                                        w.Width = int.Parse(curr.Value);
+                                                        break;
                                                     case "height":
-                                                       w.Height = int.Parse (curr.Value);
-                                                       break;
+                                                        w.Height = int.Parse(curr.Value);
+                                                        break;
                                                     case "x":
-                                                       w.X = int.Parse (curr.Value);
-                                                       break;
+                                                        w.X = int.Parse(curr.Value);
+                                                        break;
                                                     case "y":
-                                                       w.Y = int.Parse (curr.Value);
-                                                       break;
+                                                        w.Y = int.Parse(curr.Value);
+                                                        break;
                                                 }
                                             }
-                                            lock(PidgeonGtkToolkit.PidgeonForm.WindowInfo)
+                                            lock (PidgeonGtkToolkit.PidgeonForm.WindowInfo)
                                             {
                                                 if (!PidgeonGtkToolkit.PidgeonForm.WindowInfo.ContainsKey(name))
                                                 {

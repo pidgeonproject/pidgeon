@@ -78,7 +78,7 @@ namespace Client
 
                 if (message_window != null)
                 {
-                    message_window.scrollback.InsertTextAndIgnoreUpdate(mn._Protocol.PRIVMSG(message_nick, message_text), Client.ContentLine.MessageStyle.Message, true, message_time, true);
+                    message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text), Client.ContentLine.MessageStyle.Message, true, message_time, true);
                 }
                 else
                 {
@@ -419,7 +419,7 @@ namespace Client
             /// <param name="protocol">Protocol which owns this request</param>
             public static void sNetworkList(XmlNode curr, ProtocolSv protocol)
             {
-                if (curr.InnerText != "")
+                if (!string.IsNullOrEmpty(curr.InnerText))
                 {
                     string[] _networks = curr.InnerText.Split('|');
                     string[] mq = null;
@@ -535,7 +535,7 @@ namespace Client
             /// <param name="protocol">Protocol which owns this request</param>
             public static void sChannelInfo(XmlNode curr, ProtocolSv protocol)
             {
-                if (curr.InnerText == "")
+                if (string.IsNullOrEmpty(curr.InnerText))
                 {
                     if (curr.Attributes.Count > 1)
                     {
@@ -547,7 +547,7 @@ namespace Client
                             {
                                 foreach (string channel in channellist)
                                 {
-                                    if (channel != "")
+                                    if (!string.IsNullOrEmpty(channel))
                                     {
                                         if (nw.getChannel(channel) == null)
                                         {

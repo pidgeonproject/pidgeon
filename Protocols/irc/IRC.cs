@@ -81,7 +81,7 @@ namespace Client
                         }
                         if (_data2.Length > 2)
                         {
-                            if (_data2[2] != null && _data2[2] != "")
+                            if (!string.IsNullOrEmpty(_data2[2]))
                             {
                                 channel = _data2[2];
                             }
@@ -144,7 +144,7 @@ namespace Client
                     if (_data2[1].Contains("NICK"))
                     {
                         string _new = _value;
-                        if (_value == "" && _data2.Length > 2 && _data2[2] != "")
+                        if (string.IsNullOrEmpty(_value) && _data2.Length > 2 && !string.IsNullOrEmpty(_data2[2]))
                         {
                             // server is fucked
                             _new = _data2[2];
@@ -386,7 +386,7 @@ namespace Client
                             }
                             break;
                         case "433":
-                            if (!_Network.UsingNick2 && Configuration.UserData.Nick2 != "")
+                            if (!_Network.UsingNick2 && !string.IsNullOrEmpty(Configuration.UserData.Nick2))
                             {
                                 _Network.UsingNick2 = true;
                                 _Network.Transfer("NICK " + Configuration.UserData.Nick2, Configuration.Priority.High);

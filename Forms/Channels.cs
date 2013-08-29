@@ -293,7 +293,7 @@ namespace Client.Forms
                 {
                     foreach (string item in Selected)
                     {
-                        if (item != "")
+                        if (!string.IsNullOrEmpty(item))
                         {
                             network.Join(item);
                         }

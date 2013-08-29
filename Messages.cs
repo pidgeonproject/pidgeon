@@ -283,7 +283,7 @@ namespace Client
                 }
                 string text = LanguageCache.GetText(language);
                 string value = parse(text, item);
-                if (value == "")
+                if (string.IsNullOrEmpty(value))
                 {
                     if (Language != language)
                     {

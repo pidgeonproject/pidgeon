@@ -223,7 +223,7 @@ namespace Client.Graphics
                                 Line = Line.Replace("\r", "");
                             }
                             Parser.parse(Line, parent);
-                            if (Line != "")
+                            if (!string.IsNullOrEmpty(Line))
                             {
                                 lock (history)
                                 {
@@ -245,7 +245,7 @@ namespace Client.Graphics
 
                     richTextBox1.Buffer.Text = richTextBox1.Buffer.Text.Replace("\n", "");
 
-                    if (richTextBox1.Buffer.Text != "")
+                    if (!string.IsNullOrEmpty(richTextBox1.Buffer.Text))
                     {
                         Parser.parse(richTextBox1.Buffer.Text);
                         history.Add(richTextBox1.Buffer.Text);

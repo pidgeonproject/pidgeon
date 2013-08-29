@@ -87,30 +87,23 @@ namespace Client
             /// </summary>
             public static void Load()
             {
-                try
+                while (true)
                 {
-                    while (true)
+                    try
                     {
-                        try
-                        {
-                            Save();
-                            System.Threading.Thread.Sleep(2000);
-                        }
-                        catch (ThreadAbortException)
-                        {
-                            Save();
-                            return;
-                        }
-                        catch (Exception e1)
-                        {
-                            Core.handleException(e1);
-                        }
-                        Thread.Sleep(2000);
+                        Save();
+                        System.Threading.Thread.Sleep(2000);
                     }
-                }
-                catch (ThreadAbortException)
-                {
-                    return;
+                    catch (ThreadAbortException)
+                    {
+                        Save();
+                        return;
+                    }
+                    catch (Exception e1)
+                    {
+                        Core.handleException(e1);
+                        Thread.Sleep(20000);
+                    }
                 }
             }
 

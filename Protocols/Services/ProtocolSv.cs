@@ -28,7 +28,7 @@ namespace Client
     /// <summary>
     /// Protocol for pidgeon services
     /// </summary>
-    public partial class ProtocolSv : Protocol
+    public partial class ProtocolSv : Protocol, IDisposable
     {
         private class Cache
         {
@@ -36,10 +36,6 @@ namespace Client
             /// Size
             /// </summary>
             public double size = 0;
-            /// <summary>
-            /// Current pointer
-            /// </summary>
-            public double current = 0;
         }
         
         private class Request
@@ -70,6 +66,7 @@ namespace Client
         
         private System.Threading.Thread main = null;
         private System.Threading.Thread keep = null;
+        private object StreamLock = new object();
         private DateTime pong = DateTime.Now;
 
         private System.Net.Sockets.NetworkStream _networkStream;
@@ -292,6 +289,25 @@ namespace Client
                 }
             }
             return null;
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        public void Dispose()
+        {
+            if (_StreamReader != null)
+            {
+                _StreamReader.Dispose();
+            }
+            if (_networkSsl != null)
+            {
+                _networkSsl.Dispose();
+            }
+            if (_StreamWriter != null)
+            {
+                _StreamWriter.Dispose();
+            }
         }
 
         private void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
@@ -716,7 +732,7 @@ namespace Client
                 server = server.Substring(1);
             }
             // in case that server is invalid, we ignore the request
-            if (server == "")
+            if (string.IsNullOrEmpty(server))
             {
                 return false;
             }
@@ -736,7 +752,7 @@ namespace Client
         /// </summary>
         /// <param name="datagram"></param>
         /// <returns></returns>
-        public bool Valid(string datagram)
+        public static bool Valid(string datagram)
         {
             if (datagram.StartsWith("<") && datagram.EndsWith(">"))
             {
@@ -779,7 +795,7 @@ namespace Client
             {
                 try
                 {
-                    lock (_StreamWriter)
+                    lock (StreamLock)
                     {
                         _StreamWriter.WriteLine(text);
                         Core.trafficscanner.Insert(Server, " << " + text);

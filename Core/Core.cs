@@ -40,7 +40,8 @@ namespace Client
             /// Creates a new instance of pidgeon exception
             /// </summary>
             /// <param name="Message"></param>
-            public PidgeonException(string Message) : base(Message)
+            public PidgeonException(string Message)
+                : base(Message)
             {
                 // this function just inherits the base for exception
             }
@@ -215,6 +216,7 @@ namespace Client
         /// Notification box
         /// </summary>
         private static Forms.Notification notification = null;
+        private static object RandomLock = new object();
         /// <summary>
         /// Threads currently allocated in kernel
         /// </summary>
@@ -403,7 +405,7 @@ namespace Client
         {
             if (Status.Loading != _Status)
             {
-                throw new Exception("You can't load core multiple times");
+                throw new Core.PidgeonException("You can't load core multiple times");
             }
             try
             {
@@ -755,25 +757,18 @@ namespace Client
         /// <param name="verbosity">Verbosity (default is 1)</param>
         public static void DebugLog(string data, int verbosity)
         {
-            try
+            System.Diagnostics.Debug.Print(data);
+            if (Configuration.Kernel.Debugging)
             {
-                System.Diagnostics.Debug.Print(data);
-                if (Configuration.Kernel.Debugging)
+                if (Core.SystemForm != null && !Core.IsBlocked)
                 {
-                    if (Core.SystemForm != null && !Core.IsBlocked)
+                    if (Core.SystemForm.main != null)
                     {
-                        if (Core.SystemForm.main != null)
-                        {
-                            Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
-                        }
+                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
                     }
                 }
-                Ringlog("DEBUG: " + data);
             }
-            catch (Exception er)
-            {
-                Core.handleException(er);
-            }
+            Ringlog("DEBUG: " + data);
         }
 
         /// <summary>
@@ -841,35 +836,27 @@ namespace Client
         /// <returns></returns>
         public static bool ProcessCommand(string command)
         {
-            try
+            if (command.StartsWith(Configuration.CommandPrefix))
             {
-                if (command.StartsWith(Configuration.CommandPrefix))
-                {
-                    command = command.Substring(1);
-                }
-
-                // in case that it's known command we return
-                if (Commands.Process(command))
-                {
-                    return true;
-                }
-
-                // if not we can try to pass it to server
-                if (Core.SystemForm.Chat != null && !Core.SystemForm.Chat.IsDestroyed && Core.SystemForm.Chat._Network != null && Core.SystemForm.Chat._Network._Protocol != null)
-                {
-                    if (SystemForm.Chat._Network._Protocol.IsConnected)
-                    {
-                        Core.SystemForm.Chat._Network._Protocol.Command(command);
-                        return false;
-                    }
-                }
-                SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
-                return false;
+                command = command.Substring(1);
             }
-            catch (Exception f)
+
+            // in case that it's known command we return
+            if (Commands.Process(command))
             {
-                handleException(f);
+                return true;
             }
+
+            // if not we can try to pass it to server
+            if (Core.SystemForm.Chat != null && !Core.SystemForm.Chat.IsDestroyed && Core.SystemForm.Chat._Network != null && Core.SystemForm.Chat._Network._Protocol != null)
+            {
+                if (SystemForm.Chat._Network._Protocol.IsConnected)
+                {
+                    Core.SystemForm.Chat._Network._Protocol.Command(command);
+                    return false;
+                }
+            }
+            SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
             return false;
         }
 
@@ -988,19 +975,10 @@ namespace Client
         public static string RetrieveRandom()
         {
             int random = 0;
-            bool lockWasTaken = false;
-            try
+            lock (RandomLock)
             {
-                Monitor.Enter(_KernelThread, ref lockWasTaken);
                 randomuq++;
                 random = randomuq;
-            }
-            finally
-            {
-                if (lockWasTaken)
-                {
-                    Monitor.Exit(_KernelThread);
-                }
             }
             return ":" + random.ToString() + "*";
         }
@@ -1014,12 +992,10 @@ namespace Client
         {
             try
             {
-                using (Forms.ScriptEdit edit = new Forms.ScriptEdit())
-                {
-                    edit.textBox1.Buffer.Text += script;
-                    edit.network = target;
-                    edit.Show();
-                }
+                Forms.ScriptEdit edit = new Forms.ScriptEdit();
+                edit.textBox1.Buffer.Text += script;
+                edit.network = target;
+                edit.Show();
             }
             catch (Exception fail)
             {
@@ -1318,7 +1294,7 @@ namespace Client
         {
             if (time == null)
             {
-                throw new Exception("Provided time was NULL");
+                throw new Core.PidgeonException("Provided time was NULL");
             }
             double unixtimestmp = double.Parse(time);
             return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(unixtimestmp);
@@ -1592,6 +1568,7 @@ namespace Client
     /// <summary>
     /// This is an attribute that should be used for all new functions
     /// </summary>
+    [AttributeUsage(AttributeTargets.All)]
     public class Experimental : Attribute
     { }
 }

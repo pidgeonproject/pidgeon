@@ -48,11 +48,6 @@ namespace Client
             public Dictionary<string, string> Parameters = new Dictionary<string, string>();
         }
 
-        public void Load()
-        { 
-            
-        }
-
         public override void Exit()
         {
             base.Exit();

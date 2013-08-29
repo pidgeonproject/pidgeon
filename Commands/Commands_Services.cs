@@ -102,7 +102,7 @@ namespace Client
 
             public static void service_gnick(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string nick = parameter;
                     if (Core.SystemForm.Chat._Protocol != null)
@@ -135,7 +135,7 @@ namespace Client
 
             public static void pidgeon_service(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     List<string> parameters = new List<string>();
                     parameters.AddRange(parameter.Split(' '));

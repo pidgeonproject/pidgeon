@@ -83,7 +83,7 @@ namespace Client
             Changed = false;
         }
 
-        private Client.RichTBox.ContentText CreateText(ContentLine line, string text)
+        private static Client.RichTBox.ContentText CreateText(ContentLine line, string text)
         {
             Color color = Configuration.CurrentSkin.JoinColor;
             if (line != null)

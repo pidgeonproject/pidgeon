@@ -110,7 +110,7 @@ namespace Client.Graphics
                 }
                 if (System.Threading.Thread.CurrentThread != Core._KernelThread)
                 {
-                    throw new Exception("You can't control other windows from non kernel thread");
+                    throw new Core.PidgeonException("You can't control other windows from non kernel thread");
                 }
                 hasUserList = value;
                 if (GtkScrolledWindow1 != null)
@@ -135,7 +135,7 @@ namespace Client.Graphics
                 }
                 if (System.Threading.Thread.CurrentThread != Core._KernelThread)
                 {
-                    throw new Exception("You can't control other windows from non kernel thread");
+                    throw new Core.PidgeonException("You can't control other windows from non kernel thread");
                 }
                 if (textbox != null)
                 {
@@ -496,7 +496,7 @@ namespace Client.Graphics
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Exception("You can't control other windows from non kernel thread");
+                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
             }
             this.Init();
             this.Create();
@@ -526,7 +526,7 @@ namespace Client.Graphics
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Exception("You can't control other windows from non kernel thread");
+                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
             }
             hasTextBox = _HasTextBox;
             hasUserList = _HasUserList;

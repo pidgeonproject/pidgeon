@@ -403,7 +403,7 @@ namespace Client.Services
                 }
                 if (Source.lines == null)
                 {
-                    throw new Exception("This window doesn't contain any lines");
+                    throw new Core.PidgeonException("This window doesn't contain any lines");
                 }
                 target.scrollback.SetText(Source.lines);
                 Source.lines.Clear();
@@ -608,7 +608,7 @@ namespace Client.Services
                     }
                     foreach (string network in Data)
                     {
-                        if (network != "")
+                        if (!string.IsNullOrEmpty(network))
                         {
                             Core.SystemForm.Status("Reading disk cache for " + network);
                             NetworkInfo info = DeserializeNetwork(Root + network);
@@ -870,31 +870,24 @@ namespace Client.Services
         /// </summary>
         public void WriteDisk()
         {
-            try
+            if (!Directory.Exists(Root))
             {
-                if (!Directory.Exists(Root))
+                Directory.CreateDirectory(Root);
+            }
+            Core.DebugLog("Saving cache for " + protocol.Server);
+            List<string> files = new List<string>();
+            lock (networkInfo)
+            {
+                foreach (KeyValuePair<string, NetworkInfo> network in networkInfo)
                 {
-                    Directory.CreateDirectory(Root);
+                    SerializeNetwork(network.Value, Root + network.Key);
+                    files.Add(network.Key);
                 }
-                Core.DebugLog("Saving cache for " + protocol.Server);
-                List<string> files = new List<string>();
-                lock (networkInfo)
-                {
-                    foreach (KeyValuePair<string, NetworkInfo> network in networkInfo)
-                    {
-                        SerializeNetwork(network.Value, Root + network.Key);
-                        files.Add(network.Key);
-                    }
-                }
+            }
 
-                ListFile(files, Root + "data");
-                Modified = false;
-                Core.DebugLog("Done");
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            ListFile(files, Root + "data");
+            Modified = false;
+            Core.DebugLog("Done");
         }
     }
 }

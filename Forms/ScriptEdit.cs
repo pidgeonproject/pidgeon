@@ -166,7 +166,7 @@ namespace Client.Forms
                 string[] values = textview1.Buffer.Text.Split ('\n');
                 foreach (string text in values)
                 {
-                    if (text != "")
+                    if (!string.IsNullOrEmpty(text))
                     {
                         if (text.StartsWith("#"))
                         {

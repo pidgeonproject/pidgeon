@@ -38,6 +38,7 @@ namespace Client
         /// <summary>
         /// Displayed window
         /// </summary>
+        [NonSerialized]
         public Graphics.Window Current = null;
         /// <summary>
         /// Windows
@@ -395,7 +396,7 @@ namespace Client
         /// <param name="user">User</param>
         /// <param name="text">Text</param>
         /// <returns></returns>
-        public string PRIVMSG(string user, string text)
+        public static string PRIVMSG(string user, string text)
         {
             return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + EncodeText(text);
         }

@@ -339,12 +339,12 @@ namespace Client
                         }
                         if (!Configuration.irc.DisplayMode)
                         {
-                            WindowText(window, _Protocol.PRIVMSG(user.Nick, message),
+                            WindowText(window, Protocol.PRIVMSG(user.Nick, message),
                             Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                         else
                         {
-                            WindowText(window, _Protocol.PRIVMSG(user.ChannelPrefix + user.Nick, message),
+                            WindowText(window, Protocol.PRIVMSG(user.ChannelPrefix + user.Nick, message),
                             Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                     }
@@ -363,7 +363,7 @@ namespace Client
                         _Network.Private(chan);
                     }
                     Graphics.Window w = _Protocol.Windows[_Network.SystemWindowID + chan];
-                    WindowText(w, _Protocol.PRIVMSG(chan, message),
+                    WindowText(w, Protocol.PRIVMSG(chan, message),
                         Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                     if (Configuration.Kernel.Notice && Configuration.Window.NotifyPrivate && w.Highlights && updated_text)
                     {

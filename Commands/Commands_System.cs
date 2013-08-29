@@ -15,6 +15,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Client
@@ -32,7 +33,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void LinkCmd(string parameter)
             {
-                if (parameter == "")
+                if (string.IsNullOrEmpty(parameter))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
                     return;
@@ -57,7 +58,7 @@ namespace Client
 
             public static void External(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string args = "";
                     if (parameter.Contains(" "))
@@ -86,7 +87,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void Link(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     if (Core.SystemForm.Chat._Network != null && Core.SystemForm.Chat._Network.ParentSv != null)
                     {
@@ -101,7 +102,7 @@ namespace Client
 
             public static void External2Text(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string args = "";
                     if (parameter.Contains(" "))
@@ -134,7 +135,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void RegisterModule(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     if (!Core.RegisterPlugin(parameter))
                     {
@@ -158,7 +159,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void man(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     lock (ManualPages)
                     {
@@ -221,7 +222,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void pidgeon_batch(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string path = parameter;
                     if (!System.IO.Path.IsPathRooted(path))
@@ -258,7 +259,7 @@ namespace Client
             /// <param name="parameter"></param>
             public static void server(string parameter)
             {
-                if (parameter == "")
+                if (string.IsNullOrEmpty(parameter))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
@@ -272,7 +273,7 @@ namespace Client
                 }
                 int n2;
                 bool ssl = false;
-                if (name == "")
+                if (string.IsNullOrEmpty(name))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
@@ -447,9 +448,9 @@ namespace Client
 
             public static void pidgeon_file(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
-                    if (System.IO.File.Exists(parameter))
+                    if (File.Exists(parameter))
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("This file already exist, use .overwite to overwrite it", Client.ContentLine.MessageStyle.System, false);
                         return;
@@ -463,9 +464,9 @@ namespace Client
 
                     try
                     {
-                        System.IO.File.WriteAllText(parameter, data);
+                        File.WriteAllText(parameter, data);
                     }
-                    catch (Exception fail)
+                    catch (IOException fail)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Client.ContentLine.MessageStyle.System, false);
                         Core.DebugLog("Unable to write: " + fail.ToString());
@@ -477,7 +478,7 @@ namespace Client
 
             public static void forced_pidgeon_file(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string data = "";
                     foreach (string text in Core.RingBuffer)
@@ -487,9 +488,9 @@ namespace Client
 
                     try
                     {
-                        System.IO.File.WriteAllText(parameter, data);
+                        File.WriteAllText(parameter, data);
                     }
-                    catch (Exception fail)
+                    catch (IOException fail)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Client.ContentLine.MessageStyle.System, false);
                         Core.DebugLog("Unable to write: " + fail.ToString());

@@ -25,7 +25,7 @@ namespace Client
         {
             public static void join(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string channel = parameter;
                     if (Core.SelectedNetwork == null)
@@ -57,7 +57,7 @@ namespace Client
             {
                 if (Core.SelectedNetwork != null)
                 {
-                    if (parameter != "")
+                    if (!string.IsNullOrEmpty(parameter))
                     {
                         string text = parameter;
                         if (Core.SelectedNetwork.IsConnected)
@@ -87,7 +87,7 @@ namespace Client
 
             public static void msg2(string parameter)
             {
-                if (parameter != "")
+                if (!string.IsNullOrEmpty(parameter))
                 {
                     string message = parameter;
                     if (Core.SelectedNetwork == null)
@@ -199,7 +199,7 @@ namespace Client
                                 Core.SelectedNetwork.Private(channel);
                             }
                             Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
-                            Core.SelectedNetwork._Protocol.Windows[Core.SelectedNetwork.SystemWindowID + channel].scrollback.InsertText(Core.SelectedNetwork._Protocol.PRIVMSG(Core.SelectedNetwork.Nickname,
+                            Core.SelectedNetwork._Protocol.Windows[Core.SelectedNetwork.SystemWindowID + channel].scrollback.InsertText(Protocol.PRIVMSG(Core.SelectedNetwork.Nickname,
                                 parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
                             Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
                             return;

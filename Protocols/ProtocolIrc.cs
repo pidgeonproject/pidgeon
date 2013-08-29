@@ -27,7 +27,7 @@ namespace Client
     /// <summary>
     /// Protocol
     /// </summary>
-    public class ProtocolIrc : Protocol
+    public class ProtocolIrc : Protocol, IDisposable
     {
         /// <summary>
         /// Thread in which the connection to server is handled
@@ -57,6 +57,7 @@ namespace Client
         /// Stream reader for server
         /// </summary>
         private System.IO.StreamReader _StreamReader = null;
+        private object StreamLock = new object();
         /// <summary>
         /// Network associated with this connection (we have only 1 network in direct connection)
         /// </summary>
@@ -216,6 +217,25 @@ namespace Client
         }
 
         /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        public void Dispose()
+        {
+            if (_StreamReader != null)
+            {
+                _StreamReader.Dispose();
+            }
+            if (_networkSsl != null)
+            {
+                _networkSsl.Dispose();
+            }
+            if (_StreamWriter != null)
+            {
+                _StreamWriter.Dispose();
+            }
+        }
+
+        /// <summary>
         /// Part
         /// </summary>
         /// <param name="name">Channel</param>
@@ -294,7 +314,7 @@ namespace Client
 
                 Connected = true;
 
-                if (Password != null && Password != "")
+                if (!string.IsNullOrEmpty(Password))
                 {
                     Send("PASS " + Password);
                 }
@@ -426,7 +446,7 @@ namespace Client
                     Core.DebugLog("NETWORK: attempt to send a packet to disconnected network");
                     return;
                 }
-                lock (_StreamWriter)
+                lock (StreamLock)
                 {
                     _StreamWriter.WriteLine(ms);
                     Core.trafficscanner.Insert(Server, " << " + ms);
@@ -466,7 +486,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core.SystemForm.Chat.scrollback.InsertText(Core.SelectedNetwork._Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
+                Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, priority);
             return 0;

@@ -23,7 +23,7 @@ namespace Client.PidgeonGtkToolkit
     /// <summary>
     /// MessageBox
     /// </summary>
-    public class MessageBox
+    public class MessageBox : IDisposable
     {
         /// <summary>
         /// Result of this box
@@ -47,6 +47,17 @@ namespace Client.PidgeonGtkToolkit
         {
             MessageBox mb = new MessageBox(parentWindow, messageType, buttons, message, title);
             return mb;
+        }
+
+        /// <summary>
+        /// Dispose
+        /// </summary>
+        public void Dispose()
+        {
+            if (Message != null)
+            {
+                Message.Dispose();
+            }
         }
 
         /// <summary>

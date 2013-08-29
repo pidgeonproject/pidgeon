@@ -162,7 +162,7 @@ namespace Client
                             lock (channel.UserList)
                             {
                                 User _u = channel.UserFromName(_user);
-                                if (_u == null && _user != "")
+                                if (_u == null && !string.IsNullOrEmpty(_user))
                                 {
                                     channel.UserList.Add(new User(user, "", _Network, ""));
                                 }
@@ -305,7 +305,7 @@ namespace Client
         {
             string chan = parameters;
             chan = chan.Replace(" ", "");
-            if (chan == "")
+            if (string.IsNullOrEmpty(chan))
             {
                 chan = value;
             }
@@ -477,7 +477,7 @@ namespace Client
         {
             string nick = source.Substring(0, source.IndexOf("!"));
             string _new = value;
-            if (value == "" && parameters != "")
+            if (string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(parameters))
             {
                 // server is fucked
                 _new = parameters;

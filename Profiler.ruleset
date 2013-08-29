@@ -4,7 +4,9 @@
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1000" Action="None" />
     <Rule Id="CA1002" Action="None" />
+    <Rule Id="CA1010" Action="None" />
     <Rule Id="CA1014" Action="None" />
+    <Rule Id="CA1024" Action="None" />
     <Rule Id="CA1026" Action="None" />
     <Rule Id="CA1034" Action="None" />
     <Rule Id="CA1051" Action="None" />
@@ -32,8 +34,12 @@
     <Rule Id="CA1724" Action="None" />
     <Rule Id="CA1725" Action="None" />
     <Rule Id="CA1726" Action="None" />
+    <Rule Id="CA2000" Action="None" />
+    <Rule Id="CA2001" Action="None" />
+    <Rule Id="CA2122" Action="None" />
     <Rule Id="CA2204" Action="None" />
     <Rule Id="CA2211" Action="None" />
+    <Rule Id="CA2214" Action="None" />
     <Rule Id="CA2225" Action="None" />
     <Rule Id="CA2233" Action="None" />
   </Rules>

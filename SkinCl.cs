@@ -26,7 +26,7 @@ namespace Client
     /// <summary>
     /// Skin
     /// </summary>
-    public class Skin
+    public class Skin : IDisposable
     {
         /// <summary>
         /// Icon of at symbol used for PM
@@ -145,7 +145,7 @@ namespace Client
         /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
 
-        private Color colorFromXmlCode(XmlNode code)
+        private static Color colorFromXmlCode(XmlNode code)
         {
             Color color = Color.Black;
             try
@@ -177,6 +177,19 @@ namespace Client
                 }
             }
             Core.DebugLog("No such a skin is loaded: " + path);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        public void Dispose()
+        {
+            Icon_ShadowHash.Dispose();
+            Icon_ShadowMark.Dispose();
+            Icon_At.Dispose();
+            Icon_ExclamationMark.Dispose();
+            Icon_Hash.Dispose();
+            Icon_ShadowAt.Dispose();
         }
 
         /// <summary>
@@ -289,7 +302,7 @@ namespace Client
             }
             if (mrcl.Count < 15)
             {
-                throw new Exception("The skin doesn't contain all required mirc colors");
+                throw new Core.PidgeonException("The skin doesn't contain all required mirc colors");
             }
         }
 

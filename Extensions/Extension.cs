@@ -219,7 +219,7 @@ namespace Client
             if (Name == "Unknown extension")
             {
                 _Status = Status.Stopped;
-                throw new Exception("Extension had no Initialise() function and was terminated");
+                throw new Core.PidgeonException("Extension had no Initialise() function and was terminated");
             }
         }
 

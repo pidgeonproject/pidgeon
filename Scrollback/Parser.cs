@@ -432,7 +432,7 @@ namespace Client
         {
             if (SBAB == null)
             {
-                throw new Exception("NULL reference to richtb");
+                throw new Core.PidgeonException("NULL reference to richtb");
             }
 
             Client.RichTBox.Line line = null;
@@ -468,7 +468,7 @@ namespace Client
                 {
                     // check if there is a prefix character that is a symbol which separates the url
                     char prefix = Prefix(tempdata, protocol);
-                    if (templine != "" || prefix != '\0')
+                    if (!string.IsNullOrEmpty(templine) || prefix != '\0')
                     {
                         // if there is a text in buffer from previous call, we need to build it
                         if (prefix != '\0')
@@ -851,7 +851,7 @@ namespace Client
         /// <returns></returns>
         public static int parse(string input, Graphics.Window window = null)
         {
-            if (input == "")
+            if (string.IsNullOrEmpty(input))
             {
                 return 0;
             }
