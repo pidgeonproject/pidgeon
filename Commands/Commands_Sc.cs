@@ -22,9 +22,9 @@ namespace Client
     /// <summary>
     /// This class is handling all commands
     /// </summary>
-    public partial class Commands
+    public static partial class Commands
     {
-        private partial class Generic
+        private static partial class Generic
         {
             public static void If(string parameter)
             {

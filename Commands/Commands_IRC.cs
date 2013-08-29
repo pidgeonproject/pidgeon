@@ -19,9 +19,9 @@ using System.Text;
 
 namespace Client
 {
-    public partial class Commands
+    public static partial class Commands
     {
-        private partial class Generic
+        private static partial class Generic
         {
             public static void join(string parameter)
             {

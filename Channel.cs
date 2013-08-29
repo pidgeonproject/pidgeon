@@ -232,7 +232,7 @@ namespace Client
                 if (trimmed.Contains(" "))
                 {
                     int space = 0;
-                    space = 160 + trimmed.Substring(160).IndexOf(" ");
+                    space = 160 + trimmed.Substring(160).IndexOf(" ", StringComparison.Ordinal);
                     trimmed = trimmed.Substring(0, space) + Environment.NewLine + trimmed.Substring(space);
                 }
             }
@@ -326,173 +326,166 @@ namespace Client
         /// </summary>
         public void RedrawUsers()
         {
-            try
+            Core.Profiler profiler = null;
+            if (Configuration.Kernel.Profiler)
             {
-                Core.Profiler profiler = null;
-                if (Configuration.Kernel.Profiler)
+                profiler = new Core.Profiler("Channel.redrawUsers()");
+            }
+            if (IsDestroyed)
+            {
+                return;
+            }
+            if (Core._KernelThread == System.Threading.Thread.CurrentThread)
+            {
+                Redraw = false;
+                RetrieveWindow();
+                List<User> owners = new List<User>();
+                List<User> admins = new List<User>();
+                List<User> oper = new List<User>();
+                List<User> halfop = new List<User>();
+                List<User> vs = new List<User>();
+                List<User> users = new List<User>();
+                bool Inserted;
+                Core.SystemForm.UpdateStatus();
+                if (Chat != null && Chat.isInitialised)
                 {
-                    profiler = new Core.Profiler("Channel.redrawUsers()");
-                }
-                if (IsDestroyed)
-                {
-                    return;
-                }
-                if (Core._KernelThread == System.Threading.Thread.CurrentThread)
-                {
-                    Redraw = false;
-                    RetrieveWindow();
-                    List<User> owners = new List<User>();
-                    List<User> admins = new List<User>();
-                    List<User> oper = new List<User>();
-                    List<User> halfop = new List<User>();
-                    List<User> vs = new List<User>();
-                    List<User> users = new List<User>();
-                    bool Inserted;
-                    Core.SystemForm.UpdateStatus();
-                    if (Chat != null && Chat.isInitialised)
+                    if (Chat.IsDestroyed)
                     {
-                        if (Chat.IsDestroyed)
+                        if (Configuration.Kernel.Profiler)
                         {
-                            if (Configuration.Kernel.Profiler)
-                            {
-                                profiler.Done();
-                            }
-                            return;
+                            profiler.Done();
                         }
-                        if (Chat.Locked)
+                        return;
+                    }
+                    if (Chat.Locked)
+                    {
+                        Redraw = true;
+                        Graphics.PidgeonList.Updated = true;
+                        UserListRefreshWait = true;
+                        if (Configuration.Kernel.Profiler)
                         {
-                            Redraw = true;
-                            Graphics.PidgeonList.Updated = true;
-                            UserListRefreshWait = true;
-                            if (Configuration.Kernel.Profiler)
-                            {
-                                profiler.Done();
-                            }
-                            return;
+                            profiler.Done();
                         }
-                        lock (UserList)
+                        return;
+                    }
+                    lock (UserList)
+                    {
+                        foreach (User nick in UserList)
                         {
-                            foreach (User nick in UserList)
+                            Inserted = false;
+                            if (nick.ChannelMode._Mode.Count > 0)
                             {
-                                Inserted = false;
-                                if (nick.ChannelMode._Mode.Count > 0)
+                                lock (_Network.CUModes)
                                 {
-                                    lock (_Network.CUModes)
+                                    foreach (char mode in _Network.CUModes)
                                     {
-                                        foreach (char mode in _Network.CUModes)
+                                        if (nick.ChannelMode._Mode.Contains(mode.ToString()))
                                         {
-                                            if (nick.ChannelMode._Mode.Contains(mode.ToString()))
+                                            switch (mode)
                                             {
-                                                switch (mode)
-                                                {
-                                                    case 'q':
-                                                        owners.Add(nick);
-                                                        Inserted = true;
-                                                        break;
-                                                    case 'a':
-                                                        admins.Add(nick);
-                                                        Inserted = true;
-                                                        break;
-                                                    case 'o':
-                                                        Inserted = true;
-                                                        oper.Add(nick);
-                                                        break;
-                                                    case 'h':
-                                                        Inserted = true;
-                                                        halfop.Add(nick);
-                                                        break;
-                                                    case 'v':
-                                                        vs.Add(nick);
-                                                        Inserted = true;
-                                                        break;
-                                                }
-                                                if (!Inserted)
-                                                {
-                                                    users.Add(nick);
+                                                case 'q':
+                                                    owners.Add(nick);
                                                     Inserted = true;
-                                                }
-                                                break;
+                                                    break;
+                                                case 'a':
+                                                    admins.Add(nick);
+                                                    Inserted = true;
+                                                    break;
+                                                case 'o':
+                                                    Inserted = true;
+                                                    oper.Add(nick);
+                                                    break;
+                                                case 'h':
+                                                    Inserted = true;
+                                                    halfop.Add(nick);
+                                                    break;
+                                                case 'v':
+                                                    vs.Add(nick);
+                                                    Inserted = true;
+                                                    break;
                                             }
+                                            if (!Inserted)
+                                            {
+                                                users.Add(nick);
+                                                Inserted = true;
+                                            }
+                                            break;
                                         }
                                     }
                                 }
-                                if (Inserted == true)
-                                {
-                                    continue;
-                                }
-                                users.Add(nick);
                             }
-                        }
-
-                        Chat.UserList.Clear();
-                        owners.Sort();
-                        admins.Sort();
-                        halfop.Sort();
-                        oper.Sort();
-                        vs.Sort();
-                        users.Sort();
-
-                        foreach (User user in owners)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Owner;
-                        }
-
-                        foreach (User user in admins)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Admin;
-                        }
-
-                        foreach (User user in oper)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Op;
-                        }
-
-                        foreach (User user in halfop)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Halfop;
-                        }
-
-                        foreach (User user in vs)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Voice;
-                        }
-
-                        foreach (User user in users)
-                        {
-                            Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
-                            user.Status = User.ChannelStatus.Regular;
+                            if (Inserted == true)
+                            {
+                                continue;
+                            }
+                            users.Add(nick);
                         }
                     }
-                    if (Configuration.Kernel.Profiler)
+
+                    Chat.UserList.Clear();
+                    owners.Sort();
+                    admins.Sort();
+                    halfop.Sort();
+                    oper.Sort();
+                    vs.Sort();
+                    users.Sort();
+
+                    foreach (User user in owners)
                     {
-                        profiler.Done();
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Owner;
                     }
-                    return;
-                }
 
-                Redraw = true;
-                Graphics.PidgeonList.Updated = true;
+                    foreach (User user in admins)
+                    {
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Admin;
+                    }
+
+                    foreach (User user in oper)
+                    {
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Op;
+                    }
+
+                    foreach (User user in halfop)
+                    {
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Halfop;
+                    }
+
+                    foreach (User user in vs)
+                    {
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Voice;
+                    }
+
+                    foreach (User user in users)
+                    {
+                        Chat.UserList.AppendValues(uchr(user) + user.Nick, user, user.ConvertToInfoString());
+                        user.Status = User.ChannelStatus.Regular;
+                    }
+                }
                 if (Configuration.Kernel.Profiler)
                 {
                     profiler.Done();
                 }
                 return;
             }
-            catch (Exception f)
+
+            Redraw = true;
+            Graphics.PidgeonList.Updated = true;
+            if (Configuration.Kernel.Profiler)
             {
-                Core.handleException(f);
+                profiler.Done();
             }
+            return;
         }
 
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
-        [Obsolete]
+        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.")]
         public void redrawUsers()
         {
             RedrawUsers();
@@ -559,7 +552,7 @@ namespace Client
         /// </summary>
         /// <param name="nick"></param>
         /// <returns></returns>
-        private string uchr(User nick)
+        private static string uchr(User nick)
         {
             return nick.ChannelPrefix;
         }
@@ -612,7 +605,7 @@ namespace Client
         /// </summary>
         /// <param name="name">User name</param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete ("Replace with UserFromName, will be removed in pidgeon 1.6")]
         public User userFromName(string name)
         {
             return UserFromName(name);
@@ -625,9 +618,13 @@ namespace Client
         /// <returns></returns>
         public User UserFromName(string name)
         {
+            if (name == null)
+            {
+                throw new Core.PidgeonException("User name can't be null");
+            }
             foreach (User item in UserList)
             {
-                if (name.ToLower() == item.Nick.ToLower())
+                if (name.ToLower(System.Globalization.CultureInfo.CurrentUICulture) == item.Nick.ToLower(System.Globalization.CultureInfo.CurrentUICulture))
                 {
                     return item;
                 }
@@ -645,11 +642,11 @@ namespace Client
             {
                 if (_Network == null)
                 {
-                    throw new Exception("Network is NULL for " + Name);
+                    throw new Core.PidgeonException("Network is NULL for " + Name);
                 }
                 if (_Network._Protocol == null)
                 {
-                    throw new Exception("Protocol is NULL for " + _Network.ServerName);
+                    throw new Core.PidgeonException("Protocol is NULL for " + _Network.ServerName);
                 }
                 lock (_Network._Protocol.Windows)
                 {
@@ -670,7 +667,7 @@ namespace Client
         /// Retrieve window - replaced by RetrieveWindow()
         /// </summary>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced with RetrieveWindow - will be removed in pidgeon 1.2.60")]
         public Graphics.Window retrieveWindow()
         {
             return RetrieveWindow();

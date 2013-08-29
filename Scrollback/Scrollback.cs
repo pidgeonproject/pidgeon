@@ -28,7 +28,6 @@ namespace Client
     /// <summary>
     /// Scrollback
     /// </summary>
-    [Serializable]
     [System.ComponentModel.ToolboxItem(true)]
     public partial class Scrollback : Gtk.Bin
     {

@@ -31,6 +31,21 @@ namespace Client
     public partial class Core
     {
         /// <summary>
+        /// Exception raised by pidgeon itself
+        /// </summary>
+        [Serializable]
+        public class PidgeonException : Exception
+        {
+            /// <summary>
+            /// Creates a new instance of pidgeon exception
+            /// </summary>
+            /// <param name="Message"></param>
+            public PidgeonException(string Message) : base(Message)
+            {
+                // this function just inherits the base for exception
+            }
+        }
+        /// <summary>
         /// Represent a domain for program
         /// </summary>
         public class Domain

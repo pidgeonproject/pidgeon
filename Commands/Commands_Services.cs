@@ -19,9 +19,9 @@ using System.Text;
 
 namespace Client
 {
-    public partial class Commands
+    public static partial class Commands
     {
-        private partial class Generic
+        private static partial class Generic
         {
             public static void services_flush(string parameter)
             {
@@ -38,15 +38,15 @@ namespace Client
 
             public static void connect(string parameter)
             {
-                if (parameter == "")
+                if (string.IsNullOrEmpty(parameter))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;
                 }
                 string name2 = parameter;
-                string b2 = parameter.Substring(parameter.IndexOf(name2) + name2.Length);
+                string b2 = parameter.Substring(parameter.IndexOf(name2, StringComparison.Ordinal) + name2.Length);
                 int n3;
-                if (name2 == "")
+                if (string.IsNullOrEmpty(name2))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                     return;

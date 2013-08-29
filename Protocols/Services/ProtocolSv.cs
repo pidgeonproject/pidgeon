@@ -28,7 +28,6 @@ namespace Client
     /// <summary>
     /// Protocol for pidgeon services
     /// </summary>
-    [Serializable]
     public partial class ProtocolSv : Protocol
     {
         private class Cache

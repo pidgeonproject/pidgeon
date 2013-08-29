@@ -27,7 +27,6 @@ namespace Client
     /// <summary>
     /// Protocol
     /// </summary>
-    [Serializable]
     public class ProtocolIrc : Protocol
     {
         /// <summary>
