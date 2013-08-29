@@ -23,7 +23,10 @@ using System.Text;
 
 namespace Client
 {
-    class Parser
+    /// <summary>
+    /// This is a parser of text provided by user or server
+    /// </summary>
+    public static class Parser
     {
         /// <summary>
         /// Parser cache

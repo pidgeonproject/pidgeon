@@ -308,6 +308,7 @@ namespace Client
             {
                 _StreamWriter.Dispose();
             }
+            GC.SuppressFinalize(this);
         }
 
         private void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)

@@ -647,6 +647,7 @@ namespace Client
         public void Dispose()
         {
             Destroy();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

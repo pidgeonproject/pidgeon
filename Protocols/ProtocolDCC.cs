@@ -216,6 +216,7 @@ namespace Client
             {
                 _StreamWriter.Dispose();
             }
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

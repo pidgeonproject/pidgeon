@@ -190,6 +190,7 @@ namespace Client
             Icon_ExclamationMark.Dispose();
             Icon_Hash.Dispose();
             Icon_ShadowAt.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

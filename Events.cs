@@ -21,12 +21,12 @@ namespace Client
     /// <summary>
     /// This is similar to hooks but is more flexible
     /// </summary>
-    class Events
+    public static class Events
     {
         /// <summary>
         /// System events
         /// </summary>
-        public class _System
+        public static class _System
         {
             /// <summary>
             /// Handler for this event
@@ -141,7 +141,7 @@ namespace Client
             }
         }
 
-        public class _Window
+        public static class _Window
         {
             /// <summary>
             /// Handler for this event
@@ -200,7 +200,7 @@ namespace Client
             }
         }
 
-        public class _Protocol
+        public static class _Protocol
         {
             /// <summary>
             /// Handler for this event
@@ -231,7 +231,7 @@ namespace Client
             }
         }
 
-        public class _Scrollback
+        public static class _Scrollback
         {
             public delegate void LinkMouseHoverHandler(object sender, Extension.MouseHoverArgs e);
             public static event LinkMouseHoverHandler OnMouseHover;

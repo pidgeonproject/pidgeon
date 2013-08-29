@@ -23,7 +23,10 @@ using System.Xml.Serialization;
 
 namespace Client
 {
-    class LineLogs
+    /// <summary>
+    /// Helper class
+    /// </summary>
+    public static class LineLogs
     {
         private static string validpath(string path)
         {

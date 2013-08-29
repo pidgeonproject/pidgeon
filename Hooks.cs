@@ -22,12 +22,12 @@ namespace Client
     /// <summary>
     /// These functions are called when the event in question happen
     /// </summary>
-    class Hooks
+    public static class Hooks
     {
         /// <summary>
         /// System hooks
         /// </summary>
-        public class _Sys
+        public static class _Sys
         {
             /// <summary>
             /// Event to happen when core finish
@@ -143,7 +143,7 @@ namespace Client
         /// <summary>
         /// Window
         /// </summary>
-        public class _Window
+        public static class _Window
         {
             /// <summary>
             /// This is called before the user menu is shown
@@ -217,7 +217,7 @@ namespace Client
         /// <summary>
         /// Protocol hooks
         /// </summary>
-        public class _Protocol
+        public static class _Protocol
         {
             /// <summary>
             /// This hook allow you to call functions before you open connection
@@ -257,7 +257,7 @@ namespace Client
         /// <summary>
         /// Scrollback hooks
         /// </summary>
-        public class _Scrollback
+        public static class _Scrollback
         {
             /// <summary>
             /// When you hover over a link //fixme
@@ -433,7 +433,7 @@ namespace Client
         /// <summary>
         /// Network
         /// </summary>
-        public class _Network
+        public static class _Network
         {
             /// <summary>
             /// Hook that is triggered when you connect to network

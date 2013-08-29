@@ -58,6 +58,7 @@ namespace Client.PidgeonGtkToolkit
             {
                 Message.Dispose();
             }
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>

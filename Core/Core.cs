@@ -1569,6 +1569,6 @@ namespace Client
     /// This is an attribute that should be used for all new functions
     /// </summary>
     [AttributeUsage(AttributeTargets.All)]
-    public class Experimental : Attribute
+    public sealed class Experimental : Attribute
     { }
 }

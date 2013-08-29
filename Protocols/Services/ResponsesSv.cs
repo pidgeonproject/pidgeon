@@ -23,7 +23,7 @@ namespace Client
 {
     public partial class ProtocolSv
     {
-        class ResponsesSv
+        private static class ResponsesSv
         {
             /// <summary>
             /// Message
@@ -445,7 +445,7 @@ namespace Client
                     int id = 0;
                     foreach (string i in _networks)
                     {
-                        if (i != "")
+                        if (!string.IsNullOrEmpty(i))
                         {
                             protocol.Deliver(new Datagram("NETWORKINFO", i));
                             Network nw = new Network(i, protocol);
