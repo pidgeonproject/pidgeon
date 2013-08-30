@@ -114,19 +114,26 @@ namespace Client.Forms
 
         private void MenuBans(object sender, Gtk.PopupMenuArgs e)
         {
-            Gtk.Menu menu = new Menu();
-            Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
-            reload.Activated += new EventHandler(retrieveToolStripMenuItem1_Click);
-            Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
-            delete.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
-            Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
-            refresh.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
-            menu.Append(delete);
-            menu.Append(refresh);
-            menu.Append(new SeparatorMenuItem());
-            menu.Append(reload);
-            menu.ShowAll();
-            menu.Popup();
+            try
+            {
+                Gtk.Menu menu = new Menu();
+                Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
+                reload.Activated += new EventHandler(retrieveToolStripMenuItem1_Click);
+                Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
+                delete.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
+                Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
+                refresh.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
+                menu.Append(delete);
+                menu.Append(refresh);
+                menu.Append(new SeparatorMenuItem());
+                menu.Append(reload);
+                menu.ShowAll();
+                menu.Popup();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
         }
 
         private void ReloadExceptions()
@@ -362,40 +369,6 @@ namespace Client.Forms
                         channel._Network.Transfer("MODE " + channel.Name + " -e " + ex.Target);
                     }
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void cleanToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private bool timerBans_Tick(object sender, EventArgs e)
-        {
-            try
-            {
-                if (!channel.IsParsingBanData)
-                {
-                    ReloadBans();
-                    return false;
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-            return true;
-        }
-
-        private void reloadToolStripMenuItem3_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                
             }
             catch (Exception fail)
             {

@@ -37,23 +37,23 @@ namespace Client
         {
             if (parameters.Contains("PREFIX=("))
             {
-                string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                cmodes = cmodes.Substring(0, cmodes.IndexOf(")"));
+                string cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
+                cmodes = cmodes.Substring(0, cmodes.IndexOf(")", StringComparison.Ordinal));
                 lock (_Network.CUModes)
                 {
                     _Network.CUModes.Clear();
                     _Network.CUModes.AddRange(cmodes.ToArray<char>());
                 }
-                cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(") + 8);
-                cmodes = cmodes.Substring(cmodes.IndexOf(")") + 1, _Network.CUModes.Count);
+                cmodes = parameters.Substring(parameters.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
+                cmodes = cmodes.Substring(cmodes.IndexOf(")", StringComparison.Ordinal) + 1, _Network.CUModes.Count);
 
                 _Network.UChars.Clear();
                 _Network.UChars.AddRange(cmodes.ToArray<char>());
             }
             if (parameters.Contains("CHANMODES="))
             {
-                string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=") + 11);
-                xmodes = xmodes.Substring(0, xmodes.IndexOf(" "));
+                string xmodes = parameters.Substring(parameters.IndexOf("CHANMODES=", StringComparison.Ordinal) + 11);
+                xmodes = xmodes.Substring(0, xmodes.IndexOf(" ", StringComparison.Ordinal));
                 string[] _mode = xmodes.Split(',');
                 _Network.ParsedInfo = true;
                 if (_mode.Length == 4)
@@ -80,16 +80,16 @@ namespace Client
         /// <returns></returns>
         private bool ChannelData(string command, string parameters, string value)
         {
-            string channel_name = parameters.Substring(parameters.IndexOf(" ") + 1);
+            string channel_name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
             uint user_count = 0;
             if (channel_name.Contains(" "))
             {
-                if (!uint.TryParse(channel_name.Substring(channel_name.IndexOf(" ") + 1), out user_count))
+                if (!uint.TryParse(channel_name.Substring(channel_name.IndexOf(" ", StringComparison.Ordinal) + 1), out user_count))
                 {
                     user_count = 0;
                 }
 
-                channel_name = channel_name.Substring(0, channel_name.IndexOf(" "));
+                channel_name = channel_name.Substring(0, channel_name.IndexOf(" ", StringComparison.Ordinal));
             }
 
             _Network.DownloadingList = true;
@@ -130,9 +130,9 @@ namespace Client
             string chan = null;
             if (source.Contains("!"))
             {
-                _nick = source.Substring(0, source.IndexOf("!"));
-                _ident = source.Substring(source.IndexOf("!") + 1);
-                _ident = _ident.Substring(0, _ident.IndexOf("@"));
+                _nick = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
+                _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
+                _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
             }
             else
             {
@@ -150,10 +150,10 @@ namespace Client
             if (!chan.Contains(_Network.channel_prefix))
             {
                 string uc;
-                if (message.StartsWith(_Protocol.delimiter.ToString()))
+                if (message.StartsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
                 {
                     string trimmed = message;
-                    if (trimmed.StartsWith(_Protocol.delimiter.ToString()))
+                    if (trimmed.StartsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
                     {
                         trimmed = trimmed.Substring(1);
                     }
@@ -161,7 +161,7 @@ namespace Client
                     {
                         trimmed = trimmed.Substring(0, trimmed.Length - 1);
                     }
-                    if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
+                    if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION", StringComparison.Ordinal))
                     {
                         message = message.Substring("xACTION".Length);
                         if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
@@ -203,7 +203,7 @@ namespace Client
                         }
                         if (uc.Contains(" "))
                         {
-                            uc = uc.Substring(0, uc.IndexOf(" "));
+                            uc = uc.Substring(0, uc.IndexOf(" ", StringComparison.Ordinal));
                         }
                         uc = uc.ToUpper();
                         if (!Configuration.irc.FirewallCTCP)
@@ -301,7 +301,7 @@ namespace Client
             }
             user = new User(_nick, _host, _Network, _ident);
             Channel channel = null;
-            if (chan.StartsWith(_Network.channel_prefix))
+            if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
             {
                 channel = _Network.getChannel(chan);
                 if (channel != null)
@@ -317,7 +317,7 @@ namespace Client
                                 return true;
                             }
                         }
-                        if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION"))
+                        if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION", StringComparison.Ordinal))
                         {
                             message = message.Substring("xACTION".Length);
                             if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
@@ -355,7 +355,7 @@ namespace Client
             }
             if (chan == _Network.Nickname)
             {
-                chan = source.Substring(0, source.IndexOf("!"));
+                chan = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
                 lock (_Protocol.Windows)
                 {
                     if (!_Protocol.Windows.ContainsKey(_Network.SystemWindowID + chan))
@@ -394,7 +394,7 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " " + value, Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
@@ -447,7 +447,7 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " is in channels: " + value, Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
@@ -465,14 +465,14 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 if (!name.Contains(" "))
                 {
                     Core.DebugLog("Invalid whois record " + parameters);
                     return false;
                 }
-                string server = name.Substring(name.IndexOf(" ") + 1);
-                name = name.Substring(0, name.IndexOf(" "));
+                string server = name.Substring(name.IndexOf(" ", StringComparison.Ordinal) + 1);
+                name = name.Substring(0, name.IndexOf(" ", StringComparison.Ordinal));
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " is using server: " + server + " (" + value + ")", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
@@ -493,19 +493,19 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 if (name.Contains(" ") != true)
                 {
                     return false;
                 }
-                string idle = name.Substring(name.IndexOf(" ") + 1);
+                string idle = name.Substring(name.IndexOf(" ", StringComparison.Ordinal) + 1);
                 if (idle.Contains(" ") != true)
                 {
                     return false;
                 }
-                string uptime = idle.Substring(idle.IndexOf(" ") + 1);
-                name = name.Substring(0, name.IndexOf(" "));
-                idle = idle.Substring(0, idle.IndexOf(" "));
+                string uptime = idle.Substring(idle.IndexOf(" ", StringComparison.Ordinal) + 1);
+                name = name.Substring(0, name.IndexOf(" ", StringComparison.Ordinal));
+                idle = idle.Substring(0, idle.IndexOf(" ", StringComparison.Ordinal));
                 DateTime logintime = Core.ConvertFromUNIX(uptime);
                 WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + " (" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;
@@ -515,12 +515,12 @@ namespace Client
 
         private bool Quit(string source, string parameters, string value)
         {
-            string user = source.Substring(0, source.IndexOf("!"));
+            string user = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
             string _ident;
             string _host;
-            _host = source.Substring(source.IndexOf("@") + 1);
-            _ident = source.Substring(source.IndexOf("!") + 1);
-            _ident = _ident.Substring(0, _ident.IndexOf("@"));
+            _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
+            _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
+            _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
             foreach (Channel item in _Network.Channels)
             {
                 if (item.ChannelWork)

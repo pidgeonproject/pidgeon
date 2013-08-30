@@ -769,11 +769,11 @@ namespace Client.Graphics
             {
                 if (_Network.IsConnected)
                 {
-                    Channel channel = getChannel();
-                    if (channel != null)
+                    Channel _channel = getChannel();
+                    if (_channel != null)
                     {
-                        channel.UserList.Clear();
-                        _Network.Transfer("WHO " + channel.Name);
+                        _channel.UserList.Clear();
+                        _Network.Transfer("WHO " + _channel.Name);
                     }
                 }
             }

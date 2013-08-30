@@ -168,11 +168,11 @@ namespace Client.Forms
                 {
                     if (!string.IsNullOrEmpty(text))
                     {
-                        if (text.StartsWith("#"))
+                        if (text.StartsWith("#", StringComparison.Ordinal))
                         {
                             continue;
                         }
-                        if (text.StartsWith(Configuration.CommandPrefix))
+                        if (text.StartsWith(Configuration.CommandPrefix, StringComparison.Ordinal))
                         {
                             Core.ProcessCommand(text);
                             continue;

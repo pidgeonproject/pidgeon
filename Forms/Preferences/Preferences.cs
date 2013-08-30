@@ -254,11 +254,6 @@ namespace Client.Forms
             }
         }
 
-        private void lquit_Click(object sender, EventArgs e)
-        {
-            this.Hide();
-        }
-
         private void hide(object x, DeleteEventArgs e)
         {
             e.RetVal = true;
@@ -407,18 +402,6 @@ namespace Client.Forms
             }
         }
 
-        private void modifyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //if (listView2.SelectedItems.Count > 0)
-            //{
-            //    ShortcutBox sb = new ShortcutBox();
-            //    sb.Show();
-            //    sb.Left = this.Left + (this.Width / 2);
-            //    sb.config = this;
-            //    sb.Top = this.Top + (this.Height / 2);
-            //}
-        }
-
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             try
@@ -507,23 +490,6 @@ namespace Client.Forms
                             Ignoring.IgnoreList.Remove(x);
                         }
                     }
-                }
-                ReloadIgnores();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void createToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Ignoring.Ignore item = new Ignoring.Ignore(false, true, "someone_bad", Ignoring.Ignore.Type.User);
-                lock (Ignoring.IgnoreList)
-                {
-                    Ignoring.IgnoreList.Add(item);
                 }
                 ReloadIgnores();
             }

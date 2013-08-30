@@ -279,7 +279,7 @@ namespace Client
                     return;
                 }
 
-                if (name.StartsWith("$"))
+                if (name.StartsWith("$", StringComparison.Ordinal))
                 {
                     ssl = true;
                     while (name.StartsWith("$"))
@@ -426,15 +426,6 @@ namespace Client
             {
                 System.GC.Collect();
                 Core.SystemForm.Chat.scrollback.InsertText("Memory was cleaned up", Client.ContentLine.MessageStyle.System, false);
-            }
-
-            /// <summary>
-            /// Write a ring to logs
-            /// </summary>
-            /// <param name="parameter"></param>
-            public static void ring_writetologs(string parameter)
-            {
-                Core.PrintRing(Core.SystemForm.Chat, true);
             }
 
             /// <summary>

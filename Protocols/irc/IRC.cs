@@ -64,7 +64,7 @@ namespace Client
         /// <returns></returns>
         private bool ProcessThis(string source, string[] _data2, string _value)
         {
-            if (source.StartsWith(_Network.Nickname + "!"))
+            if (source.StartsWith(_Network.Nickname + "!", StringComparison.Ordinal))
             {
                 if (_data2.Length > 1)
                 {
@@ -151,7 +151,7 @@ namespace Client
                             // server is totally borked
                             if (_new.Contains(" "))
                             {
-                                _new = _new.Substring(0, _new.IndexOf(" "));
+                                _new = _new.Substring(0, _new.IndexOf(" ", StringComparison.Ordinal));
                             }
                         }
                         _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _new }),
@@ -220,7 +220,7 @@ namespace Client
                 {
                     return false;
                 }
-                if (text.StartsWith(":"))
+                if (text.StartsWith(":", StringComparison.Ordinal))
                 {
                     // :ottermaton!~mark@lancaster.hacc.edu JOIN #debian
                     last = text;
@@ -238,7 +238,7 @@ namespace Client
                         }
                         command_body = command_body.Substring(0, command_body.IndexOf(" :", StringComparison.Ordinal));
                     }
-                    source = source.Substring(0, source.IndexOf(" "));
+                    source = source.Substring(0, source.IndexOf(" ", StringComparison.Ordinal));
                     if (command_body.Length < source.Length + 1)
                     {
                         Core.DebugLog("Invalid IRC string: " + text);
@@ -247,7 +247,7 @@ namespace Client
 
                     if (command2.Contains(" "))
                     {
-                        command = command2.Substring(0, command2.IndexOf(" "));
+                        command = command2.Substring(0, command2.IndexOf(" ", StringComparison.Ordinal));
                         if (command2.Length > 1 + command.Length)
                         {
                             parameters = command2.Substring(1 + command.Length);
@@ -267,7 +267,7 @@ namespace Client
                         value = text.Substring(3 + command2.Length + source.Length);
                     }
 
-                    if (value.StartsWith(":"))
+                    if (value.StartsWith(":", StringComparison.Ordinal))
                     {
                         value = value.Substring(1);
                     }
@@ -403,7 +403,8 @@ namespace Client
                             Ping();
                             return true;
                         case "INFO":
-                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO") + 5), Client.ContentLine.MessageStyle.User, true, date, !updated_text);
+                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO", StringComparison.Ordinal) + 5), Client.ContentLine.MessageStyle.User,
+                                true, date, !updated_text);
                             return true;
                         case "NOTICE":
                             if (parameters.Contains(_Network.channel_prefix))
@@ -542,13 +543,13 @@ namespace Client
                     string value = "";
                     if (command.Contains(" :"))
                     {
-                        value = command.Substring(command.IndexOf(" :") + 2);
-                        command = command.Substring(0, command.IndexOf(" :"));
+                        value = command.Substring(command.IndexOf(" :", StringComparison.Ordinal) + 2);
+                        command = command.Substring(0, command.IndexOf(" :", StringComparison.Ordinal));
                     }
                     // for extra borked ircd
                     if (command.Contains(" "))
                     {
-                        command = command.Substring(0, command.IndexOf(" "));
+                        command = command.Substring(0, command.IndexOf(" ", StringComparison.Ordinal));
                     }
 
                     switch (command)
@@ -576,13 +577,13 @@ namespace Client
         /// <summary>
         /// This function handle the writing to scrollback
         /// </summary>
-        /// <param name="window"></param>
-        /// <param name="text"></param>
+        /// <param name="ScrollbackWindow"></param>
+        /// <param name="ScrollbackText"></param>
         /// <param name="InputStyle"></param>
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        public void WindowText(Graphics.Window window, string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        private void WindowText(Graphics.Window ScrollbackWindow, string ScrollbackText, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             bool logging = WriteLog;
 
@@ -610,7 +611,7 @@ namespace Client
                 }
             }
 
-            window.scrollback.InsertText(text, InputStyle, logging, Date, SuppressPing);
+            ScrollbackWindow.scrollback.InsertText(ScrollbackText, InputStyle, logging, Date, SuppressPing);
         }
 
         /// <summary>

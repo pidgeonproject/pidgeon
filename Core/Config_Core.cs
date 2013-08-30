@@ -468,7 +468,7 @@ namespace Client
                                     }
                                     if (curr.Attributes.Count > 0)
                                     {
-                                        if (curr.Name.StartsWith("extension."))
+                                        if (curr.Name.StartsWith("extension.", StringComparison.Ordinal))
                                         {
                                             Configuration.SetConfig(curr.Name.Substring(10), curr.InnerText);
                                             continue;

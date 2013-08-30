@@ -260,7 +260,7 @@ namespace Client
         public static class _Scrollback
         {
             /// <summary>
-            /// When you hover over a link //fixme
+            /// When you hover over a link
             /// </summary>
             /// <param name="URL"></param>
             /// <param name="X"></param>

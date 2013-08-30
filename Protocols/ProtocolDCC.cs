@@ -37,8 +37,8 @@ namespace Client
         /// Thread in which the connection is running
         /// </summary>
         private Thread thread = null;
-        private System.Net.Sockets.NetworkStream _networkStream = null;
-        private System.Net.Security.SslStream _networkSsl = null;
+        private System.Net.Sockets.NetworkStream _NetworkStream = null;
+        private System.Net.Security.SslStream _NetworkSsl = null;
         private System.IO.StreamReader _StreamReader = null;
         private object StreamLock = new object();
         private System.IO.StreamWriter _StreamWriter = null;
@@ -75,19 +75,19 @@ namespace Client
 
                 if (!SSL)
                 {
-                    _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
-                    _StreamWriter = new System.IO.StreamWriter(_networkStream);
-                    _StreamReader = new System.IO.StreamReader(_networkStream, NetworkEncoding);
+                    _NetworkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
+                    _StreamWriter = new System.IO.StreamWriter(_NetworkStream);
+                    _StreamReader = new System.IO.StreamReader(_NetworkStream, NetworkEncoding);
                 }
 
                 if (SSL)
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
-                    _networkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
+                    _NetworkSsl = new System.Net.Security.SslStream(client.GetStream(), true,
                         new System.Net.Security.RemoteCertificateValidationCallback(Protocol.ValidateServerCertificate), null);
-                    _networkSsl.AuthenticateAsClient(Server);
-                    _StreamWriter = new System.IO.StreamWriter(_networkSsl);
-                    _StreamReader = new System.IO.StreamReader(_networkSsl, NetworkEncoding);
+                    _NetworkSsl.AuthenticateAsClient(Server);
+                    _StreamWriter = new System.IO.StreamWriter(_NetworkSsl);
+                    _StreamReader = new System.IO.StreamReader(_NetworkSsl, NetworkEncoding);
                 }
 
                 Connected = true;
@@ -135,11 +135,11 @@ namespace Client
             if (SSL)
             {
                 X509Certificate cert = new X509Certificate2(Configuration.irc.CertificateDCC, "pidgeon");
-                System.Net.Security.SslStream _networkSsl = new SslStream(connection.GetStream(), false,
+                System.Net.Security.SslStream __networkSsl = new SslStream(connection.GetStream(), false,
                     new System.Net.Security.RemoteCertificateValidationCallback(ValidateServerCertificate), null);
-                _networkSsl.AuthenticateAsServer(cert);
-                _StreamWriter = new StreamWriter(_networkSsl);
-                _StreamReader = new StreamReader(_networkSsl, Encoding.UTF8);
+                __networkSsl.AuthenticateAsServer(cert);
+                _StreamWriter = new StreamWriter(__networkSsl);
+                _StreamReader = new StreamReader(__networkSsl, Encoding.UTF8);
             }
             else
             {
@@ -173,16 +173,16 @@ namespace Client
             }
             if (!SSL)
             {
-                if (_networkStream != null)
+                if (_NetworkStream != null)
                 {
-                    _networkStream.Close();
+                    _NetworkStream.Close();
                 }
             }
             else
             {
-                if (_networkSsl != null)
+                if (_NetworkSsl != null)
                 {
-                    _networkSsl.Close();
+                    _NetworkSsl.Close();
                 }
             }
             Connected = false;
@@ -208,9 +208,9 @@ namespace Client
             {
                 _StreamReader.Dispose();
             }
-            if (_networkSsl != null)
+            if (_NetworkSsl != null)
             {
-                _networkSsl.Dispose();
+                _NetworkSsl.Dispose();
             }
             if (_StreamWriter != null)
             {

@@ -303,14 +303,6 @@ namespace Client.Forms
             }
         }
 
-        private void Changed(object sender, EventArgs dt)
-        {
-            if (done)
-            {
-                Configuration.Window.WindowSize = hpaned1.Position;
-            }
-        }
-
         /// <summary>
         /// Create a new chat, replaced by Graphics.Window.CreateChat(Protocol, bool)
         /// </summary>
@@ -486,7 +478,7 @@ namespace Client.Forms
             }
         }
 
-        private void Unshow(object main, Gtk.DeleteEventArgs closing)
+        private void Unshow(object sender, Gtk.DeleteEventArgs closing)
         {
             try
             {
@@ -741,21 +733,6 @@ namespace Client.Forms
                 searchbox.Show();
                 searchbox.GrabFocus();
                 searchbox.setFocus();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void switchToAdvancedLayoutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (Chat != null)
-                {
-                    Chat.scrollback.Switch(true);
-                }
             }
             catch (Exception fail)
             {

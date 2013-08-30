@@ -26,19 +26,6 @@ namespace Client.Protocols
         public static byte[] CreateSelfSignCertificatePfx(
             string x500,
             DateTime startTime,
-            DateTime endTime)
-        {
-            byte[] pfxData = CreateSelfSignCertificatePfx(
-                x500,
-                startTime,
-                endTime,
-                (SecureString)null);
-            return pfxData;
-        }
-
-        public static byte[] CreateSelfSignCertificatePfx(
-            string x500,
-            DateTime startTime,
             DateTime endTime,
             string insecurePassword)
         {

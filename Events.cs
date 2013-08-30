@@ -34,6 +34,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void AfterCoreHandler(object sender, EventArgs e);
+            /// <summary>
+            /// This event happens after the core is loaded
+            /// </summary>
             public static event AfterCoreHandler AfterCore;
 
             /// <summary>
@@ -62,6 +65,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void BeforeNoteHandler(object sender, Extension.BeforeNoteArgs e);
+            /// <summary>
+            /// This event happens before the note is displayed
+            /// </summary>
             public static event BeforeNoteHandler BeforeNote;
 
             /// <summary>
@@ -90,6 +96,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void InitialiseHandler(object sender, Extension.SystemInitialiseArgs e);
+            /// <summary>
+            /// This event happens when the application is initialised
+            /// </summary>
             public static event InitialiseHandler Initialise;
 
             /// <summary>
@@ -118,6 +127,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void BeforeOptionsHandler(object sender, Extension.BeforeOptionsArgs e);
+            /// <summary>
+            /// This event happens before the options dialog is shown
+            /// </summary>
             public static event BeforeOptionsHandler BeforeOptions;
 
             /// <summary>
@@ -141,6 +153,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Windows
+        /// </summary>
         public static class _Window
         {
             /// <summary>
@@ -149,6 +164,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void BeforeUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
+            /// <summary>
+            /// Event that happens before the user menu
+            /// </summary>
             public static event BeforeUserMenuHandler BeforeUserMenu;
 
             /// <summary>
@@ -177,6 +195,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void AfterUserMenuHandler(object sender, Extension.BeforeUserMenuArgs e);
+            /// <summary>
+            /// This even happens right before the user menu is displayed
+            /// </summary>
             public static event AfterUserMenuHandler AfterUserMenu;
 
             /// <summary>
@@ -200,6 +221,9 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Protocol
+        /// </summary>
         public static class _Protocol
         {
             /// <summary>
@@ -231,9 +255,20 @@ namespace Client
             }
         }
 
+        /// <summary>
+        /// Scrollback
+        /// </summary>
         public static class _Scrollback
         {
+            /// <summary>
+            /// Handler for this event
+            /// </summary>
+            /// <param name="sender"></param>
+            /// <param name="e"></param>
             public delegate void LinkMouseHoverHandler(object sender, Extension.MouseHoverArgs e);
+            /// <summary>
+            /// This event is triggered when you mouse over a link
+            /// </summary>
             public static event LinkMouseHoverHandler OnMouseHover;
 
             /// <summary>

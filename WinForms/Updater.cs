@@ -114,12 +114,12 @@ namespace Client
                                     string[]lines = System.IO.File.ReadAllLines(temporarydir + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
                                     foreach (string line in lines)
                                     {
-                                        if (line.StartsWith("link|"))
+                                        if (line.StartsWith("link|", StringComparison.Ordinal))
                                         {
                                             link = line.Substring(5);
                                             continue;
                                         }
-                                        if (line.StartsWith("message|"))
+                                        if (line.StartsWith("message|", StringComparison.Ordinal))
                                         {
                                             message = line.Substring(8);
                                             continue;
@@ -244,9 +244,9 @@ namespace Client
                 if (finalize)
                 {
                     string up = System.IO.File.ReadAllText(System.Windows.Forms.Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat");
-                    string td = up.Substring(up.IndexOf("temp: ") + 6);
-                    td = td.Substring(0, td.IndexOf("^"));
-                    string main = up.Substring(up.IndexOf("previous: ") + 10);
+                    string td = up.Substring(up.IndexOf("temp: ", StringComparison.Ordinal) + 6);
+                    td = td.Substring(0, td.IndexOf("^", StringComparison.Ordinal));
+                    string main = up.Substring(up.IndexOf("previous: ", StringComparison.Ordinal) + 10);
                     System.Threading.Thread.Sleep(10000);
                     foreach (string line in up.Split('\n'))
                     {

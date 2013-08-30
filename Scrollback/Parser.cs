@@ -171,10 +171,10 @@ namespace Client
         {
             if (text.Contains("%D%") && text.Contains("%/D%"))
             {
-                string link = text.Substring(text.IndexOf("%D%") + 3);
+                string link = text.Substring(text.IndexOf("%D%", StringComparison.Ordinal) + 3);
                 if (link.Length > 0)
                 {
-                    link = link.Substring(0, link.IndexOf("%/D%"));
+                    link = link.Substring(0, link.IndexOf("%/D%", StringComparison.Ordinal));
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://ident/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
@@ -250,7 +250,7 @@ namespace Client
         /// <returns></returns>
         private static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
         {
-            if (text.StartsWith("#"))
+            if (text.StartsWith("#", StringComparison.Ordinal))
             {
                 string link = text.Substring(text.IndexOf("#"));
                 if (link.Length > 0)
@@ -300,10 +300,10 @@ namespace Client
         {
             if (text.Contains("%USER%") && text.Contains("%/USER%"))
             {
-                string link = text.Substring(text.IndexOf("%USER%") + 6);
+                string link = text.Substring(text.IndexOf("%USER%", StringComparison.Ordinal) + 6);
                 if (link.Length > 0)
                 {
-                    link = link.Substring(0, link.IndexOf("%/USER%"));
+                    link = link.Substring(0, link.IndexOf("%/USER%", StringComparison.Ordinal));
 
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Bold = bold;
@@ -338,7 +338,7 @@ namespace Client
             {
                 if (tempdata.Contains(prefix + CurrentProtocol))
                 {
-                    string link = result.Substring(result.IndexOf(CurrentProtocol) + CurrentProtocol.Length);
+                    string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + CurrentProtocol.Length);
                     // remove a leading char which we used to parse the link
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
@@ -347,7 +347,7 @@ namespace Client
                         char sepa = Prefix(link);
                         if (sepa != '\0')
                         {
-                            link = link.Substring(0, link.IndexOf(sepa.ToString()));
+                            link = link.Substring(0, link.IndexOf(sepa.ToString(), StringComparison.Ordinal));
                         }
                     }
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
@@ -363,7 +363,7 @@ namespace Client
                 return null;
             }
 
-            if (tempdata.StartsWith(CurrentProtocol))
+            if (tempdata.StartsWith(CurrentProtocol, StringComparison.Ordinal))
             {
                 string link = result.Substring(7);
                 if (link.Length > 0)
@@ -387,7 +387,7 @@ namespace Client
 
             foreach (char curr in Configuration.Parser.Separators)
             {
-                if (tempdata.StartsWith(curr.ToString()))
+                if (tempdata.StartsWith(curr.ToString(), StringComparison.Ordinal))
                 {
                     if (tempdata.Substring(1).Contains(CurrentProtocol))
                     {
@@ -516,7 +516,7 @@ namespace Client
                         Jump = tempdata.Length;
                     }
                 }
-                else if (tempdata.StartsWith("%USER%"))
+                else if (tempdata.StartsWith("%USER%", StringComparison.Ordinal))
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
@@ -534,9 +534,10 @@ namespace Client
                         Jump = tempdata.Length - 1;
                     }
                 }
-                else if (tempdata.StartsWith(" #") || (tempdata.StartsWith("#") && text.StartsWith("#")))
+                else if (tempdata.StartsWith(" #", StringComparison.Ordinal)
+                    || (tempdata.StartsWith("#", StringComparison.Ordinal) && text.StartsWith("#", StringComparison.Ordinal)))
                 {
-                    if (tempdata.StartsWith(" #"))
+                    if (tempdata.StartsWith(" #", StringComparison.Ordinal))
                     {
                         templine += text[carret].ToString();
                         carret++;
@@ -560,7 +561,7 @@ namespace Client
                         Jump = tempdata.Length;
                     }
                 }
-                else if (tempdata.StartsWith(((char)0016).ToString()))
+                else if (tempdata.StartsWith(((char)0016).ToString(), StringComparison.Ordinal))
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
@@ -586,7 +587,7 @@ namespace Client
                     Underlined = !Underlined;
                     carret++;
                 }
-                else if (tempdata.StartsWith(((char)002).ToString()))
+                else if (tempdata.StartsWith(((char)002).ToString(), StringComparison.Ordinal))
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
@@ -599,7 +600,7 @@ namespace Client
                     Bold = !Bold;
                     carret++;
                 }
-                else if (tempdata.StartsWith(((char)003).ToString()))
+                else if (tempdata.StartsWith(((char)003).ToString(), StringComparison.Ordinal))
                 {
                     // change color
                     int colorcode = -2;
@@ -648,7 +649,7 @@ namespace Client
                         }
                     }
                 }
-                else if (tempdata.StartsWith(((char)004).ToString()))
+                else if (tempdata.StartsWith(((char)004).ToString(), StringComparison.Ordinal))
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
@@ -661,7 +662,7 @@ namespace Client
                     Underlined = !Underlined;
                     carret++;
                 }
-                else if (tempdata.StartsWith("%H%"))
+                else if (tempdata.StartsWith("%H%", StringComparison.Ordinal))
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
@@ -679,7 +680,7 @@ namespace Client
                         Jump = tempdata.Length;
                     }
                 }
-                else if (tempdata.StartsWith("%L%"))
+                else if (tempdata.StartsWith("%L%", StringComparison.Ordinal))
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
@@ -697,7 +698,7 @@ namespace Client
                         Jump = tempdata.Length;
                     }
                 }
-                else if (tempdata.StartsWith("%D%"))
+                else if (tempdata.StartsWith("%D%", StringComparison.Ordinal))
                 {
                     lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
@@ -736,6 +737,9 @@ namespace Client
             return line;
         }
 
+        /*
+         * 
+         * Nice to have
         /// <summary>
         /// Check if string starts with combination of prefix and string
         /// </summary>
@@ -753,6 +757,7 @@ namespace Client
             }
             return false;
         }
+         */
 
         /// <summary>
         /// Check if string starts with a prefix
@@ -791,14 +796,14 @@ namespace Client
         /// <returns>True if string contains the prefix or false in case it doesn't contain any of them</returns>
         private static bool matchesSWPrefix(string Original, string Prefix)
         {
-            if (Original.StartsWith(Prefix))
+            if (Original.StartsWith(Prefix, StringComparison.Ordinal))
             {
                 return true;
             }
 
             foreach (char curr in Configuration.Parser.Separators)
             {
-                if (Original.StartsWith(curr.ToString() + Prefix))
+                if (Original.StartsWith(curr.ToString() + Prefix, StringComparison.Ordinal))
                 {
                     return true;
                 }
@@ -872,7 +877,8 @@ namespace Client
             {
                 network = Core.SelectedNetwork;
             }
-            if (input.StartsWith(Configuration.CommandPrefix) && !input.StartsWith(Configuration.CommandPrefix + Configuration.CommandPrefix))
+            if (input.StartsWith(Configuration.CommandPrefix, StringComparison.Ordinal) && !input.StartsWith(Configuration.CommandPrefix 
+                + Configuration.CommandPrefix, StringComparison.Ordinal))
             {
                 Core.ProcessCommand(input);
                 return 10;
@@ -890,7 +896,7 @@ namespace Client
             {
                 if (_window.IsWritable)
                 {
-                    if (input.StartsWith(Configuration.CommandPrefix))
+                    if (input.StartsWith(Configuration.CommandPrefix, StringComparison.Ordinal))
                     {
                         network.Message(input.Substring(1), _window.WindowName);
                         return 2;

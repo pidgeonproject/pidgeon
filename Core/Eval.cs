@@ -85,7 +85,7 @@ namespace Client
                 switch (Status)
                 {
                     case 0:
-                        if (part.StartsWith("$"))
+                        if (part.StartsWith("$", StringComparison.Ordinal))
                         {
                             BufferA = EvaluateVariable(part, w);
                         } else
@@ -108,7 +108,7 @@ namespace Client
                         }
                         throw new Core.PidgeonException("Unable to parse the statement, expected operator (==, !=, >, <)");
                     case 2:
-                       if (part.StartsWith("$"))
+                        if (part.StartsWith("$", StringComparison.Ordinal))
                         {
                             BufferB = EvaluateVariable(part, w);
                         } else

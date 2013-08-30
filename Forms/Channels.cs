@@ -113,7 +113,7 @@ namespace Client.Forms
             this.treeview8 = new global::Gtk.TreeView();
             this.treeview8.CanFocus = true;
             this.treeview8.Name = "treeview8";
-            this.DeleteEvent += new DeleteEventHandler(destroy);
+            this.DeleteEvent += new DeleteEventHandler(Channels_Close);
             this.GtkScrolledWindow.Add(this.treeview8);
             this.Add(this.GtkScrolledWindow);
             if ((this.Child != null))
@@ -159,12 +159,6 @@ namespace Client.Forms
             Reload();
             this.treeview8.Selection.Mode = SelectionMode.Multiple;
             this.treeview8.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
-        }
-        
-        private void destroy(object o, Gtk.DeleteEventArgs e)
-        {
-            Hide();
-            e.RetVal = true;
         }
         
         [GLib.ConnectBefore]
@@ -234,7 +228,7 @@ namespace Client.Forms
             Title = "Channels on " + network.ServerName + " [" + channelData.Count.ToString() + "]";
         }
 
-        private void Channels_Close(object sender, Gtk.DestroyEventArgs e)
+        private void Channels_Close(object sender, Gtk.DeleteEventArgs e)
         {
             try
             {
@@ -245,26 +239,6 @@ namespace Client.Forms
             {
                 Core.handleException(fail);
             }
-        }
-
-        private bool timerl_Tick()
-        {
-            try
-            {
-                if (network.DownloadingList)
-                {
-                    return true;
-                }
-                if (channels != network.ChannelList.Count)
-                {
-                    Reload();
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-            return false;
         }
 
         private void refreshToolStripMenuItem_Click(object sender, EventArgs e)

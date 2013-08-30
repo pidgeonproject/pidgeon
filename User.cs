@@ -260,10 +260,10 @@ namespace Client
                 Core.DebugLog("Unable to create user from " + user);
                 return;
             }
-            string name = user.Substring(0, user.IndexOf("!"));
-            string ident = user.Substring(user.IndexOf("!") + 1);
-            string host = ident.Substring(ident.IndexOf("@") + 1);
-            ident = ident.Substring(0, ident.IndexOf("@"));
+            string name = user.Substring(0, user.IndexOf("!", StringComparison.Ordinal));
+            string ident = user.Substring(user.IndexOf("!", StringComparison.Ordinal) + 1);
+            string host = ident.Substring(ident.IndexOf("@", StringComparison.Ordinal) + 1);
+            ident = ident.Substring(0, ident.IndexOf("@", StringComparison.Ordinal));
             MakeUser(name, host, network, ident);
             Server = network.ServerName;
         }

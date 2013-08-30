@@ -59,9 +59,9 @@ namespace Client
             Gtk.TextIter iter = tb.EndIter;
             lock (line.text)
             {
-                foreach (ContentText text in line.text)
+                foreach (ContentText _text in line.text)
                 {
-                    DrawPart(text, tb);
+                    DrawPart(_text, tb);
                 }
             }
             iter = tb.EndIter;
@@ -77,9 +77,9 @@ namespace Client
         {
             lock (line.text)
             {
-                foreach (ContentText text in line.text)
+                foreach (ContentText contentText in line.text)
                 {
-                    DrawPart(text);
+                    DrawPart(contentText);
                 }
             }
         }
@@ -149,13 +149,13 @@ namespace Client
             Gtk.TextIter iter = richTextBox.Buffer.StartIter;
             lock (line.text)
             {
-                foreach (ContentText text in line.text)
+                foreach (ContentText contentText in line.text)
                 {
                     TextTag format = new TextTag(null);
 
                     format.FontDesc = DefaultFont;
 
-                    if (text.Bold)
+                    if (contentText.Bold)
                     {
                         format.Weight = Pango.Weight.Bold;
                         if (Configuration.Scrollback.UnderlineBold)
@@ -164,19 +164,19 @@ namespace Client
                         }
                     }
 
-                    if (text.Underline)
+                    if (contentText.Underline)
                     {
                         format.Underline = Pango.Underline.Single;
                     }
 
-                    if (text.Italic)
+                    if (contentText.Italic)
                     {
                         format.Style = Pango.Style.Italic;
-                        format.BackgroundGdk = Core.FromColor(text.TextColor);
+                        format.BackgroundGdk = Core.FromColor(contentText.TextColor);
                         format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.BackgroundColor);
                     }
 
-                    if (text.Link != null)
+                    if (contentText.Link != null)
                     {
                         format.TextEvent += new TextEventHandler(LinkHandler);
                     }
@@ -185,15 +185,15 @@ namespace Client
                         format.TextEvent += new TextEventHandler(LinkRm);
                     }
 
-                    format.Data.Add("link", text.Link);
-                    format.Data.Add("identifier", text.Text);
-                    if (!text.Italic)
+                    format.Data.Add("link", contentText.Link);
+                    format.Data.Add("identifier", contentText.Text);
+                    if (!contentText.Italic)
                     {
-                        format.ForegroundGdk = Core.FromColor(text.TextColor);
+                        format.ForegroundGdk = Core.FromColor(contentText.TextColor);
                     }
                     richTextBox.Buffer.TagTable.Add(format);
                     //format.SizePoints = Configuration.CurrentSkin.FontSize;
-                    richTextBox.Buffer.InsertWithTags(ref iter, text.Text, format);
+                    richTextBox.Buffer.InsertWithTags(ref iter, contentText.Text, format);
                 }
             }
             richTextBox.Buffer.Insert(ref iter, Environment.NewLine);
@@ -225,8 +225,9 @@ namespace Client
         {
             try
             {
-                string user = (string)((TextTag)sender).Data["identifier"];
-                string link = (string)((TextTag)sender).Data["link"];
+                TextTag _sender = (TextTag)sender;
+                string user = (string)_sender.Data["identifier"];
+                string link = (string)_sender.Data["link"];
                 if (e.Event.Type == Gdk.EventType.ButtonPress)
                 {
                     if (scrollback != null)

@@ -332,23 +332,23 @@ namespace Client
         {
             try
             {
-                if (data.StartsWith("http"))
+                if (data.StartsWith("http", StringComparison.Ordinal))
                 {
                     ViewLn(data, ViewType.Link);
                 }
-                if (data.StartsWith("pidgeon://text"))
+                if (data.StartsWith("pidgeon://text", StringComparison.Ordinal))
                 {
                     ViewLn(adds, ViewType.User, adds);
                 }
-                if (data.StartsWith("pidgeon://join"))
+                if (data.StartsWith("pidgeon://join", StringComparison.Ordinal))
                 {
                     ViewLn(data, ViewType.Channel);
                 }
-                if (data.StartsWith("pidgeon://ident"))
+                if (data.StartsWith("pidgeon://ident", StringComparison.Ordinal))
                 {
                     ViewLn("*!" + adds + "@*", ViewType.User);
                 }
-                if (data.StartsWith("pidgeon://user"))
+                if (data.StartsWith("pidgeon://user", StringComparison.Ordinal))
                 {
                     if (this.owner != null && this.owner.isChannel)
                     {
@@ -368,7 +368,7 @@ namespace Client
                     }
                     ViewLn(adds + "!*@*", ViewType.User, adds);
                 }
-                if (data.StartsWith("pidgeon://hostname"))
+                if (data.StartsWith("pidgeon://hostname", StringComparison.Ordinal))
                 {
                     ViewLn("*@" + adds, ViewType.User);
                 }
@@ -488,9 +488,9 @@ namespace Client
 
         private void Click_L(string http)
         {
-            if (http.StartsWith("https://") ||
-                http.StartsWith("http://") ||
-                http.StartsWith("ftp://"))
+            if (http.StartsWith("https://", StringComparison.Ordinal) ||
+                http.StartsWith("http://", StringComparison.Ordinal) ||
+                http.StartsWith("ftp://", StringComparison.Ordinal))
             {
                 try
                 {
@@ -506,7 +506,7 @@ namespace Client
                     MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
-            if (http.StartsWith("irc://"))
+            if (http.StartsWith("irc://", StringComparison.Ordinal))
             {
                 if (owner != null)
                 {
@@ -519,14 +519,14 @@ namespace Client
                 Core.ParseLink(http);
                 return;
             }
-            if (http.StartsWith("pidgeon://"))
+            if (http.StartsWith("pidgeon://", StringComparison.Ordinal))
             {
                 string command = http.Substring("pidgeon://".Length);
                 if (command.EndsWith("/"))
                 {
                     command = command.Substring(0, command.Length - 1);
                 }
-                if (command.StartsWith("user/#"))
+                if (command.StartsWith("user/#", StringComparison.Ordinal))
                 {
                     string nick = command.Substring(6);
                     if (owner != null && owner._Network != null)
@@ -539,12 +539,12 @@ namespace Client
                     }
                     return;
                 }
-                if (command.StartsWith("join/#"))
+                if (command.StartsWith("join/#", StringComparison.Ordinal))
                 {
                     Parser.parse("/join " + command.Substring(5));
                     return;
                 }
-                if (command.StartsWith("ident/#"))
+                if (command.StartsWith("ident/#", StringComparison.Ordinal))
                 {
                     string nick = command.Substring(7);
                     if (owner != null && owner._Network != null)
@@ -557,7 +557,7 @@ namespace Client
                     }
                     return;
                 }
-                if (command.StartsWith("hostname/#"))
+                if (command.StartsWith("hostname/#", StringComparison.Ordinal))
                 {
                     string nick = command.Substring(10);
                     if (owner != null && owner._Network != null)
@@ -570,7 +570,7 @@ namespace Client
                     }
                     return;
                 }
-                if (command.StartsWith("text/#"))
+                if (command.StartsWith("text/#", StringComparison.Ordinal))
                 {
                     string nick = command.Substring(6);
                     if (owner != null && owner._Network != null)
@@ -583,7 +583,7 @@ namespace Client
                     }
                     return;
                 }
-                if (command.StartsWith("join#"))
+                if (command.StartsWith("join#", StringComparison.Ordinal))
                 {
                     Parser.parse("/join " + command.Substring(4));
                     return;
@@ -640,18 +640,6 @@ namespace Client
                 {
                     Reload();
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void closeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
             }
             catch (Exception fail)
             {
@@ -787,7 +775,7 @@ namespace Client
         {
             try
             {
-                if (Link.StartsWith("http"))
+                if (Link.StartsWith("http", StringComparison.Ordinal))
                 {
                     Hyperlink.OpenLink(Link);
                 }
@@ -802,7 +790,7 @@ namespace Client
         {
             try
             {
-                if (Link.StartsWith("#"))
+                if (Link.StartsWith("#", StringComparison.Ordinal))
                 {
                     Parser.parse("/join " + Link);
                 }

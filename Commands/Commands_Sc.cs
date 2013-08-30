@@ -34,7 +34,7 @@ namespace Client
                    if (text.Contains("\""))
                    {
                        string command = text.Substring(text.IndexOf("\"") + 1);
-                       while (command.StartsWith(" "))
+                       while (command.StartsWith(" ", StringComparison.Ordinal))
                        {
                            command=command.Substring(1);
                        }

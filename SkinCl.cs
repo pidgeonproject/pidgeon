@@ -205,7 +205,7 @@ namespace Client
             Name = path;
             if (Name.Contains(Path.DirectorySeparatorChar.ToString()))
             {
-                Name = Name.Substring(Name.LastIndexOf(Path.DirectorySeparatorChar.ToString()) + 1);
+                Name = Name.Substring(Name.LastIndexOf(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal) + 1);
             }
             if (File.Exists(_p))
             {

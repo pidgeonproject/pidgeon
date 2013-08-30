@@ -153,20 +153,20 @@ namespace Client.Forms
             }
         }
         
-        private void SearchItem_Keys(object sender, Gtk.KeyPressEventArgs keys)
-        {
-            try
-            {
-                if (keys.Event.KeyValue == 65293)
-                {
-                    SearchRun(Direction);
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
+        //private void SearchItem_Keys(object sender, Gtk.KeyPressEventArgs keys)
+        //{
+        //    try
+        //    {
+        //        if (keys.Event.KeyValue == 65293)
+        //        {
+        //            SearchRun(Direction);
+        //        }
+        //    }
+        //    catch (Exception fail)
+        //    {
+        //        Core.handleException(fail);
+        //    }
+        //}
 
         private void SearchRun(bool tp)
         {

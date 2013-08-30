@@ -159,10 +159,10 @@ namespace Client
         /// <returns></returns>
         public override bool Command(string cm, Network network = null)
         {
-            if (cm.StartsWith(" ") != true && cm.Contains(" "))
+            if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
             {
                 // uppercase
-                string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
+                string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
                 string rest = cm.Substring(first_word.Length);
                 Transfer(first_word + rest, Configuration.Priority.Normal, network);
                 return true;
@@ -291,22 +291,34 @@ namespace Client
             return null;
         }
 
+        private void ReleaseNetwork()
+        {
+            if (_StreamReader != null)
+            {
+                _StreamReader.Dispose();
+                _StreamReader = null;
+            }
+            if (_networkSsl != null)
+            {
+                _networkSsl.Dispose();
+                _networkSsl = null;
+            }
+            if (_StreamWriter != null)
+            {
+                _StreamWriter.Dispose();
+                _StreamWriter = null;
+            }
+        }
+
         /// <summary>
         /// Releases all resources used by this class
         /// </summary>
         public void Dispose()
         {
-            if (_StreamReader != null)
+            ReleaseNetwork();
+            if (!IsDestroyed)
             {
-                _StreamReader.Dispose();
-            }
-            if (_networkSsl != null)
-            {
-                _networkSsl.Dispose();
-            }
-            if (_StreamWriter != null)
-            {
-                _StreamWriter.Dispose();
+                Exit();
             }
             GC.SuppressFinalize(this);
         }
@@ -601,15 +613,11 @@ namespace Client
                 {
                     if (_StreamWriter != null) _StreamWriter.Close();
                     if (_StreamReader != null) _StreamReader.Close();
-                    _StreamWriter = null;
-                    _StreamReader = null;
                     if (SSL)
                     {
                         if (_networkSsl != null)
                         {
                             _networkSsl.Close();
-                            _networkSsl.Dispose();
-                            _networkSsl = null;
                         }
                     }
                     else
@@ -617,8 +625,6 @@ namespace Client
                         if (_networkStream != null)
                         {
                             _networkStream.Close();
-                            _networkStream.Dispose();
-                            _networkStream = null;
                         }
                     }
                 }
@@ -626,6 +632,7 @@ namespace Client
                 {
                     Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
                 }
+                ReleaseNetwork();
                 lock (NetworkList)
                 {
                     foreach (Network xx in NetworkList)
@@ -728,7 +735,7 @@ namespace Client
         public override bool ConnectTo(string server, int port)
         {
             // remove space
-            while (server.StartsWith(" "))
+            while (server.StartsWith(" ", StringComparison.Ordinal))
             {
                 server = server.Substring(1);
             }
@@ -755,7 +762,7 @@ namespace Client
         /// <returns></returns>
         public static bool Valid(string datagram)
         {
-            if (datagram.StartsWith("<") && datagram.EndsWith(">"))
+            if (datagram.StartsWith("<", StringComparison.Ordinal) && datagram.EndsWith(">", StringComparison.Ordinal))
             {
                 return true;
             }

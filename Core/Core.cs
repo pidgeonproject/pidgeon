@@ -541,7 +541,7 @@ namespace Client
         public static void ParseLink(string text, ProtocolSv services = null)
         {
             DebugLog("Parsing " + text);
-            if (text.StartsWith("irc://"))
+            if (text.StartsWith("irc://", StringComparison.Ordinal))
             {
                 text = text.Substring("irc://".Length);
                 string network = text;
@@ -556,7 +556,7 @@ namespace Client
                 if (network.Contains("/"))
                 {
                     channel = network.Substring(network.IndexOf("/") + 1);
-                    if (!channel.StartsWith("#"))
+                    if (!channel.StartsWith("#", StringComparison.Ordinal))
                     {
                         channel = "#" + channel;
                     }
@@ -836,7 +836,7 @@ namespace Client
         /// <returns></returns>
         public static bool ProcessCommand(string command)
         {
-            if (command.StartsWith(Configuration.CommandPrefix))
+            if (command.StartsWith(Configuration.CommandPrefix, StringComparison.Ordinal))
             {
                 command = command.Substring(1);
             }

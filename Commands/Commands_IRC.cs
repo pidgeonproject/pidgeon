@@ -126,7 +126,7 @@ namespace Client
                         if (Core.SelectedNetwork.IsConnected)
                         {
                             string ms = parameter.Substring(channel.Length);
-                            while (ms.StartsWith(" "))
+                            while (ms.StartsWith(" ", StringComparison.Ordinal))
                             {
                                 ms = ms.Substring(1);
                             }
@@ -183,9 +183,9 @@ namespace Client
                     Core.SystemForm.Chat.scrollback.InsertText("Invalid name", Client.ContentLine.MessageStyle.System);
                     return;
                 }
-                while (channel.StartsWith(" "))
+                while (channel.StartsWith(" ", StringComparison.Ordinal))
                 {
-                    channel.Substring(1);
+                    channel = channel.Substring(1);
                 }
                 if (channel.Contains(" "))
                 {

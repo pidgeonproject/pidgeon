@@ -233,6 +233,10 @@ namespace Client
             {
                 _StreamWriter.Dispose();
             }
+            if (!IsDestroyed)
+            {
+                Exit();
+            }
             GC.SuppressFinalize(this);
         }
 
@@ -421,10 +425,10 @@ namespace Client
         {
             try
             {
-                if (cm.StartsWith(" ") != true && cm.Contains(" "))
+                if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
                 {
                     // uppercase
-                    string first_word = cm.Substring(0, cm.IndexOf(" ")).ToUpper();
+                    string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
                     string rest = cm.Substring(first_word.Length);
                     Transfer(first_word + rest);
                     return true;

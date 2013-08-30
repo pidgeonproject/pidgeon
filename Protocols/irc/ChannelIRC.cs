@@ -63,7 +63,7 @@ namespace Client
                 if (code[8].Length > 0)
                 {
                     // if user is away we flag him
-                    if (code[8].StartsWith("G"))
+                    if (code[8].StartsWith("G", StringComparison.Ordinal))
                     {
                         IsAway = true;
                     }
@@ -262,9 +262,9 @@ namespace Client
 
         private bool Kick(string source, string parameters, string value)
         {
-            string user = parameters.Substring(parameters.IndexOf(" ") + 1);
+            string user = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
-            string chan = parameters.Substring(0, parameters.IndexOf(" "));
+            string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
@@ -309,12 +309,12 @@ namespace Client
             {
                 chan = value;
             }
-            string user = source.Substring(0, source.IndexOf("!"));
+            string user = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
             string _ident;
             string _host;
-            _host = source.Substring(source.IndexOf("@") + 1);
-            _ident = source.Substring(source.IndexOf("!") + 1);
-            _ident = _ident.Substring(0, _ident.IndexOf("@"));
+            _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
+            _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
+            _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
@@ -389,12 +389,12 @@ namespace Client
         {
             string chan = parameters;
             chan = chan.Replace(" ", "");
-            string user = source.Substring(0, source.IndexOf("!"));
+            string user = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
             string _ident;
             string _host;
-            _host = source.Substring(source.IndexOf("@") + 1);
-            _ident = source.Substring(source.IndexOf("!") + 1);
-            _ident = _ident.Substring(0, _ident.IndexOf("@"));
+            _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
+            _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
+            _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
             Channel channel = _Network.getChannel(chan);
             if (channel != null)
             {
@@ -521,17 +521,17 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string chan = parameters.Substring(0, parameters.IndexOf(" "));
+                string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
                 chan = chan.Replace(" ", "");
                 string user = source;
-                if (chan.StartsWith(_Network.channel_prefix))
+                if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
                 {
                     Channel channel = _Network.getChannel(chan);
                     if (channel != null)
                     {
                         Graphics.Window window;
                         window = channel.RetrieveWindow();
-                        string change = parameters.Substring(parameters.IndexOf(" "));
+                        string change = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal));
                         if (window != null)
                         {
                             WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
@@ -544,7 +544,7 @@ namespace Client
                             return true;
                         }
 
-                        while (change.StartsWith(" "))
+                        while (change.StartsWith(" ", StringComparison.Ordinal))
                         {
                             change = change.Substring(1);
                         }

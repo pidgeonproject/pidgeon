@@ -130,7 +130,7 @@ namespace Client
         /// <returns></returns>
         public static string Localize(string text)
         {
-            if (text.StartsWith("[["))
+            if (text.StartsWith("[[", StringComparison.Ordinal))
             {
                 return get(text, Core.SelectedLanguage);
             }

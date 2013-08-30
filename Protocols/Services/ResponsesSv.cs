@@ -49,7 +49,7 @@ namespace Client
                 long message_time = long.Parse(curr.Attributes[2].Value);
                 if (mn != null)
                 {
-                    if (message_target.StartsWith(mn.channel_prefix))
+                    if (message_target.StartsWith(mn.channel_prefix, StringComparison.Ordinal))
                     {
                         Channel target = mn.getChannel(message_target);
                         if (target != null)
@@ -638,13 +638,13 @@ namespace Client
                                 {
                                     string us = "";
                                     string ident;
-                                    us = user.Substring(0, user.IndexOf("!"));
+                                    us = user.Substring(0, user.IndexOf("!", StringComparison.Ordinal));
                                     if (channel.ContainsUser(us))
                                     {
                                         continue;
                                     }
-                                    ident = user.Substring(user.IndexOf("!") + 1);
-                                    if (ident.StartsWith("@"))
+                                    ident = user.Substring(user.IndexOf("!", StringComparison.Ordinal) + 1);
+                                    if (ident.StartsWith("@", StringComparison.Ordinal))
                                     {
                                         ident = "";
                                     }
@@ -652,11 +652,11 @@ namespace Client
                                     {
                                         if (ident.Contains("@"))
                                         {
-                                            ident = ident.Substring(0, ident.IndexOf("@"));
+                                            ident = ident.Substring(0, ident.IndexOf("@", StringComparison.Ordinal));
                                         }
                                     }
-                                    string host = user.Substring(user.IndexOf("@") + 1);
-                                    if (host.StartsWith("+"))
+                                    string host = user.Substring(user.IndexOf("@", StringComparison.Ordinal) + 1);
+                                    if (host.StartsWith("+", StringComparison.Ordinal))
                                     {
                                         host = "";
                                     }
@@ -664,7 +664,7 @@ namespace Client
                                     {
                                         if (host.Contains("+"))
                                         {
-                                            host = host.Substring(0, host.IndexOf("+"));
+                                            host = host.Substring(0, host.IndexOf("+", StringComparison.Ordinal));
                                         }
                                     }
                                     lock (channel.UserList)
@@ -672,9 +672,9 @@ namespace Client
                                         if (!channel.ContainsUser(us))
                                         {
                                             User f2 = new User(us, host, nw, ident);
-                                            if (user.Contains("+") && !user.StartsWith("+"))
+                                            if (user.Contains("+") && !user.StartsWith("+", StringComparison.Ordinal))
                                             {
-                                                f2.ChannelMode.ChangeMode(user.Substring(user.IndexOf("+")));
+                                                f2.ChannelMode.ChangeMode(user.Substring(user.IndexOf("+", StringComparison.Ordinal)));
                                                 f2.ResetMode();
                                             }
                                             channel.UserList.Add(f2);

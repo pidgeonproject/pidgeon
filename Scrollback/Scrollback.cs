@@ -371,20 +371,20 @@ namespace Client
             }
         }
 
-        private void simpleviewFinished(object o, EventArgs r)
-        {
-            try
-            {
-                if (ScrollingEnabled)
-                {
-                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
+        //private void simpleviewFinished(object o, EventArgs r)
+        //{
+        //    try
+        //    {
+        //        if (ScrollingEnabled)
+        //        {
+        //            simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
+        //        }
+        //    }
+        //    catch (Exception fail)
+        //    {
+        //        Core.handleException(fail);
+        //    }
+        //}
 
         /// <summary>
         /// Change the text to specified list
