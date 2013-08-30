@@ -66,19 +66,19 @@ namespace Client
             /// <summary>
             /// Position of textbox scroll
             /// </summary>
-            public static int x1 = 0;
+            public static int TextboxLeft = 0;
             /// <summary>
             /// Position of sidebar scroll
             /// </summary>
-            public static int x4 = 0;
+            public static int SidebarLeft = 0;
             /// <summary>
             /// Position of window
             /// </summary>
-            public static int window_size = 0;
+            public static int WindowSize = 0;
             /// <summary>
             /// Maximal size of history
             /// </summary>
-            public static int history = 200;
+            public static int History = 200;
             /// <summary>
             /// What should happen when you doubleclick a user
             /// </summary>
@@ -712,7 +712,11 @@ namespace Client
             /// <summary>
             /// Low
             /// </summary>
-            Low = 1
+            Low = 1,
+            /// <summary>
+            /// Lowest
+            /// </summary>
+            None = 0
         }
 
         /// <summary>
