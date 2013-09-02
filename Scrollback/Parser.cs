@@ -343,7 +343,7 @@ namespace Client
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
                     {
-                        // store a new separator to buffer in case link is not end
+                        // store a new separator to buffer in case link is not end of text
                         char sepa = Prefix(link);
                         if (sepa != '\0')
                         {
@@ -425,17 +425,18 @@ namespace Client
         }
 
         /// <summary>
-        /// Format line
+        /// Format line, this function is used to format text so that it has colors, clickable URL's and so
         /// </summary>
-        /// <param name="text"></param>
-        /// <param name="SBAB"></param>
-        /// <param name="_style"></param>
+        /// <param name="text">Text that needs to be formatted</param>
+        /// <param name="SBAB">This is object which replaced former SBA control, it is now a RichTBox,
+        /// which is a custom widget for GTK used only by pidgeon with same interface as SBA had</param>
+        /// <param name="_style">Default color for this text</param>
         /// <returns></returns>
         public static Client.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
             if (SBAB == null)
             {
-                throw new Core.PidgeonException("NULL reference to richtb");
+                throw new Core.PidgeonException("NULL reference to RichTBox object");
             }
 
             Client.RichTBox.Line line = null;
@@ -497,7 +498,7 @@ namespace Client
                     }
                     if (prefix != '\0')
                     {
-                        // now we need to create a hyperlink we parse it using the prefix
+                        // now we need to create a hyperlink, we parse it using the prefix
                         line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, color, protocol, prefix.ToString()));
                     }
                     else
