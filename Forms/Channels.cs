@@ -30,7 +30,6 @@ namespace Client.Forms
     {
         private Network network = null;
         private bool Loaded = false;
-        private int channels = 0;
         private List<Network.ChannelData> channelData = new List<Network.ChannelData>();
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
         private global::Gtk.TreeView treeview8;
@@ -204,7 +203,6 @@ namespace Client.Forms
         private void Reload()
         {
             data.Clear();
-            channels = 0;
             lock (network.ChannelList)
             {
                 if (network.ChannelList.Count > 0)

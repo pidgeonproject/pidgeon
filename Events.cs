@@ -232,6 +232,9 @@ namespace Client
             /// <param name="sender"></param>
             /// <param name="e"></param>
             public delegate void BeforeConnectHandler(object sender, Extension.NetworkInfo e);
+            /// <summary>
+            /// Event to happen before you connect to some protocol
+            /// </summary>
             public static event BeforeConnectHandler BeforeConnect;
 
             /// <summary>
