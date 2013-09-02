@@ -141,7 +141,7 @@ namespace Client
 
             if (source.Contains("@"))
             {
-                _host = source.Substring(source.IndexOf("@") + 1);
+                _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             }
 
             chan = parameters.Replace(" ", "");
@@ -164,7 +164,7 @@ namespace Client
                     if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION", StringComparison.Ordinal))
                     {
                         message = message.Substring("xACTION".Length);
-                        if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                        if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
                         {
                             message = message.Substring(0, message.Length - 1);
                         }
@@ -199,7 +199,7 @@ namespace Client
                         uc = message.Substring(1);
                         if (uc.Contains(_Protocol.delimiter))
                         {
-                            uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString()));
+                            uc = uc.Substring(0, uc.IndexOf(_Protocol.delimiter.ToString(), StringComparison.Ordinal));
                         }
                         if (uc.Contains(" "))
                         {
@@ -248,7 +248,7 @@ namespace Client
                                         Core.DebugLog("Malformed DCC " + message);
                                         return false;
                                     }
-                                    if (message2.EndsWith(_Protocol.delimiter.ToString()))
+                                    if (message2.EndsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
                                     {
                                         message2 = message2.Substring(0, message2.Length - 1);
                                     }
@@ -320,7 +320,7 @@ namespace Client
                         if (message.StartsWith(_Protocol.delimiter.ToString() + "ACTION", StringComparison.Ordinal))
                         {
                             message = message.Substring("xACTION".Length);
-                            if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString()))
+                            if (message.Length > 1 && message.EndsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
                             {
                                 message = message.Substring(0, message.Length - 1);
                             }
@@ -382,7 +382,7 @@ namespace Client
         {
             if (parameters.Contains(" "))
             {
-                string name = parameters.Substring(parameters.IndexOf(" ") + 1);
+                string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 string message = value;
                 WindowText(_Network.SystemWindow, name + " is currently away: " + message, Client.ContentLine.MessageStyle.System, true, date, true);
                 return true;

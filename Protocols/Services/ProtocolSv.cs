@@ -101,6 +101,7 @@ namespace Client
         /// </summary>
         private bool disconnecting = false;
         private List<string> WaitingNetw = new List<string>();
+        private bool disposed = false;
 
         /// <summary>
         /// Root window
@@ -315,12 +316,27 @@ namespace Client
         /// </summary>
         public void Dispose()
         {
-            ReleaseNetwork();
-            if (!IsDestroyed)
-            {
-                Exit();
-            }
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    ReleaseNetwork();
+                    if (!IsDestroyed)
+                    {
+                        Exit();
+                    }
+                }
+                disposed = true;
+            }
         }
 
         private void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
@@ -423,10 +439,6 @@ namespace Client
             catch (ThreadAbortException)
             {
                 return false;
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
             }
             return true;
         }

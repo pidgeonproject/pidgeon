@@ -191,7 +191,7 @@ namespace Client
                 string name = "";
                 if (parameters.Contains("#"))
                 {
-                    name = parameters.Substring(parameters.IndexOf("#")).Replace(" ", "");
+                    name = parameters.Substring(parameters.IndexOf("#", StringComparison.Ordinal)).Replace(" ", "");
                 }
                 string topic = value;
                 Channel channel = _Network.getChannel(name);
@@ -475,7 +475,7 @@ namespace Client
 
         private bool ProcessNick(string source, string parameters, string value)
         {
-            string nick = source.Substring(0, source.IndexOf("!"));
+            string nick = source.Substring(0, source.IndexOf("!", StringComparison.Ordinal));
             string _new = value;
             if (string.IsNullOrEmpty(value) && !string.IsNullOrEmpty(parameters))
             {
@@ -484,7 +484,7 @@ namespace Client
                 // server is totally borked
                 if (_new.Contains(" "))
                 {
-                    _new = _new.Substring(0, _new.IndexOf(" "));
+                    _new = _new.Substring(0, _new.IndexOf(" ", StringComparison.Ordinal));
                 }
             }
             foreach (Channel item in _Network.Channels)
@@ -535,7 +535,7 @@ namespace Client
                         if (window != null)
                         {
                             WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
-                                new List<string> { source, parameters.Substring(parameters.IndexOf(" ")) }),
+                                new List<string> { source, parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal)) }),
                                 Client.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
                         }
 
@@ -551,7 +551,7 @@ namespace Client
 
                         Client.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
 
-                        while (change.EndsWith(" ") && change.Length > 1)
+                        while (change.EndsWith(" ", StringComparison.Ordinal) && change.Length > 1)
                         {
                             change = change.Substring(0, change.Length - 1);
                         }

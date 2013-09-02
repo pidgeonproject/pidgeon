@@ -23,7 +23,7 @@ namespace Client
     /// <summary>
     /// Ignoring
     /// </summary>
-    public class Ignoring
+    public static class Ignoring
     {
         /// <summary>
         /// Single ignore

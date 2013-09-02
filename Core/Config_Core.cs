@@ -26,12 +26,12 @@ using System.Diagnostics;
 
 namespace Client
 {
-    public partial class Core
+    public static partial class Core
     {
         /// <summary>
         /// This is controlling the system configuration
         /// </summary>
-        public class _Configuration
+        public static class _Configuration
         {
             private static void make_comment(string text, XmlDocument conf, XmlNode node)
             {

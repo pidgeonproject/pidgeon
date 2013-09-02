@@ -93,15 +93,8 @@ namespace Client.Graphics
         /// </summary>
         public PidgeonList()
         {
-            try
-            {
-                this.Build();
-                this.InitStyle();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            this.Build();
+            this.InitStyle();
         }
 
         private void Build()
@@ -568,7 +561,7 @@ namespace Client.Graphics
         /// Insert a channel to list
         /// </summary>
         /// <param name="channel"></param>
-        [Obsolete]
+        [Obsolete ("Replaced by InsertChannel. Will be removed soon.")]
         public void insertChannel(Channel channel)
         {
             InsertChannel(channel);
@@ -669,7 +662,7 @@ namespace Client.Graphics
                     Updated = true;
                 }
             }
-        }  
+        }
 
         private void insertService(ProtocolSv service)
         {

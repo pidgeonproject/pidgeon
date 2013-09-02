@@ -285,45 +285,38 @@ namespace Client
         /// <param name="protocol">Protocol that own this instance</param>
         public Network(string Server, Protocol protocol)
         {
-            try
+            randomuqid = Core.RetrieveRandom();
+            lock (Descriptions)
             {
-                randomuqid = Core.RetrieveRandom();
-                lock (Descriptions)
-                {
-                    Descriptions.Clear();
-                    Descriptions.Add('n', "no /knock is allowed on channel");
-                    Descriptions.Add('r', "registered channel");
-                    Descriptions.Add('m', "talking is restricted");
-                    Descriptions.Add('i', "users need to be invited to join");
-                    Descriptions.Add('s', "channel is secret (doesn't appear on list)");
-                    Descriptions.Add('p', "channel is private");
-                    Descriptions.Add('A', "admins only");
-                    Descriptions.Add('O', "opers chan");
-                    Descriptions.Add('t', "topic changes can be done only by operators");
-                }
-                _Protocol = protocol;
-                ServerName = Server;
-                Quit = Configuration.UserData.quit;
-                Nickname = Configuration.UserData.nick;
+                Descriptions.Clear();
+                Descriptions.Add('n', "no /knock is allowed on channel");
+                Descriptions.Add('r', "registered channel");
+                Descriptions.Add('m', "talking is restricted");
+                Descriptions.Add('i', "users need to be invited to join");
+                Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                Descriptions.Add('p', "channel is private");
+                Descriptions.Add('A', "admins only");
+                Descriptions.Add('O', "opers chan");
+                Descriptions.Add('t', "topic changes can be done only by operators");
+            }
+            _Protocol = protocol;
+            ServerName = Server;
+            Quit = Configuration.UserData.quit;
+            Nickname = Configuration.UserData.nick;
 
-                UserName = Configuration.UserData.user;
-                Ident = Configuration.UserData.ident;
-                if (protocol.GetType() == typeof(ProtocolSv))
-                {
-                    SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
-                    Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
-                }
-                else
-                {
-                    SystemWindow = protocol.CreateChat("!system", true, this, false, null, false, true);
-                    Core.SystemForm.ChannelList.InsertNetwork(this);
-                }
-                Hooks._Network.CreatingNetwork(this);
-            }
-            catch (Exception ex)
+            UserName = Configuration.UserData.user;
+            Ident = Configuration.UserData.ident;
+            if (protocol.GetType() == typeof(ProtocolSv))
             {
-                Core.handleException(ex);
+                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
+                Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
             }
+            else
+            {
+                SystemWindow = protocol.CreateChat("!system", true, this, false, null, false, true);
+                Core.SystemForm.ChannelList.InsertNetwork(this);
+            }
+            Hooks._Network.CreatingNetwork(this);
         }
 
         /// <summary>
@@ -331,17 +324,35 @@ namespace Client
         /// </summary>
         ~Network()
         {
-            if (!IsDestroyed)
-            {
-                Destroy();
-            }
+            Dispose(true);
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for network: " + ServerName);
                 //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
             }
+            GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!IsDestroyed)
+            {
+                Destroy();
+            }
+        }
+        
         /// <summary>
         /// Insert a description to list
         /// </summary>
@@ -365,19 +376,12 @@ namespace Client
         /// </summary>
         public void DisplayChannelWindow()
         {
-            try
+            if (wChannelList == null)
             {
-                if (wChannelList == null)
-                {
-                    wChannelList = new Forms.Channels(this);
-                }
+                wChannelList = new Forms.Channels(this);
+            }
 
-                wChannelList.Show();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            wChannelList.Show();
         }
 
         /// <summary>
@@ -486,7 +490,7 @@ namespace Client
         /// </summary>
         /// <param name="time">timestamp</param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a field Core.ConvertFromUNIX. Will be removed in pidgeon 1.2.20")]
         public static DateTime convertUNIX(string time)
         {
             double unixtimestmp = 0;

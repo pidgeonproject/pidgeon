@@ -45,8 +45,8 @@ namespace Client
                     return;
                 }
 
-                string alias = parameter.Substring(0, parameter.IndexOf(" "));
-                string command = parameter.Substring(parameter.IndexOf(" ") + 1);
+                string alias = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
+                string command = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal) + 1);
 
                 lock (aliases)
                 {
@@ -63,8 +63,8 @@ namespace Client
                     string args = "";
                     if (parameter.Contains(" "))
                     {
-                        args = parameter.Substring(parameter.IndexOf(" "));
-                        parameter = parameter.Substring(0, parameter.IndexOf(" "));
+                        args = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
+                        parameter = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
                     }
                     ExternalCommand c = new ExternalCommand(Core.SystemForm.Chat, parameter, args);
                     string[] output = c.Execute().Split('\n');
@@ -107,8 +107,8 @@ namespace Client
                     string args = "";
                     if (parameter.Contains(" "))
                     {
-                        args = parameter.Substring(parameter.IndexOf(" "));
-                        parameter = parameter.Substring(0, parameter.IndexOf(" "));
+                        args = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
+                        parameter = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
                     }
                     ExternalCommand c = new ExternalCommand(Core.SystemForm.Chat, parameter, args);
                     string[] output = c.Execute().Split('\n');
@@ -268,7 +268,7 @@ namespace Client
                 string port = null;
                 if (name.Contains(":"))
                 {
-                    name = name.Substring(0, name.IndexOf(":"));
+                    name = name.Substring(0, name.IndexOf(":", StringComparison.Ordinal));
                     port = parameter.Substring(name.Length + 1);
                 }
                 int n2;
@@ -282,7 +282,7 @@ namespace Client
                 if (name.StartsWith("$", StringComparison.Ordinal))
                 {
                     ssl = true;
-                    while (name.StartsWith("$"))
+                    while (name.StartsWith("$", StringComparison.Ordinal))
                     {
                         name = name.Substring(1);
                     }
@@ -377,8 +377,8 @@ namespace Client
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
                     }
                     int time = 0;
-                    string tm = parameter.Substring(0, parameter.IndexOf(" "));
-                    string command = parameter.Substring(parameter.IndexOf(" ") + 1);
+                    string tm = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
+                    string command = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal) + 1);
                     if (int.TryParse(tm, out time))
                     {
                         Timer timer = new Timer(time, command);

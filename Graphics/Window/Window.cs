@@ -461,7 +461,8 @@ namespace Client.Graphics
 
             this.scrollback1 = null;
             this.textbox1 = null;
-            this.Destroy();
+            //this.Destroy();
+            this.Dispose();
         }
         
         private void Changed(object sender, GLib.NotifyArgs dt)

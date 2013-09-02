@@ -251,7 +251,7 @@ namespace Client
                         if (command2.Length > 1 + command.Length)
                         {
                             parameters = command2.Substring(1 + command.Length);
-                            if (parameters.EndsWith(" "))
+                            if (parameters.EndsWith(" ", StringComparison.Ordinal))
                             {
                                 parameters = parameters.Substring(0, parameters.Length - 1);
                             }

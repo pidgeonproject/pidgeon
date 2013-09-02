@@ -30,7 +30,7 @@ namespace Client
         /// <summary>
         /// This is a base for args
         /// </summary>
-        public class HookArgs
+        public class HookArgs : EventArgs
         {
             /// <summary>
             /// Version

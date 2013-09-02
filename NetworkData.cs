@@ -21,7 +21,7 @@ namespace Client
     /// <summary>
     /// Network
     /// </summary>
-    public class NetworkData
+    public static class NetworkData
     {
         /// <summary>
         /// Information about a single network in a network list

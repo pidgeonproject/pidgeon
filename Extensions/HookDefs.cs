@@ -82,7 +82,7 @@ namespace Client
         /// <param name="message"></param>
         /// <param name="updated"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a field Hook_UserPart(NetworkPartArgs). Will be removed in pidgeon 1.2.20")]
         public virtual bool Hook_UserPart(Network network, User user, Channel channel, string message, bool updated)
         {
             return true;
@@ -128,7 +128,7 @@ namespace Client
         /// <param name="message"></param>
         /// <param name="updated"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a field Hook_UserTalk. Will be removed in pidgeon 1.2.20")]
         public virtual bool Hook_UserTalk(Network network, User user, Channel channel, string message, bool updated)
         {
             return true;
@@ -233,7 +233,7 @@ namespace Client
         /// <param name="window"></param>
         /// <param name="updated"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a field Hook_UserQuit. Will be removed in pidgeon 1.2.20")]
         public virtual bool Hook_UserQuit(Network network, User user, string message, Graphics.Window window, bool updated)
         {
             return true;
@@ -257,7 +257,7 @@ namespace Client
         /// <param name="channel"></param>
         /// <param name="updated"></param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a Hook_UserJoin(NetworkJoinArgs). Will be removed in pidgeon 1.2.20")]
         public virtual bool Hook_UserJoin(Network network, User user, Channel channel, bool updated)
         {
             return true;
@@ -338,7 +338,7 @@ namespace Client
         /// <param name="channel">Channel</param>
         /// <param name="topic">Topic</param>
         /// <returns></returns>
-        [Obsolete]
+        [Obsolete("Replaced by a field Hook_Topic(TopicArgs). Will be removed in pidgeon 1.2.20")]
         public virtual bool Hook_Topic(Network network, string userline, Channel channel, string topic)
         {
             return true;

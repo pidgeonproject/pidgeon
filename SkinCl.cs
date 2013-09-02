@@ -144,6 +144,7 @@ namespace Client
         /// mIRC colors
         /// </summary>
         public List<System.Drawing.Color> mrcl = new List<System.Drawing.Color>();
+        private bool disposed = false;
 
         private static Color colorFromXmlCode(XmlNode code)
         {
@@ -184,13 +185,28 @@ namespace Client
         /// </summary>
         public void Dispose()
         {
-            Icon_ShadowHash.Dispose();
-            Icon_ShadowMark.Dispose();
-            Icon_At.Dispose();
-            Icon_ExclamationMark.Dispose();
-            Icon_Hash.Dispose();
-            Icon_ShadowAt.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    Icon_ShadowHash.Dispose();
+                    Icon_ShadowMark.Dispose();
+                    Icon_At.Dispose();
+                    Icon_ExclamationMark.Dispose();
+                    Icon_Hash.Dispose();
+                    Icon_ShadowAt.Dispose();
+                }
+                disposed = true;
+            }
         }
 
         /// <summary>

@@ -120,7 +120,7 @@ namespace Client
             {
                 if (parameter.Contains(" "))
                 {
-                    string channel = parameter.Substring(0, parameter.IndexOf(" "));
+                    string channel = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
                     if (Core.SelectedNetwork != null)
                     {
                         if (Core.SelectedNetwork.IsConnected)
@@ -176,7 +176,7 @@ namespace Client
                 string channel = parameter;
                 if (parameter.Contains(" "))
                 {
-                    channel = parameter.Substring(parameter.IndexOf(" "));
+                    channel = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
                 }
                 if (channel.Contains(Core.SelectedNetwork.channel_prefix))
                 {
@@ -189,7 +189,7 @@ namespace Client
                 }
                 if (channel.Contains(" "))
                 {
-                    channel = channel.Substring(0, channel.IndexOf(" "));
+                    channel = channel.Substring(0, channel.IndexOf(" ", StringComparison.Ordinal));
                     if (Core.SelectedNetwork != null && Core.SelectedNetwork._Protocol != null)
                     {
                         if (Core.SelectedNetwork.IsConnected)
@@ -200,8 +200,8 @@ namespace Client
                             }
                             Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
                             Core.SelectedNetwork._Protocol.Windows[Core.SelectedNetwork.SystemWindowID + channel].scrollback.InsertText(Protocol.PRIVMSG(Core.SelectedNetwork.Nickname,
-                                parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
-                            Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel) + 1 + channel.Length), channel);
+                                parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
+                            Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length), channel);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);

@@ -248,6 +248,7 @@ namespace Client
             ReloadWaiting = true;
         }
 
+#if DEBUG
         /// <summary>
         /// Destructor
         /// </summary>
@@ -266,6 +267,7 @@ namespace Client
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
+#endif
 
         /// <summary>
         /// This will modify a size of all scrollbacks and text areas using the given value

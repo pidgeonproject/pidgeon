@@ -208,7 +208,8 @@ namespace Client
 
                     IsBacklog = true;
                     Core.SystemForm.progress = double.Parse(id);
-                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
+                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" 
+                        + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
                         IsBacklog = false;

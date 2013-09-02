@@ -24,7 +24,7 @@ namespace Client
     /// <summary>
     /// Configuration of pidgeon
     /// </summary>
-    public class Configuration
+    public static class Configuration
     {
         // Static config
         // ===========================================================
@@ -53,7 +53,7 @@ namespace Client
         /// <summary>
         /// Configuration for window
         /// </summary>
-        public class Window
+        public static class Window
         {
             /// <summary>
             /// If this is true window will be maximized on start
@@ -114,7 +114,7 @@ namespace Client
         /// <summary>
         /// Sounds and video
         /// </summary>
-        public class Media
+        public static class Media
         {
             /// <summary>
             /// Play a sound on every note
@@ -125,7 +125,7 @@ namespace Client
         /// <summary>
         /// Configuration of IRC
         /// </summary>
-        public class irc
+        public static class irc
         {
             /// <summary>
             /// If true the system will convert whois data to some format
@@ -188,7 +188,7 @@ namespace Client
         /// <summary>
         /// Personal default configuration for all connections
         /// </summary>
-        public class UserData
+        public static class UserData
         {
             /// <summary>
             /// Ident
@@ -247,7 +247,7 @@ namespace Client
         /// <summary>
         /// Colors
         /// </summary>
-        public class Colors
+        public static class Colors
         {
             /// <summary>
             /// If this is true the link color will be overriden by color defined by color code
@@ -258,7 +258,7 @@ namespace Client
         /// <summary>
         /// Kernel
         /// </summary>
-        public class Kernel
+        public static class Kernel
         {
             /// <summary>
             /// Kernel is running in safe mode
@@ -325,7 +325,7 @@ namespace Client
         /// <summary>
         /// Memory
         /// </summary>
-        public class Memory
+        public static class Memory
         {
             /// <summary>
             /// Turning this to false will disable simple view
@@ -340,7 +340,7 @@ namespace Client
         /// <summary>
         /// Modes
         /// </summary>
-        public class ChannelModes
+        public static class ChannelModes
         {
             /// <summary>
             /// If this is true the /mode run on every new channel in order to retrieve its mode no matter if server offer it or not
@@ -371,7 +371,7 @@ namespace Client
         /// <summary>
         /// Logs
         /// </summary>
-        public class Logs
+        public static class Logs
         {
             /// <summary>
             /// Enable XML logs
@@ -420,7 +420,7 @@ namespace Client
         /// <summary>
         /// Scrollback
         /// </summary>
-        public class Scrollback
+        public static class Scrollback
         {
             /// <summary>
             /// Deprecated but might be used in future
@@ -463,7 +463,7 @@ namespace Client
         /// <summary>
         /// Services
         /// </summary>
-        public class Services
+        public static class Services
         {
             /// <summary>
             /// backlog size
@@ -486,7 +486,7 @@ namespace Client
         /// <summary>
         /// Parser
         /// </summary>
-        public class Parser
+        public static class Parser
         {
             /// <summary>
             /// List of all protocols that should be recognized

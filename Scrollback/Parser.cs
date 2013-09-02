@@ -197,10 +197,10 @@ namespace Client
         {
             if (text.Contains("%L%") && text.Contains("%/L%"))
             {
-                string link = text.Substring(text.IndexOf("%L%") + 3);
+                string link = text.Substring(text.IndexOf("%L%", StringComparison.Ordinal) + 3);
                 if (link.Length > 0)
                 {
-                    link = link.Substring(0, link.IndexOf("%/L%"));
+                    link = link.Substring(0, link.IndexOf("%/L%", StringComparison.Ordinal));
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://text/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
@@ -224,10 +224,10 @@ namespace Client
         {
             if (text.Contains("%H%") && text.Contains("%/H%"))
             {
-                string link = text.Substring(text.IndexOf("%H%") + 3);
+                string link = text.Substring(text.IndexOf("%H%", StringComparison.Ordinal) + 3);
                 if (link.Length > 0)
                 {
-                    link = link.Substring(0, link.IndexOf("%/H%"));
+                    link = link.Substring(0, link.IndexOf("%/H%", StringComparison.Ordinal));
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://hostname/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
@@ -252,13 +252,13 @@ namespace Client
         {
             if (text.StartsWith("#", StringComparison.Ordinal))
             {
-                string link = text.Substring(text.IndexOf("#"));
+                string link = text.Substring(text.IndexOf("#", StringComparison.Ordinal));
                 if (link.Length > 0)
                 {
                     char separator = Prefix(link);
                     if (separator != '\0')
                     {
-                        link = link.Substring(0, link.IndexOf(separator.ToString()));
+                        link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                     }
                     foreach (char xx in Configuration.Parser.Separators)
                     {
@@ -270,7 +270,7 @@ namespace Client
                     }
                     if (link.Contains(separator.ToString()))
                     {
-                        link = link.Substring(0, link.IndexOf(separator.ToString()));
+                        link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                     }
 
                     Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
@@ -391,7 +391,7 @@ namespace Client
                 {
                     if (tempdata.Substring(1).Contains(CurrentProtocol))
                     {
-                        string link = result.Substring(result.IndexOf(CurrentProtocol) + 7);
+                        string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + 7);
                         tempdata = tempdata.Substring(1);
                         if (link.Length > 0)
                         {
@@ -406,7 +406,7 @@ namespace Client
                             }
                             if (link.Contains(separator.ToString()))
                             {
-                                link = link.Substring(0, link.IndexOf(separator.ToString()));
+                                link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                             }
                         }
                         Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
@@ -527,7 +527,7 @@ namespace Client
                     line.insertData(parse_name(tempdata, SBAB, Underlined, Bold, color));
                     if (tempdata.Contains("%/USER%"))
                     {
-                        Jump = tempdata.IndexOf("%/USER%") + 7;
+                        Jump = tempdata.IndexOf("%/USER%", StringComparison.Ordinal) + 7;
                     }
                     else
                     {
@@ -554,7 +554,7 @@ namespace Client
                     line.insertData(parse_chan(tempdata, SBAB, Underlined, Bold, color));
                     if (tempdata.Contains(" "))
                     {
-                        Jump = tempdata.IndexOf(" ");
+                        Jump = tempdata.IndexOf(" ", StringComparison.Ordinal);
                     }
                     else
                     {
@@ -574,7 +574,7 @@ namespace Client
                     Italic = !Italic;
                     carret++;
                 }
-                else if (tempdata.StartsWith(((char)001).ToString()))
+                else if (tempdata.StartsWith(((char)001).ToString(), StringComparison.Ordinal))
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
@@ -673,7 +673,7 @@ namespace Client
                     line.insertData(parse_host(tempdata, SBAB, Underlined, Bold, color));
                     if (tempdata.Contains("%/H%"))
                     {
-                        Jump = tempdata.IndexOf("%/H%") + 4;
+                        Jump = tempdata.IndexOf("%/H%", StringComparison.Ordinal) + 4;
                     }
                     else
                     {
@@ -691,7 +691,7 @@ namespace Client
                     line.insertData(parse_link(tempdata, SBAB, Underlined, Bold));
                     if (tempdata.Contains("%/L%"))
                     {
-                        Jump = tempdata.IndexOf("%/L%") + 4;
+                        Jump = tempdata.IndexOf("%/L%", StringComparison.Ordinal) + 4;
                     }
                     else
                     {
@@ -709,7 +709,7 @@ namespace Client
                     line.insertData(parse_ident(tempdata, SBAB, Underlined, Bold));
                     if (tempdata.Contains("%/D%"))
                     {
-                        Jump = tempdata.IndexOf("%/D%") + 4;
+                        Jump = tempdata.IndexOf("%/D%", StringComparison.Ordinal) + 4;
                     }
                     else
                     {
@@ -827,7 +827,7 @@ namespace Client
                 {
                     if (data.Contains(curr.ToString() + x))
                     {
-                        int ps = data.IndexOf(curr.ToString() + x);
+                        int ps = data.IndexOf(curr.ToString() + x, StringComparison.Ordinal);
                         if (ps < size)
                         {
                             rv = curr;
@@ -839,7 +839,7 @@ namespace Client
                 {
                     if (data.Contains(curr.ToString()))
                     {
-                        int ps = data.IndexOf(curr.ToString());
+                        int ps = data.IndexOf(curr.ToString(), StringComparison.Ordinal);
                         if (ps < size)
                         {
                             rv = curr;

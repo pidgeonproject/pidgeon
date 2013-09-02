@@ -29,7 +29,7 @@ namespace Client
         /// <summary>
         /// qmeta type
         /// </summary>
-        public class QMetaType 
+        public static class QMetaType 
         {
             /// <summary>
             /// Type

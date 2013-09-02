@@ -23,7 +23,7 @@ namespace Client
     /// <summary>
     /// Helper class
     /// </summary>
-    public class Hyperlink
+    public static class Hyperlink
     {
         private static List<string> Links = new List<string>();
 

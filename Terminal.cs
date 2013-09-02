@@ -21,7 +21,7 @@ namespace Client
     /// <summary>
     /// Terminal
     /// </summary>
-    public class Terminal
+    public static class Terminal
     {
         private class Parameter
         {

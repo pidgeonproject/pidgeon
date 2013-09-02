@@ -30,17 +30,10 @@ namespace Client.Forms
         /// </summary>
         public Preferences()
         {
-            try
-            {
-                this.Build();
-                this.widget = frame1;
-                this.Initialize();
-                this.Preferences_Load();
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
+            this.Build();
+            this.widget = frame1;
+            this.Initialize();
+            this.Preferences_Load();
         }
 
         /// <summary>
@@ -216,7 +209,7 @@ namespace Client.Forms
         [GLib.ConnectBefore]
         private void s2(object sender, RowActivatedArgs e)
         {
-            Switch();
+                Switch();
         }
 
         private void RefreshModules()
@@ -284,7 +277,7 @@ namespace Client.Forms
                 Core.SelectedLanguage = combobox2.ActiveText;
 
                 Skin.ReloadSkin(combobox1.ActiveText);
-                
+
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;

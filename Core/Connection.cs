@@ -20,7 +20,7 @@ using System.Text;
 
 namespace Client
 {
-    public partial class Core
+    public static partial class Core
     {
         /// <summary>
         /// Connect to XMPP

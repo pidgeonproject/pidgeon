@@ -51,6 +51,7 @@ namespace Client
         /// </summary>
         public DCC Dcc = DCC.Chat;
         private Graphics.Window systemwindow = null;
+        private bool disposed = false;
 
         /// <summary>
         /// Window of this DCC
@@ -204,19 +205,34 @@ namespace Client
         /// </summary>
         public void Dispose()
         {
-            if (_StreamReader != null)
-            {
-                _StreamReader.Dispose();
-            }
-            if (_NetworkSsl != null)
-            {
-                _NetworkSsl.Dispose();
-            }
-            if (_StreamWriter != null)
-            {
-                _StreamWriter.Dispose();
-            }
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_StreamReader != null)
+                    {
+                        _StreamReader.Dispose();
+                    }
+                    if (_NetworkSsl != null)
+                    {
+                        _NetworkSsl.Dispose();
+                    }
+                    if (_StreamWriter != null)
+                    {
+                        _StreamWriter.Dispose();
+                    }
+                }
+            }
+            disposed = true;
         }
 
         /// <summary>

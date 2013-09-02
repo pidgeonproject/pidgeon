@@ -277,6 +277,10 @@ namespace Client
         /// <param name="ident"></param>
         public User(string nick, string host, Network network, string ident)
         {
+            if (network == null)
+            {
+                throw new Core.PidgeonException("Network can't be null in here");
+            }
             MakeUser(nick, host, network, ident);
             Server = network.ServerName;
         }

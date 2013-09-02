@@ -170,7 +170,7 @@ namespace Client.Forms
         /// </summary>
         /// <param name="Server"></param>
         /// <param name="Text"></param>
-        [Obsolete]
+        [Obsolete ("Replaced by Insert")]
         public void insert(string Server, string Text)
         {
             Insert(Server, Text);

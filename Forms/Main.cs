@@ -309,7 +309,7 @@ namespace Client.Forms
         /// <param name="Chat"></param>
         /// <param name="WindowOwner"></param>
         /// <param name="Focus"></param>
-        [Obsolete]
+        [Obsolete ("Replaced by a field Graphics.Window.CreateChat(Protocol, bool). Will be removed in pidgeon 1.2.20")]
         public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
         {
             Chat.CreateChat(WindowOwner, Focus);

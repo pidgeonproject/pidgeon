@@ -21,7 +21,7 @@ namespace Client
     /// <summary>
     /// Localization
     /// </summary>
-    public class messages
+    public static class messages
     {
         /// <summary>
         /// Language
@@ -51,7 +51,7 @@ namespace Client
         /// <summary>
         /// language cache
         /// </summary>
-        public class LanguageCache
+        public static class LanguageCache
         {
             private static Dictionary<string, string> text = new Dictionary<string, string>();
 
@@ -195,7 +195,7 @@ namespace Client
                 }
             }
         }
-        
+
         /// <summary>
         /// Load all languages
         /// </summary>
@@ -234,8 +234,8 @@ namespace Client
             if (text.Contains(name + "="))
             {
                 string x = text;
-                x = text.Substring(text.IndexOf(name + "=")).Replace(name + "=", "");
-                x = x.Substring(0, x.IndexOf(";"));
+                x = text.Substring(text.IndexOf(name + "=", StringComparison.Ordinal)).Replace(name + "=", "");
+                x = x.Substring(0, x.IndexOf(";", StringComparison.Ordinal));
                 return x;
             }
             return "";
@@ -266,43 +266,35 @@ namespace Client
         /// <returns></returns>
         public static string get(string item, string language = null, List<string> va = null)
         {
-            try
+            item = item.Replace("]", "").Replace("[", "");
+            if (language == null)
             {
-                item = item.Replace("]", "").Replace("[", "");
-                if (language == null)
+                language = Language;
+            }
+            if (!data.ContainsKey(language))
+            {
+                return "error - invalid language: " + language;
+            }
+            if (data[language].Cache.ContainsKey(item))
+            {
+                return finalize(data[language].Cache[item], va);
+            }
+            string text = LanguageCache.GetText(language);
+            string value = parse(text, item);
+            if (string.IsNullOrEmpty(value))
+            {
+                if (Language != language)
                 {
-                    language = Language;
+                    return get(item, null, va);
                 }
-                if (!data.ContainsKey(language))
+                else
                 {
-                    return "error - invalid language: " + language;
+                    return "[" + item + "]";
                 }
-                if (data[language].Cache.ContainsKey(item))
-                {
-                    return finalize(data[language].Cache[item], va);
-                }
-                string text = LanguageCache.GetText(language);
-                string value = parse(text, item);
-                if (string.IsNullOrEmpty(value))
-                {
-                    if (Language != language)
-                    {
-                        return get(item, null, va);
-                    }
-                    else
-                    {
-                        return "[" + item + "]";
-                    }
-                }
+            }
 
-                data[language].Cache.Add(item, value);
-                return finalize(value, va);
-            }
-            catch (Exception messagesys_error)
-            {
-                Core.handleException(messagesys_error);
-                return "";
-            }
+            data[language].Cache.Add(item, value);
+            return finalize(value, va);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Client
     /// <summary>
     /// Basically most elementar stuff the application consist of and that doesn't belong to some other class
     /// </summary>
-    public partial class Core
+    public static partial class Core
     {
         /// <summary>
         /// Exception raised by pidgeon itself
@@ -36,6 +36,12 @@ namespace Client
         [Serializable]
         public class PidgeonException : Exception
         {
+            /// <summary>
+            /// Creates a new instance of pidgeon exception
+            /// </summary>
+            public PidgeonException()
+                : base()   {            }
+
             /// <summary>
             /// Creates a new instance of pidgeon exception
             /// </summary>
@@ -254,7 +260,7 @@ namespace Client
         /// <summary>
         /// Use SelectedNetwork
         /// </summary>
-        [Obsolete]
+        [Obsolete("Replaced by a field SelectedNetwork. Will be removed in pidgeon 1.2.20")]
         public static Network network = null;
         /// <summary>
         /// List of ports that the dcc is using in this moment
@@ -316,7 +322,7 @@ namespace Client
         /// <summary>
         /// Parameters that were retrieved in console (deprecated)
         /// </summary>
-        [Obsolete]
+        [Obsolete("Replaced by a field StartupParams. Will be removed in pidgeon 1.2.20")]
         public static string[] startup = null;
         /// <summary>
         /// Cache of current params
@@ -423,7 +429,7 @@ namespace Client
                 {
                     startupParams.Add(data);
                 }
-                if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion))
+                if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
                 {
                     Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
                     ConfigFile = Root + "configuration.dat";
@@ -548,36 +554,36 @@ namespace Client
                 string channel = null;
                 bool ssl = false;
                 int PORT = 6667;
-                if (network.StartsWith("$"))
+                if (network.StartsWith("$", StringComparison.Ordinal))
                 {
                     network = network.Substring(1);
                     ssl = true;
                 }
                 if (network.Contains("/"))
                 {
-                    channel = network.Substring(network.IndexOf("/") + 1);
+                    channel = network.Substring(network.IndexOf("/", StringComparison.Ordinal) + 1);
                     if (!channel.StartsWith("#", StringComparison.Ordinal))
                     {
                         channel = "#" + channel;
                     }
-                    network = network.Substring(0, network.IndexOf("/"));
+                    network = network.Substring(0, network.IndexOf("/", StringComparison.Ordinal));
                 }
                 if (network.Contains("#"))
                 {
-                    channel = network.Substring(network.IndexOf("#"));
-                    network = network.Substring(0, network.IndexOf("#"));
+                    channel = network.Substring(network.IndexOf("#", StringComparison.Ordinal));
+                    network = network.Substring(0, network.IndexOf("#", StringComparison.Ordinal));
                 }
                 if (network.Contains(":"))
                 {
-                    string port = network.Substring(network.IndexOf(":") + 1);
-                    network = network.Substring(0, network.IndexOf(port));
+                    string port = network.Substring(network.IndexOf(":", StringComparison.Ordinal) + 1);
+                    network = network.Substring(0, network.IndexOf(port, StringComparison.Ordinal));
                     if (port.Contains("/"))
                     {
-                        port = port.Substring(0, port.IndexOf("/"));
+                        port = port.Substring(0, port.IndexOf("/", StringComparison.Ordinal));
                     }
                     if (port.Contains("#"))
                     {
-                        port = port.Substring(0, port.IndexOf("#"));
+                        port = port.Substring(0, port.IndexOf("#", StringComparison.Ordinal));
                     }
                     if (!int.TryParse(port, out PORT))
                     {
@@ -1199,7 +1205,7 @@ namespace Client
                     {
                         foreach (string file in skin)
                         {
-                            if (file.EndsWith(".ps"))
+                            if (file.EndsWith(".ps", StringComparison.Ordinal))
                             {
                                 Skin curr = new Skin(file);
                                 if (curr == null)

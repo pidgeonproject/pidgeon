@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Client
 {
-    public partial class Core
+    public static partial class Core
     {
         /// <summary>
         /// Return a value of variable if it exist
@@ -125,7 +125,7 @@ namespace Client
                 switch (Operation)
                 {
                     case 1:
-                        return (BufferA != BufferB).ToString().ToLower();
+                        return (BufferA != BufferB).ToString().ToLower(System.Globalization.CultureInfo.CurrentUICulture);
                     case 2:
                         Core.DebugLog("Evaluating " + BufferA + " == " + BufferB);
                         return (BufferA == BufferB).ToString().ToLower();

@@ -33,7 +33,7 @@ namespace Client
         public void Proccess()
         {
             switch (Input)
-            { 
+            {
                 case "error":
                     break;
             }
@@ -45,8 +45,8 @@ namespace Client
         /// <param name="parent">Parent.</param>
         /// <param name="input">Input.</param>
         public Quassel_Parser(ProtocolQuassel parent, string input)
-        { 
-            
+        {
+
         }
     }
 
@@ -160,18 +160,11 @@ namespace Client
 
         private void Send(string ms)
         {
-            try
+            if (IsConnected)
             {
-                if (IsConnected)
-                {
-                    _StreamWriter.WriteLine(ms);
-                    Core.trafficscanner.Insert(Server, " << " + ms);
-                    _StreamWriter.Flush();
-                }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
+                _StreamWriter.WriteLine(ms);
+                Core.trafficscanner.Insert(Server, " << " + ms);
+                _StreamWriter.Flush();
             }
         }
 

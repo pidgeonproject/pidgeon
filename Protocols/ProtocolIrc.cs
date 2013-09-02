@@ -74,6 +74,7 @@ namespace Client
         /// Loging in using sasl
         /// </summary>
         public bool UsingSasl = false;
+        private bool disposed = false;
 
         class MessagesClass
         {
@@ -221,23 +222,39 @@ namespace Client
         /// </summary>
         public void Dispose()
         {
-            if (_StreamReader != null)
-            {
-                _StreamReader.Dispose();
-            }
-            if (_networkSsl != null)
-            {
-                _networkSsl.Dispose();
-            }
-            if (_StreamWriter != null)
-            {
-                _StreamWriter.Dispose();
-            }
-            if (!IsDestroyed)
-            {
-                Exit();
-            }
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    if (_StreamReader != null)
+                    {
+                        _StreamReader.Dispose();
+                    }
+                    if (_networkSsl != null)
+                    {
+                        _networkSsl.Dispose();
+                    }
+                    if (_StreamWriter != null)
+                    {
+                        _StreamWriter.Dispose();
+                    }
+                    if (!IsDestroyed)
+                    {
+                        Exit();
+                    }
+                }
+            }
+
+            disposed = true;
         }
 
         /// <summary>
@@ -546,10 +563,6 @@ namespace Client
                 {
                     SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
                     Connected = false;
-                }
-                catch (Exception fail)
-                {
-                    Core.handleException(fail);
                 }
             }
             return true;

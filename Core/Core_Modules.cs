@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Client
 {
-    public partial class Core
+    public static partial class Core
     {
         /// <summary>
         /// Register a new plugin

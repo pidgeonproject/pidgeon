@@ -67,6 +67,7 @@ namespace Client.Forms
             this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
         }
 
+#if DEBUG
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
         /// <see cref="Client.Forms.ScriptEdit"/> is reclaimed by garbage collection.
@@ -78,6 +79,7 @@ namespace Client.Forms
                 Core.DebugLog("Destructor for script edit");
             }
         }
+#endif
 
         private void Build()
         {

@@ -102,6 +102,7 @@ namespace Client.PidgeonGtkToolkit
         /// ID of form
         /// </summary>
         public string ID = null;
+        private bool disposed = false;
 
         /// <summary>
         /// Height
@@ -195,7 +196,19 @@ namespace Client.PidgeonGtkToolkit
         /// </summary>
         ~PidgeonForm()
         {
-            OnResize(null, null);
+            Dispose(false);
+        }
+
+        /// <summary>
+        /// Releases all resources used by this class
+        /// </summary>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                OnResize(null, null);
+            }
+            disposed = true;
         }
 
         /// <summary>

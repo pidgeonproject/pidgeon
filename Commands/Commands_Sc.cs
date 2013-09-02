@@ -30,15 +30,15 @@ namespace Client
             {
                if (parameter.Contains("\""))
                {
-                   string text = parameter.Substring(parameter.IndexOf("\"") + 1);
+                   string text = parameter.Substring(parameter.IndexOf("\"", StringComparison.Ordinal) + 1);
                    if (text.Contains("\""))
                    {
-                       string command = text.Substring(text.IndexOf("\"") + 1);
+                       string command = text.Substring(text.IndexOf("\"", StringComparison.Ordinal) + 1);
                        while (command.StartsWith(" ", StringComparison.Ordinal))
                        {
                            command=command.Substring(1);
                        }
-                       text = text.Substring(0, text.IndexOf("\""));
+                       text = text.Substring(0, text.IndexOf("\"", StringComparison.Ordinal));
                        if (Core.EvaluateText(text) == "true")
                        {
                            Parser.parse(command);

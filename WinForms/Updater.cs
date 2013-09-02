@@ -106,8 +106,8 @@ namespace Client
                             if (info.Contains("[update-need]"))
                             {
                                 Core.Ringlog("UPTH: update is needed");
-                                string vr = info.Substring(info.IndexOf("version:") + "version:".Length);
-                                vr = vr.Substring(0, vr.IndexOf("^"));
+                                string vr = info.Substring(info.IndexOf("version:", StringComparison.Ordinal) + "version:".Length);
+                                vr = vr.Substring(0, vr.IndexOf("^", StringComparison.Ordinal));
                                 Updater updater = new Updater();
                                 if (info.Contains("message|"))
                                 {

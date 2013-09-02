@@ -23,7 +23,7 @@ namespace Client.PidgeonGtkToolkit
     /// <summary>
     /// MessageBox
     /// </summary>
-    public class MessageBox : IDisposable
+    public sealed class MessageBox : IDisposable
     {
         /// <summary>
         /// Result of this box
