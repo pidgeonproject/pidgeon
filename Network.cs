@@ -648,16 +648,6 @@ namespace Client
         /// Destroy this class, be careful, it can't be used in any way after you
         /// call this
         /// </summary>
-        public void Dispose()
-        {
-            Destroy();
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Destroy this class, be careful, it can't be used in any way after you
-        /// call this
-        /// </summary>
         public void Destroy()
         {
             if (IsDestroyed)
