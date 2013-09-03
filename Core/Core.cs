@@ -710,6 +710,19 @@ namespace Client
         /// <returns></returns>
         public static string RemoveSpecial(string text)
         {
+            if (text.Contains(((char)003).ToString()))
+            {
+                int number = 15;
+                while (number > 0)
+                {
+                    text = text.Replace(((char)003).ToString() + number.ToString(), "");
+                    if (number < 10)
+                    {
+                        text = text.Replace(((char)003).ToString() + "0" + number.ToString(), "");
+                    }
+                    number--;
+                }
+            }
             return text.Replace("%/USER%", "")
                 .Replace("%USER%", "")
                 .Replace("%H%", "")

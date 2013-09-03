@@ -30,7 +30,7 @@ namespace Client
         /// </summary>
         public string Host = null;
         /// <summary>
-        /// Network
+        /// Network this user belongs to
         /// </summary>
         [NonSerialized]
         public Network _Network = null;
@@ -39,7 +39,7 @@ namespace Client
         /// </summary>
         public string Ident = null;
         /// <summary>
-        /// Channel mode
+        /// Channel mode (it could be +o as well as +ov so if you want to retrieve current channel status of user, look for highest level)
         /// </summary>
         public NetworkMode ChannelMode = new NetworkMode();
         /// <summary>
