@@ -59,6 +59,7 @@ namespace Client
                               + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"
                               + "\nParameters:\n\n"
                               + "  --safe: Start pidgeon in safe mode\n"
+                              + "  --home <path>: Change a pidgeon home to specific folder\n"
                               + "  -h (--help): display this help\n"
                               + "\n"
                               + "for more information see http://pidgeonclient.org/wiki pidgeon is open source");
@@ -75,7 +76,15 @@ namespace Client
                         return true;
                     case "safe":
                         Configuration.Kernel.Safe = true;
-                        return false;
+                        break;
+                    case "home":
+                        if (parameter.parm == null || parameter.parm.Count == 0)
+                        {
+                            Console.WriteLine("Parameter --home requires path");
+                            return true;
+                        }
+                        Core.Root = parameter.parm[0];
+                        break;
                 }
             }
             
@@ -116,6 +125,11 @@ namespace Client
                             id = "safe";
                             Read = true;
                             break;
+                        case "--home":
+                            parsed = id;
+                            id = "home";
+                            Read = true;
+                            break;
                     }
                     
                     if (parsed != null)
@@ -136,7 +150,7 @@ namespace Client
                         values = new List<string>();
                     }
                     
-                    values.Add(  data  );
+                    values.Add(data);
                 }
                 
                 if (id != null)

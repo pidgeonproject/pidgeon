@@ -483,7 +483,16 @@ namespace Client
                 StringBuilder everything = new StringBuilder("");
                 foreach (ContentLine _line in ContentLines)
                 {
-                    everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine);
+                    if (Configuration.Scrollback.KeepSpecialCharsSimple)
+                    {
+                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                            _line.text + Environment.NewLine);
+                    }
+                    else
+                    {
+                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                            Core.RemoveSpecial(_line.text) + Environment.NewLine);
+                    }
                 }
                 simpleview.Buffer.Text = "";
                 simpleview.Buffer.InsertAtCursor(everything.ToString());

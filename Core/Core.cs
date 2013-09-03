@@ -181,11 +181,11 @@ namespace Client
         /// <summary>
         /// Configuration path
         /// </summary>
-        public static string ConfigFile = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar + "configuration.dat";
+        public static string ConfigFile = null;
         /// <summary>
         /// Root dir
         /// </summary>
-        public static string Root = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar;
+        public static string Root = null;
         /// <summary>
         /// Language used in system
         /// </summary>
@@ -419,6 +419,16 @@ namespace Client
                 LoadTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
+                if (Root == null && Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
+                {
+                    Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
+                    ConfigFile = Root + "configuration.dat";
+                }
+                else if (Root == null)
+                {
+                    Root = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar;
+                    ConfigFile = Root + "configuration.dat";
+                }
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
                 KernelProc = Process.GetCurrentProcess();
                 if (Configuration.Kernel.Safe)
@@ -428,11 +438,6 @@ namespace Client
                 foreach (string data in Program.Parameters)
                 {
                     startupParams.Add(data);
-                }
-                if (Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
-                {
-                    Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
-                    ConfigFile = Root + "configuration.dat";
                 }
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
