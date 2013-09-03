@@ -229,6 +229,7 @@ namespace Client
                 make_node("Configuration.CurrentSkin", Configuration.CurrentSkin.Name, curr, confname, config, xmlnode);
                 make_node("Configuration.irc.NetworkEncoding", Configuration.irc.NetworkEncoding.ToString(), curr, confname, config, xmlnode);
                 make_node("Configuration.irc.IgnoreInvites", Configuration.irc.IgnoreInvites.ToString(), curr, confname, config, xmlnode);
+                make_node("Configuration.Scrollback.KeepSpecialCharsSimple", Configuration.Scrollback.KeepSpecialCharsSimple.ToString(), curr, confname, config, xmlnode);
                 make_comment(" ============= EXTENSION CONFIGURATION ============= ", config, xmlnode);
                 foreach (KeyValuePair<string, string> data in Configuration.Extensions)
                 {
@@ -902,6 +903,9 @@ namespace Client
                                                         break;
                                                     case "Configuration.irc.IgnoreInvites":
                                                         Configuration.irc.IgnoreInvites = bool.Parse(curr.InnerText);
+                                                        break;
+                                                    case "Configuration.Scrollback.KeepSpecialCharsSimple":
+                                                        Configuration.Scrollback.KeepSpecialCharsSimple = bool.Parse(curr.InnerText);
                                                         break;
                                                 }
                                             }

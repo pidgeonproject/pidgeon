@@ -458,6 +458,10 @@ namespace Client
             /// This option will double underline bold
             /// </summary>
             public static bool UnderlineBold = false;
+            /// <summary>
+            /// If this is true the simple chat will not remove special symbols
+            /// </summary>
+            public static bool KeepSpecialCharsSimple = false;
         }
 
         /// <summary>
