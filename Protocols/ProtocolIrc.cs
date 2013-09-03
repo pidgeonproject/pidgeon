@@ -75,6 +75,18 @@ namespace Client
         /// </summary>
         public bool UsingSasl = false;
         private bool disposed = false;
+        /// <summary>
+        /// Character that represent underline tags
+        /// </summary>
+        public static string UnderlineChar = ((char)001).ToString();
+        /// <summary>
+        /// Character that makes a text bold
+        /// </summary>
+        public static string BoldChar = ((char)002).ToString();
+        /// <summary>
+        /// Character that represent color tags
+        /// </summary>
+        public static string ColorChar = ((char)003).ToString();
 
         class MessagesClass
         {

@@ -710,15 +710,15 @@ namespace Client
         /// <returns></returns>
         public static string RemoveSpecial(string text)
         {
-            if (text.Contains(((char)003).ToString()))
+            if (text.Contains(ProtocolIrc.ColorChar))
             {
                 int number = 15;
                 while (number > 0)
                 {
-                    text = text.Replace(((char)003).ToString() + number.ToString(), "");
+                    text = text.Replace(ProtocolIrc.ColorChar + number.ToString(), "");
                     if (number < 10)
                     {
-                        text = text.Replace(((char)003).ToString() + "0" + number.ToString(), "");
+                        text = text.Replace(ProtocolIrc.ColorChar + "0" + number.ToString(), "");
                     }
                     number--;
                 }
@@ -731,9 +731,9 @@ namespace Client
                 .Replace("%L%", "")
                 .Replace("%/L%", "")
                 .Replace("%/D%", "")
-                .Replace(((char)001).ToString(), "")
-                .Replace(((char)002).ToString(), "")
-                .Replace(((char)003).ToString(), "")
+                .Replace(ProtocolIrc.UnderlineChar, "")
+                .Replace(ProtocolIrc.BoldChar, "")
+                .Replace(ProtocolIrc.ColorChar, "")
                 .Replace(((char)004).ToString(), "");
         }
 
