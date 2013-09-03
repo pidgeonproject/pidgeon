@@ -18,7 +18,7 @@ using Gtk;
 
 namespace Client.Forms
 {
-    public partial class Channel_Info
+    public partial class ChannelInfo
     {
         private global::Gtk.Notebook notebook1;
         private global::Gtk.VBox vbox1;
@@ -243,7 +243,9 @@ namespace Client.Forms
             this.treeview7.CanFocus = true;
             this.treeview7.Name = "treeview7";
             this.treeview7.ButtonPressEvent += new ButtonPressEventHandler(IgnoreBans);
+            this.treeview6.PopupMenu += new PopupMenuHandler(MenuExceptions);
             this.treeview7.PopupMenu += new PopupMenuHandler(MenuBans);
+            this.treeview5.PopupMenu += new PopupMenuHandler(MenuInvites);
             this.treeview7.Selection.Mode = SelectionMode.Multiple;
             this.GtkScrolledWindow4.Add(this.treeview7);
             this.treeview7.Model = bans;

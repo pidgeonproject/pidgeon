@@ -23,7 +23,7 @@ namespace Client.Forms
     /// <summary>
     /// Window
     /// </summary>
-    public partial class Channel_Info : Client.PidgeonGtkToolkit.PidgeonForm
+    public partial class ChannelInfo : Client.PidgeonGtkToolkit.PidgeonForm
     {
         private Channel channel = null;
         private List<char> cm = new List<char>();
@@ -106,7 +106,7 @@ namespace Client.Forms
         /// Creates a new window
         /// </summary>
         /// <param name="ch"></param>
-        public Channel_Info(Channel ch)
+        public ChannelInfo(Channel ch)
         {
             channel = ch;
             Load();
@@ -121,6 +121,54 @@ namespace Client.Forms
                 reload.Activated += new EventHandler(retrieveToolStripMenuItem1_Click);
                 Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
                 delete.Activated += new EventHandler(deleteToolStripMenuItem1_Click);
+                Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
+                refresh.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
+                menu.Append(delete);
+                menu.Append(refresh);
+                menu.Append(new SeparatorMenuItem());
+                menu.Append(reload);
+                menu.ShowAll();
+                menu.Popup();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void MenuInvites(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                Gtk.Menu menu = new Menu();
+                Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
+                reload.Activated += new EventHandler(retrieveToolStripMenuItem_Click);
+                Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
+                delete.Activated += new EventHandler(deleteToolStripMenuItem_Click);
+                Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
+                refresh.Activated += new EventHandler(reloadToolStripMenuItem_Click);
+                menu.Append(delete);
+                menu.Append(refresh);
+                menu.Append(new SeparatorMenuItem());
+                menu.Append(reload);
+                menu.ShowAll();
+                menu.Popup();
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void MenuExceptions(object sender, Gtk.PopupMenuArgs e)
+        {
+            try
+            {
+                Gtk.Menu menu = new Menu();
+                Gtk.MenuItem reload = new MenuItem(reloadToolStripMenuItemb.Text);
+                reload.Activated += new EventHandler(retrieveToolStripMenuItem2_Click);
+                Gtk.MenuItem delete = new MenuItem(deleteToolStripMenuItemb.Text);
+                delete.Activated += new EventHandler(deleteToolStripMenuItem2_Click);
                 Gtk.MenuItem refresh = new MenuItem(refreshToolStripMenuItemb.Text);
                 refresh.Activated += new EventHandler(reloadToolStripMenuItem1_Click);
                 menu.Append(delete);
@@ -154,7 +202,7 @@ namespace Client.Forms
             }
         }
 
-        private void ReloadBans()
+        private void RefreshBans()
         {
             if (channel != null)
             {
@@ -200,7 +248,7 @@ namespace Client.Forms
             }
         }
 
-        private void ReloadInvites()
+        private void RefreshInvites()
         {
             if (channel != null)
             {
@@ -285,6 +333,36 @@ namespace Client.Forms
             }
         }
 
+        private void retrieveToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (channel != null)
+                {
+                    channel.ReloadExceptions();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
+        private void retrieveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (channel != null)
+                {
+                    channel.ReloadInvites();
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.handleException(fail);
+            }
+        }
+
         private void retrieveToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             try
@@ -304,7 +382,7 @@ namespace Client.Forms
         {
             try
             {
-                ReloadBans();
+                RefreshBans();
             }
             catch (Exception fail)
             {
@@ -350,7 +428,7 @@ namespace Client.Forms
         {
             try
             {
-                ReloadInvites();
+                RefreshInvites();
             }
             catch (Exception fail)
             {
@@ -369,18 +447,6 @@ namespace Client.Forms
                         channel._Network.Transfer("MODE " + channel.Name + " -e " + ex.Target);
                     }
                 }
-            }
-            catch (Exception fail)
-            {
-                Core.handleException(fail);
-            }
-        }
-
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ReloadInvites();
             }
             catch (Exception fail)
             {
@@ -424,9 +490,9 @@ namespace Client.Forms
             options.Clear();
             if (channel != null)
             {
-                ReloadBans();
+                RefreshBans();
                 ReloadExceptions();
-                ReloadInvites();
+                RefreshInvites();
 
                 lock (channel.ChannelMode)
                 {

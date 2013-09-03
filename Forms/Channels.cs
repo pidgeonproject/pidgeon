@@ -143,6 +143,7 @@ namespace Client.Forms
             Gtk.CellRendererText c3 = new Gtk.CellRendererText();
             name.Title = "Name";
             size.Title = "Users";
+            size.SortOrder = SortType.Descending;
             topic_item.Title = "Channel topic";
             name.PackStart(c1, true);
             size.PackStart(c2, true);
@@ -166,12 +167,15 @@ namespace Client.Forms
             try
             {
                 Gtk.Menu xx = new Menu();
-                Gtk.MenuItem join = new MenuItem(joinToolStripMenuItem.Text);
-                join.Activated += new EventHandler(joinToolStripMenuItem_Click);
-                xx.Append(join);
-                Gtk.MenuItem knock = new MenuItem(knockToolStripMenuItem.Text);
-                knock.Activated += new EventHandler(knockToolStripMenuItem_Click);
-                xx.Append(knock);
+                if (channelData.Count > 0)
+                {
+                    Gtk.MenuItem join = new MenuItem(joinToolStripMenuItem.Text);
+                    join.Activated += new EventHandler(joinToolStripMenuItem_Click);
+                    xx.Append(join);
+                    Gtk.MenuItem knock = new MenuItem(knockToolStripMenuItem.Text);
+                    knock.Activated += new EventHandler(knockToolStripMenuItem_Click);
+                    xx.Append(knock);
+                }
                 Gtk.MenuItem download = new MenuItem(downloadListFromServerToolStripMenuItem.Text);
                 download.Activated += new EventHandler(downloadListFromServerToolStripMenuItem_Click);
                 xx.Append(download);

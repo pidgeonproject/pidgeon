@@ -84,6 +84,10 @@ namespace Client
         /// </summary>
         public bool IsParsingWhoData = false;
         /// <summary>
+        /// If true the channel is processing invites
+        /// </summary>
+        public bool IsParsingInviteData = false;
+        /// <summary>
         /// If true the channel is processing ban data
         /// </summary>
         public bool IsParsingBanData = false;
@@ -214,6 +218,40 @@ namespace Client
                 }
             }
             _Network.Transfer("MODE " + Name + " +b");
+        }
+
+        public void ReloadInvites()
+        {
+            IsParsingExceptionData = true;
+            if (Invites == null)
+            {
+                Invites = new List<Invite>();
+            }
+            else
+            {
+                lock (Invites)
+                {
+                    Invites.Clear();
+                }
+            }
+            _Network.Transfer("MODE " + Name + " +I");
+        }
+
+        public void ReloadExceptions()
+        {
+            IsParsingExceptionData = true;
+            if (Exceptions == null)
+            {
+                Exceptions = new List<ChannelBanException>();
+            }
+            else
+            {
+                lock (Exceptions)
+                {
+                    Exceptions.Clear();
+                }
+            }
+            _Network.Transfer("MODE " + Name + " +e");
         }
 
         /// <summary>

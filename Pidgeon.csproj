@@ -113,8 +113,8 @@
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
     <Compile Include="Extensions\HookDefs.cs" />
-    <Compile Include="Forms\Channel_Info.Designer.cs">
-      <DependentUpon>Channel_Info.cs</DependentUpon>
+    <Compile Include="Forms\ChannelInfo.Designer.cs">
+      <DependentUpon>ChannelInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Connection.Designer.cs">
       <DependentUpon>Connection.cs</DependentUpon>
@@ -205,7 +205,7 @@
     <Compile Include="Graphics\PidgeonList\PidgeonList.cs" />
     <Compile Include="Forms\Connection.cs" />
     <Compile Include="Forms\SearchItem.cs" />
-    <Compile Include="Forms\Channel_Info.cs" />
+    <Compile Include="Forms\ChannelInfo.cs" />
     <Compile Include="Forms\MicroChat.cs" />
     <Compile Include="Forms\ScriptEdit.cs" />
     <Compile Include="Graphics\TextBox.cs" />

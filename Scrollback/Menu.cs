@@ -599,7 +599,7 @@ namespace Client
                 {
                     if (Core.SelectedNetwork.RenderedChannel != null)
                     {
-                        Forms.Channel_Info info = new Forms.Channel_Info(Core.SelectedNetwork.RenderedChannel);
+                        Forms.ChannelInfo info = new Forms.ChannelInfo(Core.SelectedNetwork.RenderedChannel);
                         info.Show();
                     }
                 }
