@@ -61,9 +61,18 @@ namespace Client
                     return;
                 }
                 Gtk.TextIter iter = simpleview.Buffer.EndIter;
-                simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                if (Configuration.Scrollback.KeepSpecialCharsSimple)
+                {
+                    simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
                                           line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-                                          Core.RemoveSpecial(line.text) + Environment.NewLine);
+                                          line.text + Environment.NewLine);
+                }
+                else
+                {
+                    simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                                              line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                                              Core.RemoveSpecial(line.text) + Environment.NewLine);
+                }
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
@@ -327,7 +336,14 @@ namespace Client
                     return;
                 }
                 Gtk.TextIter iter = simpleview.Buffer.EndIter;
-                simpleview.Buffer.Insert(ref iter, Core.RemoveSpecial(text));
+                if (Configuration.Scrollback.KeepSpecialCharsSimple)
+                {
+                    simpleview.Buffer.Insert(ref iter, text);
+                }
+                else
+                {
+                    simpleview.Buffer.Insert(ref iter, Core.RemoveSpecial(text));
+                }
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
@@ -349,9 +365,18 @@ namespace Client
                     return;
                 }
                 Gtk.TextIter iter = simpleview.Buffer.EndIter;
-                simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                if (!Configuration.Scrollback.KeepSpecialCharsSimple)
+                {
+                    simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
+                                              line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
+                                              Core.RemoveSpecial(line.text));
+                }
+                else
+                {
+                    simpleview.Buffer.Insert(ref iter, Configuration.Scrollback.format_date.Replace("$1",
                                           line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-                                          Core.RemoveSpecial(line.text));
+                                          line.text);
+                }
                 if (ScrollingEnabled)
                 {
                     simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
