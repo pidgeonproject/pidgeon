@@ -297,22 +297,22 @@ namespace Client
                             this.UserListFontSize = int.Parse(curr.InnerText);
                             break;
                         case "icon_at":
-                            this.Icon_At = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_At = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                         case "icon_exclamationmark":
-                            this.Icon_ExclamationMark = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_ExclamationMark = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                         case "icon_shadowmark":
-                            this.Icon_ShadowMark = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_ShadowMark = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                         case "icon_shadowhash":
-                            this.Icon_ShadowHash = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_ShadowHash = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                         case "icon_shadowat":
-                            this.Icon_ShadowAt = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_ShadowAt = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                         case "icon_hash":
-                            this.Icon_Hash = new Gdk.Pixbuf(Core.Root + curr.InnerText);
+                            this.Icon_Hash = new Gdk.Pixbuf(Core.SystemBinRootPath + curr.InnerText);
                             break;
                     }
                 }

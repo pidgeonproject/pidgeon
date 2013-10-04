@@ -304,6 +304,21 @@ namespace Client
         /// </summary>
         public static string SkinPath = "skins";
         /// <summary>
+        /// System binary root path
+        /// </summary>
+        /// <value>The system bin root path.</value>
+        public static string SystemBinRootPath
+        {
+            get
+            {
+                return SystemRoot;
+            }
+        }
+        /// <summary>
+        /// This is a root path to binary file
+        /// </summary>
+        private static string SystemRoot = null;
+        /// <summary>
         /// This is a reference to scanner window
         /// </summary>
         public static Forms.TrafficScanner trafficscanner = null;
@@ -419,6 +434,7 @@ namespace Client
                 LoadTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
+                SystemRoot = Application.StartupPath + Path.DirectorySeparatorChar;
                 if (Root == null && Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
                 {
                     Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
