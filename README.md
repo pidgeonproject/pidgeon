@@ -20,7 +20,6 @@ make
 
 make && sudo make install
 
-#to uninstall
 
 sudo make uninstall
 ```
