@@ -34,6 +34,10 @@ cp -v bin/Release/modules/* "$DESTDIR/usr/share/pidgeon/modules"
 cp -v bin/Release/skins/* "$DESTDIR/usr/share/pidgeon/skins"
 cp -v bin/Release/Pidgeon.exe "$DESTDIR/usr/share/pidgeon"
 cp -v bin/Release/Pidgeon.XML "$DESTDIR/usr/share/pidgeon"
+chmod a+rx "$DESTDIR/usr/share/pidgeon/"
+chmod a+rx "$DESTDIR/usr/share/pidgeon/skins"
+chmod a+rx "$DESTDIR/usr/share/pidgeon/modules"
+chmod -R a+r "$DESTDIR/usr/share/pidgeon"
 
 echo "Creating a terminal launcher in /usr/bin"
 
