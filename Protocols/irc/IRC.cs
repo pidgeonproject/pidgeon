@@ -386,11 +386,20 @@ namespace Client
                             }
                             break;
                         case "433":
-                            if (!_Network.UsingNick2 && !string.IsNullOrEmpty(Configuration.UserData.Nick2))
+                            if (!_Network.UsingNick2)
                             {
+                                string nick;
+                                if (string.IsNullOrEmpty(Configuration.UserData.Nick2))
+                                {
+                                    Random rx = new Random(DateTime.Now.Millisecond);
+                                    nick = _Network.Nickname + rx.Next(2, 200).ToString();
+                                } else
+                                {
+                                    nick = Configuration.UserData.Nick2;
+                                }
                                 _Network.UsingNick2 = true;
-                                _Network.Transfer("NICK " + Configuration.UserData.Nick2, Configuration.Priority.High);
-                                _Network.Nickname = Configuration.UserData.Nick2;
+                                _Network.Transfer("NICK " + nick, Configuration.Priority.High);
+                                _Network.Nickname = nick;
                             }
                             break;
                         case "PING":
