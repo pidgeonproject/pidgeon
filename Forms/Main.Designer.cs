@@ -38,14 +38,6 @@ namespace Client.Forms
         /// </summary>
         public Gtk.MenuItem ToolsAction;
         /// <summary>
-        /// Misc
-        /// </summary>
-        public Gtk.Menu MiscMenu = new Gtk.Menu();
-        /// <summary>
-        /// The misc action.
-        /// </summary>
-        public Gtk.MenuItem MiscAction;
-        /// <summary>
         /// Show menu
         /// </summary>
         public Gtk.Menu ShowMenu = new Gtk.Menu();
@@ -191,26 +183,23 @@ namespace Client.Forms
             DetachFromMicroChatAction.Image = new Gtk.Image(Gtk.Stock.Remove, Gtk.IconSize.Menu);
             DetachFromMicroChatAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.D, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
             ToolsMenu.Append(DetachFromMicroChatAction);
-            ////////////////////// MISC //////////////////////
-            MiscAction = new Gtk.MenuItem(messages.Localize("[[window-menu-misc]]"));
-            MiscAction.Submenu = MiscMenu;
-            SearchAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-search]]"));
-            SearchAction.Image = new Gtk.Image(Gtk.Stock.Find, Gtk.IconSize.Menu);
-            SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
-            MiscMenu.Append(SearchAction);
-            LoadMoreToScrollbackAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-more]]"));
-            LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
-            MiscMenu.Append(LoadMoreToScrollbackAction);
-            MiscMenu.Append(new Gtk.SeparatorMenuItem());
-            ConfigurationFileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-cf]]"));
             ////////////////////// SHOW //////////////////////
             ShowAction = new Gtk.MenuItem(messages.Localize("[[window-menu-show]]"));
             ShowAction.Submenu = ShowMenu;
+            SearchAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-search]]"));
+            SearchAction.Image = new Gtk.Image(Gtk.Stock.Find, Gtk.IconSize.Menu);
+            SearchAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.F, Gdk.ModifierType.ControlMask, Gtk.AccelFlags.Visible));
+            ShowMenu.Append(SearchAction);
+            LoadMoreToScrollbackAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-more]]"));
+            LoadMoreToScrollbackAction.AddAccelerator("activate", agrp, new Gtk.AccelKey(Gdk.Key.U, Gdk.ModifierType.Mod1Mask, Gtk.AccelFlags.Visible));
+            ShowMenu.Append(LoadMoreToScrollbackAction);
+            ShowMenu.Append(new Gtk.SeparatorMenuItem());
+            ConfigurationFileAction = new Gtk.MenuItem(messages.Localize("[[window-menu-cf]]"));
+            ShowMenu.Append(ConfigurationFileAction);
             RootAction = new Gtk.MenuItem(messages.Localize("[[window-menu-root]]"));
             ShowMenu.Append(RootAction);
             HelpAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-help]]"));
             HelpAction.Submenu = HelpMenu;
-            MiscMenu.Append(ConfigurationFileAction);
             AboutAction = new Gtk.ImageMenuItem(messages.Localize("[[window-menu-about]]"));
             AboutAction.Image = new Gtk.Image(Gtk.Stock.About, Gtk.IconSize.Menu);
             ContentsAction = new Gtk.MenuItem(messages.Localize("[[window-menu-contents]]"));
@@ -220,7 +209,6 @@ namespace Client.Forms
             HelpMenu.Append(ContentsAction);
             menubar2.Add(this.FileAction);
             menubar2.Add(this.ToolsAction);
-            menubar2.Add(this.MiscAction);
             this.menubar2.Add(this.ShowAction);
             this.menubar2.Add(this.HelpAction);
             this.Name = "Client.Forms.Main";
