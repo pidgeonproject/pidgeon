@@ -28,7 +28,7 @@ if [ "`uname`" = "Linux" ];then
 	fi
 fi
 
-sh update.sh
+./update.sh || exit 1
 
 if [ ! -f version.txt ];then
 	echo "Error! unable to create a version file!"
@@ -51,8 +51,8 @@ if [ ! -f pidgeon ];then
 	chmod a+x pidgeon
 fi
 
-if [ -f buildall.sh ];then
-	sh buildall.sh "$p" $folder
+if [ -f build/buildall.sh ];then
+	build/buildall.sh "$p" $folder
 	else
 	echo "Warning: there is no extension configuration present"
 fi
