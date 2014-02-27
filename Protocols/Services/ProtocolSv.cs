@@ -202,7 +202,7 @@ namespace Client
 
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
-                Datagram login = new Datagram("AUTH", "");
+                Datagram login = new Datagram("AUTH");
                 login.Parameters.Add("user", nick);
                 login.Parameters.Add("pw", password);
                 Deliver(login);

@@ -362,18 +362,39 @@ namespace Client
                         connected = false;
                         break;
                 }
-                foreach (Network s2 in protocol.NetworkList)
+                string nick = null;
+                string network = null;
+                if (curr.Attributes != null)
                 {
-                    if (curr.Attributes[0].Value == s2.ServerName)
+                    foreach (XmlAttribute info in curr.Attributes)
                     {
-                        if (connected)
+                        switch (info.Name)
                         {
-                            s2.flagConnection();
-                        } else
-                        {
-                            s2.flagDisconnect();
+                            case "network":
+                                network = info.Value;
+                                break;
+                            case "nick":
+                                nick = info.Value;
+                                break;
                         }
-                        break;
+                    }
+                    foreach (Network s2 in protocol.NetworkList)
+                    {
+                        if (curr.Attributes[0].Value == s2.ServerName)
+                        {
+                            if (connected)
+                            {
+                                s2.flagConnection();
+                            } else
+                            {
+                                s2.flagDisconnect();
+                            }
+                            if (nick != null)
+                            {
+                                s2.Nickname = nick;
+                            }
+                            break;
+                        }
                     }
                 }
             }
