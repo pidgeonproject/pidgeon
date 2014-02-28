@@ -238,7 +238,7 @@ namespace Client
         /// <summary>
         /// Container
         /// </summary>
-        private static Network selectedNetwork = null;
+        private static Network _SelectedNetwork = null;
         /// <summary>
         /// Selected network, if you are connected to a network and currently displayed window is attached to some,
         /// this is that network
@@ -247,13 +247,13 @@ namespace Client
         {
             get
             {
-                return selectedNetwork;
+                return _SelectedNetwork;
             }
             set
             {
-                selectedNetwork = value;
+                _SelectedNetwork = value;
 #pragma warning disable
-                network = selectedNetwork;
+                network = _SelectedNetwork;
 #pragma warning restore
             }
         }
@@ -342,7 +342,7 @@ namespace Client
         /// <summary>
         /// Cache of current params
         /// </summary>
-        private static List<string> startupParams = new List<string>();
+        private static List<string> _StartupParams = new List<string>();
         /// <summary>
         /// Parameters that were retrieved in console
         /// </summary>
@@ -351,9 +351,9 @@ namespace Client
             get
             {
                 List<string> data = new List<string>();
-                lock (startupParams)
+                lock (_StartupParams)
                 {
-                    data.AddRange(startupParams);
+                    data.AddRange(_StartupParams);
                 }
                 return data;
             }
@@ -365,7 +365,7 @@ namespace Client
         /// <summary>
         /// Status of core
         /// </summary>
-        public static Status _Status = Status.Loading;
+        public static State CoreState = State.Loading;
         private static DateTime lastActivityTime;
 
         /// <summary>
@@ -422,9 +422,9 @@ namespace Client
         /// This is a first function that should be called after application start
         /// </summary>
         /// <returns></returns>
-        public static bool Load()
+        public static bool Load(string[] parameters)
         {
-            if (Status.Loading != _Status)
+            if (CoreState != State.Loading)
             {
                 throw new Core.PidgeonException("You can't load core multiple times");
             }
@@ -451,10 +451,7 @@ namespace Client
                 {
                     Ringlog("Running in safe mode");
                 }
-                foreach (string data in Program.Parameters)
-                {
-                    startupParams.Add(data);
-                }
+                _StartupParams = new List<string>(parameters);
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
@@ -534,14 +531,14 @@ namespace Client
                     }
                     ResetMainActivityTimer();
                     Hooks._Sys.AfterCore();
-                    _Status = Status.Running;
+                    CoreState = State.Running;
                     return true;
                 }
                 Updater _finalisingupdater = new Updater();
                 _finalisingupdater.update.Visible = false;
                 _finalisingupdater.finalize = true;
                 _finalisingupdater.lStatus.Text = messages.get("update2");
-                _Status = Status.Killed;
+                CoreState = State.Killed;
                 System.Windows.Forms.Application.Run(_finalisingupdater);
             }
             catch (Exception panic)
@@ -1406,7 +1403,7 @@ namespace Client
                 }
                 dump += "Exception: " + _exception.Message + "\n";
                 dump += "Source: " + _exception.Source + "\n";
-                dump += "Status: " + _Status.ToString() + "\n";
+                dump += "Status: " + CoreState.ToString() + "\n";
                 dump += "Stack trace: " + _exception.StackTrace + "\n";
                 if (_exception.InnerException != null)
                 {
@@ -1470,12 +1467,12 @@ namespace Client
             try
             {
                 Core.DebugLog("User requested a shut down");
-                if (_Status == Status.Quiting)
+                if (CoreState == State.Quiting)
                 {
                     Core.DebugLog("Multiple calls of Core.Quit() ignored");
                     return false;
                 }
-                _Status = Status.Quiting;
+                CoreState = State.Quiting;
                 if (!IgnoreErrors)
                 {
                     IgnoreErrors = true;
@@ -1580,7 +1577,7 @@ namespace Client
         /// <summary>
         /// Which status the core is in
         /// </summary>
-        public enum Status
+        public enum State
         {
             /// <summary>
             /// Everything is OK

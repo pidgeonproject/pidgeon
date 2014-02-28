@@ -64,7 +64,7 @@ namespace Client
         /// <summary>
         /// Password
         /// </summary>
-        public string password = "";
+        public string Password = "";
         /// <summary>
         /// Name
         /// </summary>

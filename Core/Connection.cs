@@ -79,7 +79,7 @@ namespace Client
         {
             ProtocolQuassel _quassel = new ProtocolQuassel();
             _quassel.Port = port;
-            _quassel.password = password;
+            _quassel.Password = password;
             _quassel.Server = server;
             _quassel.SSL = secured;
             _quassel.Open();

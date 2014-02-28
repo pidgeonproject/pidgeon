@@ -94,16 +94,10 @@ namespace Client
         /// <summary>
         /// Check the parameters of program, return true if we can continue
         /// </summary>
-        public static bool Parameters()
+        public static bool Parameters(string[] p)
         {
-            List<string> args = new List<string>();
-            foreach (string xx in Program.Parameters)
-            {
-                args.Add(xx);
-            }
-            
+            List<string> args = new List<string>(p);
             List<Parameter> ParameterList = new List<Parameter>();
-            
             if (args.Count > 0)
             {
                 List<string> values = null;

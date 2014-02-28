@@ -21,7 +21,6 @@ namespace Client
 {
     static class Program
     {
-        public static string[] Parameters;
         private static void ExceptionForm(GLib.UnhandledExceptionArgs e)
         {
             Core.handleException((Exception)e.ExceptionObject, true);
@@ -36,12 +35,11 @@ namespace Client
         {
             try
             {
-                Parameters = parameters;
                 Application.Init();
                 GLib.ExceptionManager.UnhandledException += new GLib.UnhandledExceptionHandler(ExceptionForm);
-                if (Terminal.Parameters())
+                if (Terminal.Parameters(parameters))
                 {
-                    if (Core.Load())
+                    if (Core.Load(parameters))
                     {
                         Core.SelectedNetwork = null;
                         Core.SetMain(new Forms.Main());
