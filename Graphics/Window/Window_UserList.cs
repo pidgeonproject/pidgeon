@@ -36,11 +36,11 @@ namespace Client.Graphics
         /// <summary>
         /// Version menu
         /// </summary>
-        public PidgeonGtkToolkit.Menu vERSIONToolStripMenuItem = new PidgeonGtkToolkit.Menu("Version");
+        public PidgeonGtkToolkit.Menu vERSIONToolStripMenuItem = new PidgeonGtkToolkit.Menu("VERSION");
         /// <summary>
         /// Time menu
         /// </summary>
-        public PidgeonGtkToolkit.Menu tIMEToolStripMenuItem = new PidgeonGtkToolkit.Menu("Time");
+        public PidgeonGtkToolkit.Menu tIMEToolStripMenuItem = new PidgeonGtkToolkit.Menu("TIME");
         /// <summary>
         /// Ping menu
         /// </summary>
