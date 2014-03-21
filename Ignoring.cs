@@ -21,12 +21,12 @@ using System.Text;
 namespace Client
 {
     /// <summary>
-    /// Ignoring
+    /// This class is used to ignore text or users that is matching the given patterns
     /// </summary>
     public static class Ignoring
     {
         /// <summary>
-        /// Single ignore
+        /// Single ignore, this represent a definition of what is supposed to be ignored
         /// </summary>
         public class Ignore
         {
