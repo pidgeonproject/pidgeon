@@ -24,7 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="update.cmd" workingdir="${ProjectDir}" externalConsole="true" />
+        <Command type="BeforeBuild" command="update.cmd" workingdir="${ProjectDir}" externalConsole="True" />
       </CustomCommands>
     </CustomCommands>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -47,14 +47,8 @@
     <ApplicationIcon>pigeon_clip_art_hight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <Package>gtk-sharp-2.0</Package>
-    </Reference>
     <Reference Include="Eagle">
       <HintPath>Eagle.dll</HintPath>
-    </Reference>
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
-      <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
@@ -77,6 +71,12 @@
       <Private>False</Private>
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ManualPages\Connect.txt" />
@@ -93,7 +93,7 @@
     <EmbeddedResource Include="Languages\cs_czech.txt" />
     <None Include="Resources\arrow.png" />
     <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\at.png" />
     <EmbeddedResource Include="Resources\darknetwork.png" />
@@ -238,9 +238,9 @@
       <Properties>
         <Policies>
           <TextStylePolicy FileWidth="120" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
-          <CSharpFormattingPolicy IndentSwitchBody="True" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
-        <GtkDesignInfo generateGettext="false" />
+        <GtkDesignInfo generateGettext="False" />
         <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
           <BuildFilesVar />
           <DeployFilesVar />

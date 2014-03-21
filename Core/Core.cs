@@ -565,12 +565,19 @@ namespace Client
         public static void ParseLink(string text, ProtocolSv services = null)
         {
             DebugLog("Parsing " + text);
-            if (text.StartsWith("irc://", StringComparison.Ordinal))
+            if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
-                text = text.Substring("irc://".Length);
-                string network = text;
                 string channel = null;
                 bool ssl = false;
+                if (text.StartsWith ("irc://", StringComparison.Ordinal))
+                {
+                    text = text.Substring ("irc://".Length);
+                } else
+                {
+                    text = text.Substring ("ircs://".Length);
+                    ssl = true;
+                }
+                string network = text;
                 int PORT = 6667;
                 if (network.StartsWith("$", StringComparison.Ordinal))
                 {
