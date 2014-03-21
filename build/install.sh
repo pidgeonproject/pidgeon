@@ -16,6 +16,12 @@ if [ ! -f bin/Release/Pidgeon.exe ] || [ ! -d bin/Release/modules ];then
 fi
 
 echo "Creating directory structure in $DESTDIR/usr/share"
+if [ ! -d "$DESTDIR/usr" ]; then
+  mkdir "$DESTDIR/usr" || exit 1
+fi
+if [ ! -d "$DESTDIR/usr/share" ]; then
+  mkdir "$DESTDIR/usr/share" || exit 1
+fi
 if [ ! -d "$DESTDIR/usr/share/pidgeon" ]; then
   mkdir "$DESTDIR/usr/share/pidgeon" || exit 1
 fi
