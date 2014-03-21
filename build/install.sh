@@ -4,6 +4,10 @@ if [ "$DESTDIR" = "" ];then
     DESTDIR=/.
 fi
 
+if [ x"$1" != x ];then
+    DESTDIR=$1
+fi
+
 if [ ! -f bin/Release/Pidgeon.exe ] || [ ! -d bin/Release/modules ];then
   echo "ERROR: you need to build pidgeon first"
   exit 1
