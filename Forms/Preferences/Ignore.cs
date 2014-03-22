@@ -76,7 +76,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

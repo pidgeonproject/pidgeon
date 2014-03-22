@@ -917,7 +917,7 @@ namespace Client
                     }
                     catch (Exception f)
                     {
-                        handleException(f);
+                        HandleException(f);
                         return false;
                     }
                 }

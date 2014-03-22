@@ -790,7 +790,7 @@ namespace Client.Services
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

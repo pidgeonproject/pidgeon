@@ -190,7 +190,7 @@ namespace Client.Forms
                 xx.Popup();
             } catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -257,7 +257,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -278,7 +278,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -296,7 +296,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
     }

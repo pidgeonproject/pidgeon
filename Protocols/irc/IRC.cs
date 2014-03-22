@@ -577,7 +577,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
                 Core.DebugLog("String: " + last);
             }
             return true;

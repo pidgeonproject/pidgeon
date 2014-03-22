@@ -23,7 +23,7 @@ namespace Client
     {
         private static void ExceptionForm(GLib.UnhandledExceptionArgs e)
         {
-            Core.handleException((Exception)e.ExceptionObject, true);
+            Core.HandleException((Exception)e.ExceptionObject, true);
             Environment.Exit(2);
         }
         
@@ -54,11 +54,11 @@ namespace Client
             }
             catch (AccessViolationException fail)
             {
-                Core.handleException(fail, true);
+                Core.HandleException(fail, true);
             }
             catch (Exception fail)
             {
-                Core.handleException(fail, true);
+                Core.HandleException(fail, true);
             }
         }
     }
