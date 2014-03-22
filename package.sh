@@ -63,7 +63,7 @@ if [ x"$priv" != x ];then
     priv="-k$priv"
 fi
 
-debuild $priv -us -uc || exit 1
+debuild $priv $debs || exit 1
 
 echo "Packages were built in $temp"
 ls ../*.deb
