@@ -1,7 +1,13 @@
 #!/bin/sh
+
+debs="-us -uc"
 if [ ! -d .git ];then
     echo "This command can be run from git repository only"
     exit 1
+fi
+
+if [ x"$1" = "--source" ]; then
+debs="-sa -S"
 fi
 
 echo "Press enter to start make of debian package"
@@ -48,7 +54,8 @@ fi
 echo "Running update"
 ./update.sh || exit 1
 
-echo "Do you want to use pgp key? if yes provide the key here or hit enter"
+gpg -k
+echo "Do you want to use key? if yes provide the key here or hit enter"
 read priv
 
 if [ x"$priv" != x ];then
