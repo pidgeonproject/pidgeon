@@ -565,31 +565,24 @@ namespace Client
         public static void ParseLink(string text, ProtocolSv services = null)
         {
             DebugLog("Parsing " + text);
-            if (text.StartsWith("irc://", StringComparison.Ordinal))
+            if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
-                text = text.Substring("irc://".Length);
-                string network = text;
                 string channel = null;
                 bool ssl = false;
+                if (text.StartsWith ("irc://", StringComparison.Ordinal))
+                {
+                    text = text.Substring ("irc://".Length);
+                } else
+                {
+                    text = text.Substring ("ircs://".Length);
+                    ssl = true;
+                }
+                string network = text;
                 int PORT = 6667;
                 if (network.StartsWith("$", StringComparison.Ordinal))
                 {
                     network = network.Substring(1);
                     ssl = true;
-                }
-                if (network.Contains("/"))
-                {
-                    channel = network.Substring(network.IndexOf("/", StringComparison.Ordinal) + 1);
-                    if (!channel.StartsWith("#", StringComparison.Ordinal))
-                    {
-                        channel = "#" + channel;
-                    }
-                    network = network.Substring(0, network.IndexOf("/", StringComparison.Ordinal));
-                }
-                if (network.Contains("#"))
-                {
-                    channel = network.Substring(network.IndexOf("#", StringComparison.Ordinal));
-                    network = network.Substring(0, network.IndexOf("#", StringComparison.Ordinal));
                 }
                 if (network.Contains(":"))
                 {
@@ -607,6 +600,20 @@ namespace Client
                     {
                         PORT = 6667;
                     }
+                }
+                if (network.Contains("/"))
+                {
+                    channel = network.Substring(network.IndexOf("/", StringComparison.Ordinal) + 1);
+                    if (!channel.StartsWith("#", StringComparison.Ordinal))
+                    {
+                        channel = "#" + channel;
+                    }
+                    network = network.Substring(0, network.IndexOf("/", StringComparison.Ordinal));
+                }
+                if (network.Contains("#"))
+                {
+                    channel = network.Substring(network.IndexOf("#", StringComparison.Ordinal));
+                    network = network.Substring(0, network.IndexOf("#", StringComparison.Ordinal));
                 }
                 while (network.Contains("/"))
                 {
@@ -666,8 +673,8 @@ namespace Client
         /// </summary>
         private static void Recover()
         {
-            Client.Recovery x = new Client.Recovery();
-            System.Windows.Forms.Application.Run(x);
+            Client.Recovery recoveryWindow = new Client.Recovery();
+            System.Windows.Forms.Application.Run(recoveryWindow);
         }
 
         /// <summary>

@@ -19,8 +19,7 @@ Global
 		{6EE4F770-4A6F-4101-AFE7-0F4096F505F3}.Release|x86.ActiveCfg = Release|x86
 		{6EE4F770-4A6F-4101-AFE7-0F4096F505F3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Pidgeon.csproj
@@ -46,8 +45,25 @@ Global
 		$4.inheritsScope = text/plain
 		$4.scope = text/x-csharp
 		$0.CSharpFormattingPolicy = $5
+		$5.AnonymousMethodBraceStyle = NextLine
+		$5.PropertyBraceStyle = NextLine
+		$5.PropertyGetBraceStyle = NextLine
+		$5.PropertySetBraceStyle = NextLine
+		$5.EventBraceStyle = NextLine
+		$5.EventAddBraceStyle = NextLine
+		$5.StatementBraceStyle = NextLine
 		$5.inheritsSet = Mono
 		$5.inheritsScope = text/x-csharp
 		$5.scope = text/x-csharp
+		$0.TextStylePolicy = $6
+		$6.inheritsSet = null
+		$6.scope = application/xml
+		$0.XmlFormattingPolicy = $7
+		$7.inheritsSet = Mono
+		$7.inheritsScope = application/xml
+		$7.scope = application/xml
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal
