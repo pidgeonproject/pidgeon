@@ -50,7 +50,7 @@ chmod a+rx "$DESTDIR/usr/share/pidgeon/" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/skins" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/modules" || exit 1
 chmod -R a+r "$DESTDIR/usr/share/pidgeon" || exit 1
-chmod 644 "$DESTDIR/usr/share/pidgeon/modules/*" || exit 1
+chmod 644 $DESTDIR/usr/share/pidgeon/modules/* || exit 1
 
 echo "Creating a terminal launcher in $DESTDIR/usr/bin"
 
