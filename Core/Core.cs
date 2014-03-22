@@ -568,6 +568,7 @@ namespace Client
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
                 string channel = null;
+                int PORT = 6667;
                 bool ssl = false;
                 if (text.StartsWith ("irc://", StringComparison.Ordinal))
                 {
@@ -578,16 +579,19 @@ namespace Client
                     ssl = true;
                 }
                 string network = text;
-                int PORT = 6667;
                 if (network.StartsWith("$", StringComparison.Ordinal))
                 {
                     network = network.Substring(1);
                     ssl = true;
                 }
+                if (ssl)
+                {
+                    PORT = 6697;
+                }
                 if (network.Contains(":"))
                 {
                     string port = network.Substring(network.IndexOf(":", StringComparison.Ordinal) + 1);
-                    network = network.Substring(0, network.IndexOf(port, StringComparison.Ordinal));
+                    network = network.Substring(0, network.IndexOf(":", StringComparison.Ordinal));
                     if (port.Contains("/"))
                     {
                         port = port.Substring(0, port.IndexOf("/", StringComparison.Ordinal));
