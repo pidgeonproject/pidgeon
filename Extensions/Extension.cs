@@ -80,7 +80,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
                 Core.DebugLog("CORE: Terminating the extension " + Name);
                 _Status = Status.Terminated;
             }
@@ -205,7 +205,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Client
             }
             catch (Exception f)
             {
-                Core.handleException(f);
+                Core.HandleException(f);
             }
         }
 

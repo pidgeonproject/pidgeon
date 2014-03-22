@@ -141,7 +141,7 @@ namespace Client
             }
             catch (Exception h)
             {
-                Core.handleException(h);
+                Core.HandleException(h);
                 Disconnect();
             }
         }

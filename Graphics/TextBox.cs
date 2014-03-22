@@ -146,7 +146,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -162,7 +162,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -351,7 +351,7 @@ namespace Client.Graphics
             catch (Exception fail)
             {
                 Processing = false;
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

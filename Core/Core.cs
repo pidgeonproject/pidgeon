@@ -544,7 +544,7 @@ namespace Client
             catch (Exception panic)
             {
                 Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
-                Core.handleException(panic, true);
+                Core.HandleException(panic, true);
             }
             return false;
         }
@@ -568,6 +568,7 @@ namespace Client
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
                 string channel = null;
+                int PORT = 6667;
                 bool ssl = false;
                 if (text.StartsWith ("irc://", StringComparison.Ordinal))
                 {
@@ -578,16 +579,19 @@ namespace Client
                     ssl = true;
                 }
                 string network = text;
-                int PORT = 6667;
                 if (network.StartsWith("$", StringComparison.Ordinal))
                 {
                     network = network.Substring(1);
                     ssl = true;
                 }
+                if (ssl)
+                {
+                    PORT = 6697;
+                }
                 if (network.Contains(":"))
                 {
                     string port = network.Substring(network.IndexOf(":", StringComparison.Ordinal) + 1);
-                    network = network.Substring(0, network.IndexOf(port, StringComparison.Ordinal));
+                    network = network.Substring(0, network.IndexOf(":", StringComparison.Ordinal));
                     if (port.Contains("/"))
                     {
                         port = port.Substring(0, port.IndexOf("/", StringComparison.Ordinal));
@@ -1043,7 +1047,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -1380,7 +1384,7 @@ namespace Client
         /// <param name="_exception"></param>
         /// <param name="ek"></param>
         /// <returns></returns>
-        public static int handleException(Exception _exception, ExceptionKind ek)
+        public static int HandleException(Exception _exception, ExceptionKind ek)
         {
             if (IgnoreErrors || ek == ExceptionKind.Safe)
             {
@@ -1445,24 +1449,36 @@ namespace Client
             }
             return 0;
         }
-
+        
         /// <summary>
         /// Recover from exception
         /// </summary>
         /// <param name="_exception"></param>
         /// <param name="fatal"></param>
         /// <returns></returns>
-        public static int handleException(Exception _exception, bool fatal = false)
+        public static int HandleException(Exception _exception, bool fatal = false)
         {
             if (fatal)
             {
-                handleException(_exception, ExceptionKind.Critical);
+                HandleException(_exception, ExceptionKind.Critical);
             }
             else
             {
-                handleException(_exception, ExceptionKind.Normal);
+                HandleException(_exception, ExceptionKind.Normal);
             }
             return 0;
+        }
+        
+        [Obsolete]
+        public static int handleException(Exception _exception, bool fatal = false)
+        {
+            return HandleException(_exception, fatal);
+        }
+        
+        [Obsolete]
+        public static int handleException(Exception _exception, ExceptionKind ek)
+        {
+            return HandleException(_exception, ek);
         }
 
         /// <summary>
@@ -1501,7 +1517,7 @@ namespace Client
                     }
                     catch (Exception fail)
                     {
-                        Core.handleException(fail);
+                        Core.HandleException(fail);
                     }
                     foreach (Thread th in SystemThreads)
                     {
@@ -1512,7 +1528,7 @@ namespace Client
                         }
                         catch (Exception fail)
                         {
-                            Core.handleException(fail);
+                            Core.HandleException(fail);
                         }
                     }
                     Thread.Sleep(800);

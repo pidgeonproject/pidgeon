@@ -108,7 +108,7 @@ namespace Client
             catch (Exception fail)
             {
                 Core.KillThread(thread, true);
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

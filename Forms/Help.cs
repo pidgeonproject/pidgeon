@@ -35,7 +35,7 @@ namespace Client.Forms
                 this.label4.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
             } catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

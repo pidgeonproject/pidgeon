@@ -99,9 +99,9 @@ namespace Client
                         Save();
                         return;
                     }
-                    catch (Exception e1)
+                    catch (Exception fail)
                     {
-                        Core.handleException(e1);
+                        Core.HandleException(fail);
                         Thread.Sleep(20000);
                     }
                 }

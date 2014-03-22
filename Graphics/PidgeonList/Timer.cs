@@ -246,7 +246,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
             return true;
         }

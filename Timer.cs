@@ -125,7 +125,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
                 return false;
             }
         }
@@ -156,7 +156,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
                 Running = false;
                 return;
             }

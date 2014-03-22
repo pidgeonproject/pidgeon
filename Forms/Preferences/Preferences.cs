@@ -202,7 +202,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -294,7 +294,7 @@ namespace Client.Forms
             }
             catch (Exception f)
             {
-                Core.handleException(f);
+                Core.HandleException(f);
             }
             Hide();
         }
@@ -333,7 +333,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -346,7 +346,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -359,7 +359,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -375,7 +375,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -391,7 +391,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -410,7 +410,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -435,7 +435,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -466,7 +466,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -488,7 +488,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -504,7 +504,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -520,7 +520,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -536,7 +536,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -552,7 +552,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -568,7 +568,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -584,7 +584,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -600,7 +600,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -616,7 +616,7 @@ namespace Client.Forms
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
     }

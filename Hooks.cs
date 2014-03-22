@@ -63,7 +63,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeNote(string, string) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return true;
@@ -90,7 +90,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook Initialise(Main) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
             }
@@ -116,7 +116,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeOptions(Forms.Preferences preferences) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
             }
@@ -173,7 +173,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeUserMenu(Gtk.Menu Menu, Graphics.Window Window) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -207,7 +207,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook AfterUserMenu(Gtk.Menu Menu, Graphics.Window Window) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -237,7 +237,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeConnect(string, string) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return;
@@ -304,7 +304,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook Ignore(Graphics.Window window, string message, bool updated, long date) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -334,7 +334,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
             }
@@ -363,7 +363,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook Ignore(Graphics.Window window, string message, bool updated, long date) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
             }
@@ -389,7 +389,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook TextTab(bool, string, string, int) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
             }
@@ -422,7 +422,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook NotificationDisplay() module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
 
@@ -454,7 +454,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook AfterConnectToNetwork(Network network) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return;
@@ -481,7 +481,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook AfterConnectToNetwork(Network network) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return;
@@ -524,7 +524,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook BeforeJoin(Network network,string Channel) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return data;
@@ -572,7 +572,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook UserPart(Network network, User user, Channel channel, string message) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -647,7 +647,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook Topic(Network network, User user, Channel channel, string topic) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
 
@@ -696,7 +696,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook UserTalk(Network network, User user, Channel channel, string message) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -745,7 +745,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook UserQuit(Network network, User user, string message) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -792,7 +792,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook UserJoin(Network network, User user, Channel channel) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return ok;
@@ -842,7 +842,7 @@ namespace Client
                     catch (Exception mf)
                     {
                         Core.DebugLog("Error in hook CreatingNetwork(network) module " + extension.Name);
-                        Core.handleException(mf);
+                        Core.HandleException(mf);
                     }
                 }
                 return;

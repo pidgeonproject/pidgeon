@@ -240,7 +240,7 @@ namespace Client.PidgeonGtkToolkit
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

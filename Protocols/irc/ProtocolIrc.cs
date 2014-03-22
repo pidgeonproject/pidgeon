@@ -223,7 +223,7 @@ namespace Client
                 }
                 catch (Exception fail)
                 {
-                    Core.handleException(fail);
+                    Core.HandleException(fail);
                     return;
                 }
             }
@@ -314,7 +314,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail, Core.ExceptionKind.Safe);
+                Core.HandleException(fail, Core.ExceptionKind.Safe);
                 Core.KillThread(System.Threading.Thread.CurrentThread);
             }
         }
@@ -406,7 +406,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                Core.handleException(ex);
+                Core.HandleException(ex);
             }
             Core.KillThread(System.Threading.Thread.CurrentThread);
             return;
@@ -440,7 +440,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -466,7 +466,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                Core.handleException(ex);
+                Core.HandleException(ex);
             }
             return false;
         }
@@ -489,7 +489,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 

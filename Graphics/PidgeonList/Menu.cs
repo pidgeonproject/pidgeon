@@ -161,7 +161,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -204,7 +204,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -234,7 +234,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -257,7 +257,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -372,7 +372,7 @@ namespace Client.Graphics
             }
             catch (Exception f)
             {
-                Core.handleException(f);
+                Core.HandleException(f);
             }
         }
 
@@ -403,7 +403,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -423,7 +423,7 @@ namespace Client.Graphics
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
     }

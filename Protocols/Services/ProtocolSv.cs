@@ -137,7 +137,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail, Core.ExceptionKind.Safe);
+                Core.HandleException(fail, Core.ExceptionKind.Safe);
             }
         }
 
@@ -261,7 +261,7 @@ namespace Client
                     }
                     catch (Exception f1)
                     {
-                        Core.handleException(f1);
+                        Core.HandleException(f1);
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace Client
             {
                 if (IsConnected)
                 {
-                    Core.handleException(fail);
+                    Core.HandleException(fail);
                 }
                 Core.KillThread(System.Threading.Thread.CurrentThread);
             }
@@ -801,7 +801,7 @@ namespace Client
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                Core.HandleException(fail);
             }
         }
 
@@ -830,7 +830,7 @@ namespace Client
                 {
                     if (IsConnected)
                     {
-                        Core.handleException(f);
+                        Core.HandleException(f);
                     }
                     else
                     {
