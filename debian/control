@@ -8,5 +8,5 @@ Build-Depends: debhelper (>= 9), mono-xbuild
 Package: pidgeon
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: Pidgeon irc client
+Description: irc client
  provides an advanced IRC client, that can be extended with various plugins
