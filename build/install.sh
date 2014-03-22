@@ -67,6 +67,12 @@ fi
 echo "#!/bin/sh" > "$DESTDIR/usr/bin/pidgeon"
 echo "mono $DESTDIR/usr/share/pidgeon/Pidgeon.exe \$*" >> "$DESTDIR/usr/bin/pidgeon"
 chmod a+x "$DESTDIR/usr/bin/pidgeon"
+if [ ! -d "$DESTDIR/usr/share/man" ];then
+    mkdir "$DESTDIR/usr/share/man" || exit 1
+fi
+if [ ! -d "$DESTDIR/usr/share/man/man1" ];then
+    mkdir "$DESTDIR/usr/share/man/man1"
+fi
 cp man/* "$DESTDIR/usr/share/man/man1" || exit 1
 gzip "$DESTDIR/usr/share/man/man1/pidgeon.1" || exit 1
 
