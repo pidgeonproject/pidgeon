@@ -1,4 +1,8 @@
 #!/bin/sh
+if [ ! -d .git ];then
+    echo "This command can be run from git repository only"
+    exit 1
+fi
 
 echo "Press enter to start make of debian package"
 read x
@@ -21,6 +25,7 @@ cd "$temp/pidgeon" || exit 1
 echo "Doing sanity checks"
 
 if [ -d ".git" ];then
+    sh update.sh || exit 1
     echo "Removing .git folder"
     rm -rf .git || exit 1
 fi
@@ -47,6 +52,7 @@ echo "Do you want to use pgp key? if yes provide the key here or hit enter"
 read priv
 
 if [ x"$priv" != x ];then
+    echo "Using $priv"
     priv="-k$priv"
 fi
 
