@@ -6,8 +6,9 @@ if [ ! -d .git ];then
     exit 1
 fi
 
-if [ x"$1" = "--source" ]; then
-debs="-sa -S"
+if [ x"$1" = "x--source" ]; then
+    echo "Building only source"
+    debs="-sa -S"
 fi
 
 echo "Press enter to start make of debian package"
@@ -62,7 +63,7 @@ if [ x"$priv" != x ];then
     echo "Using $priv"
     priv="-k$priv"
 fi
-
+echo "Running debuild $priv $debs"
 debuild $priv $debs || exit 1
 
 echo "Packages were built in $temp"

@@ -3,7 +3,7 @@ Maintainer: Petr Bena <benapetr@gmail.com>
 Section: misc
 Priority: optional
 Standards-Version: 3.9.2
-Build-Depends: debhelper (>= 9), mono-devel
+Build-Depends: debhelper (>= 9), mono-devel, libmono-addins-gui0.2-cil
 
 Package: pidgeon
 Architecture: any
