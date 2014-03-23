@@ -140,24 +140,13 @@ namespace Client
             System.Threading.Thread.Sleep(100);
 
             Channel curr = Core.network.getChannel(Core.SystemForm.Chat.WindowName);
-
-                User host = null;
                 
-                if (curr != null)
-                {
-                    host = curr.userFromName(user);
-                    if (host != null)
-                    {
-                        if (host.Host != "")
-                        {
-                            Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b *!*@" + host.Host + "$##fix_your_connection", Configuration.Priority.High);
-                            return;
-                        }
-                    }
-                    Core.SystemForm.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
-                    return;
-                }
-                Core.SystemForm.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
+            if (curr != null)
+            {
+                Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b user!*@*$##fix_your_connection", Configuration.Priority.High);
+                return;
+            }
+            Core.SystemForm.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
         }
 
         public void JoinHostBan(string text)
