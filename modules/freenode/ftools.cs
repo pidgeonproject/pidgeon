@@ -143,7 +143,7 @@ namespace Client
                 
             if (curr != null)
             {
-                Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b user!*@*$##fix_your_connection", Configuration.Priority.High);
+                Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b " + user + "!*@*$##fix_your_connection", Configuration.Priority.High);
                 return;
             }
             Core.SystemForm.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
