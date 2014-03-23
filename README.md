@@ -22,10 +22,17 @@ sudo make uninstall
 ```
 
 Compiling extensions:
+----------------------
 
-Note: build.sh script for linux will build all default extensions for you, this is only needed on windows and mac
+Note: makefile script for linux will build all default extensions for you, this is only needed on windows and mac
 
-You will probably want to install at least tab completion, for that you first need to build pidgeon. Then open the extension you want to build and ensure that Pidgeon reference is existing, if it's not simply replace it with existing reference to Pidgeon.exe so that you can build the extension.
+You will probably want to install at least tab completion, for that you first need to build pidgeon. Then:
+
+* Open the project file for extension you want to build
+* Ensure that Pidgeon reference is existing (pidgeon.exe needs to be there)
+* If it's not, simply replace it with existing reference to Pidgeon.exe so that you can build the extension.
+* Hit build, the .dll file will be produced, you need to rename it to .pmod file
+* Copy the file to folder where your have pidgeon /extensions and restart pidgeon
 
 How to install pidgeon
 =======================
