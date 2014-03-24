@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// IRC protocol handler
@@ -147,7 +147,7 @@ namespace Client
             chan = parameters.Replace(" ", "");
             User user = null;
             string message = value;
-            if (!chan.Contains(_Network.channel_prefix))
+            if (!chan.Contains(_Network.ChannelPrefix))
             {
                 string uc;
                 if (message.StartsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
@@ -175,7 +175,7 @@ namespace Client
                             {
                                 if (_Network.PrivateWins.ContainsKey(user))
                                 {
-                                    WindowText(_Network.PrivateWins[user], Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action, updated_text,
+                                    WindowText(_Network.PrivateWins[user], Configuration.CurrentSkin.Message2 + _nick + message, Pidgeon.ContentLine.MessageStyle.Action, updated_text,
                                         date, !updated_text);
                                     return true;
                                 }
@@ -289,21 +289,21 @@ namespace Client
                     if (Configuration.irc.DisplayCtcp)
                     {
                         WindowText(_Network.SystemWindow, "CTCP from (" + _nick + ") " + trimmed,
-                            Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                     }
                     if (Configuration.irc.ShowReplyForCTCP && reply != null)
                     {
                         WindowText(_Network.SystemWindow, "CTCP response to (" + _nick + ") " + reply,
-                            Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                     }
                     return true;
                 }
             }
             user = new User(_nick, _host, _Network, _ident);
             Channel channel = null;
-            if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
+            if (chan.StartsWith(_Network.ChannelPrefix, StringComparison.Ordinal))
             {
-                channel = _Network.getChannel(chan);
+                channel = _Network.GetChannel(chan);
                 if (channel != null)
                 {
                     Graphics.Window window;
@@ -328,24 +328,24 @@ namespace Client
                             {
                                 if (_nick == _Network.Nickname)
                                 {
-                                    WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
+                                    WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Pidgeon.ContentLine.MessageStyle.Action,
                                         !channel.TemporarilyHidden, date, true);
                                     return true;
                                 }
                             }
-                            WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Client.ContentLine.MessageStyle.Action,
+                            WindowText(window, Configuration.CurrentSkin.Message2 + _nick + message, Pidgeon.ContentLine.MessageStyle.Action,
                                 !channel.TemporarilyHidden, date, !updated_text);
                             return true;
                         }
                         if (!Configuration.irc.DisplayMode)
                         {
                             WindowText(window, Protocol.PRIVMSG(user.Nick, message),
-                            Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                         else
                         {
                             WindowText(window, Protocol.PRIVMSG(user.ChannelPrefix + user.Nick, message),
-                            Client.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Message, !channel.TemporarilyHidden, date, !updated_text);
                         }
                     }
                     channel.UpdateInfo();
@@ -364,7 +364,7 @@ namespace Client
                     }
                     Graphics.Window w = _Protocol.Windows[_Network.SystemWindowID + chan];
                     WindowText(w, Protocol.PRIVMSG(chan, message),
-                        Client.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
+                        Pidgeon.ContentLine.MessageStyle.Message, updated_text, date, !updated_text);
                     if (Configuration.Kernel.Notice && Configuration.Window.NotifyPrivate && w.Highlights && updated_text)
                     {
                         if (Core.SystemForm.Chat != w)
@@ -384,7 +384,7 @@ namespace Client
             {
                 string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
                 string message = value;
-                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, name + " is currently away: " + message, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -395,7 +395,7 @@ namespace Client
             if (parameters.Contains(" "))
             {
                 string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " " + value, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -418,7 +418,7 @@ namespace Client
             if (user.Length > 3)
             {
                 string host = user[1] + "!" + user[2] + "@" + user[3];
-                WindowText(_Network.SystemWindow, "Start of WHOIS record for " + host + " " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "Start of WHOIS record for " + host + " " + value, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
             }
             return true;
         }
@@ -432,7 +432,7 @@ namespace Client
         /// <returns></returns>
         private bool WhoisFn(string source, string parameters, string value)
         {
-            WindowText(_Network.SystemWindow, "END OF WHOIS for " + parameters, Client.ContentLine.MessageStyle.System, true, date, true);
+            WindowText(_Network.SystemWindow, "END OF WHOIS for " + parameters, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
             return true;
         }
 
@@ -448,7 +448,7 @@ namespace Client
             if (parameters.Contains(" "))
             {
                 string name = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is in channels: " + value, Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is in channels: " + value, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -473,7 +473,7 @@ namespace Client
                 }
                 string server = name.Substring(name.IndexOf(" ", StringComparison.Ordinal) + 1);
                 name = name.Substring(0, name.IndexOf(" ", StringComparison.Ordinal));
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is using server: " + server + " (" + value + ")", Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is using server: " + server + " (" + value + ")", Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -481,7 +481,7 @@ namespace Client
 
         private bool Invite(string source, string parameters, string value)
         {
-            WindowText(_Network.SystemWindow, "INVITE: " + source + " invites you to join " + value + " (click on channel name to join)", Client.ContentLine.MessageStyle.System, true, date, true);
+            WindowText(_Network.SystemWindow, "INVITE: " + source + " invites you to join " + value + " (click on channel name to join)", Pidgeon.ContentLine.MessageStyle.System, true, date, true);
             if (!Configuration.irc.IgnoreInvites)
             {
                 Core.DisplayNote(source + " invites you to join " + value, "Invitation");
@@ -507,7 +507,7 @@ namespace Client
                 name = name.Substring(0, name.IndexOf(" ", StringComparison.Ordinal));
                 idle = idle.Substring(0, idle.IndexOf(" ", StringComparison.Ordinal));
                 DateTime logintime = Core.ConvertFromUNIX(uptime);
-                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + " (" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Client.ContentLine.MessageStyle.System, true, date, true);
+                WindowText(_Network.SystemWindow, "WHOIS " + name + " is online since " + logintime.ToString() + " (" + (DateTime.Now - logintime).ToString() + " ago) idle for " + idle + " seconds", Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 return true;
             }
             return false;
@@ -521,7 +521,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            foreach (Channel item in _Network.Channels)
+            foreach (Channel item in _Network.Channels.Values)
             {
                 if (item.ChannelWork)
                 {
@@ -535,7 +535,7 @@ namespace Client
                             {
                                 WindowText(window, messages.get("protocol-quit", Core.SelectedLanguage,
                                     new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                                    Client.ContentLine.MessageStyle.Join,
+                                    Pidgeon.ContentLine.MessageStyle.Join,
                                     !item.TemporarilyHidden, date, !updated_text);
                             }
                         }
@@ -543,7 +543,7 @@ namespace Client
                         {
                             lock (item.UserList)
                             {
-                                item.UserList.Remove(target);
+                                item.RemoveUser(target);
                             }
                             item.UpdateInfo();
                             item.RedrawUsers();

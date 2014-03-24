@@ -19,20 +19,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Client;
 
-namespace Client
+namespace Pidgeon
 {
-    class RestrictedModule : Client.Extension
+    class RestrictedModule : Extension
     {
         public override bool Hook_OnLoad()
         {
-            Client.Commands.RegisterCommand("kick", new Client.Commands.Command(Client.Commands.Type.Plugin, Kick));
-            Client.Commands.RegisterCommand("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
-            Client.Commands.RegisterCommand("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
-            Client.Commands.RegisterCommand("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
-            Client.Commands.RegisterCommand("jhostban", new Client.Commands.Command(Client.Commands.Type.Plugin, JoinHostBan));
-            Client.Commands.RegisterCommand("jb", new Client.Commands.Command(Client.Commands.Type.Plugin, OpenBan));
+            Commands.RegisterCommand("kick", new Commands.Command(Commands.Type.Plugin, Kick));
+            Commands.RegisterCommand("kq", new Commands.Command(Commands.Type.Plugin, Quiet));
+            Commands.RegisterCommand("kb", new Commands.Command(Commands.Type.Plugin, Ban));
+            Commands.RegisterCommand("op", new Commands.Command(Commands.Type.Plugin, Op));
+            Commands.RegisterCommand("jhostban", new Commands.Command(Commands.Type.Plugin, JoinHostBan));
+            Commands.RegisterCommand("jb", new Commands.Command(Commands.Type.Plugin, OpenBan));
             return true;
         }
 
@@ -42,6 +41,26 @@ namespace Client
             Description = "This plugin enable you to use extra commands";
             Version = "1.8.0";
             base.Initialise();
+        }
+
+        private void GetOp(string channel)
+        {
+            Channel channel_ = Core.SelectedNetwork.GetChannel(channel);
+            if (channel_ == null)
+            {
+                return;
+            }
+            User user = channel_.GetSelf();
+            if (user == null)
+            {
+                DebugLog("User is null, fail :(");
+                return;
+            }
+            if (!user.IsOp)
+            {
+                Core.DebugLog("Modes: " + channel_.ChannelMode.ToString());
+                Core.network.Transfer("PRIVMSG ChanServ :OP " + channel_.Name, Configuration.Priority.High);
+            }
         }
 
         public void Kick(string text)
@@ -58,19 +77,19 @@ namespace Client
                 reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, Configuration.Priority.High);
+            GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
             Core.network.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, Configuration.Priority.High);
         }
 
         public void Op(string text)
         {
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -90,7 +109,7 @@ namespace Client
             {
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -104,7 +123,7 @@ namespace Client
                 {
                     if (host.Host != "")
                     {
-                        Core.network.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, Configuration.Priority.High);
+                        GetOp(Core.SystemForm.Chat.WindowName);
                         System.Threading.Thread.Sleep(100);
                         Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +q *!*@" + host.Host, Configuration.Priority.High);
                         return;
@@ -131,12 +150,12 @@ namespace Client
             {
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, Configuration.Priority.High);
+            GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
 
             Channel curr = Core.network.getChannel(Core.SystemForm.Chat.WindowName);
@@ -161,12 +180,12 @@ namespace Client
             {
                 user = text;
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, Configuration.Priority.High);
+            GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
 
             Channel curr = Core.network.getChannel(Core.SystemForm.Chat.WindowName);
@@ -192,12 +211,12 @@ namespace Client
                 reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, Configuration.Priority.High);
+            GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
             Core.network.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, Configuration.Priority.High);
             User host = null;

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Extension
@@ -209,8 +209,6 @@ namespace Client
             }
         }
 
-        
-
         /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
@@ -241,6 +239,15 @@ namespace Client
             {
                 Core.HandleException(f);
             }
+        }
+
+        /// <summary>
+        /// Write a message to debug log
+        /// </summary>
+        /// <param name="message">Message</param>
+        public void DebugLog(string message)
+        {
+            Core.DebugLog("Extension " + this.Name + ": " + message);
         }
 
         /// <summary>

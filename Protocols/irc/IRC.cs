@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class ProcessorIRC
     {
@@ -90,7 +90,7 @@ namespace Client
                         {
                             channel = _value;
                         }
-                        Channel curr = _Network.getChannel(channel);
+                        Channel curr = _Network.GetChannel(channel);
                         if (curr == null)
                         {
                             curr = _Network.Channel(channel, !Configuration.UserData.SwitchWindowOnJoin);
@@ -102,7 +102,7 @@ namespace Client
                             Graphics.Window xx = curr.RetrieveWindow();
                             if (xx != null)
                             {
-                                xx.needIcon = true;
+                                xx.NeedsIcon = true;
                             }
                         }
                         if (updated_text)
@@ -155,33 +155,33 @@ namespace Client
                             }
                         }
                         _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _new }),
-                            Client.ContentLine.MessageStyle.User, true, date);
+                            Pidgeon.ContentLine.MessageStyle.User, true, date);
                         _Network.Nickname = _new;
                     }
                     if (_data2[1].Contains("PART"))
                     {
                         string channel = _data2[2];
-                        if (_data2[2].Contains(_Network.channel_prefix))
+                        if (_data2[2].Contains(_Network.ChannelPrefix))
                         {
                             channel = _data2[2];
-                            Channel c = _Network.getChannel(channel);
+                            Channel c = _Network.GetChannel(channel);
                             if (c != null)
                             {
                                 Graphics.Window Chat = c.RetrieveWindow();
                                 c.ChannelWork = false;
                                 if (Chat != null)
                                 {
-                                    Chat.needIcon = true;
+                                    Chat.NeedsIcon = true;
                                     if (!c.partRequested)
                                     {
                                         c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
+                                            Pidgeon.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                     else
                                     {
                                         Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
+                                            Pidgeon.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                 }
                                 c.UpdateInfo();
@@ -290,7 +290,7 @@ namespace Client
                         case "005":
                             Info(command, parameters, value);
                             Hooks._Network.NetworkInfo(_Network, command, parameters, value);
-                            if (!_Network.isLoaded)
+                            if (!_Network.IsLoaded)
                             {
                                 Hooks._Network.AfterConnectToNetwork(_Network);
                             }
@@ -412,25 +412,25 @@ namespace Client
                             Ping();
                             return true;
                         case "INFO":
-                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO", StringComparison.Ordinal) + 5), Client.ContentLine.MessageStyle.User,
+                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO", StringComparison.Ordinal) + 5), Pidgeon.ContentLine.MessageStyle.User,
                                 true, date, !updated_text);
                             return true;
                         case "NOTICE":
-                            if (parameters.Contains(_Network.channel_prefix))
+                            if (parameters.Contains(_Network.ChannelPrefix))
                             {
-                                Channel channel = _Network.getChannel(parameters);
+                                Channel channel = _Network.GetChannel(parameters);
                                 if (channel != null)
                                 {
                                     Graphics.Window window;
                                     window = channel.RetrieveWindow();
                                     if (window != null)
                                     {
-                                        window.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                                        window.scrollback.InsertText("[" + source + "] " + value, Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                                         return true;
                                     }
                                 }
                             }
-                            _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                            _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                             return true;
                         case "NICK":
                             if (ProcessNick(source, parameters, value))
@@ -572,7 +572,7 @@ namespace Client
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
-                    _Network.SystemWindow.scrollback.InsertText(text, Client.ContentLine.MessageStyle.System, true, date, true);
+                    _Network.SystemWindow.scrollback.InsertText(text, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 }
             }
             catch (Exception fail)
@@ -592,7 +592,7 @@ namespace Client
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        private void WindowText(Graphics.Window ScrollbackWindow, string ScrollbackText, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        private void WindowText(Graphics.Window ScrollbackWindow, string ScrollbackText, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             bool logging = WriteLog;
 
@@ -639,7 +639,7 @@ namespace Client
             pong = _pong;
             date = _date;
             updated_text = updated;
-            if (_network._Protocol.GetType() == typeof(ProtocolSv))
+            if (_network._Protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
                 isServices = true;
             }

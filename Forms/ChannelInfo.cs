@@ -18,12 +18,12 @@ using System.Collections.Generic;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Window
     /// </summary>
-    public partial class ChannelInfo : Client.PidgeonGtkToolkit.PidgeonForm
+    public partial class ChannelInfo : Pidgeon.PidgeonGtkToolkit.PidgeonForm
     {
         private Channel channel = null;
         private List<char> cm = new List<char>();

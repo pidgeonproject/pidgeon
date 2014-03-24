@@ -21,7 +21,7 @@ using System.Drawing;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This is a parser of text provided by user or server
@@ -31,7 +31,7 @@ namespace Client
         /// <summary>
         /// Parser cache
         /// </summary>
-        public static Dictionary<string, Client.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
+        public static Dictionary<string, Pidgeon.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
 
         /// <summary>
         /// This character will change the color of text (it is standard of mirc)
@@ -54,7 +54,7 @@ namespace Client
         /// </summary>
         /// <param name="line"></param>
         /// <returns></returns>
-        public static Client.RichTBox.Line FromCache(string line)
+        public static Pidgeon.RichTBox.Line FromCache(string line)
         {
             lock (ParserCache)
             {
@@ -71,7 +71,7 @@ namespace Client
         /// </summary>
         /// <param name="line"></param>
         /// <param name="data"></param>
-        public static void ToCache(string line, Client.RichTBox.Line data)
+        public static void ToCache(string line, Pidgeon.RichTBox.Line data)
         {
             lock (ParserCache)
             {
@@ -110,7 +110,7 @@ namespace Client
         /// <param name="text"></param>
         /// <param name="SBAB"></param>
         /// <returns></returns>
-        public static Client.RichTBox.ContentText color(string text, Client.RichTBox SBAB)
+        public static Pidgeon.RichTBox.ContentText color(string text, Pidgeon.RichTBox SBAB)
         {
             if (text.Contains(colorchar.ToString()))
             {
@@ -124,7 +124,7 @@ namespace Client
                         if (closed)
                         {
                             text = text.Substring(position, text.Length - position);
-                            Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(text), Configuration.CurrentSkin.mrcl[color]);
+                            Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(text), Configuration.CurrentSkin.mrcl[color]);
                             return Link;
                         }
 
@@ -167,7 +167,7 @@ namespace Client
         /// <param name="under">If text is underlined or not</param>
         /// <param name="bold">If text is bold or not</param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_ident(string text, Client.RichTBox SBAB, bool under, bool bold)
+        private static Pidgeon.RichTBox.ContentText parse_ident(string text, Pidgeon.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%D%") && text.Contains("%/D%"))
             {
@@ -175,7 +175,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%", StringComparison.Ordinal));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://ident/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -193,7 +193,7 @@ namespace Client
         /// <param name="under">If text is underlined or not</param>
         /// <param name="bold">If text is bold or not</param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_link(string text, Client.RichTBox SBAB, bool under, bool bold)
+        private static Pidgeon.RichTBox.ContentText parse_link(string text, Pidgeon.RichTBox SBAB, bool under, bool bold)
         {
             if (text.Contains("%L%") && text.Contains("%/L%"))
             {
@@ -201,7 +201,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%", StringComparison.Ordinal));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://text/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -220,7 +220,7 @@ namespace Client
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_host(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_host(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%H%") && text.Contains("%/H%"))
             {
@@ -228,7 +228,7 @@ namespace Client
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%", StringComparison.Ordinal));
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://hostname/#" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.TextColor = color;
@@ -248,7 +248,7 @@ namespace Client
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_chan(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_chan(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.StartsWith("#", StringComparison.Ordinal))
             {
@@ -273,7 +273,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                     }
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://join/" + ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -296,7 +296,7 @@ namespace Client
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_name(string text, Client.RichTBox SBAB, bool under, bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_name(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%USER%") && text.Contains("%/USER%"))
             {
@@ -305,7 +305,7 @@ namespace Client
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%", StringComparison.Ordinal));
 
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Bold = bold;
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
@@ -330,7 +330,7 @@ namespace Client
         /// <param name="CurrentProtocol"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        private static Client.RichTBox.ContentText parse_http(string text, Client.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
+        private static Pidgeon.RichTBox.ContentText parse_http(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
         {
             string result = text;
             string tempdata = text;
@@ -350,7 +350,7 @@ namespace Client
                             link = link.Substring(0, link.IndexOf(sepa.ToString(), StringComparison.Ordinal));
                         }
                     }
-                    Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Underline = true;
                     Link.Bold = bold;
                     if (Configuration.Colors.ChangeLinks)
@@ -374,7 +374,7 @@ namespace Client
                         link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
-                Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                 Link.Underline = true;
                 Link.Bold = bold;
                 if (Configuration.Colors.ChangeLinks)
@@ -409,7 +409,7 @@ namespace Client
                                 link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                             }
                         }
-                        Client.RichTBox.ContentText Link = new Client.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                        Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                         Link.Underline = true;
                         Link.Bold = bold;
                         if (Configuration.Colors.ChangeLinks)
@@ -432,14 +432,14 @@ namespace Client
         /// which is a custom widget for GTK used only by pidgeon with same interface as SBA had</param>
         /// <param name="_style">Default color for this text</param>
         /// <returns></returns>
-        public static Client.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
+        public static Pidgeon.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
             if (SBAB == null)
             {
                 throw new Core.PidgeonException("NULL reference to RichTBox object");
             }
 
-            Client.RichTBox.Line line = null;
+            Pidgeon.RichTBox.Line line = null;
 
             if (CacheEnabled)
             {
@@ -450,8 +450,8 @@ namespace Client
                 }
             }
 
-            line = new Client.RichTBox.Line("", SBAB);
-            Client.RichTBox.ContentText lprttext = null;
+            line = new Pidgeon.RichTBox.Line("", SBAB);
+            Pidgeon.RichTBox.ContentText lprttext = null;
             string tempdata = text;
             Color color = _style;
             string templine = "";
@@ -478,12 +478,12 @@ namespace Client
                         if (prefix != '\0')
                         {
                             // we append the prefix to previous text because it must not be a part of url
-                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine) + prefix.ToString(), color);
+                            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine) + prefix.ToString(), color);
                         }
                         else
                         {
                             // there was no prefix
-                            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                         }
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
@@ -519,7 +519,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%USER%", StringComparison.Ordinal))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     lprttext.Italic = Italic;
@@ -545,7 +545,7 @@ namespace Client
                         tempdata = tempdata.Substring(1);
                     }
 
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Underline = Underlined;
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
@@ -566,7 +566,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -579,7 +579,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -592,7 +592,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -607,7 +607,7 @@ namespace Client
                     int colorcode = -2;
                     tempdata = tempdata.Substring(1);
                     carret++;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -654,7 +654,7 @@ namespace Client
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -665,7 +665,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%H%", StringComparison.Ordinal))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -683,7 +683,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%L%", StringComparison.Ordinal))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -701,7 +701,7 @@ namespace Client
                 }
                 else if (tempdata.StartsWith("%D%", StringComparison.Ordinal))
                 {
-                    lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -724,7 +724,7 @@ namespace Client
                 tempdata = tempdata.Substring(Jump);
                 carret = carret + Jump;
             }
-            lprttext = new Client.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
             lprttext.Underline = Underlined;
             lprttext.Italic = Italic;
             lprttext.Bold = Bold;
@@ -890,7 +890,7 @@ namespace Client
             }
             if (network == null)
             {
-                _window.scrollback.InsertText("Not connected", Client.ContentLine.MessageStyle.User);
+                _window.scrollback.InsertText("Not connected", Pidgeon.ContentLine.MessageStyle.User);
                 return 2;
             }
             if (network.IsConnected)

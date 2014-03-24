@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Gtk;
 
-namespace Client
+namespace Pidgeon
 {
-    public class PidgeonTc : Client.Extension
+    public class PidgeonTc : Extension
     {
         public override void Initialise()
         {
@@ -150,15 +150,15 @@ namespace Client
                 ////
 
 
-                if (text2.StartsWith(Core.SelectedNetwork.channel_prefix))
+                if (text2.StartsWith(Core.SelectedNetwork.ChannelPrefix))
                 {
                     if (Core.SelectedNetwork.IsConnected)
                     {
 
-                        if (text2.StartsWith(Core.SystemForm.Chat._Network.channel_prefix))
+                        if (text2.StartsWith(Core.SystemForm.Chat._Network.ChannelPrefix))
                         {
                             List<string> Channels = new List<string>();
-                            foreach (Channel n in Core.SystemForm.Chat._Network.Channels)
+                            foreach (Channel n in Core.SystemForm.Chat._Network.Channels.Values)
                             {
                                 Channels.Add(n.Name);
                             }
@@ -231,7 +231,7 @@ namespace Client
                 if (Core.SelectedNetwork.RenderedChannel == null) { return; }
                 lock (Core.SelectedNetwork.RenderedChannel.UserList)
                 {
-                    foreach (var item in Core.SelectedNetwork.RenderedChannel.UserList)
+                    foreach (User item in Core.SelectedNetwork.RenderedChannel.UserList.Values)
                     {
                         if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                         {

@@ -19,7 +19,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Provides information about repository

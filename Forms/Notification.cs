@@ -15,7 +15,7 @@
 
 using System;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Notification window which is displayed in corner of window when user should be alerted of some event

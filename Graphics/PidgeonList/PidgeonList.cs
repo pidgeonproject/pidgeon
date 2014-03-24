@@ -13,12 +13,13 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+using Pidgeon.Protocols;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     /// <summary>
     /// Menu
@@ -29,7 +30,7 @@ namespace Client.Graphics
         /// <summary>
         /// List of services which are currently in sidebar
         /// </summary>
-        public Dictionary<ProtocolSv, TreeIter> ServiceList = new Dictionary<ProtocolSv, TreeIter>();
+        public Dictionary<Protocols.Services.ProtocolSv, TreeIter> ServiceList = new Dictionary<Protocols.Services.ProtocolSv, TreeIter>();
         /// <summary>
         /// Quassel core
         /// </summary>
@@ -52,7 +53,7 @@ namespace Client.Graphics
         public Dictionary<ProtocolDCC, TreeIter> DirectClientConnectionList = new Dictionary<ProtocolDCC, TreeIter>();
         private LinkedList<User> queueUsers = new LinkedList<User>();
         private LinkedList<Channel> queueChannels = new LinkedList<Channel>();
-        private List<ProtocolSv> queueProtocol = new List<ProtocolSv>();
+        private List<Protocols.Services.ProtocolSv> queueProtocol = new List<Protocols.Services.ProtocolSv>();
         private List<Network> queueNetwork = new List<Network>();
         private List<ProtocolQuassel> queueQs = new List<ProtocolQuassel>();
         private List<ProtocolDCC> queueDcc = new List<ProtocolDCC>();
@@ -290,7 +291,7 @@ namespace Client.Graphics
         /// This function removes object, it is being called only by destructor of quassel core
         /// </summary>
         /// <param name="protocol">Quassel core</param>
-        public bool RemoveServ(ProtocolSv protocol)
+        public bool RemoveServ(Protocols.Services.ProtocolSv protocol)
         {
             lock (queueProtocol)
             {
@@ -439,9 +440,9 @@ namespace Client.Graphics
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(nw.SystemWindow.MenuColor);
-                            if (nw.SystemWindow.needIcon)
+                            if (nw.SystemWindow.NeedsIcon)
                             {
-                                nw.SystemWindow.needIcon = false;
+                                nw.SystemWindow.NeedsIcon = false;
                                 if (nw.IsConnected)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
@@ -474,9 +475,9 @@ namespace Client.Graphics
                         if (window != null && !window.IsDestroyed)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
-                            if (window.needIcon)
+                            if (window.NeedsIcon)
                             {
-                                window.needIcon = false;
+                                window.NeedsIcon = false;
                                 if (user._Network == null || !user._Network.IsConnected)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowAt);
@@ -499,9 +500,9 @@ namespace Client.Graphics
                         {
                             Values.Remove(ref iter);
                         }
-                        if (dc.SystemWindow.needIcon)
+                        if (dc.SystemWindow.NeedsIcon)
                         {
-                            dc.SystemWindow.needIcon = false;
+                            dc.SystemWindow.NeedsIcon = false;
                             if (dc.IsConnected)
                             {
                                 model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
@@ -532,9 +533,9 @@ namespace Client.Graphics
                         if (window != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
-                            if (window.needIcon)
+                            if (window.NeedsIcon)
                             {
-                                window.needIcon = false;
+                                window.NeedsIcon = false;
                                 if (!channel.IsAlive)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowHash);
@@ -664,7 +665,7 @@ namespace Client.Graphics
             }
         }
 
-        private void insertService(ProtocolSv service)
+        private void insertService(Protocols.Services.ProtocolSv service)
         {
             string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.SSL.ToString() + "]";
             TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
@@ -713,7 +714,7 @@ namespace Client.Graphics
         /// This function insert a service to a list, thread safe
         /// </summary>
         /// <param name="service">Service</param>
-        public void InsertSv(ProtocolSv service)
+        public void InsertSv(Protocols.Services.ProtocolSv service)
         {
             lock (queueProtocol)
             {
@@ -780,7 +781,7 @@ namespace Client.Graphics
         /// </summary>
         /// <param name="network"></param>
         /// <param name="ParentSv"></param>
-        public void InsertNetwork(Network network, ProtocolSv ParentSv = null)
+        public void InsertNetwork(Network network, Protocols.Services.ProtocolSv ParentSv = null)
         {
             if (queueNetwork.Contains(network)) return;
             lock (queueNetwork)
@@ -893,7 +894,7 @@ namespace Client.Graphics
             switch (type)
             {
                 case ItemType.Services:
-                    ProtocolSv service = (ProtocolSv)Item;
+                    Protocols.Services.ProtocolSv service = (Protocols.Services.ProtocolSv)Item;
                     service.Exit();
                     removed = RemoveServ(service);
                     Updated = true;
@@ -985,9 +986,9 @@ namespace Client.Graphics
 
                     lock (channel._Network.Channels)
                     {
-                        if (channel._Network.Channels.Contains(channel))
+                        if (channel._Network.Channels.ContainsKey(channel.lName))
                         {
-                            channel._Network.Channels.Remove(channel);
+                            channel._Network.Channels.Remove(channel.lName);
                         }
                     }
 

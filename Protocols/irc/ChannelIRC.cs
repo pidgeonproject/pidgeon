@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class ProcessorIRC
     {
@@ -24,7 +24,7 @@ namespace Client
         {
             if (code.Length > 3)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     Graphics.Window curr = channel.RetrieveWindow();
@@ -32,7 +32,7 @@ namespace Client
                     {
                         channel.ChannelMode.ChangeMode(code[4]);
                         channel.UpdateInfo();
-                        WindowText(curr, "Mode: " + code[4], Client.ContentLine.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Mode: " + code[4], Pidgeon.ContentLine.MessageStyle.Channel, true, date, !updated_text);
                     }
                     Hooks._Network.ChannelInfo(_Network, channel, code[4]);
                     return true;
@@ -45,7 +45,7 @@ namespace Client
         {
             if (code.Length > 8)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 string ident = code[4];
                 string host = code[5];
                 string nick = code[7];
@@ -97,29 +97,27 @@ namespace Client
                             _user.Away = IsAway;
                             lock (channel.UserList)
                             {
-                                channel.UserList.Add(_user);
+                                channel.UserList.Add(_user.Nick.ToLower(), _user);
                             }
                             return true;
                         }
+                        User user = null;
                         lock (channel.UserList)
                         {
-                            foreach (User u in channel.UserList)
+                            channel.UserList.TryGetValue(nick.ToLower(), out user);
+                        }
+                        if (user != null)
+                        {
+                            user.Ident = ident;
+                            user.Host = host;
+                            user.Server = server;
+                            user.RealName = realname;
+                            user.LastAwayCheck = DateTime.Now;
+                            if (!user.Away && IsAway)
                             {
-                                if (u.Nick == nick)
-                                {
-                                    u.Ident = ident;
-                                    u.Host = host;
-                                    u.Server = server;
-                                    u.RealName = realname;
-                                    u.LastAwayCheck = DateTime.Now;
-                                    if (!u.Away && IsAway)
-                                    {
-                                        u.AwayTime = DateTime.Now;
-                                    }
-                                    u.Away = IsAway;
-                                    break;
-                                }
+                                user.AwayTime = DateTime.Now;
                             }
+                            user.Away = IsAway;
                         }
                     }
                     if (Configuration.Kernel.HidingParsed && channel.IsParsingWhoData)
@@ -140,7 +138,7 @@ namespace Client
                 {
                     return true;
                 }
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     string[] _chan = value.Split(' ');
@@ -164,7 +162,7 @@ namespace Client
                                 User _u = channel.UserFromName(_user);
                                 if (_u == null && !string.IsNullOrEmpty(_user))
                                 {
-                                    channel.UserList.Add(new User(user, "", _Network, ""));
+                                    channel.UserList.Add(user.ToLower(), new User(user, "", _Network, ""));
                                 }
                                 else
                                 {
@@ -194,7 +192,7 @@ namespace Client
                     name = parameters.Substring(parameters.IndexOf("#", StringComparison.Ordinal)).Replace(" ", "");
                 }
                 string topic = value;
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     Graphics.Window curr = channel.RetrieveWindow();
@@ -204,7 +202,7 @@ namespace Client
                         {
                             System.Threading.Thread.Sleep(100);
                         }
-                        WindowText(curr, "Topic: " + topic, Client.ContentLine.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Topic: " + topic, Pidgeon.ContentLine.MessageStyle.Channel, true, date, !updated_text);
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
@@ -219,7 +217,7 @@ namespace Client
         {
             if (code.Length > 2)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     channel.RedrawUsers();
@@ -242,7 +240,7 @@ namespace Client
                 string name = code[3];
                 string user = code[4];
                 string time = code[5];
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     channel.TopicDate = int.Parse(time);
@@ -251,7 +249,7 @@ namespace Client
                     if (curr != null)
                     {
                         WindowText(curr, "Topic by: " + user + " date " + Core.ConvertFromUNIXToString(time).ToString(),
-                            Client.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, date, !updated_text);
                         return true;
                     }
                     channel.UpdateInfo();
@@ -265,7 +263,7 @@ namespace Client
             string user = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
             string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -276,21 +274,24 @@ namespace Client
                     {
                         WindowText(window, messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
-                        Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
+                        Pidgeon.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
 
-                    if (updated_text && channel.ContainsUser(user))
+                    lock (channel.UserList)
                     {
-                        User delete = null;
-                        delete = channel.UserFromName(user);
-                        if (delete != null)
+                        if (updated_text && channel.ContainsUser(user))
                         {
-                            channel.UserList.Remove(delete);
-                        }
-                        if (delete.IsPidgeon)
-                        {
-                            channel.ChannelWork = false;
-                            window.needIcon = true;
+                            User delete = null;
+                            delete = channel.UserFromName(user);
+                            if (delete != null)
+                            {
+                                channel.UserList.Remove(user.ToLower());
+                            }
+                            if (delete.IsPidgeon)
+                            {
+                                channel.ChannelWork = false;
+                                window.NeedsIcon = true;
+                            }
                         }
                     }
                     channel.RedrawUsers();
@@ -315,7 +316,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -326,7 +327,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
-                            Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
                     if (updated_text)
                     {
@@ -334,7 +335,7 @@ namespace Client
                         {
                             if (!channel.ContainsUser(user))
                             {
-                                channel.UserList.Add(new User(user, _host, _Network, _ident));
+                                channel.UserList.Add(user.ToLower(), new User(user, _host, _Network, _ident));
                             }
                         }
                         channel.RedrawUsers();
@@ -350,7 +351,7 @@ namespace Client
         {
             if (code.Length > 4)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     if (channel.IsParsingBanData)
@@ -367,7 +368,7 @@ namespace Client
         {
             if (code.Length > 6)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     if (channel.Bans == null)
@@ -395,7 +396,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -407,7 +408,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("window-p1",
                             Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                            Client.ContentLine.MessageStyle.Part,
+                            Pidgeon.ContentLine.MessageStyle.Part,
                             !channel.TemporarilyHidden, date, !updated_text);
                     }
 
@@ -415,21 +416,11 @@ namespace Client
                     {
                         if (channel.ContainsUser(user))
                         {
-                            lock (channel.UserList)
-                            {
-                                foreach (User _user in channel.UserList)
-                                {
-                                    if (_user.Nick == user)
-                                    {
-                                        delete = _user;
-                                        break;
-                                    }
-                                }
-                            }
+                            delete = channel.UserFromName(user);
 
                             if (delete != null)
                             {
-                                channel.UserList.Remove(delete);
+                                channel.UserList.Remove(user.ToLower());
                             }
                             channel.RedrawUsers();
                             channel.UpdateInfo();
@@ -447,7 +438,7 @@ namespace Client
         {
             string chan = parameters;
             chan = chan.Replace(" ", "");
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -457,7 +448,7 @@ namespace Client
                     if (Hooks._Network.Topic(_Network, source, channel, value, date, updated_text))
                     {
                         WindowText(window, messages.get("channel-topic",
-                            Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
+                            Core.SelectedLanguage, new List<string> { source, value }), Pidgeon.ContentLine.MessageStyle.Channel,
                             !channel.TemporarilyHidden, date, !updated_text);
                     }
                 }
@@ -487,28 +478,31 @@ namespace Client
                     _new = _new.Substring(0, _new.IndexOf(" ", StringComparison.Ordinal));
                 }
             }
-            foreach (Channel item in _Network.Channels)
+            lock (_Network.Channels.Values)
             {
-                if (item.ChannelWork)
+                foreach (Channel channel in _Network.Channels.Values)
                 {
-                    lock (item.UserList)
+                    if (channel.ChannelWork)
                     {
-                        foreach (User curr in item.UserList)
+                        User user = channel.UserFromName (nick);
+                        if (user != null)
                         {
-                            if (curr.Nick == nick)
+                            if (updated_text)
                             {
-                                if (updated_text)
+                                channel.RemoveUser(user);
+                                user.SetNick(_new);
+                                lock (channel.UserList)
                                 {
-                                    curr.Nick = _new;
-                                    item.RedrawUsers();
+                                    channel.UserList.Add(_new.ToLower (), user);
                                 }
-                                Graphics.Window window = item.RetrieveWindow();
-                                if (window != null)
-                                {
-                                    WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
-                                        new List<string> { nick, _new }), Client.ContentLine.MessageStyle.Channel,
-                                        !item.TemporarilyHidden, date, !updated_text);
-                                }
+                                channel.RedrawUsers ();
+                            }
+                            Graphics.Window window = channel.RetrieveWindow ();
+                            if (window != null)
+                            {
+                                WindowText (window, messages.get ("protocol-nick", Core.SelectedLanguage,
+                                            new List<string> { nick, _new }), Pidgeon.ContentLine.MessageStyle.Channel,
+                                            !channel.TemporarilyHidden, date, !updated_text);
                             }
                         }
                     }
@@ -524,9 +518,9 @@ namespace Client
                 string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
                 chan = chan.Replace(" ", "");
                 string user = source;
-                if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
+                if (chan.StartsWith(_Network.ChannelPrefix, StringComparison.Ordinal))
                 {
-                    Channel channel = _Network.getChannel(chan);
+                    Channel channel = _Network.GetChannel(chan);
                     if (channel != null)
                     {
                         Graphics.Window window;
@@ -536,7 +530,7 @@ namespace Client
                         {
                             WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
                                 new List<string> { source, parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal)) }),
-                                Client.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
+                                Pidgeon.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
                         }
 
                         if (!updated_text)
@@ -549,7 +543,7 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        Client.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
+                        Pidgeon.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
 
                         while (change.EndsWith(" ", StringComparison.Ordinal) && change.Length > 1)
                         {

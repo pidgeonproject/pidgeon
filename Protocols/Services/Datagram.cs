@@ -18,7 +18,7 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon.Protocols.Services
 {
     public partial class ProtocolSv : Protocol
     {

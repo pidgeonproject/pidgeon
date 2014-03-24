@@ -23,7 +23,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Scrollback
@@ -577,7 +577,9 @@ namespace Client
                 {
                     foreach (TextPart curr in UndrawnTextParts)
                     {
+                        #pragma warning disable
                         InsertPart(curr.text, curr.style, false, curr.date.ToBinary());
+                        #pragma warning enable
                     }
                     UndrawnTextParts.Clear();
                 }

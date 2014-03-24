@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class RichTBox : Gtk.Bin
     {

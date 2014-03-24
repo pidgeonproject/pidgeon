@@ -21,7 +21,7 @@ using System.IO;
 using System.Data;
 using System.Xml.Serialization;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Helper class
@@ -69,7 +69,7 @@ namespace Client
         /// <param name="owner"></param>
         /// <param name="directory"></param>
         /// <param name="time"></param>
-        public static void Log(string text, Client.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory, DateTime time)
+        public static void Log(string text, Pidgeon.ContentLine.MessageStyle InputStyle, Graphics.Window owner, string directory, DateTime time)
         {
             try
             {

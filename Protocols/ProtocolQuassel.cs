@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Client
+namespace Pidgeon.Protocols
 {
     /// <summary>
     /// Quassel parser
@@ -61,10 +61,6 @@ namespace Client
         private System.IO.StreamReader _StreamReader;
         private System.IO.StreamWriter _StreamWriter;
         private Graphics.Window sw = null;
-        /// <summary>
-        /// Password
-        /// </summary>
-        public string Password = "";
         /// <summary>
         /// Name
         /// </summary>
@@ -128,7 +124,7 @@ namespace Client
                         }
 
                         text = _StreamReader.ReadLine();
-                        Core.trafficscanner.Insert(Server, " >> " + text);
+                        Core.TrafficScanner.Insert(Server, " >> " + text);
                         Quassel_Parser parser = new Quassel_Parser(this, text);
                         parser.Proccess();
                     }
@@ -163,7 +159,7 @@ namespace Client
             if (IsConnected)
             {
                 _StreamWriter.WriteLine(ms);
-                Core.trafficscanner.Insert(Server, " << " + ms);
+                Core.TrafficScanner.Insert(Server, " << " + ms);
                 _StreamWriter.Flush();
             }
         }

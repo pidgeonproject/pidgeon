@@ -21,7 +21,7 @@ using System.Drawing;
 using System.IO;
 using System.Data;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Skin

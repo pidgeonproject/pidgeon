@@ -16,12 +16,12 @@
 using System;
 using System.IO;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Editor
     /// </summary>
-    public partial class ConfigFile : Client.PidgeonGtkToolkit.PidgeonForm
+    public partial class ConfigFile : Pidgeon.PidgeonGtkToolkit.PidgeonForm
     {
         private Gtk.Button button3;
         private Gtk.Button button4;

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     /// <summary>
     /// Text box

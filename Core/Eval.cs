@@ -18,7 +18,7 @@ using System.Threading;
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Core
     {
