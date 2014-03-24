@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Configuration of pidgeon
@@ -45,7 +45,7 @@ namespace Client
         /// <summary>
         /// Version
         /// </summary>
-        public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
+        public static readonly string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
 
 
         // Dynamic configuration
