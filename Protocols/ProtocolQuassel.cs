@@ -124,7 +124,7 @@ namespace Pidgeon.Protocols
                         }
 
                         text = _StreamReader.ReadLine();
-                        Core.trafficscanner.Insert(Server, " >> " + text);
+                        Core.TrafficScanner.Insert(Server, " >> " + text);
                         Quassel_Parser parser = new Quassel_Parser(this, text);
                         parser.Proccess();
                     }
@@ -159,7 +159,7 @@ namespace Pidgeon.Protocols
             if (IsConnected)
             {
                 _StreamWriter.WriteLine(ms);
-                Core.trafficscanner.Insert(Server, " << " + ms);
+                Core.TrafficScanner.Insert(Server, " << " + ms);
                 _StreamWriter.Flush();
             }
         }

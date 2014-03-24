@@ -586,7 +586,7 @@ namespace Pidgeon.Forms
         {
             try
             {
-                Core.trafficscanner.Show();
+                Core.TrafficScanner.Show();
             }
             catch (Exception fail)
             {

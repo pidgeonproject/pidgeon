@@ -41,9 +41,9 @@ namespace Pidgeon
             {
                 string ring = "";
                 string inner = "";
-                if (Core.recovery_exception.InnerException != null)
+                if (Core.RecoveryException.InnerException != null)
                 {
-                    inner = Core.recovery_exception.InnerException.ToString() + "\n\n";
+                    inner = Core.RecoveryException.InnerException.ToString() + "\n\n";
                 }
                 foreach (string line in Core.RingBuffer)
                 {
@@ -52,12 +52,12 @@ namespace Pidgeon
                 if (Core.RecoveryIsFatal)
                 {
                     textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. This is unrecoverable exception, the application has to be terminated now. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
-                                        + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
-                                        + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
-                                        + Core.recovery_exception.Message + "\n\n"
+                                        + "Stack trace:\n" + Core.RecoveryException.StackTrace + "\n\n"
+                                        + "Target\n" + Core.RecoveryException.TargetSite + "\n\n"
+                                        + Core.RecoveryException.Message + "\n\n"
                                         + inner
                                         + ring + "\n\n"
-                                        + Core.recovery_exception.Source + "\n\n").Split('\n');
+                                        + Core.RecoveryException.Source + "\n\n").Split('\n');
                     bContinue.Enabled = false;
                     bShutdown.Enabled = false;
                 }
@@ -65,12 +65,12 @@ namespace Pidgeon
                 {
 
                     textBox1.Lines = ("YAY, we are terribly sorry, but pidgeon just crashed. If you want to prevent this from happening in future, please visit www.pidgeonclient.org/bugzilla and report this:\n\n"
-                                            + "Stack trace:\n" + Core.recovery_exception.StackTrace + "\n\n"
-                                            + "Target\n" + Core.recovery_exception.TargetSite + "\n\n"
-                                            + Core.recovery_exception.Message + "\n\n"
+                                            + "Stack trace:\n" + Core.RecoveryException.StackTrace + "\n\n"
+                                            + "Target\n" + Core.RecoveryException.TargetSite + "\n\n"
+                                            + Core.RecoveryException.Message + "\n\n"
                                             + inner
                                             + ring + "\n\n"
-                                            + Core.recovery_exception.Source + "\n\n").Split('\n');
+                                            + Core.RecoveryException.Source + "\n\n").Split('\n');
                 }
             }
             catch (Exception)

@@ -231,7 +231,7 @@ namespace Pidgeon.Protocols.Services
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.Insert(Server, " >> " + text);
+                    Core.TrafficScanner.Insert(Server, " >> " + text);
                     while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);
@@ -818,7 +818,7 @@ namespace Pidgeon.Protocols.Services
                     lock (StreamLock)
                     {
                         _StreamWriter.WriteLine(text);
-                        Core.trafficscanner.Insert(Server, " << " + text);
+                        Core.TrafficScanner.Insert(Server, " << " + text);
                         _StreamWriter.Flush();
                     }
                 }

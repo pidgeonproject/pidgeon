@@ -414,7 +414,7 @@ namespace Pidgeon
             /// <param name="parameter"></param>
             public static void snifferFree(string parameter)
             {
-                Core.trafficscanner.Clean();
+                Core.TrafficScanner.Clean();
                 Core.SystemForm.Chat.scrollback.InsertText("Sniffer log was cleared", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 

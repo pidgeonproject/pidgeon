@@ -75,7 +75,6 @@ class Foo
         return this.Number + Number_;
     }
 }
-    
 
 === CamelCase ===
 
@@ -84,7 +83,8 @@ Every variable and function should be named using camel case, for example:
 int SomeLocalVariable;
 void ThisFunctionDoesALotOfStuff();
 
-IMPORTANT: leading character is capital not lower case
+IMPORTANT: leading character is capital not lower case unless it's private
+object
 
 === Indentations ===
 

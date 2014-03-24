@@ -209,11 +209,11 @@ namespace Pidgeon
         /// <summary>
         /// Pointer to exception class during recovery
         /// </summary>
-        public static Exception recovery_exception = null;
+        public static Exception RecoveryException = null;
         /// <summary>
         /// Recovery thread
         /// </summary>
-        public static Thread _RecoveryThread = null;
+        public static Thread RecoveryThread = null;
         /// <summary>
         /// Timers
         /// </summary>
@@ -221,7 +221,7 @@ namespace Pidgeon
         /// <summary>
         /// Notification box
         /// </summary>
-        private static Forms.Notification notification = null;
+        private static Forms.Notification NotificationWidget = null;
         private static object RandomLock = new object();
         /// <summary>
         /// Threads currently allocated in kernel
@@ -238,7 +238,7 @@ namespace Pidgeon
         /// <summary>
         /// Container
         /// </summary>
-        private static Network _SelectedNetwork = null;
+        private static Network selectedNetwork = null;
         /// <summary>
         /// Selected network, if you are connected to a network and currently displayed window is attached to some,
         /// this is that network
@@ -247,13 +247,13 @@ namespace Pidgeon
         {
             get
             {
-                return _SelectedNetwork;
+                return selectedNetwork;
             }
             set
             {
-                _SelectedNetwork = value;
+                selectedNetwork = value;
 #pragma warning disable
-                network = _SelectedNetwork;
+                network = selectedNetwork;
 #pragma warning restore
             }
         }
@@ -269,7 +269,7 @@ namespace Pidgeon
         /// <summary>
         /// This is a reference to system form, it should be changed only once
         /// </summary>
-        private static Forms.Main _main = null;
+        private static Forms.Main systemForm = null;
         /// <summary>
         /// Gets the system form
         /// </summary>
@@ -280,7 +280,7 @@ namespace Pidgeon
         {
             get
             {
-                return _main;
+                return systemForm;
             }
         }
         /// <summary>
@@ -321,7 +321,7 @@ namespace Pidgeon
         /// <summary>
         /// This is a reference to scanner window
         /// </summary>
-        public static Forms.TrafficScanner trafficscanner = null;
+        public static Forms.TrafficScanner TrafficScanner = null;
         /// <summary>
         /// System is blocked if this is set to true, all subsystems and kernel are supposed to freeze
         /// </summary>
@@ -342,7 +342,7 @@ namespace Pidgeon
         /// <summary>
         /// Cache of current params
         /// </summary>
-        private static List<string> _StartupParams = new List<string>();
+        private static List<string> startupParams = new List<string>();
         /// <summary>
         /// Parameters that were retrieved in console
         /// </summary>
@@ -351,9 +351,9 @@ namespace Pidgeon
             get
             {
                 List<string> data = new List<string>();
-                lock (_StartupParams)
+                lock (startupParams)
                 {
-                    data.AddRange(_StartupParams);
+                    data.AddRange(startupParams);
                 }
                 return data;
             }
@@ -415,7 +415,7 @@ namespace Pidgeon
         /// </param>
         public static void SetMain(Forms.Main form)
         {
-            _main = form;
+            systemForm = form;
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace Pidgeon
                 {
                     Ringlog("Running in safe mode");
                 }
-                _StartupParams = new List<string>(parameters);
+                startupParams = new List<string>(parameters);
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
@@ -464,7 +464,7 @@ namespace Pidgeon
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
                 messages.Read(Configuration.Kernel.Safe);
-                trafficscanner = new Forms.TrafficScanner();
+                TrafficScanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
                     LoadSkin();
@@ -494,7 +494,7 @@ namespace Pidgeon
                     Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
-                    notification = new Forms.Notification();
+                    NotificationWidget = new Forms.Notification();
                     //DebugLog("Loading scripting core");
                     //ScriptingCore.Load();
                     if (Configuration.Kernel.Safe)
@@ -937,8 +937,8 @@ namespace Pidgeon
                 if (NotificationIsNowWaiting)
                 {
                     bool Focus = false;
-                    notification.text.Text = NotificationData;
-                    notification.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
+                    NotificationWidget.text.Text = NotificationData;
+                    NotificationWidget.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
                     NotificationIsNowWaiting = false;
                     if (Core.SystemForm.Chat != null)
                     {
@@ -947,16 +947,16 @@ namespace Pidgeon
                             Focus = true;
                         }
                     }
-                    if (!notification.Visible)
+                    if (!NotificationWidget.Visible)
                     {
-                        notification.Relocate();
-                        notification.Show();
+                        NotificationWidget.Relocate();
+                        NotificationWidget.Show();
                         if (Focus)
                         {
                             Core.SystemForm.setFocus();
                             if (Core.SystemForm.Chat != null)
                             {
-                                notification.focus = true;
+                                NotificationWidget.focus = true;
                                 Core.SystemForm.Chat.textbox.setFocus();
                             }
                         }
@@ -1387,7 +1387,7 @@ namespace Pidgeon
             }
             DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             IsBlocked = true;
-            recovery_exception = _exception;
+            RecoveryException = _exception;
             if (Configuration.Kernel.KernelDump)
             {
                 Core.DebugLog("Generating report");
@@ -1427,8 +1427,8 @@ namespace Pidgeon
                 }
                 File.WriteAllText(file, dump);
             }
-            _RecoveryThread = new Thread(Recover);
-            _RecoveryThread.Start();
+            RecoveryThread = new Thread(Recover);
+            RecoveryThread.Start();
             if (Thread.CurrentThread != _KernelThread)
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
@@ -1507,7 +1507,7 @@ namespace Pidgeon
                         SystemForm.icon.Dispose();
                     }
                     SystemForm.Hide();
-                    notification.Hide();
+                    NotificationWidget.Hide();
                     _Configuration.ConfigSave();
                     try
                     {

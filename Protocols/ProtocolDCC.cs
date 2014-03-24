@@ -117,7 +117,7 @@ namespace Pidgeon.Protocols
             while (!_StreamReader.EndOfStream && IsConnected)
             {
                 string text = _StreamReader.ReadLine();
-                Core.trafficscanner.Insert(Server, text);
+                Core.TrafficScanner.Insert(Server, text);
                 SystemWindow.scrollback.InsertText(PRIVMSG(UserName, text), ContentLine.MessageStyle.Message);
             }
         }
@@ -249,7 +249,7 @@ namespace Pidgeon.Protocols
             lock (StreamLock)
             {
                 SystemWindow.scrollback.InsertText(PRIVMSG(Configuration.UserData.nick, input), ContentLine.MessageStyle.Message);
-                Core.trafficscanner.Insert(Server, input);
+                Core.TrafficScanner.Insert(Server, input);
                 _StreamWriter.WriteLine(input);
                 _StreamWriter.Flush();
             }

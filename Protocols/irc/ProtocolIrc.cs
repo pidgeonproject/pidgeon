@@ -386,7 +386,7 @@ namespace Pidgeon
                         System.Threading.Thread.Sleep(100);
                     }
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.Insert(Server, " >> " + text);
+                    Core.TrafficScanner.Insert(Server, " >> " + text);
                     ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
                     processor.ProfiledResult();
                     pong = processor.pong;
@@ -483,7 +483,7 @@ namespace Pidgeon
                 lock (StreamLock)
                 {
                     _StreamWriter.WriteLine(ms);
-                    Core.trafficscanner.Insert(Server, " << " + ms);
+                    Core.TrafficScanner.Insert(Server, " << " + ms);
                     _StreamWriter.Flush();
                 }
             }
