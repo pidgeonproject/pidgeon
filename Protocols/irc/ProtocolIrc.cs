@@ -379,7 +379,7 @@ namespace Pidgeon
                 {
                     if (!_IRCNetwork.IsConnected)
                     {
-                        _IRCNetwork.flagConnection();
+                        _IRCNetwork.SetConnected();
                     }
                     while (Core.IsBlocked)
                     {
@@ -420,7 +420,7 @@ namespace Pidgeon
                 Core.SystemForm.Status("Disconnected from server " + Server);
                 if (_IRCNetwork != null)
                 {
-                    _IRCNetwork.flagDisconnect();
+                    _IRCNetwork.SetDisconnected();
                 }
                 if (SSL)
                 {
@@ -556,7 +556,7 @@ namespace Pidgeon
                 try
                 {
                     Send("QUIT :" + _IRCNetwork.Quit);
-                    _IRCNetwork.flagDisconnect();
+                    _IRCNetwork.SetDisconnected();
                     Core.KillThread(deliveryqueue);
                     Core.KillThread(keep);
                     if (SSL)

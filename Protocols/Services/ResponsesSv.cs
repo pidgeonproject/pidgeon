@@ -49,7 +49,7 @@ namespace Pidgeon.Protocols.Services
                 long message_time = long.Parse(curr.Attributes[2].Value);
                 if (mn != null)
                 {
-                    if (message_target.StartsWith(mn.channel_prefix, StringComparison.Ordinal))
+                    if (message_target.StartsWith(mn.ChannelPrefix, StringComparison.Ordinal))
                     {
                         Channel target = mn.GetChannel(message_target);
                         if (target != null)
@@ -178,7 +178,7 @@ namespace Pidgeon.Protocols.Services
                     protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
                     server.Nickname = protocol.nick;
-                    server.flagConnection();
+                    server.SetConnected();
                 }
                 if (Configuration.Services.UsingCache)
                 {
@@ -274,7 +274,7 @@ namespace Pidgeon.Protocols.Services
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
-                        _network.flagConnection();
+                        _network.SetConnected();
                         _network.Nickname = protocol.nick;
                         protocol.cache.Add(new Cache());
                         protocol.NetworkList.Add(_network);
@@ -384,10 +384,10 @@ namespace Pidgeon.Protocols.Services
                         {
                             if (connected)
                             {
-                                s2.flagConnection();
+                                s2.SetConnected();
                             } else
                             {
-                                s2.flagDisconnect();
+                                s2.SetDisconnected();
                             }
                             if (nick != null)
                             {
@@ -475,7 +475,7 @@ namespace Pidgeon.Protocols.Services
                             protocol.cache.Add(new Cache());
                             protocol.NetworkList.Add(nw);
                             // we flag the network as connected until we really know that
-                            nw.flagConnection();
+                            nw.SetConnected();
                             // we ask for information about every channel on that network
                             Datagram response = new Datagram("CHANNELINFO");
                             response._InnerText = "LIST";

@@ -150,12 +150,12 @@ namespace Pidgeon
                 ////
 
 
-                if (text2.StartsWith(Core.SelectedNetwork.channel_prefix))
+                if (text2.StartsWith(Core.SelectedNetwork.ChannelPrefix))
                 {
                     if (Core.SelectedNetwork.IsConnected)
                     {
 
-                        if (text2.StartsWith(Core.SystemForm.Chat._Network.channel_prefix))
+                        if (text2.StartsWith(Core.SystemForm.Chat._Network.ChannelPrefix))
                         {
                             List<string> Channels = new List<string>();
                             foreach (Channel n in Core.SystemForm.Chat._Network.Channels)

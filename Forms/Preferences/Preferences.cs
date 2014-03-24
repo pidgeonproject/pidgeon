@@ -151,7 +151,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Network.Highlighter highlight in Configuration.HighlighterList)
                 {
-                    Highlights.AppendValues(highlight.text, (!highlight.simple).ToString(), highlight.enabled.ToString(), highlight);
+                    Highlights.AppendValues(highlight.Text, (!highlight.Simple).ToString(), highlight.Enabled.ToString(), highlight);
                 }
             }
         }
@@ -498,7 +498,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Network.Highlighter x in SelectedHs)
                 {
-                    x.enabled = false;
+                    x.Enabled = false;
                 }
                 ReloadHL();
             }
@@ -514,7 +514,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Network.Highlighter x in SelectedHs)
                 {
-                    x.enabled = true;
+                    x.Enabled = true;
                 }
                 ReloadHL();
             }
@@ -530,7 +530,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Network.Highlighter x in SelectedHs)
                 {
-                    x.simple = true;
+                    x.Simple = true;
                 }
                 ReloadHL();
             }
@@ -578,7 +578,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Network.Highlighter x in SelectedHs)
                 {
-                    x.simple = false;
+                    x.Simple = false;
                 }
                 ReloadHL();
             }

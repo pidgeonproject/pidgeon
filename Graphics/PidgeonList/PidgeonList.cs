@@ -440,9 +440,9 @@ namespace Pidgeon.Graphics
                         if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(nw.SystemWindow.MenuColor);
-                            if (nw.SystemWindow.needIcon)
+                            if (nw.SystemWindow.NeedsIcon)
                             {
-                                nw.SystemWindow.needIcon = false;
+                                nw.SystemWindow.NeedsIcon = false;
                                 if (nw.IsConnected)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
@@ -475,9 +475,9 @@ namespace Pidgeon.Graphics
                         if (window != null && !window.IsDestroyed)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
-                            if (window.needIcon)
+                            if (window.NeedsIcon)
                             {
-                                window.needIcon = false;
+                                window.NeedsIcon = false;
                                 if (user._Network == null || !user._Network.IsConnected)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowAt);
@@ -500,9 +500,9 @@ namespace Pidgeon.Graphics
                         {
                             Values.Remove(ref iter);
                         }
-                        if (dc.SystemWindow.needIcon)
+                        if (dc.SystemWindow.NeedsIcon)
                         {
-                            dc.SystemWindow.needIcon = false;
+                            dc.SystemWindow.NeedsIcon = false;
                             if (dc.IsConnected)
                             {
                                 model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ExclamationMark);
@@ -533,9 +533,9 @@ namespace Pidgeon.Graphics
                         if (window != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(window.MenuColor);
-                            if (window.needIcon)
+                            if (window.NeedsIcon)
                             {
-                                window.needIcon = false;
+                                window.NeedsIcon = false;
                                 if (!channel.IsAlive)
                                 {
                                     model.SetValue(iter, 5, Configuration.CurrentSkin.Icon_ShadowHash);

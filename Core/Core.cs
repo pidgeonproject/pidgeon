@@ -525,8 +525,8 @@ namespace Pidgeon
                             Commands.RegisterAlias("shell", "pidgeon.term2in", false);
                         }
                         Network.Highlighter simple = new Network.Highlighter();
-                        simple.enabled = true;
-                        simple.text = "$nick";
+                        simple.Enabled = true;
+                        simple.Text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
                     ResetMainActivityTimer();
@@ -805,18 +805,7 @@ namespace Pidgeon
         /// <param name="verbosity">Verbosity (default is 1)</param>
         public static void DebugLog(string data, int verbosity)
         {
-            System.Diagnostics.Debug.Print(data);
-            if (Configuration.Kernel.Debugging)
-            {
-                if (Core.SystemForm != null && !Core.IsBlocked)
-                {
-                    if (Core.SystemForm.main != null)
-                    {
-                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Pidgeon.ContentLine.MessageStyle.System, false);
-                    }
-                }
-            }
-            Ringlog("DEBUG: " + data);
+            Syslog.DebugLog(data, verbosity);
         }
 
         /// <summary>
@@ -825,7 +814,7 @@ namespace Pidgeon
         /// <param name="data">Text to insert</param>
         public static void DebugLog(string data)
         {
-            DebugLog(data, 1);
+            Syslog.DebugLog(data, 1);
         }
 
         /// <summary>
@@ -1264,9 +1253,10 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Return unused port
+        /// Gets the unused system port.
         /// </summary>
-        public static uint GetPort()
+        /// <returns>The unused system port.</returns>
+        public static uint GetUnusedSystemPort()
         {
             uint port = Configuration.irc.DefaultCTCPPort;
             lock (LockedPorts)
@@ -1468,13 +1458,25 @@ namespace Pidgeon
             }
             return 0;
         }
-        
+
+        /// <summary>
+        /// Handles the exception.
+        /// </summary>
+        /// <returns>The exception.</returns>
+        /// <param name="_exception">_exception.</param>
+        /// <param name="fatal">If set to <c>true</c> fatal.</param>
         [Obsolete]
         public static int handleException(Exception _exception, bool fatal = false)
         {
             return HandleException(_exception, fatal);
         }
-        
+
+        /// <summary>
+        /// Handles the exception.
+        /// </summary>
+        /// <returns>The exception.</returns>
+        /// <param name="_exception">_exception.</param>
+        /// <param name="ek">Ek.</param>
         [Obsolete]
         public static int handleException(Exception _exception, ExceptionKind ek)
         {

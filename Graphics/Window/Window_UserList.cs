@@ -441,12 +441,12 @@ namespace Pidgeon.Graphics
 
         private void kickBanToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            if (IsChannel)
             {
                 try
                 {
                     string script = "";
-                    if (isChannel)
+                    if (IsChannel)
                     {
                         foreach (User user in SelectedUsers)
                         {
@@ -523,12 +523,12 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (!isChannel)
+                if (!IsChannel)
                 {
                     return;
                 }
                 string script = "";
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
@@ -580,7 +580,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     string script = "";
                     foreach (User user in SelectedUsers)
@@ -629,7 +629,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     SendCtcp("PAGE");
                 }
@@ -644,13 +644,13 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
                         if (!string.IsNullOrEmpty(user.Nick))
                         {
-                            uint port = Core.GetPort();
+                            uint port = Core.GetUnusedSystemPort();
                             new Forms.OpenDCC("localhost", user.Nick, port, true, false, _Network);
                         }
                     }
@@ -686,7 +686,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     if (!System.IO.File.Exists(Configuration.irc.CertificateDCC))
                     {
@@ -711,7 +711,7 @@ namespace Pidgeon.Graphics
                     {
                         if (!string.IsNullOrEmpty(user.Nick))
                         {
-                            uint port = Core.GetPort();
+                            uint port = Core.GetUnusedSystemPort();
                             new Forms.OpenDCC("localhost", user.Nick, port, true, true, _Network);
                         }
                     }
@@ -727,7 +727,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     SendCtcp("TIME");
                 }
@@ -742,7 +742,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
@@ -787,12 +787,12 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (!isChannel)
+                if (!IsChannel)
                 {
                     return;
                 }
                 string script = "";
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
@@ -817,12 +817,12 @@ namespace Pidgeon.Graphics
 
         private void kickrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (isChannel)
+            if (IsChannel)
             {
                 try
                 {
                     string script = "";
-                    if (isChannel)
+                    if (IsChannel)
                     {
                         foreach (User user in SelectedUsers)
                         {
@@ -866,7 +866,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     if (_Network == null)
                         return;
@@ -889,7 +889,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     SendCtcp("VERSION");
                 }
@@ -904,7 +904,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     SendCtcp("PING " + DateTime.Now.ToBinary().ToString());
                 }
@@ -917,7 +917,7 @@ namespace Pidgeon.Graphics
         
         private void SendCtcp(string message)
         {
-            if (isChannel)
+            if (IsChannel)
             {
                 foreach (User user in SelectedUsers)
                 {
@@ -939,7 +939,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {

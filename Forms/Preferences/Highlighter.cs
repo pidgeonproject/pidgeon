@@ -56,9 +56,9 @@ namespace Pidgeon.Forms
             try
             {
                 Network.Highlighter hl = new Network.Highlighter();
-                hl.enabled = true;
-                hl.simple = !checkbutton1.Active;
-                hl.text = entry1.Text;
+                hl.Enabled = true;
+                hl.Simple = !checkbutton1.Active;
+                hl.Text = entry1.Text;
                 lock (Configuration.HighlighterList)
                 {
                     Configuration.HighlighterList.Add(hl);

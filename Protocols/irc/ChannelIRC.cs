@@ -290,7 +290,7 @@ namespace Pidgeon
                         if (delete.IsPidgeon)
                         {
                             channel.ChannelWork = false;
-                            window.needIcon = true;
+                            window.NeedsIcon = true;
                         }
                     }
                     channel.RedrawUsers();
@@ -524,7 +524,7 @@ namespace Pidgeon
                 string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
                 chan = chan.Replace(" ", "");
                 string user = source;
-                if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
+                if (chan.StartsWith(_Network.ChannelPrefix, StringComparison.Ordinal))
                 {
                     Channel channel = _Network.GetChannel(chan);
                     if (channel != null)

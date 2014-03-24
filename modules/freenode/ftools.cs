@@ -77,7 +77,7 @@ namespace Pidgeon
                 reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -89,7 +89,7 @@ namespace Pidgeon
 
         public void Op(string text)
         {
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -109,7 +109,7 @@ namespace Pidgeon
             {
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -150,7 +150,7 @@ namespace Pidgeon
             {
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -180,7 +180,7 @@ namespace Pidgeon
             {
                 user = text;
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
@@ -211,7 +211,7 @@ namespace Pidgeon
                 reason = text.Substring(text.IndexOf(" " + 1));
                 user = text.Substring(0, text.IndexOf(" "));
             }
-            if (!Core.SystemForm.Chat.isChannel)
+            if (!Core.SystemForm.Chat.IsChannel)
             {
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;

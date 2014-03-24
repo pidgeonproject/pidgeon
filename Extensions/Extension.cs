@@ -241,6 +241,10 @@ namespace Pidgeon
             }
         }
 
+        /// <summary>
+        /// Write a message to debug log
+        /// </summary>
+        /// <param name="message">Message</param>
         public void DebugLog(string message)
         {
             Core.DebugLog("Extension " + this.Name + ": " + message);

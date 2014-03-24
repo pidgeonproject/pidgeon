@@ -37,7 +37,7 @@ namespace Pidgeon.Graphics
         /// <summary>
         /// Whether it's a channel or not
         /// </summary>
-        public bool isChannel = false;
+        public bool IsChannel = false;
         /// <summary>
         /// Lock the window for any changes
         /// </summary>
@@ -57,7 +57,7 @@ namespace Pidgeon.Graphics
         /// <summary>
         /// Private message
         /// </summary>
-        public bool isPM = false;
+        public bool IsPrivMsg = false;
         /// <summary>
         /// Network that is associated with this window
         /// </summary>
@@ -65,16 +65,16 @@ namespace Pidgeon.Graphics
         /// <summary>
         /// Panels will ignore the changes
         /// </summary>
-        public bool ignoreChange = false;
+        public bool IgnoreChange = false;
         /// <summary>
         /// If this is true the side list will assign an icon to this item
         /// </summary>
-        public bool needIcon = false;
+        public bool NeedsIcon = false;
         private Channel channel = null;
         /// <summary>
         /// Whether this window is loaded
         /// </summary>
-        public bool isInitialised = false;
+        public bool IsInitialised = false;
         /// <summary>
         /// Turning this to false will disable notifications for this window
         /// </summary>
@@ -169,7 +169,7 @@ namespace Pidgeon.Graphics
             {
                 if (!IsDestroyed)
                 {
-                    return (isChannel || isPM);
+                    return (IsChannel || IsPrivMsg);
                 }
                 return false;
             }
@@ -358,9 +358,9 @@ namespace Pidgeon.Graphics
         /// </summary>
         private void Create()
         {
-            scrollback.channelToolStripMenuItem.Visible = isChannel;
-            scrollback.retrieveTopicToolStripMenuItem.Visible = isChannel;
-            if (!isChannel)
+            scrollback.channelToolStripMenuItem.Visible = IsChannel;
+            scrollback.retrieveTopicToolStripMenuItem.Visible = IsChannel;
+            if (!IsChannel)
             {
                 banToolStripMenuItem.Visible = false;
                 whoisToolStripMenuItem.Visible = false;
@@ -402,7 +402,7 @@ namespace Pidgeon.Graphics
                 synchroToolStripMenuItem.Visible = true;
             }
             Redraw();
-            isInitialised = true;
+            IsInitialised = true;
         }
 
         /// <summary>
@@ -411,7 +411,7 @@ namespace Pidgeon.Graphics
         /// <returns></returns>
         public bool Redraw()
         {
-            ignoreChange = true;
+            IgnoreChange = true;
             if (hpaned1 != null)
             {
                 if (this.hpaned1.Position != Configuration.Window.TextboxLeft)
@@ -423,7 +423,7 @@ namespace Pidgeon.Graphics
                     vpaned1.Position = Configuration.Window.SidebarLeft;
                 }
             }
-            ignoreChange = false;
+            IgnoreChange = false;
             return true;
         }
 
@@ -469,7 +469,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (Making == false && ignoreChange == false)
+                if (Making == false && IgnoreChange == false)
                 {
                     Configuration.Window.TextboxLeft = hpaned1.Position;
                     Configuration.Window.SidebarLeft = vpaned1.Position;
@@ -538,7 +538,7 @@ namespace Pidgeon.Graphics
         {
             try
             {
-                if (isChannel)
+                if (IsChannel)
                 {
                     foreach (User user in SelectedUsers)
                     {
@@ -563,7 +563,7 @@ namespace Pidgeon.Graphics
             {
                 return channel;
             }
-            if (isChannel)
+            if (IsChannel)
             {
                 if (_Network != null)
                 {

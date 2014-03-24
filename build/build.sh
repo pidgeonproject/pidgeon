@@ -1,6 +1,6 @@
 #!/bin/sh
 
-p="/p:Configuration=Release"
+p="/p:Configuration=Release /verbosity:quiet"
 folder=Release
 
 if [ "$1" = "--debug" ]; then
@@ -35,7 +35,7 @@ if [ ! -f version.txt ];then
 	exit 1
 fi
 
-xbuild "$p" || exit 1
+xbuild $p || exit 1
 
 if [ ! -d bin/Debug ];then
     mkdir bin/Debug

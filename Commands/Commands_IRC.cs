@@ -103,7 +103,7 @@ namespace Pidgeon
                     Graphics.Window window = Core.SystemForm.Chat;
                     if (window != null)
                     {
-                        if (window.isChannel || window.isPM)
+                        if (window.IsChannel || window.IsPrivMsg)
                         {
                             Core.SelectedNetwork._Protocol.Message2(message, window.WindowName);
                             return;
@@ -178,7 +178,7 @@ namespace Pidgeon
                 {
                     channel = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
                 }
-                if (channel.Contains(Core.SelectedNetwork.channel_prefix))
+                if (channel.Contains(Core.SelectedNetwork.ChannelPrefix))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText("Invalid name", Pidgeon.ContentLine.MessageStyle.System);
                     return;

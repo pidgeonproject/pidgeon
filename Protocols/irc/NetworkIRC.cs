@@ -147,7 +147,7 @@ namespace Pidgeon
             chan = parameters.Replace(" ", "");
             User user = null;
             string message = value;
-            if (!chan.Contains(_Network.channel_prefix))
+            if (!chan.Contains(_Network.ChannelPrefix))
             {
                 string uc;
                 if (message.StartsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
@@ -301,7 +301,7 @@ namespace Pidgeon
             }
             user = new User(_nick, _host, _Network, _ident);
             Channel channel = null;
-            if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
+            if (chan.StartsWith(_Network.ChannelPrefix, StringComparison.Ordinal))
             {
                 channel = _Network.GetChannel(chan);
                 if (channel != null)

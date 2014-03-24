@@ -385,7 +385,7 @@ namespace Pidgeon
                 List<User> users = new List<User>();
                 bool Inserted;
                 Core.SystemForm.UpdateStatus();
-                if (Chat != null && Chat.isInitialised)
+                if (Chat != null && Chat.IsInitialised)
                 {
                     if (Chat.IsDestroyed)
                     {

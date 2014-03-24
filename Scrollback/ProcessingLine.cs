@@ -277,17 +277,17 @@ namespace Pidgeon
             string matchline = "";
             foreach (Network.Highlighter item in Configuration.HighlighterList)
             {
-                if (item.enabled)
+                if (item.Enabled)
                 {
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.UserData.user);
+                        matchline = item.Text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.UserData.user);
                     }
                     else
                     {
-                        matchline = item.text.Replace("$nick", Configuration.UserData.nick).Replace("$ident", Configuration.UserData.ident).Replace("$name", Configuration.UserData.user);
+                        matchline = item.Text.Replace("$nick", Configuration.UserData.nick).Replace("$ident", Configuration.UserData.ident).Replace("$name", Configuration.UserData.user);
                     }
-                    if (item.simple)
+                    if (item.Simple)
                     {
                         if (text.Contains(matchline))
                         {
@@ -297,13 +297,13 @@ namespace Pidgeon
                     }
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname)).Replace("$ident",
+                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname)).Replace("$ident",
                             System.Text.RegularExpressions.Regex.Escape(owner._Network.Ident)).Replace("$name",
                             System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }
                     else
                     {
-                        matchline = item.text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.nick)).Replace("$ident",
+                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.nick)).Replace("$ident",
                             System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.ident)).Replace("$name",
                             System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }

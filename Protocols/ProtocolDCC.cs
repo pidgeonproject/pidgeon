@@ -187,7 +187,7 @@ namespace Pidgeon.Protocols
                 }
             }
             Connected = false;
-            SystemWindow.needIcon = true;
+            SystemWindow.NeedsIcon = true;
             return true;
         }
 

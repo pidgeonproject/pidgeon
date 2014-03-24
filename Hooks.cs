@@ -441,7 +441,7 @@ namespace Pidgeon
             /// <param name="network">Network</param>
             public static void AfterConnectToNetwork(Network network)
             {
-                network.isLoaded = true;
+                network.IsLoaded = true;
                 foreach (Extension extension in Core.Extensions)
                 {
                     try

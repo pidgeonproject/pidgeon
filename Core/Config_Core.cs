@@ -287,9 +287,9 @@ namespace Pidgeon
                         XmlAttribute highlightenabled = config.CreateAttribute("enabled");
                         XmlAttribute highlighttext = config.CreateAttribute("text");
                         XmlAttribute highlightsimple = config.CreateAttribute("simple");
-                        highlightenabled.Value = high.enabled.ToString();
-                        highlightsimple.Value = high.simple.ToString();
-                        highlighttext.Value = high.text;
+                        highlightenabled.Value = high.Enabled.ToString();
+                        highlightsimple.Value = high.Simple.ToString();
+                        highlighttext.Value = high.Text;
                         curr.Attributes.Append(highlightsimple);
                         curr.Attributes.Append(highlighttext);
                         curr.Attributes.Append(highlightenabled);
@@ -568,9 +568,9 @@ namespace Pidgeon
                                             if (curr.Attributes.Count > 2)
                                             {
                                                 Network.Highlighter list = new Network.Highlighter();
-                                                list.simple = bool.Parse(curr.Attributes[0].Value);
-                                                list.text = curr.Attributes[1].Value;
-                                                list.enabled = bool.Parse(curr.Attributes[2].Value);
+                                                list.Simple = bool.Parse(curr.Attributes[0].Value);
+                                                list.Text = curr.Attributes[1].Value;
+                                                list.Enabled = bool.Parse(curr.Attributes[2].Value);
                                                 lock (Configuration.HighlighterList)
                                                 {
                                                     Configuration.HighlighterList.Add(list);

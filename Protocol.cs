@@ -173,7 +173,7 @@ namespace Pidgeon
                     Current = Windows[name];
                     Core.SystemForm.SwitchWindow(Current);
                     Current.Redraw();
-                    if (Current.isChannel)
+                    if (Current.IsChannel)
                     {
                         if (Core.SelectedNetwork != null)
                         {
@@ -349,7 +349,7 @@ namespace Pidgeon
             
             if (channelw == true)
             {
-                request.window.isChannel = true;
+                request.window.IsChannel = true;
             }
 
             lock (Core.SystemForm.WindowRequests)

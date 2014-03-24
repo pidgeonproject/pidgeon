@@ -33,15 +33,15 @@ namespace Pidgeon
             /// <summary>
             /// Is simple
             /// </summary>
-            public bool simple;
+            public bool Simple;
             /// <summary>
             /// Text
             /// </summary>
-            public string text;
+            public string Text;
             /// <summary>
             /// Enabled
             /// </summary>
-            public bool enabled;
+            public bool Enabled;
             /// <summary>
             /// Expression
             /// </summary>
@@ -52,9 +52,9 @@ namespace Pidgeon
             /// </summary>
             public Highlighter()
             {
-                simple = true;
-                enabled = false;
-                text = Configuration.UserData.user;
+                Simple = true;
+                Enabled = false;
+                Text = Configuration.UserData.user;
             }
         }
 
@@ -95,10 +95,7 @@ namespace Pidgeon
             /// <summary>
             /// This constructor needs to exist for xml deserialization don't remove it
             /// </summary>
-            public ChannelData()
-            {
-
-            }
+            public ChannelData() {}
         }
 
         /// <summary>
@@ -144,7 +141,7 @@ namespace Pidgeon
         /// <summary>
         /// Symbol prefix of channels
         /// </summary>
-        public string channel_prefix = "#";
+        public string ChannelPrefix = "#";
         /// <summary>
         /// List of private message windows
         /// </summary>
@@ -168,7 +165,7 @@ namespace Pidgeon
         /// <summary>
         /// Randomly generated ID for this network to make it unique in case some other network would share the name
         /// </summary>
-        public string randomuqid = null;
+        public string RandomuQID = null;
         /// <summary>
         /// List of all channels on network
         /// </summary>
@@ -232,7 +229,7 @@ namespace Pidgeon
         /// <summary>
         /// Whether this network is fully loaded
         /// </summary>
-        public bool isLoaded = false;
+        public bool IsLoaded = false;
         /// <summary>
         /// Version of ircd running on this network
         /// </summary>
@@ -273,7 +270,7 @@ namespace Pidgeon
                 }
                 else
                 {
-                    return randomuqid + ServerName;
+                    return RandomuQID + ServerName;
                 }
             }
         }
@@ -285,7 +282,7 @@ namespace Pidgeon
         /// <param name="protocol">Protocol that own this instance</param>
         public Network(string Server, Protocol protocol)
         {
-            randomuqid = Core.RetrieveRandom();
+            RandomuQID = Core.RetrieveRandom();
             lock (Descriptions)
             {
                 Descriptions.Clear();
@@ -308,7 +305,7 @@ namespace Pidgeon
             Ident = Configuration.UserData.ident;
             if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
-                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
+                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + RandomuQID + ServerName, false, true);
                 Core.SystemForm.ChannelList.InsertNetwork(this, (Protocols.Services.ProtocolSv)protocol);
             }
             else
@@ -380,14 +377,13 @@ namespace Pidgeon
             {
                 wChannelList = new Forms.Channels(this);
             }
-
             wChannelList.Show();
         }
 
         /// <summary>
         /// This will toggle the connection flag to true
         /// </summary>
-        public void flagConnection()
+        public void SetConnected()
         {
             Connected = true;
         }
@@ -395,7 +391,7 @@ namespace Pidgeon
         /// <summary>
         /// This will mark the network as disconnected
         /// </summary>
-        public void flagDisconnect()
+        public void SetDisconnected()
         {
             Connected = false;
             lock (Channels)
@@ -406,23 +402,20 @@ namespace Pidgeon
                     Graphics.Window cw = xx.RetrieveWindow();
                     if (cw != null)
                     {
-                        cw.needIcon = true;
+                        cw.NeedsIcon = true;
                     }
                     xx.UpdateInfo();
                 }
             }
-
             lock (PrivateWins)
             {
                 foreach (Graphics.Window uw in PrivateWins.Values)
                 {
-                    uw.needIcon = true;
+                    uw.NeedsIcon = true;
                 }
             }
-
             Graphics.PidgeonList.Updated = true;
-
-            SystemWindow.needIcon = true;
+            SystemWindow.NeedsIcon = true;
         }
 
         /// <summary>
@@ -443,7 +436,6 @@ namespace Pidgeon
                     username = username.Replace(xx.ToString(), "");
                 }
             }
-
             return username;
         }
 
@@ -551,7 +543,7 @@ namespace Pidgeon
             PrivateChat.Add(referenced_user);
             Core.SystemForm.ChannelList.insertUser(referenced_user);
             PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this, true, null, false, true));
-            PrivateWins[referenced_user].isPM = true;
+            PrivateWins[referenced_user].IsPrivMsg = true;
             if (Configuration.UserData.SwitchWindowOnJoin)
             {
                 Core.SystemForm.ChannelList.ReselectWindow(PrivateWins[referenced_user]);
@@ -607,7 +599,7 @@ namespace Pidgeon
                 Channels.Add(_channel);
                 Core.SystemForm.ChannelList.InsertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
-                window.isChannel = true;
+                window.IsChannel = true;
                 if (!nf)
                 {
                     Core.SystemForm.ChannelList.ReselectWindow(window);
@@ -774,7 +766,7 @@ namespace Pidgeon
                 {
                     Transfer("QUIT :" + Quit);
                 }
-                flagDisconnect();
+                SetDisconnected();
             }
         }
     }

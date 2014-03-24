@@ -85,8 +85,8 @@ namespace Pidgeon.Protocols.Services
             public Window(Graphics.Window owner)
             {
                 Name = owner.WindowName;
-                isChannel = owner.isChannel;
-                isPM = owner.isPM;
+                isChannel = owner.IsChannel;
+                isPM = owner.IsPrivMsg;
                 lines = new List<Pidgeon.ContentLine>();
                 if (owner.textbox != null)
                 {
@@ -423,8 +423,8 @@ namespace Pidgeon.Protocols.Services
                     target.textbox.position = Source.history.Count;
                 }
                 Source.history.Clear();
-                target.isPM = Source.isPM;
-                target.isChannel = Source.isChannel;
+                target.IsPrivMsg = Source.isPM;
+                target.IsChannel = Source.isChannel;
                 // once we recover a window we don't longer need it, so remove it from memory
                 if (_windows.Contains(Source))
                 {

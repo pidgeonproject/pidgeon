@@ -102,7 +102,7 @@ namespace Pidgeon
                             Graphics.Window xx = curr.RetrieveWindow();
                             if (xx != null)
                             {
-                                xx.needIcon = true;
+                                xx.NeedsIcon = true;
                             }
                         }
                         if (updated_text)
@@ -161,7 +161,7 @@ namespace Pidgeon
                     if (_data2[1].Contains("PART"))
                     {
                         string channel = _data2[2];
-                        if (_data2[2].Contains(_Network.channel_prefix))
+                        if (_data2[2].Contains(_Network.ChannelPrefix))
                         {
                             channel = _data2[2];
                             Channel c = _Network.GetChannel(channel);
@@ -171,7 +171,7 @@ namespace Pidgeon
                                 c.ChannelWork = false;
                                 if (Chat != null)
                                 {
-                                    Chat.needIcon = true;
+                                    Chat.NeedsIcon = true;
                                     if (!c.partRequested)
                                     {
                                         c.ChannelWork = false;
@@ -290,7 +290,7 @@ namespace Pidgeon
                         case "005":
                             Info(command, parameters, value);
                             Hooks._Network.NetworkInfo(_Network, command, parameters, value);
-                            if (!_Network.isLoaded)
+                            if (!_Network.IsLoaded)
                             {
                                 Hooks._Network.AfterConnectToNetwork(_Network);
                             }
@@ -416,7 +416,7 @@ namespace Pidgeon
                                 true, date, !updated_text);
                             return true;
                         case "NOTICE":
-                            if (parameters.Contains(_Network.channel_prefix))
+                            if (parameters.Contains(_Network.ChannelPrefix))
                             {
                                 Channel channel = _Network.GetChannel(parameters);
                                 if (channel != null)
