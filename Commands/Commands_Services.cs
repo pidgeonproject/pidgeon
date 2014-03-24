@@ -16,8 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Pidgeon.Protocols.Services;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Commands
     {
@@ -31,7 +32,7 @@ namespace Client
                 }
                 if (Core.SelectedNetwork._Protocol.GetType() == typeof(ProtocolSv))
                 {
-                    ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
+                    Protocols.Services.ProtocolSv protocol = (Protocols.Services.ProtocolSv)Core.SelectedNetwork._Protocol;
                     protocol.sBuffer.Snapshot();
                 }
             }
@@ -40,7 +41,7 @@ namespace Client
             {
                 if (string.IsNullOrEmpty(parameter))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
                 string name2 = parameter;
@@ -48,7 +49,7 @@ namespace Client
                 int n3;
                 if (string.IsNullOrEmpty(name2))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
                 if (Core.SystemForm.Chat._Protocol == null)
@@ -88,7 +89,7 @@ namespace Client
                     foreach(System.IO.DirectoryInfo f in new System.IO.DirectoryInfo(Core.PermanentTemp).GetDirectories("buffer_*"))
                     {
                         f.Delete(true);
-                        Core.SystemForm.Chat.scrollback.InsertText("Removed " + f.Name, Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Removed " + f.Name, Pidgeon.ContentLine.MessageStyle.System, false);
                     }
                     return;
                 }
@@ -96,7 +97,7 @@ namespace Client
                 {
                     ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
                     protocol.sBuffer.Clear();
-                    Core.SystemForm.Chat.scrollback.InsertText("Services cache was cleared", Client.ContentLine.MessageStyle.System, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Services cache was cleared", Pidgeon.ContentLine.MessageStyle.System, false);
                 }
             }
 
@@ -144,7 +145,7 @@ namespace Client
                     return;
                 }
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }),
-                    Client.ContentLine.MessageStyle.Message);
+                    Pidgeon.ContentLine.MessageStyle.Message);
             }
         }
     }

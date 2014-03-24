@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Basically most elementar stuff the application consist of and that doesn't belong to some other class
@@ -209,11 +209,11 @@ namespace Client
         /// <summary>
         /// Pointer to exception class during recovery
         /// </summary>
-        public static Exception recovery_exception = null;
+        public static Exception RecoveryException = null;
         /// <summary>
         /// Recovery thread
         /// </summary>
-        public static Thread _RecoveryThread = null;
+        public static Thread RecoveryThread = null;
         /// <summary>
         /// Timers
         /// </summary>
@@ -221,7 +221,7 @@ namespace Client
         /// <summary>
         /// Notification box
         /// </summary>
-        private static Forms.Notification notification = null;
+        private static Forms.Notification NotificationWidget = null;
         private static object RandomLock = new object();
         /// <summary>
         /// Threads currently allocated in kernel
@@ -238,7 +238,7 @@ namespace Client
         /// <summary>
         /// Container
         /// </summary>
-        private static Network _SelectedNetwork = null;
+        private static Network selectedNetwork = null;
         /// <summary>
         /// Selected network, if you are connected to a network and currently displayed window is attached to some,
         /// this is that network
@@ -247,13 +247,13 @@ namespace Client
         {
             get
             {
-                return _SelectedNetwork;
+                return selectedNetwork;
             }
             set
             {
-                _SelectedNetwork = value;
+                selectedNetwork = value;
 #pragma warning disable
-                network = _SelectedNetwork;
+                network = selectedNetwork;
 #pragma warning restore
             }
         }
@@ -269,7 +269,7 @@ namespace Client
         /// <summary>
         /// This is a reference to system form, it should be changed only once
         /// </summary>
-        private static Forms.Main _main = null;
+        private static Forms.Main systemForm = null;
         /// <summary>
         /// Gets the system form
         /// </summary>
@@ -280,7 +280,7 @@ namespace Client
         {
             get
             {
-                return _main;
+                return systemForm;
             }
         }
         /// <summary>
@@ -321,7 +321,7 @@ namespace Client
         /// <summary>
         /// This is a reference to scanner window
         /// </summary>
-        public static Forms.TrafficScanner trafficscanner = null;
+        public static Forms.TrafficScanner TrafficScanner = null;
         /// <summary>
         /// System is blocked if this is set to true, all subsystems and kernel are supposed to freeze
         /// </summary>
@@ -342,7 +342,7 @@ namespace Client
         /// <summary>
         /// Cache of current params
         /// </summary>
-        private static List<string> _StartupParams = new List<string>();
+        private static List<string> startupParams = new List<string>();
         /// <summary>
         /// Parameters that were retrieved in console
         /// </summary>
@@ -351,9 +351,9 @@ namespace Client
             get
             {
                 List<string> data = new List<string>();
-                lock (_StartupParams)
+                lock (startupParams)
                 {
-                    data.AddRange(_StartupParams);
+                    data.AddRange(startupParams);
                 }
                 return data;
             }
@@ -415,7 +415,7 @@ namespace Client
         /// </param>
         public static void SetMain(Forms.Main form)
         {
-            _main = form;
+            systemForm = form;
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace Client
                 {
                     Ringlog("Running in safe mode");
                 }
-                _StartupParams = new List<string>(parameters);
+                startupParams = new List<string>(parameters);
                 Configuration.Logs.logs_dir = Root + "logs";
                 Ringlog("Root path is " + Root);
                 Ringlog("Config file: " + ConfigFile);
@@ -464,7 +464,7 @@ namespace Client
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
                 DebugLog("Loading messages");
                 messages.Read(Configuration.Kernel.Safe);
-                trafficscanner = new Forms.TrafficScanner();
+                TrafficScanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
                     LoadSkin();
@@ -494,7 +494,7 @@ namespace Client
                     Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
-                    notification = new Forms.Notification();
+                    NotificationWidget = new Forms.Notification();
                     //DebugLog("Loading scripting core");
                     //ScriptingCore.Load();
                     if (Configuration.Kernel.Safe)
@@ -525,8 +525,8 @@ namespace Client
                             Commands.RegisterAlias("shell", "pidgeon.term2in", false);
                         }
                         Network.Highlighter simple = new Network.Highlighter();
-                        simple.enabled = true;
-                        simple.text = "$nick";
+                        simple.Enabled = true;
+                        simple.Text = "$nick";
                         Configuration.HighlighterList.Add(simple);
                     }
                     ResetMainActivityTimer();
@@ -562,7 +562,7 @@ namespace Client
         /// </summary>
         /// <param name="text">Link to be parsed</param>
         /// <param name="services"></param>
-        public static void ParseLink(string text, ProtocolSv services = null)
+        public static void ParseLink(string text, Protocols.Services.ProtocolSv services = null)
         {
             DebugLog("Parsing " + text);
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
@@ -677,7 +677,7 @@ namespace Client
         /// </summary>
         private static void Recover()
         {
-            Client.Recovery recoveryWindow = new Client.Recovery();
+            Pidgeon.Recovery recoveryWindow = new Pidgeon.Recovery();
             System.Windows.Forms.Application.Run(recoveryWindow);
         }
 
@@ -805,18 +805,7 @@ namespace Client
         /// <param name="verbosity">Verbosity (default is 1)</param>
         public static void DebugLog(string data, int verbosity)
         {
-            System.Diagnostics.Debug.Print(data);
-            if (Configuration.Kernel.Debugging)
-            {
-                if (Core.SystemForm != null && !Core.IsBlocked)
-                {
-                    if (Core.SystemForm.main != null)
-                    {
-                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
-                    }
-                }
-            }
-            Ringlog("DEBUG: " + data);
+            Syslog.DebugLog(data, verbosity);
         }
 
         /// <summary>
@@ -825,7 +814,7 @@ namespace Client
         /// <param name="data">Text to insert</param>
         public static void DebugLog(string data)
         {
-            DebugLog(data, 1);
+            Syslog.DebugLog(data, 1);
         }
 
         /// <summary>
@@ -872,7 +861,7 @@ namespace Client
             {
                 foreach (string item in Ring)
                 {
-                    window.scrollback.InsertText(item, Client.ContentLine.MessageStyle.System, write, 0, true);
+                    window.scrollback.InsertText(item, Pidgeon.ContentLine.MessageStyle.System, write, 0, true);
                 }
             }
         }
@@ -904,7 +893,7 @@ namespace Client
                     return false;
                 }
             }
-            SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
+            SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
             return false;
         }
 
@@ -948,8 +937,8 @@ namespace Client
                 if (NotificationIsNowWaiting)
                 {
                     bool Focus = false;
-                    notification.text.Text = NotificationData;
-                    notification.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
+                    NotificationWidget.text.Text = NotificationData;
+                    NotificationWidget.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
                     NotificationIsNowWaiting = false;
                     if (Core.SystemForm.Chat != null)
                     {
@@ -958,16 +947,16 @@ namespace Client
                             Focus = true;
                         }
                     }
-                    if (!notification.Visible)
+                    if (!NotificationWidget.Visible)
                     {
-                        notification.Relocate();
-                        notification.Show();
+                        NotificationWidget.Relocate();
+                        NotificationWidget.Show();
                         if (Focus)
                         {
                             Core.SystemForm.setFocus();
                             if (Core.SystemForm.Chat != null)
                             {
-                                notification.focus = true;
+                                NotificationWidget.focus = true;
                                 Core.SystemForm.Chat.textbox.setFocus();
                             }
                         }
@@ -1264,9 +1253,10 @@ namespace Client
         }
 
         /// <summary>
-        /// Return unused port
+        /// Gets the unused system port.
         /// </summary>
-        public static uint GetPort()
+        /// <returns>The unused system port.</returns>
+        public static uint GetUnusedSystemPort()
         {
             uint port = Configuration.irc.DefaultCTCPPort;
             lock (LockedPorts)
@@ -1397,7 +1387,7 @@ namespace Client
             }
             DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             IsBlocked = true;
-            recovery_exception = _exception;
+            RecoveryException = _exception;
             if (Configuration.Kernel.KernelDump)
             {
                 Core.DebugLog("Generating report");
@@ -1437,8 +1427,8 @@ namespace Client
                 }
                 File.WriteAllText(file, dump);
             }
-            _RecoveryThread = new Thread(Recover);
-            _RecoveryThread.Start();
+            RecoveryThread = new Thread(Recover);
+            RecoveryThread.Start();
             if (Thread.CurrentThread != _KernelThread)
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
@@ -1468,13 +1458,25 @@ namespace Client
             }
             return 0;
         }
-        
+
+        /// <summary>
+        /// Handles the exception.
+        /// </summary>
+        /// <returns>The exception.</returns>
+        /// <param name="_exception">_exception.</param>
+        /// <param name="fatal">If set to <c>true</c> fatal.</param>
         [Obsolete]
         public static int handleException(Exception _exception, bool fatal = false)
         {
             return HandleException(_exception, fatal);
         }
-        
+
+        /// <summary>
+        /// Handles the exception.
+        /// </summary>
+        /// <returns>The exception.</returns>
+        /// <param name="_exception">_exception.</param>
+        /// <param name="ek">Ek.</param>
         [Obsolete]
         public static int handleException(Exception _exception, ExceptionKind ek)
         {
@@ -1490,12 +1492,12 @@ namespace Client
             try
             {
                 Core.DebugLog("User requested a shut down");
-                if (CoreState == State.Quiting)
+                if (CoreState == State.Terminating)
                 {
                     Core.DebugLog("Multiple calls of Core.Quit() ignored");
                     return false;
                 }
-                CoreState = State.Quiting;
+                CoreState = State.Terminating;
                 if (!IgnoreErrors)
                 {
                     IgnoreErrors = true;
@@ -1505,7 +1507,7 @@ namespace Client
                         SystemForm.icon.Dispose();
                     }
                     SystemForm.Hide();
-                    notification.Hide();
+                    NotificationWidget.Hide();
                     _Configuration.ConfigSave();
                     try
                     {
@@ -1613,7 +1615,7 @@ namespace Client
             /// <summary>
             /// Terminating
             /// </summary>
-            Quiting,
+            Terminating,
             /// <summary>
             /// Loading
             /// </summary>

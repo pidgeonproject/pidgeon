@@ -19,7 +19,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     public class PidgeonChan : Extension
     {
@@ -74,9 +74,9 @@ namespace Client
         {
             foreach (Protocol network in Core.Connections)
             {
-                if (network.GetType() == typeof(ProtocolSv))
+                if (network.GetType() == typeof(Protocols.Services.ProtocolSv))
                 {
-                    ProtocolSv sv = (ProtocolSv)network;
+                    Protocols.Services.ProtocolSv sv = (Protocols.Services.ProtocolSv)network;
                     foreach (Network server in sv.NetworkList)
                     {
                         if (server.ServerName == "irc.tm-irc.org")

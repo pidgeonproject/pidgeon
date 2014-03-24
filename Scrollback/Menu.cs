@@ -23,7 +23,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class Scrollback
     {
@@ -350,9 +350,9 @@ namespace Client
                 }
                 if (data.StartsWith("pidgeon://user", StringComparison.Ordinal))
                 {
-                    if (this.owner != null && this.owner.isChannel)
+                    if (this.owner != null && this.owner.IsChannel)
                     {
-                        Channel channel = owner._Network.getChannel(owner.WindowName);
+                        Channel channel = owner._Network.GetChannel(owner.WindowName);
                         if (channel != null)
                         {
                             User user = channel.UserFromName(adds);
@@ -387,7 +387,7 @@ namespace Client
                 Link = content;
                 if (type == ViewType.Channel)
                 {
-                    if (owner.isChannel)
+                    if (owner.IsChannel)
                     {
                         mode1b2ToolStripMenuItem.Visible = false;
                         mode1e2ToolStripMenuItem.Visible = false;
@@ -406,7 +406,7 @@ namespace Client
                 }
                 if (type == ViewType.User)
                 {
-                    if (owner.isChannel)
+                    if (owner.IsChannel)
                     {
                         kickToolStripMenuItem.Visible = true;
                         whoisToolStripMenuItem.Visible = true;
@@ -437,7 +437,7 @@ namespace Client
                 }
                 if (type == ViewType.Link)
                 {
-                    if (owner.isChannel)
+                    if (owner.IsChannel)
                     {
                         mode1b2ToolStripMenuItem.Visible = false;
                         mode1e2ToolStripMenuItem.Visible = false;
@@ -531,7 +531,7 @@ namespace Client
                     string nick = command.Substring(6);
                     if (owner != null && owner._Network != null)
                     {
-                        if (owner.isChannel || owner.isPM)
+                        if (owner.IsChannel || owner.IsPrivMsg)
                         {
                             owner.textbox.richTextBox.Buffer.Text += nick + ": ";
                             owner.textbox.setFocus();
@@ -549,7 +549,7 @@ namespace Client
                     string nick = command.Substring(7);
                     if (owner != null && owner._Network != null)
                     {
-                        if (owner.isChannel)
+                        if (owner.IsChannel)
                         {
                             owner.textbox.richTextBox1.Buffer.Text += nick;
                             owner.textbox.setFocus();
@@ -562,7 +562,7 @@ namespace Client
                     string nick = command.Substring(10);
                     if (owner != null && owner._Network != null)
                     {
-                        if (owner.isChannel)
+                        if (owner.IsChannel)
                         {
                             owner.textbox.richTextBox1.Buffer.Text += nick;
                             owner.textbox.setFocus();
@@ -575,7 +575,7 @@ namespace Client
                     string nick = command.Substring(6);
                     if (owner != null && owner._Network != null)
                     {
-                        if (owner.isChannel)
+                        if (owner.IsChannel)
                         {
                             owner.textbox.richTextBox1.Buffer.Text += nick;
                             owner.textbox.setFocus();
@@ -668,7 +668,7 @@ namespace Client
         {
             try
             {
-                if (owner.isChannel)
+                if (owner.IsChannel)
                 {
                     owner._Network._Protocol.Transfer("TOPIC " + owner.WindowName);
                 }

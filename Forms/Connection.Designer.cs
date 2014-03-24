@@ -15,10 +15,11 @@
 
 // this is a designer file for connection
 
+using Gtk;
 using System;
 using System.Collections.Generic;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     public partial class Connection
     {
@@ -48,7 +49,7 @@ namespace Client.Forms
             // Widget Client.Forms.Connection
             this.Name = "Client.Forms.Connection";
             this.Title = messages.Localize("[[newconnection-title]]");
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             this.AllowGrow = false;
             // Container child Client.Forms.Connection.Gtk.Container+ContainerChild
@@ -79,6 +80,7 @@ namespace Client.Forms
             this.combobox1 = global::Gtk.ComboBox.NewText();
             this.combobox1.WidthRequest = 580;
             this.combobox1.Name = "combobox1";
+            this.combobox1.Changed += new EventHandler(Change);
             this.table1.Add(this.combobox1);
             global::Gtk.Table.TableChild w2 = ((global::Gtk.Table.TableChild)(this.table1[this.combobox1]));
             w2.TopAttach = ((uint)(6));
@@ -104,8 +106,9 @@ namespace Client.Forms
             this.entry1.WidthRequest = 580;
             this.entry1.CanFocus = true;
             this.entry1.Name = "entry1";
+            this.entry1.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.entry1.IsEditable = true;
-            this.entry1.InvisibleChar = '•';
+            this.entry1.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry1);
             global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1[this.entry1]));
             w4.TopAttach = ((uint)(1));
@@ -120,7 +123,8 @@ namespace Client.Forms
             this.entry2.CanFocus = true;
             this.entry2.Name = "entry2";
             this.entry2.IsEditable = true;
-            this.entry2.InvisibleChar = '•';
+            this.entry2.InvisibleChar = '\u25CF';
+            this.entry2.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry2);
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.entry2]));
             w5.TopAttach = ((uint)(2));
@@ -135,7 +139,8 @@ namespace Client.Forms
             this.entry3.CanFocus = true;
             this.entry3.Name = "entry3";
             this.entry3.IsEditable = true;
-            this.entry3.InvisibleChar = '•';
+            this.entry3.InvisibleChar = '\u25CF';
+            this.entry3.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry3);
             global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1[this.entry3]));
             w6.TopAttach = ((uint)(3));
@@ -150,7 +155,8 @@ namespace Client.Forms
             this.entry4.CanFocus = true;
             this.entry4.Name = "entry4";
             this.entry4.IsEditable = true;
-            this.entry4.InvisibleChar = '•';
+            this.entry4.InvisibleChar = '\u25CF';
+            this.entry4.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry4);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1[this.entry4]));
             w7.TopAttach = ((uint)(5));
@@ -242,7 +248,7 @@ namespace Client.Forms
             // Container child vbox2.Gtk.Box+BoxChild
             this.image1 = new global::Gtk.Image();
             this.image1.Name = "image1";
-            this.image1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.darknetwork.png");
+            this.image1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.darknetwork.png");
             this.vbox2.Add(this.image1);
             global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.image1]));
             w16.Position = 0;
@@ -273,6 +279,21 @@ namespace Client.Forms
             this.DefaultHeight = 320;
             Hooks._Sys.Connection(this);
             this.Show();
+        }
+
+        [GLib.ConnectBefore]
+        private void Enter(object sender, Gtk.KeyPressEventArgs keys)
+        {
+            try
+            {
+                if (keys.Event.KeyValue == 65293)
+                {
+                    this.bConnect_Click(null, null);
+                }
+            }catch (Exception fail)
+            {
+                Core.HandleException(fail);
+            }
         }
     }
 }

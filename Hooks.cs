@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// These functions are called when the event in question happen
@@ -73,7 +73,7 @@ namespace Client
             /// This function is called during the main form is created, in case you want to register some menu's, this is a good time
             /// </summary>
             /// <param name="main"></param>
-            public static void Initialise(Client.Forms.Main main)
+            public static void Initialise(Pidgeon.Forms.Main main)
             {
                 Extension.SystemInitialiseArgs e = new Extension.SystemInitialiseArgs();
                 e.Main = main;
@@ -403,7 +403,7 @@ namespace Client
             /// <param name="Date">Date of line</param>
             /// <param name="SuppressPing">If this ping should be suppressed or not</param>
             /// <returns>If true is returned this notification is ignored and not displayed</returns>
-            public static bool NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
+            public static bool NotificationDisplay(string text, Pidgeon.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
             {
                 bool success = true;
 
@@ -441,7 +441,7 @@ namespace Client
             /// <param name="network">Network</param>
             public static void AfterConnectToNetwork(Network network)
             {
-                network.isLoaded = true;
+                network.IsLoaded = true;
                 foreach (Extension extension in Core.Extensions)
                 {
                     try

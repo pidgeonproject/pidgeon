@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Dialog to insert a new shortcut
@@ -118,7 +118,7 @@ namespace Client.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.Title = "Shortcut";
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
@@ -147,7 +147,7 @@ namespace Client.Forms
             this.entry2.CanFocus = true;
             this.entry2.Name = "entry2";
             this.entry2.IsEditable = true;
-            this.entry2.InvisibleChar = '●';
+            this.entry2.InvisibleChar = '\u25CF';
             this.hbox1.Add(this.entry2);
             global::Gtk.Box.BoxChild w3 = ((global::Gtk.Box.BoxChild)(this.hbox1[this.entry2]));
             w3.Position = 1;

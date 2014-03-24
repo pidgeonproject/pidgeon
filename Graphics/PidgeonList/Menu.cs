@@ -13,12 +13,13 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+using Pidgeon.Protocols.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     /// <summary>
     /// Menu
@@ -227,7 +228,7 @@ namespace Client.Graphics
                         services.Disconnect();
                         break;
                     case ItemType.DCC:
-                        ProtocolDCC pd = (ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolDCC pd = (Protocols.ProtocolDCC)tv.Model.GetValue(iter, 1);
                         pd.Disconnect();
                         break;
                 }
@@ -331,7 +332,7 @@ namespace Client.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.DCC:
-                        ProtocolDCC dcc = (ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolDCC dcc = (Protocols.ProtocolDCC)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = dcc.SystemWindow;
                         dcc.ShowChat(dcc.SystemWindow.WindowName);
@@ -340,7 +341,7 @@ namespace Client.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.QuasselCore:
-                        ProtocolQuassel quassel = (ProtocolQuassel)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolQuassel quassel = (Protocols.ProtocolQuassel)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = quassel.SystemWindow;
                         quassel.ShowChat("!root");

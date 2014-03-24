@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// User, Every user on irc has instance of this class for every channel they are in
@@ -46,10 +46,17 @@ namespace Client
         /// Status
         /// </summary>
         public ChannelStatus Status = ChannelStatus.Regular;
+        private string nick = null;
         /// <summary>
         /// Nick
         /// </summary>
-        public string Nick = null;
+        public string Nick
+        {
+            get
+            {
+                return nick;
+            }
+        }
         /// <summary>
         /// Name
         /// </summary>
@@ -187,7 +194,7 @@ namespace Client
                 }
                 lock (_Network.Channels)
                 {
-                    foreach (Channel xx in _Network.Channels)
+                    foreach (Channel xx in _Network.Channels.Values)
                     {
                         if (xx.ContainsUser(Nick))
                         {
@@ -238,6 +245,15 @@ namespace Client
                 }
                 return "";
             }
+        }
+
+        /// <summary>
+        /// Sets the nick.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        public void SetNick(string name)
+        {
+            this.nick = name;
         }
 
         /// <summary>
@@ -351,9 +367,9 @@ namespace Client
                     nick = nick.Substring(1);
                 }
             }
-            Nick = nick;
-            Ident = ident;
-            Host = host;
+            this.nick = nick;
+            this.Ident = ident;
+            this.Host = host;
         }
 
         /// <summary>

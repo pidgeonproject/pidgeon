@@ -13,27 +13,28 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-namespace Pidgeon.Forms
+using System;
+
+namespace Pidgeon
 {
-    /// <summary>
-    /// List of networks
-    /// </summary>
-    public partial class NetworkDB
+    public class Definitions
     {
-        private void Build()
-        {
-            global::Stetic.Gui.Initialize(this);
-            // Widget Client.Forms.NetworkDB
-            this.Name = "Client.Forms.NetworkDB";
-            this.Title = "NetworkDB";
-            this.WindowPosition = ((global::Gtk.WindowPosition)(4));
-            if ((this.Child != null))
-            {
-                this.Child.ShowAll();
-            }
-            this.DefaultWidth = 456;
-            this.DefaultHeight = 336;
-            this.Show();
-        }
+        /// <summary>
+        /// The standard irc port.
+        /// </summary>
+        public const int StandardIrcPort =            6667;
+        /// <summary>
+        /// The standard irc SSL port.
+        /// </summary>
+        public const int StandardIrcSSLPort =         6697;
+        /// <summary>
+        /// The standard services port.
+        /// </summary>
+        public const int StandardServicesPort =       64530;
+        /// <summary>
+        /// The standard services SSL port.
+        /// </summary>
+        public const int StandardServicesSSLPort =    22432;
     }
 }
+

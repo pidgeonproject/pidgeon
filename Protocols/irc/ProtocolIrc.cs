@@ -22,7 +22,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Protocol
@@ -325,7 +325,7 @@ namespace Client
             {
                 Messages.protocol = this;
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                    Client.ContentLine.MessageStyle.System);
+                    Pidgeon.ContentLine.MessageStyle.System);
             
                 if (!SSL)
                 {
@@ -366,7 +366,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Pidgeon.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -379,14 +379,14 @@ namespace Client
                 {
                     if (!_IRCNetwork.IsConnected)
                     {
-                        _IRCNetwork.flagConnection();
+                        _IRCNetwork.SetConnected();
                     }
                     while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);
                     }
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.Insert(Server, " >> " + text);
+                    Core.TrafficScanner.Insert(Server, " >> " + text);
                     ProcessorIRC processor = new ProcessorIRC(_IRCNetwork, text, ref pong);
                     processor.ProfiledResult();
                     pong = processor.pong;
@@ -416,11 +416,11 @@ namespace Client
         {
             try
             {
-                SystemWindow.scrollback.InsertText("Disconnected", Client.ContentLine.MessageStyle.User);
+                SystemWindow.scrollback.InsertText("Disconnected", Pidgeon.ContentLine.MessageStyle.User);
                 Core.SystemForm.Status("Disconnected from server " + Server);
                 if (_IRCNetwork != null)
                 {
-                    _IRCNetwork.flagDisconnect();
+                    _IRCNetwork.SetDisconnected();
                 }
                 if (SSL)
                 {
@@ -483,7 +483,7 @@ namespace Client
                 lock (StreamLock)
                 {
                     _StreamWriter.WriteLine(ms);
-                    Core.trafficscanner.Insert(Server, " << " + ms);
+                    Core.TrafficScanner.Insert(Server, " << " + ms);
                     _StreamWriter.Flush();
                 }
             }
@@ -520,7 +520,7 @@ namespace Client
         {
             if (!pmsg)
             {
-                Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Client.ContentLine.MessageStyle.Message, true, 0, true);
+                Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(_IRCNetwork.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 0, true);
             }
             Transfer("PRIVMSG " + to + " :" + text, priority);
             return 0;
@@ -535,7 +535,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority priority = Configuration.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + _IRCNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
+            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + _IRCNetwork.Nickname + " " + text, Pidgeon.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), priority);
             return 0;
         }
@@ -556,7 +556,7 @@ namespace Client
                 try
                 {
                     Send("QUIT :" + _IRCNetwork.Quit);
-                    _IRCNetwork.flagDisconnect();
+                    _IRCNetwork.SetDisconnected();
                     Core.KillThread(deliveryqueue);
                     Core.KillThread(keep);
                     if (SSL)
@@ -573,7 +573,7 @@ namespace Client
                 }
                 catch (System.IO.IOException er)
                 {
-                    SystemWindow.scrollback.InsertText(er.Message, Client.ContentLine.MessageStyle.User);
+                    SystemWindow.scrollback.InsertText(er.Message, Pidgeon.ContentLine.MessageStyle.User);
                     Connected = false;
                 }
             }
@@ -644,7 +644,7 @@ namespace Client
             _IRCNetwork.Destroy();
             Connected = false;
             Thread.Sleep(200);
-            SystemWindow.scrollback.InsertText("You have disconnected from network", Client.ContentLine.MessageStyle.System);
+            SystemWindow.scrollback.InsertText("You have disconnected from network", Pidgeon.ContentLine.MessageStyle.System);
             if (Core.SelectedNetwork == _IRCNetwork)
             {
                 Core.SelectedNetwork = null;

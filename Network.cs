@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Instance of irc network, this class is typically handled by protocols
@@ -33,15 +33,15 @@ namespace Client
             /// <summary>
             /// Is simple
             /// </summary>
-            public bool simple;
+            public bool Simple;
             /// <summary>
             /// Text
             /// </summary>
-            public string text;
+            public string Text;
             /// <summary>
             /// Enabled
             /// </summary>
-            public bool enabled;
+            public bool Enabled;
             /// <summary>
             /// Expression
             /// </summary>
@@ -52,9 +52,9 @@ namespace Client
             /// </summary>
             public Highlighter()
             {
-                simple = true;
-                enabled = false;
-                text = Configuration.UserData.user;
+                Simple = true;
+                Enabled = false;
+                Text = Configuration.UserData.user;
             }
         }
 
@@ -95,10 +95,7 @@ namespace Client
             /// <summary>
             /// This constructor needs to exist for xml deserialization don't remove it
             /// </summary>
-            public ChannelData()
-            {
-
-            }
+            public ChannelData() {}
         }
 
         /// <summary>
@@ -144,7 +141,7 @@ namespace Client
         /// <summary>
         /// Symbol prefix of channels
         /// </summary>
-        public string channel_prefix = "#";
+        public string ChannelPrefix = "#";
         /// <summary>
         /// List of private message windows
         /// </summary>
@@ -168,11 +165,11 @@ namespace Client
         /// <summary>
         /// Randomly generated ID for this network to make it unique in case some other network would share the name
         /// </summary>
-        public string randomuqid = null;
+        public string RandomuQID = null;
         /// <summary>
         /// List of all channels on network
         /// </summary>
-        public List<Channel> Channels = new List<Channel>();
+        public Dictionary<string, Channel> Channels = new Dictionary<string, Channel>();
         /// <summary>
         /// Currently rendered channel on main window
         /// </summary>
@@ -200,7 +197,7 @@ namespace Client
         /// <summary>
         /// Parent service
         /// </summary>
-        public ProtocolSv ParentSv = null;
+        public Protocols.Services.ProtocolSv ParentSv = null;
         /// <summary>
         /// List of channels
         /// </summary>
@@ -232,7 +229,7 @@ namespace Client
         /// <summary>
         /// Whether this network is fully loaded
         /// </summary>
-        public bool isLoaded = false;
+        public bool IsLoaded = false;
         /// <summary>
         /// Version of ircd running on this network
         /// </summary>
@@ -267,13 +264,13 @@ namespace Client
         {
             get
             {
-                if (_Protocol.GetType() != typeof(ProtocolSv))
+                if (_Protocol.GetType() != typeof(Protocols.Services.ProtocolSv))
                 {
                     return "system";
                 }
                 else
                 {
-                    return randomuqid + ServerName;
+                    return RandomuQID + ServerName;
                 }
             }
         }
@@ -285,7 +282,7 @@ namespace Client
         /// <param name="protocol">Protocol that own this instance</param>
         public Network(string Server, Protocol protocol)
         {
-            randomuqid = Core.RetrieveRandom();
+            RandomuQID = Core.RetrieveRandom();
             lock (Descriptions)
             {
                 Descriptions.Clear();
@@ -306,10 +303,10 @@ namespace Client
 
             UserName = Configuration.UserData.user;
             Ident = Configuration.UserData.ident;
-            if (protocol.GetType() == typeof(ProtocolSv))
+            if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
-                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
-                Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
+                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + RandomuQID + ServerName, false, true);
+                Core.SystemForm.ChannelList.InsertNetwork(this, (Protocols.Services.ProtocolSv)protocol);
             }
             else
             {
@@ -380,14 +377,13 @@ namespace Client
             {
                 wChannelList = new Forms.Channels(this);
             }
-
             wChannelList.Show();
         }
 
         /// <summary>
         /// This will toggle the connection flag to true
         /// </summary>
-        public void flagConnection()
+        public void SetConnected()
         {
             Connected = true;
         }
@@ -395,34 +391,31 @@ namespace Client
         /// <summary>
         /// This will mark the network as disconnected
         /// </summary>
-        public void flagDisconnect()
+        public void SetDisconnected()
         {
             Connected = false;
             lock (Channels)
             {
-                foreach (Channel xx in Channels)
+                foreach (Channel xx in Channels.Values)
                 {
                     // we need to change the icon to gray in side list
                     Graphics.Window cw = xx.RetrieveWindow();
                     if (cw != null)
                     {
-                        cw.needIcon = true;
+                        cw.NeedsIcon = true;
                     }
                     xx.UpdateInfo();
                 }
             }
-
             lock (PrivateWins)
             {
                 foreach (Graphics.Window uw in PrivateWins.Values)
                 {
-                    uw.needIcon = true;
+                    uw.NeedsIcon = true;
                 }
             }
-
             Graphics.PidgeonList.Updated = true;
-
-            SystemWindow.needIcon = true;
+            SystemWindow.NeedsIcon = true;
         }
 
         /// <summary>
@@ -443,7 +436,6 @@ namespace Client
                     username = username.Replace(xx.ToString(), "");
                 }
             }
-
             return username;
         }
 
@@ -523,16 +515,23 @@ namespace Client
         /// </summary>
         /// <param name="name">String</param>
         /// <returns>Channel or null if it doesn't exist</returns>
+        public Channel GetChannel(string name)
+        {
+            lock (this.Channels)
+            {
+                Channel channel = null;
+                if (this.Channels.TryGetValue(name.ToLower(), out channel))
+                {
+                    return channel;
+                }
+                return null;
+            }
+        }
+
+        [Obsolete("Replaced with GetChannel")]
         public Channel getChannel(string name)
         {
-            foreach (Channel chan in Channels)
-            {
-                if (chan.Name == name)
-                {
-                    return chan;
-                }
-            }
-            return null;
+            return GetChannel(name);
         }
 
         /// <summary>
@@ -545,7 +544,7 @@ namespace Client
             PrivateChat.Add(referenced_user);
             Core.SystemForm.ChannelList.insertUser(referenced_user);
             PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this, true, null, false, true));
-            PrivateWins[referenced_user].isPM = true;
+            PrivateWins[referenced_user].IsPrivMsg = true;
             if (Configuration.UserData.SwitchWindowOnJoin)
             {
                 Core.SystemForm.ChannelList.ReselectWindow(PrivateWins[referenced_user]);
@@ -592,16 +591,17 @@ namespace Client
         /// <returns>Instance of channel object</returns>
         public Channel Channel(string channel, bool nf = false)
         {
-            Channel previous = getChannel(channel);
+            Channel previous = GetChannel(channel);
             if (previous == null)
             {
                 Channel _channel = new Channel(this);
                 RenderedChannel = _channel;
                 _channel.Name = channel;
-                Channels.Add(_channel);
+                _channel.lName = channel.ToLower();
+                Channels.Add(_channel.lName, _channel);
                 Core.SystemForm.ChannelList.InsertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
-                window.isChannel = true;
+                window.IsChannel = true;
                 if (!nf)
                 {
                     Core.SystemForm.ChannelList.ReselectWindow(window);
@@ -685,7 +685,7 @@ namespace Client
 
             lock (Channels)
             {
-                foreach (Channel xx in Channels)
+                foreach (Channel xx in Channels.Values)
                 {
                     xx.Destroy();
                 }
@@ -768,7 +768,7 @@ namespace Client
                 {
                     Transfer("QUIT :" + Quit);
                 }
-                flagDisconnect();
+                SetDisconnected();
             }
         }
     }

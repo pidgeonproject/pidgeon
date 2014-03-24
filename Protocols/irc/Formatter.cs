@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client.Protocols.Irc
+namespace Pidgeon.Protocols.Irc
 {
     /// <summary>
     /// This class allow you to format the mode to better look

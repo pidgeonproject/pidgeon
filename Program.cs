@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using Gtk;
 
-namespace Client
+namespace Pidgeon
 {
     static class Program
     {

@@ -13,7 +13,7 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     public partial class Help
     {
@@ -34,7 +34,7 @@ namespace Client.Forms
             this.HeightRequest = 600;
             this.Name = "Client.Forms.Help";
             this.Title = "Help";
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             this.Resizable = false;
             this.AllowGrow = false;
@@ -74,11 +74,11 @@ namespace Client.Forms
             // Container child fixed1.Gtk.Fixed+FixedChild
             this.image2 = new global::Gtk.Image();
             this.image2.Name = "image2";
-            this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.Pigeon_clip_art_hight_mini.png");
+            this.image2.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.Pigeon_clip_art_hight_mini.png");
             this.fixed1.Add(this.image2);
             global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.image2]));
             w4.X = 342;
-            w4.Y = 47;
+            w4.Y = 8;
             // Container child fixed1.Gtk.Fixed+FixedChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";

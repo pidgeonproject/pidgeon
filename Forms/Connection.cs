@@ -13,10 +13,11 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+using Pidgeon.Protocols;
 using System;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Creates a new form
@@ -33,7 +34,7 @@ namespace Client.Forms
             messages.Localize(this);
             this.entry4.Visibility = false;
             this.DeleteEvent += new DeleteEventHandler(Unshow);
-            entry3.Text = "6667";
+            entry3.Text = Definitions.StandardIrcPort.ToString();
             entry2.Text = Configuration.UserData.ident;
             entry1.Text = Configuration.UserData.nick;
             combobox1.Clear();
@@ -94,7 +95,51 @@ namespace Client.Forms
                 Core.HandleException(fail);
             }
         }
-
+  
+        private void Change(object sender, EventArgs x)
+        {
+            int port;
+            if (!int.TryParse(this.entry3.Text, out port))
+            {
+                port = 6667;
+            }
+            bool st = false;
+            switch (port)
+            {
+                case Definitions.StandardIrcPort:
+                case Definitions.StandardIrcSSLPort:
+                case Definitions.StandardServicesPort:
+                case Definitions.StandardServicesSSLPort:
+                    st = true;
+                    break;
+            }
+            if (!st)
+            {
+                return;
+            }
+            switch (combobox1.ActiveText)
+            {
+                case "irc":
+                    if (!this.checkbutton1.Active)
+                    {
+                        this.entry3.Text = Definitions.StandardIrcPort.ToString();
+                    } else
+                    {
+                        this.entry3.Text = Definitions.StandardIrcSSLPort.ToString();
+                    }
+                    break;
+                case "pidgeon services":
+                    if (!this.checkbutton1.Active)
+                    {
+                        this.entry3.Text = Definitions.StandardServicesPort.ToString();
+                    } else
+                    {
+                        this.entry3.Text = Definitions.StandardServicesSSLPort.ToString();
+                    }
+                    break;
+            }
+        }
+        
         private void bConnect_Click(object sender, EventArgs e)
         {
             try

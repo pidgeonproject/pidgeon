@@ -15,7 +15,7 @@
 
 using System;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     public partial class OpenDCC
     {
@@ -38,7 +38,7 @@ namespace Client.Forms
         {
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.Name = "MainWindow";
             if (ListenerMode)
             {
@@ -88,16 +88,16 @@ namespace Client.Forms
             this.label4.Name = "label4";
             switch (type)
             {
-                case ProtocolDCC.DCC.Chat:
+                case Protocols.ProtocolDCC.DCC.Chat:
                     this.label4.LabelProp = "Chat";
                     break;
-                case ProtocolDCC.DCC.File:
+                case Protocols.ProtocolDCC.DCC.File:
                     this.label4.LabelProp = "File";
                     break;
-                case ProtocolDCC.DCC.SecureChat:
+                case Protocols.ProtocolDCC.DCC.SecureChat:
                     this.label4.LabelProp = "Secure chat";
                     break;
-                case ProtocolDCC.DCC.SecureFile:
+                case Protocols.ProtocolDCC.DCC.SecureFile:
                     this.label4.LabelProp = "Secure file";
                     break;
             }

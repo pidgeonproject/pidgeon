@@ -22,7 +22,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Client
+namespace Pidgeon.Protocols
 {
     /// <summary>
     /// DCC
@@ -117,7 +117,7 @@ namespace Client
             while (!_StreamReader.EndOfStream && IsConnected)
             {
                 string text = _StreamReader.ReadLine();
-                Core.trafficscanner.Insert(Server, text);
+                Core.TrafficScanner.Insert(Server, text);
                 SystemWindow.scrollback.InsertText(PRIVMSG(UserName, text), ContentLine.MessageStyle.Message);
             }
         }
@@ -187,7 +187,7 @@ namespace Client
                 }
             }
             Connected = false;
-            SystemWindow.needIcon = true;
+            SystemWindow.NeedsIcon = true;
             return true;
         }
 
@@ -249,7 +249,7 @@ namespace Client
             lock (StreamLock)
             {
                 SystemWindow.scrollback.InsertText(PRIVMSG(Configuration.UserData.nick, input), ContentLine.MessageStyle.Message);
-                Core.trafficscanner.Insert(Server, input);
+                Core.TrafficScanner.Insert(Server, input);
                 _StreamWriter.WriteLine(input);
                 _StreamWriter.Flush();
             }

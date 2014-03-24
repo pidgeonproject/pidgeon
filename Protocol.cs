@@ -25,7 +25,7 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This is lowest level of protocol interface
@@ -173,11 +173,11 @@ namespace Client
                     Current = Windows[name];
                     Core.SystemForm.SwitchWindow(Current);
                     Current.Redraw();
-                    if (Current.isChannel)
+                    if (Current.IsChannel)
                     {
                         if (Core.SelectedNetwork != null)
                         {
-                            Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.getChannel(Current.WindowName);
+                            Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel(Current.WindowName);
                         }
                     }
                     Core.SystemForm.setChannel(name);
@@ -349,7 +349,7 @@ namespace Client
             
             if (channelw == true)
             {
-                request.window.isChannel = true;
+                request.window.IsChannel = true;
             }
 
             lock (Core.SystemForm.WindowRequests)

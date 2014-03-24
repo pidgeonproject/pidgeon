@@ -19,7 +19,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Provides information about repository
@@ -36,7 +36,7 @@ namespace Client
             {
                 using (var stream = Assembly.GetExecutingAssembly()
                                             .GetManifestResourceStream(
-                                            "Client" + "." + "version.txt"))
+                                            "Pidgeon" + "." + "version.txt"))
                 {
                     using (var reader = new StreamReader(stream))
                     {

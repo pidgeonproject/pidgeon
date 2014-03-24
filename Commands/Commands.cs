@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Commands
     {
@@ -229,9 +229,9 @@ namespace Client
         public static void Initialise()
         {
             commands.Add("server", new Command(Type.System, Generic.server));
-            RegisterManual("server", Client.Properties.Resources.Server);
+            RegisterManual("server", Pidgeon.Resources.Server);
             commands.Add("nick", new Command(Type.System, Generic.nick));
-            RegisterManual("connect", Client.Properties.Resources.Connect);
+            RegisterManual("connect", Pidgeon.Resources.Connect);
             commands.Add("connect", new Command(Type.Services, Generic.connect));
             commands.Add("join", new Command(Type.SystemSv, Generic.join));
             commands.Add("part", new Command(Type.Network));
@@ -269,7 +269,7 @@ namespace Client
             commands.Add("userip", new Command(Type.Network));
             commands.Add("version", new Command(Type.Network));
             commands.Add("wallops", new Command(Type.Network));
-            RegisterManual("oper", Client.Properties.Resources.Oper);
+            RegisterManual("oper", Pidgeon.Resources.Oper);
             commands.Add("oper", new Command(Type.Network));
             commands.Add("who", new Command(Type.Network));
             commands.Add("whois", new Command(Type.Network));
@@ -280,7 +280,7 @@ namespace Client
             commands.Add("raw", new Command(Type.System, Generic.raw));
             commands.Add("chanserv", new Command(Type.Network));
             commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
-            RegisterManual("pidgeon.uptime", Client.Properties.Resources.PidgeonUptime);
+            RegisterManual("pidgeon.uptime", Pidgeon.Resources.PidgeonUptime);
             commands.Add("pidgeon.uptime", new Command(Type.System, Generic.RetrieveUptime));
             commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
             commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
@@ -300,10 +300,10 @@ namespace Client
             commands.Add("pidgeon.ring.show", new Command(Type.System, Generic.ring_show));
             commands.Add("pidgeon.ring.file.overwrite", new Command(Type.System, Generic.forced_pidgeon_file));
             commands.Add("pidgeon.ring.file", new Command(Type.System, Generic.pidgeon_file));
-            RegisterManual("pidgeon.man", Client.Properties.Resources.PidgeonMan);
+            RegisterManual("pidgeon.man", Pidgeon.Resources.PidgeonMan);
             commands.Add("pidgeon.man", new Command(Type.System, Generic.man));
             commands.Add("pidgeon.module", new Command(Type.System, Generic.RegisterModule));
-            RegisterManual("pidgeon.module", Client.Properties.Resources.PidgeonModule);
+            RegisterManual("pidgeon.module", Pidgeon.Resources.PidgeonModule);
             commands.Add("pidgeon.link", new Command(Type.System, Generic.Link));
             //RegisterManual("pidgeon.link", Client.Properties.Resources.PidgeonModule);
             commands.Add("pidgeon.services.info", new Command(Type.System, Generic.services_cache));

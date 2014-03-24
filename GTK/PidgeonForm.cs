@@ -15,10 +15,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Client.PidgeonGtkToolkit
+namespace Pidgeon.PidgeonGtkToolkit
 {
     /// <summary>
     /// Menu
@@ -220,6 +219,7 @@ namespace Client.PidgeonGtkToolkit
         {
             try
             {
+                #pragma warning disable
                 if (Configuration.Window.RememberPosition)
                 {
                     if (ID == null)
@@ -237,6 +237,7 @@ namespace Client.PidgeonGtkToolkit
                     info.Width = this.Width;
                     info.Height = this.Height;
                 }
+                #pragma warning enable
             }
             catch (Exception fail)
             {

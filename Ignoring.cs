@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This class is used to ignore text or users that is matching the given patterns

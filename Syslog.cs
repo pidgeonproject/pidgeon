@@ -13,27 +13,32 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-namespace Pidgeon.Forms
+using System;
+
+namespace Pidgeon
 {
-    /// <summary>
-    /// List of networks
-    /// </summary>
-    public partial class NetworkDB
+    public class Syslog
     {
-        private void Build()
+        /// <summary>
+        /// Insert text in to debug log
+        /// </summary>
+        /// <param name="data">Text to insert</param>
+        /// <param name="verbosity">Verbosity (default is 1)</param>
+        public static void DebugLog(string data, int verbosity)
         {
-            global::Stetic.Gui.Initialize(this);
-            // Widget Client.Forms.NetworkDB
-            this.Name = "Client.Forms.NetworkDB";
-            this.Title = "NetworkDB";
-            this.WindowPosition = ((global::Gtk.WindowPosition)(4));
-            if ((this.Child != null))
+            System.Diagnostics.Debug.Print(data);
+            if (Configuration.Kernel.Debugging)
             {
-                this.Child.ShowAll();
+                if (Core.CoreState != Core.State.Terminating && Core.SystemForm != null && !Core.IsBlocked)
+                {
+                    if (Core.SystemForm.main != null)
+                    {
+                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Pidgeon.ContentLine.MessageStyle.System, false);
+                    }
+                }
             }
-            this.DefaultWidth = 456;
-            this.DefaultHeight = 336;
-            this.Show();
+            Core.Ringlog("DEBUG: " + data);
         }
     }
 }
+

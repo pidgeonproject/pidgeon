@@ -21,7 +21,7 @@ using System.Drawing;
 using System.IO;
 using System.Data;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Skin
@@ -31,27 +31,27 @@ namespace Client
         /// <summary>
         /// Icon of at symbol used for PM
         /// </summary>
-        public Gdk.Pixbuf Icon_ShadowAt = Gdk.Pixbuf.LoadFromResource("Client.Resources.at-s.png");
+        public Gdk.Pixbuf Icon_ShadowAt = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.at-s.png");
         /// <summary>
         /// Icon #
         /// </summary>
-        public Gdk.Pixbuf Icon_ShadowHash = Gdk.Pixbuf.LoadFromResource("Client.Resources.hash-s.png");
+        public Gdk.Pixbuf Icon_ShadowHash = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.hash-s.png");
         /// <summary>
         /// Icon !
         /// </summary>
-        public Gdk.Pixbuf Icon_ShadowMark = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation-mark-s.png");
+        public Gdk.Pixbuf Icon_ShadowMark = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.exclamation-mark-s.png");
         /// <summary>
         /// Icon @
         /// </summary>
-        public Gdk.Pixbuf Icon_At = Gdk.Pixbuf.LoadFromResource("Client.Resources.at.png");
+        public Gdk.Pixbuf Icon_At = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.at.png");
         /// <summary>
         /// Icon #
         /// </summary>
-        public Gdk.Pixbuf Icon_Hash = Gdk.Pixbuf.LoadFromResource("Client.Resources.icon_hash.png");
+        public Gdk.Pixbuf Icon_Hash = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.icon_hash.png");
         /// <summary>
         /// Icon !
         /// </summary>
-        public Gdk.Pixbuf Icon_ExclamationMark = Gdk.Pixbuf.LoadFromResource("Client.Resources.exclamation mark.png");
+        public Gdk.Pixbuf Icon_ExclamationMark = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.exclamation mark.png");
         /// <summary>
         /// Local font name or family
         /// </summary>

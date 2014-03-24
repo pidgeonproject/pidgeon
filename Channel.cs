@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Channel object
@@ -33,6 +33,11 @@ namespace Client
         /// </summary>
         public string Name = null;
         /// <summary>
+        /// Lower case of this channel that is used frequently, we cache it here so that we
+        /// don't need to use expensive string functions to make it so often
+        /// </summary>
+        public string lName = null;
+        /// <summary>
         /// Network the channel belongs to
         /// </summary>
         [NonSerialized]
@@ -41,7 +46,7 @@ namespace Client
         /// List of all users in current channel
         /// </summary>
         [NonSerialized]
-        public List<User> UserList = new List<User>();
+        public Dictionary<string, User> UserList = new Dictionary<string, User>();
         /// <summary>
         /// Topic, if it's unknown this variable is null
         /// </summary>
@@ -385,7 +390,7 @@ namespace Client
                 List<User> users = new List<User>();
                 bool Inserted;
                 Core.SystemForm.UpdateStatus();
-                if (Chat != null && Chat.isInitialised)
+                if (Chat != null && Chat.IsInitialised)
                 {
                     if (Chat.IsDestroyed)
                     {
@@ -408,7 +413,7 @@ namespace Client
                     }
                     lock (UserList)
                     {
-                        foreach (User nick in UserList)
+                        foreach (User nick in UserList.Values)
                         {
                             Inserted = false;
                             if (nick.ChannelMode._Mode.Count > 0)
@@ -523,12 +528,11 @@ namespace Client
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
-        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.")]
+        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.80")]
         public void redrawUsers()
         {
             RedrawUsers();
         }
-
 
         /// <summary>
         /// Destroy this class, be careful, it can't be used in any way after you
@@ -649,6 +653,27 @@ namespace Client
             return UserFromName(name);
         }
 
+        public void RemoveUser(User user)
+        {
+            lock (this.UserList)
+            {
+                string name = user.Nick.ToLower ();
+                if (this.UserList.ContainsKey (name))
+                {
+                    this.UserList.Remove (name);
+                }
+            }
+        }
+
+        public User GetSelf()
+        {
+            if (this._Network != null)
+            {
+                return this.UserFromName(this._Network.Nickname);
+            }
+            return null;
+        }
+
         /// <summary>
         /// Return user object if specified user exist
         /// </summary>
@@ -660,14 +685,9 @@ namespace Client
             {
                 throw new Core.PidgeonException("User name can't be null");
             }
-            foreach (User item in UserList)
-            {
-                if (name.ToLower(System.Globalization.CultureInfo.CurrentUICulture) == item.Nick.ToLower(System.Globalization.CultureInfo.CurrentUICulture))
-                {
-                    return item;
-                }
-            }
-            return null;
+            User user = null;
+            this.UserList.TryGetValue (name.ToLower (System.Globalization.CultureInfo.CurrentUICulture), out user);
+            return user;
         }
 
         /// <summary>

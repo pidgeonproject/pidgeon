@@ -19,12 +19,11 @@ using System.Text;
 using System.Data;
 using Gtk;
 
-// Documentation
-//////////////////////
-// Traffic scanner is allowing you to display all traffic sent within the protocols
-
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
+    /// <summary>
+    /// Traffic scanner is allowing you to display all traffic sent within the protocols
+    /// </summary>
     public partial class TrafficScanner : PidgeonGtkToolkit.PidgeonForm
     {
         private List<string> traf = new List<string>();
@@ -45,7 +44,7 @@ namespace Client.Forms
                 this.textview2.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
                 this.timer = new GLib.TimeoutHandler(Tick);
                 GLib.Timeout.Add (1000, timer);
-                this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+                this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
                 this.DeleteEvent += new DeleteEventHandler(Unshow);
                 textview2.Buffer.Text = "";
                 LoadStyle();
@@ -133,7 +132,7 @@ namespace Client.Forms
             {
                 if (traf.Count > 800)
                 {
-                    Client.PidgeonGtkToolkit.MessageBox message = new Client.PidgeonGtkToolkit.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
+                    Pidgeon.PidgeonGtkToolkit.MessageBox message = new Pidgeon.PidgeonGtkToolkit.MessageBox(this, Gtk.MessageType.Question, Gtk.ButtonsType.YesNo, "There are too many items in log, which means, that pidgeon may become unresponsive for several minutes if you continue, press yes to continue or no to abort", "Warning");
                     if (message.result == ResponseType.No)
                     {
                         ScannerEnabled = false;

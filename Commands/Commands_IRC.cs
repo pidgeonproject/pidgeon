@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Commands
     {
@@ -27,18 +27,18 @@ namespace Client
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    string channel = parameter;
+                    string channel = parameter; 
                     if (Core.SelectedNetwork == null)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.SelectedNetwork.IsConnected)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Channel curr = Core.SelectedNetwork.getChannel(channel);
+                    Channel curr = Core.SelectedNetwork.GetChannel(channel);
                     if (curr != null)
                     {
                         Graphics.Window window = curr.RetrieveWindow();
@@ -50,7 +50,7 @@ namespace Client
                     Core.SelectedNetwork._Protocol.Join(channel);
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-channel", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
             }
 
             public static void raw(string parameter)
@@ -65,11 +65,11 @@ namespace Client
                             Core.SelectedNetwork._Protocol.Command(text);
                             return;
                         }
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
             }
 
             public static void quit(string parameter)
@@ -92,18 +92,18 @@ namespace Client
                     string message = parameter;
                     if (Core.SelectedNetwork == null)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.SelectedNetwork.IsConnected)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                     Graphics.Window window = Core.SystemForm.Chat;
                     if (window != null)
                     {
-                        if (window.isChannel || window.isPM)
+                        if (window.IsChannel || window.IsPrivMsg)
                         {
                             Core.SelectedNetwork._Protocol.Message2(message, window.WindowName);
                             return;
@@ -112,7 +112,7 @@ namespace Client
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
 
             }
 
@@ -130,17 +130,17 @@ namespace Client
                             {
                                 ms = ms.Substring(1);
                             }
-                            Core.SelectedNetwork.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.SelectedNetwork.Nickname + "> " + ms, Client.ContentLine.MessageStyle.System);
+                            Core.SelectedNetwork.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.SelectedNetwork.Nickname + "> " + ms, Pidgeon.ContentLine.MessageStyle.System);
                             Core.SelectedNetwork.Message(ms, channel, Configuration.Priority.Normal, true);
                             return;
                         }
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             public static void ctcp(string parameter)
@@ -150,27 +150,27 @@ namespace Client
                     string[] Params = parameter.Split(' ');
                     if (Core.SelectedNetwork == null)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                     if (!Core.SelectedNetwork.IsConnected)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
                     Core.SelectedNetwork.Transfer("PRIVMSG " + Params[0] + " :" + Core.SelectedNetwork._Protocol.delimiter +
                         Params[1].ToUpper() + Core.SelectedNetwork._Protocol.delimiter);
-                    Core.SystemForm.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Client.ContentLine.MessageStyle.Message, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Pidgeon.ContentLine.MessageStyle.Message, false);
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             public static void query(string parameter)
             {
                 if (parameter.Length == 0)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
                     return;
                 }
                 string channel = parameter;
@@ -178,9 +178,9 @@ namespace Client
                 {
                     channel = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
                 }
-                if (channel.Contains(Core.SelectedNetwork.channel_prefix))
+                if (channel.Contains(Core.SelectedNetwork.ChannelPrefix))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText("Invalid name", Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText("Invalid name", Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
                 while (channel.StartsWith(" ", StringComparison.Ordinal))
@@ -200,14 +200,14 @@ namespace Client
                             }
                             Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
                             Core.SelectedNetwork._Protocol.Windows[Core.SelectedNetwork.SystemWindowID + channel].scrollback.InsertText(Protocol.PRIVMSG(Core.SelectedNetwork.Nickname,
-                                parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length)), Client.ContentLine.MessageStyle.Channel);
+                                parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length)), Pidgeon.ContentLine.MessageStyle.Channel);
                             Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length), channel);
                             return;
                         }
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
                 if (Core.SelectedNetwork != null && Core.SelectedNetwork._Protocol != null)
@@ -222,7 +222,7 @@ namespace Client
                         return;
                     }
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
         }
     }

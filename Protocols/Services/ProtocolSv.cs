@@ -23,7 +23,7 @@ using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 
-namespace Client
+namespace Pidgeon.Protocols.Services
 {
     /// <summary>
     /// Protocol for pidgeon services
@@ -86,7 +86,7 @@ namespace Client
         /// <summary>
         /// Buffer
         /// </summary>
-        public Services.Buffer sBuffer = null;
+        public Pidgeon.Protocols.Services.Buffer sBuffer = null;
         private List<Request> RemainingJobs = new List<Request>();
         /// <summary>
         /// Whether the services have finished loading
@@ -177,7 +177,7 @@ namespace Client
             try
             {
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
-                Client.ContentLine.MessageStyle.System);
+                Pidgeon.ContentLine.MessageStyle.System);
 
                 Core.SystemForm.Status("Connecting to " + Server);
 
@@ -220,7 +220,7 @@ namespace Client
             }
             catch (Exception b)
             {
-                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Client.ContentLine.MessageStyle.System);
+                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Pidgeon.ContentLine.MessageStyle.System);
                 return;
             }
             string text = "";
@@ -231,7 +231,7 @@ namespace Client
                 while (!_StreamReader.EndOfStream && Connected)
                 {
                     text = _StreamReader.ReadLine();
-                    Core.trafficscanner.Insert(Server, " >> " + text);
+                    Core.TrafficScanner.Insert(Server, " >> " + text);
                     while (Core.IsBlocked)
                     {
                         System.Threading.Thread.Sleep(100);
@@ -254,7 +254,7 @@ namespace Client
                     // we need to wrap this in another exception handler because the following functions are easy to throw some
                     try
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Client.ContentLine.MessageStyle.System);
+                        Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Pidgeon.ContentLine.MessageStyle.System);
                         Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
                         sBuffer = null;
                         Disconnect();
@@ -506,7 +506,7 @@ namespace Client
                         }
                     }
 
-                    remove.flagDisconnect();
+                    remove.SetDisconnected();
                     remove.Destroy();
                 }
             }
@@ -618,7 +618,7 @@ namespace Client
                 {
                     foreach (Network network in NetworkList)
                     {
-                        network.flagDisconnect();
+                        network.SetDisconnected();
                     }
                 }
                 try
@@ -650,7 +650,7 @@ namespace Client
                     foreach (Network xx in NetworkList)
                     {
                         // we need to flag all networks here as disconnected so that it knows we can't use them
-                        xx.flagDisconnect();
+                        xx.SetDisconnected();
                     }
                 }
                 if (keep != null)
@@ -707,7 +707,7 @@ namespace Client
         /// <returns></returns>
         public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Client.ContentLine.MessageStyle.Action, true, 0, true);
+            Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Pidgeon.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
             return 0;
         }
@@ -759,7 +759,7 @@ namespace Client
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
             {
-                SystemWindow.scrollback.InsertText("Connecting to " + server, Client.ContentLine.MessageStyle.User, true);
+                SystemWindow.scrollback.InsertText("Connecting to " + server, Pidgeon.ContentLine.MessageStyle.User, true);
                 Datagram request = new Datagram("CONNECT", server);
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
@@ -796,7 +796,7 @@ namespace Client
         {
             try
             {
-                SystemWindow.scrollback.InsertText(reason, Client.ContentLine.MessageStyle.User);
+                SystemWindow.scrollback.InsertText(reason, Pidgeon.ContentLine.MessageStyle.User);
                 Disconnect();
             }
             catch (Exception fail)
@@ -818,7 +818,7 @@ namespace Client
                     lock (StreamLock)
                     {
                         _StreamWriter.WriteLine(text);
-                        Core.trafficscanner.Insert(Server, " << " + text);
+                        Core.TrafficScanner.Insert(Server, " << " + text);
                         _StreamWriter.Flush();
                     }
                 }

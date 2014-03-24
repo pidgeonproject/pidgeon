@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Search item.
@@ -53,14 +53,14 @@ namespace Client.Forms
             this.hbox1 = new global::Gtk.HBox ();
             this.hbox1.Name = "hbox1";
             this.hbox1.Spacing = 6;
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             // Container child hbox1.Gtk.Box+BoxChild
             this.entry1 = new global::Gtk.Entry ();
             this.entry1.CanFocus = true;
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
             this.entry1.WidthRequest = 800;
-            this.entry1.InvisibleChar = '•';
+            this.entry1.InvisibleChar = '\u25CF';
             this.hbox1.Add (this.entry1);
             global::Gtk.Box.BoxChild w1 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.entry1]));
             w1.Position = 0;

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using Gtk;
 using System.Text;
 
-namespace Client.PidgeonGtkToolkit
+namespace Pidgeon.PidgeonGtkToolkit
 {
     /// <summary>
     /// MessageBox
@@ -74,7 +74,7 @@ namespace Client.PidgeonGtkToolkit
             Message = new MessageDialog(parentWindow, DialogFlags.Modal, messageType, buttons, false, null);
             Message.WindowPosition = WindowPosition.Center;
             Message.Text = message;
-            Message.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            Message.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             Message.Title = title;
             result = (ResponseType)Message.Run();
             Message.Destroy();

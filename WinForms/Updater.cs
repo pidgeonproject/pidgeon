@@ -25,7 +25,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Windows.Forms;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Form

@@ -19,7 +19,7 @@ using System.Security.Cryptography.X509Certificates;
 using SecureString = System.Security.SecureString;
 using RuntimeHelpers = System.Runtime.CompilerServices.RuntimeHelpers;
 
-namespace Client.Protocols
+namespace Pidgeon.Protocols
 {
     /// <summary>
     /// This class contains code to created certificated in windows

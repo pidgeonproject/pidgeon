@@ -20,7 +20,7 @@ using System.Xml;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace Client.Services
+namespace Pidgeon.Protocols.Services
 {
     /// <summary>
     /// Stores info and packets to local disk so that they can be retrieved instead of downloading them
@@ -48,7 +48,7 @@ namespace Client.Services
             /// <summary>
             /// Data
             /// </summary>
-            public List<Client.ContentLine> lines = null;
+            public List<Pidgeon.ContentLine> lines = null;
             /// <summary>
             /// Name
             /// </summary>
@@ -85,9 +85,9 @@ namespace Client.Services
             public Window(Graphics.Window owner)
             {
                 Name = owner.WindowName;
-                isChannel = owner.isChannel;
-                isPM = owner.isPM;
-                lines = new List<Client.ContentLine>();
+                isChannel = owner.IsChannel;
+                isPM = owner.IsPrivMsg;
+                lines = new List<Pidgeon.ContentLine>();
                 if (owner.textbox != null)
                 {
                     history.AddRange(owner.textbox.history);
@@ -423,8 +423,8 @@ namespace Client.Services
                     target.textbox.position = Source.history.Count;
                 }
                 Source.history.Clear();
-                target.isPM = Source.isPM;
-                target.isChannel = Source.isChannel;
+                target.IsPrivMsg = Source.isPM;
+                target.IsChannel = Source.isChannel;
                 // once we recover a window we don't longer need it, so remove it from memory
                 if (_windows.Contains(Source))
                 {
@@ -717,7 +717,7 @@ namespace Client.Services
                             networkInfo[uid].UChars = network.UChars;
                             lock (network.Channels)
                             {
-                                foreach (Channel xx in network.Channels)
+                                foreach (Channel xx in network.Channels.Values)
                                 {
                                     Graphics.Window window = xx.RetrieveWindow();
                                     if (window != null)
@@ -854,12 +854,12 @@ namespace Client.Services
         {
             if (Core.SystemForm.Chat != null)
             {
-                Core.SystemForm.Chat.scrollback.InsertText("Information about cache:", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Information about cache:", Pidgeon.ContentLine.MessageStyle.System, false);
                 lock (networkInfo)
                 {
                     foreach (KeyValuePair<string, NetworkInfo> xx in networkInfo)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Network: " + xx.Value.Server + " MQID: " + xx.Value.lastMQID.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
                     }
                 }
             }

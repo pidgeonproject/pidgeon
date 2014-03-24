@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Data;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Preferences
@@ -242,7 +242,7 @@ namespace Client.Forms
             // Widget Client.Forms.Preferences
             this.Name = "Client.Forms.Preferences";
             this.Title = messages.Localize("[[preferences-title]]");
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.Pigeon_clip_art_hight.png");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.Pigeon_clip_art_hight.png");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             // Container child Client.Forms.Preferences.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();
@@ -337,7 +337,7 @@ namespace Client.Forms
             this.entry1.CanFocus = true;
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
-            this.entry1.InvisibleChar = '•';
+            this.entry1.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry1);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1[this.entry1]));
             w7.LeftAttach = ((uint)(1));
@@ -350,7 +350,7 @@ namespace Client.Forms
             this.entry2.CanFocus = true;
             this.entry2.Name = "entry2";
             this.entry2.IsEditable = true;
-            this.entry2.InvisibleChar = '•';
+            this.entry2.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry2);
             global::Gtk.Table.TableChild w8 = ((global::Gtk.Table.TableChild)(this.table1[this.entry2]));
             w8.TopAttach = ((uint)(1));
@@ -365,7 +365,7 @@ namespace Client.Forms
             this.entry3.CanFocus = true;
             this.entry3.Name = "entry3";
             this.entry3.IsEditable = true;
-            this.entry3.InvisibleChar = '•';
+            this.entry3.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry3);
             global::Gtk.Table.TableChild w9 = ((global::Gtk.Table.TableChild)(this.table1[this.entry3]));
             w9.TopAttach = ((uint)(2));
@@ -380,7 +380,7 @@ namespace Client.Forms
             this.entry4.CanFocus = true;
             this.entry4.Name = "entry4";
             this.entry4.IsEditable = true;
-            this.entry4.InvisibleChar = '•';
+            this.entry4.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry4);
             global::Gtk.Table.TableChild w10 = ((global::Gtk.Table.TableChild)(this.table1[this.entry4]));
             w10.TopAttach = ((uint)(3));
@@ -395,7 +395,7 @@ namespace Client.Forms
             this.entry5.CanFocus = true;
             this.entry5.Name = "entry5";
             this.entry5.IsEditable = true;
-            this.entry5.InvisibleChar = '•';
+            this.entry5.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry5);
             global::Gtk.Table.TableChild w11 = ((global::Gtk.Table.TableChild)(this.table1[this.entry5]));
             w11.TopAttach = ((uint)(4));
@@ -797,7 +797,7 @@ namespace Client.Forms
             this.lentry1.CanFocus = true;
             this.lentry1.Name = "entry1";
             this.lentry1.IsEditable = true;
-            this.lentry1.InvisibleChar = '●';
+            this.lentry1.InvisibleChar = '\u25CF';
             this.ltable2.Add(this.lentry1);
             global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lentry1]));
             w4.TopAttach = ((uint)(1));
@@ -810,7 +810,7 @@ namespace Client.Forms
             this.lentry2.CanFocus = true;
             this.lentry2.Name = "entry2";
             this.lentry2.IsEditable = true;
-            this.lentry2.InvisibleChar = '●';
+            this.lentry2.InvisibleChar = '\u25CF';
             this.ltable2.Add(this.lentry2);
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.ltable2[this.lentry2]));
             w5.LeftAttach = ((uint)(1));

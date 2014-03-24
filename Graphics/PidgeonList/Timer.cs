@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     public partial class PidgeonList : Gtk.Bin
     {
@@ -93,12 +93,11 @@ namespace Client.Graphics
                 }
 
                 Updated = false;
-
                 tv.ColumnsAutosize();
 
                 lock (queueDcc)
                 {
-                    foreach (ProtocolDCC dcc in queueDcc)
+                    foreach (Protocols.ProtocolDCC dcc in queueDcc)
                     {
                         insertDcc(dcc);
                     }
@@ -127,7 +126,7 @@ namespace Client.Graphics
 
                 lock (queueQs)
                 {
-                    foreach (ProtocolQuassel item in queueQs)
+                    foreach (Protocols.ProtocolQuassel item in queueQs)
                     {
                         insertQuassel(item);
                     }
@@ -137,7 +136,7 @@ namespace Client.Graphics
                 // we sort out all services that are waiting to be inserted to list
                 lock (queueProtocol)
                 {
-                    foreach (ProtocolSv item in queueProtocol)
+                    foreach (Protocols.Services.ProtocolSv item in queueProtocol)
                     {
                         insertService(item);
                     }
@@ -151,9 +150,9 @@ namespace Client.Graphics
                     {
                         if (chan.Key.dispose)
                         {
-                            if (chan.Key._Network.Channels.Contains(chan.Key))
+                            if (chan.Key._Network.Channels.ContainsKey(chan.Key.lName))
                             {
-                                chan.Key._Network.Channels.Remove(chan.Key);
+                                chan.Key._Network.Channels.Remove(chan.Key.lName);
                             }
                             Graphics.Window window = chan.Key.RetrieveWindow();
                             if (window != null)
