@@ -114,7 +114,7 @@ namespace Pidgeon.Forms
             {
                 this.Child.ShowAll();
             }
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.DefaultWidth = 680;
             this.DefaultHeight = 480;
             this.Show();

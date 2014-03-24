@@ -118,7 +118,7 @@ namespace Pidgeon.Forms
             global::Stetic.Gui.Initialize(this);
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.Title = "Shortcut";
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox

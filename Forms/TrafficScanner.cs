@@ -44,7 +44,7 @@ namespace Pidgeon.Forms
                 this.textview2.PopulatePopup += new PopulatePopupHandler(CreateMenu_simple);
                 this.timer = new GLib.TimeoutHandler(Tick);
                 GLib.Timeout.Add (1000, timer);
-                this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+                this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
                 this.DeleteEvent += new DeleteEventHandler(Unshow);
                 textview2.Buffer.Text = "";
                 LoadStyle();

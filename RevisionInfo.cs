@@ -36,7 +36,7 @@ namespace Pidgeon
             {
                 using (var stream = Assembly.GetExecutingAssembly()
                                             .GetManifestResourceStream(
-                                            "Client" + "." + "version.txt"))
+                                            "Pidgeon" + "." + "version.txt"))
                 {
                     using (var reader = new StreamReader(stream))
                     {

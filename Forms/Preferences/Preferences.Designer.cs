@@ -242,7 +242,7 @@ namespace Pidgeon.Forms
             // Widget Client.Forms.Preferences
             this.Name = "Client.Forms.Preferences";
             this.Title = messages.Localize("[[preferences-title]]");
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.Pigeon_clip_art_hight.png");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.Pigeon_clip_art_hight.png");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             // Container child Client.Forms.Preferences.Gtk.Container+ContainerChild
             this.vbox1 = new global::Gtk.VBox();

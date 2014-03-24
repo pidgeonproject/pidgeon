@@ -38,7 +38,7 @@ namespace Pidgeon.Forms
         {
             global::Stetic.Gui.Initialize(this);
             // Widget MainWindow
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.Name = "MainWindow";
             if (ListenerMode)
             {

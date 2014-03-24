@@ -277,7 +277,7 @@ namespace Pidgeon.Forms
             this.notebook1.SetTabLabel(this.GtkScrolledWindow4, this.label4);
             this.label4.ShowAll();
             this.WindowPosition = WindowPosition.Center;
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.Add(this.notebook1);
             if ((this.Child != null))
             {

@@ -126,7 +126,7 @@ namespace Pidgeon.Forms
                 Core.SetMain(this);
                 if (Configuration.UserData.TrayIcon)
                 {
-                    icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico"));
+                    icon = new StatusIcon(global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico"));
                     icon.Visible = true;
                     icon.PopupMenu += new PopupMenuHandler(TrayMenu);
                 }

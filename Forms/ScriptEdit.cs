@@ -64,7 +64,7 @@ namespace Pidgeon.Forms
             this.button1.Clicked += new EventHandler(button1_Click);
             messages.Localize(this);
             this.button2.Clicked += new EventHandler(button2_Click);
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
         }
 
 #if DEBUG

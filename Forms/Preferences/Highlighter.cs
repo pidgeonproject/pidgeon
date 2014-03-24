@@ -79,7 +79,7 @@ namespace Pidgeon.Forms
             // Widget blah.Ignore
             this.Name = "blah.Ignore";
             this.Title = messages.Localize("[[preferences-highlighter-add]]");
-            this.Icon = Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = Gtk.WindowPosition.Center;
             // Internal child blah.Ignore.VBox
             global::Gtk.VBox w1 = this.VBox;

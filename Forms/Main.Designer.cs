@@ -213,7 +213,7 @@ namespace Pidgeon.Forms
             this.menubar2.Add(this.HelpAction);
             this.Name = "Client.Forms.Main";
             this.Title = "Pidgeon Client";
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = ((global::Gtk.WindowPosition)(4));
             // Container child Client.Forms.Main.Gtk.Container+ContainerChild
             this.vbox3 = new global::Gtk.VBox();

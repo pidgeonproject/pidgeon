@@ -38,7 +38,7 @@ namespace Pidgeon.Forms
             global::Stetic.Gui.Initialize(this);
             this.Name = "Client.Forms.MicroChat";
             this.Title = "Micro chat";
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = Gtk.WindowPosition.Center;
             vbox = new VBox();
             scrollback_mc = new Scrollback();

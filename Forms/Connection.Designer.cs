@@ -49,7 +49,7 @@ namespace Pidgeon.Forms
             // Widget Client.Forms.Connection
             this.Name = "Client.Forms.Connection";
             this.Title = messages.Localize("[[newconnection-title]]");
-            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.pigeon_clip_art_hight.ico");
+            this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = ((global::Gtk.WindowPosition)(1));
             this.AllowGrow = false;
             // Container child Client.Forms.Connection.Gtk.Container+ContainerChild
@@ -248,7 +248,7 @@ namespace Pidgeon.Forms
             // Container child vbox2.Gtk.Box+BoxChild
             this.image1 = new global::Gtk.Image();
             this.image1.Name = "image1";
-            this.image1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Client.Resources.darknetwork.png");
+            this.image1.Pixbuf = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.darknetwork.png");
             this.vbox2.Add(this.image1);
             global::Gtk.Box.BoxChild w16 = ((global::Gtk.Box.BoxChild)(this.vbox2[this.image1]));
             w16.Position = 0;

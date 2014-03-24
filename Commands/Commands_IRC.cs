@@ -27,7 +27,7 @@ namespace Pidgeon
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    string channel = parameter;
+                    string channel = parameter; 
                     if (Core.SelectedNetwork == null)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
