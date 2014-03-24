@@ -78,7 +78,7 @@ namespace Pidgeon.Forms
             this.fixed1.Add(this.image2);
             global::Gtk.Fixed.FixedChild w4 = ((global::Gtk.Fixed.FixedChild)(this.fixed1[this.image2]));
             w4.X = 342;
-            w4.Y = 47;
+            w4.Y = 8;
             // Container child fixed1.Gtk.Fixed+FixedChild
             this.label1 = new global::Gtk.Label();
             this.label1.Name = "label1";
