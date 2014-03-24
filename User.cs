@@ -46,10 +46,17 @@ namespace Pidgeon
         /// Status
         /// </summary>
         public ChannelStatus Status = ChannelStatus.Regular;
+        private string nick = null;
         /// <summary>
         /// Nick
         /// </summary>
-        public string Nick = null;
+        public string Nick
+        {
+            get
+            {
+                return nick;
+            }
+        }
         /// <summary>
         /// Name
         /// </summary>
@@ -187,7 +194,7 @@ namespace Pidgeon
                 }
                 lock (_Network.Channels)
                 {
-                    foreach (Channel xx in _Network.Channels)
+                    foreach (Channel xx in _Network.Channels.Values)
                     {
                         if (xx.ContainsUser(Nick))
                         {
@@ -238,6 +245,15 @@ namespace Pidgeon
                 }
                 return "";
             }
+        }
+
+        /// <summary>
+        /// Sets the nick.
+        /// </summary>
+        /// <param name="name">Name.</param>
+        public void SetNick(string name)
+        {
+            this.nick = name;
         }
 
         /// <summary>
@@ -351,9 +367,9 @@ namespace Pidgeon
                     nick = nick.Substring(1);
                 }
             }
-            Nick = nick;
-            Ident = ident;
-            Host = host;
+            this.nick = nick;
+            this.Ident = ident;
+            this.Host = host;
         }
 
         /// <summary>

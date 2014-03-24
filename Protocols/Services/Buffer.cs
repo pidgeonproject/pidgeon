@@ -717,7 +717,7 @@ namespace Pidgeon.Protocols.Services
                             networkInfo[uid].UChars = network.UChars;
                             lock (network.Channels)
                             {
-                                foreach (Channel xx in network.Channels)
+                                foreach (Channel xx in network.Channels.Values)
                                 {
                                     Graphics.Window window = xx.RetrieveWindow();
                                     if (window != null)

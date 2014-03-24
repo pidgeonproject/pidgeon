@@ -158,7 +158,7 @@ namespace Pidgeon
                         if (text2.StartsWith(Core.SystemForm.Chat._Network.ChannelPrefix))
                         {
                             List<string> Channels = new List<string>();
-                            foreach (Channel n in Core.SystemForm.Chat._Network.Channels)
+                            foreach (Channel n in Core.SystemForm.Chat._Network.Channels.Values)
                             {
                                 Channels.Add(n.Name);
                             }
@@ -231,7 +231,7 @@ namespace Pidgeon
                 if (Core.SelectedNetwork.RenderedChannel == null) { return; }
                 lock (Core.SelectedNetwork.RenderedChannel.UserList)
                 {
-                    foreach (var item in Core.SelectedNetwork.RenderedChannel.UserList)
+                    foreach (User item in Core.SelectedNetwork.RenderedChannel.UserList.Values)
                     {
                         if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                         {

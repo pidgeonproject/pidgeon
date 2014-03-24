@@ -577,7 +577,9 @@ namespace Pidgeon
                 {
                     foreach (TextPart curr in UndrawnTextParts)
                     {
+                        #pragma warning disable
                         InsertPart(curr.text, curr.style, false, curr.date.ToBinary());
+                        #pragma warning enable
                     }
                     UndrawnTextParts.Clear();
                 }

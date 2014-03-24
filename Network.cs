@@ -169,7 +169,7 @@ namespace Pidgeon
         /// <summary>
         /// List of all channels on network
         /// </summary>
-        public List<Channel> Channels = new List<Channel>();
+        public Dictionary<string, Channel> Channels = new Dictionary<string, Channel>();
         /// <summary>
         /// Currently rendered channel on main window
         /// </summary>
@@ -396,7 +396,7 @@ namespace Pidgeon
             Connected = false;
             lock (Channels)
             {
-                foreach (Channel xx in Channels)
+                foreach (Channel xx in Channels.Values)
                 {
                     // we need to change the icon to gray in side list
                     Graphics.Window cw = xx.RetrieveWindow();
@@ -517,14 +517,15 @@ namespace Pidgeon
         /// <returns>Channel or null if it doesn't exist</returns>
         public Channel GetChannel(string name)
         {
-            foreach (Channel chan in Channels)
+            lock (this.Channels)
             {
-                if (chan.Name == name)
+                Channel channel = null;
+                if (this.Channels.TryGetValue(name.ToLower(), out channel))
                 {
-                    return chan;
+                    return channel;
                 }
+                return null;
             }
-            return null;
         }
 
         [Obsolete("Replaced with GetChannel")]
@@ -596,7 +597,8 @@ namespace Pidgeon
                 Channel _channel = new Channel(this);
                 RenderedChannel = _channel;
                 _channel.Name = channel;
-                Channels.Add(_channel);
+                _channel.lName = channel.ToLower();
+                Channels.Add(_channel.lName, _channel);
                 Core.SystemForm.ChannelList.InsertChannel(_channel);
                 Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
                 window.IsChannel = true;
@@ -683,7 +685,7 @@ namespace Pidgeon
 
             lock (Channels)
             {
-                foreach (Channel xx in Channels)
+                foreach (Channel xx in Channels.Values)
                 {
                     xx.Destroy();
                 }

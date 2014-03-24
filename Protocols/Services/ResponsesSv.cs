@@ -222,12 +222,15 @@ namespace Pidgeon.Protocols.Services
                             // get all holes we are missing from backlog
                             protocol.sBuffer.retrieveData(name);
                         }
-                        foreach (Channel i in server.Channels)
+                        lock (server.Channels)
                         {
-                            i.TemporarilyHidden = false;
-                            i.IsParsingExceptionData = false;
-                            i.IsParsingBanData = false;
-                            i.IsParsingWhoData = false;
+                            foreach (Channel i in server.Channels.Values)
+                            {
+                                i.TemporarilyHidden = false;
+                                i.IsParsingExceptionData = false;
+                                i.IsParsingBanData = false;
+                                i.IsParsingWhoData = false;
+                            }
                         }
                     }
                     processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
@@ -322,11 +325,14 @@ namespace Pidgeon.Protocols.Services
                 if (server != null)
                 {
                     protocol.cache[protocol.NetworkList.IndexOf(server)].size = int.Parse(curr.InnerText);
-                    foreach (Channel i in server.Channels)
+                    lock (server.Channels)
                     {
-                        i.IsParsingWhoData = true;
-                        i.IsParsingBanData = true;
-                        i.TemporarilyHidden = true;
+                        foreach (Channel i in server.Channels.Values)
+                        {
+                            i.IsParsingWhoData = true;
+                            i.IsParsingBanData = true;
+                            i.TemporarilyHidden = true;
+                        }
                     }
                 }
             }
@@ -699,7 +705,7 @@ namespace Pidgeon.Protocols.Services
                                                 f2.ChannelMode.ChangeMode(user.Substring(user.IndexOf("+", StringComparison.Ordinal)));
                                                 f2.ResetMode();
                                             }
-                                            channel.UserList.Add(f2);
+                                            channel.UserList.Add(f2.Nick.ToLower(), f2);
                                         }
                                     }
                                 }

@@ -33,6 +33,11 @@ namespace Pidgeon
         /// </summary>
         public string Name = null;
         /// <summary>
+        /// Lower case of this channel that is used frequently, we cache it here so that we
+        /// don't need to use expensive string functions to make it so often
+        /// </summary>
+        public string lName = null;
+        /// <summary>
         /// Network the channel belongs to
         /// </summary>
         [NonSerialized]
@@ -41,7 +46,7 @@ namespace Pidgeon
         /// List of all users in current channel
         /// </summary>
         [NonSerialized]
-        public List<User> UserList = new List<User>();
+        public Dictionary<string, User> UserList = new Dictionary<string, User>();
         /// <summary>
         /// Topic, if it's unknown this variable is null
         /// </summary>
@@ -408,7 +413,7 @@ namespace Pidgeon
                     }
                     lock (UserList)
                     {
-                        foreach (User nick in UserList)
+                        foreach (User nick in UserList.Values)
                         {
                             Inserted = false;
                             if (nick.ChannelMode._Mode.Count > 0)
@@ -648,6 +653,18 @@ namespace Pidgeon
             return UserFromName(name);
         }
 
+        public void RemoveUser(User user)
+        {
+            lock (this.UserList)
+            {
+                string name = user.Nick.ToLower ();
+                if (this.UserList.ContainsKey (name))
+                {
+                    this.UserList.Remove (name);
+                }
+            }
+        }
+
         public User GetSelf()
         {
             if (this._Network != null)
@@ -668,14 +685,9 @@ namespace Pidgeon
             {
                 throw new Core.PidgeonException("User name can't be null");
             }
-            foreach (User item in UserList)
-            {
-                if (name.ToLower(System.Globalization.CultureInfo.CurrentUICulture) == item.Nick.ToLower(System.Globalization.CultureInfo.CurrentUICulture))
-                {
-                    return item;
-                }
-            }
-            return null;
+            User user = null;
+            this.UserList.TryGetValue (name.ToLower (System.Globalization.CultureInfo.CurrentUICulture), out user);
+            return user;
         }
 
         /// <summary>

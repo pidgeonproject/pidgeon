@@ -97,29 +97,27 @@ namespace Pidgeon
                             _user.Away = IsAway;
                             lock (channel.UserList)
                             {
-                                channel.UserList.Add(_user);
+                                channel.UserList.Add(_user.Nick.ToLower(), _user);
                             }
                             return true;
                         }
+                        User user = null;
                         lock (channel.UserList)
                         {
-                            foreach (User u in channel.UserList)
+                            channel.UserList.TryGetValue(nick.ToLower(), out user);
+                        }
+                        if (user != null)
+                        {
+                            user.Ident = ident;
+                            user.Host = host;
+                            user.Server = server;
+                            user.RealName = realname;
+                            user.LastAwayCheck = DateTime.Now;
+                            if (!user.Away && IsAway)
                             {
-                                if (u.Nick == nick)
-                                {
-                                    u.Ident = ident;
-                                    u.Host = host;
-                                    u.Server = server;
-                                    u.RealName = realname;
-                                    u.LastAwayCheck = DateTime.Now;
-                                    if (!u.Away && IsAway)
-                                    {
-                                        u.AwayTime = DateTime.Now;
-                                    }
-                                    u.Away = IsAway;
-                                    break;
-                                }
+                                user.AwayTime = DateTime.Now;
                             }
+                            user.Away = IsAway;
                         }
                     }
                     if (Configuration.Kernel.HidingParsed && channel.IsParsingWhoData)
@@ -164,7 +162,7 @@ namespace Pidgeon
                                 User _u = channel.UserFromName(_user);
                                 if (_u == null && !string.IsNullOrEmpty(_user))
                                 {
-                                    channel.UserList.Add(new User(user, "", _Network, ""));
+                                    channel.UserList.Add(user.ToLower(), new User(user, "", _Network, ""));
                                 }
                                 else
                                 {
@@ -279,18 +277,21 @@ namespace Pidgeon
                         Pidgeon.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
 
-                    if (updated_text && channel.ContainsUser(user))
+                    lock (channel.UserList)
                     {
-                        User delete = null;
-                        delete = channel.UserFromName(user);
-                        if (delete != null)
+                        if (updated_text && channel.ContainsUser(user))
                         {
-                            channel.UserList.Remove(delete);
-                        }
-                        if (delete.IsPidgeon)
-                        {
-                            channel.ChannelWork = false;
-                            window.NeedsIcon = true;
+                            User delete = null;
+                            delete = channel.UserFromName(user);
+                            if (delete != null)
+                            {
+                                channel.UserList.Remove(user.ToLower());
+                            }
+                            if (delete.IsPidgeon)
+                            {
+                                channel.ChannelWork = false;
+                                window.NeedsIcon = true;
+                            }
                         }
                     }
                     channel.RedrawUsers();
@@ -334,7 +335,7 @@ namespace Pidgeon
                         {
                             if (!channel.ContainsUser(user))
                             {
-                                channel.UserList.Add(new User(user, _host, _Network, _ident));
+                                channel.UserList.Add(user.ToLower(), new User(user, _host, _Network, _ident));
                             }
                         }
                         channel.RedrawUsers();
@@ -415,21 +416,11 @@ namespace Pidgeon
                     {
                         if (channel.ContainsUser(user))
                         {
-                            lock (channel.UserList)
-                            {
-                                foreach (User _user in channel.UserList)
-                                {
-                                    if (_user.Nick == user)
-                                    {
-                                        delete = _user;
-                                        break;
-                                    }
-                                }
-                            }
+                            delete = channel.UserFromName(user);
 
                             if (delete != null)
                             {
-                                channel.UserList.Remove(delete);
+                                channel.UserList.Remove(user.ToLower());
                             }
                             channel.RedrawUsers();
                             channel.UpdateInfo();
@@ -487,28 +478,31 @@ namespace Pidgeon
                     _new = _new.Substring(0, _new.IndexOf(" ", StringComparison.Ordinal));
                 }
             }
-            foreach (Channel item in _Network.Channels)
+            lock (_Network.Channels.Values)
             {
-                if (item.ChannelWork)
+                foreach (Channel channel in _Network.Channels.Values)
                 {
-                    lock (item.UserList)
+                    if (channel.ChannelWork)
                     {
-                        foreach (User curr in item.UserList)
+                        User user = channel.UserFromName (nick);
+                        if (user != null)
                         {
-                            if (curr.Nick == nick)
+                            if (updated_text)
                             {
-                                if (updated_text)
+                                channel.RemoveUser(user);
+                                user.SetNick(_new);
+                                lock (channel.UserList)
                                 {
-                                    curr.Nick = _new;
-                                    item.RedrawUsers();
+                                    channel.UserList.Add(_new.ToLower (), user);
                                 }
-                                Graphics.Window window = item.RetrieveWindow();
-                                if (window != null)
-                                {
-                                    WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
-                                        new List<string> { nick, _new }), Pidgeon.ContentLine.MessageStyle.Channel,
-                                        !item.TemporarilyHidden, date, !updated_text);
-                                }
+                                channel.RedrawUsers ();
+                            }
+                            Graphics.Window window = channel.RetrieveWindow ();
+                            if (window != null)
+                            {
+                                WindowText (window, messages.get ("protocol-nick", Core.SelectedLanguage,
+                                            new List<string> { nick, _new }), Pidgeon.ContentLine.MessageStyle.Channel,
+                                            !channel.TemporarilyHidden, date, !updated_text);
                             }
                         }
                     }

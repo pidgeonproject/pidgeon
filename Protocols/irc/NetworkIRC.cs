@@ -521,7 +521,7 @@ namespace Pidgeon
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            foreach (Channel item in _Network.Channels)
+            foreach (Channel item in _Network.Channels.Values)
             {
                 if (item.ChannelWork)
                 {
@@ -543,7 +543,7 @@ namespace Pidgeon
                         {
                             lock (item.UserList)
                             {
-                                item.UserList.Remove(target);
+                                item.RemoveUser(target);
                             }
                             item.UpdateInfo();
                             item.RedrawUsers();

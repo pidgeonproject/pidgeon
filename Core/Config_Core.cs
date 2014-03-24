@@ -29,7 +29,8 @@ namespace Pidgeon
     public static partial class Core
     {
         /// <summary>
-        /// This is controlling the system configuration
+        /// This is controlling the system configuration, basically this class is used
+        /// to save and load the configuration files
         /// </summary>
         public static class _Configuration
         {

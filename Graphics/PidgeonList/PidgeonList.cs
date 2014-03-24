@@ -986,9 +986,9 @@ namespace Pidgeon.Graphics
 
                     lock (channel._Network.Channels)
                     {
-                        if (channel._Network.Channels.Contains(channel))
+                        if (channel._Network.Channels.ContainsKey(channel.lName))
                         {
-                            channel._Network.Channels.Remove(channel);
+                            channel._Network.Channels.Remove(channel.lName);
                         }
                     }
 

@@ -150,9 +150,9 @@ namespace Pidgeon.Graphics
                     {
                         if (chan.Key.dispose)
                         {
-                            if (chan.Key._Network.Channels.Contains(chan.Key))
+                            if (chan.Key._Network.Channels.ContainsKey(chan.Key.lName))
                             {
-                                chan.Key._Network.Channels.Remove(chan.Key);
+                                chan.Key._Network.Channels.Remove(chan.Key.lName);
                             }
                             Graphics.Window window = chan.Key.RetrieveWindow();
                             if (window != null)

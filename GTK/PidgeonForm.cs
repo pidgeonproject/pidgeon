@@ -219,6 +219,7 @@ namespace Pidgeon.PidgeonGtkToolkit
         {
             try
             {
+                #pragma warning disable
                 if (Configuration.Window.RememberPosition)
                 {
                     if (ID == null)
@@ -236,6 +237,7 @@ namespace Pidgeon.PidgeonGtkToolkit
                     info.Width = this.Width;
                     info.Height = this.Height;
                 }
+                #pragma warning enable
             }
             catch (Exception fail)
             {
