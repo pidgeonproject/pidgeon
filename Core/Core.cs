@@ -1492,12 +1492,12 @@ namespace Pidgeon
             try
             {
                 Core.DebugLog("User requested a shut down");
-                if (CoreState == State.Quiting)
+                if (CoreState == State.Terminating)
                 {
                     Core.DebugLog("Multiple calls of Core.Quit() ignored");
                     return false;
                 }
-                CoreState = State.Quiting;
+                CoreState = State.Terminating;
                 if (!IgnoreErrors)
                 {
                     IgnoreErrors = true;
@@ -1615,7 +1615,7 @@ namespace Pidgeon
             /// <summary>
             /// Terminating
             /// </summary>
-            Quiting,
+            Terminating,
             /// <summary>
             /// Loading
             /// </summary>

@@ -29,7 +29,7 @@ namespace Pidgeon
             System.Diagnostics.Debug.Print(data);
             if (Configuration.Kernel.Debugging)
             {
-                if (Core.SystemForm != null && !Core.IsBlocked)
+                if (Core.CoreState != Core.State.Terminating && Core.SystemForm != null && !Core.IsBlocked)
                 {
                     if (Core.SystemForm.main != null)
                     {
