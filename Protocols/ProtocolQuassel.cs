@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Pidgeon
+namespace Pidgeon.Protocols
 {
     /// <summary>
     /// Quassel parser

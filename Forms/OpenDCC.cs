@@ -39,7 +39,7 @@ namespace Pidgeon.Forms
         private string username = null;
         private Network network;
         private bool SSL;
-        private ProtocolDCC.DCC type = ProtocolDCC.DCC.Chat;
+        private Protocols.ProtocolDCC.DCC type = Protocols.ProtocolDCC.DCC.Chat;
 
         private void _click(object sender, EventArgs e)
         {
@@ -84,7 +84,7 @@ namespace Pidgeon.Forms
             SSL = secure;
             if (SSL)
             {
-                type = ProtocolDCC.DCC.SecureChat;
+                type = Protocols.ProtocolDCC.DCC.SecureChat;
             }
             ListenerMode = Listener;
             Build();

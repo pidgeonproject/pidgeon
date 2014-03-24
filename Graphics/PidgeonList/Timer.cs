@@ -93,12 +93,11 @@ namespace Pidgeon.Graphics
                 }
 
                 Updated = false;
-
                 tv.ColumnsAutosize();
 
                 lock (queueDcc)
                 {
-                    foreach (ProtocolDCC dcc in queueDcc)
+                    foreach (Protocols.ProtocolDCC dcc in queueDcc)
                     {
                         insertDcc(dcc);
                     }
@@ -127,7 +126,7 @@ namespace Pidgeon.Graphics
 
                 lock (queueQs)
                 {
-                    foreach (ProtocolQuassel item in queueQs)
+                    foreach (Protocols.ProtocolQuassel item in queueQs)
                     {
                         insertQuassel(item);
                     }

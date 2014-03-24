@@ -32,7 +32,7 @@ namespace Pidgeon
         /// <returns>false</returns>
         public static bool ConnectXmpp(string server, int port, string password, bool secured = false)
         {
-            ProtocolXmpp IM = new ProtocolXmpp();
+            Protocols.ProtocolXmpp IM = new Protocols.ProtocolXmpp();
             IM.Open();
             return false;
         }
@@ -49,17 +49,17 @@ namespace Pidgeon
         /// <param name="Listening">Whether DCC should be listening or connect to remote</param>
         /// <param name="UserName">User name of user you connect to</param>
         /// <returns>false</returns>
-        public static bool ConnectDcc(string server, int port, string password, ProtocolDCC.DCC dcc, bool Listening, string UserName, bool secured = false, string remote = null)
+        public static bool ConnectDcc(string server, int port, string password, Protocols.ProtocolDCC.DCC dcc, bool Listening, string UserName, bool secured = false, string remote = null)
         {
-            ProtocolDCC DC = new ProtocolDCC();
+            Protocols.ProtocolDCC DC = new Protocols.ProtocolDCC();
             DC.Server = server;
             DC.Port = port;
             DC.SSL = secured;
             DC.ListenerMode = Listening;
             DC.Dcc = dcc;
-            if (dcc == ProtocolDCC.DCC.Chat && secured)
+            if (dcc == Protocols.ProtocolDCC.DCC.Chat && secured)
             {
-                DC.Dcc = ProtocolDCC.DCC.SecureChat;
+                DC.Dcc = Protocols.ProtocolDCC.DCC.SecureChat;
             }
             DC.UserName = UserName;
             DC.Open();
@@ -77,7 +77,7 @@ namespace Pidgeon
         /// <returns>false</returns>
         public static bool ConnectQl(string server, int port, string password = "xx", bool secured = false)
         {
-            ProtocolQuassel _quassel = new ProtocolQuassel();
+            Protocols.ProtocolQuassel _quassel = new Protocols.ProtocolQuassel();
             _quassel.Port = port;
             _quassel.Password = password;
             _quassel.Server = server;
