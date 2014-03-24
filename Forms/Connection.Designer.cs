@@ -80,6 +80,7 @@ namespace Pidgeon.Forms
             this.combobox1 = global::Gtk.ComboBox.NewText();
             this.combobox1.WidthRequest = 580;
             this.combobox1.Name = "combobox1";
+            this.combobox1.Changed += new EventHandler(Change);
             this.table1.Add(this.combobox1);
             global::Gtk.Table.TableChild w2 = ((global::Gtk.Table.TableChild)(this.table1[this.combobox1]));
             w2.TopAttach = ((uint)(6));
