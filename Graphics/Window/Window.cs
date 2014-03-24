@@ -567,7 +567,7 @@ namespace Client.Graphics
             {
                 if (_Network != null)
                 {
-                    Channel chan = _Network.getChannel(WindowName);
+                    Channel chan = _Network.GetChannel(WindowName);
                     if (chan != null)
                     {
                         channel = chan;

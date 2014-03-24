@@ -209,8 +209,6 @@ namespace Client
             }
         }
 
-        
-
         /// <summary>
         /// This hook is part of contructor, you can override this with constructor of extension
         /// </summary>
@@ -241,6 +239,11 @@ namespace Client
             {
                 Core.HandleException(f);
             }
+        }
+
+        public void DebugLog(string message)
+        {
+            Core.DebugLog("Extension " + this.Name + ": " + message);
         }
 
         /// <summary>

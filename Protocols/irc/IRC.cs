@@ -90,7 +90,7 @@ namespace Client
                         {
                             channel = _value;
                         }
-                        Channel curr = _Network.getChannel(channel);
+                        Channel curr = _Network.GetChannel(channel);
                         if (curr == null)
                         {
                             curr = _Network.Channel(channel, !Configuration.UserData.SwitchWindowOnJoin);
@@ -164,7 +164,7 @@ namespace Client
                         if (_data2[2].Contains(_Network.channel_prefix))
                         {
                             channel = _data2[2];
-                            Channel c = _Network.getChannel(channel);
+                            Channel c = _Network.GetChannel(channel);
                             if (c != null)
                             {
                                 Graphics.Window Chat = c.RetrieveWindow();
@@ -418,7 +418,7 @@ namespace Client
                         case "NOTICE":
                             if (parameters.Contains(_Network.channel_prefix))
                             {
-                                Channel channel = _Network.getChannel(parameters);
+                                Channel channel = _Network.GetChannel(parameters);
                                 if (channel != null)
                                 {
                                     Graphics.Window window;

@@ -523,12 +523,11 @@ namespace Client
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
-        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.")]
+        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.80")]
         public void redrawUsers()
         {
             RedrawUsers();
         }
-
 
         /// <summary>
         /// Destroy this class, be careful, it can't be used in any way after you
@@ -647,6 +646,15 @@ namespace Client
         public User userFromName(string name)
         {
             return UserFromName(name);
+        }
+
+        public User GetSelf()
+        {
+            if (this._Network != null)
+            {
+                return this.UserFromName(this._Network.Nickname);
+            }
+            return null;
         }
 
         /// <summary>

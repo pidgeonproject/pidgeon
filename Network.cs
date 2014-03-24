@@ -523,7 +523,7 @@ namespace Client
         /// </summary>
         /// <param name="name">String</param>
         /// <returns>Channel or null if it doesn't exist</returns>
-        public Channel getChannel(string name)
+        public Channel GetChannel(string name)
         {
             foreach (Channel chan in Channels)
             {
@@ -533,6 +533,12 @@ namespace Client
                 }
             }
             return null;
+        }
+
+        [Obsolete("Replaced with GetChannel")]
+        public Channel getChannel(string name)
+        {
+            return GetChannel(name);
         }
 
         /// <summary>
@@ -592,7 +598,7 @@ namespace Client
         /// <returns>Instance of channel object</returns>
         public Channel Channel(string channel, bool nf = false)
         {
-            Channel previous = getChannel(channel);
+            Channel previous = GetChannel(channel);
             if (previous == null)
             {
                 Channel _channel = new Channel(this);

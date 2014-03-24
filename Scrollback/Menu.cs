@@ -352,7 +352,7 @@ namespace Client
                 {
                     if (this.owner != null && this.owner.isChannel)
                     {
-                        Channel channel = owner._Network.getChannel(owner.WindowName);
+                        Channel channel = owner._Network.GetChannel(owner.WindowName);
                         if (channel != null)
                         {
                             User user = channel.UserFromName(adds);

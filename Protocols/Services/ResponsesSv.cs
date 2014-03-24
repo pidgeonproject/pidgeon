@@ -51,7 +51,7 @@ namespace Client
                 {
                     if (message_target.StartsWith(mn.channel_prefix, StringComparison.Ordinal))
                     {
-                        Channel target = mn.getChannel(message_target);
+                        Channel target = mn.GetChannel(message_target);
                         if (target != null)
                         {
                             message_window = target.RetrieveWindow();
@@ -571,7 +571,7 @@ namespace Client
                                 {
                                     if (!string.IsNullOrEmpty(channel))
                                     {
-                                        if (nw.getChannel(channel) == null)
+                                        if (nw.GetChannel(channel) == null)
                                         {
                                             Channel xx = nw.Channel(channel, !Configuration.UserData.SwitchWindowOnJoin);
                                             if (Configuration.Services.UsingCache)
@@ -650,7 +650,7 @@ namespace Client
                                 Core.SystemForm.Status(protocol.getInfo());
                             }
                         }
-                        Channel channel = nw.getChannel(curr.Attributes[1].Value);
+                        Channel channel = nw.GetChannel(curr.Attributes[1].Value);
 
                         if (channel != null)
                         {
@@ -742,7 +742,7 @@ namespace Client
                     return;
                 }
 
-                Channel channel = nw.getChannel(userlist["channel"]);
+                Channel channel = nw.GetChannel(userlist["channel"]);
 
                 int UserCount = int.Parse(userlist["uc"]);
                 int CurrentUser = 0;

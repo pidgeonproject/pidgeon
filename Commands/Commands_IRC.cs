@@ -38,7 +38,7 @@ namespace Client
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Channel curr = Core.SelectedNetwork.getChannel(channel);
+                    Channel curr = Core.SelectedNetwork.GetChannel(channel);
                     if (curr != null)
                     {
                         Graphics.Window window = curr.RetrieveWindow();

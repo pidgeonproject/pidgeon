@@ -303,7 +303,7 @@ namespace Client
             Channel channel = null;
             if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
             {
-                channel = _Network.getChannel(chan);
+                channel = _Network.GetChannel(chan);
                 if (channel != null)
                 {
                     Graphics.Window window;

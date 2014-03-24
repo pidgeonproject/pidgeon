@@ -24,7 +24,7 @@ namespace Client
         {
             if (code.Length > 3)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     Graphics.Window curr = channel.RetrieveWindow();
@@ -45,7 +45,7 @@ namespace Client
         {
             if (code.Length > 8)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 string ident = code[4];
                 string host = code[5];
                 string nick = code[7];
@@ -140,7 +140,7 @@ namespace Client
                 {
                     return true;
                 }
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     string[] _chan = value.Split(' ');
@@ -194,7 +194,7 @@ namespace Client
                     name = parameters.Substring(parameters.IndexOf("#", StringComparison.Ordinal)).Replace(" ", "");
                 }
                 string topic = value;
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     Graphics.Window curr = channel.RetrieveWindow();
@@ -219,7 +219,7 @@ namespace Client
         {
             if (code.Length > 2)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     channel.RedrawUsers();
@@ -242,7 +242,7 @@ namespace Client
                 string name = code[3];
                 string user = code[4];
                 string time = code[5];
-                Channel channel = _Network.getChannel(name);
+                Channel channel = _Network.GetChannel(name);
                 if (channel != null)
                 {
                     channel.TopicDate = int.Parse(time);
@@ -265,7 +265,7 @@ namespace Client
             string user = parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal) + 1);
             // petan!pidgeon@petan.staff.tm-irc.org KICK #support HelpBot :Removed from the channel
             string chan = parameters.Substring(0, parameters.IndexOf(" ", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -315,7 +315,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -350,7 +350,7 @@ namespace Client
         {
             if (code.Length > 4)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     if (channel.IsParsingBanData)
@@ -367,7 +367,7 @@ namespace Client
         {
             if (code.Length > 6)
             {
-                Channel channel = _Network.getChannel(code[3]);
+                Channel channel = _Network.GetChannel(code[3]);
                 if (channel != null)
                 {
                     if (channel.Bans == null)
@@ -395,7 +395,7 @@ namespace Client
             _host = source.Substring(source.IndexOf("@", StringComparison.Ordinal) + 1);
             _ident = source.Substring(source.IndexOf("!", StringComparison.Ordinal) + 1);
             _ident = _ident.Substring(0, _ident.IndexOf("@", StringComparison.Ordinal));
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -447,7 +447,7 @@ namespace Client
         {
             string chan = parameters;
             chan = chan.Replace(" ", "");
-            Channel channel = _Network.getChannel(chan);
+            Channel channel = _Network.GetChannel(chan);
             if (channel != null)
             {
                 Graphics.Window window;
@@ -526,7 +526,7 @@ namespace Client
                 string user = source;
                 if (chan.StartsWith(_Network.channel_prefix, StringComparison.Ordinal))
                 {
-                    Channel channel = _Network.getChannel(chan);
+                    Channel channel = _Network.GetChannel(chan);
                     if (channel != null)
                     {
                         Graphics.Window window;

@@ -177,7 +177,7 @@ namespace Client
                     {
                         if (Core.SelectedNetwork != null)
                         {
-                            Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.getChannel(Current.WindowName);
+                            Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel(Current.WindowName);
                         }
                     }
                     Core.SystemForm.setChannel(name);
