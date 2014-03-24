@@ -21,12 +21,12 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Main
     /// </summary>
-    public partial class Main : Client.PidgeonGtkToolkit.PidgeonForm
+    public partial class Main : Pidgeon.PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Micro Chat
@@ -266,7 +266,7 @@ namespace Client.Forms
                 toolStripProgressBar1.Visible = false;
                 micro = new MicroChat();
                 ChannelList.Visible = true;
-                main = new Client.Graphics.Window();
+                main = new Pidgeon.Graphics.Window();
                 main.Events = ((global::Gdk.EventMask)(256));
                 main.HasUserList = false;
                 main.CreateChat(null);
@@ -280,13 +280,13 @@ namespace Client.Forms
                     Core.PrintRing(Chat, false);
                 }
 
-                Chat.scrollback.InsertText("Welcome to pidgeon client " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Client.ContentLine.MessageStyle.System, false, 0, true);
+                Chat.scrollback.InsertText("Welcome to pidgeon client " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
 
                 if (Core.Extensions.Count > 0)
                 {
                     foreach (Extension nn in Core.Extensions)
                     {
-                        Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Client.ContentLine.MessageStyle.System, false, 0, true);
+                        Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
                     }
                 }
                 done = true;

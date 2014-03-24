@@ -19,11 +19,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Client;
 
-namespace Client
+namespace Pidgeon
 {
-    class IgnoredText : Client.Extension
+    class IgnoredText : Extension
     {
         Graphics.Window collector = null;
         Gtk.MenuItem menu;

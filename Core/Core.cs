@@ -23,7 +23,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Basically most elementar stuff the application consist of and that doesn't belong to some other class
@@ -562,7 +562,7 @@ namespace Client
         /// </summary>
         /// <param name="text">Link to be parsed</param>
         /// <param name="services"></param>
-        public static void ParseLink(string text, ProtocolSv services = null)
+        public static void ParseLink(string text, Protocols.Services.ProtocolSv services = null)
         {
             DebugLog("Parsing " + text);
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
@@ -677,7 +677,7 @@ namespace Client
         /// </summary>
         private static void Recover()
         {
-            Client.Recovery recoveryWindow = new Client.Recovery();
+            Pidgeon.Recovery recoveryWindow = new Pidgeon.Recovery();
             System.Windows.Forms.Application.Run(recoveryWindow);
         }
 
@@ -812,7 +812,7 @@ namespace Client
                 {
                     if (Core.SystemForm.main != null)
                     {
-                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.main.scrollback.InsertText("DEBUG: " + data, Pidgeon.ContentLine.MessageStyle.System, false);
                     }
                 }
             }
@@ -872,7 +872,7 @@ namespace Client
             {
                 foreach (string item in Ring)
                 {
-                    window.scrollback.InsertText(item, Client.ContentLine.MessageStyle.System, write, 0, true);
+                    window.scrollback.InsertText(item, Pidgeon.ContentLine.MessageStyle.System, write, 0, true);
                 }
             }
         }
@@ -904,7 +904,7 @@ namespace Client
                     return false;
                 }
             }
-            SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Client.ContentLine.MessageStyle.System);
+            SystemForm.Chat.scrollback.InsertText(messages.get("invalid-command", SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
             return false;
         }
 

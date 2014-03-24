@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using Gtk;
 
-namespace Client
+namespace Pidgeon
 {
-    public class PidgeonTc : Client.Extension
+    public class PidgeonTc : Extension
     {
         public override void Initialise()
         {

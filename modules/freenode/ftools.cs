@@ -19,20 +19,19 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Client;
 
-namespace Client
+namespace Pidgeon
 {
-    class RestrictedModule : Client.Extension
+    class RestrictedModule : Extension
     {
         public override bool Hook_OnLoad()
         {
-            Client.Commands.RegisterCommand("kick", new Client.Commands.Command(Client.Commands.Type.Plugin, Kick));
-            Client.Commands.RegisterCommand("kq", new Client.Commands.Command(Client.Commands.Type.Plugin, Quiet));
-            Client.Commands.RegisterCommand("kb", new Client.Commands.Command(Client.Commands.Type.Plugin, Ban));
-            Client.Commands.RegisterCommand("op", new Client.Commands.Command(Client.Commands.Type.Plugin, Op));
-            Client.Commands.RegisterCommand("jhostban", new Client.Commands.Command(Client.Commands.Type.Plugin, JoinHostBan));
-            Client.Commands.RegisterCommand("jb", new Client.Commands.Command(Client.Commands.Type.Plugin, OpenBan));
+            Commands.RegisterCommand("kick", new Commands.Command(Commands.Type.Plugin, Kick));
+            Commands.RegisterCommand("kq", new Commands.Command(Commands.Type.Plugin, Quiet));
+            Commands.RegisterCommand("kb", new Commands.Command(Commands.Type.Plugin, Ban));
+            Commands.RegisterCommand("op", new Commands.Command(Commands.Type.Plugin, Op));
+            Commands.RegisterCommand("jhostban", new Commands.Command(Commands.Type.Plugin, JoinHostBan));
+            Commands.RegisterCommand("jb", new Commands.Command(Commands.Type.Plugin, OpenBan));
             return true;
         }
 

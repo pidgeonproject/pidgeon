@@ -13,7 +13,7 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     public partial class Main
     {
@@ -120,7 +120,7 @@ namespace Client.Forms
         /// <summary>
         /// The pidgeonlist1.
         /// </summary>
-        public Client.Graphics.PidgeonList pidgeonlist1;
+        public Pidgeon.Graphics.PidgeonList pidgeonlist1;
         /// <summary>
         /// The tool strip.
         /// </summary>
@@ -232,7 +232,7 @@ namespace Client.Forms
             this.hpaned1.Name = "hpaned1";
             this.hpaned1.Position = 183;
             // Container child hpaned1.Gtk.Paned+PanedChild
-            this.pidgeonlist1 = new global::Client.Graphics.PidgeonList();
+            this.pidgeonlist1 = new global::Pidgeon.Graphics.PidgeonList();
             this.pidgeonlist1.Events = ((global::Gdk.EventMask)(256));
             this.pidgeonlist1.Name = "pidgeonlist1";
 

@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// TrafficScanner

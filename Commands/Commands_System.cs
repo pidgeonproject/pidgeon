@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This class is handling all commands
@@ -35,13 +35,13 @@ namespace Client
             {
                 if (string.IsNullOrEmpty(parameter))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Pidgeon.ContentLine.MessageStyle.Message);
                     return;
                 }
 
                 if (!parameter.Contains(" "))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Pidgeon.ContentLine.MessageStyle.Message);
                     return;
                 }
 
@@ -78,7 +78,7 @@ namespace Client
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             /// <summary>
@@ -97,7 +97,7 @@ namespace Client
                     Core.ParseLink(parameter);
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             public static void External2Text(string parameter)
@@ -126,7 +126,7 @@ namespace Client
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             /// <summary>
@@ -139,18 +139,18 @@ namespace Client
                 {
                     if (!Core.RegisterPlugin(parameter))
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("Unable to load the specified plugin", Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Unable to load the specified plugin", Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             public static void RetrieveUptime(string parameter)
             {
                 TimeSpan uptime = DateTime.Now - Core.LoadTime;
-                Core.SystemForm.Chat.scrollback.InsertText(uptime.ToString(), Client.ContentLine.MessageStyle.System, false, 0, true);
+                Core.SystemForm.Chat.scrollback.InsertText(uptime.ToString(), Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
             }
 
             /// <summary>
@@ -170,17 +170,17 @@ namespace Client
                                 + Environment.NewLine + Environment.NewLine
                                 + ManualPages[parameter]
                                 + Environment.NewLine + "===================================================================="
-                                + Environment.NewLine + "EOM", Client.ContentLine.MessageStyle.System, false, 0, true);
+                                + Environment.NewLine + "EOM", Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
                             return;
                         }
                         else
                         {
-                            Core.SystemForm.Chat.scrollback.InsertText("This command is unknown", Client.ContentLine.MessageStyle.Message);
+                            Core.SystemForm.Chat.scrollback.InsertText("This command is unknown", Pidgeon.ContentLine.MessageStyle.Message);
                         }
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             /// <summary>
@@ -213,7 +213,7 @@ namespace Client
             public static void PidgeonRehash(string parameter)
             {
                 Core._Configuration.ConfigurationLoad();
-                Core.SystemForm.Chat.scrollback.InsertText("Reloaded config", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Reloaded config", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -246,10 +246,10 @@ namespace Client
                         }
                         return;
                     }
-                    Core.SystemForm.Chat.scrollback.InsertText("Warning: file not found: " + path, Client.ContentLine.MessageStyle.System, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Warning: file not found: " + path, Pidgeon.ContentLine.MessageStyle.System, false);
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
                 return;
             }
 
@@ -261,7 +261,7 @@ namespace Client
             {
                 if (string.IsNullOrEmpty(parameter))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
                 string name = parameter;
@@ -275,7 +275,7 @@ namespace Client
                 bool ssl = false;
                 if (string.IsNullOrEmpty(name))
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
 
@@ -290,7 +290,7 @@ namespace Client
 
                 if (Uri.CheckHostName(name) == UriHostNameType.Unknown)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Client.ContentLine.MessageStyle.System);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
 
@@ -311,19 +311,19 @@ namespace Client
                 string Nick = parameter;
                 if (parameter.Length < 1)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
                     return;
                 }
                 if (Core.SelectedNetwork == null)
                 {
                     Configuration.UserData.nick = Nick;
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.User);
                     return;
                 }
                 if (!Core.SelectedNetwork.IsConnected)
                 {
                     Configuration.UserData.nick = Nick;
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Client.ContentLine.MessageStyle.User);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.User);
                     return;
                 }
                 Core.SelectedNetwork._Protocol.RequestNick(Nick);
@@ -339,7 +339,7 @@ namespace Client
                 {
                     if (Core.TimerDB.Count == 0)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("No timers to display.", Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("No timers to display.", Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
                     }
                     foreach (Timer item in Core.TimerDB)
@@ -349,7 +349,7 @@ namespace Client
                         {
                             status = "waiting";
                         }
-                        Core.SystemForm.Chat.scrollback.InsertText("Timer ID: " + item.ID.ToString() + " status: " + status + " command: " + item.Command + " time to run " + item.Time.ToString(), Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Timer ID: " + item.ID.ToString() + " status: " + status + " command: " + item.Command + " time to run " + item.Time.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
                     }
                 }
             }
@@ -361,7 +361,7 @@ namespace Client
             public static void ClearRing(string parameter)
             {
                 Core.ClearRingBufferLog();
-                Core.SystemForm.Chat.scrollback.InsertText("Ring buffer was cleaned", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Ring buffer was cleaned", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -374,7 +374,7 @@ namespace Client
                 {
                     if (!parameter.Contains(" "))
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Client.ContentLine.MessageStyle.Message);
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "2" }), Pidgeon.ContentLine.MessageStyle.Message);
                     }
                     int time = 0;
                     string tm = parameter.Substring(0, parameter.IndexOf(" ", StringComparison.Ordinal));
@@ -415,7 +415,7 @@ namespace Client
             public static void snifferFree(string parameter)
             {
                 Core.trafficscanner.Clean();
-                Core.SystemForm.Chat.scrollback.InsertText("Sniffer log was cleared", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Sniffer log was cleared", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -425,7 +425,7 @@ namespace Client
             public static void free(string parameter)
             {
                 System.GC.Collect();
-                Core.SystemForm.Chat.scrollback.InsertText("Memory was cleaned up", Client.ContentLine.MessageStyle.System, false);
+                Core.SystemForm.Chat.scrollback.InsertText("Memory was cleaned up", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -443,7 +443,7 @@ namespace Client
                 {
                     if (File.Exists(parameter))
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("This file already exist, use .overwite to overwrite it", Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("This file already exist, use .overwite to overwrite it", Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
                     }
 
@@ -459,12 +459,12 @@ namespace Client
                     }
                     catch (IOException fail)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
                         Core.DebugLog("Unable to write: " + fail.ToString());
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
 
             public static void forced_pidgeon_file(string parameter)
@@ -483,12 +483,12 @@ namespace Client
                     }
                     catch (IOException fail)
                     {
-                        Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
                         Core.DebugLog("Unable to write: " + fail.ToString());
                     }
                     return;
                 }
-                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Client.ContentLine.MessageStyle.Message);
+                Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
             }
         }
     }

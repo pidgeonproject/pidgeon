@@ -18,7 +18,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     public partial class Connection
     {

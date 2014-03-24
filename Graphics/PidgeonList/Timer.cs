@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     public partial class PidgeonList : Gtk.Bin
     {
@@ -137,7 +137,7 @@ namespace Client.Graphics
                 // we sort out all services that are waiting to be inserted to list
                 lock (queueProtocol)
                 {
-                    foreach (ProtocolSv item in queueProtocol)
+                    foreach (Protocols.Services.ProtocolSv item in queueProtocol)
                     {
                         insertService(item);
                     }

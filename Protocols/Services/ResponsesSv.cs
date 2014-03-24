@@ -19,7 +19,7 @@ using System.Threading;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon.Protocols.Services
 {
     public partial class ProtocolSv
     {
@@ -78,7 +78,7 @@ namespace Client
 
                 if (message_window != null)
                 {
-                    message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text), Client.ContentLine.MessageStyle.Message, true, message_time, true);
+                    message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text), Pidgeon.ContentLine.MessageStyle.Message, true, message_time, true);
                 }
                 else
                 {
@@ -96,11 +96,11 @@ namespace Client
                 if (curr.InnerText == "PERMISSIONDENY")
                 {
                     protocol.Windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in",
-                        Client.ContentLine.MessageStyle.System, false);
+                        Pidgeon.ContentLine.MessageStyle.System, false);
                     return;
                 }
                 protocol.Windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
-                    Client.ContentLine.MessageStyle.User, false);
+                    Pidgeon.ContentLine.MessageStyle.User, false);
             }
 
             /// <summary>
@@ -110,7 +110,7 @@ namespace Client
             /// <param name="protocol">Protocol</param>
             public static void sLoad(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Client.ContentLine.MessageStyle.System, false);
+                protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -252,7 +252,7 @@ namespace Client
                 {
                     sv.Nickname = curr.InnerText;
                     protocol.Windows["!" + sv.SystemWindowID].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
-                        Client.ContentLine.MessageStyle.User, true);
+                        Pidgeon.ContentLine.MessageStyle.User, true);
                 }
             }
 
@@ -267,10 +267,10 @@ namespace Client
                 switch (curr.InnerText)
                 {
                     case "CONNECTED":
-                        protocol.Windows["!root"].scrollback.InsertText("You are already connected to " + network, Client.ContentLine.MessageStyle.System);
+                        protocol.Windows["!root"].scrollback.InsertText("You are already connected to " + network, Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     case "PROBLEM":
-                        protocol.Windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Client.ContentLine.MessageStyle.System, false);
+                        protocol.Windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
@@ -290,7 +290,7 @@ namespace Client
             public static void sGlobalident(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
-                                new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
+                                new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
 
             /// <summary>
@@ -340,7 +340,7 @@ namespace Client
             {
                 protocol.nick = curr.InnerText;
                 protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
-                    new List<string> { curr.InnerText }), Client.ContentLine.MessageStyle.User, true);
+                    new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
 
             /// <summary>
@@ -428,10 +428,10 @@ namespace Client
                 error += "code (" + code + ") description: " + description;
                 if (protocol.SystemWindow == null)
                 {
-                    Core.SystemForm.main.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
+                    Core.SystemForm.main.scrollback.InsertText(error, Pidgeon.ContentLine.MessageStyle.User);
                     return;
                 }
-                protocol.SystemWindow.scrollback.InsertText(error, Client.ContentLine.MessageStyle.User);
+                protocol.SystemWindow.scrollback.InsertText(error, Pidgeon.ContentLine.MessageStyle.User);
             }
 
             /// <summary>
@@ -518,7 +518,7 @@ namespace Client
                                     lock (nw.Descriptions)
                                     {
                                         nw.Descriptions.Clear();
-                                        foreach (Client.Services.Buffer.NetworkInfo.Description description in info.Descriptions)
+                                        foreach (Pidgeon.Protocols.Services.Buffer.NetworkInfo.Description description in info.Descriptions)
                                         {
                                             nw.Descriptions.Add(description.Char, description.String);
                                         }
@@ -786,14 +786,14 @@ namespace Client
                 if (curr.InnerText == "INVALID")
                 {
                     protocol.Windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed",
-                        Client.ContentLine.MessageStyle.System, false);
+                        Pidgeon.ContentLine.MessageStyle.System, false);
                     protocol.Disconnect();
                 }
                 if (curr.InnerText == "OK")
                 {
                     protocol.ConnectionStatus = Status.Connected;
-                    protocol.Windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Client.ContentLine.MessageStyle.System, false);
-                    protocol.Windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Client.ContentLine.MessageStyle.System);
+                    protocol.Windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Pidgeon.ContentLine.MessageStyle.System, false);
+                    protocol.Windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Pidgeon.ContentLine.MessageStyle.System);
                 }
                 return;
             }

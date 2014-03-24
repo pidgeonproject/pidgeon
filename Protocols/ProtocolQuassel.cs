@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Quassel parser
@@ -61,10 +61,6 @@ namespace Client
         private System.IO.StreamReader _StreamReader;
         private System.IO.StreamWriter _StreamWriter;
         private Graphics.Window sw = null;
-        /// <summary>
-        /// Password
-        /// </summary>
-        public string Password = "";
         /// <summary>
         /// Name
         /// </summary>

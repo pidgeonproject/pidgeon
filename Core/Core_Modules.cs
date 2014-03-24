@@ -21,7 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Core
     {
@@ -43,7 +43,7 @@ namespace Client
                         return false;
                     }
                     Type[] types = library.GetTypes();
-                    Type type = typeof(Extension); // = library.GetType("Client.RestrictedModule");
+                    Type type = typeof(Extension);
                     Type pluginInfo = null;
                     foreach (Type curr in types)
                     {
@@ -94,7 +94,7 @@ namespace Client
                         Core.Ringlog("CORE: finished loading of module " + _plugin.Name);
                         if (Core.SystemForm != null)
                         {
-                            Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
+                            Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + _plugin.Name + " (v. " + _plugin.Version + ")", Pidgeon.ContentLine.MessageStyle.System, false);
                         }
                         return true;
                     }
@@ -134,7 +134,7 @@ namespace Client
                     plugin.Load();
                     if (Core.SystemForm != null)
                     {
-                        Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Client.ContentLine.MessageStyle.System, false);
+                        Core.SystemForm.main.scrollback.InsertText("Loaded plugin " + plugin.Name + " (v. " + plugin.Version + ")", Pidgeon.ContentLine.MessageStyle.System, false);
                     }
                     return true;
                 }

@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     /// <summary>
     /// Window
@@ -670,7 +670,7 @@ namespace Client.Graphics
         /// <returns></returns>
         private static void certificate(string name, string host)
         {
-            byte[] c = Client.Protocols.CertificateMaker.CreateSelfSignCertificatePfx(
+            byte[] c = Pidgeon.Protocols.CertificateMaker.CreateSelfSignCertificatePfx(
                 "CN=" + host, //host name
                 DateTime.Parse("2000-01-01"), //not valid before
                 DateTime.Parse("2020-01-01"), //not valid after

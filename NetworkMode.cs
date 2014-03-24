@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This class represents a simplest mode that can be present in a channel or network with optional parameter

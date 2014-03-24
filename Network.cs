@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Instance of irc network, this class is typically handled by protocols
@@ -200,7 +200,7 @@ namespace Client
         /// <summary>
         /// Parent service
         /// </summary>
-        public ProtocolSv ParentSv = null;
+        public Protocols.Services.ProtocolSv ParentSv = null;
         /// <summary>
         /// List of channels
         /// </summary>
@@ -267,7 +267,7 @@ namespace Client
         {
             get
             {
-                if (_Protocol.GetType() != typeof(ProtocolSv))
+                if (_Protocol.GetType() != typeof(Protocols.Services.ProtocolSv))
                 {
                     return "system";
                 }
@@ -306,10 +306,10 @@ namespace Client
 
             UserName = Configuration.UserData.user;
             Ident = Configuration.UserData.ident;
-            if (protocol.GetType() == typeof(ProtocolSv))
+            if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
                 SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + randomuqid + ServerName, false, true);
-                Core.SystemForm.ChannelList.InsertNetwork(this, (ProtocolSv)protocol);
+                Core.SystemForm.ChannelList.InsertNetwork(this, (Protocols.Services.ProtocolSv)protocol);
             }
             else
             {

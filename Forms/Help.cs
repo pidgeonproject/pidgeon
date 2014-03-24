@@ -15,7 +15,7 @@
 
 using System;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Help form

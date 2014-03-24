@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Localization
@@ -88,10 +88,10 @@ namespace Client
                 switch (language)
                 {
                     case "en":
-                        value = Client.Properties.Resources.en_english;
+                        value = Pidgeon.Resources.en_english;
                         break;
                     case "cs":
-                        value = Client.Properties.Resources.cs_czech;
+                        value = Pidgeon.Resources.cs_czech;
                         break;
                 }
 

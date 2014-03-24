@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using Gtk;
 using System.Text;
 
-namespace Client.PidgeonGtkToolkit
+namespace Pidgeon.PidgeonGtkToolkit
 {
     /// <summary>
     /// MessageBox

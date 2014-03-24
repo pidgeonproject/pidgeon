@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Dialog to insert a new shortcut

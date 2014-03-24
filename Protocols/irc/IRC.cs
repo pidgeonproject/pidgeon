@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class ProcessorIRC
     {
@@ -155,7 +155,7 @@ namespace Client
                             }
                         }
                         _Network.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { _new }),
-                            Client.ContentLine.MessageStyle.User, true, date);
+                            Pidgeon.ContentLine.MessageStyle.User, true, date);
                         _Network.Nickname = _new;
                     }
                     if (_data2[1].Contains("PART"))
@@ -176,12 +176,12 @@ namespace Client
                                     {
                                         c.ChannelWork = false;
                                         Chat.scrollback.InsertText(messages.get("part1", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
+                                            Pidgeon.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                     else
                                     {
                                         Chat.scrollback.InsertText(messages.get("part2", Core.SelectedLanguage),
-                                            Client.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
+                                            Pidgeon.ContentLine.MessageStyle.Message, !c.TemporarilyHidden, date);
                                     }
                                 }
                                 c.UpdateInfo();
@@ -412,7 +412,7 @@ namespace Client
                             Ping();
                             return true;
                         case "INFO":
-                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO", StringComparison.Ordinal) + 5), Client.ContentLine.MessageStyle.User,
+                            _Network.SystemWindow.scrollback.InsertText(text.Substring(text.IndexOf("INFO", StringComparison.Ordinal) + 5), Pidgeon.ContentLine.MessageStyle.User,
                                 true, date, !updated_text);
                             return true;
                         case "NOTICE":
@@ -425,12 +425,12 @@ namespace Client
                                     window = channel.RetrieveWindow();
                                     if (window != null)
                                     {
-                                        window.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                                        window.scrollback.InsertText("[" + source + "] " + value, Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                                         return true;
                                     }
                                 }
                             }
-                            _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Client.ContentLine.MessageStyle.Message, true, date, !updated_text);
+                            _Network.SystemWindow.scrollback.InsertText("[" + source + "] " + value, Pidgeon.ContentLine.MessageStyle.Message, true, date, !updated_text);
                             return true;
                         case "NICK":
                             if (ProcessNick(source, parameters, value))
@@ -572,7 +572,7 @@ namespace Client
                 if (!OK)
                 {
                     // we have no idea what we just were to parse, so print it to system window
-                    _Network.SystemWindow.scrollback.InsertText(text, Client.ContentLine.MessageStyle.System, true, date, true);
+                    _Network.SystemWindow.scrollback.InsertText(text, Pidgeon.ContentLine.MessageStyle.System, true, date, true);
                 }
             }
             catch (Exception fail)
@@ -592,7 +592,7 @@ namespace Client
         /// <param name="WriteLog"></param>
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
-        private void WindowText(Graphics.Window ScrollbackWindow, string ScrollbackText, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        private void WindowText(Graphics.Window ScrollbackWindow, string ScrollbackText, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             bool logging = WriteLog;
 
@@ -639,7 +639,7 @@ namespace Client
             pong = _pong;
             date = _date;
             updated_text = updated;
-            if (_network._Protocol.GetType() == typeof(ProtocolSv))
+            if (_network._Protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
                 isServices = true;
             }

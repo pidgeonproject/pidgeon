@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// User, Every user on irc has instance of this class for every channel they are in

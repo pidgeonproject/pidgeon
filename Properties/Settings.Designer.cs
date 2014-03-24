@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Client.Properties {
+namespace Pidgeon {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

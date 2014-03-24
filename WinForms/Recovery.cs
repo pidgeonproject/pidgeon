@@ -23,7 +23,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class Recovery : Form
     {

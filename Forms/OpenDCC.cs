@@ -17,12 +17,12 @@
 
 using System;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Open form
     /// </summary>
-    public partial class OpenDCC : Client.PidgeonGtkToolkit.PidgeonForm
+    public partial class OpenDCC : Pidgeon.PidgeonGtkToolkit.PidgeonForm
     {
         /// <summary>
         /// Listener mode

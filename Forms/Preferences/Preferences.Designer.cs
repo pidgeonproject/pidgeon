@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Data;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Preferences

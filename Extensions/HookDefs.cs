@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Extension
@@ -287,7 +287,7 @@ namespace Client
         /// This hook is started when main form is loaded
         /// </summary>
         /// <param name="main"></param>
-        public virtual void Hook_Initialise(Client.Forms.Main main)
+        public virtual void Hook_Initialise(Pidgeon.Forms.Main main)
         {
             return;
         }
@@ -324,7 +324,7 @@ namespace Client
         /// <param name="Date"></param>
         /// <param name="SuppressPing"></param>
         /// <returns>if false, the notification is not displayed</returns>
-        public virtual bool Hook_NotificationDisplay(string text, Client.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
+        public virtual bool Hook_NotificationDisplay(string text, Pidgeon.ContentLine.MessageStyle InputStyle, ref bool WriteLog, long Date, ref bool SuppressPing)
         {
             return true;
         }

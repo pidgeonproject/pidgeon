@@ -13,12 +13,13 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+using Pidgeon.Protocols.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     /// <summary>
     /// Menu

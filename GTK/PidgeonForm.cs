@@ -15,10 +15,9 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace Client.PidgeonGtkToolkit
+namespace Pidgeon.PidgeonGtkToolkit
 {
     /// <summary>
     /// Menu

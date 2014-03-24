@@ -23,7 +23,7 @@ using System.Data;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class Scrollback
     {

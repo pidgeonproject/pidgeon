@@ -18,7 +18,7 @@ using System.Net;
 using System;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Core
     {
@@ -95,9 +95,9 @@ namespace Client
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns>Protocol object</returns>
-        public static ProtocolSv ConnectPS(string server, int port = 8222, string password = "xx", bool secured = false)
+        public static Protocols.Services.ProtocolSv ConnectPS(string server, int port = 8222, string password = "xx", bool secured = false)
         {
-            ProtocolSv protocol = new ProtocolSv();
+            Protocols.Services.ProtocolSv protocol = new Protocols.Services.ProtocolSv();
             protocol.Server = server;
             protocol.nick = Configuration.UserData.nick;
             protocol.Port = port;

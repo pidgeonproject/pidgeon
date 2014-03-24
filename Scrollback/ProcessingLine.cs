@@ -23,7 +23,7 @@ using System.Linq;
 using System.IO;
 using System.Data;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class Scrollback
     {
@@ -92,30 +92,30 @@ namespace Client
             Changed = false;
         }
 
-        private static Client.RichTBox.ContentText CreateText(ContentLine line, string text)
+        private static Pidgeon.RichTBox.ContentText CreateText(ContentLine line, string text)
         {
             Color color = Configuration.CurrentSkin.JoinColor;
             if (line != null)
             {
                 switch (line.style)
                 {
-                    case Client.ContentLine.MessageStyle.Action:
+                    case Pidgeon.ContentLine.MessageStyle.Action:
                         color = Configuration.CurrentSkin.MiscelancsColor;
                         break;
-                    case Client.ContentLine.MessageStyle.Kick:
+                    case Pidgeon.ContentLine.MessageStyle.Kick:
                         color = Configuration.CurrentSkin.KickColor;
                         break;
-                    case Client.ContentLine.MessageStyle.System:
+                    case Pidgeon.ContentLine.MessageStyle.System:
                         color = Configuration.CurrentSkin.MiscelancsColor;
                         break;
-                    case Client.ContentLine.MessageStyle.Channel:
+                    case Pidgeon.ContentLine.MessageStyle.Channel:
                         color = Configuration.CurrentSkin.ColorTalk;
                         break;
-                    case Client.ContentLine.MessageStyle.User:
+                    case Pidgeon.ContentLine.MessageStyle.User:
                         color = Configuration.CurrentSkin.changenickcolor;
                         break;
-                    case Client.ContentLine.MessageStyle.Join:
-                    case Client.ContentLine.MessageStyle.Part:
+                    case Pidgeon.ContentLine.MessageStyle.Join:
+                    case Pidgeon.ContentLine.MessageStyle.Part:
                         color = Configuration.CurrentSkin.JoinColor;
                         break;
                 }
@@ -126,31 +126,31 @@ namespace Client
                 }
             }
 
-            return new Client.RichTBox.ContentText(text, color);
+            return new Pidgeon.RichTBox.ContentText(text, color);
         }
 
-        private Client.RichTBox.Line CreateLine(ContentLine Line)
+        private Pidgeon.RichTBox.Line CreateLine(ContentLine Line)
         {
             Color color = Configuration.CurrentSkin.FontColor;
             switch (Line.style)
             {
-                case Client.ContentLine.MessageStyle.Action:
+                case Pidgeon.ContentLine.MessageStyle.Action:
                     color = Configuration.CurrentSkin.MiscelancsColor;
                     break;
-                case Client.ContentLine.MessageStyle.Kick:
+                case Pidgeon.ContentLine.MessageStyle.Kick:
                     color = Configuration.CurrentSkin.KickColor;
                     break;
-                case Client.ContentLine.MessageStyle.System:
+                case Pidgeon.ContentLine.MessageStyle.System:
                     color = Configuration.CurrentSkin.MiscelancsColor;
                     break;
-                case Client.ContentLine.MessageStyle.Channel:
+                case Pidgeon.ContentLine.MessageStyle.Channel:
                     color = Configuration.CurrentSkin.ColorTalk;
                     break;
-                case Client.ContentLine.MessageStyle.User:
+                case Pidgeon.ContentLine.MessageStyle.User:
                     color = Configuration.CurrentSkin.changenickcolor;
                     break;
-                case Client.ContentLine.MessageStyle.Join:
-                case Client.ContentLine.MessageStyle.Part:
+                case Pidgeon.ContentLine.MessageStyle.Join:
+                case Pidgeon.ContentLine.MessageStyle.Part:
                     color = Configuration.CurrentSkin.JoinColor;
                     break;
             }
@@ -166,9 +166,9 @@ namespace Client
                 stamp = Configuration.Scrollback.format_date.Replace("$1", Line.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
 
-            Client.RichTBox.Line text = Parser.FormatLine(Line.text, RT, color);
-            Client.RichTBox.ContentText content = new Client.RichTBox.ContentText(stamp, color);
-            Client.RichTBox.Line line = new Client.RichTBox.Line(RT);
+            Pidgeon.RichTBox.Line text = Parser.FormatLine(Line.text, RT, color);
+            Pidgeon.RichTBox.ContentText content = new Pidgeon.RichTBox.ContentText(stamp, color);
+            Pidgeon.RichTBox.Line line = new Pidgeon.RichTBox.Line(RT);
             line.insertData(content);
             line.Merge(text);
             return line;
@@ -398,7 +398,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertText(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, false);
         }
@@ -412,7 +412,7 @@ namespace Client
         /// <param name="Date">Date</param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
-        public bool InsertTextAndIgnoreUpdate(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
+        public bool InsertTextAndIgnoreUpdate(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
         {
             return insertText(text, InputStyle, WriteLog, Date, SuppressPing, true);
         }
@@ -450,7 +450,7 @@ namespace Client
         /// <returns></returns>
         [Experimental]
         [Obsolete("This function is experimental and using it may result in errors")]
-        public void InsertPart(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        public void InsertPart(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             DateTime time = DateTime.Now;
 
@@ -516,7 +516,7 @@ namespace Client
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <param name="IgnoreUpdate"></param>
         /// <returns></returns>
-        private bool insertText(string text, Client.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
+        private bool insertText(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             // we need to finish the previous partial line
             if (!IsEmtpy)

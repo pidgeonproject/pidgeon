@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// Extension

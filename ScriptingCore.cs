@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Eagle;
 
-namespace Client
+namespace Pidgeon
 {
 
 }

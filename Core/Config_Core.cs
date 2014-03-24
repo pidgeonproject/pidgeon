@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Client
+namespace Pidgeon
 {
     public static partial class Core
     {

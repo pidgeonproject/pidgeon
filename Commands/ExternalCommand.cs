@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace Client
+namespace Pidgeon
 {
     /// <summary>
     /// This is a command that is launched from operating system

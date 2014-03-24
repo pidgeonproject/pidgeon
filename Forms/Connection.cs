@@ -16,7 +16,7 @@
 using System;
 using Gtk;
 
-namespace Client.Forms
+namespace Pidgeon.Forms
 {
     /// <summary>
     /// Creates a new form

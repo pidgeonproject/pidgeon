@@ -21,7 +21,7 @@ using System.Data;
 using System.Text;
 using Gtk;
 
-namespace Client.Graphics
+namespace Pidgeon.Graphics
 {
     [System.ComponentModel.ToolboxItem(true)]
     public partial class Window : Gtk.Bin
@@ -87,10 +87,10 @@ namespace Client.Graphics
         // window
         private global::Gtk.VPaned vpaned1;
         private global::Gtk.HPaned hpaned1;
-        private global::Client.Scrollback scrollback1;
+        private global::Pidgeon.Scrollback scrollback1;
         private global::Gtk.ScrolledWindow GtkScrolledWindow1;
         private global::Gtk.TreeView listView;
-        private global::Client.Graphics.TextBox textbox1;
+        private global::Pidgeon.Graphics.TextBox textbox1;
         private bool destroyed = false;
         private bool hasUserList = true;
         /// <summary>
@@ -202,8 +202,8 @@ namespace Client.Graphics
         /// </summary>
         public Window()
         {
-            this.scrollback1 = new global::Client.Scrollback();
-            this.textbox1 = new global::Client.Graphics.TextBox();
+            this.scrollback1 = new global::Pidgeon.Scrollback();
+            this.textbox1 = new global::Pidgeon.Graphics.TextBox();
             MenuColor = Configuration.CurrentSkin.ColorDefault;
             textbox1.parent = this;
             if (textbox1.history == null)

@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Client</RootNamespace>
     <AssemblyName>Pidgeon</AssemblyName>
-    <StartupObject>Client.Program</StartupObject>
+    <StartupObject>Pidgeon.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="update.cmd" workingdir="${ProjectDir}" externalConsole="True" />
+        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="True" />
       </CustomCommands>
     </CustomCommands>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -224,6 +224,7 @@
     <Compile Include="Graphics\Window\Window_UserList.cs" />
     <Compile Include="Terminal.cs" />
     <Compile Include="Protocols\irc\ProtocolIrc.cs" />
+    <Compile Include="Syslog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

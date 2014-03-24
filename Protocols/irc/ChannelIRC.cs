@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     public partial class ProcessorIRC
     {
@@ -32,7 +32,7 @@ namespace Client
                     {
                         channel.ChannelMode.ChangeMode(code[4]);
                         channel.UpdateInfo();
-                        WindowText(curr, "Mode: " + code[4], Client.ContentLine.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Mode: " + code[4], Pidgeon.ContentLine.MessageStyle.Channel, true, date, !updated_text);
                     }
                     Hooks._Network.ChannelInfo(_Network, channel, code[4]);
                     return true;
@@ -204,7 +204,7 @@ namespace Client
                         {
                             System.Threading.Thread.Sleep(100);
                         }
-                        WindowText(curr, "Topic: " + topic, Client.ContentLine.MessageStyle.Channel, true, date, !updated_text);
+                        WindowText(curr, "Topic: " + topic, Pidgeon.ContentLine.MessageStyle.Channel, true, date, !updated_text);
                     }
                     channel.Topic = topic;
                     channel.UpdateInfo();
@@ -251,7 +251,7 @@ namespace Client
                     if (curr != null)
                     {
                         WindowText(curr, "Topic by: " + user + " date " + Core.ConvertFromUNIXToString(time).ToString(),
-                            Client.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, date, !updated_text);
                         return true;
                     }
                     channel.UpdateInfo();
@@ -276,7 +276,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("userkick", Core.SelectedLanguage,
                         new List<string> { source, user, value }),
-                        Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
+                        Pidgeon.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
 
                     if (updated_text && channel.ContainsUser(user))
@@ -326,7 +326,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("join", Core.SelectedLanguage,
                             new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%" }),
-                            Client.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
+                            Pidgeon.ContentLine.MessageStyle.Join, !channel.TemporarilyHidden, date, !updated_text);
                     }
                     if (updated_text)
                     {
@@ -407,7 +407,7 @@ namespace Client
                     {
                         WindowText(window, messages.get("window-p1",
                             Core.SelectedLanguage, new List<string> { "%L%" + user + "%/L%!%D%" + _ident + "%/D%@%H%" + _host + "%/H%", value }),
-                            Client.ContentLine.MessageStyle.Part,
+                            Pidgeon.ContentLine.MessageStyle.Part,
                             !channel.TemporarilyHidden, date, !updated_text);
                     }
 
@@ -457,7 +457,7 @@ namespace Client
                     if (Hooks._Network.Topic(_Network, source, channel, value, date, updated_text))
                     {
                         WindowText(window, messages.get("channel-topic",
-                            Core.SelectedLanguage, new List<string> { source, value }), Client.ContentLine.MessageStyle.Channel,
+                            Core.SelectedLanguage, new List<string> { source, value }), Pidgeon.ContentLine.MessageStyle.Channel,
                             !channel.TemporarilyHidden, date, !updated_text);
                     }
                 }
@@ -506,7 +506,7 @@ namespace Client
                                 if (window != null)
                                 {
                                     WindowText(window, messages.get("protocol-nick", Core.SelectedLanguage,
-                                        new List<string> { nick, _new }), Client.ContentLine.MessageStyle.Channel,
+                                        new List<string> { nick, _new }), Pidgeon.ContentLine.MessageStyle.Channel,
                                         !item.TemporarilyHidden, date, !updated_text);
                                 }
                             }
@@ -536,7 +536,7 @@ namespace Client
                         {
                             WindowText(window, messages.get("channel-mode", Core.SelectedLanguage,
                                 new List<string> { source, parameters.Substring(parameters.IndexOf(" ", StringComparison.Ordinal)) }),
-                                Client.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
+                                Pidgeon.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, date, !updated_text);
                         }
 
                         if (!updated_text)
@@ -549,7 +549,7 @@ namespace Client
                             change = change.Substring(1);
                         }
 
-                        Client.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
+                        Pidgeon.Protocols.Irc.Formatter formatter = new Protocols.Irc.Formatter();
 
                         while (change.EndsWith(" ", StringComparison.Ordinal) && change.Length > 1)
                         {

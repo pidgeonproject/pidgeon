@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Client
+namespace Pidgeon
 {
     class ProtocolXmpp : IProtocol
     {

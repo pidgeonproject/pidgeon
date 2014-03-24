@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Client
+namespace Pidgeon
 {
     public class RestrictedModule : Extension
     {
