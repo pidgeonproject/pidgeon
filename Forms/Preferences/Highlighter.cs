@@ -110,7 +110,7 @@ namespace Pidgeon.Forms
             this.entry1.Text = "$nick!$ident@$host.*$name";
             this.entry1.Name = "entry1";
             this.entry1.IsEditable = true;
-            this.entry1.InvisibleChar = '●';
+            this.entry1.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry1);
             global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1[this.entry1]));
             w4.LeftAttach = ((uint)(1));

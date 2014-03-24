@@ -107,7 +107,7 @@ namespace Pidgeon.Forms
             this.entry1.Name = "entry1";
             this.entry1.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.entry1.IsEditable = true;
-            this.entry1.InvisibleChar = '•';
+            this.entry1.InvisibleChar = '\u25CF';
             this.table1.Add(this.entry1);
             global::Gtk.Table.TableChild w4 = ((global::Gtk.Table.TableChild)(this.table1[this.entry1]));
             w4.TopAttach = ((uint)(1));
@@ -122,7 +122,7 @@ namespace Pidgeon.Forms
             this.entry2.CanFocus = true;
             this.entry2.Name = "entry2";
             this.entry2.IsEditable = true;
-            this.entry2.InvisibleChar = '•';
+            this.entry2.InvisibleChar = '\u25CF';
             this.entry2.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry2);
             global::Gtk.Table.TableChild w5 = ((global::Gtk.Table.TableChild)(this.table1[this.entry2]));
@@ -138,7 +138,7 @@ namespace Pidgeon.Forms
             this.entry3.CanFocus = true;
             this.entry3.Name = "entry3";
             this.entry3.IsEditable = true;
-            this.entry3.InvisibleChar = '•';
+            this.entry3.InvisibleChar = '\u25CF';
             this.entry3.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry3);
             global::Gtk.Table.TableChild w6 = ((global::Gtk.Table.TableChild)(this.table1[this.entry3]));
@@ -154,7 +154,7 @@ namespace Pidgeon.Forms
             this.entry4.CanFocus = true;
             this.entry4.Name = "entry4";
             this.entry4.IsEditable = true;
-            this.entry4.InvisibleChar = '•';
+            this.entry4.InvisibleChar = '\u25CF';
             this.entry4.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.entry4);
             global::Gtk.Table.TableChild w7 = ((global::Gtk.Table.TableChild)(this.table1[this.entry4]));
