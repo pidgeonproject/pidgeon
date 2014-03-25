@@ -115,6 +115,8 @@ namespace Pidgeon
         /// Currently selected user
         /// </summary>
         public string SelectedUser = null;
+        private static Gdk.Atom atom = Gdk.Atom.Intern("CLIPBOARD", false);
+        private Gtk.Clipboard ClipBoard = Gtk.Clipboard.Get(atom);
 
         private bool CreatingMenu = false;
         
@@ -861,13 +863,14 @@ namespace Pidgeon
                 if (simple)
                 {
                     text = simpleview.Buffer.Text;
-                    Clipboard.SetText(text);
+                    //Clipboard.SetText(text);
+                    this.ClipBoard.SetText(text);
                     return;
                 }
                 text = RT.Text;
                 if (text != null)
                 {
-                    Clipboard.SetText(RT.Text);
+                    this.ClipBoard.SetText(RT.Text);
                 }
             }
             catch (Exception fail)
@@ -880,7 +883,8 @@ namespace Pidgeon
         {
             try
             {
-                Clipboard.SetText(Text);
+                //Clipboard.SetText(Text);
+                this.ClipBoard.SetText(Text);
             }
             catch (Exception fail)
             {
@@ -907,7 +911,7 @@ namespace Pidgeon
         {
             try
             {
-                Clipboard.SetText(Link);
+                this.ClipBoard.SetText(Link);
             }
             catch (Exception fail)
             {
