@@ -838,13 +838,6 @@ namespace Pidgeon
             {
                 if (owner != null)
                 {
-                    if (Configuration.irc.ConfirmAll)
-                    {
-                        //if (MessageBox.Show(messages.get("window-confirm", Core.SelectedLanguage, new List<string> { "\n\n" + kickToolStripMenuItem.Text }), "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) == DialogResult.No)
-                        {
-                            return;
-                        }
-                    }
                     Parser.parse(kickToolStripMenuItem.Text);
                 }
             }
@@ -862,14 +855,13 @@ namespace Pidgeon
                 if (simple)
                 {
                     text = simpleview.Buffer.Text;
-                    //Clipboard.SetText(text);
-                    this.ClipBoard.SetText(text);
+                    this.ClipBoard.Text = text;
                     return;
                 }
                 text = RT.Text;
                 if (text != null)
                 {
-                    this.ClipBoard.SetText(RT.Text);
+                    this.ClipBoard.Text = text;
                 }
             }
             catch (Exception fail)
@@ -882,8 +874,7 @@ namespace Pidgeon
         {
             try
             {
-                //Clipboard.SetText(Text);
-                this.ClipBoard.SetText(Text);
+                this.ClipBoard.Text = Text;
             }
             catch (Exception fail)
             {
@@ -910,7 +901,7 @@ namespace Pidgeon
         {
             try
             {
-                this.ClipBoard.SetText(Link);
+                this.ClipBoard.Text = Link;
             }
             catch (Exception fail)
             {

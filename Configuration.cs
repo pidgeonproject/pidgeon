@@ -45,7 +45,7 @@ namespace Pidgeon
         /// <summary>
         /// Version
         /// </summary>
-        public static string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
+        public static readonly string Version = "Pidgeon v. " + System.Windows.Forms.Application.ProductVersion;
 
 
         // Dynamic configuration
