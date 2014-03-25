@@ -277,11 +277,11 @@ namespace Pidgeon.Graphics
             this.vpaned1.Add(this.textbox1);
 
             // this is a nasty bug in version of gtk distributed 
-            if (Configuration.CurrentPlatform != Core.Platform.Linuxx64 && Configuration.CurrentPlatform != Core.Platform.Linuxx86)
-            {
+            //if (Configuration.CurrentPlatform != Core.Platform.Linuxx64 && Configuration.CurrentPlatform != Core.Platform.Linuxx86)
+            //{
                 this.vpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
                 this.hpaned1.AddNotification("position", new GLib.NotifyHandler(Changed));
-            }
+            //}
 
             this.Add(this.vpaned1);
             if ((this.Child != null))

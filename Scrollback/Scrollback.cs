@@ -27,6 +27,9 @@ namespace Pidgeon
 {
     /// <summary>
     /// Scrollback
+    /// 
+    /// This is a widget that is used to store all text, every irc window is using it, this is the window
+    /// where chat is written to.
     /// </summary>
     [System.ComponentModel.ToolboxItem(true)]
     public partial class Scrollback : Gtk.Bin
