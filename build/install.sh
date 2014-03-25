@@ -50,7 +50,10 @@ chmod a+rx "$DESTDIR/usr/share/pidgeon/" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/skins" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/modules" || exit 1
 chmod -R a+r "$DESTDIR/usr/share/pidgeon" || exit 1
-
+chmod 644 $DESTDIR/usr/share/pidgeon/modules/* || exit 1
+if [ ! -d "$DESTDIR/usr/bin" ];then
+    mkdir "$DESTDIR/usr/bin" || exit 1
+fi
 echo "Creating a terminal launcher in $DESTDIR/usr/bin"
 
 if [ -f "$DESTDIR/usr/bin/pidgeon" ]; then
@@ -67,12 +70,18 @@ fi
 echo "#!/bin/sh" > "$DESTDIR/usr/bin/pidgeon"
 echo "mono $DESTDIR/usr/share/pidgeon/Pidgeon.exe \$*" >> "$DESTDIR/usr/bin/pidgeon"
 chmod a+x "$DESTDIR/usr/bin/pidgeon"
+if [ ! -d "$DESTDIR/usr/share/man" ];then
+    mkdir "$DESTDIR/usr/share/man" || exit 1
+fi
+if [ ! -d "$DESTDIR/usr/share/man/man1" ];then
+    mkdir "$DESTDIR/usr/share/man/man1"
+fi
 cp man/* "$DESTDIR/usr/share/man/man1" || exit 1
 gzip "$DESTDIR/usr/share/man/man1/pidgeon.1" || exit 1
 if [ ! -d "$DESTDIR/usr/share/applications" ];then
     mkdir "$DESTDIR/usr/share/applications"
 fi
 cp "pidgeon.desktop" "$DESTDIR/usr/share/applications" || exit 1
-cp "Resources/Pigeon_clip_art_hight.png" "$DESTDIR/usr/share/pidgeon/pidgeon_mini.png" || exit 1
+cp "Resources/pidgeon_mini.png" "$DESTDIR/usr/share/pidgeon/pidgeon_mini.png" || exit 1
 
 echo "Everything was installed, you can launch pidgeon using \"pidgeon\""
