@@ -1,16 +1,4 @@
-pidgeon (1.2.6.0ppa1.1ubuntu1) precise; urgency=medium
-
-  * Fix
-
- -- Petr Bena <benapetr@gmail.com>  Sat, 22 Mar 2014 19:43:11 +0100
-
-pidgeon (1.2.6.0ppa1.0) precise; urgency=medium
-
-  * Fix
-
- -- Petr Bena <benapetr@gmail.com>  Sat, 22 Mar 2014 19:23:45 +0100
-
-pidgeon (1.2.6.0) precise; urgency=medium
+pidgeon (1.2.6.0) stable; urgency=medium
 
   * Initial release
 
