@@ -42,7 +42,7 @@ namespace Pidgeon.PidgeonGtkToolkit
         public string Text;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client.PidgeonGtkToolkit.Menu"/> class.
+        /// Initializes a new instance of the <see cref="Pidgeon.PidgeonGtkToolkit.Menu"/> class.
         /// </summary>
         public Menu()
         { 

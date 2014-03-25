@@ -164,7 +164,7 @@ namespace Pidgeon
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="Text">Text.</param>
             /// <param name="SBAB">SBA.</param>
@@ -178,7 +178,7 @@ namespace Pidgeon
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="Text">Text.</param>
             /// <param name="SBAB">SBA.</param>
@@ -189,7 +189,7 @@ namespace Pidgeon
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.RichTBox.Line"/> class.
             /// </summary>
             /// <param name="SBAB">SBA.</param>
             public Line(RichTBox SBAB)
@@ -199,7 +199,7 @@ namespace Pidgeon
             }
 
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.RichTBox.Line"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.RichTBox.Line"/> class.
             /// </summary>
             public Line()
             {

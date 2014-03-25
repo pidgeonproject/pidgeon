@@ -127,7 +127,7 @@ namespace Pidgeon.Forms
         }
         
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client.Forms.SearchItem"/> class.
+        /// Initializes a new instance of the <see cref="Pidgeon.Forms.SearchItem"/> class.
         /// </summary>
         public SearchItem()
         {
