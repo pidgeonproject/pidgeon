@@ -55,7 +55,6 @@ if [ ! -d "$DESTDIR/usr/bin" ];then
     mkdir "$DESTDIR/usr/bin" || exit 1
 fi
 echo "Creating a terminal launcher in $DESTDIR/usr/bin"
-
 if [ -f "$DESTDIR/usr/bin/pidgeon" ]; then
   echo "WARNING: there is already existing pidgeon launcher in $DESTDIR/usr/bin/pidgeon making backup"
   suffix=0
@@ -66,10 +65,8 @@ if [ -f "$DESTDIR/usr/bin/pidgeon" ]; then
   cp -v "$DESTDIR/usr/bin/pidgeon" "/tmp/pidgeon.$suffix"
   rm -f "$DESTDIR/usr/bin/pidgeon"
 fi
-
-echo "#!/bin/sh" > "$DESTDIR/usr/bin/pidgeon"
-echo "mono $DESTDIR/usr/share/pidgeon/Pidgeon.exe \$*" >> "$DESTDIR/usr/bin/pidgeon"
-chmod a+x "$DESTDIR/usr/bin/pidgeon"
+cp build/pidgeon "$DESTDIR/usr/bin/pidgeon" || exit 1
+chmod a+x "$DESTDIR/usr/bin/pidgeon" || exit 1
 if [ ! -d "$DESTDIR/usr/share/man" ];then
     mkdir "$DESTDIR/usr/share/man" || exit 1
 fi
