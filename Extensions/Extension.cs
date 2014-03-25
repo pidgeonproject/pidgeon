@@ -222,6 +222,15 @@ namespace Pidgeon
         }
 
         /// <summary>
+        /// Write a text to system ring log
+        /// </summary>
+        /// <param name="message"></param>
+        public void Ringlog(string message)
+        {
+            Core.Ringlog(this.Name + ": " + message);
+        }
+
+        /// <summary>
         /// Load
         /// </summary>
         public void Load()
@@ -245,9 +254,10 @@ namespace Pidgeon
         /// Write a message to debug log
         /// </summary>
         /// <param name="message">Message</param>
-        public void DebugLog(string message)
+        /// <param name="verbosity"></param>
+        public void DebugLog(string message, int verbosity = 1)
         {
-            Core.DebugLog("Extension " + this.Name + ": " + message);
+            Core.DebugLog("Extension " + this.Name + ": " + message, verbosity);
         }
 
         /// <summary>
