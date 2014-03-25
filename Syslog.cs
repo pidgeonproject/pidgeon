@@ -17,6 +17,9 @@ using System;
 
 namespace Pidgeon
 {
+    /// <summary>
+    /// Provides an interface to write logs to terminal as well as system window
+    /// </summary>
     public class Syslog
     {
         /// <summary>

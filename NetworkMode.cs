@@ -76,9 +76,9 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents the current <see cref="Client.SimpleMode"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="Pidgeon.SimpleMode"/>.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Client.SimpleMode"/>.</returns>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Pidgeon.SimpleMode"/>.</returns>
         public override string ToString()
         {
             if (ContainsParameter)
@@ -115,9 +115,9 @@ namespace Pidgeon
         public ModeType _ModeType = ModeType.Network;
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents the current <see cref="Client.NetworkMode"/>.
+        /// Returns a <see cref="System.String"/> that represents the current <see cref="Pidgeon.NetworkMode"/>.
         /// </summary>
-        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Client.NetworkMode"/>.</returns>
+        /// <returns>A <see cref="System.String"/> that represents the current <see cref="Pidgeon.NetworkMode"/>.</returns>
         public override string ToString()
         {
             string _val = "";

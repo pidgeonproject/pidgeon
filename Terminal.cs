@@ -35,7 +35,7 @@ namespace Pidgeon
             public List<string> parm;
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.Terminal.Parameter"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.Terminal.Parameter"/> class.
             /// </summary>
             /// <param name='_Parameter'>
             /// Name

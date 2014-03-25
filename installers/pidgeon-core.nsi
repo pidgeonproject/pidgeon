@@ -316,7 +316,7 @@ OutFile "pidgeon_setup.exe"
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 2
-!define VERSIONBUILD 
+!define VERSIONBUILD 6
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link
@@ -336,7 +336,7 @@ OutFile "pidgeon_setup.exe"
 ;--------------------------------
 ;Pages
 
-  !insertmacro MUI_PAGE_LICENSE "C:\Users\petr.bena\Documents\Visual Studio 2010\gpl-3.0.txt"
+  !insertmacro MUI_PAGE_LICENSE "C:\Users\petr.bena\Documents\Visual Studio 2010\gpl.txt"
   !insertmacro MUI_PAGE_COMPONENTS
   !insertmacro MUI_PAGE_DIRECTORY
   !insertmacro MUI_PAGE_INSTFILES

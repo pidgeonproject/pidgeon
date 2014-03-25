@@ -181,7 +181,7 @@ namespace Pidgeon.Protocols
             private string userTypeName = null;
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.Qt.QVariant"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.Protocols.Qt.QVariant"/> class.
             /// </summary>
             /// <param name='VariantData'>
             /// Variant data.
@@ -197,7 +197,7 @@ namespace Pidgeon.Protocols
             }
             
             /// <summary>
-            /// Initializes a new instance of the <see cref="Client.Qt.QVariant"/> class.
+            /// Initializes a new instance of the <see cref="Pidgeon.Protocols.Qt.QVariant"/> class.
             /// </summary>
             /// <param name='VariantData'>
             /// Variant data.
@@ -268,10 +268,10 @@ namespace Pidgeon.Protocols
             }
             
             /// <summary>
-            /// Returns a <see cref="System.String"/> that represents the current <see cref="Client.Qt.QVariant"/>.
+            /// Returns a <see cref="System.String"/> that represents the current <see cref="Pidgeon.Protocols.Qt.QVariant"/>.
             /// </summary>
             /// <returns>
-            /// A <see cref="System.String"/> that represents the current <see cref="Client.Qt.QVariant"/>.
+            /// A <see cref="System.String"/> that represents the current <see cref="Pidgeon.Protocols.Qt.QVariant"/>.
             /// </returns>
             public override string ToString()
             {

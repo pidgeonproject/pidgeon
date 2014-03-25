@@ -40,7 +40,7 @@ namespace Pidgeon.Protocols
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client.Quassel_Parser"/> class.
+        /// Initializes a new instance of the <see cref="Pidgeon.Protocols.Quassel_Parser"/> class.
         /// </summary>
         /// <param name="parent">Parent.</param>
         /// <param name="input">Input.</param>
