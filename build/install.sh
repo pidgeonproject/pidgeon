@@ -82,6 +82,6 @@ if [ ! -d "$DESTDIR/usr/share/applications" ];then
     mkdir "$DESTDIR/usr/share/applications"
 fi
 cp "pidgeon.desktop" "$DESTDIR/usr/share/applications" || exit 1
-cp "Resources/Pigeon_clip_art_hight.png" "$DESTDIR/usr/share/pidgeon/pidgeonicon.png" || exit 1
+cp "Resources/Pigeon_clip_art_hight.png" "$DESTDIR/usr/share/pidgeon/pidgeon_mini.png" || exit 1
 
 echo "Everything was installed, you can launch pidgeon using \"pidgeon\""
