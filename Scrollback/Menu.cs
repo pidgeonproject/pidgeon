@@ -21,7 +21,6 @@ using System.Text;
 using System.IO;
 using System.Data;
 using System.Drawing;
-using System.Windows.Forms;
 
 namespace Pidgeon
 {
@@ -505,7 +504,7 @@ namespace Pidgeon
                 }
                 catch (Exception)
                 {
-                    MessageBox.Show("Unable to open " + http, "Link", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    Pidgeon.PidgeonGtkToolkit.MessageBox.Show(null, Gtk.MessageType.Error, Gtk.ButtonsType.Ok, "Unable to open " + http, "Link");
                 }
             }
             if (http.StartsWith("irc://", StringComparison.Ordinal))
