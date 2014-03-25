@@ -69,5 +69,10 @@ echo "mono $DESTDIR/usr/share/pidgeon/Pidgeon.exe \$*" >> "$DESTDIR/usr/bin/pidg
 chmod a+x "$DESTDIR/usr/bin/pidgeon"
 cp man/* "$DESTDIR/usr/share/man/man1" || exit 1
 gzip "$DESTDIR/usr/share/man/man1/pidgeon.1" || exit 1
+if [ ! -d "$DESTDIR/usr/share/applications" ];then
+    mkdir "$DESTDIR/usr/share/applications"
+fi
+cp "pidgeon.desktop" "$DESTDIR/usr/share/applications" || exit 1
+cp "Resources/Pigeon_clip_art_hight.png" "$DESTDIR/usr/share/pidgeon" || exit 1
 
 echo "Everything was installed, you can launch pidgeon using \"pidgeon\""
