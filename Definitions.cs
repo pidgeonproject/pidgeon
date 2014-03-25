@@ -17,6 +17,9 @@ using System;
 
 namespace Pidgeon
 {
+    /// <summary>
+    /// Contains a lot of static definitions (variant of #define in c)
+    /// </summary>
     public class Definitions
     {
         /// <summary>

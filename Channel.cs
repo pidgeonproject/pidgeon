@@ -225,6 +225,9 @@ namespace Pidgeon
             _Network.Transfer("MODE " + Name + " +b");
         }
 
+        /// <summary>
+        /// Request a list of invites from server and parse them
+        /// </summary>
         public void ReloadInvites()
         {
             IsParsingExceptionData = true;
@@ -242,6 +245,9 @@ namespace Pidgeon
             _Network.Transfer("MODE " + Name + " +I");
         }
 
+        /// <summary>
+        /// Request a list of exceptions from server and parse them
+        /// </summary>
         public void ReloadExceptions()
         {
             IsParsingExceptionData = true;
@@ -653,6 +659,10 @@ namespace Pidgeon
             return UserFromName(name);
         }
 
+        /// <summary>
+        /// Removes a user from the channel list (this will not issue any IRC command) it just removes the object from local list
+        /// </summary>
+        /// <param name="user"></param>
         public void RemoveUser(User user)
         {
             lock (this.UserList)
@@ -665,6 +675,10 @@ namespace Pidgeon
             }
         }
 
+        /// <summary>
+        /// Retrieve a pointer to current user if present in channel list (that mean the user who is connected using this session)
+        /// </summary>
+        /// <returns></returns>
         public User GetSelf()
         {
             if (this._Network != null)

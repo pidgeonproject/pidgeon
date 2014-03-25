@@ -528,6 +528,11 @@ namespace Pidgeon
             }
         }
 
+        /// <summary>
+        /// Retrieve channel
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         [Obsolete("Replaced with GetChannel")]
         public Channel getChannel(string name)
         {

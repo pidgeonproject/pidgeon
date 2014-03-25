@@ -55,7 +55,7 @@ namespace Pidgeon.Forms
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Client.Forms.ScriptEdit"/> class.
+        /// Initializes a new instance of the <see cref="Pidgeon.Forms.ScriptEdit"/> class.
         /// </summary>
         public ScriptEdit()
         {
