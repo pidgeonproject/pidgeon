@@ -24,7 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="true" />
+        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="True" />
       </CustomCommands>
     </CustomCommands>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -77,6 +77,9 @@
     <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="libirc">
+      <HintPath>libirc.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ManualPages\Connect.txt" />
@@ -93,7 +96,7 @@
     <EmbeddedResource Include="Languages\cs_czech.txt" />
     <None Include="Resources\arrow.png" />
     <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
-      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\at.png" />
     <EmbeddedResource Include="Resources\darknetwork.png" />
@@ -152,8 +155,6 @@
     <Compile Include="GTK\PidgeonForm.cs" />
     <Compile Include="Hyperlink.cs" />
     <Compile Include="Protocols\CertificateMaker.cs" />
-    <Compile Include="Protocols\irc\Formatter.cs" />
-    <Compile Include="Protocols\irc\IRC_objects.cs" />
     <Compile Include="Protocols\ProtocolDCC.cs" />
     <Compile Include="RichTBox\Classes.cs" />
     <Compile Include="RichTBox\Data.cs" />
@@ -171,7 +172,6 @@
     <Compile Include="Messages.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="NetworkData.cs" />
-    <Compile Include="NetworkMode.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="RevisionInfo.cs" />
@@ -190,11 +190,7 @@
     <Compile Include="Protocols\Services\Datagram.cs" />
     <Compile Include="Protocols\Services\ProtocolSv.cs" />
     <Compile Include="Protocols\Services\ResponsesSv.cs" />
-    <Compile Include="Protocols\irc\ChannelIRC.cs" />
-    <Compile Include="Protocols\irc\IRC.cs" />
-    <Compile Include="Protocols\irc\NetworkIRC.cs" />
     <Compile Include="Forms\Main.cs" />
-    <Compile Include="User.cs" />
     <Compile Include="Forms\Preferences\Preferences.cs" />
     <Compile Include="Forms\Channels.cs" />
     <Compile Include="Forms\TrafficScanner.cs" />
@@ -223,9 +219,11 @@
     <Compile Include="Graphics\Window\Window.cs" />
     <Compile Include="Graphics\Window\Window_UserList.cs" />
     <Compile Include="Terminal.cs" />
-    <Compile Include="Protocols\irc\ProtocolIrc.cs" />
     <Compile Include="Syslog.cs" />
     <Compile Include="Definitions.cs" />
+    <Compile Include="Protocols\ProtocolIrc.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="WindowsManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -242,7 +240,7 @@
           <TextStylePolicy FileWidth="120" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
-        <GtkDesignInfo generateGettext="false" />
+        <GtkDesignInfo generateGettext="False" />
         <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
           <BuildFilesVar />
           <DeployFilesVar />

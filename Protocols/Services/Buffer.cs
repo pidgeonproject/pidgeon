@@ -127,15 +127,15 @@ namespace Pidgeon.Protocols.Services
             /// <summary>
             /// Invites
             /// </summary>
-            public List<Invite> Invites = null;
+            public List<libirc.Invite> Invites = null;
             /// <summary>
             /// List of bans set
             /// </summary>
-            public List<SimpleBan> Bans = null;
+            public List<libirc.SimpleBan> Bans = null;
             /// <summary>
             /// Exception list 
             /// </summary>
-            public List<ChannelBanException> Exceptions = null;
+            public List<libirc.ChannelBanException> Exceptions = null;
             /// <summary>
             /// If channel output is temporarily hidden
             /// </summary>

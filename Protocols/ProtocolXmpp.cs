@@ -18,7 +18,7 @@ using System.Collections.Generic;
 
 namespace Pidgeon.Protocols
 {
-    class ProtocolXmpp : IProtocol
+    class ProtocolXmpp
     {
         public class Datagram
         {
@@ -46,11 +46,6 @@ namespace Pidgeon.Protocols
             public string _InnerText;
             public string _Datagram;
             public Dictionary<string, string> Parameters = new Dictionary<string, string>();
-        }
-
-        public override void Exit()
-        {
-            base.Exit();
         }
     }
 }

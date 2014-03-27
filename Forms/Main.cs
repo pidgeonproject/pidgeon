@@ -65,10 +65,6 @@ namespace Pidgeon.Forms
         /// Maximum value of progress
         /// </summary>
         public double ProgressMax = 0;
-        /// <summary>
-        /// Request db
-        /// </summary>
-        public List<_WindowRequest> WindowRequests = new List<_WindowRequest>();
         private GLib.TimeoutHandler timer = null;
         /// <summary>
         /// Tray icon
@@ -83,37 +79,6 @@ namespace Pidgeon.Forms
             {
                 return hpaned1;
             }
-        }
-
-        /// <summary>
-        /// Window request, this class represent a request to create a new window and is usually done by a thread which can't control windows
-        /// </summary>
-        public class _WindowRequest
-        {
-            /// <summary>
-            /// Window handle
-            /// </summary>
-            public Graphics.Window window = null;
-            /// <summary>
-            /// Name
-            /// </summary>
-            public string name = null;
-            /// <summary>
-            /// Focus
-            /// </summary>
-            public bool focus = false;
-            /// <summary>
-            /// Protocol that owns this request
-            /// </summary>
-            public Protocol owner = null;
-            /// <summary>
-            /// new window has a user list
-            /// </summary>
-            public bool hasUserList = true;
-            /// <summary>
-            /// Text
-            /// </summary>
-            public bool hasTextBox = true;
         }
 
         /// <summary>
@@ -269,7 +234,7 @@ namespace Pidgeon.Forms
                 main = new Pidgeon.Graphics.Window();
                 main.Events = ((global::Gdk.EventMask)(256));
                 main.HasUserList = false;
-                main.CreateChat(null);
+                main.CreateChat();
                 main.WindowName = "Pidgeon";
                 toolStripStatusNetwork.TooltipText = messages.Localize("[[main-wcp]]");
                 Chat = main;
@@ -301,18 +266,6 @@ namespace Pidgeon.Forms
             {
                 Core.HandleException(f);
             }
-        }
-
-        /// <summary>
-        /// Create a new chat, replaced by Graphics.Window.CreateChat(Protocol, bool)
-        /// </summary>
-        /// <param name="Chat"></param>
-        /// <param name="WindowOwner"></param>
-        /// <param name="Focus"></param>
-        [Obsolete ("Replaced by a field Graphics.Window.CreateChat(Protocol, bool). Will be removed in pidgeon 1.2.20")]
-        public void CreateChat(Graphics.Window Chat, Protocol WindowOwner, bool Focus = true)
-        {
-            Chat.CreateChat(WindowOwner, Focus);
         }
 
         /// <summary>
@@ -370,7 +323,7 @@ namespace Pidgeon.Forms
             this.toolStripInfo.Text = StatusBox;
             if (Core.SelectedNetwork != null && !Core.SelectedNetwork.IsDestroyed)
             {
-                toolStripStatusNetwork.Text = Core.SelectedNetwork.ServerName + "    w/c/p " + Core.SelectedNetwork._Protocol.Windows.Count.ToString() + "/" + Core.SelectedNetwork.Channels.Count.ToString() + "/" + Core.SelectedNetwork.PrivateChat.Count.ToString();
+                //toolStripStatusNetwork.Text = Core.SelectedNetwork.ServerName + "    w/c/p " + Core.SelectedNetwork._Protocol.Windows.Count.ToString() + "/" + Core.SelectedNetwork.Channels.Count.ToString() + "/" + Core.SelectedNetwork.PrivateChat.Count.ToString();
                 if (Core.SelectedNetwork.RenderedChannel != null)
                 {
                     string info = "";
@@ -690,7 +643,7 @@ namespace Pidgeon.Forms
             if (Core.SelectedNetwork != null)
             {
                 Core.SelectedNetwork.RenderedChannel = null;
-                Core.SelectedNetwork._Protocol.Current = main;
+                WindowsManager.CurrentWindow = main;
                 SwitchWindow(main);
                 return;
             }

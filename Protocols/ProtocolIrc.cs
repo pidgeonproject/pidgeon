@@ -13,48 +13,23 @@
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-// Documentation
-///////////////////////
-// This file contains a default class for protocols which all the other classes are inherited from
-// some functions are returning integer, which should be 0 on success and 2 by default
-// which means that the function was never overriden, so that a function working with that can catch it
-
+using System.Threading;
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Net.Sockets;
+using System.Net;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
-namespace Pidgeon
+namespace Pidgeon.Protocols
 {
     /// <summary>
-    /// Connection
+    /// Protocol
     /// </summary>
-    [Serializable]
-    public class Protocol : libirc.Protocol
+    public class ProtocolIrc : libirc.Protocols.ProtocolIrc
     {
-        /// <summary>
-        /// Parse a command
-        /// </summary>
-        /// <param name="cm"></param>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        public virtual bool Command(string cm, Network network = null)
-        {
-            Core.DebugLog("Command(string cm, Network network = null) is not implemented");
-            return false;
-        }
-
-        /// <summary>
-        /// Format a message to given style selected by skin
-        /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="text">Text</param>
-        /// <returns></returns>
-        public static string PRIVMSG(string user, string text)
-        {
-            return Configuration.Scrollback.format_nick.Replace("$1", "%USER%" + user + "%/USER%") + EncodeText(text);
-        }
+        WindowsManager WindowManager = new WindowsManager();
 
         /// <summary>
         /// Return back the system chars to previous look
@@ -66,11 +41,6 @@ namespace Pidgeon
             return text.Replace("%####%", "%");
         }
 
-        public virtual int Message(string text, string to, Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
-        {
-            return 0;
-        }
-
         /// <summary>
         /// Escape system char
         /// </summary>
@@ -79,6 +49,33 @@ namespace Pidgeon
         public static string EncodeText(string text)
         {
             return text.Replace("%", "%####%");
+        }
+
+        /// <summary>
+        /// Command
+        /// </summary>
+        /// <param name="cm"></param>
+        /// <param name="network"></param>
+        /// <returns></returns>
+        public bool Command(string cm, Network network = null)
+        {
+            try
+            {
+                if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
+                {
+                    // uppercase
+                    string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
+                    string rest = cm.Substring(first_word.Length);
+                    Transfer(first_word + rest);
+                    return true;
+                }
+                Transfer(cm.ToUpper());
+            }
+            catch (Exception ex)
+            {
+                Core.HandleException(ex);
+            }
+            return false;
         }
     }
 }

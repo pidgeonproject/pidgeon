@@ -21,102 +21,19 @@ namespace Pidgeon
 {
     /// <summary>
     /// Channel object
-    ///
-    /// Every channel that is open in pidgeon except for list should be made of this class, it is serializable because at some
-    /// point we want to allow it to be copied to various domains
     /// </summary>
     [Serializable]
-    public class Channel
+    public class Channel : libirc.Channel
     {
         /// <summary>
-        /// Name of a channel including the special prefix, if it's unknown this variable is null
-        /// </summary>
-        public string Name = null;
-        /// <summary>
-        /// Lower case of this channel that is used frequently, we cache it here so that we
-        /// don't need to use expensive string functions to make it so often
-        /// </summary>
-        public string lName = null;
-        /// <summary>
-        /// Network the channel belongs to
-        /// </summary>
-        [NonSerialized]
-        public Network _Network = null;
-        /// <summary>
-        /// List of all users in current channel
-        /// </summary>
-        [NonSerialized]
-        public Dictionary<string, User> UserList = new Dictionary<string, User>();
-        /// <summary>
-        /// Topic, if it's unknown this variable is null
-        /// </summary>
-        public string Topic = null;
-        /// <summary>
-        /// Whether channel is in proccess of dispose
-        /// </summary>
-        public bool dispose = false;
-        /// <summary>
-        /// User who set a topic
-        /// </summary>
-        public string TopicUser = "<Unknown user>";
-        /// <summary>
-        /// Date when a topic was set
-        /// </summary>
-        public int TopicDate = 0;
-        /// <summary>
-        /// Invites
-        /// </summary>
-        public List<Invite> Invites = null;
-        /// <summary>
-        /// List of bans set
-        /// </summary>
-        public List<SimpleBan> Bans = null;
-        /// <summary>
-        /// Exception list 
-        /// </summary>
-        public List<ChannelBanException> Exceptions = null;
-        /// <summary>
-        /// Window this channel is rendered to, if any
+        /// Window this channel is rendered to
         /// </summary>
         [NonSerialized]
         private Graphics.Window Chat = null;
         /// <summary>
-        /// If channel output is temporarily hidden
-        /// </summary>
-        public bool TemporarilyHidden = false;
-        /// <summary>
-        /// If true the channel is processing the /who data
-        /// </summary>
-        public bool IsParsingWhoData = false;
-        /// <summary>
-        /// If true the channel is processing invites
-        /// </summary>
-        public bool IsParsingInviteData = false;
-        /// <summary>
-        /// If true the channel is processing ban data
-        /// </summary>
-        public bool IsParsingBanData = false;
-        /// <summary>
-        /// If true the channel is processing exception data
-        /// </summary>
-        public bool IsParsingExceptionData = false;
-        /// <summary>
-        /// If true the channel is processing whois data
-        /// </summary>
-        public bool IsParsingWhoisData = false;
-        /// <summary>
-        /// Channel mode
-        /// </summary>
-        [NonSerialized]
-        public NetworkMode ChannelMode = null;
-        /// <summary>
         /// Whether window needs to be redrawn
         /// </summary>
         public bool Redraw = false;
-        /// <summary>
-        /// If true the window is considered usable, in case it's false, the window is flagged as parted channel
-        /// </summary>
-        public bool ChannelWork = false;
         /// <summary>
         /// If this is true user list was changed and needs to be refreshed but it can't be refreshed as it's waiting for some lock
         /// </summary>
@@ -125,145 +42,7 @@ namespace Pidgeon
         /// Text displayed in the list menu
         /// </summary>
         public string MenuData = null;
-        /// <summary>
-        /// Whether part from this channel was requested
-        /// </summary>
-        public bool partRequested = false;
-        /// <summary>
-        /// If this is false the channel is not being used / you aren't in it or you can't access it
-        /// </summary>
-        public bool IsAlive
-        {
-            get
-            {
-                if (!ChannelWork)
-                {
-                    return false;
-                }
-                if (IsDestroyed)
-                {
-                    return false;
-                }
-                if (_Network != null)
-                {
-                    return _Network.IsConnected;
-                }
-                return false;
-            }
-        }
-        private bool destroyed = false;
-        /// <summary>
-        /// This will return true in case object was requested to be disposed
-        /// you should never work with objects that return true here
-        /// </summary>
-        public bool IsDestroyed
-        {
-            get
-            {
-                return destroyed;
-            }
-        }
-
-        /// <summary>
-        /// Constructor (simple)
-        /// </summary>
-        public Channel()
-        {
-            ChannelWork = true;
-            ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
-            Topic = "";
-            TopicUser = "";
-            Chat = null;
-        }
-
-        /// <summary>
-        /// Constructor (normal)
-        /// </summary>
-        public Channel(Network network)
-        {
-            _Network = network;
-            ChannelWork = true;
-            ChannelMode = new NetworkMode(NetworkMode.ModeType.Channel, _Network);
-            Topic = "";
-            TopicUser = "";
-            Chat = null;
-        }
-
-        /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Channel()
-        {
-            if (!destroyed)
-            {
-                Destroy();
-            }
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destructor called for channel: " + Name);
-                //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
-            }
-        }
-
-        /// <summary>
-        /// Renew bans
-        /// </summary>
-        public void ReloadBans()
-        {
-            IsParsingBanData = true;
-            if (Bans == null)
-            {
-                Bans = new List<SimpleBan>();
-            }
-            else
-            {
-                lock (Bans)
-                {
-                    Bans.Clear();
-                }
-            }
-            _Network.Transfer("MODE " + Name + " +b");
-        }
-
-        /// <summary>
-        /// Request a list of invites from server and parse them
-        /// </summary>
-        public void ReloadInvites()
-        {
-            IsParsingExceptionData = true;
-            if (Invites == null)
-            {
-                Invites = new List<Invite>();
-            }
-            else
-            {
-                lock (Invites)
-                {
-                    Invites.Clear();
-                }
-            }
-            _Network.Transfer("MODE " + Name + " +I");
-        }
-
-        /// <summary>
-        /// Request a list of exceptions from server and parse them
-        /// </summary>
-        public void ReloadExceptions()
-        {
-            IsParsingExceptionData = true;
-            if (Exceptions == null)
-            {
-                Exceptions = new List<ChannelBanException>();
-            }
-            else
-            {
-                lock (Exceptions)
-                {
-                    Exceptions.Clear();
-                }
-            }
-            _Network.Transfer("MODE " + Name + " +e");
-        }
+        public new Network _Network = null;
 
         /// <summary>
         /// Recreate information in side menu
@@ -292,82 +71,6 @@ namespace Pidgeon
             text += Name + " " + UserList.Count + " users, mode: " + ChannelMode.ToString() +
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
             MenuData = Core.NormalizeHtml(Core.RemoveSpecial(text));
-        }
-
-        /// <summary>
-        /// Return true if channel contains the given user name
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        public bool ContainsUser(string user)
-        {
-            if (UserFromName(user) != null)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Return true if channel contains the given user name
-        /// </summary>
-        /// <param name="user"></param>
-        /// <returns></returns>
-        [Obsolete("Replaced with ContainsUser, will be removed in Pidgeon 1.2.80")]
-        public bool containsUser(string user)
-        {
-            return ContainsUser(user);
-        }
-
-        /// <summary>
-        /// Part this channel
-        /// </summary>
-        public void Part()
-        {
-            if (IsAlive && _Network != null)
-            {
-                if (!Hooks._Network.BeforePart(_Network, this))
-                {
-                    return;
-                }
-                _Network.Part(this);
-                partRequested = true;
-            }
-            else
-            {
-                Core.SystemForm.Chat.scrollback.InsertText("This channel isn't working", ContentLine.MessageStyle.System, false);
-            }
-        }
-
-        /// <summary>
-        /// Return true if a channel is matching ban (exact, not a mask)
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        public bool ContainsBan(string host)
-        {
-            lock (Bans)
-            {
-                foreach (SimpleBan name in Bans)
-                {
-                    if (name.Target == host)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Return true if a channel is matching ban (exact, not a mask)
-        /// </summary>
-        /// <param name="host"></param>
-        /// <returns></returns>
-        [Obsolete("Replaced with ContainsBan, will be removed in Pidgeon 1.2.80")]
-        public bool containsBan(string host)
-        {
-            return ContainsBan(host);
         }
 
         /// <summary>
@@ -419,7 +122,7 @@ namespace Pidgeon
                     }
                     lock (UserList)
                     {
-                        foreach (User nick in UserList.Values)
+                        foreach (libirc.User nick in UserList.Values)
                         {
                             Inserted = false;
                             if (nick.ChannelMode._Mode.Count > 0)
@@ -544,164 +247,20 @@ namespace Pidgeon
         /// Destroy this class, be careful, it can't be used in any way after you
         /// call this
         /// </summary>
-        public void Destroy()
+        public override void Destroy()
         {
             if (IsDestroyed)
             {
                 // prevent this from being called multiple times
                 return;
             }
-
-            destroyed = true;
-
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destroying channel " + Name);
             }
-
             Core.SystemForm.ChannelList.RemoveChannel(this);
-
-            lock (UserList)
-            {
-                UserList.Clear();
-            }
-
             Chat = null;
-            ChannelWork = false;
-            _Network = null;
-
-            if (Invites != null)
-            {
-                lock (Invites)
-                {
-                    Invites.Clear();
-                }
-            }
-
-            if (Exceptions != null)
-            {
-                lock (Exceptions)
-                {
-                    Exceptions.Clear();
-                }
-            }
-
-            if (Bans != null)
-            {
-                lock (Bans)
-                {
-                    Bans.Clear();
-                }
-            }
-        }
-
-        /// <summary>
-        /// This function returns a special user mode for a user that should be in user list (for example % for halfop or @ for operator)
-        /// </summary>
-        /// <param name="nick"></param>
-        /// <returns></returns>
-        private static string uchr(User nick)
-        {
-            return nick.ChannelPrefix;
-        }
-
-        /// <summary>
-        /// Insert ban to a ban list, this will not set a ban to channel, this will only set it into memory of pidgeon
-        /// </summary>
-        /// <param name="ban">Host</param>
-        /// <param name="user">User who set</param>
-        /// <param name="time">Time when it was set</param>
-        public void InsertBan(string ban, string user, string time = "0")
-        {
-            SimpleBan br = new SimpleBan(user, ban, time);
-            lock (Bans)
-            {
-                Bans.Add(br);
-            }
-        }
-
-        /// <summary>
-        /// Removes a ban where target is matching "ban" this needs to be perfect match (a != A and x* != xX) you can't use mask
-        /// </summary>
-        /// <param name="ban"></param>
-        /// <returns></returns>
-        public bool RemoveBan(string ban)
-        {
-            SimpleBan br = null;
-            lock (Bans)
-            {
-                foreach (SimpleBan xx in Bans)
-                {
-                    if (xx.Target == ban)
-                    {
-                        br = xx;
-                        break;
-                    }
-                }
-
-                if (br != null)
-                {
-                    Bans.Remove(br);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Return user object if specified user exist - replaced UserFromName(string name)
-        /// </summary>
-        /// <param name="name">User name</param>
-        /// <returns></returns>
-        [Obsolete ("Replace with UserFromName, will be removed in pidgeon 1.6")]
-        public User userFromName(string name)
-        {
-            return UserFromName(name);
-        }
-
-        /// <summary>
-        /// Removes a user from the channel list (this will not issue any IRC command) it just removes the object from local list
-        /// </summary>
-        /// <param name="user"></param>
-        public void RemoveUser(User user)
-        {
-            lock (this.UserList)
-            {
-                string name = user.Nick.ToLower ();
-                if (this.UserList.ContainsKey (name))
-                {
-                    this.UserList.Remove (name);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Retrieve a pointer to current user if present in channel list (that mean the user who is connected using this session)
-        /// </summary>
-        /// <returns></returns>
-        public User GetSelf()
-        {
-            if (this._Network != null)
-            {
-                return this.UserFromName(this._Network.Nickname);
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Return user object if specified user exist
-        /// </summary>
-        /// <param name="name">User name</param>
-        /// <returns></returns>
-        public User UserFromName(string name)
-        {
-            if (name == null)
-            {
-                throw new Core.PidgeonException("User name can't be null");
-            }
-            User user = null;
-            this.UserList.TryGetValue (name.ToLower (System.Globalization.CultureInfo.CurrentUICulture), out user);
-            return user;
+            base.Destroy();
         }
 
         /// <summary>
@@ -712,6 +271,10 @@ namespace Pidgeon
         {
             if (Chat == null)
             {
+                if (IsDestroyed)
+                {
+                    return null;
+                }
                 if (_Network == null)
                 {
                     throw new Core.PidgeonException("Network is NULL for " + Name);

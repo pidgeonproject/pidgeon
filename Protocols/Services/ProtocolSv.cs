@@ -28,7 +28,7 @@ namespace Pidgeon.Protocols.Services
     /// <summary>
     /// Protocol for pidgeon services
     /// </summary>
-    public partial class ProtocolSv : Protocol, IDisposable
+    public partial class ProtocolSv : libirc.Protocol, IDisposable
     {
         private class Cache
         {
@@ -102,22 +102,16 @@ namespace Pidgeon.Protocols.Services
         private bool disconnecting = false;
         private List<string> WaitingNetw = new List<string>();
         private bool disposed = false;
+        WindowsManager WindowManager;
 
         /// <summary>
         /// Root window
         /// </summary>
-        public override Graphics.Window SystemWindow
+        public Graphics.Window SystemWindow
         {
             get
             {
-                lock (Windows)
-                {
-                    if (Windows.ContainsKey("!root"))
-                    {
-                        return Windows["!root"];
-                    }
-                }
-                return null;
+                return WindowManager.SystemWindow;
             }
         }
 
@@ -158,7 +152,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="cm"></param>
         /// <param name="network"></param>
         /// <returns></returns>
-        public override bool Command(string cm, Network network = null)
+        public bool Command(string cm, Network network = null)
         {
             if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
             {
@@ -362,7 +356,7 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="network"></param>
-        public override void Part(string name, Network network = null)
+        public override void Part(string name, libirc.Network network = null)
         {
             Transfer("PART " + name, Configuration.Priority.High, network);
         }
@@ -676,14 +670,14 @@ namespace Pidgeon.Protocols.Services
         /// Open
         /// </summary>
         /// <returns></returns>
-        public override bool Open()
+        public override System.Threading.Thread Open()
         {
             CreateChat("!root", true, null, false, null, false, true);
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
             Core.SystemThreads.Add(main);
             main.Start();
-            return true;
+            return main;
         }
 
         /// <summary>
@@ -692,7 +686,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="_Nick"></param>
         /// <param name="network"></param>
         /// <returns></returns>
-        public override int RequestNick(string _Nick, Network network = null)
+        public override int RequestNick(string _Nick, libirc.Network network = null)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
             return 0;
@@ -705,7 +699,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="to"></param>
         /// <param name="_priority"></param>
         /// <returns></returns>
-        public override int Message2(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal)
+        public override int Act(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
         {
             Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Pidgeon.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
@@ -721,7 +715,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="_priority">Priority</param>
         /// <param name="pmsg">Whether it is supposed to be considered a private message</param>
         /// <returns></returns>
-        public override int Message(string text, string to, Network network, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        public int Message(string text, string to, libirc.Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
         {
             Datagram message = new Datagram("MESSAGE", text);
             if (network != null && NetworkList.Contains(network))
@@ -849,7 +843,7 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="network"></param>
-        public override void Join(string name, Network network = null)
+        public override void Join(string name, libirc.Network network = null)
         {
             Transfer("JOIN " + name);
         }
@@ -860,7 +854,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="text">Message</param>
         /// <param name="priority">priority</param>
         /// <param name="network">This value must be filled in - it's not required because some old functions do not provide it</param>
-        public override void Transfer(string text, Configuration.Priority priority = Configuration.Priority.Normal, Network network = null)
+        public override void Transfer(string text, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal, libirc.Network network = null)
         {
             if (network == null)
             {

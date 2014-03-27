@@ -164,26 +164,12 @@ namespace Pidgeon.Graphics
                     }
                 }
 
-                foreach (var chan in _channels)
+                foreach (Channel chan in _channels)
                 {
                     ChannelList.Remove(chan);
                     chan.Destroy();
                 }
-
-                // if there are waiting window requests we process them here
-                lock (Core.SystemForm.WindowRequests)
-                {
-                    foreach (Forms.Main._WindowRequest item in Core.SystemForm.WindowRequests)
-                    {
-                        item.window.CreateChat(item.owner, item.hasUserList, item.hasTextBox, item.focus);
-                        if (item.owner != null && item.focus)
-                        {
-                            item.owner.ShowChat(item.name);
-                        }
-                    }
-                    Core.SystemForm.WindowRequests.Clear();
-                }
-
+                WindowsManager.PendingRequests();
                 lock (WaitingDCC)
                 {
                     foreach (RequestDCC dcc in WaitingDCC)

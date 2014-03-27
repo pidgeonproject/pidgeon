@@ -23,7 +23,7 @@ namespace Pidgeon
     /// <summary>
     /// Instance of irc network, this class is typically handled by protocols
     /// </summary>
-    public class Network : IDisposable
+    public class Network : libirc.Network, IDisposable
     {
         /// <summary>
         /// Highlight
@@ -59,204 +59,29 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Information about the channel for list
-        /// 
-        /// This is not a class for channels, only the list
-        /// </summary>
-        [Serializable]
-        public class ChannelData
-        {
-            /// <summary>
-            /// Name
-            /// </summary>
-            public string ChannelName = null;
-            /// <summary>
-            /// Number of users
-            /// </summary>
-            public uint UserCount = 0;
-            /// <summary>
-            /// Topic of a channel
-            /// </summary>
-            public string ChannelTopic = null;
-
-            /// <summary>
-            /// Creates a new instance
-            /// </summary>
-            /// <param name="Users">Number of users</param>
-            /// <param name="Name"></param>
-            /// <param name="Topic"></param>
-            public ChannelData(uint Users, string Name, string Topic)
-            {
-                ChannelTopic = Topic;
-                UserCount = Users;
-                ChannelName = Name;
-            }
-
-            /// <summary>
-            /// This constructor needs to exist for xml deserialization don't remove it
-            /// </summary>
-            public ChannelData() {}
-        }
-
-        /// <summary>
-        /// Message that is shown to users when you are away
-        /// </summary>
-        public string AwayMessage = null;
-        /// <summary>
-        /// User modes, these are modes that are applied on network, not channel (invisible, oper)
-        /// </summary>
-        public List<char> UModes = new List<char> { 'i', 'w', 'o', 'Q', 'r', 'A' };
-        /// <summary>
-        /// Channel user symbols (oper and such)
-        /// </summary>
-        public List<char> UChars = new List<char> { '~', '&', '@', '%', '+' };
-        /// <summary>
-        /// Channel user modes (voiced, op)
-        /// </summary>
-        public List<char> CUModes = new List<char> { 'q', 'a', 'o', 'h', 'v' };
-        /// <summary>
-        /// Channel modes (moderated, topic)
-        /// </summary>
-        public List<char> CModes = new List<char> { 'n', 'r', 't', 'm' };
-        /// <summary>
-        /// Special channel modes with parameter as a string
-        /// </summary>
-        public List<char> SModes = new List<char> { 'k', 'L' };
-        /// <summary>
-        /// Special channel modes with parameter as a number
-        /// </summary>
-        public List<char> XModes = new List<char> { 'l' };
-        /// <summary>
-        /// Special channel user modes with parameters as a string
-        /// </summary>
-        public List<char> PModes = new List<char> { 'b', 'I', 'e' };
-        /// <summary>
-        /// Descriptions for channel and user modes
-        /// </summary>
-        public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
-        /// <summary>
-        /// Check if the info is parsed
-        /// </summary>
-        public bool ParsedInfo = false;
-        /// <summary>
-        /// Symbol prefix of channels
-        /// </summary>
-        public string ChannelPrefix = "#";
-        /// <summary>
-        /// List of private message windows
-        /// </summary>
-        public List<User> PrivateChat = new List<User>();
-        /// <summary>
         /// System window
         /// </summary>
         public Graphics.Window SystemWindow = null;
         /// <summary>
-        /// Host name of server
-        /// </summary>
-        public string ServerName = null;
-        /// <summary>
-        /// User mode of current user
-        /// </summary>
-        public NetworkMode usermode = new NetworkMode();
-        /// <summary>
-        /// User name (real name)
-        /// </summary>
-        public string UserName = null;
-        /// <summary>
-        /// Randomly generated ID for this network to make it unique in case some other network would share the name
-        /// </summary>
-        public string RandomuQID = null;
-        /// <summary>
         /// List of all channels on network
         /// </summary>
-        public Dictionary<string, Channel> Channels = new Dictionary<string, Channel>();
+        public new Dictionary<string, Channel> Channels = new Dictionary<string, Channel>();
         /// <summary>
         /// Currently rendered channel on main window
         /// </summary>
-        public Channel RenderedChannel = null;
-        /// <summary>
-        /// Nickname of this user
-        /// </summary>
-        public string Nickname = null;
-        /// <summary>
-        /// Identification of user
-        /// </summary>
-        public string Ident = "pidgeon";
-        /// <summary>
-        /// Quit message
-        /// </summary>
-        public string Quit = null;
-        /// <summary>
-        /// Protocol
-        /// </summary>
-        public Protocol _Protocol = null;
-        /// <summary>
-        /// Specifies whether this network is using SSL connection
-        /// </summary>
-        public bool IsSecure = false;
+        public new Channel RenderedChannel = null;
         /// <summary>
         /// Parent service
         /// </summary>
         public Protocols.Services.ProtocolSv ParentSv = null;
         /// <summary>
-        /// List of channels
-        /// </summary>
-        public List<ChannelData> ChannelList = new List<ChannelData>();
-        /// <summary>
         /// If true, the channel data will be suppressed in system window
-        /// </summary>
-        public bool SuppressData = false;
-        /// <summary>
-        /// This is true when network is just parsing the list of all channels
-        /// </summary>
-        public bool DownloadingList = false;
-        /// <summary>
-        /// If the system already attempted to change the nick
-        /// </summary>
-        public bool UsingNick2 = false;
-        /// <summary>
-        /// Pointer to channel window
         /// </summary>
         private Forms.Channels wChannelList = null;
         /// <summary>
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
-        /// <summary>
-        /// Whether user is away
-        /// </summary>
-        public bool IsAway = false;
-        /// <summary>
-        /// Whether this network is fully loaded
-        /// </summary>
-        public bool IsLoaded = false;
-        /// <summary>
-        /// Version of ircd running on this network
-        /// </summary>
-        public string IrcdVersion = null;
-        private bool Connected = false;
-        /// <summary>
-        /// Specifies if you are connected to network
-        /// </summary>
-        public bool IsConnected
-        {
-            get
-            {
-                return Connected;
-            }
-        }
-        private bool isDestroyed = false;
-        /// <summary>
-        /// This will return true in case object was requested to be disposed
-        /// you should never work with objects that return true here
-        /// </summary>
-        public bool IsDestroyed
-        {
-            get
-            {
-                return isDestroyed;
-            }
-        }
         /// <summary>
         /// Window ID of this network system window
         /// </summary>
@@ -280,7 +105,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="Server">Server name</param>
         /// <param name="protocol">Protocol that own this instance</param>
-        public Network(string Server, Protocol protocol)
+        public Network(string Server, libirc.Protocol protocol)
         {
             RandomuQID = Core.RetrieveRandom();
             lock (Descriptions)
@@ -331,44 +156,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Releases all resources used by this class
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases all resources used by this class
-        /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!IsDestroyed)
-            {
-                Destroy();
-            }
-        }
-        
-        /// <summary>
-        /// Insert a description to list
-        /// </summary>
-        /// <param name="mode"></param>
-        /// <param name="description"></param>
-        public void InsertSafeDescription(char mode, string description)
-        {
-            lock (Descriptions)
-            {
-                if (Descriptions.ContainsKey(mode))
-                {
-                    Descriptions.Remove(mode);
-                }
-
-                Descriptions.Add(mode, description);
-            }
-        }
-
-        /// <summary>
         /// Display server channel list
         /// </summary>
         public void DisplayChannelWindow()
@@ -378,119 +165,6 @@ namespace Pidgeon
                 wChannelList = new Forms.Channels(this);
             }
             wChannelList.Show();
-        }
-
-        /// <summary>
-        /// This will toggle the connection flag to true
-        /// </summary>
-        public void SetConnected()
-        {
-            Connected = true;
-        }
-
-        /// <summary>
-        /// This will mark the network as disconnected
-        /// </summary>
-        public void SetDisconnected()
-        {
-            Connected = false;
-            lock (Channels)
-            {
-                foreach (Channel xx in Channels.Values)
-                {
-                    // we need to change the icon to gray in side list
-                    Graphics.Window cw = xx.RetrieveWindow();
-                    if (cw != null)
-                    {
-                        cw.NeedsIcon = true;
-                    }
-                    xx.UpdateInfo();
-                }
-            }
-            lock (PrivateWins)
-            {
-                foreach (Graphics.Window uw in PrivateWins.Values)
-                {
-                    uw.NeedsIcon = true;
-                }
-            }
-            Graphics.PidgeonList.Updated = true;
-            SystemWindow.NeedsIcon = true;
-        }
-
-        /// <summary>
-        /// Removes the channel symbols (like @ or ~) from user nick
-        /// </summary>
-        /// <returns>
-        /// The username without char
-        /// </returns>
-        /// <param name='username'>
-        /// Username
-        /// </param>
-        public string RemoveCharFromUser(string username)
-        {
-            foreach (char xx in UChars)
-            {
-                if (username.Contains(xx.ToString()))
-                {
-                    username = username.Replace(xx.ToString(), "");
-                }
-            }
-            return username;
-        }
-
-        /// <summary>
-        /// Retrieve information about given channel from cache of channel list
-        /// </summary>
-        /// <param name="channel">Channel that is about to be resolved</param>
-        /// <returns></returns>
-        public ChannelData ContainsChannel(string channel)
-        {
-            lock (ChannelList)
-            {
-                foreach (ChannelData data in ChannelList)
-                {
-                    if (channel.ToLower() == data.ChannelName.ToLower())
-                    {
-                        return data;
-                    }
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Part a given channel
-        /// </summary>
-        /// <param name="ChannelName">Channel name</param>
-        public void Part(string ChannelName)
-        {
-            _Protocol.Part(ChannelName, this);
-        }
-
-        /// <summary>
-        /// Part
-        /// </summary>
-        /// <param name="channel"></param>
-        public void Part(Channel channel)
-        {
-            _Protocol.Part(channel.Name, this);
-        }
-
-        /// <summary>
-        /// UNIX time to DateTime
-        /// </summary>
-        /// <param name="time">timestamp</param>
-        /// <returns></returns>
-        [Obsolete("Replaced by a field Core.ConvertFromUNIX. Will be removed in pidgeon 1.2.20")]
-        public static DateTime convertUNIX(string time)
-        {
-            double unixtimestmp = 0;
-            if (!double.TryParse(time, out unixtimestmp))
-            {
-                unixtimestmp = 0;
-            }
-            return (new DateTime(1970, 1, 1, 0, 0, 0)).AddSeconds(unixtimestmp);
         }
 
         /// <summary>
@@ -515,7 +189,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="name">String</param>
         /// <returns>Channel or null if it doesn't exist</returns>
-        public Channel GetChannel(string name)
+        public new Channel GetChannel(string name)
         {
             lock (this.Channels)
             {
@@ -555,37 +229,6 @@ namespace Pidgeon
                 Core.SystemForm.ChannelList.ReselectWindow(PrivateWins[referenced_user]);
             }
             return referenced_user;
-        }
-
-        /// <summary>
-        /// Reconnect a disconnected network
-        /// </summary>
-        public void Reconnect()
-        {
-            if (IsDestroyed)
-            {
-                return;
-            }
-            if (IsConnected)
-            {
-                SystemWindow.scrollback.InsertText(messages.Localize("[[network-reconnect-error-1]]"), ContentLine.MessageStyle.System);
-                return;
-            }
-
-            _Protocol.ReconnectNetwork(this);
-        }
-
-        /// <summary>
-        /// Join
-        /// </summary>
-        /// <param name="channel">Channel name which is supposed to be joined</param>
-        /// <returns></returns>
-        public void Join(string channel)
-        {
-            if (Hooks._Network.BeforeJoin(this, channel))
-            {
-                Transfer("JOIN " + channel, Configuration.Priority.Normal);
-            }
         }
 
         /// <summary>
@@ -632,111 +275,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Unregister info for user and channel modes
-        /// </summary>
-        /// <param name="key">Mode</param>
-        /// <returns></returns>
-        public bool UnregisterInfo(char key)
-        {
-            lock (Descriptions)
-            {
-                if (Descriptions.ContainsKey(key))
-                {
-                    Descriptions.Remove(key);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        /// <summary>
-        /// Destroy this class, be careful, it can't be used in any way after you
-        /// call this
-        /// </summary>
-        public void Destroy()
-        {
-            if (IsDestroyed)
-            {
-                // avoid calling this function multiple times, otherwise it could crash
-                Core.DebugLog("Destroy() called multiple times on " + ServerName);
-                return;
-            }
-
-            Core.DebugLog("Destroying network " + ServerName);
-
-            isDestroyed = true;
-
-            lock (ChannelList)
-            {
-                ChannelList.Clear();
-            }
-
-            if (wChannelList != null)
-            {
-                wChannelList.Hide();
-                wChannelList.Dispose();
-                wChannelList = null;
-            }
-
-            lock (PrivateChat)
-            {
-                // release all windows
-                foreach (User user in PrivateChat)
-                {
-                    user.Destroy();
-                }
-                PrivateChat.Clear();
-            }
-
-            lock (Channels)
-            {
-                foreach (Channel xx in Channels.Values)
-                {
-                    xx.Destroy();
-                }
-                Channels.Clear();
-            }
-
-            lock (PrivateWins)
-            {
-                foreach (Graphics.Window cw in PrivateWins.Values)
-                {
-                    cw._Destroy();
-                }
-                PrivateWins.Clear();
-            }
-
-            _Protocol = null;
-            SystemWindow = null;
-
-            lock (Descriptions)
-            {
-                Descriptions.Clear();
-            }
-
-            Core.SystemForm.ChannelList.RemoveServer(this);
-        }
-
-        /// <summary>
-        /// Register info for channel info
-        /// </summary>
-        /// <param name="key">Mode</param>
-        /// <param name="text">Text</param>
-        /// <returns>true on success, false if this info already exist</returns>
-        public bool RegisterInfo(char key, string text)
-        {
-            lock (Descriptions)
-            {
-                if (Descriptions.ContainsKey(key))
-                {
-                    return false;
-                }
-                Descriptions.Add(key, text);
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Transfer data to this network server
         /// </summary>
         /// <param name="data"></param>
@@ -746,34 +284,6 @@ namespace Pidgeon
             if (!string.IsNullOrEmpty(data))
             {
                 _Protocol.Transfer(data, _priority, this);
-            }
-        }
-
-        /// <summary>
-        /// Disconnect you from network
-        /// </summary>
-        public void Disconnect()
-        {
-            lock (this)
-            {
-                if (ParentSv != null)
-                {
-                    ParentSv.Disconnect(this);
-                }
-                else if (_Protocol.GetType() == typeof(ProtocolIrc))
-                {
-                    if (!IsConnected)
-                    {
-                        SystemWindow.scrollback.InsertText("You need to be connected in order to disconnect", ContentLine.MessageStyle.System);
-                        return;
-                    }
-                    _Protocol.Disconnect();
-                }
-                else
-                {
-                    Transfer("QUIT :" + Quit);
-                }
-                SetDisconnected();
             }
         }
     }

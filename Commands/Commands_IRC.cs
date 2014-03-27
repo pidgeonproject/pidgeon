@@ -27,7 +27,7 @@ namespace Pidgeon
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    string channel = parameter; 
+                    string channel = parameter;
                     if (Core.SelectedNetwork == null)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
@@ -44,7 +44,7 @@ namespace Pidgeon
                         Graphics.Window window = curr.RetrieveWindow();
                         if (window != null)
                         {
-                            Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindow + window.WindowName);
+                            WindowsManager.ShowChat(Core.SelectedNetwork.SystemWindow + window.WindowName);
                         }
                     }
                     Core.SelectedNetwork._Protocol.Join(channel);
@@ -105,7 +105,7 @@ namespace Pidgeon
                     {
                         if (window.IsChannel || window.IsPrivMsg)
                         {
-                            Core.SelectedNetwork._Protocol.Message2(message, window.WindowName);
+                            Core.SelectedNetwork._Protocol.Act(message, window.WindowName);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText("You can't use this command in this type of window", ContentLine.MessageStyle.System, false);
@@ -194,13 +194,17 @@ namespace Pidgeon
                     {
                         if (Core.SelectedNetwork.IsConnected)
                         {
-                            if (!Core.SelectedNetwork._Protocol.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
+                            if (!WindowsManager.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
                             {
                                 Core.SelectedNetwork.Private(channel);
                             }
-                            Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
-                            Core.SelectedNetwork._Protocol.Windows[Core.SelectedNetwork.SystemWindowID + channel].scrollback.InsertText(Protocol.PRIVMSG(Core.SelectedNetwork.Nickname,
-                                parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length)), Pidgeon.ContentLine.MessageStyle.Channel);
+                            WindowsManager.ShowChat(Core.SelectedNetwork.SystemWindowID + channel, Core.SelectedNetwork);
+                            Graphics.Window window = WindowsManager.GetWindow (Core.SelectedNetwork.SystemWindowID + channel, Core.SelectedNetwork);
+                            if (window != null)
+                            {
+                                window.scrollback.InsertText (Protocol.PRIVMSG (Core.SelectedNetwork.Nickname, parameter.Substring
+                                                                                (parameter.IndexOf (channel, StringComparison.Ordinal) + 1 + channel.Length)), Pidgeon.ContentLine.MessageStyle.Channel);
+                            }
                             Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length), channel);
                             return;
                         }
@@ -214,11 +218,11 @@ namespace Pidgeon
                 {
                     if (Core.SelectedNetwork.IsConnected)
                     {
-                        if (!Core.SelectedNetwork._Protocol.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
+                        if (!WindowsManager.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
                         {
                             Core.SelectedNetwork.Private(channel);
                         }
-                        Core.SelectedNetwork._Protocol.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
+                        WindowsManager.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
                         return;
                     }
                 }

@@ -20,7 +20,7 @@ using System.Text;
 
 namespace Pidgeon.Protocols.Services
 {
-    public partial class ProtocolSv : Protocol
+    public partial class ProtocolSv
     {
         /// <summary>
         /// Smallest data unit

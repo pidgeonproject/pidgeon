@@ -891,6 +891,7 @@ namespace Pidgeon.Graphics
         private void RemoveItem(TreeIter it, object Item, ItemType type)
         {
             bool removed = false;
+            Graphics.Window window = null;
             switch (type)
             {
                 case ItemType.Services:
@@ -945,45 +946,38 @@ namespace Pidgeon.Graphics
                     {
                         lock (user._Network.PrivateChat)
                         {
-                            if (user._Network.PrivateChat.Contains(user))
+                            if (user._Network.PrivateChat.Contains (user))
                             {
                                 lock (user._Network.PrivateWins)
                                 {
-                                    if (user._Network.PrivateWins.ContainsKey(user))
+                                    if (user._Network.PrivateWins.ContainsKey (user))
                                     {
-                                        user._Network.PrivateWins.Remove(user);
-                                    }
-                                    else
+                                        user._Network.PrivateWins.Remove (user);
+                                    } else
                                     {
-                                        Core.DebugLog("There was no private window handle for " + user.Nick);
+                                        Core.DebugLog ("There was no private window handle for " + user.Nick);
                                     }
                                 }
-                                user._Network.PrivateChat.Remove(user);
+                                user._Network.PrivateChat.Remove (user);
                             }
                         }
                     }
-
-                    lock (user._Network._Protocol.Windows)
+                    window = WindowsManager.GetWindow (user._Network.SystemWindowID + user.Nick, user._Network);
+                    if (window != null)
                     {
-                        if (user._Network._Protocol.Windows.ContainsKey(user._Network.SystemWindowID + user.Nick))
-                        {
-                            Core.SystemForm.SwitchRoot();
-                            user._Network._Protocol.Windows[user._Network.SystemWindowID + user.Nick]._Destroy();
-                            user._Network._Protocol.Windows.Remove(user._Network.SystemWindowID + user.Nick);
-                        }
+                        Core.SystemForm.SwitchRoot();
+                        window._Destroy ();
+                        WindowsManager.UnregisterWindow(user._Network.SystemWindowID + user.Nick, user._Network);
                     }
-
                     removed = RemoveUser(user);
                     break;
                 case ItemType.Channel:
                     Channel channel = (Channel)Item;
-
                     if (channel.IsAlive)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to remove channel because it's active, you need to part it: " + channel.Name, ContentLine.MessageStyle.System, false, 0);
                         return;
                     }
-
                     lock (channel._Network.Channels)
                     {
                         if (channel._Network.Channels.ContainsKey(channel.lName))
@@ -991,18 +985,14 @@ namespace Pidgeon.Graphics
                             channel._Network.Channels.Remove(channel.lName);
                         }
                     }
-
                     Core.SystemForm.SwitchRoot();
-
-                    lock (channel._Network._Protocol.Windows)
+                    window = WindowsManager.GetWindow (channel._Network.SystemWindowID + channel.Name, channel._Network);
+                    if (window != null)
                     {
-                        if (channel._Network._Protocol.Windows.ContainsKey(channel._Network.SystemWindowID + channel.Name))
-                        {
-                            channel._Network._Protocol.Windows[channel._Network.SystemWindowID + channel.Name]._Destroy();
-                            channel._Network._Protocol.Windows.Remove(channel._Network.SystemWindowID + channel.Name);
-                        }
+                        Core.SystemForm.SwitchRoot();
+                        window._Destroy ();
+                        WindowsManager.UnregisterWindow(channel._Network.SystemWindowID + channel.Name, channel._Network);
                     }
-
                     removed = RemoveChannel(channel);
                     break;
             }

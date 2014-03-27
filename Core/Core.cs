@@ -193,7 +193,7 @@ namespace Pidgeon
         /// <summary>
         /// List of active networks in system
         /// </summary>
-        public static List<IProtocol> Connections = new List<IProtocol>();
+        public static List<libirc.IProtocol> Connections = new List<libirc.IProtocol>();
         /// <summary>
         /// Thread for IO logs
         /// </summary>
@@ -650,12 +650,12 @@ namespace Pidgeon
                     }
                     return;
                 }
-                ProtocolIrc server = null;
-                foreach (Protocol protocol in Connections)
+                Protocols.ProtocolIrc server = null;
+                foreach (libirc.Protocol protocol in Connections)
                 {
-                    if (typeof(ProtocolIrc) == protocol.GetType() && protocol.Server == network)
+                    if (typeof(Protocols.ProtocolIrc) == protocol.GetType() && protocol.Server == network)
                     {
-                        server = (ProtocolIrc)protocol;
+                        server = (Protocols.ProtocolIrc)protocol;
                         break;
                     }
                 }
@@ -667,7 +667,7 @@ namespace Pidgeon
 
                 if (channel != null)
                 {
-                    server._IRCNetwork.Join(channel);
+                    server.IRCNetwork.Join(channel);
                 }
             }
         }
@@ -739,15 +739,15 @@ namespace Pidgeon
         /// <returns></returns>
         public static string RemoveSpecial(string text)
         {
-            if (text.Contains(ProtocolIrc.ColorChar))
+            if (text.Contains(Protocols.ProtocolIrc.ColorChar))
             {
                 int number = 15;
                 while (number > 0)
                 {
-                    text = text.Replace(ProtocolIrc.ColorChar + number.ToString(), "");
+                    text = text.Replace(Protocols.ProtocolIrc.ColorChar + number.ToString(), "");
                     if (number < 10)
                     {
-                        text = text.Replace(ProtocolIrc.ColorChar + "0" + number.ToString(), "");
+                        text = text.Replace(Protocols.ProtocolIrc.ColorChar + "0" + number.ToString(), "");
                     }
                     number--;
                 }
@@ -760,9 +760,9 @@ namespace Pidgeon
                 .Replace("%L%", "")
                 .Replace("%/L%", "")
                 .Replace("%/D%", "")
-                .Replace(ProtocolIrc.UnderlineChar, "")
-                .Replace(ProtocolIrc.BoldChar, "")
-                .Replace(ProtocolIrc.ColorChar, "")
+                .Replace(Protocols.ProtocolIrc.UnderlineChar, "")
+                .Replace(Protocols.ProtocolIrc.BoldChar, "")
+                .Replace(Protocols.ProtocolIrc.ColorChar, "")
                 .Replace(((char)004).ToString(), "");
         }
 

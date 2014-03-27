@@ -56,7 +56,7 @@ namespace Pidgeon.Protocols
         /// <summary>
         /// Window of this DCC
         /// </summary>
-        public override Graphics.Window SystemWindow
+        public Graphics.Window SystemWindow
         {
             get
             {
@@ -260,7 +260,7 @@ namespace Pidgeon.Protocols
         /// Open the connection to foreign client OR open a local listener
         /// </summary>
         /// <returns></returns>
-        public override bool Open()
+        public override Thread Open()
         {
             systemwindow = CreateChat(UserName, false, null, false, null, false, true);
             systemwindow._Protocol = this;
@@ -269,7 +269,7 @@ namespace Pidgeon.Protocols
             thread.Name = "DCC chat " + UserName;
             Core.SystemThreads.Add(thread);
             thread.Start();
-            return true;
+            return main;
         }
 
         /// <summary>

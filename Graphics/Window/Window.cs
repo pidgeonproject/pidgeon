@@ -461,7 +461,6 @@ namespace Pidgeon.Graphics
 
             this.scrollback1 = null;
             this.textbox1 = null;
-            //this.Destroy();
             this.Dispose();
         }
         
@@ -493,7 +492,7 @@ namespace Pidgeon.Graphics
         /// <exception cref='Exception'>
         /// Represents errors that occur during application execution.
         /// </exception>
-        public void CreateChat(Protocol WindowOwner, bool Focus = true)
+        public void CreateChat(bool Focus = true)
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
@@ -502,7 +501,6 @@ namespace Pidgeon.Graphics
             this.Init();
             this.Create();
             this.Visible = true;
-            this._Protocol = WindowOwner;
             if (Core.SystemForm.Chat != null && Core.SystemForm.Chat.textbox != null)
             {
                 if (this.textbox.history.Count == 0)
@@ -523,7 +521,7 @@ namespace Pidgeon.Graphics
         /// <param name="_HasUserList"></param>
         /// <param name="_HasTextBox"></param>
         /// <param name="Focus"></param>
-        public void CreateChat(Protocol WindowOwner, bool _HasUserList, bool _HasTextBox, bool Focus = true)
+        public void CreateChat(bool _HasUserList, bool _HasTextBox, bool Focus = true)
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
@@ -531,7 +529,7 @@ namespace Pidgeon.Graphics
             }
             hasTextBox = _HasTextBox;
             hasUserList = _HasUserList;
-            CreateChat(WindowOwner, Focus);
+            CreateChat(Focus);
         }
         
         private bool Mode(string mode)

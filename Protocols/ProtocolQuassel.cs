@@ -69,7 +69,7 @@ namespace Pidgeon.Protocols
         /// <summary>
         /// System window
         /// </summary>
-        public override Graphics.Window SystemWindow
+        public Graphics.Window SystemWindow
         {
             get
             {
@@ -168,15 +168,15 @@ namespace Pidgeon.Protocols
         /// Connect to quassel core
         /// </summary>
         /// <returns></returns>
-        public override bool Open()
+        public override System.Threading.Thread Open()
         {
-            sw = CreateChat("!root", true, null);
+            sw = this.wCreateChat("!root", true, null);
             Core.SystemForm.ChannelList.InsertQuassel(this);
             _Thread = new System.Threading.Thread(Start);
             _Thread.Name = "Quassel main";
             Core.SystemThreads.Add(_Thread);
             _Thread.Start();
-            return true;
+            return _Thread;
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Pidgeon
         public static bool ConnectXmpp(string server, int port, string password, bool secured = false)
         {
             Protocols.ProtocolXmpp IM = new Protocols.ProtocolXmpp();
-            IM.Open();
+            //IM.Open();
             return false;
         }
 
@@ -116,17 +116,17 @@ namespace Pidgeon
         /// <param name="password">Password</param>
         /// <param name="secured">SSL</param>
         /// <returns>Protocol object</returns>
-        public static ProtocolIrc ConnectIRC(string server, int port = 6667, string password = "", bool secured = false)
+        public static Protocols.ProtocolIrc ConnectIRC(string server, int port = 6667, string password = "", bool secured = false)
         {
-            ProtocolIrc protocol = new ProtocolIrc();
+            Protocols.ProtocolIrc protocol = new Protocols.ProtocolIrc();
             Connections.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
             protocol.Password = password;
             protocol.SSL = secured;
-            protocol._IRCNetwork = new Network(server, protocol);
-            SelectedNetwork = protocol._IRCNetwork;
-            protocol._IRCNetwork._Protocol = protocol;
+            Network network = new Network (server, protocol);
+            protocol.IRCNetwork = (libirc.Network)network;
+            SelectedNetwork = network;
             protocol.Open();
             return protocol;
         }

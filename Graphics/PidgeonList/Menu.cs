@@ -302,18 +302,18 @@ namespace Pidgeon.Graphics
                         partToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         chan._Network.RenderedChannel = chan;
-                        chan._Network._Protocol.ShowChat(chan._Network.SystemWindowID + chan.Name);
+                        WindowsManager.ShowChat(chan._Network.SystemWindowID + chan.Name, chan._Network);
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.Server:
                         Network server = (Network)tv.Model.GetValue(iter, 1);
                         if (server.ParentSv == null)
                         {
-                            server._Protocol.ShowChat("!system");
+                            WindowsManager.ShowChat("!system", server._Protocol);
                         }
                         else
                         {
-                            server.ParentSv.ShowChat("!" + server.SystemWindowID);
+                            WindowsManager.ShowChat("!" + server.SystemWindowID, server.ParentSv);
                         }
                         server.SystemWindow.MenuColor = Configuration.CurrentSkin.FontColor;
                         SelectedWindow = server.SystemWindow;
@@ -326,7 +326,7 @@ namespace Pidgeon.Graphics
                         ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = protocol.SystemWindow;
-                        protocol.ShowChat("!root");
+                        WindowsManager.ShowChat("!root", protocol);
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
@@ -335,7 +335,7 @@ namespace Pidgeon.Graphics
                         Protocols.ProtocolDCC dcc = (Protocols.ProtocolDCC)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = dcc.SystemWindow;
-                        dcc.ShowChat(dcc.SystemWindow.WindowName);
+                        WindowsManager.ShowChat(dcc.SystemWindow.WindowName, dcc);
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
@@ -344,7 +344,7 @@ namespace Pidgeon.Graphics
                         Protocols.ProtocolQuassel quassel = (Protocols.ProtocolQuassel)tv.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = quassel.SystemWindow;
-                        quassel.ShowChat("!root");
+                        WindowsManager.ShowChat("!root", quassel);
                         Core.SelectedNetwork = null;
                         disconnectToolStripMenuItem.Visible = true;
                         return;
@@ -365,7 +365,7 @@ namespace Pidgeon.Graphics
                             SelectedWindow = window;
                             window.MenuColor = Configuration.CurrentSkin.FontColor;
                         }
-                        us._Network._Protocol.ShowChat(us._Network.SystemWindowID + us.Nick);
+                        WindowsManager.ShowChat(us._Network.SystemWindowID + us.Nick, us._Network);
                         closeToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         return;
