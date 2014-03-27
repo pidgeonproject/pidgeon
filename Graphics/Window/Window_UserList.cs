@@ -477,8 +477,8 @@ namespace Pidgeon.Graphics
                             script += current_kick + "\n";
                             if (!Configuration.irc.ConfirmAll)
                             {
-                                _channel._Network.Transfer(current_ban, Configuration.Priority.High);
-                                _channel._Network.Transfer(current_kick, Configuration.Priority.High);
+                                _channel._Network.Transfer(current_ban, libirc.Defs.Priority.High);
+                                _channel._Network.Transfer(current_kick, libirc.Defs.Priority.High);
                             }
                         }
                         if (Configuration.irc.ConfirmAll)
@@ -536,7 +536,7 @@ namespace Pidgeon.Graphics
                         script += current_kick + "\n";
                         if (!Configuration.irc.ConfirmAll)
                         {
-                            _Network.Transfer(current_kick, Configuration.Priority.High);
+                            _Network.Transfer(current_kick, libirc.Defs.Priority.High);
                         }
                     }
                     if (Configuration.irc.ConfirmAll)
@@ -605,7 +605,7 @@ namespace Pidgeon.Graphics
                             }
                             if (!Configuration.irc.ConfirmAll)
                             {
-                                Core.SelectedNetwork.Transfer(mode, Configuration.Priority.High);
+                                Core.SelectedNetwork.Transfer(mode, libirc.Defs.Priority.High);
                             }
                         }
                         else
@@ -749,9 +749,13 @@ namespace Pidgeon.Graphics
                         string nickname = user.Nick;
                         if (string.IsNullOrEmpty(nickname))
                         {
-                            if (!Core.SelectedNetwork._Protocol.Windows.ContainsKey(_Network.SystemWindowID + nickname))
+                            Pidgeon.Graphics.Window wn = WindowsManager.GetWindow (_Network.SystemWindowID + nickname, _Network);
+                            if (wn == null)
                             {
                                 _Network.Private(nickname);
+                            } else
+                            {
+                                Core.SystemForm.SwitchWindow(wn);
                             }
                         }
                     }
@@ -800,7 +804,7 @@ namespace Pidgeon.Graphics
                         script += current_kick + "\n";
                         if (!Configuration.irc.ConfirmAll)
                         {
-                            _Network.Transfer(current_kick, Configuration.Priority.High);
+                            _Network.Transfer(current_kick, libirc.Defs.Priority.High);
                         }
                     }
                     if (Configuration.irc.ConfirmAll)
@@ -926,7 +930,7 @@ namespace Pidgeon.Graphics
                     {
                         if (Configuration.irc.DisplayCtcp)
                         {
-                            _channel._Network._Protocol.Windows["!" + _channel._Network.SystemWindowID].scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
+                            _channel._Network.SystemWindow.scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
                         }
                         _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Network._Protocol.delimiter + message + _Network._Protocol.delimiter);
                     }

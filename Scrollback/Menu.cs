@@ -356,7 +356,7 @@ namespace Pidgeon
                         Channel channel = owner._Network.GetChannel(owner.WindowName);
                         if (channel != null)
                         {
-                            User user = channel.UserFromName(adds);
+                            libirc.User user = channel.UserFromName(adds);
                             if (user != null)
                             {
                                 if (!string.IsNullOrEmpty(user.Host))

@@ -131,7 +131,7 @@ namespace Pidgeon
                                 ms = ms.Substring(1);
                             }
                             Core.SelectedNetwork.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.SelectedNetwork.Nickname + "> " + ms, Pidgeon.ContentLine.MessageStyle.System);
-                            Core.SelectedNetwork.Message(ms, channel, Configuration.Priority.Normal, true);
+                            Core.SelectedNetwork.Message(ms, channel, libirc.Defs.Priority.Normal, true);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);

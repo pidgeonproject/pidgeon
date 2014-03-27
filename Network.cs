@@ -105,7 +105,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="Server">Server name</param>
         /// <param name="protocol">Protocol that own this instance</param>
-        public Network(string Server, libirc.Protocol protocol)
+        public Network(string Server, libirc.Protocol protocol) : base(Server, protocol)
         {
             RandomuQID = Core.RetrieveRandom();
             lock (Descriptions)
@@ -130,12 +130,12 @@ namespace Pidgeon
             Ident = Configuration.UserData.ident;
             if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
-                SystemWindow = protocol.CreateChat("!" + ServerName, false, this, false, "!" + RandomuQID + ServerName, false, true);
+                SystemWindow = WindowsManager.CreateChat("!" + ServerName, false, this, false, "!" + RandomuQID + ServerName, false, true, this);
                 Core.SystemForm.ChannelList.InsertNetwork(this, (Protocols.Services.ProtocolSv)protocol);
             }
             else
             {
-                SystemWindow = protocol.CreateChat("!system", true, this, false, null, false, true);
+                SystemWindow = WindowsManager.CreateChat("!system", true, this, false, null, false, true, this);
                 Core.SystemForm.ChannelList.InsertNetwork(this);
             }
             Hooks._Network.CreatingNetwork(this);
@@ -203,17 +203,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Retrieve channel
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns></returns>
-        [Obsolete("Replaced with GetChannel")]
-        public Channel getChannel(string name)
-        {
-            return GetChannel(name);
-        }
-
-        /// <summary>
         /// Create private message to user
         /// </summary>
         /// <param name="user">User name</param>
@@ -222,7 +211,8 @@ namespace Pidgeon
             User referenced_user = new User(user, "", this, "");
             PrivateChat.Add(referenced_user);
             Core.SystemForm.ChannelList.insertUser(referenced_user);
-            PrivateWins.Add(referenced_user, _Protocol.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this, true, null, false, true));
+            PrivateWins.Add(referenced_user, WindowsManager.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this,
+                                                                       true, null, false, true, this));
             PrivateWins[referenced_user].IsPrivMsg = true;
             if (Configuration.UserData.SwitchWindowOnJoin)
             {
@@ -248,7 +238,7 @@ namespace Pidgeon
                 _channel.lName = channel.ToLower();
                 Channels.Add(_channel.lName, _channel);
                 Core.SystemForm.ChannelList.InsertChannel(_channel);
-                Graphics.Window window = _Protocol.CreateChat(channel, !nf, this, true);
+                Graphics.Window window = WindowsManager.CreateChat(channel, !nf, this, true, null, true, true, this);
                 window.IsChannel = true;
                 if (!nf)
                 {
@@ -269,22 +259,9 @@ namespace Pidgeon
         /// <param name="to">Sending to</param>
         /// <param name="_priority">Priority</param>
         /// <param name="pmsg">If this is private message (so it needs to be handled in a different way)</param>
-        public void Message(string text, string to, Configuration.Priority _priority = Configuration.Priority.Normal, bool pmsg = false)
+        public void Message(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
         {
-            _Protocol.Message(text, to, this, _priority, pmsg);
-        }
-
-        /// <summary>
-        /// Transfer data to this network server
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="_priority"></param>
-        public void Transfer(string data, Configuration.Priority _priority = Configuration.Priority.Normal)
-        {
-            if (!string.IsNullOrEmpty(data))
-            {
-                _Protocol.Transfer(data, _priority, this);
-            }
+            _Protocol.Message(text, to, this, _priority);
         }
     }
 }

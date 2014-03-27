@@ -32,7 +32,7 @@ namespace Pidgeon
         /// <returns>false</returns>
         public static bool ConnectXmpp(string server, int port, string password, bool secured = false)
         {
-            Protocols.ProtocolXmpp IM = new Protocols.ProtocolXmpp();
+            //Protocols.ProtocolXmpp IM = new Protocols.ProtocolXmpp();
             //IM.Open();
             return false;
         }

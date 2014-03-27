@@ -30,5 +30,15 @@ namespace Pidgeon
         /// </summary>
         [NonSerialized]
         public new Network _Network = null;
+        
+        public User(string user, libirc.Network network) : base(user, network)
+        {
+            
+        }
+        
+        public User(string nick, string host, libirc.Network network, string ident) : base(nick, host, network, ident)
+        {
+            
+        }
     }
 }

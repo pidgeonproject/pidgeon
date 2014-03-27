@@ -65,14 +65,12 @@ namespace Pidgeon.Protocols.Services
                     }
                     else
                     {
-                        lock (protocol.Windows)
+                        Graphics.Window window = WindowsManager.GetWindow(mn.SystemWindowID + message_target, mn);
+                        if (window == null)
                         {
-                            if (!protocol.Windows.ContainsKey(mn.SystemWindowID + message_target))
-                            {
-                                mn.Private(message_target);
-                            }
-                            message_window = protocol.Windows[mn.SystemWindowID + message_target];
+                            mn.Private(message_target);
                         }
+                        message_window = WindowsManager.GetWindow(mn.SystemWindowID + message_target, mn);
                     }
                 }
 
@@ -95,11 +93,11 @@ namespace Pidgeon.Protocols.Services
             {
                 if (curr.InnerText == "PERMISSIONDENY")
                 {
-                    protocol.Windows["!root"].scrollback.InsertText("You can't send this command to server, because you aren't logged in",
+                    protocol.SystemWindow.scrollback.InsertText("You can't send this command to server, because you aren't logged in",
                         Pidgeon.ContentLine.MessageStyle.System, false);
                     return;
                 }
-                protocol.Windows["!root"].scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
+                protocol.SystemWindow.scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
                     Pidgeon.ContentLine.MessageStyle.User, false);
             }
 
@@ -110,7 +108,7 @@ namespace Pidgeon.Protocols.Services
             /// <param name="protocol">Protocol</param>
             public static void sLoad(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.Windows["!root"].scrollback.InsertText(curr.InnerText, Pidgeon.ContentLine.MessageStyle.System, false);
+                protocol.SystemWindow.scrollback.InsertText(curr.InnerText, Pidgeon.ContentLine.MessageStyle.System, false);
             }
 
             /// <summary>
@@ -193,7 +191,7 @@ namespace Pidgeon.Protocols.Services
                     }
                 }
 
-                ProcessorIRC processor = null;
+                libirc.ProcessorIRC processor = null;
 
                 if (backlog || range)
                 {
@@ -233,12 +231,12 @@ namespace Pidgeon.Protocols.Services
                             }
                         }
                     }
-                    processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
+                    processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
                     processor.IsBacklog = IsBacklog;
                     processor.ProfiledResult();
                     return;
                 }
-                processor = new ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
+                processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
                 processor.IsBacklog = IsBacklog;
                 processor.ProfiledResult();
             }
@@ -254,7 +252,7 @@ namespace Pidgeon.Protocols.Services
                 if (sv != null)
                 {
                     sv.Nickname = curr.InnerText;
-                    protocol.Windows["!" + sv.SystemWindowID].scrollback.InsertText("Your nick was changed to " + curr.InnerText,
+                    sv.SystemWindow.scrollback.InsertText("Your nick was changed to " + curr.InnerText,
                         Pidgeon.ContentLine.MessageStyle.User, true);
                 }
             }
@@ -270,10 +268,10 @@ namespace Pidgeon.Protocols.Services
                 switch (curr.InnerText)
                 {
                     case "CONNECTED":
-                        protocol.Windows["!root"].scrollback.InsertText("You are already connected to " + network, Pidgeon.ContentLine.MessageStyle.System);
+                        protocol.SystemWindow.scrollback.InsertText("You are already connected to " + network, Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     case "PROBLEM":
-                        protocol.Windows["!root"].scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Pidgeon.ContentLine.MessageStyle.System, false);
+                        protocol.SystemWindow.scrollback.InsertText(messages.get("service_error", Core.SelectedLanguage, new List<string> { network, curr.Attributes[1].Value }), Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
@@ -292,7 +290,7 @@ namespace Pidgeon.Protocols.Services
             /// <param name="protocol">Protocol which owns this request</param>
             public static void sGlobalident(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
+                protocol.SystemWindow.scrollback.InsertText(messages.get("pidgeon.globalident", Core.SelectedLanguage,
                                 new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
 
@@ -345,7 +343,7 @@ namespace Pidgeon.Protocols.Services
             public static void sGlobalNick(XmlNode curr, ProtocolSv protocol)
             {
                 protocol.nick = curr.InnerText;
-                protocol.Windows["!root"].scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
+                protocol.SystemWindow.scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
                     new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
 
@@ -601,7 +599,7 @@ namespace Pidgeon.Protocols.Services
                                                         xx.IsParsingBanData = channel_info.parsing_bans;
                                                         xx.IsParsingWhoisData = channel_info.parsing_wh;
                                                         xx.IsParsingWhoData = channel_info.parsing_who;
-                                                        xx.ChannelMode = new NetworkMode(channel_info.mode);
+                                                        xx.ChannelMode = new libirc.NetworkMode(channel_info.mode);
                                                         xx.IsParsingExceptionData = channel_info.parsing_xe;
                                                         xx.Redraw = channel_info.Redraw;
                                                         xx.TemporarilyHidden = channel_info.temporary_hide;
@@ -614,8 +612,8 @@ namespace Pidgeon.Protocols.Services
                                         }
                                         if (!Configuration.Services.Retrieve_Sv)
                                         {
-                                            protocol.SendData(nw.ServerName, "TOPIC " + channel, Configuration.Priority.Normal);
-                                            protocol.SendData(nw.ServerName, "MODE " + channel, Configuration.Priority.Low);
+                                            protocol.SendData(nw.ServerName, "TOPIC " + channel, libirc.Defs.Priority.Normal);
+                                            protocol.SendData(nw.ServerName, "MODE " + channel, libirc.Defs.Priority.Low);
                                         }
                                         Datagram response2 = new Datagram("CHANNELINFO", "INFO");
                                         response2.Parameters.Add("network", curr.Attributes[0].Value);
@@ -760,7 +758,7 @@ namespace Pidgeon.Protocols.Services
                         Core.DebugLog("Invalid xml:" + curr.InnerXml);
                         return;
                     }
-                    User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);
+                    libirc.User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);
 
                     if (user == null)
                     {
@@ -791,15 +789,15 @@ namespace Pidgeon.Protocols.Services
             {
                 if (curr.InnerText == "INVALID")
                 {
-                    protocol.Windows["!root"].scrollback.InsertText("You have supplied wrong password, connection closed",
+                    protocol.SystemWindow.scrollback.InsertText("You have supplied wrong password, connection closed",
                         Pidgeon.ContentLine.MessageStyle.System, false);
                     protocol.Disconnect();
                 }
                 if (curr.InnerText == "OK")
                 {
                     protocol.ConnectionStatus = Status.Connected;
-                    protocol.Windows["!root"].scrollback.InsertText("You are now logged in to pidgeon bnc", Pidgeon.ContentLine.MessageStyle.System, false);
-                    protocol.Windows["!root"].scrollback.InsertText(curr.Attributes[0].Value, Pidgeon.ContentLine.MessageStyle.System);
+                    protocol.SystemWindow.scrollback.InsertText("You are now logged in to pidgeon bnc", Pidgeon.ContentLine.MessageStyle.System, false);
+                    protocol.SystemWindow.scrollback.InsertText(curr.Attributes[0].Value, Pidgeon.ContentLine.MessageStyle.System);
                 }
                 return;
             }

@@ -262,14 +262,14 @@ namespace Pidgeon.Protocols
         /// <returns></returns>
         public override Thread Open()
         {
-            systemwindow = CreateChat(UserName, false, null, false, null, false, true);
+            systemwindow = WindowsManager.CreateChat(UserName, false, null, false, null, false, true, this);
             systemwindow._Protocol = this;
             Core.SystemForm.ChannelList.InsertDcc(this);
             thread = new Thread(main);
             thread.Name = "DCC chat " + UserName;
             Core.SystemThreads.Add(thread);
             thread.Start();
-            return main;
+            return thread;
         }
 
         /// <summary>

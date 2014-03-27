@@ -563,7 +563,10 @@ namespace Pidgeon
             {
                 ContentLines.Clear();
             }
-            simpleview.Destroy();
+            if (simpleview != null)
+            {
+                simpleview.Destroy();
+            }
             RT = null;
             owner = null;
             this.Destroy();

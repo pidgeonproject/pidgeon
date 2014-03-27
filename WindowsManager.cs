@@ -185,8 +185,7 @@ namespace Pidgeon
             {
                 foreach (WindowRequest item in WindowRequests)
                 {
-                    CreateChat(item.hasUserList, item.hasTextBox, item.focus, null, item.window.IsChannel, item.hasUserList,
-                               item.hasTextBox, item.Parent);
+                    item.window.CreateChat(item.hasUserList, item.hasTextBox, item.focus);
                     if (item.focus)
                     {
                         //! TODO: why the hell we pass string here instead of window
@@ -208,7 +207,8 @@ namespace Pidgeon
         /// <param name="hasUserList"></param>
         /// <param name="hasTextBox"></param>
         /// <returns></returns>
-        public static Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null, bool hasUserList = true, bool hasTextBox = true, object parent = null)
+        public static Graphics.Window CreateChat(string name, bool focus, Network network, bool channelw = false, string id = null, bool hasUserList = true, 
+                                                 bool hasTextBox = true, object parent = null)
         {
             // in case there is no parent object for this window, let's put it into root
             if (parent == null)

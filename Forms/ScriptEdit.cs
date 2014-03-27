@@ -179,7 +179,7 @@ namespace Pidgeon.Forms
                             Core.ProcessCommand(text);
                             continue;
                         }
-                        network.Transfer(text, Configuration.Priority.High);
+                        network.Transfer(text, libirc.Defs.Priority.High);
                     }
                 }
                 Hide();

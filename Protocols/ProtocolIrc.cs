@@ -29,8 +29,8 @@ namespace Pidgeon.Protocols
     /// </summary>
     public class ProtocolIrc : libirc.Protocols.ProtocolIrc
     {
-        WindowsManager WindowManager = new WindowsManager();
-
+        private Thread ThreadMain = null;
+        
         /// <summary>
         /// Return back the system chars to previous look
         /// </summary>
@@ -50,7 +50,28 @@ namespace Pidgeon.Protocols
         {
             return text.Replace("%", "%####%");
         }
-
+  
+        public override void TrafficLog (string text, bool incoming)
+        {
+            if (!incoming)
+            {
+                Core.TrafficScanner.Insert(this.Server, " << " + text);
+                return;
+            }
+            Core.TrafficScanner.Insert(this.Server, " >> " + text);
+        }
+        
+        private void Exec()
+        {
+            try
+            {
+                this.Start();
+            } catch (Exception fail)
+            {
+                Core.HandleException(fail);
+            }
+        }
+        
         /// <summary>
         /// Command
         /// </summary>
@@ -76,6 +97,14 @@ namespace Pidgeon.Protocols
                 Core.HandleException(ex);
             }
             return false;
+        }
+        
+        public override Thread Open ()
+        {
+            ThreadMain = new Thread(Exec);
+            Core.DebugLog("Connecting to server " + Server + " port " + Port.ToString());
+            ThreadMain.Start();
+            return ThreadMain;
         }
     }
 }

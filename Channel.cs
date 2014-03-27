@@ -43,7 +43,17 @@ namespace Pidgeon
         /// </summary>
         public string MenuData = null;
         public new Network _Network = null;
-
+  
+        public Channel() : base()
+        {
+            
+        }
+        
+        public Channel(libirc.Network network) : base(network)
+        {
+            
+        }
+        
         /// <summary>
         /// Recreate information in side menu
         /// </summary>
@@ -91,12 +101,12 @@ namespace Pidgeon
             {
                 Redraw = false;
                 RetrieveWindow();
-                List<User> owners = new List<User>();
-                List<User> admins = new List<User>();
-                List<User> oper = new List<User>();
-                List<User> halfop = new List<User>();
-                List<User> vs = new List<User>();
-                List<User> users = new List<User>();
+                List<libirc.User> owners = new List<libirc.User>();
+                List<libirc.User> admins = new List<libirc.User>();
+                List<libirc.User> oper = new List<libirc.User>();
+                List<libirc.User> halfop = new List<libirc.User>();
+                List<libirc.User> vs = new List<libirc.User>();
+                List<libirc.User> users = new List<libirc.User>();
                 bool Inserted;
                 Core.SystemForm.UpdateStatus();
                 if (Chat != null && Chat.IsInitialised)
@@ -283,16 +293,11 @@ namespace Pidgeon
                 {
                     throw new Core.PidgeonException("Protocol is NULL for " + _Network.ServerName);
                 }
-                lock (_Network._Protocol.Windows)
+                Graphics.Window wind = WindowsManager.GetWindow(_Network.SystemWindowID + Name, _Network);
+                if (wind != null)
                 {
-                    foreach (var curr in _Network._Protocol.Windows)
-                    {
-                        if (curr.Key == _Network.SystemWindowID + Name)
-                        {
-                            this.Chat = curr.Value;
-                            return curr.Value;
-                        }
-                    }
+                    this.Chat = wind;
+                    return wind;
                 }
             }
             return Chat;

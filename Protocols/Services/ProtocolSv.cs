@@ -74,7 +74,7 @@ namespace Pidgeon.Protocols.Services
         /// <summary>
         /// List of networks loaded on server
         /// </summary>
-        public List<Network> NetworkList = new List<Network>();
+        public List<libirc.Network> NetworkList = new List<libirc.Network>();
         private System.IO.StreamWriter _StreamWriter = null;
         /// <summary>
         /// Password
@@ -102,18 +102,11 @@ namespace Pidgeon.Protocols.Services
         private bool disconnecting = false;
         private List<string> WaitingNetw = new List<string>();
         private bool disposed = false;
-        WindowsManager WindowManager;
 
         /// <summary>
         /// Root window
         /// </summary>
-        public Graphics.Window SystemWindow
-        {
-            get
-            {
-                return WindowManager.SystemWindow;
-            }
-        }
+        public Graphics.Window SystemWindow = null;
 
         private void _Ping()
         {
@@ -159,10 +152,10 @@ namespace Pidgeon.Protocols.Services
                 // uppercase
                 string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
                 string rest = cm.Substring(first_word.Length);
-                Transfer(first_word + rest, Configuration.Priority.Normal, network);
+                Transfer(first_word + rest, libirc.Defs.Priority.Normal, network);
                 return true;
             }
-            Transfer(cm.ToUpper(), Configuration.Priority.Normal, network);
+            Transfer(cm.ToUpper(), libirc.Defs.Priority.Normal, network);
             return true;
         }
 
@@ -333,16 +326,16 @@ namespace Pidgeon.Protocols.Services
             }
         }
 
-        private void SendData(string network, string data, Configuration.Priority priority = Configuration.Priority.Normal)
+        private void SendData(string network, string data, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal)
         {
             Datagram line = new Datagram("RAW", data);
             string Pr = "Normal";
             switch (priority)
             {
-                case Configuration.Priority.High:
+                case libirc.Defs.Priority.High:
                     Pr = "High";
                     break;
-                case Configuration.Priority.Low:
+                case libirc.Defs.Priority.Low:
                     Pr = "Low";
                     break;
             }
@@ -358,7 +351,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="network"></param>
         public override void Part(string name, libirc.Network network = null)
         {
-            Transfer("PART " + name, Configuration.Priority.High, network);
+            Transfer("PART " + name, libirc.Defs.Priority.High, network);
         }
 
         private bool Process(string dg)
@@ -585,7 +578,6 @@ namespace Pidgeon.Protocols.Services
                 _StreamWriter = null;
                 _StreamReader = null;
                 base.Exit();
-                destroyed = true;
             }
         }
 
@@ -672,7 +664,7 @@ namespace Pidgeon.Protocols.Services
         /// <returns></returns>
         public override System.Threading.Thread Open()
         {
-            CreateChat("!root", true, null, false, null, false, true);
+            SystemWindow = WindowsManager.CreateChat("!root", true, null, false, null, false, true, this);
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
             Core.SystemThreads.Add(main);
@@ -781,7 +773,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="network"></param>
         public void Disconnect(Network network)
         {
-            Transfer("QUIT :" + network.Quit, Configuration.Priority.High, network);
+            Transfer("QUIT :" + network.Quit, libirc.Defs.Priority.High, network);
             Datagram request = new Datagram("REMOVE", network.ServerName);
             Deliver(request);
         }

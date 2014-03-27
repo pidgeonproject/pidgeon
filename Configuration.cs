@@ -701,29 +701,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Priority of irc message
-        /// </summary>
-        public enum Priority
-        {
-            /// <summary>
-            /// High
-            /// </summary>
-            High = 8,
-            /// <summary>
-            /// Normal
-            /// </summary>
-            Normal = 2,
-            /// <summary>
-            /// Low
-            /// </summary>
-            Low = 1,
-            /// <summary>
-            /// Lowest
-            /// </summary>
-            None = 0
-        }
-
-        /// <summary>
         /// Events
         /// </summary>
         public enum PidgeonList_MouseClick

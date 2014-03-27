@@ -124,7 +124,7 @@ namespace Pidgeon
                         if (closed)
                         {
                             text = text.Substring(position, text.Length - position);
-                            Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(text), Configuration.CurrentSkin.mrcl[color]);
+                            Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text), Configuration.CurrentSkin.mrcl[color]);
                             return Link;
                         }
 
@@ -175,8 +175,8 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
-                    Link.Link = "pidgeon://ident/#" + ProtocolIrc.DecodeText(link);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Link.Link = "pidgeon://ident/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -201,8 +201,8 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
-                    Link.Link = "pidgeon://text/#" + ProtocolIrc.DecodeText(link);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Link.Link = "pidgeon://text/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
                     return Link;
@@ -228,8 +228,8 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
-                    Link.Link = "pidgeon://hostname/#" + ProtocolIrc.DecodeText(link);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Link.Link = "pidgeon://hostname/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.TextColor = color;
                     Link.Bold = bold;
@@ -273,8 +273,8 @@ namespace Pidgeon
                         link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                     }
 
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
-                    Link.Link = "pidgeon://join/" + ProtocolIrc.DecodeText(link);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Link.Link = "pidgeon://join/" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
                     {
@@ -305,14 +305,14 @@ namespace Pidgeon
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%", StringComparison.Ordinal));
 
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Bold = bold;
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
                     {
                         Link.TextColor = color;
                     }
-                    Link.Link = "pidgeon://user/#" + ProtocolIrc.DecodeText(link);
+                    Link.Link = "pidgeon://user/#" + Protocols.ProtocolIrc.DecodeText(link);
                     return Link;
                 }
             }
@@ -350,14 +350,14 @@ namespace Pidgeon
                             link = link.Substring(0, link.IndexOf(sepa.ToString(), StringComparison.Ordinal));
                         }
                     }
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Underline = true;
                     Link.Bold = bold;
                     if (Configuration.Colors.ChangeLinks)
                     {
                         Link.TextColor = color;
                     }
-                    Link.Link = CurrentProtocol + ProtocolIrc.DecodeText(link);
+                    Link.Link = CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link);
                     return Link;
                 }
                 return null;
@@ -374,14 +374,14 @@ namespace Pidgeon
                         link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
-                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                 Link.Underline = true;
                 Link.Bold = bold;
                 if (Configuration.Colors.ChangeLinks)
                 {
                     Link.TextColor = color;
                 }
-                Link.Link = CurrentProtocol + ProtocolIrc.DecodeText(link);
+                Link.Link = CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link);
                 return Link;
             }
 
@@ -409,14 +409,14 @@ namespace Pidgeon
                                 link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
                             }
                         }
-                        Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
+                        Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                         Link.Underline = true;
                         Link.Bold = bold;
                         if (Configuration.Colors.ChangeLinks)
                         {
                             Link.TextColor = color;
                         }
-                        Link.Link = CurrentProtocol + ProtocolIrc.DecodeText(link);
+                        Link.Link = CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link);
                         return Link;
                     }
                 }
@@ -478,12 +478,12 @@ namespace Pidgeon
                         if (prefix != '\0')
                         {
                             // we append the prefix to previous text because it must not be a part of url
-                            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine) + prefix.ToString(), color);
+                            lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine) + prefix.ToString(), color);
                         }
                         else
                         {
                             // there was no prefix
-                            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                            lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                         }
                         lprttext.Underline = Underlined;
                         lprttext.Bold = Bold;
@@ -519,7 +519,7 @@ namespace Pidgeon
                 }
                 else if (tempdata.StartsWith("%USER%", StringComparison.Ordinal))
                 {
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Underline = Underlined;
                     lprttext.Italic = Italic;
@@ -545,7 +545,7 @@ namespace Pidgeon
                         tempdata = tempdata.Substring(1);
                     }
 
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Underline = Underlined;
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
@@ -566,7 +566,7 @@ namespace Pidgeon
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -579,7 +579,7 @@ namespace Pidgeon
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -592,7 +592,7 @@ namespace Pidgeon
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -607,7 +607,7 @@ namespace Pidgeon
                     int colorcode = -2;
                     tempdata = tempdata.Substring(1);
                     carret++;
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -654,7 +654,7 @@ namespace Pidgeon
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -665,7 +665,7 @@ namespace Pidgeon
                 }
                 else if (tempdata.StartsWith("%H%", StringComparison.Ordinal))
                 {
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -683,7 +683,7 @@ namespace Pidgeon
                 }
                 else if (tempdata.StartsWith("%L%", StringComparison.Ordinal))
                 {
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -701,7 +701,7 @@ namespace Pidgeon
                 }
                 else if (tempdata.StartsWith("%D%", StringComparison.Ordinal))
                 {
-                    lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+                    lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
                     lprttext.Bold = Bold;
                     lprttext.Italic = Italic;
                     lprttext.Underline = Underlined;
@@ -724,7 +724,7 @@ namespace Pidgeon
                 tempdata = tempdata.Substring(Jump);
                 carret = carret + Jump;
             }
-            lprttext = new Pidgeon.RichTBox.ContentText(ProtocolIrc.DecodeText(templine), color);
+            lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine), color);
             lprttext.Underline = Underlined;
             lprttext.Italic = Italic;
             lprttext.Bold = Bold;

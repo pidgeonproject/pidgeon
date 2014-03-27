@@ -170,7 +170,7 @@ namespace Pidgeon.Protocols
         /// <returns></returns>
         public override System.Threading.Thread Open()
         {
-            sw = this.wCreateChat("!root", true, null);
+            sw = WindowsManager.CreateChat("!root", true, null, false, null, false, true, this);
             Core.SystemForm.ChannelList.InsertQuassel(this);
             _Thread = new System.Threading.Thread(Start);
             _Thread.Name = "Quassel main";
