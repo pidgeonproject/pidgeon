@@ -135,7 +135,6 @@ namespace Pidgeon
             if (Configuration.Kernel.Debugging)
             {
                 Core.DebugLog("Destructor called for network: " + ServerName);
-                //Core.DebugLog("Released: " + System.Runtime.InteropServices.Marshal.SizeOf(this).ToString() + " bytes of memory");
             }
             GC.SuppressFinalize(this);
         }
@@ -152,18 +151,39 @@ namespace Pidgeon
             wChannelList.Show();
         }
 
-        /// <summary>
-        /// If such a user is contained in a private message list it will be returned
-        /// </summary>
-        /// <param name="user">User nick</param>
-        /// <returns>Instance of user or null if it doesn't exist</returns>
-        public User getUser(string user)
+        public Graphics.Window GetPrivateUserWindow(string nickname)
         {
-            foreach (User x in PrivateChat)
+            lock (this.PrivateWins)
             {
-                if (x.Nick.ToLower() == user.ToLower())
+                User user = this.GetUser(nickname);
+                if (user == null)
                 {
-                    return x;
+                    // we didn't have a conversion so far, let's make a new window for this user
+                    user = new User(nickname, this);
+                    Graphics.Window window = WindowsManager.CreateChat(nickname, false, this, false, nickname, false, true, this);
+                    this.PrivateWins.Add(user, window);
+                    window.IsPrivMsg = true;
+                    Core.SystemForm.ChannelList.insertUser(user);
+                    return window;
+                }
+                else
+                {
+                    return this.PrivateWins[user];
+                }
+            }
+        }
+
+        public User GetUser(string nickname)
+        {
+            nickname = nickname.ToLower();
+            lock (this.PrivateWins)
+            {
+                foreach (User user in PrivateWins.Keys)
+                {
+                    if (user.Nick.ToLower() == nickname)
+                    {
+                        return user;
+                    }
                 }
             }
             return null;
@@ -191,19 +211,14 @@ namespace Pidgeon
         /// Create private message to user
         /// </summary>
         /// <param name="user">User name</param>
+        [Obsolete ("Use GetPrivateUserWindow instead")]
         public User Private(string user)
         {
-            User referenced_user = new User(user, "", this, "");
-            PrivateChat.Add(referenced_user);
-            Core.SystemForm.ChannelList.insertUser(referenced_user);
-            PrivateWins.Add(referenced_user, WindowsManager.CreateChat(user, Configuration.UserData.SwitchWindowOnJoin, this,
-                                                                       true, null, false, true, this));
-            PrivateWins[referenced_user].IsPrivMsg = true;
-            if (Configuration.UserData.SwitchWindowOnJoin)
+            lock (this.PrivateWins)
             {
-                Core.SystemForm.ChannelList.ReselectWindow(PrivateWins[referenced_user]);
+                this.GetPrivateUserWindow(user);
+                return GetUser(user);
             }
-            return referenced_user;
         }
 
         /// <summary>
@@ -240,6 +255,18 @@ namespace Pidgeon
                 case libirc.Network.EventType.Join:
                     CreateChannel(args.ChannelName);
                     break;
+            }
+        }
+
+        public override void __evt_PRIVMSG(libirc.Network.NetworkPRIVMSGEventArgs args)
+        {
+            if (String.IsNullOrEmpty(args.ChannelName))
+            {
+                
+            }
+            else
+            {
+                
             }
         }
     }

@@ -483,9 +483,6 @@ namespace Pidgeon.Graphics
         /// <summary>
         /// Creates the chat
         /// </summary>
-        /// <param name='WindowOwner'>
-        /// Window owner.
-        /// </param>
         /// <param name='Focus'>
         /// Focus.
         /// </param>
@@ -517,7 +514,6 @@ namespace Pidgeon.Graphics
         /// <summary>
         /// Creates the chat
         /// </summary>
-        /// <param name="WindowOwner">Window owner</param>
         /// <param name="_HasUserList"></param>
         /// <param name="_HasTextBox"></param>
         /// <param name="Focus"></param>
