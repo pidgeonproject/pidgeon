@@ -43,15 +43,28 @@ namespace Pidgeon
         /// </summary>
         public string MenuData = null;
         public new Network _Network = null;
-  
-        public Channel() : base()
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Pidgeon.Channel"/> class.
+        /// This is special pidgeon constructor that also creates a window for this channel
+        /// </summary>
+        /// <param name="network">Network.</param>
+        /// <param name="name">Name.</param>
+        public Channel(Network network, string name) : base((libirc.Network)network)
         {
-            
-        }
-        
-        public Channel(libirc.Network network) : base(network)
-        {
-            
+            this._Network = network;
+            this.lName = name.ToLower();
+            this.Name = name;
+            this.Chat = WindowsManager.CreateChat(name, Configuration.UserData.SwitchWindowOnJoin, network,
+                                                  true, name, true, true, network);
+            Core.SystemForm.ChannelList.InsertChannel(this);
+            this.Chat.IsChannel = true;
+            if(Configuration.UserData.SwitchWindowOnJoin)
+            {
+                // in case that we want to switch to this new window we need to select it in channel list
+                // otherwise it would be very confusing for user
+                Core.SystemForm.ChannelList.ReselectWindow(Chat);
+            }
         }
         
         /// <summary>

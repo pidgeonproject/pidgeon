@@ -309,11 +309,11 @@ namespace Pidgeon.Graphics
                         Network server = (Network)tv.Model.GetValue(iter, 1);
                         if (server.ParentSv == null)
                         {
-                            WindowsManager.ShowChat("!system", server._Protocol);
+                            WindowsManager.ShowChat("!system", server);
                         }
                         else
                         {
-                            WindowsManager.ShowChat("!" + server.SystemWindowID, server.ParentSv);
+                            WindowsManager.ShowChat("!" + server.SystemWindowID, server);
                         }
                         server.SystemWindow.MenuColor = Configuration.CurrentSkin.FontColor;
                         SelectedWindow = server.SystemWindow;

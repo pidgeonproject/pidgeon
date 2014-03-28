@@ -623,7 +623,7 @@ namespace Pidgeon.Forms
         }
 
         /// <summary>
-        /// Change a name of currently displayed channel (thread unsafe)
+        /// Change a name of currently displayed channel in the toolbar (thread unsafe)
         /// </summary>
         /// <param name="channel"></param>
         public void setChannel(string channel)
@@ -636,7 +636,8 @@ namespace Pidgeon.Forms
         }
 
         /// <summary>
-        /// Display a root
+        /// Display the main window of application you should call this always before you decide to
+        /// destroy the current window
         /// </summary>
         public void SwitchRoot()
         {

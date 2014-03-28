@@ -170,8 +170,8 @@ namespace Pidgeon
             {
                 if (Windows.ContainsKey (Object))
                 {
-                    Windows [Object].Clear ();
-                    Windows.Remove (Object);
+                    Windows [Object].Clear();
+                    Windows.Remove(Object);
                     return true;
                 }
             }
@@ -188,7 +188,6 @@ namespace Pidgeon
                     item.window.CreateChat(item.hasUserList, item.hasTextBox, item.focus);
                     if (item.focus)
                     {
-                        //! TODO: why the hell we pass string here instead of window
                         WindowsManager.ShowChat(item.name, item.Parent);
                     }
                 }

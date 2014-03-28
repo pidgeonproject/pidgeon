@@ -59,7 +59,7 @@ namespace Pidgeon.Protocols.Services
                         else
                         {
                             Core.DebugLog("There is no channel " + message_target);
-                            target = mn.Channel(message_target, !Configuration.UserData.SwitchWindowOnJoin);
+                            target = mn.CreateChannel(message_target);
                             message_window = target.RetrieveWindow();
                         }
                     }
@@ -577,7 +577,7 @@ namespace Pidgeon.Protocols.Services
                                     {
                                         if (nw.GetChannel(channel) == null)
                                         {
-                                            Channel xx = nw.Channel(channel, !Configuration.UserData.SwitchWindowOnJoin);
+                                            Channel xx = nw.CreateChannel(channel);
                                             if (Configuration.Services.UsingCache)
                                             {
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);

@@ -74,6 +74,7 @@ namespace Pidgeon
         /// Parent service
         /// </summary>
         public Protocols.Services.ProtocolSv ParentSv = null;
+        public string RandomuQID;
         /// <summary>
         /// If true, the channel data will be suppressed in system window
         /// </summary>
@@ -108,24 +109,8 @@ namespace Pidgeon
         public Network(string Server, libirc.Protocol protocol) : base(Server, protocol)
         {
             RandomuQID = Core.RetrieveRandom();
-            lock (Descriptions)
-            {
-                Descriptions.Clear();
-                Descriptions.Add('n', "no /knock is allowed on channel");
-                Descriptions.Add('r', "registered channel");
-                Descriptions.Add('m', "talking is restricted");
-                Descriptions.Add('i', "users need to be invited to join");
-                Descriptions.Add('s', "channel is secret (doesn't appear on list)");
-                Descriptions.Add('p', "channel is private");
-                Descriptions.Add('A', "admins only");
-                Descriptions.Add('O', "opers chan");
-                Descriptions.Add('t', "topic changes can be done only by operators");
-            }
-            _Protocol = protocol;
-            ServerName = Server;
             Quit = Configuration.UserData.quit;
             Nickname = Configuration.UserData.nick;
-
             UserName = Configuration.UserData.user;
             Ident = Configuration.UserData.ident;
             if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
@@ -222,37 +207,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Create a new instance of channel window
-        /// </summary>
-        /// <param name="channel">Channel</param>
-        /// <param name="nf">Don't focus this new window</param>
-        /// <returns>Instance of channel object</returns>
-        public Channel Channel(string channel, bool nf = false)
-        {
-            Channel previous = GetChannel(channel);
-            if (previous == null)
-            {
-                Channel _channel = new Channel(this);
-                RenderedChannel = _channel;
-                _channel.Name = channel;
-                _channel.lName = channel.ToLower();
-                Channels.Add(_channel.lName, _channel);
-                Core.SystemForm.ChannelList.InsertChannel(_channel);
-                Graphics.Window window = WindowsManager.CreateChat(channel, !nf, this, true, null, true, true, this);
-                window.IsChannel = true;
-                if (!nf)
-                {
-                    Core.SystemForm.ChannelList.ReselectWindow(window);
-                }
-                return _channel;
-            }
-            else
-            {
-                return previous;
-            }
-        }
-
-        /// <summary>
         /// Send a message to network
         /// </summary>
         /// <param name="text">Text of message</param>
@@ -262,6 +216,31 @@ namespace Pidgeon
         public void Message(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
         {
             _Protocol.Message(text, to, this, _priority);
+        }
+
+        public Channel CreateChannel(string channel)
+        {
+            Channel ch = GetChannel(channel);
+            if(ch == null)
+            {
+                // we aren't in this channel, which is expected, let's create a new window for it
+                ch = new Pidgeon.Channel(this, channel);
+                lock(this.Channels)
+                {
+                    this.Channels.Add(ch.lName, ch);
+                }
+            }
+            return ch;
+        }
+
+        public override void __evt_Self(NetworkSelfEventArgs args)
+        {
+            switch(args.Type)
+            {
+                case libirc.Network.EventType.Join:
+                    CreateChannel(args.ChannelName);
+                    break;
+            }
         }
     }
 }

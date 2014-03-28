@@ -896,9 +896,9 @@ namespace Pidgeon.Graphics
             {
                 case ItemType.Services:
                     Protocols.Services.ProtocolSv service = (Protocols.Services.ProtocolSv)Item;
-                    service.Exit();
                     removed = RemoveServ(service);
                     Updated = true;
+                    service.Exit();
                     break;
                 case ItemType.QuasselCore:
                     ProtocolQuassel protocol = (ProtocolQuassel)Item;
@@ -914,11 +914,11 @@ namespace Pidgeon.Graphics
                     break;
                 case ItemType.Server:
                     Network network = (Network)Item;
-                    if (network.ParentSv != null)
+                    if(network.ParentSv != null)
                     {
-                        lock (ServerList)
+                        lock(ServerList)
                         {
-                            if (ServerList.ContainsKey(network))
+                            if(ServerList.ContainsKey(network))
                             {
                                 RemoveServer(network);
                             }
@@ -926,19 +926,18 @@ namespace Pidgeon.Graphics
                         network.Disconnect();
                         return;
                     }
-                    network._Protocol.Exit();
-
-                    lock (Core.Connections)
+                    lock(Core.Connections)
                     {
-                        if (Core.Connections.Contains(network._Protocol))
+                        if(Core.Connections.Contains(network._Protocol))
                         {
                             Core.Connections.Remove(network._Protocol);
                         }
                     }
-
                     Updated = true;
                     removed = true;
                     RemoveServer(network);
+                    Core.SystemForm.SwitchRoot();
+                    network._Protocol.Exit();
                     break;
                 case ItemType.User:
                     User user = (User)Item;

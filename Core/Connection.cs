@@ -125,6 +125,7 @@ namespace Pidgeon
             protocol.Password = password;
             protocol.SSL = secured;
             Network network = new Network (server, protocol);
+            protocol.NetworkMeta = network;
             protocol.IRCNetwork = (libirc.Network)network;
             SelectedNetwork = network;
             protocol.Open();

@@ -2,17 +2,14 @@
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or   
 //  (at your option) version 3.                                         
-
 //  This program is distributed in the hope that it will be useful,     
 //  but WITHOUT ANY WARRANTY; without even the implied warranty of      
 //  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
 //  GNU General Public License for more details.                        
-
 //  You should have received a copy of the GNU General Public License   
 //  along with this program; if not, write to the                       
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 using System.Threading;
 using System;
 using System.Collections.Generic;
@@ -30,7 +27,8 @@ namespace Pidgeon.Protocols
     public class ProtocolIrc : libirc.Protocols.ProtocolIrc
     {
         private Thread ThreadMain = null;
-        
+        public Network NetworkMeta = null;
+
         /// <summary>
         /// Return back the system chars to previous look
         /// </summary>
@@ -50,17 +48,22 @@ namespace Pidgeon.Protocols
         {
             return text.Replace("%", "%####%");
         }
-  
-        public override void TrafficLog (string text, bool incoming)
+
+        public override void TrafficLog(string text, bool incoming)
         {
-            if (!incoming)
+            if(!incoming)
             {
                 Core.TrafficScanner.Insert(this.Server, " << " + text);
                 return;
             }
             Core.TrafficScanner.Insert(this.Server, " >> " + text);
         }
-        
+
+        public override void HandleUnknownData(string data)
+        {
+            this.NetworkMeta.SystemWindow.scrollback.InsertText(data, Pidgeon.ContentLine.MessageStyle.System, true, 0, true);
+        }
+
         private void Exec()
         {
             try
@@ -71,7 +74,13 @@ namespace Pidgeon.Protocols
                 Core.HandleException(fail);
             }
         }
-        
+
+        protected override void DisconnectExec(string reason, Exception ex)
+        {
+            Core.SystemForm.Status("Disconnected from server " + Server);
+            this.NetworkMeta.SystemWindow.scrollback.InsertText("Disconnected: " + reason, Pidgeon.ContentLine.MessageStyle.System);
+        }
+
         /// <summary>
         /// Command
         /// </summary>
@@ -82,7 +91,7 @@ namespace Pidgeon.Protocols
         {
             try
             {
-                if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
+                if(cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
                 {
                     // uppercase
                     string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
@@ -91,19 +100,21 @@ namespace Pidgeon.Protocols
                     return true;
                 }
                 Transfer(cm.ToUpper());
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 Core.HandleException(ex);
             }
             return false;
         }
-        
-        public override Thread Open ()
+
+        public override Thread Open()
         {
             ThreadMain = new Thread(Exec);
-            Core.DebugLog("Connecting to server " + Server + " port " + Port.ToString());
+            Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
+                                                       Pidgeon.ContentLine.MessageStyle.System);
+            Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
             ThreadMain.Start();
+            Core.SystemThreads.Add(ThreadMain);
             return ThreadMain;
         }
     }
