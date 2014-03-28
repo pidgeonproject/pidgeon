@@ -70,7 +70,7 @@ namespace Pidgeon.Forms
 #if DEBUG
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the
-        /// <see cref="Client.Forms.ScriptEdit"/> is reclaimed by garbage collection.
+        /// <see cref="Pidgeon.Forms.ScriptEdit"/> is reclaimed by garbage collection.
         /// </summary>
         ~ScriptEdit()
         {
