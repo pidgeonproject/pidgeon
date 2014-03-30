@@ -30,15 +30,53 @@ namespace Pidgeon
         /// </summary>
         [NonSerialized]
         public new Network _Network = null;
-
-        public User(string nick, string host, Network network, string ident)
-            : base(nick, host, (libirc.Network)network, ident)
+        public new Channel Channel = null;
+  
+        public override string Nick
+        {
+            get
+            {
+                return this.nick;
+            }
+            set
+            {
+                if (this.Nick != value)
+                {
+                    if (this.Channel != null)
+                    {
+                        // rename the key in dictionary
+                        this.Channel.RemoveUser(this);
+                        // store again this exactly same user
+                        this.lnick = value.ToLower();
+                        this.nick = value;
+                        this.Channel.InsertUser(this);
+                        return;
+                    }
+                    this.lnick = value.ToLower();
+                    this.nick = value;
+                }
+            }
+        }
+        
+        public User(libirc.UserInfo user, Network network)
+            : base(user, (libirc.Network)network)
         {
             this._Network = network;
         }
-
+        
         public User(string user, Network network) : base(user, (libirc.Network)network)
         {
+            this._Network = network;
+        }
+        
+        public User(libirc.User user, Network network) : base(user.Nick, user.Host, user.Ident, (libirc.Network)network)
+        {
+            this.RealName = user.RealName;
+            this.Away = user.Away;
+            this.AwayMessage = user.AwayMessage;
+            this.AwayTime = user.AwayTime;
+            this.ChannelMode = user.ChannelMode;
+            this.Server = user.Server;
             this._Network = network;
         }
     }

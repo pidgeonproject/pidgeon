@@ -451,7 +451,7 @@ namespace Pidgeon.Graphics
                         foreach (User user in SelectedUsers)
                         {
                             string current_ban = "";
-                            Channel _channel = getChannel();
+                            Channel _channel = GetChannel();
                             if (_channel != null)
                             {
                                 switch (Configuration.irc.DefaultBans)
@@ -586,7 +586,7 @@ namespace Pidgeon.Graphics
                     foreach (User user in SelectedUsers)
                     {
                         string mode = "";
-                        Channel _channel = getChannel();
+                        Channel _channel = GetChannel();
                         if (_channel != null)
                         {
                             switch (Configuration.irc.DefaultBans)
@@ -749,14 +749,8 @@ namespace Pidgeon.Graphics
                         string nickname = user.Nick;
                         if (string.IsNullOrEmpty(nickname))
                         {
-                            Pidgeon.Graphics.Window wn = WindowsManager.GetWindow (_Network.SystemWindowID + nickname, _Network);
-                            if (wn == null)
-                            {
-                                _Network.Private(nickname);
-                            } else
-                            {
-                                Core.SystemForm.SwitchWindow(wn);
-                            }
+                            Pidgeon.Graphics.Window window = _Network.GetPrivateUserWindow(nickname);
+                            Core.SystemForm.SwitchWindow(window);
                         }
                     }
                 }
@@ -773,10 +767,10 @@ namespace Pidgeon.Graphics
             {
                 if (_Network.IsConnected)
                 {
-                    Channel _channel = getChannel();
+                    Channel _channel = GetChannel();
                     if (_channel != null)
                     {
-                        _channel.UserList.Clear();
+                        _channel.ClearUsers();
                         _Network.Transfer("WHO " + _channel.Name);
                     }
                 }
@@ -831,7 +825,7 @@ namespace Pidgeon.Graphics
                         foreach (User user in SelectedUsers)
                         {
                             string current_ban = "";
-                            Channel _channel = getChannel();
+                            Channel _channel = GetChannel();
                             if (_channel != null)
                             {
                                 switch (Configuration.irc.DefaultBans)
@@ -875,7 +869,7 @@ namespace Pidgeon.Graphics
                     if (_Network == null)
                         return;
 
-                    Channel item = getChannel();
+                    Channel item = GetChannel();
                     if (item != null)
                     {
                         Locked = false;
@@ -925,7 +919,7 @@ namespace Pidgeon.Graphics
             {
                 foreach (User user in SelectedUsers)
                 {
-                    Channel _channel = getChannel();
+                    Channel _channel = GetChannel();
                     if (_channel != null)
                     {
                         if (Configuration.irc.DisplayCtcp)

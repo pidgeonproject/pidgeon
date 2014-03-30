@@ -943,30 +943,7 @@ namespace Pidgeon.Graphics
                     User user = (User)Item;
                     if (user._Network != null && !user._Network.IsDestroyed)
                     {
-                        lock (user._Network.PrivateChat)
-                        {
-                            if (user._Network.PrivateChat.Contains (user))
-                            {
-                                lock (user._Network.PrivateWins)
-                                {
-                                    if (user._Network.PrivateWins.ContainsKey (user))
-                                    {
-                                        user._Network.PrivateWins.Remove (user);
-                                    } else
-                                    {
-                                        Core.DebugLog ("There was no private window handle for " + user.Nick);
-                                    }
-                                }
-                                user._Network.PrivateChat.Remove (user);
-                            }
-                        }
-                    }
-                    window = WindowsManager.GetWindow (user._Network.SystemWindowID + user.Nick, user._Network);
-                    if (window != null)
-                    {
-                        Core.SystemForm.SwitchRoot();
-                        window._Destroy ();
-                        WindowsManager.UnregisterWindow(user._Network.SystemWindowID + user.Nick, user._Network);
+                        user._Network.RemoveUserWindow(user);
                     }
                     removed = RemoveUser(user);
                     break;

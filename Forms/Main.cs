@@ -355,7 +355,7 @@ namespace Pidgeon.Forms
                         info += "??";
                     }
                     setText(Core.SelectedNetwork.RenderedChannel.Name + " - " + Core.SelectedNetwork.RenderedChannel.Topic);
-                    toolStripStatusChannel.Text = Core.SelectedNetwork.RenderedChannel.Name + " user count: " + Core.SelectedNetwork.RenderedChannel.UserList.Count + " channel modes: " + Core.SelectedNetwork.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
+                    toolStripStatusChannel.Text = Core.SelectedNetwork.RenderedChannel.Name + " user count: " + Core.SelectedNetwork.RenderedChannel.UserCount + " channel modes: " + Core.SelectedNetwork.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
                         if (Chat != null)

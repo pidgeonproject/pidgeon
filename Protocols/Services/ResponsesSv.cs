@@ -65,12 +65,7 @@ namespace Pidgeon.Protocols.Services
                     }
                     else
                     {
-                        Graphics.Window window = WindowsManager.GetWindow(mn.SystemWindowID + message_target, mn);
-                        if (window == null)
-                        {
-                            mn.Private(message_target);
-                        }
-                        message_window = WindowsManager.GetWindow(mn.SystemWindowID + message_target, mn);
+                        message_window = mn.GetPrivateUserWindow(message_target);
                     }
                 }
 
@@ -529,8 +524,7 @@ namespace Pidgeon.Protocols.Services
                                     }
                                     foreach (string ms in info.PrivateWins)
                                     {
-                                        User current_pm = nw.Private(ms);
-                                        info.recoverWindowText(nw.PrivateWins[current_pm], ms);
+                                        info.recoverWindowText(nw.GetPrivateUserWindow(ms), ms);
                                     }
                                     int mqid = info.lastMQID;
                                     request.Parameters.Add("last", mqid.ToString());
@@ -693,7 +687,7 @@ namespace Pidgeon.Protocols.Services
                                             host = host.Substring(0, host.IndexOf("+", StringComparison.Ordinal));
                                         }
                                     }
-                                    lock (channel.UserList)
+                                    /*lock (channel.UserList)
                                     {
                                         if (!channel.ContainsUser(us))
                                         {
@@ -705,7 +699,7 @@ namespace Pidgeon.Protocols.Services
                                             }
                                             channel.UserList.Add(f2.Nick.ToLower(), f2);
                                         }
-                                    }
+                                    } */
                                 }
                             }
                             Datagram response = new Datagram("USERLIST", "INFO");

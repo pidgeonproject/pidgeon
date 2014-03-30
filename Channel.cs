@@ -43,6 +43,7 @@ namespace Pidgeon
         /// </summary>
         public string MenuData = null;
         public new Network _Network = null;
+        protected new Dictionary<string, User> UserList = new Dictionary<string, User>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Pidgeon.Channel"/> class.
@@ -95,7 +96,28 @@ namespace Pidgeon
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
             MenuData = Core.NormalizeHtml(Core.RemoveSpecial(text));
         }
-
+  
+        public new User UserFromName (string name)
+        {
+            name = name.ToLower();
+            lock (this.UserList)
+            {
+                if (this.UserList.ContainsKey(name))
+                {
+                    return this.UserList[name];
+                }
+            }
+            return null;
+        }
+        
+        public void ImportData(libirc.Channel channel)
+        {
+            foreach (libirc.User user in channel.RetrieveUL().Values)
+            {
+                this.InsertUser(user);
+            }
+        }
+        
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
@@ -256,14 +278,32 @@ namespace Pidgeon
             }
             return;
         }
-
-        /// <summary>
-        /// Thread safe, redraw all users in the user list in window, if exist
-        /// </summary>
-        [Obsolete("Use RedrawUsers(). This will be removed in pidgeon 1.6.80")]
-        public void redrawUsers()
+  
+        public override void InsertUser (libirc.User user)
         {
-            RedrawUsers();
+            lock (this.UserList)
+            {
+                string ln = user.LowNick;
+                if (!this.UserList.ContainsKey(ln))
+                {
+                    User user_ = new User(user, this._Network);
+                    user_.Channel = this;
+                    this.UserList.Add(ln, user_);
+                }
+            }
+        }
+        
+        public void InsertUser(User user)
+        {
+            lock (this.UserList)
+            {
+                string ln = user.LowNick;
+                user.Channel = this;
+                if (!this.UserList.ContainsKey(ln))
+                {
+                    this.UserList.Add(ln, user);
+                }
+            }
         }
 
         /// <summary>

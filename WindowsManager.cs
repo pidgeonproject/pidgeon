@@ -93,6 +93,33 @@ namespace Pidgeon
             return Windows [parent] [name];
         }
 
+        public static bool ShowChat(Graphics.Window chat)
+        {
+            if (chat != null)
+            {
+                CurrentWindow = chat;
+                Core.SystemForm.SwitchWindow (CurrentWindow);
+                CurrentWindow.Redraw ();
+                if (CurrentWindow.IsChannel)
+                {
+                    if (Core.SelectedNetwork != null)
+                    {
+                        Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel (CurrentWindow.WindowName);
+                    }
+                }
+                Core.SystemForm.setChannel (chat.Name);
+                if (CurrentWindow.Making == false)
+                {
+                    CurrentWindow.textbox.setFocus ();
+                }
+                Core.SystemForm.Chat = chat;
+                CurrentWindow.Making = false;
+                Core.SystemForm.UpdateStatus ();
+                return true;
+            }
+            return false;
+        }
+        
         /// <summary>
         /// Request window to be shown
         /// </summary>
@@ -114,24 +141,7 @@ namespace Pidgeon
                 {
                     if (Windows [parent].ContainsKey (name))
                     {
-                        CurrentWindow = Windows [parent] [name];
-                        Core.SystemForm.SwitchWindow (CurrentWindow);
-                        CurrentWindow.Redraw ();
-                        if (CurrentWindow.IsChannel)
-                        {
-                            if (Core.SelectedNetwork != null)
-                            {
-                                Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel (CurrentWindow.WindowName);
-                            }
-                        }
-                        Core.SystemForm.setChannel (name);
-                        if (CurrentWindow.Making == false)
-                        {
-                            CurrentWindow.textbox.setFocus ();
-                        }
-                        Core.SystemForm.Chat = Windows[parent][name];
-                        CurrentWindow.Making = false;
-                        Core.SystemForm.UpdateStatus ();
+                        ShowChat(Windows[parent][name]);
                     }
                 }
             }

@@ -551,7 +551,7 @@ namespace Pidgeon.Graphics
         /// Return a channel associated with this window
         /// </summary>
         /// <returns></returns>
-        public Channel getChannel()
+        public Channel GetChannel()
         {
             if (channel != null)
             {

@@ -65,12 +65,7 @@ namespace Pidgeon
         {
             return text.Replace("%####%", "%");
         }
-
-        public virtual int Message(string text, string to, Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
-        {
-            return 0;
-        }
-
+        
         /// <summary>
         /// Escape system char
         /// </summary>
@@ -79,6 +74,11 @@ namespace Pidgeon
         public static string EncodeText(string text)
         {
             return text.Replace("%", "%####%");
+        }
+
+        public virtual int Message(string text, string to, Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
+        {
+            return 0;
         }
     }
 }

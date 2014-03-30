@@ -178,6 +178,7 @@ namespace Pidgeon
                 {
                     channel = parameter.Substring(parameter.IndexOf(" ", StringComparison.Ordinal));
                 }
+                Network network = Core.SelectedNetwork;
                 if (channel.Contains(Core.SelectedNetwork.ChannelPrefix))
                 {
                     Core.SystemForm.Chat.scrollback.InsertText("Invalid name", Pidgeon.ContentLine.MessageStyle.System);
@@ -190,22 +191,15 @@ namespace Pidgeon
                 if (channel.Contains(" "))
                 {
                     channel = channel.Substring(0, channel.IndexOf(" ", StringComparison.Ordinal));
-                    if (Core.SelectedNetwork != null && Core.SelectedNetwork._Protocol != null)
+                    if (network != null && network._Protocol != null)
                     {
-                        if (Core.SelectedNetwork.IsConnected)
+                        if (network.IsConnected)
                         {
-                            if (!WindowsManager.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
-                            {
-                                Core.SelectedNetwork.Private(channel);
-                            }
-                            WindowsManager.ShowChat(Core.SelectedNetwork.SystemWindowID + channel, Core.SelectedNetwork);
-                            Graphics.Window window = WindowsManager.GetWindow (Core.SelectedNetwork.SystemWindowID + channel, Core.SelectedNetwork);
-                            if (window != null)
-                            {
-                                window.scrollback.InsertText (Protocol.PRIVMSG (Core.SelectedNetwork.Nickname, parameter.Substring
-                                                                                (parameter.IndexOf (channel, StringComparison.Ordinal) + 1 + channel.Length)), Pidgeon.ContentLine.MessageStyle.Channel);
-                            }
-                            Core.SelectedNetwork.Message(parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length), channel);
+                            Graphics.Window window = network.GetPrivateUserWindow(channel);
+                            WindowsManager.ShowChat(window);
+                            window.scrollback.InsertText (Protocol.PRIVMSG (network.Nickname, parameter.Substring(parameter.IndexOf (channel, StringComparison.Ordinal)
+                                                          + 1 + channel.Length)), Pidgeon.ContentLine.MessageStyle.Channel);
+                            network.Message(parameter.Substring(parameter.IndexOf(channel, StringComparison.Ordinal) + 1 + channel.Length), channel);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
@@ -214,15 +208,11 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
-                if (Core.SelectedNetwork != null && Core.SelectedNetwork._Protocol != null)
+                if (network != null && network._Protocol != null)
                 {
-                    if (Core.SelectedNetwork.IsConnected)
+                    if (network.IsConnected)
                     {
-                        if (!WindowsManager.Windows.ContainsKey(Core.SelectedNetwork.SystemWindowID + channel))
-                        {
-                            Core.SelectedNetwork.Private(channel);
-                        }
-                        WindowsManager.ShowChat(Core.SelectedNetwork.SystemWindowID + channel);
+                        WindowsManager.ShowChat(network.GetPrivateUserWindow(channel));
                         return;
                     }
                 }

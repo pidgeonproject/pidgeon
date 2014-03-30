@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -24,7 +24,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <CustomCommands>
       <CustomCommands>
-        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="True" />
+        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="true" />
       </CustomCommands>
     </CustomCommands>
     <UseVSHostingProcess>true</UseVSHostingProcess>
@@ -78,7 +78,7 @@
       <Package>gtk-sharp-2.0</Package>
     </Reference>
     <Reference Include="libirc">
-      <HintPath>..\libirc\bin\Debug\libirc.dll</HintPath>
+      <HintPath>libirc.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +96,7 @@
     <EmbeddedResource Include="Languages\cs_czech.txt" />
     <None Include="Resources\arrow.png" />
     <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
-      <DeployService-UseProjectRelativePath>True</DeployService-UseProjectRelativePath>
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\at.png" />
     <EmbeddedResource Include="Resources\darknetwork.png" />
@@ -240,7 +240,7 @@
           <TextStylePolicy FileWidth="120" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
           <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeIndexerDeclarationBracket="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" IfParentheses="False" WhileParentheses="False" ForParentheses="False" ForeachParentheses="False" SwitchParentheses="False" LockParentheses="False" UsingParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
         </Policies>
-        <GtkDesignInfo generateGettext="False" />
+        <GtkDesignInfo generateGettext="false" />
         <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
           <BuildFilesVar />
           <DeployFilesVar />
