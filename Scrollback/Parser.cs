@@ -884,7 +884,7 @@ namespace Pidgeon
                 Core.ProcessCommand(input);
                 return 10;
             }
-            if (_window._Protocol != null && _window._Protocol.ParseInput(input))
+            if (_window._Protocol != null && (_window._Protocol.ParseInput(input) == libirc.IProtocol.Result.Done))
             {
                 return 12;
             }

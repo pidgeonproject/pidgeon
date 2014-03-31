@@ -349,9 +349,10 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="network"></param>
-        public override void Part(string name, libirc.Network network = null)
+        public override Result Part(string name, libirc.Network network = null)
         {
             Transfer("PART " + name, libirc.Defs.Priority.High, network);
+            return Result.Done;
         }
 
         private bool Process(string dg)
@@ -585,7 +586,7 @@ namespace Pidgeon.Protocols.Services
         /// Disconnect from the server
         /// </summary>
         /// <returns></returns>
-        public override bool Disconnect()
+        public override Result Disconnect()
         {
             lock (this)
             {
@@ -594,7 +595,7 @@ namespace Pidgeon.Protocols.Services
                 {
                     Core.DebugLog("User attempted to disconnect services that are already disconnected");
                     disconnecting = false;
-                    return false;
+                    return Result.Failure;
                 }
                 if (System.Threading.Thread.CurrentThread != main)
                 {
@@ -646,7 +647,7 @@ namespace Pidgeon.Protocols.Services
                 Connected = false;
                 disconnecting = false;
             }
-            return true;
+            return Result.Done;
         }
 
         /// <summary>
@@ -678,10 +679,10 @@ namespace Pidgeon.Protocols.Services
         /// <param name="_Nick"></param>
         /// <param name="network"></param>
         /// <returns></returns>
-        public override int RequestNick(string _Nick, libirc.Network network = null)
+        public override Result RequestNick(string _Nick, libirc.Network network = null)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
-            return 0;
+            return Result.Done;
         }
 
         /// <summary>
@@ -691,11 +692,11 @@ namespace Pidgeon.Protocols.Services
         /// <param name="to"></param>
         /// <param name="_priority"></param>
         /// <returns></returns>
-        public override int Act(string text, string to, libirc.Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
+        public override Result Act(string text, string to, libirc.Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
         {
             Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Pidgeon.ContentLine.MessageStyle.Action, true, 0, true);
             Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
-            return 0;
+            return Result.Done;
         }
 
         /// <summary>
@@ -730,7 +731,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="server"></param>
         /// <param name="port"></param>
         /// <returns></returns>
-        public override bool ConnectTo(string server, int port)
+        public override Result ConnectTo(string server, int port)
         {
             // remove space
             while (server.StartsWith(" ", StringComparison.Ordinal))
@@ -740,7 +741,7 @@ namespace Pidgeon.Protocols.Services
             // in case that server is invalid, we ignore the request
             if (string.IsNullOrEmpty(server))
             {
-                return false;
+                return Result.Failure;
             }
             // We also ignore it if we aren't connected to services
             if (ConnectionStatus == Status.Connected)
@@ -750,7 +751,7 @@ namespace Pidgeon.Protocols.Services
                 request.Parameters.Add("port", port.ToString());
                 Deliver(request);
             }
-            return true;
+            return Result.Done;
         }
 
         /// <summary>
@@ -835,9 +836,10 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         /// <param name="name"></param>
         /// <param name="network"></param>
-        public override void Join(string name, libirc.Network network = null)
+        public override Result Join(string name, libirc.Network network = null)
         {
             Transfer("JOIN " + name);
+            return Result.Done;
         }
 
         /// <summary>
@@ -846,7 +848,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="text">Message</param>
         /// <param name="priority">priority</param>
         /// <param name="network">This value must be filled in - it's not required because some old functions do not provide it</param>
-        public override void Transfer(string text, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal, libirc.Network network = null)
+        public override Result Transfer(string text, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal, libirc.Network network = null)
         {
             if (network == null)
             {
@@ -855,7 +857,7 @@ namespace Pidgeon.Protocols.Services
                     Datagram data = new Datagram("RAW", text);
                     data.Parameters.Add("network", Core.SelectedNetwork.ServerName);
                     Deliver(data);
-                    return;
+                    return Result.Done;
                 }
             }
             else
@@ -865,12 +867,15 @@ namespace Pidgeon.Protocols.Services
                     Datagram data = new Datagram("RAW", text);
                     data.Parameters.Add("network", network.ServerName);
                     Deliver(data);
+                    return Result.Done;
                 }
                 else
                 {
                     Core.DebugLog("Network is not a part of this services connection " + network.ServerName);
+                    return Result.Failure;
                 }
             }
+            return Result.Failure;
         }
 
         /// <summary>

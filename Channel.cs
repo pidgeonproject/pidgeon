@@ -45,6 +45,14 @@ namespace Pidgeon
         public new Network _Network = null;
         protected new Dictionary<string, User> UserList = new Dictionary<string, User>();
 
+        public override int UserCount
+        {
+            get
+            {
+                return this.UserList.Count;
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Pidgeon.Channel"/> class.
         /// This is special pidgeon constructor that also creates a window for this channel
@@ -115,6 +123,30 @@ namespace Pidgeon
             foreach (libirc.User user in channel.RetrieveUL().Values)
             {
                 this.InsertUser(user);
+            }
+        }
+
+        public override void RemoveUser(libirc.User user)
+        {
+            string nick = user.LowNick;
+            lock (this.UserList)
+            {
+                if (this.UserList.ContainsKey(nick))
+                {
+                    this.UserList.Remove(nick);
+                }
+            }
+        }
+
+        public override void RemoveUser(string nick)
+        {
+            nick = nick.ToLower();
+            lock (this.UserList)
+            {
+                if (this.UserList.ContainsKey(nick))
+                {
+                    this.UserList.Remove(nick);
+                }
             }
         }
         

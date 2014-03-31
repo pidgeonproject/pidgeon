@@ -45,6 +45,11 @@ namespace Pidgeon
             return false;
         }
 
+        public virtual Result ParseInput(string Input)
+        {
+            return Result.NotImplemented;
+        }
+
         /// <summary>
         /// Format a message to given style selected by skin
         /// </summary>

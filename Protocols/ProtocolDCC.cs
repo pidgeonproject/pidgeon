@@ -156,11 +156,11 @@ namespace Pidgeon.Protocols
         /// Disconnect
         /// </summary>
         /// <returns></returns>
-        public override bool Disconnect()
+        public override Result Disconnect()
         {
             if (!Connected)
             {
-                return false;
+                return Result.Failure;
             }
             if (ListenerMode)
             {
@@ -188,7 +188,7 @@ namespace Pidgeon.Protocols
             }
             Connected = false;
             SystemWindow.NeedsIcon = true;
-            return true;
+            return Result.Done;
         }
 
         /// <summary>
@@ -240,11 +240,11 @@ namespace Pidgeon.Protocols
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public override bool ParseInput(string input)
+        public override Result ParseInput(string input)
         {
             if (!IsConnected)
             {
-                return false;
+                return Result.Failure;
             }
             lock (StreamLock)
             {
@@ -253,7 +253,7 @@ namespace Pidgeon.Protocols
                 _StreamWriter.WriteLine(input);
                 _StreamWriter.Flush();
             }
-            return true;
+            return Result.Done;
         }
 
         /// <summary>

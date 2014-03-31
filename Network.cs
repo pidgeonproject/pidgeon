@@ -233,20 +233,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Create private message to user
-        /// </summary>
-        /// <param name="user">User name</param>
-        [Obsolete ("Use GetPrivateUserWindow instead")]
-        public User Private(string user)
-        {
-            lock (this.PrivateWins)
-            {
-                this.GetPrivateUserWindow(user);
-                return GetUser(user);
-            }
-        }
-
-        /// <summary>
         /// Send a message to network
         /// </summary>
         /// <param name="text">Text of message</param>
@@ -254,8 +240,16 @@ namespace Pidgeon
         /// <param name="_priority">Priority</param>
         public override void Message(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
         {
-            Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 0, true);
-            _Protocol.Message(text, to, this, _priority);
+            switch (_Protocol.Message(text, to, this, _priority))
+            {
+                case libirc.IProtocol.Result.Done:
+                    Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 0, true);
+                    break;
+                case libirc.IProtocol.Result.Failure:
+                case libirc.IProtocol.Result.NotImplemented:
+                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, 0, false);
+                    break;
+            }
         }
 
         public Channel CreateChannel(string channel)
@@ -279,6 +273,24 @@ namespace Pidgeon
             {
                 case libirc.Network.EventType.Join:
                     CreateChannel(args.ChannelName);
+                    break;
+                case libirc.Network.EventType.Part:
+                case libirc.Network.EventType.Kick:
+                case libirc.Network.EventType.Quit:
+                    lock (this.Channels)
+                    {
+                        string channel = args.ChannelName.ToLower();
+                        Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
+                        if (this.Channels.ContainsKey(channel))
+                        {
+                            this.Channels.Remove(channel);
+                        }
+                    }
+                    break;
+                case libirc.Network.EventType.Nick:
+                    this.Nickname = args.NewNick;
+                    this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
+                                                              Pidgeon.ContentLine.MessageStyle.User, true, args.Date);
                     break;
             }
         }
@@ -361,6 +373,7 @@ namespace Pidgeon
             if (channel != null && args.Parameters.Count > 1)
             {
                 Graphics.Window window = channel.RetrieveWindow();
+                channel.ChannelMode.ChangeMode(args.Parameters[2]);
                 window.scrollback.InsertText("Mode: " + args.Parameters[2], ContentLine.MessageStyle.Channel, true, args.Date, false);
                 channel.UpdateInfo();
             }
@@ -390,7 +403,7 @@ namespace Pidgeon
             }
             if (args.Channel != null && args.Channel.IsParsingWhoData && !Configuration.Kernel.HidingParsed)
             {
-                this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, true, args.Date, false);
+                this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, true, args.Date);
             }
         }
         
@@ -421,7 +434,7 @@ namespace Pidgeon
                 {
                     window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                                                  new List<string> { args.Source, args.Target, args.Message }),
-                                                 ContentLine.MessageStyle.Join, true, args.Date, false);
+                                                 ContentLine.MessageStyle.Join, true, args.Date);
                     channel.RemoveUser(args.Target);
                 }
             }
@@ -440,7 +453,7 @@ namespace Pidgeon
                     {
                         w.scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage,
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
-                               ContentLine.MessageStyle.Part, true, args.Date, false);
+                               ContentLine.MessageStyle.Part, true, args.Date);
                     }
                     channel.RemoveUser(user);
                     channel.RedrawUsers();
@@ -460,7 +473,7 @@ namespace Pidgeon
                 {
                     w.scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
-                               ContentLine.MessageStyle.Join, true, args.Date, false);
+                               ContentLine.MessageStyle.Join, true, args.Date);
                 }
                 channel.InsertUser(user);
                 channel.RedrawUsers();
@@ -483,7 +496,7 @@ namespace Pidgeon
                             window.scrollback.InsertText(messages.get ("protocol-nick", Core.SelectedLanguage,
                                                            new List<string> { args.OldNick, args.NewNick }),
                                                            Pidgeon.ContentLine.MessageStyle.Channel,
-                                                           !channel.TemporarilyHidden, args.Date, false);
+                                                           !channel.TemporarilyHidden, args.Date);
                         }
                         user.Nick = args.NewNick;
                         channel.RedrawUsers();
@@ -553,6 +566,13 @@ namespace Pidgeon
                         }
                     }
                 }
+                Graphics.Window window = channel.RetrieveWindow();
+                if (window != null)
+                {
+                    window.scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { args.Source, args.SimpleMode }),
+                                                 Pidgeon.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, args.Date);
+                }
+                channel.UpdateInfo();
             }
         }
         
@@ -569,7 +589,7 @@ namespace Pidgeon
                         window_.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                                       new List<string> { "%L%" + args.SourceInfo.Nick + "%/L%!%D%" +
                                                       args.SourceInfo.Ident + "%/D%@%H%" + args.SourceInfo.Host + "%/H%", args.Message }),
-                                                      ContentLine.MessageStyle.Join, true, args.Date, false);
+                                                      ContentLine.MessageStyle.Join, true, args.Date);
                     }
                     channel.RemoveUser(args.SourceInfo.Nick);
                     channel.UpdateInfo();
@@ -613,6 +633,136 @@ namespace Pidgeon
                     this.SModes.AddRange(_mode[2].ToArray<char>());
                     this.CModes.AddRange(_mode[3].ToArray<char>());
                 }
+            }
+        }
+
+        public override void __evt_TOPIC(NetworkTOPICEventArgs args)
+        {
+            Channel channel = this.GetChannel(args.ChannelName);
+            if (channel != null)
+            {
+                if (Hooks._Network.Topic(this, args.Source, channel, args.Topic, args.Date, true))
+                {
+                    Graphics.Window window = channel.RetrieveWindow();
+                    if (window != null)
+                    {
+                        window.scrollback.InsertText(messages.get("channel-topic", Core.SelectedLanguage, new List<string> { args.Source, args.Topic }),
+                                                       Pidgeon.ContentLine.MessageStyle.Channel, true, args.Date);
+                    }
+                    channel.Topic = args.Topic;
+                    channel.TopicDate = (int)args.TopicDate;
+                    channel.TopicUser = args.Source;
+                    channel.UpdateInfo();
+                }
+            }
+        }
+
+        public override void __evt_TopicData(libirc.Network.NetworkTOPICEventArgs args)
+        {
+            Channel channel = GetChannel(args.ChannelName);
+            if (channel != null)
+            {
+                Graphics.Window window = channel.RetrieveWindow();
+                if (window != null)
+                {
+                    window.scrollback.InsertText("Topic: " + args.Topic, Pidgeon.ContentLine.MessageStyle.Channel, true, args.Date);
+                }
+                channel.Topic = args.Topic;
+                channel.UpdateInfo();
+            }
+        }
+
+        public override void __evt_TopicInfo(NetworkTOPICEventArgs args)
+        {
+            Channel channel = this.GetChannel(args.ChannelName);
+            if (channel != null)
+            {
+                channel.TopicDate = (int)args.TopicDate;
+                channel.TopicUser = args.Source;
+                Graphics.Window window = channel.RetrieveWindow();
+                if (window != null)
+                {
+                    window.scrollback.InsertText("Topic by: " + args.Source + " date " + Core.ConvertFromUNIXToString(args.TopicDate.ToString()),
+                                                 Pidgeon.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, args.Date);
+                }
+                channel.UpdateInfo();
+            }
+        }
+
+        public override void __evt_CTCP(NetworkCTCPEventArgs args)
+        {
+            string reply = null;
+            switch (args.CTCP)
+            {
+                case "VERSION":
+                    reply = "VERSION " + Configuration.Version + " build: " + RevisionProvider.GetHash() + " http://pidgeonclient.org/wiki/";
+                    if (Configuration.irc.DetailedVersion)
+                    {
+                        reply += " operating system " + Environment.OSVersion.ToString();
+                    }
+                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                        libirc.Defs.Priority.Low);
+                    break;
+                case "TIME":
+                    reply = "TIME " + DateTime.Now.ToString();
+                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                        libirc.Defs.Priority.Low);
+                    break;
+                case "PING":
+                    if (args.Message.Length > 6)
+                    {
+                        string time = args.Message.Substring(6);
+                        if (time.Contains(this._Protocol.delimiter))
+                        {
+                            reply = "PING " + time;
+                            time = args.Message.Substring(0, args.Message.IndexOf(this._Protocol.delimiter));
+                            this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                                libirc.Defs.Priority.Low);
+                        }
+                    }
+                    break;
+                case "DCC":
+                    string message2 = args.Message;
+                    if (message2.Length < 5 || !message2.Contains(" "))
+                    {
+                        Core.DebugLog("Malformed DCC " + message2);
+                        return;
+                    }
+                    if (message2.EndsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
+                    {
+                        message2 = message2.Substring(0, message2.Length - 1);
+                    }
+                    string[] list = message2.Split(' ');
+                    if (list.Length < 5)
+                    {
+                        Core.DebugLog("Malformed DCC " + message2);
+                        return;
+                    }
+                    string type = list[1];
+                    int port = 0;
+                    if (!int.TryParse(list[4], out port))
+                    {
+                        Core.DebugLog("Malformed DCC " + message2);
+                        return;
+                    }
+                    if (port < 1)
+                    {
+                        Core.DebugLog("Malformed DCC " + message2);
+                        return;
+                    }
+                    switch (type.ToLower())
+                    {
+                        case "send":
+                            break;
+                        case "chat":
+                            Core.OpenDCC(list[3], port, args.SourceInfo.Nick, false, false, this);
+                            return;
+                        case "securechat":
+                            Core.OpenDCC(list[3], port, args.SourceInfo.Nick, false, true, this);
+                            return;
+                    }
+                    Core.DebugLog("Malformed DCC " + message2);
+                    return;
             }
         }
     }
