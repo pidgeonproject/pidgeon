@@ -105,7 +105,7 @@ namespace Pidgeon
                     {
                         if (window.IsChannel || window.IsPrivMsg)
                         {
-                            Core.SelectedNetwork._Protocol.Act(message, window.WindowName);
+                            Core.SelectedNetwork.Act(message, window.WindowName);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText("You can't use this command in this type of window", ContentLine.MessageStyle.System, false);
@@ -131,7 +131,7 @@ namespace Pidgeon
                                 ms = ms.Substring(1);
                             }
                             Core.SelectedNetwork.SystemWindow.scrollback.InsertText("[>> " + channel + "] <" + Core.SelectedNetwork.Nickname + "> " + ms, Pidgeon.ContentLine.MessageStyle.System);
-                            Core.SelectedNetwork.Message(ms, channel, libirc.Defs.Priority.Normal, true);
+                            Core.SelectedNetwork.Message(ms, channel, libirc.Defs.Priority.Normal);
                             return;
                         }
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);

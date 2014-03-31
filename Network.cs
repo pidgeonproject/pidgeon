@@ -252,9 +252,9 @@ namespace Pidgeon
         /// <param name="text">Text of message</param>
         /// <param name="to">Sending to</param>
         /// <param name="_priority">Priority</param>
-        /// <param name="pmsg">If this is private message (so it needs to be handled in a different way)</param>
-        public void Message(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
+        public override void Message(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
         {
+            Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 0, true);
             _Protocol.Message(text, to, this, _priority);
         }
 
