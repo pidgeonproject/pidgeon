@@ -89,11 +89,11 @@ namespace Pidgeon.Protocols.Services
                 if (curr.InnerText == "PERMISSIONDENY")
                 {
                     protocol.SystemWindow.scrollback.InsertText("You can't send this command to server, because you aren't logged in",
-                        Pidgeon.ContentLine.MessageStyle.System, false);
+                                                                    Pidgeon.ContentLine.MessageStyle.System, false);
                     return;
                 }
                 protocol.SystemWindow.scrollback.InsertText("Server responded to SRAW with this: " + curr.InnerText,
-                    Pidgeon.ContentLine.MessageStyle.User, false);
+                                                             Pidgeon.ContentLine.MessageStyle.User, false);
             }
 
             /// <summary>
@@ -171,7 +171,7 @@ namespace Pidgeon.Protocols.Services
                     protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
                     server.Nickname = protocol.nick;
-                    server.SetConnected();
+                    server.IsConnected = true;
                 }
                 if (Configuration.Services.UsingCache)
                 {
@@ -270,7 +270,7 @@ namespace Pidgeon.Protocols.Services
                         return;
                     case "OK":
                         Network _network = new Network(network, protocol);
-                        _network.SetConnected();
+                        _network.IsConnected = true;
                         _network.Nickname = protocol.nick;
                         protocol.cache.Add(new Cache());
                         protocol.NetworkList.Add(_network);
@@ -383,10 +383,10 @@ namespace Pidgeon.Protocols.Services
                         {
                             if (connected)
                             {
-                                s2.SetConnected();
+                                s2.IsConnected = true;
                             } else
                             {
-                                s2.SetDisconnected();
+                                s2.IsConnected = false;
                             }
                             if (nick != null)
                             {
@@ -474,7 +474,7 @@ namespace Pidgeon.Protocols.Services
                             protocol.cache.Add(new Cache());
                             protocol.NetworkList.Add(nw);
                             // we flag the network as connected until we really know that
-                            nw.SetConnected();
+                            nw.IsConnected = true;
                             // we ask for information about every channel on that network
                             Datagram response = new Datagram("CHANNELINFO");
                             response._InnerText = "LIST";

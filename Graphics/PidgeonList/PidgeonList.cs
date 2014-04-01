@@ -386,7 +386,7 @@ namespace Pidgeon.Graphics
         /// </summary>
         /// <param name="item"></param>
         /// <returns></returns>
-        public KeyValuePair<TreeIter, bool> getIter(object item)
+        private KeyValuePair<TreeIter, bool> getIter(object item)
         {
             lock (this)
             {
@@ -556,16 +556,6 @@ namespace Pidgeon.Graphics
             {
                 Core.HandleException(fail);
             }
-        }
-
-        /// <summary>
-        /// Insert a channel to list
-        /// </summary>
-        /// <param name="channel"></param>
-        [Obsolete ("Replaced by InsertChannel. Will be removed soon.")]
-        public void insertChannel(Channel channel)
-        {
-            InsertChannel(channel);
         }
 
         /// <summary>

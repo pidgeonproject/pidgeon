@@ -81,6 +81,33 @@ namespace Pidgeon
         /// </summary>
         private Forms.Channels wChannelList = null;
         /// <summary>
+        /// Descriptions for channel and user modes
+        /// </summary>
+        public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+        public override bool IsConnected
+        {
+            get
+            {
+                return base.IsConnected;
+            }
+            set
+            {
+                base.IsConnected = value;
+                this.SystemWindow.NeedsIcon = true;
+                lock (this.Channels)
+                {
+                    foreach (Channel channel in this.Channels.Values)
+                    {
+                        Graphics.Window window = channel.RetrieveWindow();
+                        if (window != null)
+                        {
+                            window.NeedsIcon = true;
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
         /// Private windows
         /// </summary>
         public Dictionary<User, Graphics.Window> PrivateWins = new Dictionary<User, Graphics.Window>();
@@ -124,6 +151,19 @@ namespace Pidgeon
             {
                 SystemWindow = WindowsManager.CreateChat("!system", true, this, false, null, false, true, this);
                 Core.SystemForm.ChannelList.InsertNetwork(this);
+            }
+            lock (Descriptions)
+            {
+                Descriptions.Clear();
+                Descriptions.Add('n', "no /knock is allowed on channel");
+                Descriptions.Add('r', "registered channel");
+                Descriptions.Add('m', "talking is restricted");
+                Descriptions.Add('i', "users need to be invited to join");
+                Descriptions.Add('s', "channel is secret (doesn't appear on list)");
+                Descriptions.Add('p', "channel is private");
+                Descriptions.Add('A', "admins only");
+                Descriptions.Add('O', "opers chan");
+                Descriptions.Add('t', "topic changes can be done only by operators");
             }
             Hooks._Network.CreatingNetwork(this);
         }
@@ -174,7 +214,71 @@ namespace Pidgeon
                 }
             }
         }
-  
+
+        public override void Destroy()
+        {
+            lock (Descriptions)
+            {
+                Descriptions.Clear();
+            }
+            base.Destroy();
+        }
+
+        /// <summary>
+        /// Register info for channel info
+        /// </summary>
+        /// <param name="key">Mode</param>
+        /// <param name="text">Text</param>
+        /// <returns>true on success, false if this info already exist</returns>
+        public virtual bool RegisterInfo(char key, string text)
+        {
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(key))
+                {
+                    return false;
+                }
+                Descriptions.Add(key, text);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Unregister info for user and channel modes
+        /// </summary>
+        /// <param name="key">Mode</param>
+        /// <returns></returns>
+        public bool UnregisterInfo(char key)
+        {
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(key))
+                {
+                    Descriptions.Remove(key);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Insert a description to list
+        /// </summary>
+        /// <param name="mode"></param>
+        /// <param name="description"></param>
+        public void InsertSafeDescription(char mode, string description)
+        {
+            lock (Descriptions)
+            {
+                if (Descriptions.ContainsKey(mode))
+                {
+                    Descriptions.Remove(mode);
+                }
+
+                Descriptions.Add(mode, description);
+            }
+        }
+
         public void RemoveUserWindow(User user)
         {
             Graphics.Window window = null;
@@ -764,6 +868,33 @@ namespace Pidgeon
                     Core.DebugLog("Malformed DCC " + message2);
                     return;
             }
+        }
+
+        public override void __evt_ChannelFinishBan(NetworkChannelEventArgs args)
+        {
+            Channel channel = this.GetChannel(args.ChannelName);
+            if (channel != null && args.Channel != null)
+            {
+                if (channel.Bans == null)
+                {
+                    channel.Bans = args.Channel.Bans;
+                }
+                else
+                {
+                    channel.Bans.AddRange(args.Channel.Bans);
+                }
+                channel.UpdateInfo();
+            }
+        }
+
+        public override void __evt_WHOIS(NetworkWHOISEventArgs args)
+        {
+            
+        }
+
+        public override void __evt_INVITE(NetworkChannelDataEventArgs args)
+        {
+            
         }
     }
 }

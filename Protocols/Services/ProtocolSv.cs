@@ -494,7 +494,7 @@ namespace Pidgeon.Protocols.Services
                         }
                     }
 
-                    remove.SetDisconnected();
+                    remove.IsConnected = false;
                     remove.Destroy();
                 }
             }
@@ -605,7 +605,7 @@ namespace Pidgeon.Protocols.Services
                 {
                     foreach (Network network in NetworkList)
                     {
-                        network.SetDisconnected();
+                        network.IsConnected = false;
                     }
                 }
                 try
@@ -637,7 +637,7 @@ namespace Pidgeon.Protocols.Services
                     foreach (Network xx in NetworkList)
                     {
                         // we need to flag all networks here as disconnected so that it knows we can't use them
-                        xx.SetDisconnected();
+                        xx.IsConnected = false;
                     }
                 }
                 if (keep != null)
