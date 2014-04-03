@@ -50,6 +50,9 @@
     <Reference Include="Eagle">
       <HintPath>Eagle.dll</HintPath>
     </Reference>
+    <Reference Include="libirc">
+      <HintPath>libirc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
       <Package>gtk-sharp-2.0</Package>
@@ -260,10 +263,7 @@
     <Content Include="pigeon_clip_art_hight.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\libirc\libirc.csproj">
-      <Project>{944CB47E-0E2F-4371-8291-92CE2C4E68CA}</Project>
-      <Name>libirc</Name>
-    </ProjectReference>
+  
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>

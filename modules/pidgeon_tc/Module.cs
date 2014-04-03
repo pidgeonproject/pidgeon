@@ -229,15 +229,12 @@ namespace Pidgeon
                 List<string> Results2 = new List<string>();
                 string Resd2 = "";
                 if (Core.SelectedNetwork.RenderedChannel == null) { return; }
-                lock (Core.SelectedNetwork.RenderedChannel.UserList)
+                foreach (User item in Core.SelectedNetwork.RenderedChannel.RetrieveUL().Values)
                 {
-                    foreach (User item in Core.SelectedNetwork.RenderedChannel.UserList.Values)
+                    if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                     {
-                        if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
-                        {
-                            Resd2 += item.Nick + ", ";
-                            Results2.Add(item.Nick);
-                        }
+                        Resd2 += item.Nick + ", ";
+                        Results2.Add(item.Nick);
                     }
                 }
                 if (Results2.Count == 1)
