@@ -52,7 +52,7 @@ namespace Pidgeon
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                HandleException(fail);
                 return false;
             }
         }
@@ -70,9 +70,9 @@ namespace Pidgeon
             Core.DebugLog("Registered #pidgeon in menu");
         }
 
-        private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
+        private bool join()
         {
-            foreach (Protocol network in Core.Connections)
+            foreach (libirc.IProtocol network in Core.Connections)
             {
                 if (network.GetType() == typeof(Protocols.Services.ProtocolSv))
                 {
@@ -82,25 +82,28 @@ namespace Pidgeon
                         if (server.ServerName == "irc.tm-irc.org")
                         {
                             server.Join("#pidgeon");
-                            return;
+                            return true;
                         }
                     }
-                }
-
-                if (network.Server == "irc.tm-irc.org")
+                } else if (network.GetType() == typeof(Protocols.ProtocolIrc))
                 {
-                    network.Join("#pidgeon");
-                    return;
+                    Network n_ = ((Protocols.ProtocolIrc)network).NetworkMeta;
+                    if (n_.ServerName == "irc.tm-irc.org")
+                    {
+                        n_.Join("#pidgeon");
+                        return true;
+                    }
                 }
             }
-            Core.ConnectIRC("irc.tm-irc.org");
-            foreach (Protocol network in Core.Connections)
+            return false;
+        }
+
+        private void pidgeonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!join())
             {
-                if (network.Server == "irc.tm-irc.org")
-                {
-                    network.Join("#pidgeon");
-                    return;
-                }
+                Core.ConnectIRC("irc.tm-irc.org");
+                join();
             }
         }
     }
