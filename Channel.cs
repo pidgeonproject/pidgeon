@@ -59,7 +59,8 @@ namespace Pidgeon
         /// </summary>
         /// <param name="network">Network.</param>
         /// <param name="name">Name.</param>
-        public Channel(Network network, string name) : base((libirc.Network)network)
+        public Channel(Network network, string name)
+            : base((libirc.Network)network)
         {
             this._Network = network;
             this.lName = name.ToLower();
@@ -68,14 +69,14 @@ namespace Pidgeon
                                                   true, name, true, true, network);
             Core.SystemForm.ChannelList.InsertChannel(this);
             this.Chat.IsChannel = true;
-            if(Configuration.UserData.SwitchWindowOnJoin)
+            if (Configuration.UserData.SwitchWindowOnJoin)
             {
                 // in case that we want to switch to this new window we need to select it in channel list
                 // otherwise it would be very confusing for user
                 Core.SystemForm.ChannelList.ReselectWindow(Chat);
             }
         }
-        
+
         /// <summary>
         /// Recreate information in side menu
         /// </summary>
@@ -104,8 +105,8 @@ namespace Pidgeon
                 Environment.NewLine + "Topic: " + trimmed + Environment.NewLine + "Last activity: " + DateTime.Now.ToString();
             MenuData = Core.NormalizeHtml(Core.RemoveSpecial(text));
         }
-  
-        public new User UserFromName (string name)
+
+        public new User UserFromName(string name)
         {
             name = name.ToLower();
             lock (this.UserList)
@@ -117,7 +118,7 @@ namespace Pidgeon
             }
             return null;
         }
-        
+
         public void ImportData(libirc.Channel channel)
         {
             foreach (libirc.User user in channel.RetrieveUL().Values)
@@ -149,7 +150,7 @@ namespace Pidgeon
                 }
             }
         }
-        
+
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
@@ -310,8 +311,8 @@ namespace Pidgeon
             }
             return;
         }
-  
-        public override void InsertUser (libirc.User user)
+
+        public override void InsertUser(libirc.User user)
         {
             lock (this.UserList)
             {
@@ -324,7 +325,7 @@ namespace Pidgeon
                 }
             }
         }
-        
+
         public void InsertUser(User user)
         {
             lock (this.UserList)

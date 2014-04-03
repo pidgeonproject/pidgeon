@@ -138,14 +138,19 @@ namespace Pidgeon.Protocols.Services
             this.FinishedLoading = true;
             return "";
         }
-        
-        /// <summary>
-        /// Send a command to network
-        /// </summary>
-        /// <param name="cm"></param>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        public bool Command(string cm, Network network = null)
+
+        private void BacklogMode(bool enable)
+        {
+            lock (this.NetworkList)
+            {
+                foreach (libirc.Network network in this.NetworkList)
+                {
+                    network.IsDownloadingBouncerBacklog = enable;
+                }
+            }
+        }
+
+        public override libirc.IProtocol.Result Command(string cm, libirc.Network network = null)
         {
             if (cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
             {
@@ -153,10 +158,10 @@ namespace Pidgeon.Protocols.Services
                 string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
                 string rest = cm.Substring(first_word.Length);
                 Transfer(first_word + rest, libirc.Defs.Priority.Normal, network);
-                return true;
+                return Result.Done;
             }
             Transfer(cm.ToUpper(), libirc.Defs.Priority.Normal, network);
-            return true;
+            return Result.Done;
         }
 
         private void Start()
@@ -699,30 +704,27 @@ namespace Pidgeon.Protocols.Services
             return Result.Done;
         }
 
-        /// <summary>
-        /// Send a message to network
-        /// </summary>
-        /// <param name="text">Text of message</param>
-        /// <param name="to">Who is supposed to receive it</param>
-        /// <param name="network">Network where it is sent</param>
-        /// <param name="_priority">Priority</param>
-        /// <param name="pmsg">Whether it is supposed to be considered a private message</param>
-        /// <returns></returns>
-        public int Message(string text, string to, libirc.Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal, bool pmsg = false)
+        public override void DebugLog(string Text, int Verbosity = 1)
+        {
+            Core.DebugLog(Text, Verbosity);
+        }
+
+        public override libirc.IProtocol.Result Message(string text, string to, libirc.Network network, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal)
         {
             Datagram message = new Datagram("MESSAGE", text);
             if (network != null && NetworkList.Contains(network))
             {
                 message.Parameters.Add("network", network.ServerName);
-                message.Parameters.Add("priority", _priority.ToString());
+                message.Parameters.Add("priority", priority.ToString());
                 message.Parameters.Add("to", to);
                 Deliver(message);
+                return Result.Queued;
             }
             else
             {
                 Core.DebugLog("Invalid network for message to: " + to);
+                return Result.Failure;
             }
-            return 0;
         }
 
         /// <summary>

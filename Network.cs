@@ -288,7 +288,8 @@ namespace Pidgeon
                 {
                     window = this.PrivateWins[user];
                     this.PrivateWins.Remove(user);
-                } else
+                }
+                else
                 {
                     return;
                 }
@@ -298,10 +299,14 @@ namespace Pidgeon
                 Core.SystemForm.SwitchRoot();
             }
             WindowsManager.UnregisterWindow(user.Nick, this);
-            window._Destroy ();
+            window._Destroy();
         }
-           
-        
+
+        public override void HandleUnknownData(UnknownDataEventArgs text)
+        {
+            this.SystemWindow.scrollback.InsertText(text.Data, Pidgeon.ContentLine.MessageStyle.System, true, text.Date, true);
+        }
+
         public User GetUser(string nickname)
         {
             nickname = nickname.ToLower();
@@ -359,11 +364,11 @@ namespace Pidgeon
         public Channel CreateChannel(string channel)
         {
             Channel ch = GetChannel(channel);
-            if(ch == null)
+            if (ch == null)
             {
                 // we aren't in this channel, which is expected, let's create a new window for it
                 ch = new Pidgeon.Channel(this, channel);
-                lock(this.Channels)
+                lock (this.Channels)
                 {
                     this.Channels.Add(ch.lName, ch);
                 }
@@ -373,7 +378,7 @@ namespace Pidgeon
 
         public override void __evt_Self(NetworkSelfEventArgs args)
         {
-            switch(args.Type)
+            switch (args.Type)
             {
                 case libirc.Network.EventType.Join:
                     CreateChannel(args.ChannelName);
@@ -394,7 +399,7 @@ namespace Pidgeon
                 case libirc.Network.EventType.Nick:
                     this.Nickname = args.NewNick;
                     this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
-                                                              Pidgeon.ContentLine.MessageStyle.User, true, args.Date);
+                                                              Pidgeon.ContentLine.MessageStyle.User, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     break;
             }
         }
@@ -407,10 +412,11 @@ namespace Pidgeon
                 Graphics.Window window = this.GetPrivateUserWindow(user.Nick);
                 if (args.IsAct)
                 {
-                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Action, true, args.Date, false);
-                } else
+                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Action, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                }
+                else
                 {
-                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Message, true, args.Date, false);
+                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
             }
             else
@@ -428,30 +434,33 @@ namespace Pidgeon
                         if (!args.IsAct)
                         {
                             window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceUser.Nick, args.Message),
-                                                         ContentLine.MessageStyle.Message, true,
-                                                         args.Date, false);
-                        } else
+                                                         ContentLine.MessageStyle.Message, WriteLogs(),
+                                                         args.Date, IsDownloadingBouncerBacklog);
+                        }
+                        else
                         {
                             window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceUser.Nick + " " +
                                                          args.Message, ContentLine.MessageStyle.Action,
-                                                         true, args.Date, false);
+                                                         WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                         }
-                    } else
+                    }
+                    else
                     {
                         this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
                                                                 ")" + args.Message, ContentLine.MessageStyle.Message,
-                                                                true, args.Date, false);
+                                                                WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                } else
+                }
+                else
                 {
                     this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
                                                                 ")" + args.Message, ContentLine.MessageStyle.Message,
-                                                                true, args.Date, false);
+                                                                WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
             }
         }
-        
-        public override void __evt_NOTICE (libirc.Network.NetworkNOTICEEventArgs args)
+
+        public override void __evt_NOTICE(libirc.Network.NetworkNOTICEEventArgs args)
         {
             Graphics.Window window = null;
             if (args.SourceUser == null)
@@ -467,23 +476,23 @@ namespace Pidgeon
                 }
             }
             if (window == null) window = this.SystemWindow;
-            window.scrollback.InsertText("[" + args.SourceUser.Nick + "] " + args.Message,ContentLine.MessageStyle.Message, true,
-                                         args.Date, false);
+            window.scrollback.InsertText("[" + args.SourceUser.Nick + "] " + args.Message, ContentLine.MessageStyle.Message, WriteLogs(),
+                                         args.Date, IsDownloadingBouncerBacklog);
         }
-        
-        public override void __evt_ChannelInfo (libirc.Network.NetworkChannelDataEventArgs args)
+
+        public override void __evt_ChannelInfo(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null && args.Parameters.Count > 1)
             {
                 Graphics.Window window = channel.RetrieveWindow();
                 channel.ChannelMode.ChangeMode(args.Parameters[2]);
-                window.scrollback.InsertText("Mode: " + args.Parameters[2], ContentLine.MessageStyle.Channel, true, args.Date, false);
+                window.scrollback.InsertText("Mode: " + args.Parameters[2], ContentLine.MessageStyle.Channel, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 channel.UpdateInfo();
             }
         }
-        
-        public override void __evt_ParseUser (libirc.Network.NetworkParseUserEventArgs args)
+
+        public override void __evt_ParseUser(libirc.Network.NetworkParseUserEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -497,21 +506,22 @@ namespace Pidgeon
                     user.LastAwayCheck = DateTime.Now;
                     user.RealName = args.RealName;
                     user.Away = args.IsAway;
-                } else
+                }
+                else
                 {
+                    user = new User(args.User, this);
                     user.Away = args.IsAway;
                     user.RealName = args.RealName;
-                    user = new User(args.User, this);
                     channel.InsertUser(user);
                 }
             }
             if (args.Channel != null && args.Channel.IsParsingWhoData && !Configuration.Kernel.HidingParsed)
             {
-                this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, true, args.Date);
+                this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
             }
         }
-        
-        public override void __evt_ChannelUserList (libirc.Network.ChannelUserListEventArgs args)
+
+        public override void __evt_ChannelUserList(libirc.Network.ChannelUserListEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (args.Channel != null && channel != null)
@@ -520,15 +530,15 @@ namespace Pidgeon
                 channel.RedrawUsers();
             }
         }
-        
-        public override void __evt_FinishChannelParseUser (libirc.Network.NetworkChannelDataEventArgs args)
+
+        public override void __evt_FinishChannelParseUser(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             channel.UpdateInfo();
             channel.RedrawUsers();
         }
-        
-        public override void __evt_KICK (libirc.Network.NetworkKickEventArgs args)
+
+        public override void __evt_KICK(libirc.Network.NetworkKickEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -538,13 +548,13 @@ namespace Pidgeon
                 {
                     window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                                                  new List<string> { args.Source, args.Target, args.Message }),
-                                                 ContentLine.MessageStyle.Join, true, args.Date);
+                                                 ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     channel.RemoveUser(args.Target);
                 }
             }
         }
-        
-        public override void __evt_PART (libirc.Network.NetworkChannelEventArgs args)
+
+        public override void __evt_PART(libirc.Network.NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -553,11 +563,11 @@ namespace Pidgeon
                 User user = channel.UserFromName(args.SourceInfo.Nick);
                 if (user != null)
                 {
-                    if ( w != null)
+                    if (w != null)
                     {
                         w.scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage,
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
-                               ContentLine.MessageStyle.Part, true, args.Date);
+                               ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     channel.RemoveUser(user);
                     channel.RedrawUsers();
@@ -565,8 +575,8 @@ namespace Pidgeon
                 }
             }
         }
-        
-        public override void __evt_JOIN (libirc.Network.NetworkChannelEventArgs args)
+
+        public override void __evt_JOIN(libirc.Network.NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -577,15 +587,15 @@ namespace Pidgeon
                 {
                     w.scrollback.InsertText(messages.get("join", Core.SelectedLanguage,
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
-                               ContentLine.MessageStyle.Join, true, args.Date);
+                               ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
                 channel.InsertUser(user);
                 channel.RedrawUsers();
                 channel.UpdateInfo();
             }
         }
-        
-        public override void __evt_NICK (libirc.Network.NetworkNICKEventArgs args)
+
+        public override void __evt_NICK(libirc.Network.NetworkNICKEventArgs args)
         {
             lock (this.Channels)
             {
@@ -597,10 +607,10 @@ namespace Pidgeon
                         Graphics.Window window = channel.RetrieveWindow();
                         if (window != null)
                         {
-                            window.scrollback.InsertText(messages.get ("protocol-nick", Core.SelectedLanguage,
+                            window.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage,
                                                            new List<string> { args.OldNick, args.NewNick }),
                                                            Pidgeon.ContentLine.MessageStyle.Channel,
-                                                           !channel.TemporarilyHidden, args.Date);
+                                                           !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                         }
                         user.Nick = args.NewNick;
                         channel.RedrawUsers();
@@ -608,8 +618,8 @@ namespace Pidgeon
                 }
             }
         }
-        
-        public override void __evt_MODE (libirc.Network.NetworkMODEEventArgs args)
+
+        public override void __evt_MODE(libirc.Network.NetworkMODEEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -674,13 +684,15 @@ namespace Pidgeon
                 if (window != null)
                 {
                     window.scrollback.InsertText(messages.get("channel-mode", Core.SelectedLanguage, new List<string> { args.Source, args.SimpleMode }),
-                                                 Pidgeon.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden, args.Date);
+                                                 Pidgeon.ContentLine.MessageStyle.Action, !channel.TemporarilyHidden && WriteLogs(), args.Date,
+                                                 IsDownloadingBouncerBacklog);
                 }
                 channel.UpdateInfo();
+                channel.RedrawUsers();
             }
         }
-        
-        public override void __evt_QUIT (libirc.Network.NetworkGenericDataEventArgs args)
+
+        public override void __evt_QUIT(libirc.Network.NetworkGenericDataEventArgs args)
         {
             lock (this.Channels)
             {
@@ -693,7 +705,7 @@ namespace Pidgeon
                         window_.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                                       new List<string> { "%L%" + args.SourceInfo.Nick + "%/L%!%D%" +
                                                       args.SourceInfo.Ident + "%/D%@%H%" + args.SourceInfo.Host + "%/H%", args.Message }),
-                                                      ContentLine.MessageStyle.Join, true, args.Date);
+                                                      ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     channel.RemoveUser(args.SourceInfo.Nick);
                     channel.UpdateInfo();
@@ -701,8 +713,8 @@ namespace Pidgeon
                 }
             }
         }
-        
-        public override void __evt_INFO (libirc.Network.NetworkGenericDataEventArgs args)
+
+        public override void __evt_INFO(libirc.Network.NetworkGenericDataEventArgs args)
         {
             string parameter_line = args.ParameterLine;
             if (parameter_line.Contains("PREFIX=("))
@@ -751,7 +763,7 @@ namespace Pidgeon
                     if (window != null)
                     {
                         window.scrollback.InsertText(messages.get("channel-topic", Core.SelectedLanguage, new List<string> { args.Source, args.Topic }),
-                                                       Pidgeon.ContentLine.MessageStyle.Channel, true, args.Date);
+                                                       Pidgeon.ContentLine.MessageStyle.Channel, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     channel.Topic = args.Topic;
                     channel.TopicDate = (int)args.TopicDate;
@@ -769,7 +781,7 @@ namespace Pidgeon
                 Graphics.Window window = channel.RetrieveWindow();
                 if (window != null)
                 {
-                    window.scrollback.InsertText("Topic: " + args.Topic, Pidgeon.ContentLine.MessageStyle.Channel, true, args.Date);
+                    window.scrollback.InsertText("Topic: " + args.Topic, Pidgeon.ContentLine.MessageStyle.Channel, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
                 channel.Topic = args.Topic;
                 channel.UpdateInfo();
@@ -787,10 +799,31 @@ namespace Pidgeon
                 if (window != null)
                 {
                     window.scrollback.InsertText("Topic by: " + args.Source + " date " + Core.ConvertFromUNIXToString(args.TopicDate.ToString()),
-                                                 Pidgeon.ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, args.Date);
+                                                 Pidgeon.ContentLine.MessageStyle.Channel, WriteLogs() && !channel.TemporarilyHidden, args.Date,
+                                                 IsDownloadingBouncerBacklog);
                 }
                 channel.UpdateInfo();
             }
+        }
+
+        private bool WriteLogs()
+        {
+            if (!IsDownloadingBouncerBacklog)
+            {
+                return true;
+            }
+            else
+            {
+                switch (Configuration.Logs.ServicesLogs)
+                {
+                    case Configuration.Logs.ServiceLogs.full:
+                        return true;
+                    case Configuration.Logs.ServiceLogs.incremental:
+                    case Configuration.Logs.ServiceLogs.none:
+                        return false;
+                }
+            }
+            return false;
         }
 
         public override void __evt_CTCP(NetworkCTCPEventArgs args)
@@ -881,6 +914,7 @@ namespace Pidgeon
                 }
                 else
                 {
+                    channel.Bans.Clear();
                     channel.Bans.AddRange(args.Channel.Bans);
                 }
                 channel.UpdateInfo();
@@ -889,12 +923,12 @@ namespace Pidgeon
 
         public override void __evt_WHOIS(NetworkWHOISEventArgs args)
         {
-            
+
         }
 
         public override void __evt_INVITE(NetworkChannelDataEventArgs args)
         {
-            
+
         }
     }
 }

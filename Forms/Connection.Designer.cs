@@ -67,6 +67,7 @@ namespace Pidgeon.Forms
             this.checkbutton1.Name = "checkbutton1";
             this.checkbutton1.Label = messages.Localize("[[newconnection-secure]]");
             this.checkbutton1.DrawIndicator = true;
+            this.checkbutton1.Clicked += new EventHandler(Change);
             this.checkbutton1.UseUnderline = true;
             this.table1.Add(this.checkbutton1);
             global::Gtk.Table.TableChild w1 = ((global::Gtk.Table.TableChild)(this.table1[this.checkbutton1]));

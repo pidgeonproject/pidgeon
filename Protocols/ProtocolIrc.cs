@@ -68,11 +68,6 @@ namespace Pidgeon.Protocols
             Core.DebugLog(Text, Verbosity);
         }
 
-        public override void HandleUnknownData(string data)
-        {
-            this.NetworkMeta.SystemWindow.scrollback.InsertText(data, Pidgeon.ContentLine.MessageStyle.System, true, 0, true);
-        }
-
         private void Exec()
         {
             try

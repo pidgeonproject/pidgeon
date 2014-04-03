@@ -192,6 +192,7 @@ namespace Pidgeon.Protocols.Services
                 {
                     if (Core.SystemForm.DisplayingProgress == false)
                     {
+                        protocol.BacklogMode(true);
                         Core.SystemForm.progress = double.Parse(id);
                         Core.SystemForm.DisplayingProgress = true;
                         protocol.FinishedLoading = false;
@@ -206,6 +207,7 @@ namespace Pidgeon.Protocols.Services
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
                         IsBacklog = false;
+                        protocol.BacklogMode(false);
                         Core.SystemForm.Status(protocol.getInfo());
                         Core.SystemForm.DisplayingProgress = false;
                         Core.SystemForm.progress = 0;
@@ -226,7 +228,7 @@ namespace Pidgeon.Protocols.Services
                             }
                         }
                     }
-                    processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, false);
+                    processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, true);
                     processor.IsBacklog = IsBacklog;
                     processor.ProfiledResult();
                     return;

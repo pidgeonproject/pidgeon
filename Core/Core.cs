@@ -1460,30 +1460,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <returns>The exception.</returns>
-        /// <param name="_exception">_exception.</param>
-        /// <param name="fatal">If set to <c>true</c> fatal.</param>
-        [Obsolete]
-        public static int handleException(Exception _exception, bool fatal = false)
-        {
-            return HandleException(_exception, fatal);
-        }
-
-        /// <summary>
-        /// Handles the exception.
-        /// </summary>
-        /// <returns>The exception.</returns>
-        /// <param name="_exception">_exception.</param>
-        /// <param name="ek">Ek.</param>
-        [Obsolete]
-        public static int handleException(Exception _exception, ExceptionKind ek)
-        {
-            return HandleException(_exception, ek);
-        }
-
-        /// <summary>
         /// Exit
         /// </summary>
         /// <returns>true</returns>
