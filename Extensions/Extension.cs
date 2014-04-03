@@ -250,6 +250,11 @@ namespace Pidgeon
             }
         }
 
+        public void HandleException(Exception exception)
+        {
+            Core.HandleException(exception);
+        }
+
         /// <summary>
         /// Write a message to debug log
         /// </summary>
