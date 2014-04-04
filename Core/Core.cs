@@ -46,8 +46,7 @@ namespace Pidgeon
             /// Creates a new instance of pidgeon exception
             /// </summary>
             /// <param name="Message"></param>
-            public PidgeonException(string Message)
-                : base(Message)
+            public PidgeonException(string Message) : base(Message)
             {
                 // this function just inherits the base for exception
             }
@@ -77,7 +76,6 @@ namespace Pidgeon
                 name = _name;
             }
         }
-
         /// <summary>
         /// Profiler
         /// </summary>
@@ -335,11 +333,6 @@ namespace Pidgeon
         /// </summary>
         public static bool RecoveryIsFatal = false;
         /// <summary>
-        /// Parameters that were retrieved in console (deprecated)
-        /// </summary>
-        [Obsolete("Replaced by a field StartupParams. Will be removed in pidgeon 1.2.20")]
-        public static string[] startup = null;
-        /// <summary>
         /// Cache of current params
         /// </summary>
         private static List<string> startupParams = new List<string>();
@@ -543,7 +536,7 @@ namespace Pidgeon
             }
             catch (Exception panic)
             {
-                Core.DebugLog("Failed to Core.Load: " + panic.Message + panic.StackTrace);
+                Core.DebugLog("@ Core.Load(): " + panic.Message + panic.StackTrace);
                 Core.HandleException(panic, true);
             }
             return false;
@@ -753,17 +746,17 @@ namespace Pidgeon
                 }
             }
             return text.Replace("%/USER%", "")
-                .Replace("%USER%", "")
-                .Replace("%H%", "")
-                .Replace("%/H%", "")
-                .Replace("%D%", "")
-                .Replace("%L%", "")
-                .Replace("%/L%", "")
-                .Replace("%/D%", "")
-                .Replace(Protocols.ProtocolIrc.UnderlineChar, "")
-                .Replace(Protocols.ProtocolIrc.BoldChar, "")
-                .Replace(Protocols.ProtocolIrc.ColorChar, "")
-                .Replace(((char)004).ToString(), "");
+                       .Replace("%USER%", "")
+                       .Replace("%H%", "")
+                       .Replace("%/H%", "")
+                       .Replace("%D%", "")
+                       .Replace("%L%", "")
+                       .Replace("%/L%", "")
+                       .Replace("%/D%", "")
+                       .Replace(Protocols.ProtocolIrc.UnderlineChar, "")
+                       .Replace(Protocols.ProtocolIrc.BoldChar, "")
+                       .Replace(Protocols.ProtocolIrc.ColorChar, "")
+                       .Replace(((char)004).ToString(), "");
         }
 
         /// <summary>

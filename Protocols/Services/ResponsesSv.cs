@@ -200,7 +200,7 @@ namespace Pidgeon.Protocols.Services
                     }
 
                     Core.SystemForm.progress = double.Parse(id);
-                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" 
+                    Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/"
                         + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
                     {
@@ -379,7 +379,8 @@ namespace Pidgeon.Protocols.Services
                             if (connected)
                             {
                                 s2.IsConnected = true;
-                            } else
+                            }
+                            else
                             {
                                 s2.IsConnected = false;
                             }
@@ -651,50 +652,30 @@ namespace Pidgeon.Protocols.Services
                             {
                                 if (user.Contains("!") && user.Contains("@"))
                                 {
-                                    string us = "";
-                                    string ident;
-                                    us = user.Substring(0, user.IndexOf("!", StringComparison.Ordinal));
-                                    if (channel.ContainsUser(us))
+                                    string mode = null;
+                                    libirc.UserInfo ui;
+                                    if (user.Contains("+"))
                                     {
+                                        mode = user.Substring(user.LastIndexOf("+"));
+                                        ui = new libirc.UserInfo(user.Substring(0, user.IndexOf("+")));
+                                    }
+                                    else
+                                    {
+                                        ui = new libirc.UserInfo(user);
+                                    }
+                                    
+                                    if (channel.ContainsUser(ui.Nick))
+                                    {
+                                        // we already have this user in a user list
                                         continue;
                                     }
-                                    ident = user.Substring(user.IndexOf("!", StringComparison.Ordinal) + 1);
-                                    if (ident.StartsWith("@", StringComparison.Ordinal))
+                                    User user_ = new User(ui, nw);
+                                    if (mode != null)
                                     {
-                                        ident = "";
+                                        user_.ChannelMode.ChangeMode(mode);
+                                        user_.ResetMode();
                                     }
-                                    else
-                                    {
-                                        if (ident.Contains("@"))
-                                        {
-                                            ident = ident.Substring(0, ident.IndexOf("@", StringComparison.Ordinal));
-                                        }
-                                    }
-                                    string host = user.Substring(user.IndexOf("@", StringComparison.Ordinal) + 1);
-                                    if (host.StartsWith("+", StringComparison.Ordinal))
-                                    {
-                                        host = "";
-                                    }
-                                    else
-                                    {
-                                        if (host.Contains("+"))
-                                        {
-                                            host = host.Substring(0, host.IndexOf("+", StringComparison.Ordinal));
-                                        }
-                                    }
-                                    /*lock (channel.UserList)
-                                    {
-                                        if (!channel.ContainsUser(us))
-                                        {
-                                            User f2 = new User(us, host, nw, ident);
-                                            if (user.Contains("+") && !user.StartsWith("+", StringComparison.Ordinal))
-                                            {
-                                                f2.ChannelMode.ChangeMode(user.Substring(user.IndexOf("+", StringComparison.Ordinal)));
-                                                f2.ResetMode();
-                                            }
-                                            channel.UserList.Add(f2.Nick.ToLower(), f2);
-                                        }
-                                    } */
+                                    channel.InsertUser(user_);
                                 }
                             }
                             Datagram response = new Datagram("USERLIST", "INFO");
@@ -728,7 +709,7 @@ namespace Pidgeon.Protocols.Services
                     Core.DebugLog("Invalid network " + curr.Attributes["network"].Value);
                     return;
                 }
-                
+
                 if (!userlist.ContainsKey("channel"))
                 {
                     Core.DebugLog("Invalid xml:" + curr.InnerXml);

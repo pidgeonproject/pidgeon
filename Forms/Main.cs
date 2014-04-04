@@ -386,7 +386,7 @@ namespace Pidgeon.Forms
             {
                 throw new Core.PidgeonException("This function can be called only from kernel thread");
             }
-            this.Title = "Pidgeon Client v 1.2 " + name;
+            this.Title = "Pidgeon Client v 1.6 " + name;
             return 2;
         }
 

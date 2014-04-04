@@ -259,28 +259,9 @@ namespace Pidgeon.Protocols.Services
             [Serializable]
             public class Description
             {
-                /// <summary>
-                /// Char
-                /// </summary>
                 public char Char;
-                /// <summary>
-                /// Text
-                /// </summary>
                 public string String = null;
-
-                /// <summary>
-                /// Creates a new instance for xml
-                /// </summary>
-                public Description()
-                {
-
-                }
-
-                /// <summary>
-                /// Creates a new instance with data
-                /// </summary>
-                /// <param name="c"></param>
-                /// <param name="s"></param>
+                public Description(){}
                 public Description(char c, string s)
                 {
                     Char = c;
@@ -317,10 +298,7 @@ namespace Pidgeon.Protocols.Services
             /// <summary>
             /// Creates a new instance (for xml serialization only)
             /// </summary>
-            public NetworkInfo()
-            {
-
-            }
+            public NetworkInfo(){}
 
             /// <summary>
             /// retrieve a window info
