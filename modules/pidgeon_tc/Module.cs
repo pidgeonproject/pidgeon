@@ -147,14 +147,10 @@ namespace Pidgeon
                 if (Core.SelectedNetwork == null)
                     return;
 
-                ////
-
-
                 if (text2.StartsWith(Core.SelectedNetwork.ChannelPrefix))
                 {
                     if (Core.SelectedNetwork.IsConnected)
                     {
-
                         if (text2.StartsWith(Core.SystemForm.Chat._Network.ChannelPrefix))
                         {
                             List<string> Channels = new List<string>();
@@ -220,7 +216,6 @@ namespace Pidgeon
                             }
                         }
                     }
-
                 }
 
 
@@ -229,6 +224,7 @@ namespace Pidgeon
                 List<string> Results2 = new List<string>();
                 string Resd2 = "";
                 if (Core.SelectedNetwork.RenderedChannel == null) { return; }
+                DebugLog(Core.SelectedNetwork.RenderedChannel.RetrieveUL().Count.ToString());
                 foreach (User item in Core.SelectedNetwork.RenderedChannel.RetrieveUL().Values)
                 {
                     if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
@@ -243,9 +239,7 @@ namespace Pidgeon
                     result = result.Substring(0, x);
                     result = result + Results2[0] + text.Substring(x + text2.Length);
                     text = result;
-
                     caret = result.Length;
-
                     prev = result;
                     return;
                 }

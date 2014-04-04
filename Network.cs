@@ -141,8 +141,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="Server">Server name</param>
         /// <param name="protocol">Protocol that own this instance</param>
-        public Network(string Server, libirc.Protocol protocol)
-            : base(Server, protocol)
+        public Network(string Server, libirc.Protocol protocol) : base(Server, protocol)
         {
             RandomuQID = Core.RetrieveRandom();
             Quit = Configuration.UserData.quit;

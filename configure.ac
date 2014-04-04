@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.68])
-AC_INIT([Pidgeon], [1.2], [benapetr@gmail.com])
+AC_INIT([Pidgeon], [1.6], [benapetr@gmail.com])
 
 # Checks for programs.
 AC_PROG_LN_S

@@ -127,6 +127,14 @@ namespace Pidgeon
             }
         }
 
+        public new Dictionary<string, User> RetrieveUL()
+        {
+            lock (this.UserList)
+            {
+                return new Dictionary<string, User> (this.UserList);
+            }
+        }
+
         public override void RemoveUser(libirc.User user)
         {
             string nick = user.LowNick;
