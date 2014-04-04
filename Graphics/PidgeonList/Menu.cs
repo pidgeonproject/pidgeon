@@ -64,7 +64,7 @@ namespace Pidgeon.Graphics
         {
             if (e.Event.Button == 3)
             {
-                Menu(sender, null);
+                showMenu(sender, null);
             }
 
             if (e.Event.Button == 2)
@@ -81,8 +81,13 @@ namespace Pidgeon.Graphics
             }
         }
 
+        /// <summary>
+        /// This is called when menu is clicked (right click) on mouse
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         [GLib.ConnectBefore]
-        private void Menu(object sender, Gtk.PopupMenuArgs e)
+        private void showMenu(object sender, Gtk.PopupMenuArgs e)
         {
             try
             {

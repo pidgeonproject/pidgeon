@@ -120,7 +120,7 @@ namespace Pidgeon.Graphics
             pict.AddAttribute(icon, "pixbuf", 5);
             tv.AppendColumn(pict);
             tv.AppendColumn(Column);
-            tv.PopupMenu += Menu;
+            tv.PopupMenu += showMenu;
             tv.TooltipColumn = 4;
             tv.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             Column.AddAttribute(Item, "text", 0);

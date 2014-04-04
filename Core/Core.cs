@@ -956,7 +956,7 @@ namespace Pidgeon
                             Core.SystemForm.setFocus();
                             if (Core.SystemForm.Chat != null)
                             {
-                                NotificationWidget.focus = true;
+                                NotificationWidget.WillFocus = true;
                                 Core.SystemForm.Chat.textbox.setFocus();
                             }
                         }

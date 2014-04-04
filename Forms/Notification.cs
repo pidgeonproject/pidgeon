@@ -25,7 +25,7 @@ namespace Pidgeon.Forms
         /// <summary>
         /// Whether the focus should be returned to textbox after this notification is handled
         /// </summary>
-        public bool focus = false;
+        public bool WillFocus = false;
         private Gtk.VBox vbox1;
         private Gtk.Label label1;
         private Gtk.HBox hbox1;
@@ -183,7 +183,7 @@ namespace Pidgeon.Forms
         {
             try
             {
-                if (focus)
+                if (WillFocus)
                 {
                     Core.SystemForm.setFocus();
                     if (Core.SystemForm.Chat != null && Core.SystemForm.Chat.textbox != null)

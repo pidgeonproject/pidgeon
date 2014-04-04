@@ -107,7 +107,7 @@ namespace Pidgeon
                         Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel (CurrentWindow.WindowName);
                     }
                 }
-                Core.SystemForm.setChannel (chat.Name);
+                Core.SystemForm.SetChannel (chat.WindowName);
                 if (CurrentWindow.Making == false)
                 {
                     CurrentWindow.textbox.setFocus ();

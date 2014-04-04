@@ -18,10 +18,6 @@ using System.Threading;
 using System;
 using System.Collections.Generic;
 using System.Text;
-using System.Net.Sockets;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Pidgeon.Protocols
 {

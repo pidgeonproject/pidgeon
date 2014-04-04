@@ -105,6 +105,13 @@ namespace Pidgeon
                         }
                     }
                 }
+                lock (this.PrivateWins)
+                {
+                    foreach (Graphics.Window user in this.PrivateWins.Values)
+                    {
+                        user.NeedsIcon = true;
+                    }
+                }
             }
         }
         /// <summary>
@@ -134,7 +141,8 @@ namespace Pidgeon
         /// </summary>
         /// <param name="Server">Server name</param>
         /// <param name="protocol">Protocol that own this instance</param>
-        public Network(string Server, libirc.Protocol protocol) : base(Server, protocol)
+        public Network(string Server, libirc.Protocol protocol)
+            : base(Server, protocol)
         {
             RandomuQID = Core.RetrieveRandom();
             Quit = Configuration.UserData.quit;
@@ -361,19 +369,39 @@ namespace Pidgeon
             }
         }
 
-        public Channel CreateChannel(string channel)
+        public override bool RemoveChannel(string name)
         {
-            Channel ch = GetChannel(channel);
-            if (ch == null)
+            name = name.ToLower();
+            lock (this.Channels)
             {
-                // we aren't in this channel, which is expected, let's create a new window for it
-                ch = new Pidgeon.Channel(this, channel);
-                lock (this.Channels)
+                if (this.Channels.ContainsKey(name))
                 {
-                    this.Channels.Add(ch.lName, ch);
+                    this.Channels.Remove(name);
                 }
             }
-            return ch;
+            return base.RemoveChannel(name);
+        }
+
+        public new Channel MakeChannel(string channel)
+        {
+            lock (this.Channels)
+            {
+                Channel ch = GetChannel(channel);
+                if (ch == null)
+                {
+                    // we aren't in this channel, which is expected, let's create a new window for it
+                    ch = new Pidgeon.Channel(this, channel);
+                    this.Channels.Add(ch.lName, ch);
+                    lock (base.Channels)
+                    {
+                        if (!base.Channels.ContainsKey(ch.lName))
+                        {
+                            base.Channels.Add(ch.lName, (libirc.Channel)ch);
+                        }
+                    }
+                }
+                return ch;
+            }
         }
 
         public override void __evt_Self(NetworkSelfEventArgs args)
@@ -381,20 +409,14 @@ namespace Pidgeon
             switch (args.Type)
             {
                 case libirc.Network.EventType.Join:
-                    CreateChannel(args.ChannelName);
+                    MakeChannel(args.ChannelName);
                     break;
                 case libirc.Network.EventType.Part:
                 case libirc.Network.EventType.Kick:
                 case libirc.Network.EventType.Quit:
-                    lock (this.Channels)
-                    {
-                        string channel = args.ChannelName.ToLower();
-                        Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
-                        if (this.Channels.ContainsKey(channel))
-                        {
-                            this.Channels.Remove(channel);
-                        }
-                    }
+                    string channel = args.ChannelName.ToLower();
+                    Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
+                    this.RemoveChannel(channel);
                     break;
                 case libirc.Network.EventType.Nick:
                     this.Nickname = args.NewNick;
@@ -506,6 +528,10 @@ namespace Pidgeon
                     user.LastAwayCheck = DateTime.Now;
                     user.RealName = args.RealName;
                     user.Away = args.IsAway;
+                    if (args.StringMode.Length > 0)
+                    {
+                        user.ChannelPrefix_Char = args.StringMode[0];
+                    }
                 }
                 else
                 {
@@ -513,6 +539,10 @@ namespace Pidgeon
                     user.Away = args.IsAway;
                     user.RealName = args.RealName;
                     channel.InsertUser(user);
+                    if (args.StringMode.Length > 0)
+                    {
+                        user.ChannelPrefix_Char = args.StringMode[0];
+                    }
                 }
             }
             if (args.Channel != null && args.Channel.IsParsingWhoData && !Configuration.Kernel.HidingParsed)
@@ -923,12 +953,78 @@ namespace Pidgeon
 
         public override void __evt_WHOIS(NetworkWHOISEventArgs args)
         {
-
+            try
+            {
+                if (Configuration.irc.FriendlyWhois)
+                {
+                    string name = args.ParameterLine.Substring(args.ParameterLine.IndexOf(" ", StringComparison.Ordinal) + 1);
+                    if (args.WhoisType == NetworkWHOISEventArgs.Mode.Channels)
+                    {
+                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " is in channels: " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
+                            WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Info)
+                    {
+                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
+                            WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Server)
+                    {
+                        this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
+                                        args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Uptime)
+                    {
+                        this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
+                                    args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else
+                    {
+                        this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
+                                    args.Date, IsDownloadingBouncerBacklog);
+                    }
+                }
+                else
+                {
+                    this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
+                                    args.Date, IsDownloadingBouncerBacklog);
+                }
+            }
+            catch (Exception fail)
+            {
+                Core.HandleException(fail);
+            }
         }
 
         public override void __evt_INVITE(NetworkChannelDataEventArgs args)
         {
+            this.SystemWindow.scrollback.InsertText("INVITE: " + args.Source + " invites you to join " + args.ChannelName + " (click on channel name to join)",
+                Pidgeon.ContentLine.MessageStyle.System, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+            if (!Configuration.irc.IgnoreInvites)
+            {
+                Core.DisplayNote(args.Source + " invites you to join " + args.ChannelName, "Invitation");
+            }
+        }
 
+        public override bool __evt__IncomingData(IncomingDataEventArgs args)
+        {
+            switch (args.Command)
+            {
+                case "001":
+                case "002":
+                case "003":
+                case "004":
+                    Hooks._Network.NetworkInfo(this, args.Command, args.ParameterLine, args.Message);
+                    return false;
+                case "005":
+                    Hooks._Network.NetworkInfo(this, args.Command, args.ParameterLine, args.Message);
+                    if (!this.IsLoaded)
+                    {
+                        Hooks._Network.AfterConnectToNetwork(this);
+                    }
+                    return false;
+            }
+            return false;
         }
     }
 }

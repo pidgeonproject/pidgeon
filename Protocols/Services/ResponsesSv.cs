@@ -59,7 +59,7 @@ namespace Pidgeon.Protocols.Services
                         else
                         {
                             Core.DebugLog("There is no channel " + message_target);
-                            target = mn.CreateChannel(message_target);
+                            target = mn.MakeChannel(message_target);
                             message_window = target.RetrieveWindow();
                         }
                     }
@@ -132,7 +132,6 @@ namespace Pidgeon.Protocols.Services
             public static void sData(XmlNode curr, ProtocolSv protocol)
             {
                 long date = 0;
-                bool backlog = false;
                 bool IsBacklog = false;
                 string MQID = null;
                 bool range = false;
@@ -154,7 +153,7 @@ namespace Pidgeon.Protocols.Services
                             if (xx.Name == "buffer")
                             {
                                 id = xx.Value;
-                                backlog = true;
+                                IsBacklog = true;
                             }
                             break;
                         case "range":
@@ -188,7 +187,7 @@ namespace Pidgeon.Protocols.Services
 
                 libirc.ProcessorIRC processor = null;
 
-                if (backlog || range)
+                if (IsBacklog || range)
                 {
                     if (Core.SystemForm.DisplayingProgress == false)
                     {
@@ -200,7 +199,6 @@ namespace Pidgeon.Protocols.Services
                         Core.SystemForm.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
-                    IsBacklog = true;
                     Core.SystemForm.progress = double.Parse(id);
                     Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/" 
                         + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
@@ -228,13 +226,8 @@ namespace Pidgeon.Protocols.Services
                             }
                         }
                     }
-                    processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, true);
-                    processor.IsBacklog = IsBacklog;
-                    processor.ProfiledResult();
-                    return;
                 }
-                processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date);
-                processor.IsBacklog = IsBacklog;
+                processor = new libirc.ProcessorIRC(server, curr.InnerText, ref protocol.pong, date, IsBacklog);
                 processor.ProfiledResult();
             }
 
@@ -573,7 +566,7 @@ namespace Pidgeon.Protocols.Services
                                     {
                                         if (nw.GetChannel(channel) == null)
                                         {
-                                            Channel xx = nw.CreateChannel(channel);
+                                            Channel xx = nw.MakeChannel(channel);
                                             if (Configuration.Services.UsingCache)
                                             {
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
@@ -754,10 +747,13 @@ namespace Pidgeon.Protocols.Services
                         Core.DebugLog("Invalid xml:" + curr.InnerXml);
                         return;
                     }
-                    libirc.User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);
+                    User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);
 
                     if (user == null)
                     {
+                        user = new User(userlist["nickname" + CurrentUser.ToString()], nw);
+                        channel.InsertUser(user);
+                        CurrentUser++;
                         continue;
                     }
 

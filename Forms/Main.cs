@@ -626,7 +626,7 @@ namespace Pidgeon.Forms
         /// Change a name of currently displayed channel in the toolbar (thread unsafe)
         /// </summary>
         /// <param name="channel"></param>
-        public void setChannel(string channel)
+        public void SetChannel(string channel)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
