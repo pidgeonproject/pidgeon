@@ -31,7 +31,7 @@ namespace Pidgeon
         {
             menu = new Gtk.MenuItem("Display notifications");
             collector = new Graphics.Window();
-            collector.CreateChat(null, false, false, false);
+            collector.CreateChat(false, false, false);
             menu.Activated += new EventHandler(Display);
             collector.WindowName = "Notifications";
             main.ToolsMenu.Append(menu);
@@ -50,8 +50,6 @@ namespace Pidgeon
             {
                 if (Core.SelectedNetwork != null)
                 {
-                    Core.SelectedNetwork.RenderedChannel = null;
-                    Core.SelectedNetwork._Protocol.Current = collector;
                     Core.SystemForm.SwitchWindow(collector);
                     return;
                 }
@@ -60,7 +58,7 @@ namespace Pidgeon
             }
             catch (Exception fail)
             {
-                Core.handleException(fail);
+                HandleException(fail);
             }
         }
 

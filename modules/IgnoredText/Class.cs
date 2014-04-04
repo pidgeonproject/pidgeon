@@ -39,7 +39,7 @@ namespace Pidgeon
         {
             menu = new Gtk.MenuItem("Display ignored text");
             collector = new Graphics.Window();
-            collector.CreateChat(false);
+            collector.CreateChat(false, false, false);
             menu.Activated += new EventHandler(Display);
             collector.WindowName = "Ignored";
             main.ToolsMenu.Append(menu);
