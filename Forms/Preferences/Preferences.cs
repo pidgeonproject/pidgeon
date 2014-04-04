@@ -319,7 +319,7 @@ namespace Pidgeon.Forms
                 IgnoreDB.Clear();
                 foreach (Ignoring.Ignore curr in Ignoring.IgnoreList)
                 {
-                    IgnoreDB.AppendValues(curr.Text, curr.Simple.ToString(), curr.Enabled.ToString(), curr.type.ToString(), curr);
+                    IgnoreDB.AppendValues(curr.Text, curr.Simple.ToString(), curr.Enabled.ToString(), curr.MatchingType.ToString(), curr);
                 }
             }
         }
@@ -594,7 +594,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Ignoring.Ignore curr in SelectedIgnore)
                 {
-                    curr.type = Ignoring.Ignore.Type.User;
+                    curr.MatchingType = Ignoring.Ignore.Type.User;
                 }
                 ReloadIgnores();
             }
@@ -610,7 +610,7 @@ namespace Pidgeon.Forms
             {
                 foreach (Ignoring.Ignore curr in SelectedIgnore)
                 {
-                    curr.type = Ignoring.Ignore.Type.Everything;
+                    curr.MatchingType = Ignoring.Ignore.Type.Everything;
                 }
                 ReloadIgnores();
             }

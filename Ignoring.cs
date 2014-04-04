@@ -41,15 +41,15 @@ namespace Pidgeon
             /// <summary>
             /// Regex
             /// </summary>
-            public Regex regex = null;
+            public Regex Regex = null;
             /// <summary>
             /// If true there is no regex
             /// </summary>
             public bool Simple = false;
             /// <summary>
-            /// Type
+            /// This is affecting what is this ignore going to match, you can either pick just a user string, or any part of text message
             /// </summary>
-            public Type type = Type.User;
+            public Type MatchingType = Type.User;
             
             /// <summary>
             /// Creates a new instance of ignore
@@ -60,14 +60,14 @@ namespace Pidgeon
             /// <param name="_Type"></param>
             public Ignore(bool enabled, bool simple, string data, Type _Type)
             {
-                Enabled = enabled;
+                this.Enabled = enabled;
                 if (!simple)
                 {
-                    regex = new Regex(data);
+                    this.Regex = new Regex(data);
                 }
-                type = _Type;
-                Text = data;
-                Simple = simple;
+                this.MatchingType = _Type;
+                this.Text = data;
+                this.Simple = simple;
             }
 
             /// <summary>
@@ -109,14 +109,14 @@ namespace Pidgeon
                     if (x.Simple)
                     {
                         // if user is null we can skip it
-                        if (user != null && x.type == Ignore.Type.User)
+                        if (user != null && x.MatchingType == Ignore.Type.User)
                         {
                             if (user.ToString().Contains(x.Text))
                             {
                                 return true;
                             }
                         }
-                        if (x.type == Ignore.Type.Everything)
+                        if (x.MatchingType == Ignore.Type.Everything)
                         {
                             if (text.Contains(x.Text))
                             {
@@ -126,16 +126,16 @@ namespace Pidgeon
                     }
                     else
                     {
-                        if (user != null && x.type == Ignore.Type.User)
+                        if (user != null && x.MatchingType == Ignore.Type.User)
                         {
-                            if (x.regex.IsMatch(user.ToString()))
+                            if (x.Regex.IsMatch(user.ToString()))
                             {
                                 return true;
                             }
                         }
-                        if (x.type == Ignore.Type.Everything)
+                        if (x.MatchingType == Ignore.Type.Everything)
                         {
-                            if (x.regex.IsMatch(text))
+                            if (x.Regex.IsMatch(text))
                             {
                                 return true;
                             }

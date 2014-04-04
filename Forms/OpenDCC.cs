@@ -60,7 +60,7 @@ namespace Pidgeon.Forms
             {
                 network.SystemWindow.scrollback.InsertText("[CTCP] " + username + ": " + message, ContentLine.MessageStyle.User);
             }
-            network.Transfer("PRIVMSG " + username + " :" + network._Protocol.delimiter + message + network._Protocol.delimiter);
+            network.Transfer("PRIVMSG " + username + " :" + network._Protocol.Separator + message + network._Protocol.Separator);
             Hide();
             Connected = true;
             Destroy();

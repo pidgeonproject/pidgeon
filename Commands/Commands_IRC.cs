@@ -158,8 +158,8 @@ namespace Pidgeon
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("error1", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                         return;
                     }
-                    Core.SelectedNetwork.Transfer("PRIVMSG " + Params[0] + " :" + Core.SelectedNetwork._Protocol.delimiter +
-                        Params[1].ToUpper() + Core.SelectedNetwork._Protocol.delimiter);
+                    Core.SelectedNetwork.Transfer("PRIVMSG " + Params[0] + " :" + Core.SelectedNetwork._Protocol.Separator +
+                        Params[1].ToUpper() + Core.SelectedNetwork._Protocol.Separator);
                     Core.SystemForm.Chat.scrollback.InsertText("CTCP to " + Params[0] + " >> " + Params[1], Pidgeon.ContentLine.MessageStyle.Message, false);
                     return;
                 }

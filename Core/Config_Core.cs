@@ -344,7 +344,7 @@ namespace Pidgeon
                         enabled.Value = ci.Enabled.ToString();
                         simple.Value = ci.Simple.ToString();
                         text.Value = ci.Text;
-                        type.Value = ci.type.ToString();
+                        type.Value = ci.MatchingType.ToString();
                         curr.Attributes.Append(enabled);
                         curr.Attributes.Append(simple);
                         curr.Attributes.Append(text);

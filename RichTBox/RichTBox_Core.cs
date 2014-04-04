@@ -23,7 +23,8 @@ using Gtk;
 namespace Pidgeon
 {
     /// <summary>
-    /// Rich text box
+    /// Rich text box for use by pidgeon, this class exists because I just could find any text box that would be simply
+    /// useable for rendering of irc chat, so I just made my own
     /// </summary>
     public partial class RichTBox : Gtk.Bin
     {
@@ -132,9 +133,10 @@ namespace Pidgeon
         /// <summary>
         /// Creates a new instance of this class
         /// </summary>
-        public RichTBox()
+        public RichTBox(Scrollback sc)
         {
             this.Build();
+            this.scrollback = sc;
             ForeColor = Configuration.CurrentSkin.ColorDefault;
             BackColor = Configuration.CurrentSkin.BackgroundColor;
             DefaultFont.Family = Configuration.CurrentSkin.LocalFont;

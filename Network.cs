@@ -867,23 +867,23 @@ namespace Pidgeon
                     {
                         reply += " operating system " + Environment.OSVersion.ToString();
                     }
-                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.Separator.ToString() + reply,
                         libirc.Defs.Priority.Low);
                     break;
                 case "TIME":
                     reply = "TIME " + DateTime.Now.ToString();
-                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                    this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.Separator.ToString() + reply,
                         libirc.Defs.Priority.Low);
                     break;
                 case "PING":
                     if (args.Message.Length > 6)
                     {
                         string time = args.Message.Substring(6);
-                        if (time.Contains(this._Protocol.delimiter))
+                        if (time.Contains(this._Protocol.Separator))
                         {
                             reply = "PING " + time;
-                            time = args.Message.Substring(0, args.Message.IndexOf(this._Protocol.delimiter));
-                            this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.delimiter.ToString() + reply,
+                            time = args.Message.Substring(0, args.Message.IndexOf(this._Protocol.Separator));
+                            this.Transfer("NOTICE " + args.SourceInfo.Nick + " :" + _Protocol.Separator.ToString() + reply,
                                 libirc.Defs.Priority.Low);
                         }
                     }
@@ -895,7 +895,7 @@ namespace Pidgeon
                         Core.DebugLog("Malformed DCC " + message2);
                         return;
                     }
-                    if (message2.EndsWith(_Protocol.delimiter.ToString(), StringComparison.Ordinal))
+                    if (message2.EndsWith(_Protocol.Separator.ToString(), StringComparison.Ordinal))
                     {
                         message2 = message2.Substring(0, message2.Length - 1);
                     }

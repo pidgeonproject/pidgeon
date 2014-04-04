@@ -19,7 +19,7 @@ using System.IO;
 namespace Pidgeon.Forms
 {
     /// <summary>
-    /// Editor
+    /// Editor of configuration file
     /// </summary>
     public partial class ConfigFile : Pidgeon.PidgeonGtkToolkit.PidgeonForm
     {

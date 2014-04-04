@@ -926,7 +926,7 @@ namespace Pidgeon.Graphics
                         {
                             _channel._Network.SystemWindow.scrollback.InsertText("[CTCP] " + user.Nick + ": " + message, ContentLine.MessageStyle.User);
                         }
-                        _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Network._Protocol.delimiter + message + _Network._Protocol.delimiter);
+                        _channel._Network.Transfer("PRIVMSG " + user.Nick + " :" + _Network._Protocol.Separator + message + _Network._Protocol.Separator);
                     }
                 }
 

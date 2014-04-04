@@ -328,7 +328,7 @@ namespace Pidgeon
             this.simpleview.ScrollEvent += new Gtk.ScrollEventHandler(Scroll);
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
-            this.RT = new RichTBox();
+            this.RT = new RichTBox(this);
             if (!isMicro)
             {
                 this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
@@ -469,7 +469,6 @@ namespace Pidgeon
         public void Create()
         {
             Build();
-            RT.scrollback = this;
             scrollToolStripMenuItem.Checked = true;
             HideLn();
             lastDate = DateTime.MinValue;

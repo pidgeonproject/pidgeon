@@ -700,7 +700,7 @@ namespace Pidgeon.Protocols.Services
         public override Result Act(string text, string to, libirc.Network network, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
         {
             Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, Pidgeon.ContentLine.MessageStyle.Action, true, 0, true);
-            Transfer("PRIVMSG " + to + " :" + delimiter.ToString() + "ACTION " + text + delimiter.ToString(), _priority);
+            Transfer("PRIVMSG " + to + " :" + this.Separator.ToString() + "ACTION " + text + this.Separator.ToString(), _priority);
             return Result.Done;
         }
 
