@@ -1,27 +1,26 @@
-//  This program is free software; you can redistribute it and/or modify
-//  it under the terms of the GNU General Public License as published by
-//  the Free Software Foundation; either version 2 of the License, or   
-//  (at your option) version 3.                                         
-
-//  This program is distributed in the hope that it will be useful,     
-//  but WITHOUT ANY WARRANTY; without even the implied warranty of      
-//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the       
-//  GNU General Public License for more details.                        
-
-//  You should have received a copy of the GNU General Public License   
-//  along with this program; if not, write to the                       
-//  Free Software Foundation, Inc.,                                     
-//  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
-using System.IO;
-using System.Net;
+using System.Collections.Generic;
 using System;
-using System.Text;
 
 namespace Pidgeon
 {
-    public static partial class Core
+    public class Connections
     {
+        /// <summary>
+        /// List of active networks in system
+        /// </summary>
+        public static List<libirc.IProtocol> ConnectionList = new List<libirc.IProtocol>();
+        
+        public static void Remove(libirc.IProtocol connection)
+        {
+            lock (ConnectionList)
+            {
+                if (ConnectionList.Contains(connection))
+                {
+                    ConnectionList.Remove(connection);
+                }
+            }
+        }
+        
         /// <summary>
         /// Connect to XMPP
         /// </summary>
@@ -63,7 +62,7 @@ namespace Pidgeon
             }
             DC.UserName = UserName;
             DC.Open();
-            Connections.Add(DC);
+            ConnectionList.Add(DC);
             return false;
         }
 
@@ -83,7 +82,7 @@ namespace Pidgeon
             _quassel.Server = server;
             _quassel.SSL = secured;
             _quassel.Open();
-            Connections.Add(_quassel);
+            ConnectionList.Add(_quassel);
             return false;
         }
 
@@ -103,7 +102,7 @@ namespace Pidgeon
             protocol.Port = port;
             protocol.SSL = secured;
             protocol.password = password;
-            Connections.Add(protocol);
+            ConnectionList.Add(protocol);
             protocol.Open();
             return protocol;
         }
@@ -119,7 +118,7 @@ namespace Pidgeon
         public static Protocols.ProtocolIrc ConnectIRC(string server, int port = 6667, string password = "", bool secured = false)
         {
             Protocols.ProtocolIrc protocol = new Protocols.ProtocolIrc();
-            Connections.Add(protocol);
+            ConnectionList.Add(protocol);
             protocol.Server = server;
             protocol.Port = port;
             protocol.Password = password;
@@ -127,9 +126,10 @@ namespace Pidgeon
             Network network = new Network (server, protocol);
             protocol.NetworkMeta = network;
             protocol.IRCNetwork = (libirc.Network)network;
-            SelectedNetwork = network;
+            Core.SelectedNetwork = network;
             protocol.Open();
             return protocol;
         }
     }
 }
+

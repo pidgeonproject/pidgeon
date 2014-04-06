@@ -80,7 +80,7 @@ namespace Pidgeon.Protocols
             Core.SystemForm.Status("Disconnected from server " + Server);
             this.NetworkMeta.SystemWindow.scrollback.InsertText("Disconnected: " + reason, Pidgeon.ContentLine.MessageStyle.System);
         }
-
+        
         /// <summary>
         /// Command
         /// </summary>

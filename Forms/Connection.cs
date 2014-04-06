@@ -182,16 +182,16 @@ namespace Pidgeon.Forms
                 switch (combobox1.ActiveText)
                 {
                     case "irc":
-                        Core.ConnectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Connections.ConnectIRC(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case "quassel":
-                        Core.ConnectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Connections.ConnectQl(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case "pidgeon services":
-                        Core.ConnectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
+                        Connections.ConnectPS(comboboxentry1.ActiveText, port, entry4.Text, checkbutton1.Active);
                         break;
                     case "dcc":
-                        Core.ConnectDcc(comboboxentry1.ActiveText, port, entry4.Text, ProtocolDCC.DCC.Chat, false, comboboxentry1.ActiveText, checkbutton1.Active);
+                        Connections.ConnectDcc(comboboxentry1.ActiveText, port, entry4.Text, ProtocolDCC.DCC.Chat, false, comboboxentry1.ActiveText, checkbutton1.Active);
                         break;
                 }
                 Hide();

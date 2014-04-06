@@ -189,10 +189,6 @@ namespace Pidgeon
         /// </summary>
         public static string SelectedLanguage = "en";
         /// <summary>
-        /// List of active networks in system
-        /// </summary>
-        public static List<libirc.IProtocol> Connections = new List<libirc.IProtocol>();
-        /// <summary>
         /// Thread for IO logs
         /// </summary>
         public static Thread Thread_logs = null;
@@ -250,16 +246,8 @@ namespace Pidgeon
             set
             {
                 selectedNetwork = value;
-#pragma warning disable
-                network = selectedNetwork;
-#pragma warning restore
             }
         }
-        /// <summary>
-        /// Use SelectedNetwork
-        /// </summary>
-        [Obsolete("Replaced by a field SelectedNetwork. Will be removed in pidgeon 1.2.20")]
-        public static Network network = null;
         /// <summary>
         /// List of ports that the dcc is using in this moment
         /// </summary>
@@ -644,7 +632,7 @@ namespace Pidgeon
                     return;
                 }
                 Protocols.ProtocolIrc server = null;
-                foreach (libirc.Protocol protocol in Connections)
+                foreach (libirc.Protocol protocol in Connections.ConnectionList)
                 {
                     if (typeof(Protocols.ProtocolIrc) == protocol.GetType() && protocol.Server == network)
                     {
@@ -655,7 +643,7 @@ namespace Pidgeon
 
                 if (server == null)
                 {
-                    server = ConnectIRC(network, PORT, "", ssl);
+                    server = Connections.ConnectIRC(network, PORT, "", ssl);
                 }
 
                 if (channel != null)
@@ -1480,7 +1468,7 @@ namespace Pidgeon
                     _Configuration.ConfigSave();
                     try
                     {
-                        foreach (Protocol server in Connections)
+                        foreach (Protocol server in Connections.ConnectionList)
                         {
                             Core.Ringlog("Exiting network " + server.Server);
                             server.Exit();

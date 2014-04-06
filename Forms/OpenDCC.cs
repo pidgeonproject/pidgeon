@@ -45,12 +45,12 @@ namespace Pidgeon.Forms
         {
             if (!ListenerMode)
             {
-                Core.ConnectDcc(Server, (int)Port, null, type, false, Configuration.UserData.nick, SSL, username);
+                Connections.ConnectDcc(Server, (int)Port, null, type, false, Configuration.UserData.nick, SSL, username);
                 Hide();
                 Destroy();
                 return;
             }
-            Core.ConnectDcc("localhost", (int)Port, null, type, true, Configuration.UserData.nick, SSL, username);
+            Connections.ConnectDcc("localhost", (int)Port, null, type, true, Configuration.UserData.nick, SSL, username);
             string message = "DCC CHAT chat " + Core.GetIP() + " " + Port.ToString();
             if (SSL)
             {

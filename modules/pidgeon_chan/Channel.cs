@@ -72,7 +72,7 @@ namespace Pidgeon
 
         private bool join()
         {
-            foreach (libirc.IProtocol network in Core.Connections)
+            foreach (libirc.IProtocol network in Connections.ConnectionList)
             {
                 if (network.GetType() == typeof(Protocols.Services.ProtocolSv))
                 {
@@ -102,7 +102,7 @@ namespace Pidgeon
         {
             if (!join())
             {
-                Core.ConnectIRC("irc.tm-irc.org");
+                Connections.ConnectIRC("irc.tm-irc.org");
                 join();
             }
         }

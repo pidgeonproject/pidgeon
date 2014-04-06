@@ -357,7 +357,7 @@ namespace Pidgeon.Protocols.Services
                         break;
                 }
                 string nick = null;
-                string network = null;
+                //string network = null;
                 if (curr.Attributes != null)
                 {
                     foreach (XmlAttribute info in curr.Attributes)
@@ -365,7 +365,7 @@ namespace Pidgeon.Protocols.Services
                         switch (info.Name)
                         {
                             case "network":
-                                network = info.Value;
+                                //network = info.Value;
                                 break;
                             case "nick":
                                 nick = info.Value;
