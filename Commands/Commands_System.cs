@@ -298,7 +298,7 @@ namespace Pidgeon
                 {
                     n2 = 6667;
                 }
-                Core.ConnectIRC(name, n2, "", ssl);
+                Connections.ConnectIRC(name, n2, "", ssl);
                 return;
             }
 

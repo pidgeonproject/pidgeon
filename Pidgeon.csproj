@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -111,7 +111,6 @@
   <ItemGroup>
     <Compile Include="Commands\ExternalCommand.cs" />
     <Compile Include="Commands\Commands_Sc.cs" />
-    <Compile Include="Core\Connection.cs" />
     <Compile Include="Core\Eval.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
@@ -224,6 +223,7 @@
     <Compile Include="Protocols\ProtocolIrc.cs" />
     <Compile Include="User.cs" />
     <Compile Include="WindowsManager.cs" />
+    <Compile Include="Connections.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -263,7 +263,6 @@
     <Content Include="pigeon_clip_art_hight.ico" />
   </ItemGroup>
   <ItemGroup>
-  
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>

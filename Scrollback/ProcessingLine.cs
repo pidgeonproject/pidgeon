@@ -30,7 +30,7 @@ namespace Pidgeon
         /// <summary>
         /// This is a line for logs
         /// </summary>
-        class LI
+        public class LI
         {
             /// <summary>
             /// Text to be written to log file
@@ -80,15 +80,11 @@ namespace Pidgeon
                 Changed = false;
                 return;
             }
-            lock (ContentLines)
+            if (ContentLines.Count > scrollback_max)
             {
-                if (ContentLines.Count > scrollback_max)
-                {
-                    RT.RemoveLine(0);
-                }
+                RT.RemoveLine(0);
             }
             RT.InsertLine(CreateLine(line));
-
             Changed = false;
         }
 
@@ -119,13 +115,11 @@ namespace Pidgeon
                         color = Configuration.CurrentSkin.JoinColor;
                         break;
                 }
-
                 if (line.notice)
                 {
                     color = Configuration.CurrentSkin.HighlightColor;
                 }
             }
-
             return new Pidgeon.RichTBox.ContentText(text, color);
         }
 
@@ -154,18 +148,15 @@ namespace Pidgeon
                     color = Configuration.CurrentSkin.JoinColor;
                     break;
             }
-
             if (Line.notice)
             {
                 color = Configuration.CurrentSkin.HighlightColor;
             }
-
             string stamp = "";
             if (Configuration.Scrollback.chat_timestamp)
             {
                 stamp = Configuration.Scrollback.format_date.Replace("$1", Line.time.ToString(Configuration.Scrollback.timestamp_mask));
             }
-
             Pidgeon.RichTBox.Line text = Parser.FormatLine(Line.text, RT, color);
             Pidgeon.RichTBox.ContentText content = new Pidgeon.RichTBox.ContentText(stamp, color);
             Pidgeon.RichTBox.Line line = new Pidgeon.RichTBox.Line(RT);
@@ -185,36 +176,33 @@ namespace Pidgeon
             {
                 return false;
             }
-
             if (!enforce && !Changed)
             {
                 return false;
             }
-
             Changed = false;
-
             Flush();
-
             lock (UndrawnLines)
             {
                 UndrawnLines.Clear();
             }
-
             lock (UndrawnTextParts)
             {
                 UndrawnTextParts.Clear();
             }
-
             if (owner == null || (owner != null && WindowVisible()) || !Configuration.Scrollback.DynamicReload)
             {
-                if (Configuration.Memory.MaximumChannelBufferSize != 0)
+                lock (ContentLines)
                 {
-                    lock (ContentLines)
+                    if (Configuration.Memory.MaximumChannelBufferSize != 0)
                     {
                         if (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                         {
-                            ContentLines.Sort();
-                            SortNeeded = false;
+                            if (SortNeeded)
+                            {
+                                ContentLines.Sort();
+                                SortNeeded = false;
+                            }
                             while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                             {
                                 ContentLines.RemoveAt(0);
@@ -224,30 +212,22 @@ namespace Pidgeon
                 }
                 if (SortNeeded)
                 {
-                    lock (ContentLines)
-                    {
-                        ContentLines.Sort();
-                        SortNeeded = false;
-                    }
+                    ContentLines.Sort();
+                    SortNeeded = false;
                 }
-
-                if (simple && Configuration.Memory.EnableSimpleViewCache)
+                if (simple)
                 {
                     ReloadSimple();
                     return true;
                 }
-
                 int min = 0;
-
                 lock (ContentLines)
                 {
                     if (scrollback_max != 0 && scrollback_max < ContentLines.Count)
                     {
                         min = ContentLines.Count - scrollback_max;
                     }
-
                     RT.RemoveText();
-
                     if (ContentLines.Count > 0)
                     {
                         int max = ContentLines.Count;
@@ -260,7 +240,6 @@ namespace Pidgeon
                         }
                     }
                 }
-
                 RT.RedrawText();
                 return true;
             }
@@ -281,11 +260,15 @@ namespace Pidgeon
                 {
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.Text.Replace("$nick", owner._Network.Nickname).Replace("$ident", owner._Network.Ident).Replace("$name", Configuration.UserData.user);
+                        matchline = item.Text.Replace("$nick", owner._Network.Nickname)
+                                             .Replace("$ident", owner._Network.Ident)
+                                             .Replace("$name", Configuration.UserData.user);
                     }
                     else
                     {
-                        matchline = item.Text.Replace("$nick", Configuration.UserData.nick).Replace("$ident", Configuration.UserData.ident).Replace("$name", Configuration.UserData.user);
+                        matchline = item.Text.Replace("$nick", Configuration.UserData.nick)
+                                             .Replace("$ident", Configuration.UserData.ident)
+                                             .Replace("$name", Configuration.UserData.user);
                     }
                     if (item.Simple)
                     {
@@ -297,15 +280,15 @@ namespace Pidgeon
                     }
                     if (owner != null && owner._Network != null)
                     {
-                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname)).Replace("$ident",
-                            System.Text.RegularExpressions.Regex.Escape(owner._Network.Ident)).Replace("$name",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
+                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(owner._Network.Nickname))
+                                             .Replace("$ident", System.Text.RegularExpressions.Regex.Escape(owner._Network.Ident))
+                                             .Replace("$name", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }
                     else
                     {
-                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.nick)).Replace("$ident",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.ident)).Replace("$name",
-                            System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
+                        matchline = item.Text.Replace("$nick", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.nick))
+                                             .Replace("$ident", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.ident))
+                                             .Replace("$name", System.Text.RegularExpressions.Regex.Escape(Configuration.UserData.user));
                     }
                     System.Text.RegularExpressions.Regex regex = new System.Text.RegularExpressions.Regex(matchline);
                     if (regex.IsMatch(text))
@@ -385,7 +368,6 @@ namespace Pidgeon
                 return;
             }
             RT.InsertPart(CreateLine(line));
-
             Changed = false;
         }
 
@@ -428,12 +410,10 @@ namespace Pidgeon
                         ContentLines.Add(EndingLine);
                     }
                 }
-
                 lock (UndrawnTextParts)
                 {
                     UndrawnTextParts.Add(new TextPart(Environment.NewLine, ContentLine.MessageStyle.Join, DateTime.Now));
                 }
-
                 EndingLine = null;
             }
         }
@@ -453,16 +433,13 @@ namespace Pidgeon
         public void InsertPart(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
             DateTime time = DateTime.Now;
-
             if (Date != 0)
             {
                 time = DateTime.FromBinary(Date);
             }
-
             if (EndingLine == null)
             {
                 EndingLine = new ContentLine(InputStyle, text, time, false);
-
                 if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
                 {
                     if (lastDate > time)
@@ -491,7 +468,6 @@ namespace Pidgeon
                 {
                     EndingLine.text += text;
                 }
-
                 if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
                 {
                     InsertPartToText(text);
@@ -526,26 +502,21 @@ namespace Pidgeon
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {
-                string[] data = text.Split('\n');
-                foreach (string Next in data)
+                foreach (string Next in text.Split('\n'))
                 {
                     InsertText(Next, InputStyle, WriteLog, Date, SuppressPing);
                 }
                 return true;
             }
-
             if (owner != null && owner.MicroBox)
             {
                 Core.SystemForm.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
             }
-
             bool Matched = false;
-
             if (!SuppressPing)
             {
                 Matched = Match(text);
             }
-
             if (Matched && owner != null && owner.Highlights)
             {
                 if (Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
@@ -553,8 +524,8 @@ namespace Pidgeon
                     Core.DisplayNote(text, owner.WindowName);
                 }
             }
-
-            if (!IgnoreUpdate && owner != null && owner != Core.SystemForm.Chat && owner._Network != null && owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
+            if (!IgnoreUpdate && owner != null && owner != Core.SystemForm.Chat && owner._Network != null &&
+                owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
             {
                 switch (InputStyle)
                 {
@@ -584,33 +555,26 @@ namespace Pidgeon
                         }
                         break;
                 }
-
                 Graphics.PidgeonList.Updated = true;
-
                 if (Matched)
                 {
                     owner.MenuColor = Configuration.CurrentSkin.HighlightColor;
                 }
             }
-
-            DateTime time = DateTime.Now;
-
+            DateTime time;
             if (Date != 0)
             {
                 time = DateTime.FromBinary(Date);
+                SortNeeded = true;
+            } else
+            {
+                time = DateTime.Now;
             }
-
             ContentLine line = new ContentLine(InputStyle, text, time, Matched);
-
             lock (ContentLines)
             {
                 ContentLines.Add(line);
-                if (Date != 0)
-                {
-                    SortNeeded = true;
-                }
             }
-
             if (WriteLog == true)
             {
                 if (owner != null && owner._Network != null)
@@ -645,9 +609,7 @@ namespace Pidgeon
                     }
                 }
             }
-
             Changed = true;
-
             if (Thread.CurrentThread == Core._KernelThread && (!Configuration.Scrollback.DynamicReload || WindowVisible()))
             {
                 if (!RequireReload(time))

@@ -90,13 +90,9 @@ namespace Pidgeon
             {
                 tb = richTextBox.Buffer;
             }
-
             Gtk.TextIter iter = tb.EndIter;
-
             TextTag format = new TextTag(null);
-
             format.FontDesc = DefaultFont;
-
             if (text.Bold)
             {
                 format.Weight = Pango.Weight.Bold;
@@ -105,19 +101,16 @@ namespace Pidgeon
                     format.Underline = Pango.Underline.Double;
                 }
             }
-            
             if (text.Underline)
             {
                 format.Underline = Pango.Underline.Single;
             }
-
             if (text.Italic)
             {
                 format.Style = Pango.Style.Italic;
                 format.BackgroundGdk = Core.FromColor(text.TextColor);
                 format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.BackgroundColor);
             }
-
             if (text.Link != null)
             {
                 format.TextEvent += new TextEventHandler(LinkHandler);
@@ -126,7 +119,6 @@ namespace Pidgeon
             {
                 format.TextEvent += new TextEventHandler(LinkRm);
             }
-
             format.Data.Add("link", text.Link);
             format.Data.Add("identifier", text.Text);
             if (!text.Italic)
@@ -152,9 +144,7 @@ namespace Pidgeon
                 foreach (ContentText contentText in line.text)
                 {
                     TextTag format = new TextTag(null);
-
                     format.FontDesc = DefaultFont;
-
                     if (contentText.Bold)
                     {
                         format.Weight = Pango.Weight.Bold;
@@ -163,19 +153,16 @@ namespace Pidgeon
                             format.Underline = Pango.Underline.Double;
                         }
                     }
-
                     if (contentText.Underline)
                     {
                         format.Underline = Pango.Underline.Single;
                     }
-
                     if (contentText.Italic)
                     {
                         format.Style = Pango.Style.Italic;
                         format.BackgroundGdk = Core.FromColor(contentText.TextColor);
                         format.ForegroundGdk = Core.FromColor(Configuration.CurrentSkin.BackgroundColor);
                     }
-
                     if (contentText.Link != null)
                     {
                         format.TextEvent += new TextEventHandler(LinkHandler);
@@ -184,7 +171,6 @@ namespace Pidgeon
                     {
                         format.TextEvent += new TextEventHandler(LinkRm);
                     }
-
                     format.Data.Add("link", contentText.Link);
                     format.Data.Add("identifier", contentText.Text);
                     if (!contentText.Italic)

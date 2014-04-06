@@ -62,13 +62,13 @@ namespace Pidgeon.Graphics
         /// </summary>
         public static bool Updated = false;
         private global::Gtk.ScrolledWindow GtkScrolledWindow;
-        private global::Gtk.TreeView tv;
-        private Gtk.TreeStore Values = new TreeStore(typeof(string),
-                                                     typeof(object),
-                                                     typeof(ItemType),
-                                                     typeof(Window),
-                                                     typeof(string),
-                                                     typeof(Gdk.Pixbuf));
+        private global::Gtk.TreeView treeView;
+        private Gtk.TreeStore vTree = new TreeStore(typeof(string),
+                                                    typeof(object),
+                                                    typeof(ItemType),
+                                                    typeof(Window),
+                                                    typeof(string),
+                                                    typeof(Gdk.Pixbuf));
         private GLib.TimeoutHandler timer;
         private object ObjectStore = null;
         private TreeIter IterStore;
@@ -106,9 +106,9 @@ namespace Pidgeon.Graphics
             this.GtkScrolledWindow = new global::Gtk.ScrolledWindow();
             this.GtkScrolledWindow.Name = "GtkScrolledWindow";
             this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
-            this.tv = new global::Gtk.TreeView();
-            this.tv.CanFocus = true;
-            this.tv.Name = "treeview1";
+            this.treeView = new global::Gtk.TreeView();
+            this.treeView.CanFocus = true;
+            this.treeView.Name = "treeview1";
             Gtk.TreeViewColumn Column = new TreeViewColumn();
             Gtk.TreeViewColumn pict = new Gtk.TreeViewColumn();
             Gtk.CellRendererText Item = new Gtk.CellRendererText();
@@ -118,19 +118,19 @@ namespace Pidgeon.Graphics
             pict.PackStart(icon, true);
             Column.SetCellDataFunc(Item, UserListRendererTool);
             pict.AddAttribute(icon, "pixbuf", 5);
-            tv.AppendColumn(pict);
-            tv.AppendColumn(Column);
-            tv.PopupMenu += showMenu;
-            tv.TooltipColumn = 4;
-            tv.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
+            treeView.AppendColumn(pict);
+            treeView.AppendColumn(Column);
+            treeView.PopupMenu += showMenu;
+            treeView.TooltipColumn = 4;
+            treeView.ButtonPressEvent += new ButtonPressEventHandler(Menu2);
             Column.AddAttribute(Item, "text", 0);
-            this.tv.Model = Values;
-            this.GtkScrolledWindow.Add(this.tv);
+            this.treeView.Model = vTree;
+            this.GtkScrolledWindow.Add(this.treeView);
             timer = new GLib.TimeoutHandler(timer01_Tick);
             GLib.Timeout.Add(200, timer);
-            this.tv.RowActivated += new RowActivatedHandler(items_AfterSelect);
+            this.treeView.RowActivated += new RowActivatedHandler(items_AfterSelect);
             this.Add(this.GtkScrolledWindow);
-            this.tv.CursorChanged += new EventHandler(items_AfterSelect2);
+            this.treeView.CursorChanged += new EventHandler(items_AfterSelect2);
             partToolStripMenuItem.Enabled = true;
             disconnectToolStripMenuItem.Enabled = true;
             closeToolStripMenuItem.Enabled = true;
@@ -138,8 +138,8 @@ namespace Pidgeon.Graphics
             highlightToolStripMenuItem.Visible = true;
             Pango.FontDescription font = new Pango.FontDescription();
             font.Size = Configuration.CurrentSkin.ChannelListFontSize;
-            tv.ModifyFont(font);
-            this.tv.ModifyFg(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.FontColor));
+            treeView.ModifyFont(font);
+            this.treeView.ModifyFg(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.FontColor));
             if ((this.Child != null))
             {
                 this.Child.ShowAll();
@@ -169,7 +169,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -204,7 +204,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -240,7 +240,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -274,7 +274,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -308,7 +308,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -343,7 +343,7 @@ namespace Pidgeon.Graphics
                     if (result.Value)
                     {
                         TreeIter tree = result.Key;
-                        Values.Remove(ref tree);
+                        vTree.Remove(ref tree);
                     }
                     else
                     {
@@ -358,8 +358,8 @@ namespace Pidgeon.Graphics
 
         private void InitStyle()
         {
-            tv.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
-            tv.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
+            treeView.ModifyBase(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.BackgroundColor));
+            treeView.ModifyText(StateType.Normal, Core.FromColor(Configuration.CurrentSkin.ColorDefault));
         }
 
         /// <summary>
@@ -371,7 +371,7 @@ namespace Pidgeon.Graphics
         /// <returns></returns>
         private bool feIter(TreeModel model, TreePath path, TreeIter iter)
         {
-            if (Values.GetValue(iter, 1) == ObjectStore)
+            if (vTree.GetValue(iter, 1) == ObjectStore)
             {
                 ResultStore = true;
                 IterStore = iter;
@@ -393,7 +393,7 @@ namespace Pidgeon.Graphics
                 ObjectStore = item;
                 IterStore = new TreeIter();
                 ResultStore = false;
-                Values.Foreach(feIter);
+                vTree.Foreach(feIter);
                 ObjectStore = null;
 
                 return new KeyValuePair<TreeIter, bool>(IterStore, ResultStore);
@@ -424,7 +424,7 @@ namespace Pidgeon.Graphics
                         }
                         if (nw.IsDestroyed)
                         {
-                            Values.Remove(ref iter);
+                            vTree.Remove(ref iter);
                             return;
                         }
                         string info = null;
@@ -463,7 +463,7 @@ namespace Pidgeon.Graphics
                         }
                         if (user.IsDestroyed)
                         {
-                            Values.Remove(ref iter);
+                            vTree.Remove(ref iter);
                         }
                         lock (user._Network.PrivateWins)
                         {
@@ -498,7 +498,7 @@ namespace Pidgeon.Graphics
                         }
                         if (dc.IsDestroyed)
                         {
-                            Values.Remove(ref iter);
+                            vTree.Remove(ref iter);
                         }
                         if (dc.SystemWindow.NeedsIcon)
                         {
@@ -522,7 +522,7 @@ namespace Pidgeon.Graphics
                         }
                         if (channel.IsDestroyed)
                         {
-                            Values.Remove(ref iter);
+                            vTree.Remove(ref iter);
                         }
                         string data = (string)model.GetValue(iter, 4);
                         if (data != channel.MenuData)
@@ -577,7 +577,7 @@ namespace Pidgeon.Graphics
 
         private void insertDcc(ProtocolDCC protocol)
         {
-            TreeIter text = Values.AppendValues(protocol.UserName, protocol, ItemType.DCC, protocol.SystemWindow, "DCC connection window", Configuration.CurrentSkin.Icon_ExclamationMark);
+            TreeIter text = vTree.AppendValues(protocol.UserName, protocol, ItemType.DCC, protocol.SystemWindow, "DCC connection window", Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (DirectClientConnectionList)
             {
                 this.DirectClientConnectionList.Add(protocol, text);
@@ -619,7 +619,7 @@ namespace Pidgeon.Graphics
                         KeyValuePair<TreeIter, bool> result = getIter(channel);
                         if (result.Value)
                         {
-                            tv.Selection.SelectIter(result.Key);
+                            treeView.Selection.SelectIter(result.Key);
                             return true;
                         }
                     }
@@ -637,14 +637,14 @@ namespace Pidgeon.Graphics
                     TreeIter text;
                     if (user._Network.IsConnected)
                     {
-                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_At);
+                        text = vTree.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_At);
                     }
                     else
                     {
-                        text = Values.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_ShadowAt);
+                        text = vTree.AppendValues(ServerList[user._Network], user.Nick, user, ItemType.User, null, null, Configuration.CurrentSkin.Icon_ShadowAt);
                     }
-                    TreePath path = tv.Model.GetPath(ServerList[user._Network]);
-                    tv.ExpandRow(path, true);
+                    TreePath path = treeView.Model.GetPath(ServerList[user._Network]);
+                    treeView.ExpandRow(path, true);
 
                     lock (UserList)
                     {
@@ -658,7 +658,7 @@ namespace Pidgeon.Graphics
         private void insertService(Protocols.Services.ProtocolSv service)
         {
             string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.SSL.ToString() + "]";
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
+            TreeIter text = vTree.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (ServiceList)
             {
                 ServiceList.Add(service, text);
@@ -667,7 +667,7 @@ namespace Pidgeon.Graphics
 
         private void insertQuassel(ProtocolQuassel service)
         {
-            TreeIter text = Values.AppendValues(service.Server, service, ItemType.QuasselCore, service.SystemWindow, "Root window of quassel", Configuration.CurrentSkin.Icon_ExclamationMark);
+            TreeIter text = vTree.AppendValues(service.Server, service, ItemType.QuasselCore, service.SystemWindow, "Root window of quassel", Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (QuasselList)
             {
                 QuasselList.Add(service, text);
@@ -722,16 +722,16 @@ namespace Pidgeon.Graphics
                     TreeIter text;
                     if (channel.IsAlive)
                     {
-                        text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
+                        text = vTree.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
                             ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, Configuration.CurrentSkin.Icon_Hash);
                     }
                     else
                     {
-                        text = Values.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
+                        text = vTree.InsertWithValues(ServerList[channel._Network], 0, channel.Name, channel,
                             ItemType.Channel, channel.RetrieveWindow(), channel.MenuData, Configuration.CurrentSkin.Icon_ShadowHash);
                     }
-                    TreePath path = tv.Model.GetPath(ServerList[channel._Network]);
-                    tv.ExpandRow(path, true);
+                    TreePath path = treeView.Model.GetPath(ServerList[channel._Network]);
+                    treeView.ExpandRow(path, true);
 
                     lock (ChannelList)
                     {
@@ -750,7 +750,7 @@ namespace Pidgeon.Graphics
             }
             if (network.ParentSv == null)
             {
-                TreeIter text = Values.AppendValues(network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
+                TreeIter text = vTree.AppendValues(network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -759,9 +759,9 @@ namespace Pidgeon.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = Values.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
-                TreePath path = tv.Model.GetPath(ServiceList[network.ParentSv]);
-                tv.ExpandRow(path, true);
+                TreeIter text = vTree.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
+                TreePath path = treeView.Model.GetPath(ServiceList[network.ParentSv]);
+                treeView.ExpandRow(path, true);
                 ServerList.Add(network, text);
             }
         }
@@ -799,7 +799,7 @@ namespace Pidgeon.Graphics
                         if (result.Value)
                         {
                             TreeIter tree = result.Key;
-                            Values.Remove(ref tree);
+                            vTree.Remove(ref tree);
                         }
                         else
                         {
@@ -831,7 +831,7 @@ namespace Pidgeon.Graphics
                         if (result.Value)
                         {
                             TreeIter tree = result.Key;
-                            Values.Remove(ref tree);
+                            vTree.Remove(ref tree);
                         }
                         else
                         {
@@ -863,7 +863,7 @@ namespace Pidgeon.Graphics
                         if (result.Value)
                         {
                             TreeIter tree = result.Key;
-                            Values.Remove(ref tree);
+                            vTree.Remove(ref tree);
                         }
                         else
                         {
@@ -903,31 +903,19 @@ namespace Pidgeon.Graphics
                     Updated = true;
                     break;
                 case ItemType.Server:
+                    Core.SystemForm.SwitchRoot();
                     Network network = (Network)Item;
-                    if(network.ParentSv != null)
+                    network.Disconnect();
+                    if (network._Protocol.GetType() == typeof(libirc.Protocols.ProtocolIrc) ||
+                        network._Protocol.GetType() == typeof(Pidgeon.Protocols.ProtocolIrc))
                     {
-                        lock(ServerList)
-                        {
-                            if(ServerList.ContainsKey(network))
-                            {
-                                RemoveServer(network);
-                            }
-                        }
-                        network.Disconnect();
-                        return;
+                        // we need to remove the protocol as well
+                        network._Protocol.Exit();
+                        Connections.Remove(network._Protocol);
                     }
-                    lock(Core.Connections)
-                    {
-                        if(Core.Connections.Contains(network._Protocol))
-                        {
-                            Core.Connections.Remove(network._Protocol);
-                        }
-                    }
+                    RemoveServer(network);
                     Updated = true;
                     removed = true;
-                    RemoveServer(network);
-                    Core.SystemForm.SwitchRoot();
-                    network._Protocol.Exit();
                     break;
                 case ItemType.User:
                     User user = (User)Item;
@@ -965,7 +953,7 @@ namespace Pidgeon.Graphics
 
             if (removed == false)
             {
-                Values.Remove(ref it);
+                vTree.Remove(ref it);
             }
         }
 

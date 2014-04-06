@@ -61,7 +61,7 @@ namespace Pidgeon
         {
             try
             {
-                if (Core.network != null)
+                if (Core.SelectedNetwork != null)
                 {
                     Core.SystemForm.SwitchWindow(collector);
                     return;

@@ -93,7 +93,7 @@ namespace Pidgeon.Graphics
                 }
 
                 Updated = false;
-                tv.ColumnsAutosize();
+                this.treeView.ColumnsAutosize();
 
                 lock (queueDcc)
                 {
@@ -203,26 +203,26 @@ namespace Pidgeon.Graphics
                 // items in store and skip all checks
                 if (IsEmpty)
                 {
-                    Values.Clear();
+                    this.vTree.Clear();
                     return true;
                 }
 
                 // check all destroyed windows
                 TreeIter iter;
-                if (Values.GetIterFirst(out iter))
+                if (this.vTree.GetIterFirst(out iter))
                 {
                     do
                     {
                         // in case the window is destroyed we need to remove the reference
-                        var window = (Window)Values.GetValue(iter, 3);
+                        var window = (Window)this.vTree.GetValue(iter, 3);
                         if (window != null)
                         {
                             if (window.IsDestroyed)
                             {
-                                Values.Remove(ref iter);
+                                this.vTree.Remove(ref iter);
                             }
                         }
-                    } while (Values.IterNext(ref iter));
+                    } while (this.vTree.IterNext(ref iter));
                 }
 
                 ClearServer();

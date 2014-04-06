@@ -44,6 +44,7 @@ echo "Copying the binaries to /usr/share"
 
 cp -v bin/Release/modules/* "$DESTDIR/usr/share/pidgeon/modules" || exit 1
 cp -v bin/Release/skins/* "$DESTDIR/usr/share/pidgeon/skins" || exit 1
+cp -v libirc.dll "$DESTDIR/usr/share/pidgeon/" || exit 1
 cp -v bin/Release/Pidgeon.exe "$DESTDIR/usr/share/pidgeon" || exit 1
 cp -v bin/Release/Pidgeon.XML "$DESTDIR/usr/share/pidgeon" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/" || exit 1

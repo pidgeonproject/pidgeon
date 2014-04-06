@@ -12,7 +12,6 @@
 //  along with this program; if not, write to the                       
 //  Free Software Foundation, Inc.,                                     
 //  51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -126,9 +125,9 @@ namespace Pidgeon
         {
             get
             {
-                lock (UndrawnTextParts)
+                lock(UndrawnTextParts)
                 {
-                    if (UndrawnTextParts.Count > 0 || EndingLine != null)
+                    if(UndrawnTextParts.Count > 0 || EndingLine != null)
                     {
                         return false;
                     }
@@ -168,7 +167,7 @@ namespace Pidgeon
             get
             {
                 List<ContentLine> data = new List<ContentLine>();
-                lock (ContentLines)
+                lock(ContentLines)
                 {
                     data.AddRange(ContentLines);
                 }
@@ -183,15 +182,17 @@ namespace Pidgeon
         {
             get
             {
-                string text = "";
-                lock (ContentLines)
+                StringBuilder text = new StringBuilder("");
+                lock(ContentLines)
                 {
-                    foreach (ContentLine _line in ContentLines)
+                    foreach(ContentLine _line in ContentLines)
                     {
-                        text += Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) + Core.RemoveSpecial(_line.text) + Environment.NewLine;
+                        text.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)));
+                        text.Append(Core.RemoveSpecial(_line.text));
+                        text.Append(Environment.NewLine);
                     }
                 }
-                return text;
+                return text.ToString();
             }
         }
 
@@ -215,15 +216,15 @@ namespace Pidgeon
             {
                 Gtk.TextIter a;
                 Gtk.TextIter b;
-                if (IsSimple)
+                if(IsSimple)
                 {
-                    if (simpleview.Buffer.GetSelectionBounds(out a, out b))
+                    if(simpleview.Buffer.GetSelectionBounds(out a, out b))
                     {
                         return simpleview.Buffer.GetText(a, b, false);
                     }
                     return null;
                 }
-                if (RT.textView.Buffer.GetSelectionBounds(out a, out b))
+                if(RT.textView.Buffer.GetSelectionBounds(out a, out b))
                 {
                     return RT.textView.Buffer.GetText(a, b, false);
                 }
@@ -278,7 +279,7 @@ namespace Pidgeon
         /// <param name="adjustment"></param>
         public void ResizeText(int adjustment)
         {
-            if (Configuration.CurrentSkin.FontSize + adjustment < 1)
+            if(Configuration.CurrentSkin.FontSize + adjustment < 1)
             {
                 return;
             }
@@ -299,9 +300,9 @@ namespace Pidgeon
         /// <returns></returns>
         public bool WindowVisible()
         {
-            if (owner != null)
+            if(owner != null)
             {
-                if (owner != Core.SystemForm.Chat)
+                if(owner != Core.SystemForm.Chat)
                 {
                     return false;
                 }
@@ -329,7 +330,7 @@ namespace Pidgeon
             this.simpleview.DoubleBuffered = true;
             this.GtkScrolledWindow.Add(this.simpleview);
             this.RT = new RichTBox(this);
-            if (!isMicro)
+            if(!isMicro)
             {
                 this.simpleview.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_simple);
                 this.RT.textView.PopulatePopup += new Gtk.PopulatePopupHandler(CreateMenu_rt);
@@ -342,7 +343,7 @@ namespace Pidgeon
             simpleview.KeyPressEvent += new Gtk.KeyPressEventHandler(PressEvent);
             GLib.Timeout.Add(200, timer2);
             this.Add(this.GtkScrolledWindow);
-            if ((this.Child != null))
+            if((this.Child != null))
             {
                 this.Child.ShowAll();
             }
@@ -352,13 +353,12 @@ namespace Pidgeon
         {
             try
             {
-                if (Forms.Main.ShortcutHandle(sender, e))
+                if(Forms.Main.ShortcutHandle(sender, e))
                 {
                     e.RetVal = true;
                     return;
                 }
-            }
-            catch (Exception fail)
+            } catch (Exception fail)
             {
                 Core.HandleException(fail);
             }
@@ -369,27 +369,12 @@ namespace Pidgeon
         /// </summary>
         public void IncreaseLimits()
         {
-            if (scrollback_max < ContentLines.Count)
+            if(scrollback_max < ContentLines.Count)
             {
                 scrollback_max = scrollback_max + 800;
                 Reload(true);
             }
         }
-
-        //private void simpleviewFinished(object o, EventArgs r)
-        //{
-        //    try
-        //    {
-        //        if (ScrollingEnabled)
-        //        {
-        //            simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-        //        }
-        //    }
-        //    catch (Exception fail)
-        //    {
-        //        Core.HandleException(fail);
-        //    }
-        //}
 
         /// <summary>
         /// Change the text to specified list
@@ -397,10 +382,10 @@ namespace Pidgeon
         /// <param name="text"></param>
         public void SetText(List<ContentLine> text)
         {
-            lock (UndrawnLines)
+            lock(UndrawnLines)
             {
                 UndrawnLines.Clear();
-                lock (ContentLines)
+                lock(ContentLines)
                 {
                     ContentLines.Clear();
                     ContentLines.AddRange(text);
@@ -412,11 +397,11 @@ namespace Pidgeon
 
         private void Scroll2(object sender, Gtk.SizeAllocatedArgs e)
         {
-            if (IsDestroyed)
+            if(IsDestroyed)
             {
                 return;
             }
-            if (ScrollingEnabled)
+            if(ScrollingEnabled)
             {
                 simpleview.ScrollToIter(simpleview.Buffer.EndIter, 0, false, 0, 0);
             }
@@ -428,39 +413,39 @@ namespace Pidgeon
         /// <param name="advanced"></param>
         public void Switch(bool advanced)
         {
-            if (!Configuration.Memory.EnableSimpleViewCache)
+            if(!Configuration.Memory.EnableSimpleViewCache)
             {
                 simpleview.Buffer.Text = "";
             }
-            if (advanced)
+            if(advanced)
             {
-                if (simple)
+                if(simple)
                 {
                     simple = false;
-                    if (this.Child != null)
+                    if(this.Child != null)
                     {
                         this.Remove(this.Child);
                     }
                     this.Add(RT);
                     toggleAdvancedLayoutToolStripMenuItem.Checked = true;
                     toggleSimpleLayoutToolStripMenuItem.Checked = false;
-                    return;
+                    Reload(true);
                 }
-                Reload(true);
                 return;
             }
-            toggleAdvancedLayoutToolStripMenuItem.Checked = false;
-            toggleSimpleLayoutToolStripMenuItem.Checked = true;
-            simple = true;
-            if (this.Child != null)
+            if (!simple || !Configuration.Memory.EnableSimpleViewCache)
             {
-                this.Remove(this.Child);
+                toggleAdvancedLayoutToolStripMenuItem.Checked = false;
+                toggleSimpleLayoutToolStripMenuItem.Checked = true;
+                simple = true;
+                if(this.Child != null)
+                {
+                    this.Remove(this.Child);
+                }
+                this.Add(GtkScrolledWindow);
+                this.ShowAll();
+                Reload(true);
             }
-            this.Add(GtkScrolledWindow);
-
-            this.ShowAll();
-
-            Reload(true);
         }
 
         /// <summary>
@@ -480,28 +465,27 @@ namespace Pidgeon
         /// </summary>
         public void ReloadSimple()
         {
-            lock (ContentLines)
+            StringBuilder everything = new StringBuilder("");
+            lock(ContentLines)
             {
-                StringBuilder everything = new StringBuilder("");
-                foreach (ContentLine _line in ContentLines)
+                foreach(ContentLine _line in ContentLines)
                 {
-                    if (Configuration.Scrollback.KeepSpecialCharsSimple)
+                    if(Configuration.Scrollback.KeepSpecialCharsSimple)
                     {
-                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-                            _line.text + Environment.NewLine);
-                    }
-                    else
+                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)));
+                        everything.AppendLine(_line.text);
+                    } else
                     {
-                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)) +
-                            Core.RemoveSpecial(_line.text) + Environment.NewLine);
+                        everything.Append(Configuration.Scrollback.format_date.Replace("$1", _line.time.ToString(Configuration.Scrollback.timestamp_mask)));
+                        everything.Append(Core.RemoveSpecial(_line.text));
+                        everything.Append(Environment.NewLine);
                     }
                 }
-                simpleview.Buffer.Text = "";
-                simpleview.Buffer.InsertAtCursor(everything.ToString());
-                if (ScrollingEnabled)
-                {
-                    simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
-                }
+            }
+            simpleview.Buffer.Text = everything.ToString();
+            if(ScrollingEnabled)
+            {
+                simpleview.ScrollToIter(simpleview.Buffer.GetIterAtLine(ContentLines.Count), 0, true, 0, 0);
             }
         }
 
@@ -510,20 +494,18 @@ namespace Pidgeon
         {
             try
             {
-                if (Core.HoldingCtrl)
+                if(Core.HoldingCtrl)
                 {
-                    if (e.Event.Direction == Gdk.ScrollDirection.Up)
+                    if(e.Event.Direction == Gdk.ScrollDirection.Up)
                     {
                         ResizeText(400);
-                    }
-                    else
+                    } else
                     {
                         ResizeText(-400);
                     }
                     e.RetVal = true;
                 }
-            }
-            catch (Exception fail)
+            } catch (Exception fail)
             {
                 Core.HandleException(fail);
             }
@@ -548,21 +530,21 @@ namespace Pidgeon
         /// </summary>
         public void _Destroy()
         {
-            if (IsDestroyed)
+            if(IsDestroyed)
             {
                 return;
             }
 
             destroyed = true;
-            lock (UndrawnLines)
+            lock(UndrawnLines)
             {
                 UndrawnLines.Clear();
             }
-            lock (ContentLines)
+            lock(ContentLines)
             {
                 ContentLines.Clear();
             }
-            if (simpleview != null)
+            if(simpleview != null)
             {
                 simpleview.Destroy();
             }
@@ -576,11 +558,11 @@ namespace Pidgeon
         /// </summary>
         public void FlushParts()
         {
-            if (!IsEmtpy)
+            if(!IsEmtpy)
             {
-                lock (UndrawnTextParts)
+                lock(UndrawnTextParts)
                 {
-                    foreach (TextPart curr in UndrawnTextParts)
+                    foreach(TextPart curr in UndrawnTextParts)
                     {
                         #pragma warning disable
                         InsertPart(curr.text, curr.style, false, curr.date.ToBinary());
@@ -593,11 +575,11 @@ namespace Pidgeon
 
         private TextPart NewerPart(DateTime time)
         {
-            lock (UndrawnTextParts)
+            lock(UndrawnTextParts)
             {
-                foreach (TextPart k in UndrawnTextParts)
+                foreach(TextPart k in UndrawnTextParts)
                 {
-                    if (k.date < time)
+                    if(k.date < time)
                     {
                         return k;
                     }
@@ -610,53 +592,53 @@ namespace Pidgeon
         {
             try
             {
-                if (running)
+                if(running)
                 {
                     return true;
                 }
                 running = true;
-                if (IsDestroyed)
+                if(IsDestroyed)
                 {
                     // the window was destroyed so we can't work with it
                     return false;
                 }
-                if (WindowVisible() || !Configuration.Scrollback.DynamicReload)
+                if(WindowVisible() || !Configuration.Scrollback.DynamicReload)
                 {
-                    if (Font.Size != Configuration.CurrentSkin.FontSize)
+                    if(Font.Size != Configuration.CurrentSkin.FontSize)
                     {
                         ResizeText(0);
                     }
-                    lock (UndrawnLines)
+                    lock(UndrawnLines)
                     {
-                        lock (ContentLines)
+                        lock(ContentLines)
                         {
-                            if (!ReloadWaiting)
+                            if(!ReloadWaiting)
                             {
                                 // there are more undrawn lines than we actually want to max. have in scrollback, let's trim it all
-                                if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
+                                if(Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
                                 {
                                     ContentLines.Sort();
-                                    while (Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
+                                    while(Configuration.Memory.MaximumChannelBufferSize < ContentLines.Count)
                                     {
                                         ContentLines.RemoveAt(0);
                                     }
                                 }
-                                if (Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                if(Configuration.Memory.MaximumChannelBufferSize > 0 && Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
                                 {
                                     UndrawnLines.Sort();
-                                    while (Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
+                                    while(Configuration.Memory.MaximumChannelBufferSize < UndrawnLines.Count)
                                     {
                                         UndrawnLines.RemoveAt(0);
                                     }
                                 }
-                                lock (UndrawnTextParts)
+                                lock(UndrawnTextParts)
                                 {
-                                    foreach (ContentLine curr in UndrawnLines)
+                                    foreach(ContentLine curr in UndrawnLines)
                                     {
-                                        if (!IsEmtpy)
+                                        if(!IsEmtpy)
                                         {
                                             TextPart text = NewerPart(curr.time);
-                                            while (text != null)
+                                            while(text != null)
                                             {
                                                 InsertPartToText(text.text);
                                                 UndrawnTextParts.Remove(text);
@@ -671,21 +653,20 @@ namespace Pidgeon
                             }
                         }
                     }
-                    if (ReloadWaiting)
+                    if(ReloadWaiting)
                     {
-                        if (Reload())
+                        if(Reload())
                         {
                             ReloadWaiting = false;
                         }
                     }
-                    if (EnableScrolling)
+                    if(EnableScrolling)
                     {
                         EnableScrolling = false;
                         ScrollingEnabled = true;
                     }
                 }
-            }
-            catch (Exception fail)
+            } catch (Exception fail)
             {
                 Core.HandleException(fail);
             }

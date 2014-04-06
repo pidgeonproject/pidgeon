@@ -199,12 +199,12 @@ namespace Pidgeon.Graphics
             try
             {
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
-                tv.Model.GetIter(out iter, path[0]);
-                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
+                this.treeView.Model.GetIter(out iter, path[0]);
+                ItemType type = (ItemType)this.treeView.Model.GetValue(iter, 2);
                 if (type == ItemType.Channel)
                 {
-                    Channel ch = (Channel)tv.Model.GetValue(iter, 1);
+                    Channel ch = (Channel)this.treeView.Model.GetValue(iter, 1);
                     ch._Network.Join(ch.Name);
                 }
             }
@@ -219,21 +219,21 @@ namespace Pidgeon.Graphics
             try
             {
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
-                tv.Model.GetIter(out iter, path[0]);
-                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
+                this.treeView.Model.GetIter(out iter, path[0]);
+                ItemType type = (ItemType)treeView.Model.GetValue(iter, 2);
                 switch (type)
                 {
                     case ItemType.Server:
-                        Network item = (Network)tv.Model.GetValue(iter, 1);
+                        Network item = (Network)this.treeView.Model.GetValue(iter, 1);
                         item.Disconnect();
                         break;
                     case ItemType.Services:
-                        ProtocolSv services = (ProtocolSv)tv.Model.GetValue(iter, 1);
+                        ProtocolSv services = (ProtocolSv)this.treeView.Model.GetValue(iter, 1);
                         services.Disconnect();
                         break;
                     case ItemType.DCC:
-                        Protocols.ProtocolDCC pd = (Protocols.ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolDCC pd = (Protocols.ProtocolDCC)this.treeView.Model.GetValue(iter, 1);
                         pd.Disconnect();
                         break;
                 }
@@ -249,12 +249,12 @@ namespace Pidgeon.Graphics
             try
             {
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
-                tv.Model.GetIter(out iter, path[0]);
-                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
+                this.treeView.Model.GetIter(out iter, path[0]);
+                ItemType type = (ItemType)this.treeView.Model.GetValue(iter, 2);
                 if (type == ItemType.Channel)
                 {
-                    Channel channel = (Channel)tv.Model.GetValue(iter, 1);
+                    Channel channel = (Channel)this.treeView.Model.GetValue(iter, 1);
                     if (ChannelList.ContainsKey(channel))
                     {
                         channel.Part();
@@ -279,20 +279,20 @@ namespace Pidgeon.Graphics
                 SelectedWindow = null;
                 RedrawMenu();
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
                 if (path.Length < 1)
                 {
                     Core.DebugLog("items_AfterSelect(object sender, RowActivatedArgs e): GetSelectedRows returned 0 value");
                     return;
                 }
-                tv.Model.GetIter(out iter, path[0]);
+                this.treeView.Model.GetIter(out iter, path[0]);
                 Hooks._Sys.Poke();
                 Window window = null;
-                ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                ItemType type = (ItemType)this.treeView.Model.GetValue(iter, 2);
                 switch (type)
                 {
                     case ItemType.Channel:
-                        Channel chan = (Channel)tv.Model.GetValue(iter, 1);
+                        Channel chan = (Channel)this.treeView.Model.GetValue(iter, 1);
                         Core.SelectedNetwork = chan._Network;
                         window = chan.RetrieveWindow();
                         if (window != null)
@@ -311,7 +311,7 @@ namespace Pidgeon.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.Server:
-                        Network server = (Network)tv.Model.GetValue(iter, 1);
+                        Network server = (Network)this.treeView.Model.GetValue(iter, 1);
                         if (server.ParentSv == null)
                         {
                             WindowsManager.ShowChat("!system", server);
@@ -328,7 +328,7 @@ namespace Pidgeon.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.Services:
-                        ProtocolSv protocol = (ProtocolSv)tv.Model.GetValue(iter, 1);
+                        ProtocolSv protocol = (ProtocolSv)this.treeView.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = protocol.SystemWindow;
                         WindowsManager.ShowChat("!root", protocol);
@@ -337,7 +337,7 @@ namespace Pidgeon.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.DCC:
-                        Protocols.ProtocolDCC dcc = (Protocols.ProtocolDCC)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolDCC dcc = (Protocols.ProtocolDCC)this.treeView.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = dcc.SystemWindow;
                         WindowsManager.ShowChat(dcc.SystemWindow.WindowName, dcc);
@@ -346,7 +346,7 @@ namespace Pidgeon.Graphics
                         Core.SystemForm.UpdateStatus();
                         return;
                     case ItemType.QuasselCore:
-                        Protocols.ProtocolQuassel quassel = (Protocols.ProtocolQuassel)tv.Model.GetValue(iter, 1);
+                        Protocols.ProtocolQuassel quassel = (Protocols.ProtocolQuassel)this.treeView.Model.GetValue(iter, 1);
                         closeToolStripMenuItem.Visible = true;
                         SelectedWindow = quassel.SystemWindow;
                         WindowsManager.ShowChat("!root", quassel);
@@ -356,7 +356,7 @@ namespace Pidgeon.Graphics
                     case ItemType.System:
                         return;
                     case ItemType.User:
-                        User us = (User)tv.Model.GetValue(iter, 1);
+                        User us = (User)this.treeView.Model.GetValue(iter, 1);
                         Core.SelectedNetwork = us._Network;
                         lock (us._Network.PrivateWins)
                         {
@@ -387,12 +387,12 @@ namespace Pidgeon.Graphics
             try
             {
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
                 if (path.Length > 0)
                 {
-                    tv.Model.GetIter(out iter, path[0]);
-                    object data = tv.Model.GetValue(iter, 1);
-                    ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                    this.treeView.Model.GetIter(out iter, path[0]);
+                    object data = this.treeView.Model.GetValue(iter, 1);
+                    ItemType type = (ItemType)this.treeView.Model.GetValue(iter, 2);
                     switch (type)
                     {
                         case ItemType.QuasselCore:
@@ -418,12 +418,12 @@ namespace Pidgeon.Graphics
             try
             {
                 TreeIter iter;
-                TreePath[] path = tv.Selection.GetSelectedRows();
+                TreePath[] path = this.treeView.Selection.GetSelectedRows();
                 if (path.Length > 0)
                 {
-                    tv.Model.GetIter(out iter, path[0]);
-                    object data = tv.Model.GetValue(iter, 1);
-                    ItemType type = (ItemType)tv.Model.GetValue(iter, 2);
+                    this.treeView.Model.GetIter(out iter, path[0]);
+                    object data = this.treeView.Model.GetValue(iter, 1);
+                    ItemType type = (ItemType)this.treeView.Model.GetValue(iter, 2);
                     RemoveItem(iter, data, type);
                 }
             }
