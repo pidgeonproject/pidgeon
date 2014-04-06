@@ -414,7 +414,13 @@ namespace Pidgeon
                 case libirc.Network.EventType.Kick:
                 case libirc.Network.EventType.Quit:
                     string channel = args.ChannelName.ToLower();
-                    Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
+                    lock (this.Channels)
+                    {
+                        if (this.Channels.ContainsKey(channel))
+                        {
+                            Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
+                        }
+                    }
                     this.RemoveChannel(channel);
                     break;
                 case libirc.Network.EventType.Nick:
