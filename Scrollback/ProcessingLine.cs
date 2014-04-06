@@ -432,10 +432,21 @@ namespace Pidgeon
         [Obsolete("This function is experimental and using it may result in errors")]
         public void InsertPart(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false, bool IgnoreUpdate = false)
         {
-            DateTime time = DateTime.Now;
-            if (Date != 0)
+            DateTime time;
+            if (Date > 0)
             {
                 time = DateTime.FromBinary(Date);
+            } else if (Date < 0)
+            {
+                // this is a performance trick, in case we want to append a line to bottom, but we don't know
+                // what time it needs to have in order to be most new, we just use the last and append 1ms :)
+                // this way we prevent insertion of text into middle of a list, which would require the RT box
+                // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
+                // be completely processed for such a change)
+                time = lastDate.AddMilliseconds(1);
+            } else
+            {
+                time = DateTime.Now;
             }
             if (EndingLine == null)
             {
@@ -508,6 +519,22 @@ namespace Pidgeon
                 }
                 return true;
             }
+            DateTime time;
+            if (Date > 0)
+            {
+                time = DateTime.FromBinary(Date);
+            } else if (Date < 0 && lastDate > DateTime.Now)
+            {
+                // this is a performance trick, in case we want to append a line to bottom, but we don't know
+                // what time it needs to have in order to be most new, we just use the last and append 1ms :)
+                // this way we prevent insertion of text into middle of a list, which would require the RT box
+                // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
+                // be completely processed for such a change)
+                time = lastDate.AddMilliseconds(1);
+            } else
+            {
+                time = DateTime.Now;
+            }
             if (owner != null && owner.MicroBox)
             {
                 Core.SystemForm.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
@@ -560,15 +587,6 @@ namespace Pidgeon
                 {
                     owner.MenuColor = Configuration.CurrentSkin.HighlightColor;
                 }
-            }
-            DateTime time;
-            if (Date != 0)
-            {
-                time = DateTime.FromBinary(Date);
-                SortNeeded = true;
-            } else
-            {
-                time = DateTime.Now;
             }
             ContentLine line = new ContentLine(InputStyle, text, time, Matched);
             lock (ContentLines)
