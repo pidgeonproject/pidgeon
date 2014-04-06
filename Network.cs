@@ -429,15 +429,14 @@ namespace Pidgeon
         {
             if (String.IsNullOrEmpty(args.ChannelName))
             {
-                libirc.User user = new libirc.User(args.Source);
-                Graphics.Window window = this.GetPrivateUserWindow(user.Nick);
+                Graphics.Window window = this.GetPrivateUserWindow(args.SourceInfo.Nick);
                 if (args.IsAct)
                 {
                     window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Action, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
                 else
                 {
-                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceUser.Nick, args.Message), ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
             }
             else
