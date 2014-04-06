@@ -432,11 +432,14 @@ namespace Pidgeon
                 Graphics.Window window = this.GetPrivateUserWindow(args.SourceInfo.Nick);
                 if (args.IsAct)
                 {
-                    window.scrollback.InsertText(args.Message, ContentLine.MessageStyle.Action, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceInfo.Nick + " " + args.Message,
+                                                 ContentLine.MessageStyle.Action, WriteLogs(),
+                                                 args.Date, IsDownloadingBouncerBacklog);
                 }
                 else
                 {
-                    window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceUser.Nick, args.Message), ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceInfo.Nick, args.Message), ContentLine.MessageStyle.Message,
+                                                 WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
             }
             else
