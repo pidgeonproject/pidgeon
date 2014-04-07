@@ -593,8 +593,11 @@ namespace Pidgeon
         public override void __evt_FinishChannelParseUser(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
-            channel.UpdateInfo();
-            channel.RedrawUsers();
+            if (channel != null)
+            {
+                channel.UpdateInfo();
+                channel.RedrawUsers();
+            }
         }
 
         public override void __evt_KICK(libirc.Network.NetworkKickEventArgs args)
