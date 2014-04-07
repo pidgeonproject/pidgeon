@@ -354,11 +354,11 @@ namespace Pidgeon
             {
                 case libirc.IProtocol.Result.Done:
                     Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text,
-                                                               Pidgeon.ContentLine.MessageStyle.Message, true, -1, true);
+                                                               Pidgeon.ContentLine.MessageStyle.Message, true, 1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
                 case libirc.IProtocol.Result.NotImplemented:
-                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, -1, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, 1, false);
                     break;
             }
         }
@@ -374,11 +374,11 @@ namespace Pidgeon
             switch (_Protocol.Message(text, to, this, _priority))
             {
                 case libirc.IProtocol.Result.Done:
-                    Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, -1, true);
+                    Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
                 case libirc.IProtocol.Result.NotImplemented:
-                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, -1, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, 1, false);
                     break;
             }
         }

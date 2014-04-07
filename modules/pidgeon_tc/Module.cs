@@ -115,7 +115,7 @@ namespace Pidgeon
                     if (Results.Count > 1)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }),
-                                                                   ContentLine.MessageStyle.System, true, -1);
+                                                                   ContentLine.MessageStyle.System, true, 1);
                         string part = "";
                         int curr = 0;
                         bool match = true;
@@ -188,7 +188,7 @@ namespace Pidgeon
                             if (Results.Count > 1)
                             {
                                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd }),
-                                                                           ContentLine.MessageStyle.System, true, -1);
+                                                                           ContentLine.MessageStyle.System, true, 1);
                                 string part = "";
                                 int curr = 0;
                                 bool match = true;
@@ -264,7 +264,7 @@ namespace Pidgeon
 
                 if (Results2.Count > 1)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System, true, -1);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System, true, 1);
                     string part = "";
                     int curr = 0;
                     char orig = ' ';
