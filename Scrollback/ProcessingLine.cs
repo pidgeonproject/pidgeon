@@ -377,7 +377,10 @@ namespace Pidgeon
         /// <param name="text">Text</param>
         /// <param name="InputStyle">Style</param>
         /// <param name="WriteLog">Write to a log</param>
-        /// <param name="Date">Date</param>
+        /// <param name="Date">
+        /// Date of a text in binary format, if this date is negative, the last date + 1ms will be taken (this is useful when server time is in future) if it's 0
+        /// the current date will be used
+        /// </param>
         /// <param name="SuppressPing">Suppress highlight</param>
         /// <returns></returns>
         public bool InsertText(string text, Pidgeon.ContentLine.MessageStyle InputStyle, bool WriteLog = true, long Date = 0, bool SuppressPing = false)
@@ -520,10 +523,10 @@ namespace Pidgeon
                 return true;
             }
             DateTime time;
-            if (Date > 0)
+            if (Date < 0)
             {
                 time = DateTime.FromBinary(Date);
-            } else if (Date < 0 && lastDate > DateTime.Now)
+            } else if (Date > 0 && lastDate > DateTime.Now)
             {
                 // this is a performance trick, in case we want to append a line to bottom, but we don't know
                 // what time it needs to have in order to be most new, we just use the last and append 1ms :)

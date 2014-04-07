@@ -348,6 +348,21 @@ namespace Pidgeon
             }
         }
 
+        public override void Act(string text, string to, libirc.Defs.Priority _priority = libirc.Defs.Priority.Normal)
+        {
+            switch (_Protocol.Act(text, to, this, _priority))
+            {
+                case libirc.IProtocol.Result.Done:
+                    Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text,
+                                                               Pidgeon.ContentLine.MessageStyle.Message, true, -1, true);
+                    break;
+                case libirc.IProtocol.Result.Failure:
+                case libirc.IProtocol.Result.NotImplemented:
+                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, -1, false);
+                    break;
+            }
+        }
+
         /// <summary>
         /// Send a message to network
         /// </summary>
@@ -359,11 +374,11 @@ namespace Pidgeon
             switch (_Protocol.Message(text, to, this, _priority))
             {
                 case libirc.IProtocol.Result.Done:
-                    Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, 0, true);
+                    Core.SystemForm.Chat.scrollback.InsertText(Protocol.PRIVMSG(this.Nickname, text), Pidgeon.ContentLine.MessageStyle.Message, true, -1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
                 case libirc.IProtocol.Result.NotImplemented:
-                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, 0, false);
+                    Core.SystemForm.Chat.scrollback.InsertText("Failed to deliver: " + text, ContentLine.MessageStyle.System, false, -1, false);
                     break;
             }
         }
@@ -433,59 +448,66 @@ namespace Pidgeon
 
         public override void __evt_PRIVMSG(libirc.Network.NetworkPRIVMSGEventArgs args)
         {
-            if (String.IsNullOrEmpty(args.ChannelName))
+            try
             {
-                Graphics.Window window = this.GetPrivateUserWindow(args.SourceInfo.Nick);
-                if (args.IsAct)
+                if (String.IsNullOrEmpty(args.ChannelName))
                 {
-                    window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceInfo.Nick + " " + args.Message,
-                                                 ContentLine.MessageStyle.Action, WriteLogs(),
-                                                 args.Date, IsDownloadingBouncerBacklog);
+                    Graphics.Window window = this.GetPrivateUserWindow(args.SourceInfo.Nick);
+                    if (args.IsAct)
+                    {
+                        window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceInfo.Nick + " " + args.Message,
+                                                     ContentLine.MessageStyle.Action, WriteLogs(),
+                                                     args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else
+                    {
+                        window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceInfo.Nick, args.Message), ContentLine.MessageStyle.Message,
+                                                     WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                    }
                 }
                 else
                 {
-                    window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceInfo.Nick, args.Message), ContentLine.MessageStyle.Message,
-                                                 WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                }
-            }
-            else
-            {
-                Channel channel = this.GetChannel(args.ChannelName);
-                if (args.SourceUser == null)
-                {
-                    args.SourceUser = new libirc.User(args.Source);
-                }
-                if (channel != null)
-                {
-                    Graphics.Window window = channel.RetrieveWindow();
-                    if (window != null)
+                    Channel channel = this.GetChannel(args.ChannelName);
+                    if (args.SourceUser == null)
                     {
-                        if (!args.IsAct)
+                        args.SourceUser = new libirc.User(args.Source);
+                    }
+                    if (channel != null)
+                    {
+                        Graphics.Window window = channel.RetrieveWindow();
+                        if (window != null)
                         {
-                            window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceUser.Nick, args.Message),
-                                                         ContentLine.MessageStyle.Message, WriteLogs(),
-                                                         args.Date, IsDownloadingBouncerBacklog);
+                            if (!args.IsAct)
+                            {
+                                window.scrollback.InsertText(Protocol.PRIVMSG(args.SourceUser.Nick, args.Message),
+                                                             ContentLine.MessageStyle.Message, WriteLogs(),
+                                                             args.Date, IsDownloadingBouncerBacklog);
+                            }
+                            else
+                            {
+                                window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceUser.Nick + " " +
+                                                             args.Message, ContentLine.MessageStyle.Action,
+                                                             WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                            }
                         }
                         else
                         {
-                            window.scrollback.InsertText(Configuration.CurrentSkin.Message2 + args.SourceUser.Nick + " " +
-                                                         args.Message, ContentLine.MessageStyle.Action,
-                                                         WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                            this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
+                                                                    ")" + args.Message, ContentLine.MessageStyle.Message,
+                                                                    WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                         }
                     }
                     else
                     {
                         this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
-                                                                ")" + args.Message, ContentLine.MessageStyle.Message,
-                                                                WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                                                                    ")" + args.Message, ContentLine.MessageStyle.Message,
+                                                                    WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                 }
-                else
-                {
-                    this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
-                                                                ")" + args.Message, ContentLine.MessageStyle.Message,
-                                                                WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                }
+            }
+            catch (Exception fail)
+            {
+                Core.HandleException(fail);
             }
         }
 
