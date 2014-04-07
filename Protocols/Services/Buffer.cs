@@ -16,9 +16,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml;
 using System.Text;
-using System.Xml.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 
 namespace Pidgeon.Protocols.Services
 {
@@ -625,26 +625,57 @@ namespace Pidgeon.Protocols.Services
 
         private static void SerializeNetwork(NetworkInfo line, string file)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
+            //XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
             if (File.Exists(file))
             {
                 File.Delete(file);
             }
-            StreamWriter writer = File.AppendText(file);
-            xs.Serialize(writer, line);
-            writer.Close();
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fs = new FileStream(file, FileMode.Create);
+            try
+            {
+                formatter.Serialize(fs, line);
+            }
+            catch (SerializationException e)
+            {
+                Core.HandleException(e);
+            }
+            finally
+            {
+                fs.Close();
+            }
         }
 
         private static NetworkInfo DeserializeNetwork(string file)
         {
-            XmlDocument document = new XmlDocument();
-            TextReader sr = new StreamReader(file);
-            document.Load(sr);
-            XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
-            XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
-            NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
-            reader.Close();
-            sr.Close();
+            FileStream fs = new FileStream(file, FileMode.Open);
+            NetworkInfo info = null;
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                // Deserialize the hashtable from the file and  
+                // assign the reference to the local variable.
+                info = (NetworkInfo)formatter.Deserialize(fs);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                fs.Close();
+            }
+            //XmlDocument document = new XmlDocument();
+            //TextReader sr = new StreamReader(file);
+
+            //document.Load(sr);
+            //XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
+            //XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
+            //NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
+            //reader.Close();
+            //sr.Close();
             return info;
         }
 
