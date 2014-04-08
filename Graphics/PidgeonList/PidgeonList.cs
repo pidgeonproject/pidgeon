@@ -221,7 +221,7 @@ namespace Pidgeon.Graphics
         /// Remove a server
         /// </summary>
         /// <param name="server"></param>
-        public bool RemoveServer(Network server)
+        public bool RemoveNetwork(Network server)
         {
             lock (queueNetwork)
             {
@@ -415,7 +415,7 @@ namespace Pidgeon.Graphics
                 Window window = null;
                 switch (type)
                 {
-                    case ItemType.Server:
+                    case ItemType.Network:
                         Network nw = (Network)model.GetValue(iter, 1);
                         if (nw == null)
                         {
@@ -657,7 +657,7 @@ namespace Pidgeon.Graphics
 
         private void insertService(Protocols.Services.ProtocolSv service)
         {
-            string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.SSL.ToString() + "]";
+            string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.UsingSSL.ToString() + "]";
             TreeIter text = vTree.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (ServiceList)
             {
@@ -750,7 +750,7 @@ namespace Pidgeon.Graphics
             }
             if (network.ParentSv == null)
             {
-                TreeIter text = vTree.AppendValues(network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
+                TreeIter text = vTree.AppendValues(network.ServerName, network, ItemType.Network, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
                 lock (ServerList)
                 {
                     ServerList.Add(network, text);
@@ -759,7 +759,7 @@ namespace Pidgeon.Graphics
             }
             if (this.ServiceList.ContainsKey(network.ParentSv))
             {
-                TreeIter text = vTree.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Server, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
+                TreeIter text = vTree.AppendValues(ServiceList[network.ParentSv], network.ServerName, network, ItemType.Network, null, info, Configuration.CurrentSkin.Icon_ExclamationMark);
                 TreePath path = treeView.Model.GetPath(ServiceList[network.ParentSv]);
                 treeView.ExpandRow(path, true);
                 ServerList.Add(network, text);
@@ -902,7 +902,7 @@ namespace Pidgeon.Graphics
                     removed = RemoveDcc(dcc);
                     Updated = true;
                     break;
-                case ItemType.Server:
+                case ItemType.Network:
                     Core.SystemForm.SwitchRoot();
                     Network network = (Network)Item;
                     network.Disconnect();
@@ -913,7 +913,7 @@ namespace Pidgeon.Graphics
                         network._Protocol.Exit();
                         Connections.Remove(network._Protocol);
                     }
-                    RemoveServer(network);
+                    RemoveNetwork(network);
                     Updated = true;
                     removed = true;
                     break;
@@ -965,7 +965,7 @@ namespace Pidgeon.Graphics
             /// <summary>
             /// Network
             /// </summary>
-            Server,
+            Network,
             /// <summary>
             /// ProtocolSv
             /// </summary>

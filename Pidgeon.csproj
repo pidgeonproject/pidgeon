@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -35,7 +35,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>3</WarningLevel>
     <PlatformTarget>x86</PlatformTarget>
     <ConsolePause>false</ConsolePause>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -112,6 +112,7 @@
     <Compile Include="Commands\ExternalCommand.cs" />
     <Compile Include="Commands\Commands_Sc.cs" />
     <Compile Include="Core\Eval.cs" />
+    <Compile Include="Core\ThreadManager.cs" />
     <Compile Include="Events.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
     <Compile Include="Extensions\HookDefs.cs" />

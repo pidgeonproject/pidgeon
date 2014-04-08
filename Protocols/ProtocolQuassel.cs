@@ -61,6 +61,27 @@ namespace Pidgeon.Protocols
         private System.IO.StreamReader _StreamReader;
         private System.IO.StreamWriter _StreamWriter;
         private Graphics.Window sw = null;
+        private bool SSL = false;
+        public override bool SupportSSL
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool UsingSSL
+        {
+            get
+            {
+                return SSL;
+            }
+            set
+            {
+                SSL = value;
+            }
+        }
+
         /// <summary>
         /// Name
         /// </summary>
@@ -174,7 +195,7 @@ namespace Pidgeon.Protocols
             Core.SystemForm.ChannelList.InsertQuassel(this);
             _Thread = new System.Threading.Thread(Start);
             _Thread.Name = "Quassel main";
-            Core.SystemThreads.Add(_Thread);
+            Core.ThreadManager.RegisterThread(_Thread);
             _Thread.Start();
             return _Thread;
         }

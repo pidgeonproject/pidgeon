@@ -218,10 +218,6 @@ namespace Pidgeon
         private static Forms.Notification NotificationWidget = null;
         private static object RandomLock = new object();
         /// <summary>
-        /// Threads currently allocated in kernel
-        /// </summary>
-        public static List<Thread> SystemThreads = new List<Thread>();
-        /// <summary>
         /// Ring log
         /// </summary>
         private static List<string> Ring = new List<string>();
@@ -464,14 +460,14 @@ namespace Pidgeon
                     {
                         DebugLog("Running updater");
                         ThUp = new Thread(Updater.Run);
-                        ThUp.Name = "pidgeon service";
+                        ThUp.Name = "Pidgeon:Updater";
                         ThUp.Start();
-                        SystemThreads.Add(ThUp);
+                        ThreadManager.RegisterThread(ThUp);
                     }
                     DebugLog("Loading log writer thread");
                     Thread_logs = new Thread(IO.Load);
-                    Thread_logs.Name = "Logs";
-                    SystemThreads.Add(Thread_logs);
+                    Thread_logs.Name = "Pidgeon:Writer";
+                    ThreadManager.RegisterThread(Thread_logs);
                     Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
@@ -660,57 +656,6 @@ namespace Pidgeon
         {
             Pidgeon.Recovery recoveryWindow = new Pidgeon.Recovery();
             System.Windows.Forms.Application.Run(recoveryWindow);
-        }
-
-        /// <summary>
-        /// Kill thread or only remove it from system thread table
-        /// </summary>
-        /// <param name="name">Thread</param>
-        /// <param name="remove">If this is true it will be only removed from system table and not killed</param>
-        public static void KillThread(Thread name, bool remove = false)
-        {
-            if (name == null)
-            {
-                return;
-            }
-            if (name == KernelThread)
-            {
-                DebugLog("Refusing to kill kernel thread >:-(");
-                return;
-            }
-            // we need to lock it here so that we prevent multiple calls of this function at same time
-            lock (SystemThreads)
-            {
-                if (name != Thread.CurrentThread)
-                {
-                    if (!remove && (name.ThreadState == System.Threading.ThreadState.Running || name.ThreadState == System.Threading.ThreadState.WaitSleepJoin))
-                    {
-                        name.Abort();
-                        Core.DebugLog("Killed thread " + name.Name);
-                    }
-                    else
-                    {
-                        Core.DebugLog("Ignored request to abort thread in "
-                            + name.ThreadState.ToString()
-                            + " "
-                            + name.Name);
-                    }
-                }
-                else
-                {
-                    Core.DebugLog("Ignored request to abort thread from within the same thread " + name.Name);
-                }
-
-                if (Core.IgnoreErrors)
-                {
-                    DebugLog("Not removing thread from thread queue " + name.Name + " because system is shutting down");
-                    return;
-                }
-                if (SystemThreads.Contains(name))
-                {
-                    SystemThreads.Remove(name);
-                }
-            }
         }
 
         /// <summary>
@@ -1478,12 +1423,12 @@ namespace Pidgeon
                     {
                         Core.HandleException(fail);
                     }
-                    foreach (Thread th in SystemThreads)
+                    foreach (Thread th in ThreadManager.Threads)
                     {
                         try
                         {
-                            Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " needs to be terminated now");
-                            Core.KillThread(th);
+                            Core.Ringlog("CORE: Thread " + th.ManagedThreadId.ToString() + " (" + th.Name + ") needs to be terminated now");
+                            Core.ThreadManager.KillThread(th);
                         }
                         catch (Exception fail)
                         {

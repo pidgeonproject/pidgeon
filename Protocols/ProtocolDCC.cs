@@ -52,6 +52,26 @@ namespace Pidgeon.Protocols
         public DCC Dcc = DCC.Chat;
         private Graphics.Window systemwindow = null;
         private bool disposed = false;
+        private bool SSL = false;
+        public override bool SupportSSL
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool UsingSSL
+        {
+            get
+            {
+                return SSL;
+            }
+            set
+            {
+                SSL = value;
+            }
+        }
 
         /// <summary>
         /// Window of this DCC
@@ -102,12 +122,12 @@ namespace Pidgeon.Protocols
             catch (ThreadAbortException)
             {
                 Disconnect();
-                Core.KillThread(thread, true);
+                Core.ThreadManager.UnregisterThread(thread);
                 return;
             }
             catch (Exception fail)
             {
-                Core.KillThread(thread, true);
+                Core.ThreadManager.UnregisterThread(thread);
                 Core.HandleException(fail);
             }
         }
@@ -267,7 +287,7 @@ namespace Pidgeon.Protocols
             Core.SystemForm.ChannelList.InsertDcc(this);
             thread = new Thread(main);
             thread.Name = "DCC chat " + UserName;
-            Core.SystemThreads.Add(thread);
+            Core.ThreadManager.RegisterThread(thread);
             thread.Start();
             return thread;
         }

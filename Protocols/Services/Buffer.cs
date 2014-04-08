@@ -610,7 +610,7 @@ namespace Pidgeon.Protocols.Services
         /// <summary>
         /// Remove all data
         /// </summary>
-        public void Clear()
+        public void DeleteCache()
         {
             ClearData();
         }
@@ -625,7 +625,6 @@ namespace Pidgeon.Protocols.Services
 
         private static void SerializeNetwork(NetworkInfo line, string file)
         {
-            //XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
             if (File.Exists(file))
             {
                 File.Delete(file);
@@ -667,15 +666,6 @@ namespace Pidgeon.Protocols.Services
             {
                 fs.Close();
             }
-            //XmlDocument document = new XmlDocument();
-            //TextReader sr = new StreamReader(file);
-
-            //document.Load(sr);
-            //XmlNodeReader reader = new XmlNodeReader(document.DocumentElement);
-            //XmlSerializer xs = new XmlSerializer(typeof(NetworkInfo));
-            //NetworkInfo info = (NetworkInfo)xs.Deserialize(reader);
-            //reader.Close();
-            //sr.Close();
             return info;
         }
 
@@ -806,7 +796,7 @@ namespace Pidgeon.Protocols.Services
         /// <summary>
         /// Destroy
         /// </summary>
-        public void Destroy()
+        public void Wipe()
         {
             destroyed = true;
             foreach (NetworkInfo nw in networkInfo.Values)
@@ -831,11 +821,8 @@ namespace Pidgeon.Protocols.Services
                 if (networkInfo.ContainsKey(Networks[network]))
                 {
                     System.Threading.Thread th = new System.Threading.Thread(Init);
-                    th.Name = "Services buffer";
-                    lock (Core.SystemThreads)
-                    {
-                        Core.SystemThreads.Add(th);
-                    }
+                    th.Name = "Services/buffer";
+                    Core.ThreadManager.RegisterThread(th);
                     th.Start(networkInfo[Networks[network]]);
                 }
             }

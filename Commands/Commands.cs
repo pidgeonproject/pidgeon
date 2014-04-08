@@ -282,9 +282,10 @@ namespace Pidgeon
             commands.Add("ctcp", new Command(Type.SystemSv, Generic.ctcp));
             RegisterManual("pidgeon.uptime", Pidgeon.Resources.PidgeonUptime);
             commands.Add("pidgeon.uptime", new Command(Type.System, Generic.RetrieveUptime));
-            commands.Add("service.quit", new Command(Type.Services, Generic.service_quit));
-            commands.Add("service.gnick", new Command(Type.Services, Generic.service_gnick));
+            commands.Add("service.quit", new Command(Type.Services, Generic.ServiceQuit));
+            commands.Add("service.gnick", new Command(Type.Services, Generic.ServiceGnick));
             commands.Add("pidgeon.service", new Command(Type.System, Generic.pidgeon_service));
+            commands.Add("pidgeon.threadlist", new Command(Type.System, Generic.Threads));
             commands.Add("pidgeon.quit", new Command(Type.System, Generic.pidgeon_quit));
             commands.Add("pidgeon.sleep", new Command(Type.System, Generic.sleep));
             commands.Add("pidgeon.timer", new Command(Type.System, Generic.timer));

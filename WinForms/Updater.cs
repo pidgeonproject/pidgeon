@@ -133,12 +133,14 @@ namespace Pidgeon
                                         updater.lUpdateLink.Text = link;
                                         updater.lUpdateLink.Visible = true;
                                         System.Windows.Forms.Application.Run(updater);
+                                        Core.ThreadManager.UnregisterThread(System.Threading.Thread.CurrentThread);
                                         return;
                                     }
                                 }
                                 updater.update.Text = messages.get("update-update");
                                 updater.lStatus.Text = messages.get("update1", Core.SelectedLanguage, new List<string> { vr });
                                 System.Windows.Forms.Application.Run(updater);
+                                Core.ThreadManager.UnregisterThread(System.Threading.Thread.CurrentThread);
                                 return;
                             }
                             Core.Ringlog("UPTH: No update is needed");
@@ -155,6 +157,7 @@ namespace Pidgeon
             {
                 Core.HandleException(_t);
             }
+            Core.ThreadManager.UnregisterThread(System.Threading.Thread.CurrentThread);
         }
 
         private void UpdateLink_Click(object sender, EventArgs e)
