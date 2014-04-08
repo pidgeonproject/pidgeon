@@ -885,6 +885,7 @@ namespace Pidgeon.Graphics
             switch (type)
             {
                 case ItemType.Services:
+                    Core.SystemForm.SwitchRoot();
                     Protocols.Services.ProtocolSv service = (Protocols.Services.ProtocolSv)Item;
                     removed = RemoveServ(service);
                     Updated = true;
