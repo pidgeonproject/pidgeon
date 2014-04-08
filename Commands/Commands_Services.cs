@@ -52,19 +52,29 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
-                if (Core.SystemForm.Chat._Protocol == null)
+                // we need to fetch the reference here because SelectedNetwork is property that can change from line to line
+                libirc.Protocol protocol = null;
+                if (Core.SystemForm.Chat._Protocol != null)
                 {
-                    return;
+                    protocol = Core.SystemForm.Chat._Protocol;
                 }
-                if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
+                else
+                {
+                    Network network = Core.SelectedNetwork;
+                    if (network == null || network._Protocol == null)
+                    {
+                        protocol = network._Protocol;
+                    }
+                }
+                if (protocol != null && protocol.GetType() == typeof(ProtocolSv))
                 {
                     if (int.TryParse(b2, out n3))
                     {
-                        Core.SystemForm.Chat._Protocol.ConnectTo(name2, n3);
+                        protocol.ConnectTo(name2, n3);
                         return;
                     }
 
-                    Core.SystemForm.Chat._Protocol.ConnectTo(name2, 6667);
+                    protocol.ConnectTo(name2, 6667);
                     return;
                 }
             }
@@ -96,40 +106,28 @@ namespace Pidgeon
                 if (Core.SelectedNetwork._Protocol.GetType() == typeof(ProtocolSv))
                 {
                     ProtocolSv protocol = (ProtocolSv)Core.SelectedNetwork._Protocol;
-                    protocol.sBuffer.Clear();
+                    protocol.sBuffer.DeleteCache();
                     Core.SystemForm.Chat.scrollback.InsertText("Services cache was cleared", Pidgeon.ContentLine.MessageStyle.System, false);
                 }
             }
 
-            public static void service_gnick(string parameter)
+            public static void ServiceGnick(string parameter)
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    string nick = parameter;
-                    if (Core.SystemForm.Chat._Protocol != null)
+                    string nick = parameter.Trim();
+                    if (Core.SystemForm.Chat._Protocol == null)
                     {
-                        if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
-                        {
-                            Core.SystemForm.Chat._Protocol.RequestNick(nick);
-                            return;
-                        }
+                        return;
                     }
-                    if (Core.SystemForm.Chat._Network != null)
+                    if (Core.SystemForm.Chat._Protocol.GetType() == typeof(ProtocolSv))
                     {
-                        if (Core.SystemForm.Chat._Network._Protocol != null)
-                        {
-                            if (Core.SystemForm.Chat._Network._Protocol.GetType() == typeof(ProtocolSv))
-                            {
-                                Core.SystemForm.Chat._Network._Protocol.RequestNick(nick);
-                                return;
-                            }
-                        }
+                        ((ProtocolSv)Core.SystemForm.Chat._Protocol).RequestGlobalNick(nick);
                     }
-                    return;
                 }
             }
 
-            public static void service_quit(string parameter)
+            public static void ServiceQuit(string parameter)
             {
                 Core.SelectedNetwork._Protocol.Exit();
             }

@@ -73,6 +73,7 @@ namespace Pidgeon.Protocols
             {
                 Core.HandleException(fail);
             }
+            Core.ThreadManager.UnregisterThread(Thread.CurrentThread);
         }
 
         protected override void DisconnectExec(string reason, Exception ex)
@@ -109,12 +110,13 @@ namespace Pidgeon.Protocols
 
         public override Thread Open()
         {
-            ThreadMain = new Thread(Exec);
             Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                                                        Pidgeon.ContentLine.MessageStyle.System);
+            ThreadMain = new Thread(Exec);
             Core.SystemForm.Status("Connecting to server " + Server + " port " + Port.ToString());
             ThreadMain.Start();
-            Core.SystemThreads.Add(ThreadMain);
+            ThreadMain.Name = ("IRC:" + Server + "/Main");
+            Core.ThreadManager.RegisterThread(ThreadMain);
             return ThreadMain;
         }
     }

@@ -119,7 +119,7 @@ namespace Pidgeon
                     Core.Ringlog("Unable to kill timer " + ID.ToString() + " because it's not running");
                     return false;
                 }
-                Core.KillThread(thread);
+                Core.ThreadManager.KillThread(thread);
                 Running = false;
                 return true;
             }

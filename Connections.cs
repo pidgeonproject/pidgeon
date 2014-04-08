@@ -68,7 +68,7 @@ namespace Pidgeon
             Protocols.ProtocolDCC DC = new Protocols.ProtocolDCC();
             DC.Server = server;
             DC.Port = port;
-            DC.SSL = secured;
+            DC.UsingSSL = secured;
             DC.ListenerMode = Listening;
             DC.Dcc = dcc;
             if (dcc == Protocols.ProtocolDCC.DCC.Chat && secured)
@@ -95,7 +95,7 @@ namespace Pidgeon
             _quassel.Port = port;
             _quassel.Password = password;
             _quassel.Server = server;
-            _quassel.SSL = secured;
+            _quassel.UsingSSL = secured;
             _quassel.Open();
             ConnectionList.Add(_quassel);
             return false;
@@ -115,7 +115,7 @@ namespace Pidgeon
             protocol.Server = server;
             protocol.nick = Configuration.UserData.nick;
             protocol.Port = port;
-            protocol.SSL = secured;
+            protocol.UsingSSL = secured;
             protocol.password = password;
             ConnectionList.Add(protocol);
             protocol.Open();
@@ -137,7 +137,7 @@ namespace Pidgeon
             protocol.Server = server;
             protocol.Port = port;
             protocol.Password = password;
-            protocol.SSL = secured;
+            protocol.UsingSSL = secured;
             Network network = new Network (server, protocol);
             protocol.NetworkMeta = network;
             protocol.IRCNetwork = (libirc.Network)network;

@@ -224,7 +224,7 @@ namespace Pidgeon.Graphics
                 ItemType type = (ItemType)treeView.Model.GetValue(iter, 2);
                 switch (type)
                 {
-                    case ItemType.Server:
+                    case ItemType.Network:
                         Network item = (Network)this.treeView.Model.GetValue(iter, 1);
                         item.Disconnect();
                         break;
@@ -310,7 +310,7 @@ namespace Pidgeon.Graphics
                         WindowsManager.ShowChat(chan._Network.SystemWindowID + chan.Name, chan._Network);
                         Core.SystemForm.UpdateStatus();
                         return;
-                    case ItemType.Server:
+                    case ItemType.Network:
                         Network server = (Network)this.treeView.Model.GetValue(iter, 1);
                         if (server.ParentSv == null)
                         {
@@ -400,7 +400,7 @@ namespace Pidgeon.Graphics
                             Protocol protocol = (Protocol)data;
                             protocol.Reconnect();
                             break;
-                        case ItemType.Server:
+                        case ItemType.Network:
                             Network network = (Network)data;
                             network.Reconnect();
                             break;

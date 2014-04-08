@@ -28,7 +28,7 @@ namespace Pidgeon.Protocols.Services
     /// <summary>
     /// Protocol for pidgeon services
     /// </summary>
-    public partial class ProtocolSv : libirc.Protocol, IDisposable
+    public partial class ProtocolSv : Protocol
     {
         private class Cache
         {
@@ -65,7 +65,7 @@ namespace Pidgeon.Protocols.Services
         }
         
         private System.Threading.Thread main = null;
-        private System.Threading.Thread keep = null;
+        private System.Threading.Thread tPinger = null;
         private object StreamLock = new object();
         private DateTime pong = DateTime.Now;
 
@@ -99,9 +99,28 @@ namespace Pidgeon.Protocols.Services
         /// <summary>
         /// This needs to be true when the services are in process of disconnecting
         /// </summary>
-        private bool disconnecting = false;
+        private bool IsDisconnecting = false;
         private List<string> WaitingNetw = new List<string>();
-        private bool disposed = false;
+        private bool SSL = false;
+        public override bool SupportSSL
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        public override bool UsingSSL
+        {
+            get
+            {
+                return SSL;
+            }
+            set
+            {
+                SSL = value;
+            }
+        }
 
         /// <summary>
         /// Root window
@@ -120,12 +139,14 @@ namespace Pidgeon.Protocols.Services
             }
             catch (System.Threading.ThreadAbortException)
             {
+                Core.ThreadManager.UnregisterThread(Thread.CurrentThread);
                 return;
             }
             catch (Exception fail)
             {
                 Core.HandleException(fail, Core.ExceptionKind.Safe);
             }
+            Core.ThreadManager.UnregisterThread(Thread.CurrentThread);
         }
 
         private string getInfo()
@@ -170,16 +191,13 @@ namespace Pidgeon.Protocols.Services
             {
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("loading-server", Core.SelectedLanguage, new List<string> { this.Server }),
                 Pidgeon.ContentLine.MessageStyle.System);
-
                 Core.SystemForm.Status("Connecting to " + Server);
-
                 if (!SSL)
                 {
                     _networkStream = new System.Net.Sockets.TcpClient(Server, Port).GetStream();
                     _StreamWriter = new System.IO.StreamWriter(_networkStream);
                     _StreamReader = new System.IO.StreamReader(_networkStream, Encoding.UTF8);
                 }
-
                 if (SSL)
                 {
                     System.Net.Sockets.TcpClient client = new System.Net.Sockets.TcpClient(Server, Port);
@@ -189,9 +207,7 @@ namespace Pidgeon.Protocols.Services
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
-
                 Connected = true;
-
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
                 Datagram login = new Datagram("AUTH");
@@ -201,28 +217,15 @@ namespace Pidgeon.Protocols.Services
                 Deliver(new Datagram("GLOBALNICK"));
                 Deliver(new Datagram("NETWORKLIST"));
                 Deliver(new Datagram("STATUS"));
-                keep = new System.Threading.Thread(_Ping);
-                Core.SystemThreads.Add(keep);
-                keep.Name = "pinger thread";
-                keep.Start();
-            }
-            catch (System.Threading.ThreadAbortException)
-            {
-                return;
-            }
-            catch (Exception b)
-            {
-                Core.SystemForm.Chat.scrollback.InsertText(b.Message, Pidgeon.ContentLine.MessageStyle.System);
-                return;
-            }
-            string text = "";
-            try
-            {
+                tPinger = new System.Threading.Thread(_Ping);
+                tPinger.Name = "Pidgeon:Services/pinger";
+                Core.ThreadManager.RegisterThread(tPinger);
+                tPinger.Start();
                 sBuffer = new Services.Buffer(this);
                 Core.SystemForm.Status(getInfo());
                 while (!_StreamReader.EndOfStream && Connected)
                 {
-                    text = _StreamReader.ReadLine();
+                    string text = _StreamReader.ReadLine();
                     Core.TrafficScanner.Insert(Server, " >> " + text);
                     while (Core.IsBlocked)
                     {
@@ -230,18 +233,13 @@ namespace Pidgeon.Protocols.Services
                     }
                     if (Valid(text))
                     {
-                        // if this return false the thread must be stopped now
-                        if (!Process(text))
-                        {
-                            return;
-                        }
-                        continue;
+                        Process(text);
                     }
                 }
             }
             catch (System.IO.IOException fail)
             {
-                if (IsConnected && !disconnecting)
+                if (IsConnected && !IsDisconnecting)
                 {
                     // we need to wrap this in another exception handler because the following functions are easy to throw some
                     try
@@ -259,7 +257,7 @@ namespace Pidgeon.Protocols.Services
             }
             catch (System.Threading.ThreadAbortException)
             {
-                Core.KillThread(System.Threading.Thread.CurrentThread, true);
+                Core.ThreadManager.UnregisterThread(System.Threading.Thread.CurrentThread);
                 return;
             }
             catch (Exception fail)
@@ -268,7 +266,7 @@ namespace Pidgeon.Protocols.Services
                 {
                     Core.HandleException(fail);
                 }
-                Core.KillThread(System.Threading.Thread.CurrentThread);
+                Core.ThreadManager.UnregisterThread(System.Threading.Thread.CurrentThread);
             }
         }
 
@@ -282,53 +280,6 @@ namespace Pidgeon.Protocols.Services
                 }
             }
             return null;
-        }
-
-        private void ReleaseNetwork()
-        {
-            if (_StreamReader != null)
-            {
-                _StreamReader.Dispose();
-                _StreamReader = null;
-            }
-            if (_networkSsl != null)
-            {
-                _networkSsl.Dispose();
-                _networkSsl = null;
-            }
-            if (_StreamWriter != null)
-            {
-                _StreamWriter.Dispose();
-                _StreamWriter = null;
-            }
-        }
-
-        /// <summary>
-        /// Releases all resources used by this class
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Releases all resources used by this class
-        /// </summary>
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposed)
-            {
-                if (disposing)
-                {
-                    ReleaseNetwork();
-                    if (!IsDestroyed)
-                    {
-                        Exit();
-                    }
-                }
-                disposed = true;
-            }
         }
 
         private void SendData(string network, string data, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal)
@@ -360,7 +311,7 @@ namespace Pidgeon.Protocols.Services
             return Result.Done;
         }
 
-        private bool Process(string dg)
+        private void Process(string dg)
         {
             try
             {
@@ -429,11 +380,6 @@ namespace Pidgeon.Protocols.Services
                 Core.DebugLog("Unable to parse: " + xx.ToString());
                 Core.Ringlog("Invalid xml: " + dg);
             }
-            catch (ThreadAbortException)
-            {
-                return false;
-            }
-            return true;
         }
 
         /// <summary>
@@ -443,64 +389,29 @@ namespace Pidgeon.Protocols.Services
         public void RemoveNetworkFromMemory(string network)
         {
             network = network.ToLower();
-            Network remove = null;
-            lock (Core.SystemForm.ChannelList.ServerList)
+            lock (this.NetworkList)
             {
-                foreach (KeyValuePair<Network, Gtk.TreeIter> n in Core.SystemForm.ChannelList.ServerList)
+                Network network_ = retrieveNetwork(network);
+                if (network_ != null)
                 {
-                    if (n.Key.ServerName.ToLower() == network)
-                    {
-                        remove = n.Key;
-                        if (remove != null)
-                        {
-                            Core.SystemForm.ChannelList.RemoveServer(remove);
-                        }
-                        else
-                        {
-                            Core.DebugLog("Unable to remove " + network);
-                        }
-                        break;
-                    }
-                }
-            }
-
-            lock (NetworkList)
-            {
-                if (remove == null)
-                {
-                    foreach (Network xx in NetworkList)
-                    {
-                        if (network == xx.ServerName.ToLower())
-                        {
-                            remove = xx;
-                            break;
-                        }
-                    }
-                }
-
-                if (remove != null)
-                {
-                    if (NetworkList.Contains(remove))
-                    {
-                        NetworkList.Remove(remove);
-                    }
+                    Core.SystemForm.ChannelList.RemoveNetwork(network_);
+                    NetworkList.Remove(network_);
 
                     if (Configuration.Services.UsingCache)
                     {
                         // we need to remove the network here from db
-                        if (sBuffer.networkInfo.ContainsKey(remove.ServerName))
+                        if (sBuffer.networkInfo.ContainsKey(network_.ServerName))
                         {
-                            sBuffer.networkInfo.Remove(remove.ServerName);
+                            sBuffer.networkInfo.Remove(network_.ServerName);
                         }
 
-                        if (sBuffer.Networks.ContainsKey(remove.ServerName))
+                        if (sBuffer.Networks.ContainsKey(network_.ServerName))
                         {
-                            sBuffer.Networks.Remove(remove.ServerName);
+                            sBuffer.Networks.Remove(network_.ServerName);
                         }
                     }
-
-                    remove.IsConnected = false;
-                    remove.Destroy();
+                    network_.IsConnected = false;
+                    network_.Destroy();
                 }
             }
         }
@@ -520,7 +431,6 @@ namespace Pidgeon.Protocols.Services
                 {
                     Disconnect();
                 }
-                disconnecting = true;
                 int remaining = 0;
                 lock (RemainingJobs)
                 {
@@ -557,32 +467,23 @@ namespace Pidgeon.Protocols.Services
                 {
                     foreach (Network network in NetworkList)
                     {
-                        network.Destroy();
                         if (Core.SelectedNetwork == network)
                         {
                             Core.SelectedNetwork = null;
                         }
+                        network.Destroy();
                     }
                     NetworkList.Clear();
                 }
-
-                if (keep != null)
-                {
-                    Core.KillThread(keep);
-                    keep = null;
-                }
-
+                Core.ThreadManager.KillThread(tPinger);
+                tPinger = null;
                 if (sBuffer != null)
                 {
-                    sBuffer.Destroy();
+                    sBuffer.Wipe();
                 }
-
                 sBuffer = null;
-
                 if (_StreamWriter != null) _StreamWriter.Close();
                 if (_StreamReader != null) _StreamReader.Close();
-                _StreamWriter = null;
-                _StreamReader = null;
                 base.Exit();
             }
         }
@@ -595,17 +496,18 @@ namespace Pidgeon.Protocols.Services
         {
             lock (this)
             {
-                disconnecting = true;
                 if (!IsConnected)
                 {
                     Core.DebugLog("User attempted to disconnect services that are already disconnected");
-                    disconnecting = false;
                     return Result.Failure;
                 }
+                IsDisconnecting = true;
                 if (System.Threading.Thread.CurrentThread != main)
                 {
-                    Core.KillThread(main);
+                    Core.ThreadManager.KillThread(main);
                 }
+                Core.ThreadManager.KillThread(tPinger);
+                tPinger = null;
                 lock (NetworkList)
                 {
                     foreach (Network network in NetworkList)
@@ -619,38 +521,19 @@ namespace Pidgeon.Protocols.Services
                     if (_StreamReader != null) _StreamReader.Close();
                     if (SSL)
                     {
-                        if (_networkSsl != null)
-                        {
-                            _networkSsl.Close();
-                        }
+                        if (_networkSsl != null) _networkSsl.Close();
                     }
                     else
                     {
-                        if (_networkStream != null)
-                        {
-                            _networkStream.Close();
-                        }
+                        if (_networkStream != null) _networkStream.Close();
                     }
                 }
                 catch (System.Net.Sockets.SocketException fail)
                 {
                     Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
                 }
-                ReleaseNetwork();
-                lock (NetworkList)
-                {
-                    foreach (Network xx in NetworkList)
-                    {
-                        // we need to flag all networks here as disconnected so that it knows we can't use them
-                        xx.IsConnected = false;
-                    }
-                }
-                if (keep != null)
-                {
-                    Core.KillThread(keep);
-                }
                 Connected = false;
-                disconnecting = false;
+                IsDisconnecting = false;
             }
             return Result.Done;
         }
@@ -671,9 +554,10 @@ namespace Pidgeon.Protocols.Services
         public override System.Threading.Thread Open()
         {
             SystemWindow = WindowsManager.CreateChat("!root", true, null, false, null, false, true, this);
+            SystemWindow._Protocol = this;
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
-            Core.SystemThreads.Add(main);
+            Core.ThreadManager.RegisterThread(main);
             main.Start();
             return main;
         }
@@ -682,9 +566,8 @@ namespace Pidgeon.Protocols.Services
         /// Request a global nick
         /// </summary>
         /// <param name="_Nick"></param>
-        /// <param name="network"></param>
         /// <returns></returns>
-        public override Result RequestNick(string _Nick, libirc.Network network = null)
+        public Result RequestGlobalNick(string _Nick)
         {
             Deliver(new Datagram("GLOBALNICK", _Nick));
             return Result.Done;
@@ -735,11 +618,7 @@ namespace Pidgeon.Protocols.Services
         /// <returns></returns>
         public override Result ConnectTo(string server, int port)
         {
-            // remove space
-            while (server.StartsWith(" ", StringComparison.Ordinal))
-            {
-                server = server.Substring(1);
-            }
+            server = server.Trim();
             // in case that server is invalid, we ignore the request
             if (string.IsNullOrEmpty(server))
             {
@@ -774,7 +653,7 @@ namespace Pidgeon.Protocols.Services
         /// Disconnect from a specific network on bouncer side
         /// </summary>
         /// <param name="network"></param>
-        public void Disconnect(Network network)
+        public void DisconnectRemote(Network network)
         {
             Transfer("QUIT :" + network.Quit, libirc.Defs.Priority.High, network);
             Datagram request = new Datagram("REMOVE", network.ServerName);

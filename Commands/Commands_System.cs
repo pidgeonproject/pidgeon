@@ -15,6 +15,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
+using System.Threading;
 using System.IO;
 using System.Text;
 
@@ -79,6 +81,15 @@ namespace Pidgeon
                     return;
                 }
                 Core.SystemForm.Chat.scrollback.InsertText(messages.get("command-wrong", Core.SelectedLanguage, new List<string> { "1" }), Pidgeon.ContentLine.MessageStyle.Message);
+            }
+
+            public static void Threads(string parameter)
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("List of all threads in system:", ContentLine.MessageStyle.System, false, 1);
+                foreach (Thread th in Core.ThreadManager.Threads)
+                {
+                    Core.SystemForm.Chat.scrollback.InsertText(th.ManagedThreadId.ToString() + " (" + th.Name + ") state: " + th.ThreadState.ToString(), ContentLine.MessageStyle.System, false, 1, true);
+                }
             }
 
             /// <summary>
@@ -326,7 +337,7 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("nick", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.User);
                     return;
                 }
-                Core.SelectedNetwork._Protocol.RequestNick(Nick);
+                Core.SelectedNetwork.RequestNick(Nick);
             }
 
             /// <summary>

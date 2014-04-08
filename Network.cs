@@ -70,7 +70,7 @@ namespace Pidgeon
         /// <summary>
         /// Currently rendered channel on main window
         /// </summary>
-        public new Channel RenderedChannel = null;
+        public Channel RenderedChannel = null;
         /// <summary>
         /// Parent service
         /// </summary>
@@ -769,9 +769,12 @@ namespace Pidgeon
                                                       args.SourceInfo.Ident + "%/D%@%H%" + args.SourceInfo.Host + "%/H%", args.Message }),
                                                       ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                    channel.RemoveUser(args.SourceInfo.Nick);
-                    channel.UpdateInfo();
-                    channel.RedrawUsers();
+                    if (!IsDownloadingBouncerBacklog)
+                    {
+                        channel.RemoveUser(args.SourceInfo.Nick);
+                        channel.UpdateInfo();
+                        channel.RedrawUsers();
+                    }
                 }
             }
         }
