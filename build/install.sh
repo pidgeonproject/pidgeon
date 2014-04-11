@@ -75,6 +75,7 @@ if [ ! -d "$DESTDIR/usr/share/man/man1" ];then
     mkdir "$DESTDIR/usr/share/man/man1"
 fi
 cp man/* "$DESTDIR/usr/share/man/man1" || exit 1
+rm -f "$DESTDIR/usr/share/man/man1/pidgeon.1.gz" || exit 1
 gzip "$DESTDIR/usr/share/man/man1/pidgeon.1" || exit 1
 if [ ! -d "$DESTDIR/usr/share/applications" ];then
     mkdir "$DESTDIR/usr/share/applications"
