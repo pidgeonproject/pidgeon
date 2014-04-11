@@ -84,6 +84,7 @@ namespace Pidgeon
         /// Descriptions for channel and user modes
         /// </summary>
         public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+
         public override bool IsConnected
         {
             get
@@ -616,7 +617,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_PART(libirc.Network.NetworkChannelEventArgs args)
+        public override void __evt_PART(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -628,7 +629,7 @@ namespace Pidgeon
                     if (w != null)
                     {
                         w.scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage,
-                               new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
+                               new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%", args.Message }),
                                ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     channel.RemoveUser(user);

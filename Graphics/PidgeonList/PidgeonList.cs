@@ -395,7 +395,6 @@ namespace Pidgeon.Graphics
                 ResultStore = false;
                 vTree.Foreach(feIter);
                 ObjectStore = null;
-
                 return new KeyValuePair<TreeIter, bool>(IterStore, ResultStore);
             }
         }
