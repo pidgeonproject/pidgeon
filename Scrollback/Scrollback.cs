@@ -182,7 +182,7 @@ namespace Pidgeon
         {
             get
             {
-                StringBuilder text = new StringBuilder("");
+                StringBuilder text = new StringBuilder();
                 lock(ContentLines)
                 {
                     foreach(ContentLine _line in ContentLines)
@@ -465,7 +465,7 @@ namespace Pidgeon
         /// </summary>
         public void ReloadSimple()
         {
-            StringBuilder everything = new StringBuilder("");
+            StringBuilder everything = new StringBuilder();
             lock(ContentLines)
             {
                 foreach(ContentLine _line in ContentLines)

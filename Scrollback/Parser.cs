@@ -201,8 +201,7 @@ namespace Pidgeon
                         break;
                     }
                 }
-                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text),
-                                                                                     Configuration.CurrentSkin.LinkColor);
+                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text), Configuration.CurrentSkin.LinkColor);
                 Link.Link = "pidgeon://join/";
                 Link.Link += Protocols.ProtocolIrc.DecodeText(text);
                 Link.Underline = under;
@@ -357,7 +356,7 @@ namespace Pidgeon
         public static Pidgeon.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
             // this is some hardcore source bellow, have fun
-            if (SBAB == null)  throw new Core.PidgeonException("NULL reference to RichTBox object");
+            if (SBAB == null)  throw new PidgeonException("NULL reference to RichTBox object");
             Pidgeon.RichTBox.Line line;
             if (CacheEnabled)
             {
@@ -368,7 +367,7 @@ namespace Pidgeon
             Pidgeon.RichTBox.ContentText lprttext = null;
             string tempdata = text;
             Color color = _style;
-            StringBuilder templine = new StringBuilder("");
+            StringBuilder templine = new StringBuilder();
             bool bold_ = false;
             bool underline_ = false;
             bool italic_ = false;

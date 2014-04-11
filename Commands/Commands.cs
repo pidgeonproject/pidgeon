@@ -323,7 +323,7 @@ namespace Pidgeon
         {
             if (command == null)
             {
-                throw new Core.PidgeonException("command must not be null!");
+                throw new PidgeonException("command must not be null!");
             }
             string[] values = command.Split(' ');
             string parameter = command.Substring(values[0].Length);

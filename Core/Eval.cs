@@ -35,7 +35,7 @@ namespace Pidgeon
                 case "$PidgeonVersion":
                     return System.Windows.Forms.Application.ProductVersion.ToString();
                 case "$PidgeonUptime":
-                    TimeSpan uptime = DateTime.Now - Core.LoadTime;
+                    TimeSpan uptime = DateTime.Now - Core.StartupTime;
                     return uptime.ToString();
                 case "$Connected":
                     if (window._Network != null)
@@ -106,7 +106,7 @@ namespace Pidgeon
                                 Status = 2;
                                 continue;
                         }
-                        throw new Core.PidgeonException("Unable to parse the statement, expected operator (==, !=, >, <)");
+                        throw new PidgeonException("Unable to parse the statement, expected operator (==, !=, >, <)");
                     case 2:
                         if (part.StartsWith("$", StringComparison.Ordinal))
                         {

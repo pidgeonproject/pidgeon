@@ -192,14 +192,14 @@ namespace Pidgeon.Protocols.Services
                     if (Core.SystemForm.DisplayingProgress == false)
                     {
                         protocol.BacklogMode(true);
-                        Core.SystemForm.progress = double.Parse(id);
+                        Core.SystemForm.Progress = double.Parse(id);
                         Core.SystemForm.DisplayingProgress = true;
                         protocol.FinishedLoading = false;
                         protocol.SuppressChanges = true;
                         Core.SystemForm.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
 
-                    Core.SystemForm.progress = double.Parse(id);
+                    Core.SystemForm.Progress = double.Parse(id);
                     Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/"
                         + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
                     if ((protocol.cache[protocol.NetworkList.IndexOf(server)].size - 2) < double.Parse(id))
@@ -208,7 +208,7 @@ namespace Pidgeon.Protocols.Services
                         protocol.BacklogMode(false);
                         Core.SystemForm.Status(protocol.getInfo());
                         Core.SystemForm.DisplayingProgress = false;
-                        Core.SystemForm.progress = 0;
+                        Core.SystemForm.Progress = 0;
                         protocol.SuppressChanges = false;
                         if (Configuration.Services.UsingCache && Configuration.Services.MissingFix)
                         {

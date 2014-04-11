@@ -154,6 +154,7 @@
     <Compile Include="GTK\MessageBox.cs" />
     <Compile Include="GTK\PidgeonForm.cs" />
     <Compile Include="Hyperlink.cs" />
+    <Compile Include="PidgeonException.cs" />
     <Compile Include="Protocols\CertificateMaker.cs" />
     <Compile Include="Protocols\ProtocolDCC.cs" />
     <Compile Include="RichTBox\Classes.cs" />

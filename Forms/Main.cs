@@ -52,17 +52,17 @@ namespace Pidgeon.Forms
         public Preferences fPrefs;
         private bool UpdatedStatus = true;
         private SearchItem searchbox = new SearchItem();
-        private bool done = false;
+        private bool loadingDone = false;
         /// <summary>
-        /// Progress
+        /// Value of progress bar (thread safe)
         /// </summary>
-        public double progress = 0;
+        public double Progress = 0;
         /// <summary>
-        /// Displaying progress
+        /// Displaying progress (whether the progress bar is visible)
         /// </summary>
         public bool DisplayingProgress = false;
         /// <summary>
-        /// Maximum value of progress
+        /// Maximum value of progress bar (thread safe)
         /// </summary>
         public double ProgressMax = 0;
         private GLib.TimeoutHandler timer = null;
@@ -244,9 +244,7 @@ namespace Pidgeon.Forms
                 {
                     Core.PrintRing(Chat, false);
                 }
-
                 Chat.scrollback.InsertText("Welcome to pidgeon client " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
-
                 if (Core.Extensions.Count > 0)
                 {
                     foreach (Extension nn in Core.Extensions)
@@ -254,8 +252,7 @@ namespace Pidgeon.Forms
                         Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
                     }
                 }
-                done = true;
-
+                loadingDone = true;
                 foreach (string text in Core.StartupParams)
                 {
                     Core.ParseLink(text);
@@ -318,7 +315,7 @@ namespace Pidgeon.Forms
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
+                throw new PidgeonException("You can't control other windows from non kernel thread");
             }
             this.toolStripInfo.Text = StatusBox;
             if (Core.SelectedNetwork != null && !Core.SelectedNetwork.IsDestroyed)
@@ -384,7 +381,7 @@ namespace Pidgeon.Forms
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Core.PidgeonException("This function can be called only from kernel thread");
+                throw new PidgeonException("This function can be called only from kernel thread");
             }
             this.Title = "Pidgeon Client v 1.6 " + name;
             return 2;
@@ -477,9 +474,7 @@ namespace Pidgeon.Forms
             try
             {
                 if (fConnection == null)
-                {
                     fConnection = new Forms.Connection();
-                }
 
                 fConnection.Show();
             }
@@ -501,17 +496,15 @@ namespace Pidgeon.Forms
                 }
 
                 // Visible is not a variable but property so don't change it even to same value for performance reasons
+                // we don't want to call its function unless we want to change it
                 if (toolStripProgressBar1.Visible != DisplayingProgress)
                 {
                     toolStripProgressBar1.Visible = DisplayingProgress;
                 }
 
-                if (hpaned1.Position != Configuration.Window.WindowSize)
+                if (hpaned1.Position != Configuration.Window.WindowSize && loadingDone)
                 {
-                    if (done)
-                    {
-                        Configuration.Window.WindowSize = hpaned1.Position;
-                    }
+                    Configuration.Window.WindowSize = hpaned1.Position;
                 }
 
                 if (this.toolStripProgressBar1.Adjustment.Upper != ProgressMax)
@@ -522,9 +515,9 @@ namespace Pidgeon.Forms
                     }
                     toolStripProgressBar1.Adjustment.Upper = ProgressMax;
                 }
-                if (toolStripProgressBar1.Adjustment.Value != progress)
+                if (toolStripProgressBar1.Adjustment.Value != Progress)
                 {
-                    toolStripProgressBar1.Adjustment.Value = progress;
+                    toolStripProgressBar1.Adjustment.Value = Progress;
                 }
             }
             catch (Exception fail)
@@ -612,7 +605,7 @@ namespace Pidgeon.Forms
         {
             if (System.Threading.Thread.CurrentThread != Core._KernelThread)
             {
-                throw new Core.PidgeonException("You can't control other windows from non kernel thread");
+                throw new PidgeonException("You can't control other windows from non kernel thread");
             }
             if (hpaned1.Child2 != null)
             {
@@ -630,7 +623,7 @@ namespace Pidgeon.Forms
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Core.PidgeonException("This function can be called only from kernel thread");
+                throw new PidgeonException("This function can be called only from kernel thread");
             }
             toolStripStatusChannel.Text = channel;
         }

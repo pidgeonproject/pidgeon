@@ -31,52 +31,6 @@ namespace Pidgeon
     public static partial class Core
     {
         /// <summary>
-        /// Exception raised by pidgeon itself
-        /// </summary>
-        [Serializable]
-        public class PidgeonException : Exception
-        {
-            /// <summary>
-            /// Creates a new instance of pidgeon exception
-            /// </summary>
-            public PidgeonException()
-                : base()   {            }
-
-            /// <summary>
-            /// Creates a new instance of pidgeon exception
-            /// </summary>
-            /// <param name="Message"></param>
-            public PidgeonException(string Message) : base(Message)
-            {
-                // this function just inherits the base for exception
-            }
-        }
-        /// <summary>
-        /// Represent a domain for program
-        /// </summary>
-        public class Domain
-        {
-            /// <summary>
-            /// Domain
-            /// </summary>
-            public AppDomain domain;
-            /// <summary>
-            /// Name
-            /// </summary>
-            public string name;
-
-            /// <summary>
-            /// Creates a new instance of this class
-            /// </summary>
-            /// <param name="_appDomain"></param>
-            /// <param name="_name"></param>
-            public Domain(AppDomain _appDomain, string _name)
-            {
-                domain = _appDomain;
-                name = _name;
-            }
-        }
-        /// <summary>
         /// Profiler
         /// </summary>
         public class Profiler
@@ -175,7 +129,7 @@ namespace Pidgeon
         /// <summary>
         /// Exact time of system load
         /// </summary>
-        public static DateTime LoadTime;
+        public static DateTime StartupTime;
         /// <summary>
         /// Configuration path
         /// </summary>
@@ -183,31 +137,15 @@ namespace Pidgeon
         /// <summary>
         /// Root dir
         /// </summary>
-        public static string Root = null;
+        public static string RootDirectory = null;
         /// <summary>
         /// Language used in system
         /// </summary>
         public static string SelectedLanguage = "en";
         /// <summary>
-        /// Thread for IO logs
-        /// </summary>
-        public static Thread Thread_logs = null;
-        /// <summary>
-        /// Thread for update system
-        /// </summary>
-        public static Thread ThUp = null;
-        /// <summary>
-        /// Module layers
-        /// </summary>
-        public static List<Domain> domains = new List<Domain>();
-        /// <summary>
         /// Pointer to exception class during recovery
         /// </summary>
         public static Exception RecoveryException = null;
-        /// <summary>
-        /// Recovery thread
-        /// </summary>
-        public static Thread RecoveryThread = null;
         /// <summary>
         /// Timers
         /// </summary>
@@ -364,7 +302,7 @@ namespace Pidgeon
         {
             get
             {
-                return Root + "Temp" + System.IO.Path.DirectorySeparatorChar;
+                return RootDirectory + "Temp" + System.IO.Path.DirectorySeparatorChar;
             }
         }
 
@@ -403,24 +341,24 @@ namespace Pidgeon
         {
             if (CoreState != State.Loading)
             {
-                throw new Core.PidgeonException("You can't load core multiple times");
+                throw new PidgeonException("You can't load core multiple times");
             }
             try
             {
                 KernelThread = Thread.CurrentThread;
-                LoadTime = DateTime.Now;
+                StartupTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
                 SystemRoot = Application.StartupPath + Path.DirectorySeparatorChar;
-                if (Root == null && Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
+                if (RootDirectory == null && Application.LocalUserAppDataPath.EndsWith(Application.ProductVersion, StringComparison.Ordinal))
                 {
-                    Root = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
-                    ConfigFile = Root + "configuration.dat";
+                    RootDirectory = Application.LocalUserAppDataPath.Substring(0, Application.LocalUserAppDataPath.Length - Application.ProductVersion.Length);
+                    ConfigFile = RootDirectory + "configuration.dat";
                 }
-                else if (Root == null)
+                else if (RootDirectory == null)
                 {
-                    Root = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar;
-                    ConfigFile = Root + "configuration.dat";
+                    RootDirectory = System.Windows.Forms.Application.LocalUserAppDataPath + Path.DirectorySeparatorChar;
+                    ConfigFile = RootDirectory + "configuration.dat";
                 }
                 Ringlog("Pidgeon " + Application.ProductVersion.ToString() + " loading core");
                 KernelProc = Process.GetCurrentProcess();
@@ -429,10 +367,10 @@ namespace Pidgeon
                     Ringlog("Running in safe mode");
                 }
                 startupParams = new List<string>(parameters);
-                Configuration.Logs.logs_dir = Root + "logs";
-                Ringlog("Root path is " + Root);
+                Configuration.Logs.logs_dir = RootDirectory + "logs";
+                Ringlog("Root path is " + RootDirectory);
                 Ringlog("Config file: " + ConfigFile);
-                Configuration.irc.CertificateDCC = Root + "certificate.p12";
+                Configuration.irc.CertificateDCC = RootDirectory + "certificate.p12";
                 string is64 = " which is a 32 bit system";
                 if (Environment.Is64BitOperatingSystem)
                 {
@@ -459,16 +397,16 @@ namespace Pidgeon
                     else
                     {
                         DebugLog("Running updater");
-                        ThUp = new Thread(Updater.Run);
-                        ThUp.Name = "Pidgeon:Updater";
-                        ThUp.Start();
-                        ThreadManager.RegisterThread(ThUp);
+                        ThreadManager.ThUp = new Thread(Updater.Run);
+                        ThreadManager.ThUp.Name = "Pidgeon:Updater";
+                        ThreadManager.ThUp.Start();
+                        ThreadManager.RegisterThread(ThreadManager.ThUp);
                     }
                     DebugLog("Loading log writer thread");
-                    Thread_logs = new Thread(IO.Load);
-                    Thread_logs.Name = "Pidgeon:Writer";
-                    ThreadManager.RegisterThread(Thread_logs);
-                    Thread_logs.Start();
+                    ThreadManager.Thread_logs = new Thread(IO.Load);
+                    ThreadManager.Thread_logs.Name = "Pidgeon:Writer";
+                    ThreadManager.RegisterThread(ThreadManager.Thread_logs);
+                    ThreadManager.Thread_logs.Start();
                     DebugLog("Loading commands");
                     Commands.Initialise();
                     NotificationWidget = new Forms.Notification();
@@ -866,12 +804,9 @@ namespace Pidgeon
                     NotificationWidget.text.Text = NotificationData;
                     NotificationWidget.title.Markup = "<span size='18000'>" + NotificationCaption + "</span>";
                     NotificationIsNowWaiting = false;
-                    if (Core.SystemForm.Chat != null)
+                    if (Core.SystemForm.Chat != null && Core.SystemForm.Chat.textbox.richTextBox1.IsFocus)
                     {
-                        if (Core.SystemForm.Chat.textbox.richTextBox1.IsFocus)
-                        {
-                            Focus = true;
-                        }
+                        Focus = true;
                     }
                     if (!NotificationWidget.Visible)
                     {
@@ -1258,7 +1193,7 @@ namespace Pidgeon
         {
             if (time == null)
             {
-                throw new Core.PidgeonException("Provided time was NULL");
+                throw new PidgeonException("Provided time was NULL");
             }
             double unixtimestmp = double.Parse(time);
             return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(unixtimestmp);
@@ -1345,16 +1280,16 @@ namespace Pidgeon
                 }
                 dump += "That's all folks";
                 int current = 0;
-                string file = Root + "dump__" + current.ToString();
+                string file = RootDirectory + "dump__" + current.ToString();
                 while (File.Exists(file))
                 {
                     current++;
-                    file = Root + "dump__" + current.ToString();
+                    file = RootDirectory + "dump__" + current.ToString();
                 }
                 File.WriteAllText(file, dump);
             }
-            RecoveryThread = new Thread(Recover);
-            RecoveryThread.Start();
+            ThreadManager.RecoveryThread = new Thread(Recover);
+            ThreadManager.RecoveryThread.Start();
             if (Thread.CurrentThread != _KernelThread)
             {
                 DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);

@@ -160,7 +160,7 @@ namespace Pidgeon
 
             public static void RetrieveUptime(string parameter)
             {
-                TimeSpan uptime = DateTime.Now - Core.LoadTime;
+                TimeSpan uptime = DateTime.Now - Core.StartupTime;
                 Core.SystemForm.Chat.scrollback.InsertText(uptime.ToString(), Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
             }
 

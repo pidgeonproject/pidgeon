@@ -38,9 +38,6 @@ namespace Pidgeon
             /// What to ignore
             /// </summary>
             public string Text = null;
-            /// <summary>
-            /// Regex
-            /// </summary>
             public Regex Regex = null;
             /// <summary>
             /// If true there is no regex
@@ -62,9 +59,7 @@ namespace Pidgeon
             {
                 this.Enabled = enabled;
                 if (!simple)
-                {
                     this.Regex = new Regex(data);
-                }
                 this.MatchingType = _Type;
                 this.Text = data;
                 this.Simple = simple;
@@ -109,36 +104,24 @@ namespace Pidgeon
                     if (x.Simple)
                     {
                         // if user is null we can skip it
-                        if (user != null && x.MatchingType == Ignore.Type.User)
+                        if (user != null && x.MatchingType == Ignore.Type.User && user.ToString().Contains(x.Text))
                         {
-                            if (user.ToString().Contains(x.Text))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                        if (x.MatchingType == Ignore.Type.Everything)
+                        if (x.MatchingType == Ignore.Type.Everything && text.Contains(x.Text))
                         {
-                            if (text.Contains(x.Text))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                     else
                     {
-                        if (user != null && x.MatchingType == Ignore.Type.User)
+                        if (user != null && x.MatchingType == Ignore.Type.User && x.Regex.IsMatch(user.ToString()))
                         {
-                            if (x.Regex.IsMatch(user.ToString()))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
-                        if (x.MatchingType == Ignore.Type.Everything)
+                        if (x.MatchingType == Ignore.Type.Everything && x.Regex.IsMatch(text))
                         {
-                            if (x.Regex.IsMatch(text))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                 }

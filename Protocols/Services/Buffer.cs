@@ -381,7 +381,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 if (Source.lines == null)
                 {
-                    throw new Core.PidgeonException("This window doesn't contain any lines");
+                    throw new PidgeonException("This window doesn't contain any lines");
                 }
                 target.scrollback.SetText(Source.lines);
                 Source.lines.Clear();
@@ -835,7 +835,7 @@ namespace Pidgeon.Protocols.Services
         /// <param name="file"></param>
         public static void ListFile(List<string> list, string file)
         {
-            StringBuilder data = new StringBuilder("");
+            StringBuilder data = new StringBuilder();
             foreach (string line in list)
             {
                 data.Append(line + Environment.NewLine);

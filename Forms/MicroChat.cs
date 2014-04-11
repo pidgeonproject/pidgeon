@@ -40,17 +40,17 @@ namespace Pidgeon.Forms
             this.Title = "Micro chat";
             this.Icon = global::Gdk.Pixbuf.LoadFromResource("Pidgeon.Resources.pigeon_clip_art_hight.ico");
             this.WindowPosition = Gtk.WindowPosition.Center;
-            vbox = new VBox();
-            scrollback_mc = new Scrollback();
-            scrollback_mc.isMicro = true;
-            scrollback_mc.Create();
+            this.vbox = new VBox();
+            this.scrollback_mc = new Scrollback();
+            this.scrollback_mc.isMicro = true;
+            this.scrollback_mc.Create();
             this.TypeHint = Gdk.WindowTypeHint.Normal;
             this.DefaultHeight = 420;
             this.DefaultWidth = 680;
-            scrollback_mc.Events = ((global::Gdk.EventMask)(256));
-            scrollback_mc.Name = "scrollback1";
+            this.scrollback_mc.Events = ((global::Gdk.EventMask)(256));
+            this.scrollback_mc.Name = "scrollback1";
             this.DeleteEvent += new DeleteEventHandler(Close);
-            vbox.Add(scrollback_mc);
+            this.vbox.Add(scrollback_mc);
             this.Add(vbox);
             if ((this.Child != null))
             {

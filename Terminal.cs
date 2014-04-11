@@ -83,7 +83,7 @@ namespace Pidgeon
                             Console.WriteLine("Parameter --home requires path");
                             return true;
                         }
-                        Core.Root = parameter.parm[0];
+                        Core.RootDirectory = parameter.parm[0];
                         break;
                 }
             }

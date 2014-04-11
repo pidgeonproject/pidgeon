@@ -184,7 +184,7 @@ namespace Pidgeon
         {
             if (line == null)
             {
-                throw new Core.PidgeonException("You can't insert null to text box");
+                throw new PidgeonException("You can't insert null to text box");
             }
             lock (Lines)
             {
@@ -229,7 +229,7 @@ namespace Pidgeon
         {
             if (line == null)
             {
-                throw new Core.PidgeonException("You can't insert null to text box");
+                throw new PidgeonException("You can't insert null to text box");
             }
             lock (Lines)
             {
@@ -250,12 +250,12 @@ namespace Pidgeon
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Core.PidgeonException("You can't call this function from different thread");
+                throw new PidgeonException("You can't call this function from different thread");
             }
 
             if (line == null)
             {
-                throw new Core.PidgeonException("You can't insert null to text box");
+                throw new PidgeonException("You can't insert null to text box");
             }
 
             if (CurrentLine != null)
@@ -279,12 +279,12 @@ namespace Pidgeon
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Core.PidgeonException("You can't call this function from different thread");
+                throw new PidgeonException("You can't call this function from different thread");
             }
 
             if (text == null)
             {
-                throw new Core.PidgeonException("You can't insert null to text box");
+                throw new PidgeonException("You can't insert null to text box");
             }
 
             if (CurrentLine == null)
@@ -312,7 +312,7 @@ namespace Pidgeon
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
-                throw new Core.PidgeonException("You can't call this function from different thread");
+                throw new PidgeonException("You can't call this function from different thread");
             }
             if (scrollback == null || scrollback.IsDestroyed)
             {

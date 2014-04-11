@@ -47,7 +47,7 @@ namespace Pidgeon
             }
             if (owner == null)
             {
-                throw new Core.PidgeonException("You can't enable logging for a window that has no parent");
+                throw new PidgeonException("You can't enable logging for a window that has no parent");
             }
             directory = owner.WindowName.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
             return directory;

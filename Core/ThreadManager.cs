@@ -25,6 +25,18 @@ namespace Pidgeon
     {
         public static class ThreadManager
         {
+            /// <summary>
+            /// Thread for IO logs
+            /// </summary>
+            public static Thread Thread_logs = null;
+            /// <summary>
+            /// Thread for update system
+            /// </summary>
+            public static Thread ThUp = null;
+            /// <summary>
+            /// Recovery thread
+            /// </summary>
+            public static Thread RecoveryThread = null;
             private static List<Thread> ThreadPool = new List<Thread>();
 
             public static List<Thread> Threads

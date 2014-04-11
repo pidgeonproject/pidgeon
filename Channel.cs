@@ -381,11 +381,11 @@ namespace Pidgeon
                 }
                 if (_Network == null)
                 {
-                    throw new Core.PidgeonException("Network is NULL for " + Name);
+                    throw new PidgeonException("Network is NULL for " + Name);
                 }
                 if (_Network._Protocol == null)
                 {
-                    throw new Core.PidgeonException("Protocol is NULL for " + _Network.ServerName);
+                    throw new PidgeonException("Protocol is NULL for " + _Network.ServerName);
                 }
                 Graphics.Window wind = WindowsManager.GetWindow(_Network.SystemWindowID + Name, _Network);
                 if (wind != null)

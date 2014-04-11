@@ -279,11 +279,9 @@ namespace Pidgeon
             lock (Descriptions)
             {
                 if (Descriptions.ContainsKey(mode))
-                {
-                    Descriptions.Remove(mode);
-                }
-
-                Descriptions.Add(mode, description);
+                    Descriptions[mode] = description;
+                else
+                    Descriptions.Add(mode, description);
             }
         }
 

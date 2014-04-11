@@ -27,10 +27,6 @@ namespace Pidgeon
     {
         private static List<string> Links = new List<string>();
 
-        /// <summary>
-        /// Open link
-        /// </summary>
-        /// <param name="ln">Link</param>
         public static void OpenLink(string ln)
         {
             lock (Links)
@@ -46,7 +42,7 @@ namespace Pidgeon
         {
             try
             {
-                while (true)
+                while (Core.CoreState != Core.State.Terminating)
                 {
                     if (Links.Count > 0)
                     {
@@ -74,10 +70,6 @@ namespace Pidgeon
             }
         }
 
-        /// <summary>
-        /// Initialize
-        /// </summary>
-        /// <returns></returns>
         public static int Initialize()
         {
             Thread link = new Thread(Exec);

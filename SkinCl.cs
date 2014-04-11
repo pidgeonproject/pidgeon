@@ -319,7 +319,7 @@ namespace Pidgeon
             }
             if (mrcl.Count < 15)
             {
-                throw new Core.PidgeonException("The skin doesn't contain all required mirc colors");
+                throw new PidgeonException("The skin doesn't contain all required mirc colors");
             }
         }
 

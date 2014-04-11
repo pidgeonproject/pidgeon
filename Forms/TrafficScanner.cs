@@ -127,7 +127,7 @@ namespace Pidgeon.Forms
             {
                 return true;
             }
-            StringBuilder text = new StringBuilder("");
+            StringBuilder text = new StringBuilder();
             lock (traf)
             {
                 if (traf.Count > 800)
