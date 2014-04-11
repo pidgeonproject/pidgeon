@@ -151,8 +151,7 @@ namespace Pidgeon
             Ident = Configuration.UserData.ident;
             if (protocol.GetType() == typeof(Protocols.Services.ProtocolSv))
             {
-                SystemWindow = WindowsManager.CreateChat("!" + ServerName, false, this, false, "!" +
-                                                         RandomuQID + ServerName, false, true, this);
+                SystemWindow = WindowsManager.CreateChat("!" + ServerName, false, this, false, "!" + RandomuQID + ServerName, false, true, this);
                 Core.SystemForm.ChannelList.InsertNetwork(this, (Protocols.Services.ProtocolSv)protocol);
             }
             else
@@ -352,7 +351,7 @@ namespace Pidgeon
             switch (_Protocol.Act(text, to, this, _priority))
             {
                 case libirc.IProtocol.Result.Done:
-                    Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text,
+                    Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, 
                                                                Pidgeon.ContentLine.MessageStyle.Message, true, 1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
@@ -997,9 +996,9 @@ namespace Pidgeon
                         this.SystemWindow.scrollback.InsertText("WHOIS " + name + " is in channels: " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
                             WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Info)
+                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Info && args.Parameters.Count > 1)
                     {
-                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
+                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " is " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
                             WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Server)
@@ -1011,6 +1010,12 @@ namespace Pidgeon
                     {
                         this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
                                     args.Date, IsDownloadingBouncerBacklog);
+                    }
+                    else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Header && args.Parameters.Count > 3)
+                    {
+                        this.SystemWindow.scrollback.InsertText("WHOIS for " + args.Parameters[1] + " (" + args.Parameters[1] +
+                                "!" + args.Parameters[2] + "@" + args.Parameters[3] + ") " + args.Message, ContentLine.MessageStyle.System, WriteLogs(),
+                                args.Date, IsDownloadingBouncerBacklog);
                     }
                     else
                     {

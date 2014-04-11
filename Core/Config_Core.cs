@@ -40,17 +40,6 @@ namespace Pidgeon
                 node.AppendChild(xx);
             }
 
-            /// <summary>
-            /// Create a node
-            /// </summary>
-            /// <param name="config_key">Key</param>
-            /// <param name="text">Text</param>
-            /// <param name="xmlnode">Node</param>
-            /// <param name="key">Key</param>
-            /// <param name="_c">Config</param>
-            /// <param name="conf">Node</param>
-            /// <param name="nn">Config name</param>
-            /// <returns></returns>
             private static bool make_node(string config_key, string text, XmlNode xmlnode, XmlAttribute key, XmlDocument _c, XmlNode conf, string nn = "confname")
             {
                 key = _c.CreateAttribute(nn);
