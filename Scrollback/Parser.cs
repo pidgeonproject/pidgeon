@@ -35,7 +35,7 @@ namespace Pidgeon
         /// This character will change the color of text (it is standard of mirc)
         /// </summary>
         private static char colorchar = (char)3;
-        
+
         /// <summary>
         /// Return if cache is enabled or not
         /// </summary>
@@ -99,62 +99,6 @@ namespace Pidgeon
                 }
                 ParserCache.Add(line, data);
             }
-        }
-
-        /// <summary>
-        /// Change the color of text
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="SBAB"></param>
-        /// <returns></returns>
-        private static Pidgeon.RichTBox.ContentText color(string text, Pidgeon.RichTBox SBAB)
-        {
-            if (text.Contains(colorchar.ToString()))
-            {
-                int color = 0;
-                bool closed = false;
-                int position = 0;
-                while (text.Length > position)
-                {
-                    if (text[position] == colorchar)
-                    {
-                        if (closed)
-                        {
-                            text = text.Substring(position, text.Length - position);
-                            Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text),
-                                                                                                 Configuration.CurrentSkin.mrcl[color]);
-                            return Link;
-                        }
-
-                        if (!closed)
-                        {
-                            if (!int.TryParse(text[position + 1].ToString() + text[position + 2].ToString(), out color))
-                            {
-                                if (!int.TryParse(text[position + 1].ToString(), out color))
-                                {
-                                    color = 0;
-                                }
-                            }
-                            if (color > 9)
-                            {
-                                text = text.Remove(position, 3);
-                            }
-                            else
-                            {
-                                text = text.Remove(position, 2);
-                            }
-                            closed = true;
-                            if (color < 16)
-                            {
-                                text = text.Substring(position);
-                                break;
-                            }
-                        }
-                    }
-                    position++;
-                }
-            }
-            return null;
         }
 
         /// <summary>
@@ -250,43 +194,33 @@ namespace Pidgeon
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Pidgeon.RichTBox.ContentText parse_chan(string text, Pidgeon.RichTBox SBAB, bool under,
-                                                               bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_chan(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
-            if (text.StartsWith("#", StringComparison.Ordinal))
+            if (text[0] == '#')
             {
-                string link = text.Substring(text.IndexOf("#", StringComparison.Ordinal));
-                if (link.Length > 0)
+                string separator = PrefixString(text);
+                if (separator != "")
                 {
-                    char separator = Prefix(link);
-                    if (separator != '\0')
-                    {
-                        link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
-                    }
-                    foreach (char xx in Configuration.Parser.Separators)
-                    {
-                        if (link.Contains(xx.ToString()))
-                        {
-                            separator = xx;
-                            break;
-                        }
-                    }
-                    if (link.Contains(separator.ToString()))
-                    {
-                        link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
-                    }
-
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link),
-                                                                                         Configuration.CurrentSkin.LinkColor);
-                    Link.Link = "pidgeon://join/" + Protocols.ProtocolIrc.DecodeText(link);
-                    Link.Underline = under;
-                    if (Configuration.Colors.ChangeLinks)
-                    {
-                        Link.TextColor = color;
-                    }
-                    Link.Bold = bold;
-                    return Link;
+                    text = text.Substring(0, text.IndexOf(separator, StringComparison.Ordinal));
                 }
+                foreach (string xx in Configuration.Parser.SeparatorsCache)
+                {
+                    if (text.Contains(xx))
+                    {
+                        text = text.Substring(0, text.IndexOf(xx, StringComparison.Ordinal));
+                        break;
+                    }
+                }
+                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text),
+                                                                                     Configuration.CurrentSkin.LinkColor);
+                Link.Link = "pidgeon://join/" + Protocols.ProtocolIrc.DecodeText(text);
+                Link.Underline = under;
+                if (Configuration.Colors.ChangeLinks)
+                {
+                    Link.TextColor = color;
+                }
+                Link.Bold = bold;
+                return Link;
             }
             return null;
         }
@@ -352,10 +286,10 @@ namespace Pidgeon
                     if (link.Length > 0)
                     {
                         // store a new separator to buffer in case link is not end of text
-                        char sepa = Prefix(link);
-                        if (sepa != '\0')
+                        string sepa = PrefixString(link);
+                        if (sepa.Length > 0)
                         {
-                            link = link.Substring(0, link.IndexOf(sepa.ToString(), StringComparison.Ordinal));
+                            link = link.Substring(0, link.IndexOf(sepa, StringComparison.Ordinal));
                         }
                     }
                     Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol +
@@ -447,11 +381,9 @@ namespace Pidgeon
         /// <returns></returns>
         public static Pidgeon.RichTBox.Line FormatLine(string text, RichTBox SBAB, Color _style)
         {
-            if (SBAB == null)
-            {
-                throw new Core.PidgeonException("NULL reference to RichTBox object");
-            }
-            Pidgeon.RichTBox.Line line = null;
+            // this is some hardcore source bellow, have fun
+            if (SBAB == null)  throw new Core.PidgeonException("NULL reference to RichTBox object");
+            Pidgeon.RichTBox.Line line;
             if (CacheEnabled)
             {
                 line = FromCache(text);
@@ -462,10 +394,10 @@ namespace Pidgeon
             string tempdata = text;
             Color color = _style;
             StringBuilder templine = new StringBuilder("");
-            bool Bold = false;
-            bool Underlined = false;
-            bool Italic = false;
-            string Link = null;
+            bool bold_ = false;
+            bool underline_ = false;
+            bool italic_ = false;
+            string link = null;
             int Jump = 0;
             int carret = 0;
             while (carret < text.Length)
@@ -473,6 +405,9 @@ namespace Pidgeon
                 Jump = 1;
                 // we check if the current string is actually some url
                 string protocol = matchesProtocol(tempdata);
+                char first_char_ = '\0';
+                if (tempdata.Length > 0)
+                    first_char_ = tempdata[0];
                 if (protocol != null)
                 {
                     // check if there is a prefix character that is a symbol which separates the url
@@ -491,132 +426,117 @@ namespace Pidgeon
                             // there was no prefix
                             lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
                         }
-                        lprttext.Underline = Underlined;
-                        lprttext.Bold = Bold;
+                        lprttext.Underline = underline_;
+                        lprttext.Bold = bold_;
                         lprttext.TextColor = color;
-                        lprttext.Italic = Italic;
-                        if (Link != null)
-                        {
-                            lprttext.Link = Link;
-                        }
+                        lprttext.Italic = italic_;
+                        if (link != null)
+                            lprttext.Link = link;
                         line.insertData(lprttext);
                         templine.Clear();
                     }
                     if (prefix != '\0')
                     {
                         // now we need to create a hyperlink, we parse it using the prefix
-                        line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, color, protocol, prefix.ToString()));
+                        line.insertData(parse_http(tempdata, SBAB, underline_, bold_, color, protocol, prefix.ToString()));
                     }
                     else
                     {
                         // create a hyperlink not using the prefix
-                        line.insertData(parse_http(tempdata, SBAB, Underlined, Bold, color, protocol));
+                        line.insertData(parse_http(tempdata, SBAB, underline_, bold_, color, protocol));
                     }
                     string temp01 = tempdata.Substring(1);
                     // we check if there is another separator in the rest of link
                     if (matchesAPrefix(temp01))
-                    {
                         Jump = temp01.IndexOf(Prefix(temp01)) + 1;
-                    }
                     else
-                    {
                         Jump = tempdata.Length;
-                    }
                 } // here we check if the string is a user link
-                else if (tempdata.StartsWith("%USER%", StringComparison.Ordinal))
+                else if (first_char_ == '%' && tempdata.StartsWith("%USER%", StringComparison.Ordinal))
                 {
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Underline = Underlined;
-                    lprttext.Italic = Italic;
+                    lprttext.Bold = bold_;
+                    lprttext.Underline = underline_;
+                    lprttext.Italic = italic_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    line.insertData(parse_name(tempdata, SBAB, Underlined, Bold, color));
+                    line.insertData(parse_name(tempdata, SBAB, underline_, bold_, color));
                     if (tempdata.Contains("%/USER%"))
-                    {
                         Jump = tempdata.IndexOf("%/USER%", StringComparison.Ordinal) + 7;
-                    }
                     else
-                    {
                         Jump = tempdata.Length - 1;
-                    }
                 } // now we check if string is a channel name
-                else if (tempdata.StartsWith(" #", StringComparison.Ordinal) ||
-                        (tempdata.StartsWith("#", StringComparison.Ordinal) &&
-                         text.StartsWith("#", StringComparison.Ordinal)))
+                else if ((first_char_ == ' ' &&  tempdata.StartsWith(" #", StringComparison.Ordinal)) || (first_char_ == '#' &&
+                    tempdata.StartsWith("#", StringComparison.Ordinal) && text.StartsWith("#", StringComparison.Ordinal)))
                 {
-                    if (tempdata.StartsWith(" #", StringComparison.Ordinal))
+                    if (first_char_ == ' ' && tempdata.StartsWith(" #", StringComparison.Ordinal))
                     {
-                        templine.Append(text[carret].ToString());
+                        templine.Append(text[carret]);
                         carret++;
                         tempdata = tempdata.Substring(1);
                     }
 
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Underline = Underlined;
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
+                    lprttext.Underline = underline_;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    line.insertData(parse_chan(tempdata, SBAB, Underlined, Bold, color));
+                    line.insertData(parse_chan(tempdata, SBAB, underline_, bold_, color));
                     if (tempdata.Contains(" "))
-                    {
                         Jump = tempdata.IndexOf(" ", StringComparison.Ordinal);
-                    }
                     else
-                    {
                         Jump = tempdata.Length;
-                    }
                 } // Italic
-                else if (tempdata.StartsWith(((char)0016).ToString(), StringComparison.Ordinal))
+                else if (first_char_ == (char)0016)
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    Italic = !Italic;
+                    italic_ = !italic_;
                     carret++;
                 } // Underline
-                else if (tempdata.StartsWith(((char)001).ToString(), StringComparison.Ordinal))
+                else if (first_char_ == (char)001)
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    Underlined = !Underlined;
+                    underline_ = !underline_;
                     carret++;
                 } // Bold text
-                else if (tempdata.StartsWith(((char)002).ToString(), StringComparison.Ordinal))
+                else if (first_char_ == (char)002)
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    Bold = !Bold;
+                    bold_ = !bold_;
                     carret++;
                 }
-                else if (tempdata.StartsWith(((char)003).ToString(), StringComparison.Ordinal))
+                else if (first_char_ == (char)003)
                 {
                     // change color
                     int colorcode = -2;
                     tempdata = tempdata.Substring(1);
                     carret++;
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     if (tempdata.Length > 1)
                     {
@@ -655,113 +575,75 @@ namespace Pidgeon
                         }
                     }
                 }
-                else if (tempdata.StartsWith(((char)004).ToString(), StringComparison.Ordinal))
+                else if (first_char_ == (char)004)
                 {
                     tempdata = tempdata.Substring(1);
                     Jump = 0;
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    Underlined = !Underlined;
+                    underline_ = !underline_;
                     carret++;
                 }
-                else if (tempdata.StartsWith("%H%", StringComparison.Ordinal))
+                else if (first_char_ == '%' && tempdata.StartsWith("%H%", StringComparison.Ordinal))
                 {
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    line.insertData(parse_host(tempdata, SBAB, Underlined, Bold, color));
+                    line.insertData(parse_host(tempdata, SBAB, underline_, bold_, color));
                     if (tempdata.Contains("%/H%"))
-                    {
                         Jump = tempdata.IndexOf("%/H%", StringComparison.Ordinal) + 4;
-                    }
                     else
-                    {
                         Jump = tempdata.Length;
-                    }
                 }
-                else if (tempdata.StartsWith("%L%", StringComparison.Ordinal))
+                else if (first_char_ == '%' && tempdata.StartsWith("%L%", StringComparison.Ordinal))
                 {
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    line.insertData(parse_link(tempdata, SBAB, Underlined, Bold));
+                    line.insertData(parse_link(tempdata, SBAB, underline_, bold_));
                     if (tempdata.Contains("%/L%"))
-                    {
                         Jump = tempdata.IndexOf("%/L%", StringComparison.Ordinal) + 4;
-                    }
                     else
-                    {
                         Jump = tempdata.Length;
-                    }
                 }
-                else if (tempdata.StartsWith("%D%", StringComparison.Ordinal))
+                else if (first_char_ == '%' && tempdata.StartsWith("%D%", StringComparison.Ordinal))
                 {
                     lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-                    lprttext.Bold = Bold;
-                    lprttext.Italic = Italic;
-                    lprttext.Underline = Underlined;
+                    lprttext.Bold = bold_;
+                    lprttext.Italic = italic_;
+                    lprttext.Underline = underline_;
                     line.insertData(lprttext);
                     templine.Clear();
-                    line.insertData(parse_ident(tempdata, SBAB, Underlined, Bold));
+                    line.insertData(parse_ident(tempdata, SBAB, underline_, bold_));
                     if (tempdata.Contains("%/D%"))
-                    {
                         Jump = tempdata.IndexOf("%/D%", StringComparison.Ordinal) + 4;
-                    }
                     else
-                    {
                         Jump = tempdata.Length;
-                    }
                 }
                 else
-                {
                     templine.Append(text[carret]);
-                }
                 tempdata = tempdata.Substring(Jump);
                 carret = carret + Jump;
             }
             lprttext = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(templine.ToString()), color);
-            lprttext.Underline = Underlined;
-            lprttext.Italic = Italic;
-            lprttext.Bold = Bold;
+            lprttext.Underline = underline_;
+            lprttext.Italic = italic_;
+            lprttext.Bold = bold_;
             line.insertData(lprttext);
             if (CacheEnabled)
-            {
                 ToCache(text, line);
-            }
             return line;
         }
-
-        /*
-         * 
-         * Nice to have
-        /// <summary>
-        /// Check if string starts with combination of prefix and string
-        /// </summary>
-        /// <param name="data"></param>
-        /// <param name="x"></param>
-        /// <returns></returns>
-        private static bool matchesPrefix(string data, string x)
-        {
-            foreach (char curr in Configuration.Parser.Separators)
-            {
-                if (data.Contains(curr.ToString() + x))
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-         */
 
         /// <summary>
         /// Check if string starts with a prefix
@@ -804,10 +686,10 @@ namespace Pidgeon
             {
                 return true;
             }
-
+            char FirstChar = Original[0];
             foreach (char curr in Configuration.Parser.Separators)
             {
-                if (Original.StartsWith(curr.ToString() + Prefix, StringComparison.Ordinal))
+                if (FirstChar == curr && Original.StartsWith(curr.ToString() + Prefix, StringComparison.Ordinal))
                 {
                     return true;
                 }
@@ -845,6 +727,47 @@ namespace Pidgeon
                     if (data.Contains(curr.ToString()))
                     {
                         int ps = data.IndexOf(curr.ToString(), StringComparison.Ordinal);
+                        if (ps < size)
+                        {
+                            rv = curr;
+                            size = ps;
+                        }
+                    }
+                }
+            }
+            return rv;
+        }
+
+        /// <summary>
+        /// Check if the string start with a prefix or not and if it does it return the symbol which
+        /// is most close to beginning of string
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="x"></param>
+        /// <returns></returns>
+        private static string PrefixString(string data, string x = null)
+        {
+            string rv = "";
+            int size = 99999999;
+            foreach (string curr in Configuration.Parser.SeparatorsCache)
+            {
+                if (x != null)
+                {
+                    if (data.Contains(curr + x))
+                    {
+                        int ps = data.IndexOf(curr + x, StringComparison.Ordinal);
+                        if (ps < size)
+                        {
+                            rv = curr;
+                            size = ps;
+                        }
+                    }
+                }
+                else
+                {
+                    if (data.Contains(curr))
+                    {
+                        int ps = data.IndexOf(curr, StringComparison.Ordinal);
                         if (ps < size)
                         {
                             rv = curr;

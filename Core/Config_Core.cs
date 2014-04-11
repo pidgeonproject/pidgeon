@@ -738,11 +738,14 @@ namespace Pidgeon
                                                     case "Configuration.Parser.Separators":
                                                     case "delimiters":
                                                         List<char> temp = new List<char>();
+                                                        List<string> separators = new List<string>();
                                                         foreach (char part in curr.InnerText)
                                                         {
                                                             temp.Add(part);
+                                                            separators.Add(part.ToString());
                                                         }
                                                         Configuration.Parser.Separators = temp;
+                                                        Configuration.Parser.SeparatorsCache = separators;
                                                         break;
                                                     case "colors.changelinks":
                                                     case "Configuration.Colors.ChangeLinks":
