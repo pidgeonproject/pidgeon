@@ -500,7 +500,12 @@ namespace Pidgeon
             /// List of all separators that should be used
             /// </summary>
             public static List<char> Separators = new List<char> { '<', ' ', '>', '!', '[', ']', '(', '{', '}', ')', (char)1, (char)2, (char)3 };
-            public static List<string> SeparatorsCache = new List<string>() { "<", " ", ">", "!", "[", "]", "(", "{", "}", ")", ((char)1).ToString(), ((char)2).ToString(), ((char)3).ToString() };
+            /// <summary>
+            /// This is a cache of all separators in string form, it exist because some functions were calling Char.ToString(), which is
+            /// rather expensive function too frequently, so they can use this array instead
+            /// </summary>
+            public static List<string> SeparatorsCache = new List<string>() { "<", " ", ">", "!", "[", "]", "(", "{", "}", ")", 
+                                                         ((char)1).ToString(), ((char)2).ToString(), ((char)3).ToString() };
             /// <summary>
             /// Whether all modes should be processed by formatter
             /// </summary>

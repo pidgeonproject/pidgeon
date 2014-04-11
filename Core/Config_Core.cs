@@ -236,15 +236,13 @@ namespace Pidgeon
                 {
                     make_node("extension." + data.Key, data.Value, curr, confname, config, xmlnode);
                 }
-
                 string separators = "";
                 MakeComment(" ============= SEPARATORS ============= ", config, xmlnode);
-                foreach (char separator in Configuration.Parser.Separators)
+                foreach (string separator in Configuration.Parser.SeparatorsCache)
                 {
-                    separators = separators + separator.ToString();
+                    separators = separators + separator;
                 }
                 make_node("delimiters", separators, curr, confname, config, xmlnode);
-
                 MakeComment(" ============= PROTOCOLS ============= ", config, xmlnode);
                 lock (Configuration.Parser.Protocols)
                 {
@@ -255,7 +253,6 @@ namespace Pidgeon
                         xmlnode.AppendChild(curr);
                     }
                 }
-
                 MakeComment(" ============= NETWORKS ============= ", config, xmlnode);
                 lock (NetworkData.Networks)
                 {
@@ -278,7 +275,6 @@ namespace Pidgeon
                     }
                 }
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= HIGHLIGHTERS ============= ", config, xmlnode);
                 lock (Configuration.HighlighterList)
                 {
@@ -298,7 +294,6 @@ namespace Pidgeon
                     }
                 }
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= ALIASES ============= ", config, xmlnode);
                 lock (Commands.aliases)
                 {
@@ -318,7 +313,6 @@ namespace Pidgeon
                     }
                 }
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= HISTORY ============= ", config, xmlnode);
                 lock (Configuration.UserData.History)
                 {
@@ -330,7 +324,6 @@ namespace Pidgeon
                     }
                 }
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= IGNORE LIST ============= ", config, xmlnode);
                 lock (Ignoring.IgnoreList)
                 {
@@ -353,9 +346,7 @@ namespace Pidgeon
                     }
                 }
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= SHORTCUTS ============= ", config, xmlnode);
-
                 lock (Configuration.ShortcutKeylist)
                 {
                     foreach (Shortcut RR in Configuration.ShortcutKeylist)
@@ -377,11 +368,8 @@ namespace Pidgeon
                         xmlnode.AppendChild(curr);
                     }
                 }
-
                 config.AppendChild(xmlnode);
-
                 MakeComment(" ============= WINDOWS ============= ", config, xmlnode);
-
                 lock (PidgeonGtkToolkit.PidgeonForm.WindowInfo)
                 {
                     foreach (KeyValuePair<string, PidgeonGtkToolkit.PidgeonForm.Info> xx in PidgeonGtkToolkit.PidgeonForm.WindowInfo)
@@ -403,9 +391,7 @@ namespace Pidgeon
                         xmlnode.AppendChild(curr);
                     }
                 }
-
                 config.AppendChild(xmlnode);
-
                 if (Backup(ConfigFile))
                 {
                     config.Save(ConfigFile);

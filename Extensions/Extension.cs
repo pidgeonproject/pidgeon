@@ -180,10 +180,7 @@ namespace Pidgeon
                         {
                             try
                             {
-                                if (thread.ThreadState == ThreadState.WaitSleepJoin || thread.ThreadState == ThreadState.Running)
-                                {
-                                    thread.Abort();
-                                }
+                                Core.ThreadManager.KillThread(thread);
                             }
                             catch (Exception fail)
                             {

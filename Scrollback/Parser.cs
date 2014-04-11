@@ -31,10 +31,6 @@ namespace Pidgeon
         /// Parser cache
         /// </summary>
         public static Dictionary<string, Pidgeon.RichTBox.Line> ParserCache = new Dictionary<string, RichTBox.Line>();
-        /// <summary>
-        /// This character will change the color of text (it is standard of mirc)
-        /// </summary>
-        private static char colorchar = (char)3;
 
         /// <summary>
         /// Return if cache is enabled or not
@@ -54,12 +50,10 @@ namespace Pidgeon
         /// <returns></returns>
         private static Pidgeon.RichTBox.Line FromCache(string line)
         {
-            lock (ParserCache)
+            Pidgeon.RichTBox.Line rv;
+            if (ParserCache.TryGetValue(line, out rv))
             {
-                if (ParserCache.ContainsKey(line))
-                {
-                    return ParserCache[line];
-                }
+                return rv;
             }
             return null;
         }
@@ -117,8 +111,7 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/D%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link),
-                                                                                         Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://ident/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -144,8 +137,7 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/L%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link),
-                                                                                         Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://text/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.Bold = bold;
@@ -164,8 +156,7 @@ namespace Pidgeon
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Pidgeon.RichTBox.ContentText parse_host(string text, Pidgeon.RichTBox SBAB, bool under,
-                                                               bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_host(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%H%") && text.Contains("%/H%"))
             {
@@ -173,8 +164,7 @@ namespace Pidgeon
                 if (link.Length > 0)
                 {
                     link = link.Substring(0, link.IndexOf("%/H%", StringComparison.Ordinal));
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link),
-                                                                                         Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Link = "pidgeon://hostname/#" + Protocols.ProtocolIrc.DecodeText(link);
                     Link.Underline = under;
                     Link.TextColor = color;
@@ -199,7 +189,7 @@ namespace Pidgeon
             if (text[0] == '#')
             {
                 string separator = PrefixString(text);
-                if (separator != "")
+                if (separator.Length > 0)
                 {
                     text = text.Substring(0, text.IndexOf(separator, StringComparison.Ordinal));
                 }
@@ -213,7 +203,8 @@ namespace Pidgeon
                 }
                 Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(text),
                                                                                      Configuration.CurrentSkin.LinkColor);
-                Link.Link = "pidgeon://join/" + Protocols.ProtocolIrc.DecodeText(text);
+                Link.Link = "pidgeon://join/";
+                Link.Link += Protocols.ProtocolIrc.DecodeText(text);
                 Link.Underline = under;
                 if (Configuration.Colors.ChangeLinks)
                 {
@@ -234,8 +225,7 @@ namespace Pidgeon
         /// <param name="bold">If text is bold or not</param>
         /// <param name="color">Color</param>
         /// <returns></returns>
-        private static Pidgeon.RichTBox.ContentText parse_name(string text, Pidgeon.RichTBox SBAB, bool under,
-                                                               bool bold, Color color)
+        private static Pidgeon.RichTBox.ContentText parse_name(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color)
         {
             if (text.Contains("%USER%") && text.Contains("%/USER%"))
             {
@@ -244,15 +234,15 @@ namespace Pidgeon
                 {
                     link = link.Substring(0, link.IndexOf("%/USER%", StringComparison.Ordinal));
 
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link),
-                                                                                         Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Bold = bold;
                     Link.Underline = under;
                     if (Configuration.Colors.ChangeLinks)
                     {
                         Link.TextColor = color;
                     }
-                    Link.Link = "pidgeon://user/#" + Protocols.ProtocolIrc.DecodeText(link);
+                    Link.Link = "pidgeon://user/#";
+                    Link.Link += Protocols.ProtocolIrc.DecodeText(link);
                     return Link;
                 }
             }
@@ -270,8 +260,7 @@ namespace Pidgeon
         /// <param name="CurrentProtocol"></param>
         /// <param name="prefix"></param>
         /// <returns></returns>
-        private static Pidgeon.RichTBox.ContentText parse_http(string text, Pidgeon.RichTBox SBAB, bool under, bool bold,
-                                                               Color color, string CurrentProtocol, string prefix = null)
+        private static Pidgeon.RichTBox.ContentText parse_http(string text, Pidgeon.RichTBox SBAB, bool under, bool bold, Color color, string CurrentProtocol, string prefix = null)
         {
             string result = text;
             string tempdata = text;
@@ -279,8 +268,7 @@ namespace Pidgeon
             {
                 if (tempdata.Contains(prefix + CurrentProtocol))
                 {
-                    string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) +
-                                                   CurrentProtocol.Length);
+                    string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + CurrentProtocol.Length);
                     // remove a leading char which we used to parse the link
                     tempdata = tempdata.Substring(1);
                     if (link.Length > 0)
@@ -292,9 +280,7 @@ namespace Pidgeon
                             link = link.Substring(0, link.IndexOf(sepa, StringComparison.Ordinal));
                         }
                     }
-                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol +
-                                                            Protocols.ProtocolIrc.DecodeText(link),
-                                                            Configuration.CurrentSkin.LinkColor);
+                    Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                     Link.Underline = true;
                     Link.Bold = bold;
                     if (Configuration.Colors.ChangeLinks)
@@ -306,7 +292,6 @@ namespace Pidgeon
                 }
                 return null;
             }
-
             if (tempdata.StartsWith(CurrentProtocol, StringComparison.Ordinal))
             {
                 string link = result.Substring(7);
@@ -318,9 +303,7 @@ namespace Pidgeon
                         link = link.Substring(0, link.IndexOf(sepa));
                     }
                 }
-                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol +
-                                                        Protocols.ProtocolIrc.DecodeText(link),
-                                                        Configuration.CurrentSkin.LinkColor);
+                Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                 Link.Underline = true;
                 Link.Bold = bold;
                 if (Configuration.Colors.ChangeLinks)
@@ -332,31 +315,23 @@ namespace Pidgeon
             }
             foreach (char curr in Configuration.Parser.Separators)
             {
-                if (tempdata.StartsWith(curr.ToString(), StringComparison.Ordinal))
+                if (tempdata[0] == curr)
                 {
-                    if (tempdata.Substring(1).Contains(CurrentProtocol))
+                    if (tempdata.Contains(CurrentProtocol))
                     {
                         string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + 7);
-                        tempdata = tempdata.Substring(1);
                         if (link.Length > 0)
                         {
-                            char separator = ' ';
-                            foreach (char xx in Configuration.Parser.Separators)
+                            foreach (string xx in Configuration.Parser.SeparatorsCache)
                             {
-                                if (link.Contains(xx.ToString()))
+                                if (link.Contains(xx))
                                 {
-                                    separator = xx;
+                                    link = link.Substring(0, link.IndexOf(xx, StringComparison.Ordinal));
                                     break;
                                 }
                             }
-                            if (link.Contains(separator.ToString()))
-                            {
-                                link = link.Substring(0, link.IndexOf(separator.ToString(), StringComparison.Ordinal));
-                            }
                         }
-                        Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol +
-                                                                Protocols.ProtocolIrc.DecodeText(link),
-                                                                Configuration.CurrentSkin.LinkColor);
+                        Pidgeon.RichTBox.ContentText Link = new Pidgeon.RichTBox.ContentText(CurrentProtocol + Protocols.ProtocolIrc.DecodeText(link), Configuration.CurrentSkin.LinkColor);
                         Link.Underline = true;
                         Link.Bold = bold;
                         if (Configuration.Colors.ChangeLinks)
@@ -652,9 +627,9 @@ namespace Pidgeon
         /// <returns></returns>
         private static bool matchesAPrefix(string data)
         {
-            foreach (char curr in Configuration.Parser.Separators)
+            foreach (string curr in Configuration.Parser.SeparatorsCache)
             {
-                if (data.Contains(curr.ToString()))
+                if (data.Contains(curr))
                 {
                     return true;
                 }
@@ -708,28 +683,28 @@ namespace Pidgeon
         {
             char rv = '\0';
             int size = 99999999;
-            foreach (char curr in Configuration.Parser.Separators)
+            foreach (string curr in Configuration.Parser.SeparatorsCache)
             {
                 if (x != null)
                 {
-                    if (data.Contains(curr.ToString() + x))
+                    if (data.Contains(curr + x))
                     {
-                        int ps = data.IndexOf(curr.ToString() + x, StringComparison.Ordinal);
+                        int ps = data.IndexOf(curr + x, StringComparison.Ordinal);
                         if (ps < size)
                         {
-                            rv = curr;
+                            rv = curr[0];
                             size = ps;
                         }
                     }
                 }
                 else
                 {
-                    if (data.Contains(curr.ToString()))
+                    if (data.Contains(curr))
                     {
-                        int ps = data.IndexOf(curr.ToString(), StringComparison.Ordinal);
+                        int ps = data.IndexOf(curr, StringComparison.Ordinal);
                         if (ps < size)
                         {
-                            rv = curr;
+                            rv = curr[0];
                             size = ps;
                         }
                     }
