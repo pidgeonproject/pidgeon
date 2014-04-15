@@ -274,10 +274,6 @@ namespace Pidgeon
             }
         }
         /// <summary>
-        /// Extensions loaded in core
-        /// </summary>
-        public static List<Extension> Extensions = new List<Extension>();
-        /// <summary>
         /// Status of core
         /// </summary>
         public static State CoreState = State.Loading;
@@ -425,7 +421,7 @@ namespace Pidgeon
                             foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
                             {
                                 Syslog.DebugLog("Registering plugin " + dll);
-                                RegisterPlugin(dll);
+                                ExtensionPool.RegisterPlugin(dll);
                             }
                         }
                     }
@@ -1210,9 +1206,9 @@ namespace Pidgeon
                 dump += "Time: " + DateTime.Now.ToString() + "\n";
                 dump += "Version: " + Application.ProductVersion + RevisionProvider.GetHash() + "\n";
                 dump += "Extensions: " + "\n";
-                lock (Extensions)
+                lock (ExtensionPool.Extensions)
                 {
-                    foreach (Extension xx in Extensions)
+                    foreach (Extension xx in ExtensionPool.Extensions)
                     {
                         dump += "  " + xx.Name + " version: " + xx.Version + " status: " + xx._Status.ToString() + "\n";
                     }

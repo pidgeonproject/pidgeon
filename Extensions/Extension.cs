@@ -189,11 +189,11 @@ namespace Pidgeon
                         }
                     }
                 }
-                lock (Core.Extensions)
+                lock (ExtensionPool.Extensions)
                 {
-                    if (Core.Extensions.Contains(this))
+                    if (ExtensionPool.Extensions.Contains(this))
                     {
-                        Core.Extensions.Remove(this);
+                        ExtensionPool.Extensions.Remove(this);
                         Syslog.DebugLog("CORE: Unloaded " + Name);
                     }
                 }

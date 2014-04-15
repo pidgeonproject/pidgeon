@@ -215,7 +215,7 @@ namespace Pidgeon.Forms
         private void RefreshModules()
         {
             Extensions.Clear();
-            foreach (Extension ex in Core.Extensions)
+            foreach (Extension ex in ExtensionPool.Extensions)
             {
                 Extensions.AppendValues(ex.Name, ex.Version, ex.Description, "Extension", ex);
             }
@@ -423,7 +423,7 @@ namespace Pidgeon.Forms
                 {
                     if (!string.IsNullOrEmpty(dialog.Filename))
                     {
-                        Core.RegisterPlugin(dialog.Filename);
+                        ExtensionPool.RegisterPlugin(dialog.Filename);
                     }
                     else
                     {

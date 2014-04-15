@@ -51,7 +51,7 @@ namespace Pidgeon
                 Events._System.TriggerBeforeNote(null, e);
                 caption = e.Caption;
                 text = e.Text;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -78,7 +78,7 @@ namespace Pidgeon
                 Extension.SystemInitialiseArgs e = new Extension.SystemInitialiseArgs();
                 e.Main = main;
                 Events._System.TriggerInitialise(null, e);
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -104,7 +104,7 @@ namespace Pidgeon
                 Extension.BeforeOptionsArgs e = new Extension.BeforeOptionsArgs();
                 e.Window = preferences;
                 Events._System.TriggerBeforeOptions(null, e);
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -158,7 +158,7 @@ namespace Pidgeon
                 e.window = Window;
                 Events._Window.TriggerBeforeUserMenu(null, e);
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -192,7 +192,7 @@ namespace Pidgeon
                 e.window = Window;
                 Events._Window.TriggerBeforeUserMenu(null, e);
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -225,7 +225,7 @@ namespace Pidgeon
             /// <param name="protocol"></param>
             public static void BeforeConnect(Protocol protocol)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -283,7 +283,7 @@ namespace Pidgeon
             public static bool Ignore(Graphics.Window window, User user, string message, bool updated, long date)
             {
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -318,7 +318,7 @@ namespace Pidgeon
             /// <param name="_Menu"></param>
             public static void BeforeMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -347,7 +347,7 @@ namespace Pidgeon
             /// <param name="_Menu"></param>
             public static void AfterMenu(Graphics.Window Window, Scrollback _Scrollback, Gtk.Menu _Menu)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -377,7 +377,7 @@ namespace Pidgeon
             /// <param name="CarretPosition"></param>
             public static void TextTab(ref bool restore, ref string Text, ref string PrevText, ref int CarretPosition)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -407,7 +407,7 @@ namespace Pidgeon
             {
                 bool success = true;
 
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -442,7 +442,7 @@ namespace Pidgeon
             public static void AfterConnectToNetwork(Network network)
             {
                 network.IsLoaded = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -469,7 +469,7 @@ namespace Pidgeon
             /// <param name="value">Values</param>
             public static void NetworkInfo(Network network, string command, string parameters, string value)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -509,7 +509,7 @@ namespace Pidgeon
             public static bool BeforeJoin(Network network, string Channel)
             {
                 bool data = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -543,7 +543,7 @@ namespace Pidgeon
             public static bool UserPart(Network network, User user, Channel channel, string message, bool updated, long date)
             {
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -618,7 +618,7 @@ namespace Pidgeon
             {
                 bool success = true;
 
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -667,7 +667,7 @@ namespace Pidgeon
             public static bool UserTalk(Network network, User user, Channel channel, string message, bool updated, long date)
             {
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -715,7 +715,7 @@ namespace Pidgeon
             public static bool UserQuit(Network network, User user, string message, Graphics.Window window, bool updated, long date)
             {
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -763,7 +763,7 @@ namespace Pidgeon
             public static bool UserJoin(Network network, User user, Channel channel, bool updated, long date)
             {
                 bool ok = true;
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {
@@ -830,7 +830,7 @@ namespace Pidgeon
             /// <param name="network"></param>
             public static void CreatingNetwork(Network network)
             {
-                foreach (Extension extension in Core.Extensions)
+                foreach (Extension extension in ExtensionPool.Extensions)
                 {
                     try
                     {

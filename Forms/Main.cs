@@ -245,9 +245,9 @@ namespace Pidgeon.Forms
                     Core.PrintRing(Chat, false);
                 }
                 Chat.scrollback.InsertText("Welcome to pidgeon client " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version, Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
-                if (Core.Extensions.Count > 0)
+                if (ExtensionPool.Extensions.Count > 0)
                 {
-                    foreach (Extension nn in Core.Extensions)
+                    foreach (Extension nn in ExtensionPool.Extensions)
                     {
                         Chat.scrollback.InsertText("Extension " + nn.Name + " (" + nn.Version + ")", Pidgeon.ContentLine.MessageStyle.System, false, 0, true);
                     }

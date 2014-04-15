@@ -148,7 +148,7 @@ namespace Pidgeon
             {
                 if (!string.IsNullOrEmpty(parameter))
                 {
-                    if (!Core.RegisterPlugin(parameter))
+                    if (!ExtensionPool.RegisterPlugin(parameter))
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to load the specified plugin", Pidgeon.ContentLine.MessageStyle.System, false);
                         return;
