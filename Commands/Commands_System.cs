@@ -471,7 +471,7 @@ namespace Pidgeon
                     catch (IOException fail)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
-                        Core.DebugLog("Unable to write: " + fail.ToString());
+                        Syslog.DebugLog("Unable to write: " + fail.ToString());
                     }
                     return;
                 }
@@ -495,7 +495,7 @@ namespace Pidgeon
                     catch (IOException fail)
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Unable to write: " + fail.Message.ToString(), Pidgeon.ContentLine.MessageStyle.System, false);
-                        Core.DebugLog("Unable to write: " + fail.ToString());
+                        Syslog.DebugLog("Unable to write: " + fail.ToString());
                     }
                     return;
                 }

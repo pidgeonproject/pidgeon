@@ -282,7 +282,7 @@ namespace Pidgeon.Graphics
                 TreePath[] path = this.treeView.Selection.GetSelectedRows();
                 if (path.Length < 1)
                 {
-                    Core.DebugLog("items_AfterSelect(object sender, RowActivatedArgs e): GetSelectedRows returned 0 value");
+                    Syslog.DebugLog("items_AfterSelect(object sender, RowActivatedArgs e): GetSelectedRows returned 0 value");
                     return;
                 }
                 this.treeView.Model.GetIter(out iter, path[0]);

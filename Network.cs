@@ -903,7 +903,7 @@ namespace Pidgeon
                     string message2 = args.Message;
                     if (message2.Length < 5 || !message2.Contains(" "))
                     {
-                        Core.DebugLog("Malformed DCC " + message2);
+                        Syslog.DebugLog("Malformed DCC " + message2);
                         return;
                     }
                     if (message2.EndsWith(_Protocol.Separator.ToString(), StringComparison.Ordinal))
@@ -913,19 +913,19 @@ namespace Pidgeon
                     string[] list = message2.Split(' ');
                     if (list.Length < 5)
                     {
-                        Core.DebugLog("Malformed DCC " + message2);
+                        Syslog.DebugLog("Malformed DCC " + message2);
                         return;
                     }
                     string type = list[1];
                     int port = 0;
                     if (!int.TryParse(list[4], out port))
                     {
-                        Core.DebugLog("Malformed DCC " + message2);
+                        Syslog.DebugLog("Malformed DCC " + message2);
                         return;
                     }
                     if (port < 1)
                     {
-                        Core.DebugLog("Malformed DCC " + message2);
+                        Syslog.DebugLog("Malformed DCC " + message2);
                         return;
                     }
                     switch (type.ToLower())
@@ -939,7 +939,7 @@ namespace Pidgeon
                             Core.OpenDCC(list[3], port, args.SourceInfo.Nick, false, true, this);
                             return;
                     }
-                    Core.DebugLog("Malformed DCC " + message2);
+                    Syslog.DebugLog("Malformed DCC " + message2);
                     return;
             }
         }

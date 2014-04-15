@@ -377,13 +377,13 @@ namespace Pidgeon
                     is64 = " which is a 64 bit system";
                 }
                 Ringlog("This pidgeon is compiled for " + Configuration.CurrentPlatform.ToString() + " and running on " + Environment.OSVersion.ToString() + is64);
-                DebugLog("Loading messages");
+                Syslog.DebugLog("Loading messages");
                 messages.Read(Configuration.Kernel.Safe);
                 TrafficScanner = new Forms.TrafficScanner();
                 if (!System.IO.File.Exists(Application.StartupPath + System.IO.Path.DirectorySeparatorChar + "pidgeon.dat"))
                 {
                     LoadSkin();
-                    DebugLog("Loading configuration file");
+                    Syslog.DebugLog("Loading configuration file");
                     Configuration.Kernel.Debugging = false;
                     Core._Configuration.ConfigurationLoad();
                     if (!Directory.Exists(PermanentTemp))
@@ -392,44 +392,44 @@ namespace Pidgeon
                     }
                     if (Configuration.Kernel.Safe)
                     {
-                        DebugLog("Not running updater in safe mode");
+                        Syslog.DebugLog("Not running updater in safe mode");
                     }
                     else
                     {
-                        DebugLog("Running updater");
+                        Syslog.DebugLog("Running updater");
                         ThreadManager.ThUp = new Thread(Updater.Run);
                         ThreadManager.ThUp.Name = "Pidgeon:Updater";
                         ThreadManager.ThUp.Start();
                         ThreadManager.RegisterThread(ThreadManager.ThUp);
                     }
-                    DebugLog("Loading log writer thread");
+                    Syslog.DebugLog("Loading log writer thread");
                     ThreadManager.Thread_logs = new Thread(IO.Load);
                     ThreadManager.Thread_logs.Name = "Pidgeon:Writer";
                     ThreadManager.RegisterThread(ThreadManager.Thread_logs);
                     ThreadManager.Thread_logs.Start();
-                    DebugLog("Loading commands");
+                    Syslog.DebugLog("Loading commands");
                     Commands.Initialise();
                     NotificationWidget = new Forms.Notification();
                     //DebugLog("Loading scripting core");
                     //ScriptingCore.Load();
                     if (Configuration.Kernel.Safe)
                     {
-                        DebugLog("Skipping load of extensions");
+                        Syslog.DebugLog("Skipping load of extensions");
                     }
                     else
                     {
-                        DebugLog("Loading extensions");
+                        Syslog.DebugLog("Loading extensions");
                         Extension.Init();
                         if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                         {
                             foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
                             {
-                                DebugLog("Registering plugin " + dll);
+                                Syslog.DebugLog("Registering plugin " + dll);
                                 RegisterPlugin(dll);
                             }
                         }
                     }
-                    DebugLog("Loading http");
+                    Syslog.DebugLog("Loading http");
                     Hyperlink.Initialize();
                     if (!File.Exists(ConfigFile))
                     {
@@ -458,7 +458,7 @@ namespace Pidgeon
             }
             catch (Exception panic)
             {
-                Core.DebugLog("@ Core.Load(): " + panic.Message + panic.StackTrace);
+                Syslog.DebugLog("@ Core.Load(): " + panic.Message + panic.StackTrace);
                 Core.HandleException(panic, true);
             }
             return false;
@@ -479,7 +479,7 @@ namespace Pidgeon
         /// <param name="services"></param>
         public static void ParseLink(string text, Protocols.Services.ProtocolSv services = null)
         {
-            DebugLog("Parsing " + text);
+            Syslog.DebugLog("Parsing " + text);
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
                 string channel = null;
@@ -666,16 +666,7 @@ namespace Pidgeon
         /// Insert text in to debug log
         /// </summary>
         /// <param name="data">Text to insert</param>
-        /// <param name="verbosity">Verbosity (default is 1)</param>
-        public static void DebugLog(string data, int verbosity)
-        {
-            Syslog.DebugLog(data, verbosity);
-        }
-
-        /// <summary>
-        /// Insert text in to debug log
-        /// </summary>
-        /// <param name="data">Text to insert</param>
+        [Obsolete]
         public static void DebugLog(string data)
         {
             Syslog.DebugLog(data, 1);
@@ -773,11 +764,11 @@ namespace Pidgeon
                 return false;
             }
             string backup = System.IO.Path.GetRandomFileName();
-            DebugLog("Restoring file " + file + " from a backup");
+            Syslog.DebugLog("Restoring file " + file + " from a backup");
             if (File.Exists(file))
             {
                 File.Copy(file, backup);
-                DebugLog("Stored previous version: " + backup);
+                Syslog.DebugLog("Stored previous version: " + backup);
             }
             File.Copy(file + "~", file, true);
             return true;
@@ -1086,11 +1077,11 @@ namespace Pidgeon
             Configuration.SL.Add(new Skin());
             if (Configuration.Kernel.Safe)
             {
-                DebugLog("Skipping load of skins because of safe mode");
+                Syslog.DebugLog("Skipping load of skins because of safe mode");
             }
             else
             {
-                DebugLog("Loading skins");
+                Syslog.DebugLog("Loading skins");
                 if (Directory.Exists(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath))
                 {
                     string[] skin = Directory.GetFiles(System.Windows.Forms.Application.StartupPath + Path.DirectorySeparatorChar + SkinPath);
@@ -1151,18 +1142,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Convert a date to unix one
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public static double ConvertDateToUnix(DateTime time)
-        {
-            DateTime EPOCH = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
-            TimeSpan span = (time - EPOCH);
-            return span.TotalSeconds;
-        }
-
-        /// <summary>
         /// Convert a unix timestamp to human readable time
         /// </summary>
         /// <param name="time"></param>
@@ -1182,31 +1161,6 @@ namespace Pidgeon
             {
                 return "Unable to read: " + time;
             }
-        }
-
-        /// <summary>
-        /// Return a DateTime object from unix time
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public static DateTime ConvertFromUNIX(string time)
-        {
-            if (time == null)
-            {
-                throw new PidgeonException("Provided time was NULL");
-            }
-            double unixtimestmp = double.Parse(time);
-            return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(unixtimestmp);
-        }
-
-        /// <summary>
-        /// Return a DateTime object from unix time
-        /// </summary>
-        /// <param name="time"></param>
-        /// <returns></returns>
-        public static DateTime ConvertFromUNIX(double time)
-        {
-            return new DateTime(1970, 1, 1, 0, 0, 0).AddSeconds(time);
         }
 
         /// <summary>
@@ -1246,12 +1200,12 @@ namespace Pidgeon
             {
                 RecoveryIsFatal = true;
             }
-            DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
+            Syslog.DebugLog(_exception.Message + " at " + _exception.Source + " info: " + _exception.Data.ToString());
             IsBlocked = true;
             RecoveryException = _exception;
             if (Configuration.Kernel.KernelDump)
             {
-                Core.DebugLog("Generating report");
+                Syslog.DebugLog("Generating report");
                 string dump = "KERNEL DUMP\n\n";
                 dump += "Time: " + DateTime.Now.ToString() + "\n";
                 dump += "Version: " + Application.ProductVersion + RevisionProvider.GetHash() + "\n";
@@ -1292,7 +1246,7 @@ namespace Pidgeon
             ThreadManager.RecoveryThread.Start();
             if (Thread.CurrentThread != _KernelThread)
             {
-                DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
+                Syslog.DebugLog("Warning, the thread which raised the exception is not a core thread, identifier: " + Thread.CurrentThread.Name);
             }
             while (IsBlocked || RecoveryIsFatal)
             {
@@ -1328,10 +1282,10 @@ namespace Pidgeon
         {
             try
             {
-                Core.DebugLog("User requested a shut down");
+                Syslog.DebugLog("User requested a shut down");
                 if (CoreState == State.Terminating)
                 {
-                    Core.DebugLog("Multiple calls of Core.Quit() ignored");
+                    Syslog.DebugLog("Multiple calls of Core.Quit() ignored");
                     return false;
                 }
                 CoreState = State.Terminating;
@@ -1371,7 +1325,7 @@ namespace Pidgeon
                         }
                     }
                     Thread.Sleep(800);
-                    Core.DebugLog("Exiting with code 0");
+                    Syslog.DebugLog("Exiting with code 0");
                     Environment.Exit(0);
                 }
             }

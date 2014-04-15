@@ -39,7 +39,7 @@ namespace Pidgeon
                     System.Reflection.Assembly library = System.Reflection.Assembly.LoadFrom(path);
                     if (library == null)
                     {
-                        Core.DebugLog("Unable to load " + path + " because the file can't be read");
+                        Syslog.DebugLog("Unable to load " + path + " because the file can't be read");
                         return false;
                     }
                     Type[] types = library.GetTypes();
@@ -55,7 +55,7 @@ namespace Pidgeon
                     }
                     if (pluginInfo == null)
                     {
-                        Core.DebugLog("Unable to load " + path + " because the library contains no module");
+                        Syslog.DebugLog("Unable to load " + path + " because the library contains no module");
                         return false;
                     }
                     Extension _plugin = (Extension)Activator.CreateInstance(pluginInfo);
@@ -63,7 +63,7 @@ namespace Pidgeon
                     {
                         if (Extensions.Contains(_plugin))
                         {
-                            Core.DebugLog("Unable to load extension because the handle is already known to core");
+                            Syslog.DebugLog("Unable to load extension because the handle is already known to core");
                             return false;
                         }
                         bool problem = false;

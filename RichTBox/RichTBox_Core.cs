@@ -316,7 +316,7 @@ namespace Pidgeon
             }
             if (scrollback == null || scrollback.IsDestroyed)
             {
-                Core.DebugLog("Called ScrollToBottom on NULL scrollback");
+                Syslog.DebugLog("Called ScrollToBottom on NULL scrollback");
                 return;
             }
             if (scrollback.ScrollingEnabled)

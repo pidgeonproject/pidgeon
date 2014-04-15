@@ -545,7 +545,7 @@ namespace Pidgeon
                         else
                         {
                             color = Configuration.CurrentSkin.mrcl[0];
-                            Core.DebugLog("Invalid color for link: " + colorcode.ToString());
+                            Syslog.DebugLog("Invalid color for link: " + colorcode.ToString());
                         }
                     }
                 }

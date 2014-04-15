@@ -58,7 +58,7 @@ namespace Pidgeon.Protocols.Services
                         }
                         else
                         {
-                            Core.DebugLog("There is no channel " + message_target);
+                            Syslog.DebugLog("There is no channel " + message_target);
                             target = mn.MakeChannel(message_target);
                             message_window = target.RetrieveWindow();
                         }
@@ -75,7 +75,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 else
                 {
-                    Core.DebugLog("There is no window for " + message_target);
+                    Syslog.DebugLog("There is no window for " + message_target);
                 }
             }
 
@@ -143,7 +143,7 @@ namespace Pidgeon.Protocols.Services
                         case "time":
                             if (!long.TryParse(xx.Value, out date))
                             {
-                                Core.DebugLog("Warning: " + xx.Value + " is not a correct time");
+                                Syslog.DebugLog("Warning: " + xx.Value + " is not a correct time");
                             }
                             break;
                         case "MQID":
@@ -447,7 +447,7 @@ namespace Pidgeon.Protocols.Services
                             mq = curr.Attributes[0].Value.Split('|');
                             if (_networks.Length != mq.Length)
                             {
-                                Core.DebugLog("Invalid buffer " + curr.Attributes[0].Value);
+                                Syslog.DebugLog("Invalid buffer " + curr.Attributes[0].Value);
                                 mq = null;
                             }
                         }
@@ -699,20 +699,20 @@ namespace Pidgeon.Protocols.Services
                 Dictionary<string, string> userlist = Core.XmlCollectionToDict(curr.Attributes);
                 if (!userlist.ContainsKey("network"))
                 {
-                    Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                    Syslog.DebugLog("Invalid xml:" + curr.InnerXml);
                     return;
                 }
                 Network nw = protocol.retrieveNetwork(userlist["network"]);
 
                 if (nw == null)
                 {
-                    Core.DebugLog("Invalid network " + curr.Attributes["network"].Value);
+                    Syslog.DebugLog("Invalid network " + curr.Attributes["network"].Value);
                     return;
                 }
 
                 if (!userlist.ContainsKey("channel"))
                 {
-                    Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                    Syslog.DebugLog("Invalid xml:" + curr.InnerXml);
                     return;
                 }
 
@@ -725,7 +725,7 @@ namespace Pidgeon.Protocols.Services
                 {
                     if (!userlist.ContainsKey("nickname" + CurrentUser.ToString()))
                     {
-                        Core.DebugLog("Invalid xml:" + curr.InnerXml);
+                        Syslog.DebugLog("Invalid xml:" + curr.InnerXml);
                         return;
                     }
                     User user = channel.UserFromName(userlist["nickname" + CurrentUser.ToString()]);

@@ -376,7 +376,7 @@ namespace Pidgeon.Protocols.Services
                 Buffer.Window Source = getW(source);
                 if (Source == null)
                 {
-                    Core.DebugLog("Failed to recover " + source);
+                    Syslog.DebugLog("Failed to recover " + source);
                     return;
                 }
                 if (Source.lines == null)
@@ -569,13 +569,13 @@ namespace Pidgeon.Protocols.Services
                     networkInfo.Clear();
                     if (!Directory.Exists(Root))
                     {
-                        Core.DebugLog("There is no folder for buffer of " + protocol.Server);
+                        Syslog.DebugLog("There is no folder for buffer of " + protocol.Server);
                         Loaded = false;
                         return;
                     }
                     if (!File.Exists(Root + "data"))
                     {
-                        Core.DebugLog("There is no main for buffer of " + protocol.Server);
+                        Syslog.DebugLog("There is no main for buffer of " + protocol.Server);
                         Loaded = false;
                         return;
                     }
@@ -600,7 +600,7 @@ namespace Pidgeon.Protocols.Services
             }
             catch (Exception fail)
             {
-                Core.DebugLog("Failed to load buffer, invalidating it " + fail.ToString());
+                Syslog.DebugLog("Failed to load buffer, invalidating it " + fail.ToString());
                 Loaded = false;
                 Modified = true;
                 networkInfo.Clear();
@@ -753,7 +753,7 @@ namespace Pidgeon.Protocols.Services
                                     }
                                     else
                                     {
-                                        Core.DebugLog("ERROR: Multiple same private windows detected of " + window.Name);
+                                        Syslog.DebugLog("ERROR: Multiple same private windows detected of " + window.Name);
                                     }
                                 }
                             }
@@ -870,7 +870,7 @@ namespace Pidgeon.Protocols.Services
             {
                 Directory.CreateDirectory(Root);
             }
-            Core.DebugLog("Saving cache for " + protocol.Server);
+            Syslog.DebugLog("Saving cache for " + protocol.Server);
             List<string> files = new List<string>();
             lock (networkInfo)
             {
@@ -883,7 +883,7 @@ namespace Pidgeon.Protocols.Services
 
             ListFile(files, Root + "data");
             Modified = false;
-            Core.DebugLog("Done");
+            Syslog.DebugLog("Done");
         }
     }
 }

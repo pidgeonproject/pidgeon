@@ -76,7 +76,7 @@ namespace Pidgeon
             }
             catch (Exception fail)
             {
-                Core.DebugLog("Failed to download " + fail.ToString());
+                Syslog.DebugLog("Failed to download " + fail.ToString());
             }
             return false;
         }

@@ -62,7 +62,7 @@ namespace Pidgeon
         /// <returns></returns>
         public static string EvaluateText(string text, Graphics.Window w = null)
         {
-            Core.DebugLog("expression: " + text);
+            Syslog.DebugLog("expression: " + text);
             if (w == null)
             {
                 w = SystemForm.Chat;
@@ -127,7 +127,7 @@ namespace Pidgeon
                     case 1:
                         return (BufferA != BufferB).ToString().ToLower(System.Globalization.CultureInfo.CurrentUICulture);
                     case 2:
-                        Core.DebugLog("Evaluating " + BufferA + " == " + BufferB);
+                        Syslog.DebugLog("Evaluating " + BufferA + " == " + BufferB);
                         return (BufferA == BufferB).ToString().ToLower();
                 }
             }

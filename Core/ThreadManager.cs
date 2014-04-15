@@ -58,7 +58,7 @@ namespace Pidgeon
                 }
                 if (thread == Core.KernelThread)
                 {
-                    DebugLog("Refusing to kill kernel thread >:-|");
+                    Syslog.DebugLog("Refusing to kill kernel thread >:-|");
                     return;
                 }
                 if (thread != Thread.CurrentThread)
@@ -66,16 +66,16 @@ namespace Pidgeon
                     if (thread.ThreadState == System.Threading.ThreadState.Running || thread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
                     {
                         thread.Abort();
-                        Core.DebugLog("Killed thread " + thread.Name);
+                        Syslog.DebugLog("Killed thread " + thread.Name);
                     }
                     else
                     {
-                        Core.DebugLog("Ignored request to abort thread in " + thread.ThreadState.ToString() + " " + thread.Name);
+                        Syslog.DebugLog("Ignored request to abort thread in " + thread.ThreadState.ToString() + " " + thread.Name);
                     }
                 }
                 else
                 {
-                    Core.DebugLog("Ignored request to abort thread from within the same thread " + thread.Name);
+                    Syslog.DebugLog("Ignored request to abort thread from within the same thread " + thread.Name);
                 }
                 UnregisterThread(thread);
             }
@@ -84,7 +84,7 @@ namespace Pidgeon
             {
                 if (thread.Name == "")
                 {
-                    Core.DebugLog("No thread name provided for: " + thread.ManagedThreadId.ToString());
+                    Syslog.DebugLog("No thread name provided for: " + thread.ManagedThreadId.ToString());
                 }
                 lock (ThreadPool)
                 {

@@ -623,7 +623,7 @@ namespace Pidgeon
                     {
                         if (logs.Count > 100)
                         {
-                            Core.DebugLog("Buffer overflow: more than 100 items waiting to be written to log: auto flushing");
+                            Syslog.DebugLog("Buffer overflow: more than 100 items waiting to be written to log: auto flushing");
                             logs.Clear();
                         }
                         logs.Add(item);

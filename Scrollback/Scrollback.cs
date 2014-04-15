@@ -262,11 +262,11 @@ namespace Pidgeon
             {
                 if (owner != null)
                 {
-                    Core.DebugLog("Destructor called for scrollback " + owner.WindowName);
+                    Syslog.DebugLog("Destructor called for scrollback " + owner.WindowName);
                 }
                 else
                 {
-                    Core.DebugLog("Destructor called for scrollback of no name");
+                    Syslog.DebugLog("Destructor called for scrollback of no name");
                 }
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }

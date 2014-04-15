@@ -427,7 +427,7 @@ namespace Pidgeon.Forms
                     }
                     else
                     {
-                        Core.DebugLog("Preferences: provided invalid file name");
+                        Syslog.DebugLog("Preferences: provided invalid file name");
                     }
                 }
                 dialog.Destroy();

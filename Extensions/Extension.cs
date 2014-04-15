@@ -72,7 +72,7 @@ namespace Pidgeon
                 _Status = Status.Loading;
                 if (Required > System.Reflection.Assembly.GetExecutingAssembly().GetName().Version)
                 {
-                    Core.DebugLog("CORE: Terminating the extension " + Name + " which requires pidgeon " + Required.ToString());
+                    Syslog.DebugLog("CORE: Terminating the extension " + Name + " which requires pidgeon " + Required.ToString());
                     _Status = Status.Terminated;
                     return;
                 }
@@ -81,7 +81,7 @@ namespace Pidgeon
             catch (Exception fail)
             {
                 Core.HandleException(fail);
-                Core.DebugLog("CORE: Terminating the extension " + Name);
+                Syslog.DebugLog("CORE: Terminating the extension " + Name);
                 _Status = Status.Terminated;
             }
         }
@@ -169,11 +169,11 @@ namespace Pidgeon
         {
             try
             {
-                Core.DebugLog("CORE: Unloading " + Name);
+                Syslog.DebugLog("CORE: Unloading " + Name);
                 _Status = Status.Terminating;
                 if (!Hook_Unload())
                 {
-                    Core.DebugLog("CORE: Failed to unload " + Name + " forcefully removing from memory");
+                    Syslog.DebugLog("CORE: Failed to unload " + Name + " forcefully removing from memory");
                     lock (_Threads)
                     {
                         foreach (Thread thread in _Threads)
@@ -184,7 +184,7 @@ namespace Pidgeon
                             }
                             catch (Exception fail)
                             {
-                                Core.DebugLog("CORE: Failed to unload " + Name + " error " + fail.ToString());
+                                Syslog.DebugLog("CORE: Failed to unload " + Name + " error " + fail.ToString());
                             }
                         }
                     }
@@ -194,11 +194,11 @@ namespace Pidgeon
                     if (Core.Extensions.Contains(this))
                     {
                         Core.Extensions.Remove(this);
-                        Core.DebugLog("CORE: Unloaded " + Name);
+                        Syslog.DebugLog("CORE: Unloaded " + Name);
                     }
                 }
                 _Status = Status.Terminated;
-                Core.DebugLog("CORE: Terminated " + Name);
+                Syslog.DebugLog("CORE: Terminated " + Name);
             }
             catch (Exception fail)
             {
@@ -236,7 +236,7 @@ namespace Pidgeon
             {
                 if (!Hook_OnLoad())
                 {
-                    Core.DebugLog("Unable to load " + Name + " the OnLoad hook returned invalid value");
+                    Syslog.DebugLog("Unable to load " + Name + " the OnLoad hook returned invalid value");
                     _Status = Status.Stopped;
                     return;
                 }
@@ -259,7 +259,7 @@ namespace Pidgeon
         /// <param name="verbosity"></param>
         public void DebugLog(string message, int verbosity = 1)
         {
-            Core.DebugLog("Extension " + this.Name + ": " + message, verbosity);
+            Syslog.DebugLog("Extension " + this.Name + ": " + message, verbosity);
         }
 
         /// <summary>

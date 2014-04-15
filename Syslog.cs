@@ -27,7 +27,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="data">Text to insert</param>
         /// <param name="verbosity">Verbosity (default is 1)</param>
-        public static void DebugLog(string data, int verbosity)
+        public static void DebugLog(string data, int verbosity = 1)
         {
             System.Diagnostics.Debug.Print(data);
             if (Configuration.Kernel.Debugging)

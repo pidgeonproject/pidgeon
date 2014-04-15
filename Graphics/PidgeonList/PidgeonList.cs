@@ -173,7 +173,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + dcc.Server);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + dcc.Server);
                     }
                     this.DirectClientConnectionList.Remove(dcc);
                     return true;
@@ -208,7 +208,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + channel.Name);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + channel.Name);
                     }
                     ChannelList.Remove(channel);
                     return true;
@@ -244,7 +244,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + server.ServerName);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + server.ServerName);
                     }
                     ServerList.Remove(server);
                     return true;
@@ -278,7 +278,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
                     }
                     QuasselList.Remove(protocol);
                     return true;
@@ -312,7 +312,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + protocol.Server);
                     }
                     ServiceList.Remove(protocol);
                     return true;
@@ -347,7 +347,7 @@ namespace Pidgeon.Graphics
                     }
                     else
                     {
-                        Core.DebugLog("Can't remove from sidebar because reference isn't present: " + user.Nick);
+                        Syslog.DebugLog("Can't remove from sidebar because reference isn't present: " + user.Nick);
                     }
                     UserList.Remove(user);
                     return true;
@@ -418,7 +418,7 @@ namespace Pidgeon.Graphics
                         Network nw = (Network)model.GetValue(iter, 1);
                         if (nw == null)
                         {
-                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL network");
+                            Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL network");
                             return;
                         }
                         string info = null;
@@ -452,7 +452,7 @@ namespace Pidgeon.Graphics
                         User user = (User)model.GetValue(iter, 1);
                         if (user == null)
                         {
-                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL user");
+                            Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL user");
                             return;
                         }
                         if (user.IsDestroyed)
@@ -487,7 +487,7 @@ namespace Pidgeon.Graphics
                         ProtocolDCC dc = (ProtocolDCC)model.GetValue(iter, 1);
                         if (dc == null)
                         {
-                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL dc");
+                            Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL dc");
                             return;
                         }
                         if (dc.IsDestroyed)
@@ -511,7 +511,7 @@ namespace Pidgeon.Graphics
                         Channel channel = (Channel)model.GetValue(iter, 1);
                         if (channel == null)
                         {
-                            Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL channel");
+                            Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL channel");
                             return;
                         }
                         string data = (string)model.GetValue(iter, 4);

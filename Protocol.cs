@@ -41,7 +41,7 @@ namespace Pidgeon
         /// <returns></returns>
         public virtual bool Command(string cm, Network network = null)
         {
-            Core.DebugLog("Command(string cm, Network network = null) is not implemented");
+            Syslog.DebugLog("Command(string cm, Network network = null) is not implemented");
             return false;
         }
 

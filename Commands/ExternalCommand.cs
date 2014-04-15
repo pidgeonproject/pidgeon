@@ -64,14 +64,14 @@ namespace Pidgeon
                 }
             };
 
-            Core.DebugLog("Starting a process " + Command);
+            Syslog.DebugLog("Starting a process " + Command);
             p.Start();
-            Core.DebugLog("Writing standard input to " + Command);
+            Syslog.DebugLog("Writing standard input to " + Command);
             p.StandardInput.Write(Text);
             p.StandardInput.Close();
-            Core.DebugLog("Reading standard error from " + Command);
+            Syslog.DebugLog("Reading standard error from " + Command);
             Data += p.StandardError.ReadToEnd();
-            Core.DebugLog("Reading standard output from " + Command);
+            Syslog.DebugLog("Reading standard output from " + Command);
             Data += p.StandardOutput.ReadToEnd();
             return Data;
         }

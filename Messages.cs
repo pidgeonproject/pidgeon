@@ -203,7 +203,7 @@ namespace Pidgeon
         {
             if (SafeMode)
             {
-                Core.DebugLog("Loading only built-in english, because of safe mode");
+                Syslog.DebugLog("Loading only built-in english, because of safe mode");
                 messages.data.Add("en", new messages.LanguageContainer("en"));
                 return;
             }
@@ -214,7 +214,7 @@ namespace Pidgeon
                     string f = Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + file;
                     if (System.IO.File.Exists(f))
                     {
-                        Core.DebugLog("Registering a new language " + f);
+                        Syslog.DebugLog("Registering a new language " + f);
                         messages.data.Add(f, new messages.LanguageContainer(f));
                     }
                 }

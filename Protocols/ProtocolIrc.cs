@@ -61,7 +61,7 @@ namespace Pidgeon.Protocols
 
         public override void DebugLog(string Text, int Verbosity = 1)
         {
-            Core.DebugLog(Text, Verbosity);
+            Syslog.DebugLog(Text, Verbosity);
         }
 
         private void Exec()

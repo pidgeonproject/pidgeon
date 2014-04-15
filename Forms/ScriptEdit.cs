@@ -76,7 +76,7 @@ namespace Pidgeon.Forms
         {
             if (Configuration.Kernel.Debugging)
             {
-                Core.DebugLog("Destructor for script edit");
+                Syslog.DebugLog("Destructor for script edit");
             }
         }
 #endif

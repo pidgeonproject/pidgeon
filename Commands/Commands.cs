@@ -216,7 +216,7 @@ namespace Pidgeon
         /// <param name="command">What is supposed to be ran</param>
         public static void RegisterCommand(string Name, Command command)
         {
-            Core.DebugLog("Registering a new command by extension: " + Name);
+            Syslog.DebugLog("Registering a new command by extension: " + Name);
             lock (commands)
             {
                 commands.Add(Name, command);

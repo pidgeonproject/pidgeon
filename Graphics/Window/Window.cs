@@ -224,7 +224,7 @@ namespace Pidgeon.Graphics
             }
             if (Configuration.Kernel.Debugging)
             {
-                Core.DebugLog("Destructor called for window: " + WindowName);
+                Syslog.DebugLog("Destructor called for window: " + WindowName);
                 //Core.DebugLog("Released: " + Core.GetSizeOfObject(this).ToString() + " bytes of memory");
             }
         }
@@ -439,7 +439,7 @@ namespace Pidgeon.Graphics
 
             if (Configuration.Kernel.Debugging)
             {
-                Core.DebugLog("Destroying " + WindowName);
+                Syslog.DebugLog("Destroying " + WindowName);
             }
 
             destroyed = true;

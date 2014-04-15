@@ -245,7 +245,7 @@ namespace Pidgeon.Protocols.Services
                     try
                     {
                         Core.SystemForm.Chat.scrollback.InsertText("Quit: " + fail.Message, Pidgeon.ContentLine.MessageStyle.System);
-                        Core.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
+                        Syslog.DebugLog("Clearing the sBuffer to prevent corrupted data being written");
                         sBuffer = null;
                         Disconnect();
                     }
@@ -377,7 +377,7 @@ namespace Pidgeon.Protocols.Services
             }
             catch (System.Xml.XmlException xx)
             {
-                Core.DebugLog("Unable to parse: " + xx.ToString());
+                Syslog.DebugLog("Unable to parse: " + xx.ToString());
                 Core.Ringlog("Invalid xml: " + dg);
             }
         }
@@ -440,10 +440,10 @@ namespace Pidgeon.Protocols.Services
                     }
                     RemainingJobs.Clear();
                 }
-                Core.DebugLog("Remaining jobs are now cleared");
+                Syslog.DebugLog("Remaining jobs are now cleared");
                 if (sBuffer == null)
                 {
-                    Core.DebugLog("Warning sBuffer == null");
+                    Syslog.DebugLog("Warning sBuffer == null");
                 }
                 if (Configuration.Services.UsingCache && sBuffer != null)
                 {
@@ -455,12 +455,12 @@ namespace Pidgeon.Protocols.Services
                     }
                     else
                     {
-                        Core.DebugLog("Didn't write the network cache because the services were still waiting on " + remaining.ToString() + " requests");
+                        Syslog.DebugLog("Didn't write the network cache because the services were still waiting on " + remaining.ToString() + " requests");
                     }
                 }
                 else
                 {
-                    Core.DebugLog("Didn't write the network cache because it is disallowed");
+                    Syslog.DebugLog("Didn't write the network cache because it is disallowed");
                 }
                 lock (NetworkList)
                 {
@@ -496,7 +496,7 @@ namespace Pidgeon.Protocols.Services
             {
                 if (!IsConnected)
                 {
-                    Core.DebugLog("User attempted to disconnect services that are already disconnected");
+                    Syslog.DebugLog("User attempted to disconnect services that are already disconnected");
                     return Result.Failure;
                 }
                 IsDisconnecting = true;
@@ -528,7 +528,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 catch (System.Net.Sockets.SocketException fail)
                 {
-                    Core.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
+                    Syslog.DebugLog("Problem when disconnecting from network " + Server + ": " + fail.ToString());
                 }
                 Connected = false;
                 IsDisconnecting = false;
@@ -587,7 +587,7 @@ namespace Pidgeon.Protocols.Services
 
         public override void DebugLog(string Text, int Verbosity = 1)
         {
-            Core.DebugLog(Text, Verbosity);
+            Syslog.DebugLog(Text, Verbosity);
         }
 
         public override libirc.IProtocol.Result Message(string text, string to, libirc.Network network, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal)
@@ -603,7 +603,7 @@ namespace Pidgeon.Protocols.Services
             }
             else
             {
-                Core.DebugLog("Invalid network for message to: " + to);
+                Syslog.DebugLog("Invalid network for message to: " + to);
                 return Result.Failure;
             }
         }
@@ -700,13 +700,13 @@ namespace Pidgeon.Protocols.Services
                     }
                     else
                     {
-                        Core.DebugLog("ex " + f.ToString());
+                        Syslog.DebugLog("ex " + f.ToString());
                     }
                 }
             }
             else
             {
-                Core.DebugLog("ERROR: Can't send a datagram because connection to " + Server + " is closed");
+                Syslog.DebugLog("ERROR: Can't send a datagram because connection to " + Server + " is closed");
             }
         }
 
@@ -750,7 +750,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 else
                 {
-                    Core.DebugLog("Network is not a part of this services connection " + network.ServerName);
+                    Syslog.DebugLog("Network is not a part of this services connection " + network.ServerName);
                     return Result.Failure;
                 }
             }

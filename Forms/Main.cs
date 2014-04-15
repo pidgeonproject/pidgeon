@@ -434,7 +434,7 @@ namespace Pidgeon.Forms
             {
                 if (Core.IgnoreErrors)
                 {
-                    Core.DebugLog("Closing main");
+                    Syslog.DebugLog("Closing main");
                     return;
                 }
                 MessageDialog message = new MessageDialog(this, DialogFlags.Modal, MessageType.Question, ButtonsType.YesNo, messages.get("pidgeon-shut", Core.SelectedLanguage));

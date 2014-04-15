@@ -177,7 +177,7 @@ namespace Pidgeon
                     }
                 }
             }
-            Core.DebugLog("No such a skin is loaded: " + path);
+            Syslog.DebugLog("No such a skin is loaded: " + path);
         }
 
         /// <summary>
@@ -215,7 +215,7 @@ namespace Pidgeon
         /// <param name="path"></param>
         public Skin(string path)
         {
-            Core.DebugLog("Loading skin " + path);
+            Syslog.DebugLog("Loading skin " + path);
             Defaults();
             string _p = path;
             Name = path;
