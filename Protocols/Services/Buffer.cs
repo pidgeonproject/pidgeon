@@ -127,11 +127,11 @@ namespace Pidgeon.Protocols.Services
             /// <summary>
             /// Invites
             /// </summary>
-            public List<libirc.Invite> Invites = null;
+            public List<libirc.ChannelInvite> Invites = null;
             /// <summary>
             /// List of bans set
             /// </summary>
-            public List<libirc.SimpleBan> Bans = null;
+            public List<libirc.ChannelBan> Bans = null;
             /// <summary>
             /// Exception list 
             /// </summary>

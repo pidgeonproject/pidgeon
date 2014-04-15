@@ -59,8 +59,7 @@ namespace Pidgeon
         /// </summary>
         /// <param name="network">Network.</param>
         /// <param name="name">Name.</param>
-        public Channel(Network network, string name)
-            : base((libirc.Network)network)
+        public Channel(Network network, string name) : base((libirc.Network)network)
         {
             this._Network = network;
             this.lName = name.ToLower();
@@ -82,10 +81,6 @@ namespace Pidgeon
         /// </summary>
         public void UpdateInfo()
         {
-            if (IsDestroyed)
-            {
-                return;
-            }
             string text = "";
             string trimmed = Topic;
             if (trimmed.Length > 160)
@@ -168,10 +163,6 @@ namespace Pidgeon
             if (Configuration.Kernel.Profiler)
             {
                 profiler = new Core.Profiler("Channel.redrawUsers()");
-            }
-            if (IsDestroyed)
-            {
-                return;
             }
             if (Core._KernelThread == System.Threading.Thread.CurrentThread)
             {
@@ -348,26 +339,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Destroy this class, be careful, it can't be used in any way after you
-        /// call this
-        /// </summary>
-        public override void Destroy()
-        {
-            if (IsDestroyed)
-            {
-                // prevent this from being called multiple times
-                return;
-            }
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destroying channel " + Name);
-            }
-            Core.SystemForm.ChannelList.RemoveChannel(this);
-            Chat = null;
-            base.Destroy();
-        }
-
-        /// <summary>
         /// Retrieve window
         /// </summary>
         /// <returns></returns>
@@ -375,10 +346,6 @@ namespace Pidgeon
         {
             if (Chat == null)
             {
-                if (IsDestroyed)
-                {
-                    return null;
-                }
                 if (_Network == null)
                 {
                     throw new PidgeonException("Network is NULL for " + Name);

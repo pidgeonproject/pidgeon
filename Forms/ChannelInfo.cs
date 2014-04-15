@@ -29,8 +29,8 @@ namespace Pidgeon.Forms
         private List<char> cm = new List<char>();
 
         private Gtk.ListStore exceptions = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(libirc.ChannelBanException));
-        private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(libirc.SimpleBan));
-        private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(libirc.Invite));
+        private Gtk.ListStore bans = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(libirc.ChannelBan));
+        private Gtk.ListStore invites = new Gtk.ListStore(typeof(string), typeof(string), typeof(string), typeof(libirc.ChannelInvite));
         private List<CheckButton> options = new List<CheckButton>();
 
         /// <summary>
@@ -59,11 +59,11 @@ namespace Pidgeon.Forms
         /// <summary>
         /// List of selected items
         /// </summary>
-        public List<libirc.SimpleBan> SelectedBans
+        public List<libirc.ChannelBan> SelectedBans
         {
             get
             {
-                List<libirc.SimpleBan> bl = new List<libirc.SimpleBan>();
+                List<libirc.ChannelBan> bl = new List<libirc.ChannelBan>();
                 TreeIter iter;
                 TreePath[] path = treeview7.Selection.GetSelectedRows();
                 if (path.Length < 1)
@@ -73,7 +73,7 @@ namespace Pidgeon.Forms
                 foreach (TreePath p in path)
                 {
                     treeview7.Model.GetIter(out iter, p);
-                    bl.Add((libirc.SimpleBan)treeview7.Model.GetValue(iter, 3));
+                    bl.Add((libirc.ChannelBan)treeview7.Model.GetValue(iter, 3));
                 }
                 return bl;
             }
@@ -82,11 +82,11 @@ namespace Pidgeon.Forms
         /// <summary>
         /// List of selected items
         /// </summary>
-        public List<libirc.Invite> SelectedInvites
+        public List<libirc.ChannelInvite> SelectedInvites
         {
             get
             {
-                List<libirc.Invite> il = new List<libirc.Invite>();
+                List<libirc.ChannelInvite> il = new List<libirc.ChannelInvite>();
                 TreeIter iter;
                 TreePath[] path = treeview5.Selection.GetSelectedRows();
                 if (path.Length < 1)
@@ -96,7 +96,7 @@ namespace Pidgeon.Forms
                 foreach (TreePath p in path)
                 {
                     treeview5.Model.GetIter(out iter, p);
-                    il.Add((libirc.Invite)treeview5.Model.GetValue(iter, 3));
+                    il.Add((libirc.ChannelInvite)treeview5.Model.GetValue(iter, 3));
                 }
                 return il;
             }
@@ -211,7 +211,7 @@ namespace Pidgeon.Forms
                     bans.Clear();
                     lock (channel.Bans)
                     {
-                        foreach (libirc.SimpleBan sb in channel.Bans)
+                        foreach (libirc.ChannelBan sb in channel.Bans)
                         {
                             bans.AppendValues(sb.Target, Core.ConvertFromUNIXToString(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
@@ -257,7 +257,7 @@ namespace Pidgeon.Forms
                     invites.Clear();
                     lock (channel.Invites)
                     {
-                        foreach (libirc.Invite sb in channel.Invites)
+                        foreach (libirc.ChannelInvite sb in channel.Invites)
                         {
                             invites.AppendValues(sb.Target, Core.ConvertFromUNIXToString(sb.Time) + " (" + sb.Time + ")", sb.User, sb);
                         }
@@ -321,7 +321,7 @@ namespace Pidgeon.Forms
             {
                 if (SelectedInvites != null)
                 {
-                    foreach (libirc.Invite item in SelectedInvites)
+                    foreach (libirc.ChannelInvite item in SelectedInvites)
                     {
                         channel._Network.Transfer("MODE " + channel.Name + " -I " + item.Target);
                     }
@@ -397,7 +397,7 @@ namespace Pidgeon.Forms
                 if (SelectedBans != null)
                 {
                     List<libirc.SimpleMode> mode = new List<libirc.SimpleMode>();
-                    foreach (libirc.SimpleBan ban in SelectedBans)
+                    foreach (libirc.ChannelBan ban in SelectedBans)
                     {
                         if (Configuration.Parser.formatter)
                         {

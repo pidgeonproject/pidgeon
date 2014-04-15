@@ -167,7 +167,6 @@ namespace Pidgeon.Graphics
                 foreach (Channel chan in _channels)
                 {
                     ChannelList.Remove(chan);
-                    chan.Destroy();
                 }
                 WindowsManager.PendingRequests();
                 lock (WaitingDCC)
@@ -192,7 +191,7 @@ namespace Pidgeon.Graphics
                 {
                     foreach (var channel in ChannelList)
                     {
-                        if (!channel.Key.IsDestroyed && channel.Key.Redraw)
+                        if (channel.Key.Redraw)
                         {
                             channel.Key.RedrawUsers();
                         }
@@ -224,10 +223,6 @@ namespace Pidgeon.Graphics
                         }
                     } while (this.vTree.IterNext(ref iter));
                 }
-
-                ClearServer();
-                ClearUser();
-                ClearChan();
             }
             catch (Exception fail)
             {

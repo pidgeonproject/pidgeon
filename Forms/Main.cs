@@ -318,7 +318,7 @@ namespace Pidgeon.Forms
                 throw new PidgeonException("You can't control other windows from non kernel thread");
             }
             this.toolStripInfo.Text = StatusBox;
-            if (Core.SelectedNetwork != null && !Core.SelectedNetwork.IsDestroyed)
+            if (Core.SelectedNetwork != null)
             {
                 //toolStripStatusNetwork.Text = Core.SelectedNetwork.ServerName + "    w/c/p " + Core.SelectedNetwork._Protocol.Windows.Count.ToString() + "/" + Core.SelectedNetwork.Channels.Count.ToString() + "/" + Core.SelectedNetwork.PrivateChat.Count.ToString();
                 if (Core.SelectedNetwork.RenderedChannel != null)

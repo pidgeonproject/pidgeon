@@ -411,7 +411,6 @@ namespace Pidgeon.Protocols.Services
                         }
                     }
                     network_.IsConnected = false;
-                    network_.Destroy();
                 }
             }
         }
@@ -471,7 +470,6 @@ namespace Pidgeon.Protocols.Services
                         {
                             Core.SelectedNetwork = null;
                         }
-                        network.Destroy();
                     }
                     NetworkList.Clear();
                 }

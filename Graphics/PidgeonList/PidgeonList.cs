@@ -421,11 +421,6 @@ namespace Pidgeon.Graphics
                             Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL network");
                             return;
                         }
-                        if (nw.IsDestroyed)
-                        {
-                            vTree.Remove(ref iter);
-                            return;
-                        }
                         string info = null;
                         if (nw.IrcdVersion != null)
                         {
@@ -436,7 +431,7 @@ namespace Pidgeon.Graphics
                         {
                             model.SetValue(iter, 4, info);
                         }
-                        if (nw != null && !nw.IsDestroyed && nw.SystemWindow != null)
+                        if (nw != null && nw.SystemWindow != null)
                         {
                             (cell as Gtk.CellRendererText).ForegroundGdk = Core.FromColor(nw.SystemWindow.MenuColor);
                             if (nw.SystemWindow.NeedsIcon)
@@ -518,10 +513,6 @@ namespace Pidgeon.Graphics
                         {
                             Core.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL channel");
                             return;
-                        }
-                        if (channel.IsDestroyed)
-                        {
-                            vTree.Remove(ref iter);
                         }
                         string data = (string)model.GetValue(iter, 4);
                         if (data != channel.MenuData)
@@ -781,102 +772,6 @@ namespace Pidgeon.Graphics
             }
         }
 
-        /// <summary>
-        /// Delete unused channels
-        /// </summary>
-        private void ClearUser()
-        {
-            List<User> removedUser = new List<User>();
-            lock (UserList)
-            {
-                foreach (User d in UserList.Keys)
-                {
-                    if (d.IsDestroyed)
-                    {
-                        removedUser.Add(d);
-                        KeyValuePair<TreeIter, bool> result = getIter(d);
-                        if (result.Value)
-                        {
-                            TreeIter tree = result.Key;
-                            vTree.Remove(ref tree);
-                        }
-                        else
-                        {
-                            Core.DebugLog("Can't remove user from sidebar because there is no reference " + d.Nick);
-                        }
-                    }
-                }
-                foreach (User d in removedUser)
-                {
-                    UserList.Remove(d);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Delete unused networks
-        /// </summary>
-        private void ClearServer()
-        {
-            List<Network> removedChan = new List<Network>();
-            lock (ServerList)
-            {
-                foreach (Network d in ServerList.Keys)
-                {
-                    if (d.IsDestroyed)
-                    {
-                        removedChan.Add(d);
-                        KeyValuePair<TreeIter, bool> result = getIter(d);
-                        if (result.Value)
-                        {
-                            TreeIter tree = result.Key;
-                            vTree.Remove(ref tree);
-                        }
-                        else
-                        {
-                            Core.DebugLog("unable to remove network from list " + d.ServerName);
-                        }
-                    }
-                }
-                foreach (Network d in removedChan)
-                {
-                    ServerList.Remove(d);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Delete unused channels
-        /// </summary>
-        private void ClearChan()
-        {
-            List<Channel> removedChan = new List<Channel>();
-            lock (ChannelList)
-            {
-                foreach (Channel d in ChannelList.Keys)
-                {
-                    if (d.IsDestroyed)
-                    {
-                        removedChan.Add(d);
-                        KeyValuePair<TreeIter, bool> result = getIter(d);
-                        if (result.Value)
-                        {
-                            TreeIter tree = result.Key;
-                            vTree.Remove(ref tree);
-                        }
-                        else
-                        {
-                            Core.DebugLog("unable to remove channel from sidebar " + d.Name);
-                        }
-                    }
-                }
-                foreach (Channel d in removedChan)
-                {
-                    ChannelList.Remove(d);
-                }
-            }
-        }
-
         private void RemoveItem(TreeIter it, object Item, ItemType type)
         {
             bool removed = false;
@@ -919,7 +814,7 @@ namespace Pidgeon.Graphics
                     break;
                 case ItemType.User:
                     User user = (User)Item;
-                    if (user._Network != null && !user._Network.IsDestroyed)
+                    if (user._Network != null)
                     {
                         user._Network.RemoveUserWindow(user);
                     }

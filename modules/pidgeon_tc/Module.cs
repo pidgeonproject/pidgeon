@@ -240,14 +240,14 @@ namespace Pidgeon
                 // check if it's a nick
 
                 List<string> Results2 = new List<string>();
-                string Resd2 = "";
+                StringBuilder Resd2 = new StringBuilder();
                 if (Core.SelectedNetwork.RenderedChannel == null) { return; }
-                DebugLog(Core.SelectedNetwork.RenderedChannel.RetrieveUL().Count.ToString());
                 foreach (User item in Core.SelectedNetwork.RenderedChannel.RetrieveUL().Values)
                 {
                     if ((item.Nick.ToUpper()).StartsWith(text2.ToUpper()))
                     {
-                        Resd2 += item.Nick + ", ";
+                        Resd2.Append(item.Nick);
+                        Resd2.Append(", ");
                         Results2.Add(item.Nick);
                     }
                 }
@@ -264,7 +264,7 @@ namespace Pidgeon
 
                 if (Results2.Count > 1)
                 {
-                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2 }), ContentLine.MessageStyle.System, true, 1);
+                    Core.SystemForm.Chat.scrollback.InsertText(messages.get("autocomplete-result", Core.SelectedLanguage, new List<string> { Resd2.ToString() }), ContentLine.MessageStyle.System, true, 1);
                     string part = "";
                     int curr = 0;
                     char orig = ' ';

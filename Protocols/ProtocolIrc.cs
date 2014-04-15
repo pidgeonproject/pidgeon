@@ -81,32 +81,6 @@ namespace Pidgeon.Protocols
             Core.SystemForm.Status("Disconnected from server " + Server);
             this.NetworkMeta.SystemWindow.scrollback.InsertText("Disconnected: " + reason, Pidgeon.ContentLine.MessageStyle.System);
         }
-        
-        /// <summary>
-        /// Command
-        /// </summary>
-        /// <param name="cm"></param>
-        /// <param name="network"></param>
-        /// <returns></returns>
-        public bool Command(string cm, Network network = null)
-        {
-            try
-            {
-                if(cm.StartsWith(" ", StringComparison.Ordinal) != true && cm.Contains(" "))
-                {
-                    // uppercase
-                    string first_word = cm.Substring(0, cm.IndexOf(" ", StringComparison.Ordinal)).ToUpper();
-                    string rest = cm.Substring(first_word.Length);
-                    Transfer(first_word + rest);
-                    return true;
-                }
-                Transfer(cm.ToUpper());
-            } catch (Exception ex)
-            {
-                Core.HandleException(ex);
-            }
-            return false;
-        }
 
         public override Thread Open()
         {

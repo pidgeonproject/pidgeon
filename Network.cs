@@ -24,7 +24,7 @@ namespace Pidgeon
     /// <summary>
     /// Instance of irc network, this class is typically handled by protocols
     /// </summary>
-    public class Network : libirc.Network, IDisposable
+    public class Network : libirc.Network
     {
         /// <summary>
         /// Highlight
@@ -176,19 +176,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Destructor
-        /// </summary>
-        ~Network()
-        {
-            Dispose(true);
-            if (Configuration.Kernel.Debugging)
-            {
-                Core.DebugLog("Destructor called for network: " + ServerName);
-            }
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Display server channel list
         /// </summary>
         public void DisplayChannelWindow()
@@ -220,15 +207,6 @@ namespace Pidgeon
                     return this.PrivateWins[user];
                 }
             }
-        }
-
-        public override void Destroy()
-        {
-            lock (Descriptions)
-            {
-                Descriptions.Clear();
-            }
-            base.Destroy();
         }
 
         /// <summary>
@@ -491,14 +469,14 @@ namespace Pidgeon
                         else
                         {
                             this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
-                                                                    ")" + args.Message, ContentLine.MessageStyle.Message,
+                                                                    ") " + args.Source + ": " + args.Message, ContentLine.MessageStyle.Message,
                                                                     WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                         }
                     }
                     else
                     {
                         this.SystemWindow.scrollback.InsertText("Message to channel you aren't in (" + args.ChannelName +
-                                                                    ")" + args.Message, ContentLine.MessageStyle.Message,
+                                                                    ") " + args.Source + ": " + args.Message, ContentLine.MessageStyle.Message,
                                                                     WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                 }
@@ -703,11 +681,11 @@ namespace Pidgeon
                             case "b":
                                 if (channel.Bans == null)
                                 {
-                                    channel.Bans = new List<libirc.SimpleBan>();
+                                    channel.Bans = new List<libirc.ChannelBan>();
                                 }
                                 lock (channel.Bans)
                                 {
-                                    channel.Bans.Add(new libirc.SimpleBan(args.Source, m.Parameter, ""));
+                                    channel.Bans.Add(new libirc.ChannelBan(args.Source, m.Parameter, ""));
                                 }
                                 break;
                         }
@@ -733,7 +711,7 @@ namespace Pidgeon
                             case "b":
                                 if (channel.Bans == null)
                                 {
-                                    channel.Bans = new List<libirc.SimpleBan>();
+                                    channel.Bans = new List<libirc.ChannelBan>();
                                 }
                                 channel.RemoveBan(m.Parameter);
                                 break;
