@@ -43,6 +43,15 @@ if [ ! -d bin/Debug ];then
     mkdir bin/Debug
 fi
 
+if [ -d skins ];then
+    if [ ! -d bin/$folder/skins ];then
+        mkdir bin/$folder/skins
+    fi
+
+    cp skins/* bin/$folder/skins || exit 1
+fi
+
+
 if [ -f Configuration.cs.orig ]; then
 	mv Configuration.cs.orig Configuration.cs
 fi
@@ -57,14 +66,6 @@ if [ -f build/buildall.sh ];then
 	build/buildall.sh "$p" $folder || exit 1
 	else
 	echo "Warning: there is no extension configuration present"
-fi
-
-if [ -d skins ];then
-    if [ ! -d bin/$folder/skins ];then
-        mkdir bin/$folder/skins
-    fi
-
-    cp skins/* bin/$folder/skins || exit 1
 fi
 
 if [ ! -f pidgeon ];then
