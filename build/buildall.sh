@@ -1,6 +1,5 @@
 #!/bin/sh
 
-
 if [ "$1" = "" ];then
     echo "Missing parameter"
     exit 1
@@ -13,35 +12,36 @@ fi
 
 echo "Creating modules"
 
-if [ ! -d "bin/$2/modules" ];then
-	mkdir "bin/$2/modules" || exit 1
+if [ ! -d "Pidgeon/bin/$2/modules" ];then
+	mkdir "Pidgeon/bin/$2/modules" || exit 1
 fi
-original_path=`pwd`
+original_path=`pwd`/Pidgeon
+cd Extensions || exit 1
 echo "Creating search"
 echo "Building tab completion"
-cd "modules/SearchText/"
+cd "SearchText/"
 xbuild $1 && mv bin/$2/SearchData.dll "$original_path/bin/$2/modules/search.pmod"
-cd "$original_path"
+cd -
 echo "Creating tab completion"
-cd "modules/pidgeon_tc/"
+cd "pidgeon_tc/"
 xbuild $1 && mv bin/$2/pidgeon_tab.dll "$original_path/bin/$2/modules/pidgeon_tc.pmod"
-cd "$original_path"
+cd -
 echo "Creating network data"
-cd "modules/NetworkInfo"
+cd "NetworkInfo"
 xbuild $1 && mv bin/$2/NetworkInfo.dll "$original_path/bin/$2/modules/networkdata.pmod"
-cd "$original_path"
+cd -
 echo "Creating notice"
-cd "modules/pidgeon_notice"
+cd "pidgeon_notice"
 xbuild $1 && mv bin/$2/pidgeon_notice.dll "$original_path/bin/$2/modules/pidgeon_notice.pmod"
-cd "$original_path"
+cd -
 echo "Creating diff"
-cd "modules/TopicDiff"
+cd "TopicDiff"
 xbuild $1 && mv bin/$2/TopicDiff.dll "$original_path/bin/$2/modules/TopicDiff.pmod"
-cd "$original_path"
+cd -
 echo "Creating it"
-cd "modules/IgnoredText"
+cd "IgnoredText"
 xbuild $1 && mv bin/$2/IgnoredText.dll "$original_path/bin/$2/modules/IgnoredText.pmod"
-cd "$original_path"
+cd -
 echo "Creating channel"
-cd "modules/pidgeon_chan"
+cd "pidgeon_chan"
 xbuild $1 && mv bin/$2/pidgeon_chan.dll "$original_path/bin/$2/modules/pidgeon_chan.pmod"

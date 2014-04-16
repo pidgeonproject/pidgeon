@@ -15,6 +15,8 @@ if [ "`which xbuild`" = "" ];then
 	exit 1
 fi
 
+cd Pidgeon || exit 1
+
 echo "Checking links"
 
 if [ ! -L manualpages ];then
@@ -41,24 +43,20 @@ if [ ! -d bin/Debug ];then
     mkdir bin/Debug
 fi
 
+if [ -f Configuration.cs.orig ]; then
+	mv Configuration.cs.orig Configuration.cs
+fi
+
 if [ ! -f "bin/Debug/Pidgeon.exe" ];then
     cp bin/Release/Pidgeon.exe bin/Debug
 fi
 
-if [ ! -f pidgeon ];then
-	echo "#!/bin/sh" >> pidgeon
-	echo "mono bin/$folder/Pidgeon.exe \$*" >> pidgeon
-	chmod a+x pidgeon
-fi
+cd .. || exit 1
 
 if [ -f build/buildall.sh ];then
-	build/buildall.sh "$p" $folder
+	build/buildall.sh "$p" $folder || exit 1
 	else
 	echo "Warning: there is no extension configuration present"
-fi
-
-if [ -f Configuration.cs.orig ]; then
-	mv Configuration.cs.orig Configuration.cs
 fi
 
 if [ -d skins ];then
@@ -66,7 +64,13 @@ if [ -d skins ];then
         mkdir bin/$folder/skins
     fi
 
-    cp skins/* bin/$folder/skins
+    cp skins/* bin/$folder/skins || exit 1
+fi
+
+if [ ! -f pidgeon ];then
+	echo "#!/bin/sh" >> pidgeon
+	echo "mono Pidgeon/bin/$folder/Pidgeon.exe \$*" >> pidgeon
+	chmod a+x pidgeon
 fi
 
 echo "Everything was built, you can start pidgeon by typing"
