@@ -28,11 +28,17 @@ namespace Pidgeon
         /// <summary>
         /// Name of extension
         /// </summary>
-        public string Name = "Unknown extension";
+        public string Name
+        {
+            get
+            {
+                return this.GetType().Name;
+            }
+        }
         /// <summary>
         /// Version
         /// </summary>
-        public string Version = "1.0";
+        public Version Version = new Version(1, 0, 0);
         /// <summary>
         /// Description of extension
         /// </summary>
@@ -189,11 +195,11 @@ namespace Pidgeon
                         }
                     }
                 }
-                lock (Core.Extensions)
+                lock (ExtensionPool.Extensions)
                 {
-                    if (Core.Extensions.Contains(this))
+                    if (ExtensionPool.Extensions.Contains(this))
                     {
-                        Core.Extensions.Remove(this);
+                        ExtensionPool.Extensions.Remove(this);
                         Syslog.DebugLog("CORE: Unloaded " + Name);
                     }
                 }

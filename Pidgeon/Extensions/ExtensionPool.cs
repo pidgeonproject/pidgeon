@@ -1,4 +1,4 @@
-//  This program is free software; you can redistribute it and/or modify
+﻿//  This program is free software; you can redistribute it and/or modify
 //  it under the terms of the GNU General Public License as published by
 //  the Free Software Foundation; either version 2 of the License, or   
 //  (at your option) version 3.                                         
@@ -23,8 +23,10 @@ using System.Diagnostics;
 
 namespace Pidgeon
 {
-    public static partial class Core
+    public class ExtensionPool
     {
+        public static List<Extension> Extensions = new List<Extension>();
+
         /// <summary>
         /// Register a new plugin
         /// </summary>
@@ -67,7 +69,7 @@ namespace Pidgeon
                             return false;
                         }
                         bool problem = false;
-                        foreach (Extension x in Core.Extensions)
+                        foreach (Extension x in Extensions)
                         {
                             if (x.Name == _plugin.Name)
                             {
@@ -79,9 +81,9 @@ namespace Pidgeon
                         }
                         if (problem)
                         {
-                            if (Core.Extensions.Contains(_plugin))
+                            if (Extensions.Contains(_plugin))
                             {
-                                Core.Extensions.Remove(_plugin);
+                                Extensions.Remove(_plugin);
                             }
                         }
                         Core.Ringlog("CORE: everything is fine, registering " + _plugin.Name);

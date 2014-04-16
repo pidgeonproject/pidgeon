@@ -114,6 +114,7 @@
     <Compile Include="Core\Eval.cs" />
     <Compile Include="Core\ThreadManager.cs" />
     <Compile Include="Events.cs" />
+    <Compile Include="Extensions\ExtensionPool.cs" />
     <Compile Include="Extensions\HookArgs.cs" />
     <Compile Include="Extensions\HookDefs.cs" />
     <Compile Include="Forms\ChannelInfo.Designer.cs">
@@ -183,7 +184,6 @@
     <Compile Include="Core\Config_Core.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="Core\Core_IO.cs" />
-    <Compile Include="Core\Core_Modules.cs" />
     <Compile Include="Protocols\ProtocolQuassel.cs" />
     <Compile Include="Protocols\ProtocolXmpp.cs" />
     <Compile Include="Protocols\Qt.cs" />

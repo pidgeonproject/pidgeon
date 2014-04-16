@@ -119,23 +119,6 @@ namespace Pidgeon
         }
 
         /// <summary>
-        /// Retrieve a size in memory of an object
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public static long GetSizeOfObject(object obj)
-        {
-            var bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            long size = 0;
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                size = ms.Length;
-            }
-            return size;
-        }
-
-        /// <summary>
         /// Convert a Color to Gdk version
         /// </summary>
         /// <param name="color"></param>
