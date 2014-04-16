@@ -26,9 +26,7 @@ namespace Pidgeon
     {
         public override void Initialise()
         {
-            Name = "Input tab completion for the pidgeon";
             Description = "This plugin enable you to use tab completion like in terminal";
-            Version = "1.0.60";
             base.Initialise();
         }
 

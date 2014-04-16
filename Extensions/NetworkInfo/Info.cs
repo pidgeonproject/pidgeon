@@ -26,8 +26,6 @@ namespace Pidgeon
     {
         public override void Initialise()
         {
-            Name = "Network data";
-            Version = "1.0";
             Description = "This extension enable some extra features based on version of ircd";
             base.Initialise();
         }

@@ -64,8 +64,6 @@ namespace Pidgeon
 
         public override void Initialise()
         {
-            Name = "Notification collector";
-            Version = "1.0.0";
             Description = "This allows you to collect all notification you get";
             base.Initialise();
         }

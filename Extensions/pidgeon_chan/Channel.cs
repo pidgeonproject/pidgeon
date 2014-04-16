@@ -30,9 +30,7 @@ namespace Pidgeon
 
         public override void Initialise()
         {
-            Name = "Help";
             Description = "This plugin enable you to open #pidgeon channel from help menu";
-            Version = "1.2.0";
             base.Initialise();
         }
 

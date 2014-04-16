@@ -37,9 +37,8 @@ namespace Pidgeon
 
         public override void Initialise()
         {
-            Name = "Freenode tools";
             Description = "This plugin enable you to use extra commands";
-            Version = "1.8.0";
+            Version = new Version(2,0,0);
             base.Initialise();
         }
 

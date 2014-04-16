@@ -24,8 +24,6 @@ namespace Pidgeon
     {
         public override void Initialise()
         {
-            Name = "TopicDiff";
-            Version = "1.0";
             Description = "This extension let you display a diff of change to a topic";
         }
 

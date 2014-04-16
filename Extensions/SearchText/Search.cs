@@ -11,9 +11,7 @@ namespace Pidgeon
 
         public override void Initialise()
         {
-            Name = "Search";
             Description = "Search using wikipedia etc menu when you right click selected text";
-            Version = "1.0.0.0";
             base.Initialise();
         }
 

@@ -29,8 +29,6 @@ namespace Pidgeon
 
         public override void Initialise()
         {
-            Name = "Ignored text";
-            Version = "1.0.0";
             Description = "This allows you to display all ignored text in a separate window";
             base.Initialise();
         }
