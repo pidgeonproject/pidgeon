@@ -342,6 +342,8 @@ namespace Pidgeon
             try
             {
                 KernelThread = Thread.CurrentThread;
+                KernelThread.Name = "Pidgeon:Core";
+                ThreadManager.RegisterThread(KernelThread);
                 StartupTime = DateTime.Now;
                 // turn on debugging until we load the config
                 Configuration.Kernel.Debugging = true;
