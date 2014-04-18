@@ -1,3 +1,9 @@
+pidgeon (1.6.0.0) precise; urgency=medium
+
+  * https://github.com/pidgeonproject/pidgeon/compare/8fb6250b05a6...6abbe27ec2db
+
+ -- Petr Bena <benapetr@gmail.com>  Fri, 18 Apr 2014 18:20:00 +0200
+
 pidgeon (1.2.6.0) precise; urgency=medium
 
   * Initial release
