@@ -1,6 +1,6 @@
 #!/bin/sh
 
-debs="-us -uc"
+debs="-S -sa"
 if [ ! -d .git ];then
     echo "This command can be run from git repository only"
     exit 1
