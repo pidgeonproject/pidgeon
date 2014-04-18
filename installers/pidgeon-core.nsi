@@ -359,14 +359,21 @@ SectionIn RO
   ;ADD YOUR OWN FILES HERE...
   file "tcl84.dll"
   file "Pidgeon.exe" 
-  file "gtk-sharp-2.12.20.msi"
+  file "gtk-sharp-2.12.21.msi"
   CreateDirectory $INSTDIR\skins
   file /oname=skins\mono.ps "skins\mono.ps"
   file /oname=skins\cool.ps "skins\cool.ps"
-  ExecWait 'msiexec.exe /passive /i "$INSTDIR\gtk-sharp-2.12.20.msi"'
+  file /oname=skins\at.png "skins\at.png"
+  file /oname=skins\exclamationmark.png "skins\exclamationmark.png"
+  file /oname=skins\exclamation-mark-s.png "skins\exclamation-mark-s.png"
+  file /oname=skins\hash-s.png "skins\hash-s.png"
+  file /oname=skins\icon_hash.png "skins\icon_hash.png"
+  file /oname=skins\at-s.png "skins\at-s.png"
+  file /oname=skins\mini.ps "skins\mini.ps"
+  ExecWait 'msiexec.exe /passive /i "$INSTDIR\gtk-sharp-2.12.21.msi"'
   ;${EnvVarUpdate} $0 "PATH" "A" "HKLM" "$PROGRAMFILES32\GtkSharp\2.12\bin" ; Append  
   ;${EnvVarUpdate} $0 "GTK_BASEPATH" "A" "HKLM" "$PROGRAMFILES32\GtkSharp\2.12\" ; Append  
-  Delete "gtk-sharp-2.12.20.msi"
+  Delete "gtk-sharp-2.12.21.msi"
   ;Store installation folder
   CreateShortCut "$SMPROGRAMS\${APPNAME}.lnk" "$INSTDIR\Pidgeon.exe" ""
   WriteUninstaller "$INSTDIR\Uninstall.exe"
@@ -380,6 +387,7 @@ Section "Modules" SecModules
   file /oname=modules\NetworkInfo.pmod "modules\NetworkInfo.pmod"
   file /oname=modules\pidgeon_chan.pmod "modules\pidgeon_chan.pmod"
   file /oname=modules\pidgeon_notice.pmod "modules\pidgeon_notice.pmod"
+  file /oname=modules\SearchData.pmod "modules\SearchData.pmod"
   file /oname=modules\IgnoredText.pmod "modules\IgnoredText.pmod"
   file /oname=modules\TopicDiff.pmod "modules\TopicDiff.pmod"
 SectionEnd
