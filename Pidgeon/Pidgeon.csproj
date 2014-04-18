@@ -1,0 +1,272 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>10.0.0</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6EE4F770-4A6F-4101-AFE7-0F4096F505F3}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Pidgeon</RootNamespace>
+    <AssemblyName>Pidgeon</AssemblyName>
+    <StartupObject>Pidgeon.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="BeforeBuild" command="" workingdir="${ProjectDir}" externalConsole="true" />
+      </CustomCommands>
+    </CustomCommands>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <DocumentationFile>bin\Debug\Pidgeon.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+    <ConsolePause>false</ConsolePause>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Pidgeon.XML</DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <CodeAnalysisRuleSet>Profiler.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>pigeon_clip_art_hight.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Eagle">
+      <HintPath>Eagle.dll</HintPath>
+    </Reference>
+    <Reference Include="libirc">
+      <HintPath>libirc.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web" />
+    <Reference Include="gtk-dotnet, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+      <Package>gtk-dotnet-2.0</Package>
+    </Reference>
+    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+      <Package>glib-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Private>False</Private>
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f">
+      <Package>gtk-sharp-2.0</Package>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ManualPages\Connect.txt" />
+    <EmbeddedResource Include="ManualPages\Oper.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonMan.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonModule.txt" />
+    <EmbeddedResource Include="ManualPages\PidgeonUptime.txt" />
+    <EmbeddedResource Include="ManualPages\Server.txt" />
+    <EmbeddedResource Include="ManualPages\ServicesClear.txt" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Languages\en_english.txt" />
+    <EmbeddedResource Include="Languages\cs_czech.txt" />
+    <None Include="Resources\arrow.png" />
+    <EmbeddedResource Include="Resources\pigeon_clip_art_hight.ico">
+      <DeployService-UseProjectRelativePath>true</DeployService-UseProjectRelativePath>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\at.png" />
+    <EmbeddedResource Include="Resources\darknetwork.png" />
+    <EmbeddedResource Include="Resources\exclamation mark.png" />
+    <None Include="Resources\hash.png" />
+    <EmbeddedResource Include="Resources\Pigeon_clip_art_hight.png" />
+    <EmbeddedResource Include="Resources\Pigeon_clip_art_hight_mini.png" />
+    <EmbeddedResource Include="version.txt" />
+    <EmbeddedResource Include="Resources\icon.png" />
+    <EmbeddedResource Include="Resources\icon_hash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\ExternalCommand.cs" />
+    <Compile Include="Commands\Commands_Sc.cs" />
+    <Compile Include="Core\Eval.cs" />
+    <Compile Include="Core\ThreadManager.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Extensions\ExtensionPool.cs" />
+    <Compile Include="Extensions\HookArgs.cs" />
+    <Compile Include="Extensions\HookDefs.cs" />
+    <Compile Include="Forms\ChannelInfo.Designer.cs">
+      <DependentUpon>ChannelInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Connection.Designer.cs">
+      <DependentUpon>Connection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Help.Designer.cs">
+      <DependentUpon>Help.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Main.Designer.cs">
+      <DependentUpon>Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\NetworkDB.Designer.cs">
+      <DependentUpon>NetworkDB.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\OpenDCC.cs" />
+    <Compile Include="Forms\OpenDCC.Designer.cs">
+      <DependentUpon>OpenDCC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Preferences\Highlighter.cs" />
+    <Compile Include="Forms\Preferences\Preferences.Designer.cs">
+      <DependentUpon>Preferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Preferences\Ignore.cs" />
+    <Compile Include="Forms\Preferences\Shortcut.cs" />
+    <Compile Include="Forms\TrafficScanner.Designer.cs">
+      <DependentUpon>TrafficScanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Graphics\PidgeonList\Menu.cs" />
+    <Compile Include="Graphics\PidgeonList\Timer.cs" />
+    <Compile Include="GTK\SteticMono.cs" />
+    <Compile Include="Commands\Commands.cs" />
+    <Compile Include="Commands\Commands_IRC.cs" />
+    <Compile Include="Commands\Commands_Services.cs" />
+    <Compile Include="Commands\Commands_System.cs" />
+    <Compile Include="GTK\MessageBox.cs" />
+    <Compile Include="GTK\PidgeonForm.cs" />
+    <Compile Include="Hyperlink.cs" />
+    <Compile Include="PidgeonException.cs" />
+    <Compile Include="Protocols\CertificateMaker.cs" />
+    <Compile Include="Protocols\ProtocolDCC.cs" />
+    <Compile Include="RichTBox\Classes.cs" />
+    <Compile Include="RichTBox\Data.cs" />
+    <Compile Include="RichTBox\RichTBox_Core.cs" />
+    <Compile Include="Scrollback\LineLogs.cs" />
+    <Compile Include="Scrollback\Menu.cs" />
+    <Compile Include="Scrollback\Parser.cs" />
+    <Compile Include="Scrollback\ProcessingLine.cs" />
+    <Compile Include="Scrollback\Scrollback.cs" />
+    <Compile Include="Channel.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="Extensions\Extension.cs" />
+    <Compile Include="Hooks.cs" />
+    <Compile Include="Ignoring.cs" />
+    <Compile Include="Messages.cs" />
+    <Compile Include="Network.cs" />
+    <Compile Include="NetworkData.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Protocol.cs" />
+    <Compile Include="RevisionInfo.cs" />
+    <Compile Include="ScriptingCore.cs" />
+    <Compile Include="Scrollback\ScrollbackLine.cs" />
+    <Compile Include="SkinCl.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="Core\Config_Core.cs" />
+    <Compile Include="Core\Core.cs" />
+    <Compile Include="Core\Core_IO.cs" />
+    <Compile Include="Protocols\ProtocolQuassel.cs" />
+    <Compile Include="Protocols\ProtocolXmpp.cs" />
+    <Compile Include="Protocols\Qt.cs" />
+    <Compile Include="Protocols\Services\Buffer.cs" />
+    <Compile Include="Protocols\Services\Datagram.cs" />
+    <Compile Include="Protocols\Services\ProtocolSv.cs" />
+    <Compile Include="Protocols\Services\ResponsesSv.cs" />
+    <Compile Include="Forms\Main.cs" />
+    <Compile Include="Forms\Preferences\Preferences.cs" />
+    <Compile Include="Forms\Channels.cs" />
+    <Compile Include="Forms\TrafficScanner.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs" />
+    <Compile Include="Properties\Settings.Designer.cs" />
+    <Compile Include="Graphics\PidgeonList\PidgeonList.cs" />
+    <Compile Include="Forms\Connection.cs" />
+    <Compile Include="Forms\SearchItem.cs" />
+    <Compile Include="Forms\ChannelInfo.cs" />
+    <Compile Include="Forms\MicroChat.cs" />
+    <Compile Include="Forms\ScriptEdit.cs" />
+    <Compile Include="Graphics\TextBox.cs" />
+    <Compile Include="Forms\Help.cs" />
+    <Compile Include="WinForms\Recovery.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Recovery.Designer.cs" />
+    <Compile Include="Forms\Notification.cs" />
+    <Compile Include="WinForms\Updater.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinForms\Updater.Designer.cs" />
+    <Compile Include="Forms\ConfigFile.cs" />
+    <Compile Include="Forms\NetworkDB.cs" />
+    <Compile Include="Graphics\Window\Window.cs" />
+    <Compile Include="Graphics\Window\Window_UserList.cs" />
+    <Compile Include="Terminal.cs" />
+    <Compile Include="Syslog.cs" />
+    <Compile Include="Definitions.cs" />
+    <Compile Include="Protocols\ProtocolIrc.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="WindowsManager.cs" />
+    <Compile Include="Connections.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <None Include="Resources\Letter S.png" />
+    <None Include="Properties\Resources.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\exclamation-mark-s.png" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy FileWidth="120" EolMarker="Unix" inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeIndexerDeclarationBracket="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" IfParentheses="False" WhileParentheses="False" ForParentheses="False" ForeachParentheses="False" SwitchParentheses="False" LockParentheses="False" UsingParentheses="False" SpacesBeforeBrackets="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+        <GtkDesignInfo generateGettext="false" />
+        <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
+          <BuildFilesVar />
+          <DeployFilesVar />
+          <ResourcesVar />
+          <OthersVar />
+          <GacRefVar />
+          <AsmRefVar />
+          <ProjectRefVar />
+        </MonoDevelop.Autotools.MakefileInfo>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\hash-s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\at-s.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="pigeon_clip_art_hight.ico" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <PropertyGroup>
+    <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>
+  </PropertyGroup>
+</Project>

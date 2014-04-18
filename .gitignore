@@ -1,2 +1,6 @@
 *.suo
+*.exe
+*.pdb
+bin
+obj
 version.txt
