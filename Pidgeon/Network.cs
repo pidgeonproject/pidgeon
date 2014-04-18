@@ -976,18 +976,31 @@ namespace Pidgeon
                     }
                     else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Info && args.Parameters.Count > 1)
                     {
-                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " is " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
+                        this.SystemWindow.scrollback.InsertText("WHOIS " + name + " " + args.Message, Pidgeon.ContentLine.MessageStyle.System,
                             WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
                     else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Server)
                     {
-                        this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
-                                        args.Date, IsDownloadingBouncerBacklog);
+                        if (args.Parameters.Count > 2)
+                        {
+                            string server = "";
+                            if (!String.IsNullOrEmpty(args.Message))
+                            {
+                                server = " (" + args.Message + ")";
+                            }
+                            this.SystemWindow.scrollback.InsertText("WHOIS " + args.Parameters[1] + " is using server: " + args.Parameters[2] + server, ContentLine.MessageStyle.System, WriteLogs(),
+                                            args.Date, IsDownloadingBouncerBacklog);
+                        }
                     }
                     else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Uptime)
                     {
-                        this.SystemWindow.scrollback.InsertText(args.ServerLine, ContentLine.MessageStyle.System, WriteLogs(),
-                                    args.Date, IsDownloadingBouncerBacklog);
+                        if (args.Parameters.Count > 3)
+                        {
+                            DateTime date = libirc.Defs.ConvertFromUNIX(args.Parameters[3]);
+                            this.SystemWindow.scrollback.InsertText("WHOIS " + args.Parameters[1] + " is idle for " + args.Parameters[2] +
+                                " seconds and online since " + date.ToString() + " (" + (DateTime.Now - date).ToString() + ")", ContentLine.MessageStyle.System, WriteLogs(),
+                                        args.Date, IsDownloadingBouncerBacklog);
+                        }
                     }
                     else if (args.WhoisType == NetworkWHOISEventArgs.Mode.Header && args.Parameters.Count > 3)
                     {
@@ -1021,6 +1034,11 @@ namespace Pidgeon
             {
                 Core.DisplayNote(args.Source + " invites you to join " + args.ChannelName, "Invitation");
             }
+        }
+
+        public override void __evt_OnMOTD(libirc.Network.NetworkGenericDataEventArgs args)
+        {
+            this.SystemWindow.scrollback.InsertText("MOTD: " + args.Message, ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
         }
 
         public override bool __evt__IncomingData(IncomingDataEventArgs args)
