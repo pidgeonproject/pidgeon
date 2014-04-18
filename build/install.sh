@@ -10,7 +10,7 @@ fi
 
 echo "Installing pidgeon to $DESTDIR"
 
-if [ ! -f bin/Release/Pidgeon.exe ] || [ ! -d bin/Release/modules ];then
+if [ ! -f Pidgeon/bin/Release/Pidgeon.exe ] || [ ! -d Pidgeon/bin/Release/modules ];then
   echo "ERROR: you need to build pidgeon first"
   exit 1
 fi
@@ -42,11 +42,11 @@ mkdir "$DESTDIR/usr/share/pidgeon/modules" || exit 1
 
 echo "Copying the binaries to /usr/share"
 
-cp -v bin/Release/modules/* "$DESTDIR/usr/share/pidgeon/modules" || exit 1
-cp -v bin/Release/skins/* "$DESTDIR/usr/share/pidgeon/skins" || exit 1
-cp -v libirc.dll "$DESTDIR/usr/share/pidgeon/" || exit 1
-cp -v bin/Release/Pidgeon.exe "$DESTDIR/usr/share/pidgeon" || exit 1
-cp -v bin/Release/Pidgeon.XML "$DESTDIR/usr/share/pidgeon" || exit 1
+cp -v Pidgeon/bin/Release/modules/* "$DESTDIR/usr/share/pidgeon/modules" || exit 1
+cp -v Pidgeon/bin/Release/skins/* "$DESTDIR/usr/share/pidgeon/skins" || exit 1
+cp -v Pidgeon/libirc.dll "$DESTDIR/usr/share/pidgeon/" || exit 1
+cp -v Pidgeon/bin/Release/Pidgeon.exe "$DESTDIR/usr/share/pidgeon" || exit 1
+cp -v Pidgeon/bin/Release/Pidgeon.XML "$DESTDIR/usr/share/pidgeon" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/skins" || exit 1
 chmod a+rx "$DESTDIR/usr/share/pidgeon/modules" || exit 1
@@ -80,7 +80,7 @@ gzip "$DESTDIR/usr/share/man/man1/pidgeon.1" || exit 1
 if [ ! -d "$DESTDIR/usr/share/applications" ];then
     mkdir "$DESTDIR/usr/share/applications"
 fi
-cp "pidgeon.desktop" "$DESTDIR/usr/share/applications" || exit 1
-cp "Resources/pidgeon_mini.png" "$DESTDIR/usr/share/pidgeon/pidgeon_mini.png" || exit 1
+cp "build/pidgeon.desktop" "$DESTDIR/usr/share/applications" || exit 1
+cp "Pidgeon/Resources/pidgeon_mini.png" "$DESTDIR/usr/share/pidgeon/pidgeon_mini.png" || exit 1
 
 echo "Everything was installed, you can launch pidgeon using \"pidgeon\""
