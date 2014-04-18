@@ -32,12 +32,14 @@ cd "$temp/pidgeon" || exit 1
 echo "Doing sanity checks"
 
 if [ -d ".git" ];then
+    cd Pidgeon || exit 1
     sh update.sh || exit 1
+    cd .. || exit 1
     echo "Removing .git folder"
     rm -rf .git || exit 1
 fi
 
-if [ -d "bin" ];then
+if [ -d "Pidgeon/bin" ];then
     echo "Cleaning the binaries"
     if [ ! -f "Makefile" ];then
         cp Makefile.in Makefile || exit 1
@@ -53,7 +55,9 @@ if [ -f "Makefile" ];then
 fi
 
 echo "Running update"
+cd Pidgeon || exit 1
 ./update.sh || exit 1
+cd .. || exit 1
 
 gpg -k
 echo "Do you want to use key? if yes provide the key here or hit enter"
