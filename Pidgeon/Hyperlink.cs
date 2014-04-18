@@ -62,17 +62,21 @@ namespace Pidgeon
             }
             catch (ThreadAbortException)
             {
+                Core.ThreadManager.UnregisterThread(Thread.CurrentThread);
                 return;
             }
             catch (Exception fail)
             {
                 Core.HandleException(fail);
             }
+            Core.ThreadManager.UnregisterThread(Thread.CurrentThread);
         }
 
         public static int Initialize()
         {
             Thread link = new Thread(Exec);
+            link.Name = "Pidgeon:Link";
+            Core.ThreadManager.RegisterThread(link);
             link.Start();
             return 0;
         }

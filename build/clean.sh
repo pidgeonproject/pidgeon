@@ -9,6 +9,8 @@ if [ -d bin ];then
 rm -vrf bin
 fi
 
+cd -
+
 rm -vrf Extensions/*/bin
 rm -vrf Extensions/*/obj
 rm -vf pidgeon
