@@ -755,44 +755,6 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_INFO(libirc.Network.NetworkGenericDataEventArgs args)
-        {
-            string parameter_line = args.ParameterLine;
-            if (parameter_line.Contains("PREFIX=("))
-            {
-                string cmodes = parameter_line.Substring(parameter_line.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
-                cmodes = cmodes.Substring(0, cmodes.IndexOf(")", StringComparison.Ordinal));
-                lock (this.CUModes)
-                {
-                    this.CUModes.Clear();
-                    this.CUModes.AddRange(cmodes.ToArray<char>());
-                }
-                cmodes = parameter_line.Substring(parameter_line.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
-                cmodes = cmodes.Substring(cmodes.IndexOf(")", StringComparison.Ordinal) + 1, this.CUModes.Count);
-
-                this.UChars.Clear();
-                this.UChars.AddRange(cmodes.ToArray<char>());
-            }
-            if (parameter_line.Contains("CHANMODES="))
-            {
-                string xmodes = parameter_line.Substring(parameter_line.IndexOf("CHANMODES=", StringComparison.Ordinal) + 11);
-                xmodes = xmodes.Substring(0, xmodes.IndexOf(" ", StringComparison.Ordinal));
-                string[] _mode = xmodes.Split(',');
-                this.ParsedInfo = true;
-                if (_mode.Length == 4)
-                {
-                    this.PModes.Clear();
-                    this.CModes.Clear();
-                    this.XModes.Clear();
-                    this.SModes.Clear();
-                    this.PModes.AddRange(_mode[0].ToArray<char>());
-                    this.XModes.AddRange(_mode[1].ToArray<char>());
-                    this.SModes.AddRange(_mode[2].ToArray<char>());
-                    this.CModes.AddRange(_mode[3].ToArray<char>());
-                }
-            }
-        }
-
         public override void __evt_TOPIC(NetworkTOPICEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
@@ -947,6 +909,11 @@ namespace Pidgeon
         public override void __evt_ChannelFinishBan(NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
+            if (channel == args.Channel)
+            {
+                channel.UpdateInfo();
+                return;
+            }
             if (channel != null && args.Channel != null)
             {
                 if (channel.Bans == null)
