@@ -77,7 +77,7 @@ namespace Pidgeon.Protocols.Services
         /// Whether the services have finished loading
         /// </summary>
         public bool FinishedLoading = false;
-        public string nick = "";
+        public string Username = "";
         /// <summary>
         /// This needs to be true when the services are in process of disconnecting
         /// </summary>
@@ -191,7 +191,7 @@ namespace Pidgeon.Protocols.Services
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
                 Datagram login = new Datagram("AUTH");
-                login.Parameters.Add("user", nick);
+                login.Parameters.Add("user", Username);
                 login.Parameters.Add("pw", password);
                 Deliver(login);
                 Deliver(new Datagram("GLOBALNICK"));
@@ -531,7 +531,7 @@ namespace Pidgeon.Protocols.Services
             SystemWindow._Protocol = this;
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
-            main.Name = "Services/Main";
+            main.Name = "Pidgeon:Services/Main";
             Core.ThreadManager.RegisterThread(main);
             main.Start();
             return main;

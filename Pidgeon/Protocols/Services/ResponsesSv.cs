@@ -169,7 +169,7 @@ namespace Pidgeon.Protocols.Services
                     server = new Network(name, protocol);
                     protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
-                    server.Nickname = protocol.nick;
+                    server.Nickname = protocol.Username;
                     server.IsConnected = true;
                 }
                 if (Configuration.Services.UsingCache)
@@ -266,7 +266,7 @@ namespace Pidgeon.Protocols.Services
                     case "OK":
                         Network _network = new Network(network, protocol);
                         _network.IsConnected = true;
-                        _network.Nickname = protocol.nick;
+                        _network.Nickname = protocol.Username;
                         protocol.cache.Add(new Cache());
                         protocol.NetworkList.Add(_network);
                         return;
@@ -332,7 +332,7 @@ namespace Pidgeon.Protocols.Services
             /// <param name="protocol">Protocol which owns this request</param>
             public static void sGlobalNick(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.nick = curr.InnerText;
+                protocol.Username = curr.InnerText;
                 protocol.SystemWindow.scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
                     new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
@@ -466,7 +466,7 @@ namespace Pidgeon.Protocols.Services
                         {
                             protocol.Deliver(new Datagram("NETWORKINFO", i));
                             Network nw = new Network(i, protocol);
-                            nw.Nickname = protocol.nick;
+                            nw.Nickname = protocol.Username;
                             protocol.cache.Add(new Cache());
                             protocol.NetworkList.Add(nw);
                             // we flag the network as connected until we really know that
