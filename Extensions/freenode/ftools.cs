@@ -36,7 +36,7 @@ namespace Pidgeon
             return true;
         }
 
-        private void Remove(string channel)
+        private void Remove(string text)
         {
             if (text == "")
             {
