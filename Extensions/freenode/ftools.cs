@@ -38,7 +38,26 @@ namespace Pidgeon
 
         private void Remove(string channel)
         {
-            // todo
+            if (text == "")
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            string user = text;
+            string reason = Configuration.irc.DefaultReason;
+            if (text.Contains(" "))
+            {
+                reason = text.Substring(text.IndexOf(" " + 1));
+                user = text.Substring(0, text.IndexOf(" "));
+            }
+            if (!Core.SystemForm.Chat.IsChannel)
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            GetOp(Core.SystemForm.Chat.WindowName);
+            System.Threading.Thread.Sleep(100);
+            Core.SelectedNetwork.Transfer("REMOVE " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
         }
 
         public override void Initialise()
