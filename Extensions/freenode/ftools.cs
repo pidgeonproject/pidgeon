@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Pidgeon
 {
-    class RestrictedModule : Extension
+    class FreenodeTools : Extension
     {
         public override bool Hook_OnLoad()
         {
@@ -32,7 +32,13 @@ namespace Pidgeon
             Commands.RegisterCommand("op", new Commands.Command(Commands.Type.Plugin, Op));
             Commands.RegisterCommand("jhostban", new Commands.Command(Commands.Type.Plugin, JoinHostBan));
             Commands.RegisterCommand("jb", new Commands.Command(Commands.Type.Plugin, OpenBan));
+            Commands.RegisterCommand("remove", new Commands.Command(Commands.Type.Plugin, Remove));
             return true;
+        }
+
+        private void Remove(string channel)
+        {
+            // todo
         }
 
         public override void Initialise()
