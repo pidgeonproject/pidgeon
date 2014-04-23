@@ -408,7 +408,8 @@ namespace Pidgeon
                 case libirc.Network.EventType.Part:
                 case libirc.Network.EventType.Kick:
                 case libirc.Network.EventType.Quit:
-                    window.NeedsIcon = true;
+                    if (window != null)
+                        window.NeedsIcon = true;
                     break;
                 case libirc.Network.EventType.Nick:
                     this.Nickname = args.NewNick;
