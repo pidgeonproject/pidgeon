@@ -396,6 +396,10 @@ namespace Pidgeon
 
         public override void __evt_Self(NetworkSelfEventArgs args)
         {
+            Channel channel = GetChannel(args.ChannelName);
+            Graphics.Window window = null;
+            if (channel != null)
+                window = channel.RetrieveWindow();
             switch (args.Type)
             {
                 case libirc.Network.EventType.Join:
@@ -404,15 +408,7 @@ namespace Pidgeon
                 case libirc.Network.EventType.Part:
                 case libirc.Network.EventType.Kick:
                 case libirc.Network.EventType.Quit:
-                    string channel = args.ChannelName.ToLower();
-                    lock (this.Channels)
-                    {
-                        if (this.Channels.ContainsKey(channel))
-                        {
-                            Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
-                        }
-                    }
-                    this.RemoveChannel(channel);
+                    window.NeedsIcon = true;
                     break;
                 case libirc.Network.EventType.Nick:
                     this.Nickname = args.NewNick;
