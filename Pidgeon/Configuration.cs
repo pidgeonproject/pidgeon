@@ -280,9 +280,6 @@ namespace Pidgeon
             /// Enable the notice in tray
             /// </summary>
             public static bool Notice = true;
-            /// <summary>
-            /// Updater
-            /// </summary>
             public static string UpdaterUrl = "http://pidgeonclient.org/updater/index.php?this=" + System.Web.HttpUtility.UrlEncode(System.Windows.Forms.Application.ProductVersion);
             /// <summary>
             /// Maximum size of ringlog
@@ -322,9 +319,6 @@ namespace Pidgeon
             public static string ExternalHandler = "";
         }
 
-        /// <summary>
-        /// Memory
-        /// </summary>
         public static class Memory
         {
             /// <summary>
@@ -337,9 +331,6 @@ namespace Pidgeon
             public static int MaximumChannelBufferSize = 820;
         }
 
-        /// <summary>
-        /// Modes
-        /// </summary>
         public static class ChannelModes
         {
             /// <summary>
@@ -368,9 +359,6 @@ namespace Pidgeon
             public static bool aggressive_channel = true;
         }
 
-        /// <summary>
-        /// Logs
-        /// </summary>
         public static class Logs
         {
             /// <summary>
@@ -385,13 +373,7 @@ namespace Pidgeon
             /// Enable html logs
             /// </summary>
             public static bool logs_html = true;
-            /// <summary>
-            /// Directory path
-            /// </summary>
             public static string logs_dir = null;
-            /// <summary>
-            /// Name
-            /// </summary>
             public static string logs_name = "$1_yyMMdd";
             /// <summary>
             /// Kind of logs produced by services
@@ -430,9 +412,6 @@ namespace Pidgeon
             /// Enable this to make bars change the max size when reached
             /// </summary>
             public static bool DynamicBars = true;
-            /// <summary>
-            /// Size
-            /// </summary>
             public static int scrollback_plimit = 200;
             /// <summary>
             /// If timestamp is displayed

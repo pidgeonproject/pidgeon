@@ -18,9 +18,6 @@ using System.Collections.Generic;
 
 namespace Pidgeon
 {
-    /// <summary>
-    /// Terminal
-    /// </summary>
     public static class Terminal
     {
         private class Parameter
@@ -29,9 +26,6 @@ namespace Pidgeon
             /// The parameter.
             /// </summary>
             public string parameter;
-            /// <summary>
-            /// Parm
-            /// </summary>
             public List<string> parm;
             
             /// <summary>
@@ -52,16 +46,14 @@ namespace Pidgeon
         
         private static void ShowHelp()
         {
-            Console.WriteLine("Usage: pidgeon [h] [link]\n"
-                              + "\n"
+            Console.WriteLine("Usage: pidgeon [h] [link]\n\n"
                               + "This is a GUI irc client, you need to have an xserver in order to run it, bellow is a list of available options:\n"
                               + "\n"
                               + "Calling pidgeon irc://irc.tm-irc.org will connect to server tm-irc.org on port 6667, link has format [$]server:port $ is optional\n"
                               + "\nParameters:\n\n"
                               + "  --safe: Start pidgeon in safe mode\n"
                               + "  --home <path>: Change a pidgeon home to specific folder\n"
-                              + "  -h (--help): display this help\n"
-                              + "\n"
+                              + "  -h (--help): display this help\n\n"
                               + "for more information see http://pidgeonclient.org/wiki pidgeon is open source");
         }
         
@@ -87,7 +79,6 @@ namespace Pidgeon
                         break;
                 }
             }
-            
             return false;
         }
         

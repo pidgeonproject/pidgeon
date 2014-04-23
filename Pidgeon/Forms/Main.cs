@@ -217,7 +217,7 @@ namespace Pidgeon.Forms
             {
                 messages.Localize(this);
                 //SkinEditorAction.Sensitive = false;
-                setText("");
+                ChangeTitle("");
                 if (Configuration.Window.Window_Maximized)
                 {
                     this.Maximize();
@@ -351,7 +351,6 @@ namespace Pidgeon.Forms
                     {
                         info += "??";
                     }
-                    setText(Core.SelectedNetwork.RenderedChannel.Name + " - " + Core.SelectedNetwork.RenderedChannel.Topic);
                     toolStripStatusChannel.Text = Core.SelectedNetwork.RenderedChannel.Name + " user count: " + Core.SelectedNetwork.RenderedChannel.UserCount + " channel modes: " + Core.SelectedNetwork.RenderedChannel.ChannelMode.ToString() + " b/I/e: " + info;
                     if (Configuration.Kernel.DisplaySizeOfBuffer)
                     {
@@ -377,7 +376,7 @@ namespace Pidgeon.Forms
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int setText(string name)
+        public int ChangeTitle(string name)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {
@@ -613,13 +612,21 @@ namespace Pidgeon.Forms
             }
             hpaned1.Add2(window);
             Chat = window;
+            if (window.IsChannel)
+            {
+                Channel channel = window.GetChannel();
+                ChangeTitle(channel.Name + " - " + channel.Topic);
+            } else
+            {
+                ChangeTitle("");
+            }
         }
 
         /// <summary>
         /// Change a name of currently displayed channel in the toolbar (thread unsafe)
         /// </summary>
         /// <param name="channel"></param>
-        public void SetChannel(string channel)
+        public void SetRenderedWindowTitle(string channel)
         {
             if (Core._KernelThread != System.Threading.Thread.CurrentThread)
             {

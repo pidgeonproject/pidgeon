@@ -32,7 +32,7 @@ namespace Pidgeon.Forms
                 this.Build ();
                 messages.Localize (this);
                 this.label1.Markup = "<span size='18000'>Pidgeon</span>";
-                this.label4.Text = Configuration.Version + " build: " + RevisionProvider.GetHash();
+                this.label4.Text = Configuration.Version + " build: " + RevisionProvider.GetHash() + " libirc " + libirc.Defs.Version.ToString();
             } catch (Exception fail)
             {
                 Core.HandleException(fail);
