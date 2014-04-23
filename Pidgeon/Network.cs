@@ -330,7 +330,7 @@ namespace Pidgeon
             {
                 case libirc.IProtocol.Result.Done:
                     Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, 
-                                                               Pidgeon.ContentLine.MessageStyle.Message, true, 1, true);
+                                                               Pidgeon.ContentLine.MessageStyle.Action, true, 1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
                 case libirc.IProtocol.Result.NotImplemented:

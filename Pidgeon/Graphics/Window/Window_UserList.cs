@@ -677,6 +677,7 @@ namespace Pidgeon.Graphics
                     if (_channel != null)
                     {
                         _channel.ClearUsers();
+                        _channel.IsParsingWhoData = true;
                         _Network.Transfer("WHO " + _channel.Name);
                     }
                 }

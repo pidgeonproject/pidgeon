@@ -401,10 +401,6 @@ namespace Pidgeon.Protocols.Services
         {
             lock (this)
             {
-                if (IsDestroyed)
-                {
-                    return;
-                }
                 if (IsConnected)
                 {
                     Disconnect();

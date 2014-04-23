@@ -490,10 +490,6 @@ namespace Pidgeon.Graphics
                             Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL dc");
                             return;
                         }
-                        if (dc.IsDestroyed)
-                        {
-                            vTree.Remove(ref iter);
-                        }
                         if (dc.SystemWindow.NeedsIcon)
                         {
                             dc.SystemWindow.NeedsIcon = false;

@@ -154,6 +154,15 @@ namespace Pidgeon
             }
         }
 
+        public override void ClearUsers()
+        {
+            lock (this.UserList)
+            {
+                this.UserList.Clear();
+            }
+            base.ClearUsers();
+        }
+
         /// <summary>
         /// Thread safe, redraw all users in the user list in window, if exist
         /// </summary>
