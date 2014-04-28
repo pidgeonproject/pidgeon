@@ -313,6 +313,10 @@ namespace Pidgeon
         /// <returns>Channel or null if it doesn't exist</returns>
         public new Channel GetChannel(string name)
         {
+            if (name == null)
+            {
+                return null;
+            }
             lock (this.Channels)
             {
                 Channel channel = null;
@@ -396,26 +400,32 @@ namespace Pidgeon
 
         public override void __evt_Self(NetworkSelfEventArgs args)
         {
-            Channel channel = GetChannel(args.ChannelName);
-            Graphics.Window window = null;
-            if (channel != null)
-                window = channel.RetrieveWindow();
-            switch (args.Type)
+            try
             {
-                case libirc.Network.EventType.Join:
-                    MakeChannel(args.ChannelName);
-                    break;
-                case libirc.Network.EventType.Part:
-                case libirc.Network.EventType.Kick:
-                case libirc.Network.EventType.Quit:
-                    if (window != null)
-                        window.NeedsIcon = true;
-                    break;
-                case libirc.Network.EventType.Nick:
-                    this.Nickname = args.NewNick;
-                    this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
-                                                              Pidgeon.ContentLine.MessageStyle.User, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                    break;
+                Channel channel = GetChannel(args.ChannelName);
+                Graphics.Window window = null;
+                if (channel != null)
+                    window = channel.RetrieveWindow();
+                switch (args.Type)
+                {
+                    case libirc.Network.EventType.Join:
+                        MakeChannel(args.ChannelName);
+                        break;
+                    case libirc.Network.EventType.Part:
+                    case libirc.Network.EventType.Kick:
+                    case libirc.Network.EventType.Quit:
+                        if (window != null)
+                            window.NeedsIcon = true;
+                        break;
+                    case libirc.Network.EventType.Nick:
+                        this.Nickname = args.NewNick;
+                        this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
+                                                                  Pidgeon.ContentLine.MessageStyle.User, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                        break;
+                }
+            } catch (Exception fail)
+            {
+                Core.HandleException(fail);
             }
         }
 
