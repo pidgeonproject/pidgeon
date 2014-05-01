@@ -643,7 +643,7 @@ namespace Pidgeon.Graphics
 
         private void insertService(Protocols.Services.ProtocolSv service)
         {
-            string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.UsingSSL.ToString() + "]";
+            string tx = "Root window of services [Port: " + service.Port.ToString() + " Encrypted: " + service.UsingSSL.ToString() + "]";
             TreeIter text = vTree.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (ServiceList)
             {
