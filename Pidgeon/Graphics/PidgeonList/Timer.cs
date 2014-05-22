@@ -182,7 +182,7 @@ namespace Pidgeon.Graphics
                 {
                     foreach (User user in queueUsers)
                     {
-                        _insertUser(user);
+                        insertUser(user);
                     }
                     queueUsers.Clear();
                 }

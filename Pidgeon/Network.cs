@@ -199,7 +199,7 @@ namespace Pidgeon
                     Graphics.Window window = WindowsManager.CreateChat(nickname, false, this, false, nickname, false, true, this);
                     this.PrivateWins.Add(user, window);
                     window.IsPrivMsg = true;
-                    Core.SystemForm.ChannelList.insertUser(user);
+                    Core.SystemForm.ChannelList.InsertUser(user);
                     return window;
                 }
                 else

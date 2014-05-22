@@ -574,7 +574,7 @@ namespace Pidgeon.Graphics
         /// Insert a user to list (thread safe)
         /// </summary>
         /// <param name="user"></param>
-        public void insertUser(User user)
+        public void InsertUser(User user)
         {
             lock (queueUsers)
             {
@@ -614,7 +614,7 @@ namespace Pidgeon.Graphics
             return false;
         }
 
-        private void _insertUser(User user)
+        private void insertUser(User user)
         {
             lock (ServerList)
             {
