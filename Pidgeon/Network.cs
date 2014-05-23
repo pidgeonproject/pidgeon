@@ -594,7 +594,12 @@ namespace Pidgeon
                     window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                                                  new List<string> { args.Source, args.Target, args.Message }),
                                                  ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                    channel.RemoveUser(args.Target);
+                    if (!IsDownloadingBouncerBacklog)
+                    {
+                        // modify this list only if we are not downloading a backlog because in that case
+                        // we are changing something what may conflict with latest data
+                        channel.RemoveUser(args.Target);
+                    }
                 }
             }
         }
@@ -614,9 +619,14 @@ namespace Pidgeon
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%", args.Message }),
                                ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                    channel.RemoveUser(user);
-                    channel.RedrawUsers();
-                    channel.UpdateInfo();
+                    if (!IsDownloadingBouncerBacklog)
+                    {
+                        // modify this list only if we are not downloading a backlog because in that case
+                        // we are changing something what may conflict with latest data
+                        channel.RemoveUser(user);
+                        channel.RedrawUsers();
+                        channel.UpdateInfo();
+                    }
                 }
             }
         }
@@ -634,9 +644,14 @@ namespace Pidgeon
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
                                ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
-                channel.InsertUser(user);
-                channel.RedrawUsers();
-                channel.UpdateInfo();
+                if (!IsDownloadingBouncerBacklog)
+                {
+                    // modify this list only if we are not downloading a backlog because in that case
+                    // we are changing something what may conflict with latest data
+                    channel.InsertUser(user);
+                    channel.RedrawUsers();
+                    channel.UpdateInfo();
+                }
             }
         }
 
@@ -657,8 +672,6 @@ namespace Pidgeon
                                                            Pidgeon.ContentLine.MessageStyle.Channel,
                                                            !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                         }
-                        user.Nick = args.NewNick;
-                        channel.RedrawUsers();
                     }
                 }
             }
