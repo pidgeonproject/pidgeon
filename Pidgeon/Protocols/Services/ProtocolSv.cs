@@ -40,9 +40,6 @@ namespace Pidgeon.Protocols.Services
         
         private class Request
         {
-            /// <summary>
-            /// Name
-            /// </summary>
             public string Name = null;
             public Type type = Type.ChannelInfo;
 
@@ -51,15 +48,9 @@ namespace Pidgeon.Protocols.Services
                 Name = name;
                 type = Task;
             }
-            
-            /// <summary>
-            /// Type
-            /// </summary>
+
             public enum Type
             {
-                /// <summary>
-                /// Channel info
-                /// </summary>
                 ChannelInfo,
             }
         }
@@ -76,26 +67,17 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         public List<libirc.Network> NetworkList = new List<libirc.Network>();
         private System.IO.StreamWriter _StreamWriter = null;
-        /// <summary>
-        /// Password
-        /// </summary>
         public string password = "";
         private List<Cache> cache = new List<Cache>();
         private Status ConnectionStatus = Status.WaitingPW;
         private SslStream _networkSsl = null;
-        /// <summary>
-        /// Buffer
-        /// </summary>
         public Pidgeon.Protocols.Services.Buffer sBuffer = null;
         private List<Request> RemainingJobs = new List<Request>();
         /// <summary>
         /// Whether the services have finished loading
         /// </summary>
         public bool FinishedLoading = false;
-        /// <summary>
-        /// Nickname
-        /// </summary>
-        public string nick = "";
+        public string Username = "";
         /// <summary>
         /// This needs to be true when the services are in process of disconnecting
         /// </summary>
@@ -109,7 +91,6 @@ namespace Pidgeon.Protocols.Services
                 return true;
             }
         }
-
         public override bool UsingSSL
         {
             get
@@ -121,7 +102,6 @@ namespace Pidgeon.Protocols.Services
                 SSL = value;
             }
         }
-
         /// <summary>
         /// Root window
         /// </summary>
@@ -211,7 +191,7 @@ namespace Pidgeon.Protocols.Services
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
                 Datagram login = new Datagram("AUTH");
-                login.Parameters.Add("user", nick);
+                login.Parameters.Add("user", Username);
                 login.Parameters.Add("pw", password);
                 Deliver(login);
                 Deliver(new Datagram("GLOBALNICK"));
@@ -396,7 +376,6 @@ namespace Pidgeon.Protocols.Services
                 {
                     Core.SystemForm.ChannelList.RemoveNetwork(network_);
                     NetworkList.Remove(network_);
-
                     if (Configuration.Services.UsingCache)
                     {
                         // we need to remove the network here from db
@@ -422,10 +401,6 @@ namespace Pidgeon.Protocols.Services
         {
             lock (this)
             {
-                if (IsDestroyed)
-                {
-                    return;
-                }
                 if (IsConnected)
                 {
                     Disconnect();
@@ -473,6 +448,7 @@ namespace Pidgeon.Protocols.Services
                     }
                     NetworkList.Clear();
                 }
+                Core.ThreadManager.KillThread(main);
                 Core.ThreadManager.KillThread(tPinger);
                 tPinger = null;
                 if (sBuffer != null)
@@ -545,16 +521,13 @@ namespace Pidgeon.Protocols.Services
             Send(message.ToDocumentXmlText());
         }
 
-        /// <summary>
-        /// Open
-        /// </summary>
-        /// <returns></returns>
         public override System.Threading.Thread Open()
         {
             SystemWindow = WindowsManager.CreateChat("!root", true, null, false, null, false, true, this);
             SystemWindow._Protocol = this;
             Core.SystemForm.ChannelList.InsertSv(this);
             main = new System.Threading.Thread(Start);
+            main.Name = "Pidgeon:Services/Main";
             Core.ThreadManager.RegisterThread(main);
             main.Start();
             return main;
@@ -585,9 +558,9 @@ namespace Pidgeon.Protocols.Services
             return Result.Done;
         }
 
-        public override void DebugLog(string Text, int Verbosity = 1)
+        public override void DebugLog(string Text, int Verbosity)
         {
-            Syslog.DebugLog(Text, Verbosity);
+            base.DebugLog(Text, Verbosity);
         }
 
         public override libirc.IProtocol.Result Message(string text, string to, libirc.Network network, libirc.Defs.Priority priority = libirc.Defs.Priority.Normal)

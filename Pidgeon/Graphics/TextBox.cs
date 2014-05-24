@@ -184,10 +184,11 @@ namespace Pidgeon.Graphics
 
                 bool control = false;
 
-                if (e.Event.State == Gdk.ModifierType.ShiftMask ||
-                e.Event.State == Gdk.ModifierType.ControlMask ||
-                e.Event.State == Gdk.ModifierType.Mod1Mask ||
-                e.Event.State == Gdk.ModifierType.SuperMask)
+                if (Core.HoldingCtrl ||
+                    e.Event.State == Gdk.ModifierType.ShiftMask ||
+                    e.Event.State == Gdk.ModifierType.ControlMask ||
+                    e.Event.State == Gdk.ModifierType.Mod1Mask ||
+                    e.Event.State == Gdk.ModifierType.SuperMask)
                 {
                     switch (e.Event.Key)
                     {

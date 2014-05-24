@@ -199,7 +199,7 @@ namespace Pidgeon
                     Graphics.Window window = WindowsManager.CreateChat(nickname, false, this, false, nickname, false, true, this);
                     this.PrivateWins.Add(user, window);
                     window.IsPrivMsg = true;
-                    Core.SystemForm.ChannelList.insertUser(user);
+                    Core.SystemForm.ChannelList.InsertUser(user);
                     return window;
                 }
                 else
@@ -313,6 +313,10 @@ namespace Pidgeon
         /// <returns>Channel or null if it doesn't exist</returns>
         public new Channel GetChannel(string name)
         {
+            if (name == null)
+            {
+                return null;
+            }
             lock (this.Channels)
             {
                 Channel channel = null;
@@ -330,7 +334,7 @@ namespace Pidgeon
             {
                 case libirc.IProtocol.Result.Done:
                     Core.SystemForm.Chat.scrollback.InsertText(Configuration.CurrentSkin.Message2 + Core.SelectedNetwork.Nickname + " " + text, 
-                                                               Pidgeon.ContentLine.MessageStyle.Message, true, 1, true);
+                                                               Pidgeon.ContentLine.MessageStyle.Action, true, 1, true);
                     break;
                 case libirc.IProtocol.Result.Failure:
                 case libirc.IProtocol.Result.NotImplemented:
@@ -396,29 +400,32 @@ namespace Pidgeon
 
         public override void __evt_Self(NetworkSelfEventArgs args)
         {
-            switch (args.Type)
+            try
             {
-                case libirc.Network.EventType.Join:
-                    MakeChannel(args.ChannelName);
-                    break;
-                case libirc.Network.EventType.Part:
-                case libirc.Network.EventType.Kick:
-                case libirc.Network.EventType.Quit:
-                    string channel = args.ChannelName.ToLower();
-                    lock (this.Channels)
-                    {
-                        if (this.Channels.ContainsKey(channel))
-                        {
-                            Core.SystemForm.ChannelList.RemoveChannel(this.Channels[channel]);
-                        }
-                    }
-                    this.RemoveChannel(channel);
-                    break;
-                case libirc.Network.EventType.Nick:
-                    this.Nickname = args.NewNick;
-                    this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
-                                                              Pidgeon.ContentLine.MessageStyle.User, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                    break;
+                Channel channel = GetChannel(args.ChannelName);
+                Graphics.Window window = null;
+                if (channel != null)
+                    window = channel.RetrieveWindow();
+                switch (args.Type)
+                {
+                    case libirc.Network.EventType.Join:
+                        MakeChannel(args.ChannelName);
+                        break;
+                    case libirc.Network.EventType.Part:
+                    case libirc.Network.EventType.Kick:
+                    case libirc.Network.EventType.Quit:
+                        if (window != null)
+                            window.NeedsIcon = true;
+                        break;
+                    case libirc.Network.EventType.Nick:
+                        this.Nickname = args.NewNick;
+                        this.SystemWindow.scrollback.InsertText(messages.get("protocolnewnick", Core.SelectedLanguage, new List<string> { args.NewNick }),
+                                                                  Pidgeon.ContentLine.MessageStyle.User, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                        break;
+                }
+            } catch (Exception fail)
+            {
+                Core.HandleException(fail);
             }
         }
 
@@ -521,6 +528,8 @@ namespace Pidgeon
 
         public override void __evt_ParseUser(libirc.Network.NetworkParseUserEventArgs args)
         {
+            if (IsDownloadingBouncerBacklog)
+                return;
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
             {
@@ -558,6 +567,8 @@ namespace Pidgeon
 
         public override void __evt_ChannelUserList(libirc.Network.ChannelUserListEventArgs args)
         {
+            if (IsDownloadingBouncerBacklog)
+                return;
             Channel channel = this.GetChannel(args.ChannelName);
             if (args.Channel != null && channel != null)
             {
@@ -587,7 +598,12 @@ namespace Pidgeon
                     window.scrollback.InsertText(messages.get("userkick", Core.SelectedLanguage,
                                                  new List<string> { args.Source, args.Target, args.Message }),
                                                  ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                    channel.RemoveUser(args.Target);
+                    if (!IsDownloadingBouncerBacklog)
+                    {
+                        // modify this list only if we are not downloading a backlog because in that case
+                        // we are changing something what may conflict with latest data
+                        channel.RemoveUser(args.Target);
+                    }
                 }
             }
         }
@@ -607,9 +623,14 @@ namespace Pidgeon
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%", args.Message }),
                                ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                    channel.RemoveUser(user);
-                    channel.RedrawUsers();
-                    channel.UpdateInfo();
+                    if (!IsDownloadingBouncerBacklog)
+                    {
+                        // modify this list only if we are not downloading a backlog because in that case
+                        // we are changing something what may conflict with latest data
+                        channel.RemoveUser(user);
+                        channel.RedrawUsers();
+                        channel.UpdateInfo();
+                    }
                 }
             }
         }
@@ -627,9 +648,14 @@ namespace Pidgeon
                                new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%" }),
                                ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                 }
-                channel.InsertUser(user);
-                channel.RedrawUsers();
-                channel.UpdateInfo();
+                if (!IsDownloadingBouncerBacklog)
+                {
+                    // modify this list only if we are not downloading a backlog because in that case
+                    // we are changing something what may conflict with latest data
+                    channel.InsertUser(user);
+                    channel.RedrawUsers();
+                    channel.UpdateInfo();
+                }
             }
         }
 
@@ -650,8 +676,6 @@ namespace Pidgeon
                                                            Pidgeon.ContentLine.MessageStyle.Channel,
                                                            !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                         }
-                        user.Nick = args.NewNick;
-                        channel.RedrawUsers();
                     }
                 }
             }
@@ -751,44 +775,6 @@ namespace Pidgeon
                         channel.UpdateInfo();
                         channel.RedrawUsers();
                     }
-                }
-            }
-        }
-
-        public override void __evt_INFO(libirc.Network.NetworkGenericDataEventArgs args)
-        {
-            string parameter_line = args.ParameterLine;
-            if (parameter_line.Contains("PREFIX=("))
-            {
-                string cmodes = parameter_line.Substring(parameter_line.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
-                cmodes = cmodes.Substring(0, cmodes.IndexOf(")", StringComparison.Ordinal));
-                lock (this.CUModes)
-                {
-                    this.CUModes.Clear();
-                    this.CUModes.AddRange(cmodes.ToArray<char>());
-                }
-                cmodes = parameter_line.Substring(parameter_line.IndexOf("PREFIX=(", StringComparison.Ordinal) + 8);
-                cmodes = cmodes.Substring(cmodes.IndexOf(")", StringComparison.Ordinal) + 1, this.CUModes.Count);
-
-                this.UChars.Clear();
-                this.UChars.AddRange(cmodes.ToArray<char>());
-            }
-            if (parameter_line.Contains("CHANMODES="))
-            {
-                string xmodes = parameter_line.Substring(parameter_line.IndexOf("CHANMODES=", StringComparison.Ordinal) + 11);
-                xmodes = xmodes.Substring(0, xmodes.IndexOf(" ", StringComparison.Ordinal));
-                string[] _mode = xmodes.Split(',');
-                this.ParsedInfo = true;
-                if (_mode.Length == 4)
-                {
-                    this.PModes.Clear();
-                    this.CModes.Clear();
-                    this.XModes.Clear();
-                    this.SModes.Clear();
-                    this.PModes.AddRange(_mode[0].ToArray<char>());
-                    this.XModes.AddRange(_mode[1].ToArray<char>());
-                    this.SModes.AddRange(_mode[2].ToArray<char>());
-                    this.CModes.AddRange(_mode[3].ToArray<char>());
                 }
             }
         }
@@ -947,6 +933,11 @@ namespace Pidgeon
         public override void __evt_ChannelFinishBan(NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
+            if (channel == args.Channel)
+            {
+                channel.UpdateInfo();
+                return;
+            }
             if (channel != null && args.Channel != null)
             {
                 if (channel.Bans == null)

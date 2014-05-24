@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Pidgeon
 {
-    class RestrictedModule : Extension
+    class FreenodeTools : Extension
     {
         public override bool Hook_OnLoad()
         {
@@ -32,7 +32,32 @@ namespace Pidgeon
             Commands.RegisterCommand("op", new Commands.Command(Commands.Type.Plugin, Op));
             Commands.RegisterCommand("jhostban", new Commands.Command(Commands.Type.Plugin, JoinHostBan));
             Commands.RegisterCommand("jb", new Commands.Command(Commands.Type.Plugin, OpenBan));
+            Commands.RegisterCommand("remove", new Commands.Command(Commands.Type.Plugin, Remove));
             return true;
+        }
+
+        private void Remove(string text)
+        {
+            if (text == "")
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            string user = text;
+            string reason = Configuration.irc.DefaultReason;
+            if (text.Contains(" "))
+            {
+                reason = text.Substring(text.IndexOf(" " + 1));
+                user = text.Substring(0, text.IndexOf(" "));
+            }
+            if (!Core.SystemForm.Chat.IsChannel)
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            GetOp(Core.SystemForm.Chat.WindowName);
+            System.Threading.Thread.Sleep(100);
+            Core.SelectedNetwork.Transfer("REMOVE " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
         }
 
         public override void Initialise()
