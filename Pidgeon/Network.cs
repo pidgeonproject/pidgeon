@@ -528,6 +528,8 @@ namespace Pidgeon
 
         public override void __evt_ParseUser(libirc.Network.NetworkParseUserEventArgs args)
         {
+            if (IsDownloadingBouncerBacklog)
+                return;
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
             {
@@ -565,6 +567,8 @@ namespace Pidgeon
 
         public override void __evt_ChannelUserList(libirc.Network.ChannelUserListEventArgs args)
         {
+            if (IsDownloadingBouncerBacklog)
+                return;
             Channel channel = this.GetChannel(args.ChannelName);
             if (args.Channel != null && channel != null)
             {
