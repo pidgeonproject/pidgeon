@@ -451,6 +451,7 @@ namespace Pidgeon.Protocols.Services
                 Core.ThreadManager.KillThread(main);
                 Core.ThreadManager.KillThread(tPinger);
                 tPinger = null;
+                Core.SystemForm.DisplayingProgress = false;
                 if (sBuffer != null)
                 {
                     sBuffer.Wipe();
