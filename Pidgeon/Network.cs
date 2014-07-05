@@ -614,15 +614,14 @@ namespace Pidgeon
             if (channel != null)
             {
                 Graphics.Window w = channel.RetrieveWindow();
+                if (w != null)
+                {
+                    w.scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage, new List<string> { "%L%" + args.SourceInfo.Nick + "%/L%!%D%" + args.SourceInfo.Ident + "%/D%@%H%" + args.SourceInfo.Host + "%/H%", args.Message }),
+                                            ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
+                }
                 User user = channel.UserFromName(args.SourceInfo.Nick);
                 if (user != null)
                 {
-                    if (w != null)
-                    {
-                        w.scrollback.InsertText(messages.get("window-p1", Core.SelectedLanguage,
-                               new List<string> { "%L%" + user.Nick + "%/L%!%D%" + user.Ident + "%/D%@%H%" + user.Host + "%/H%", args.Message }),
-                               ContentLine.MessageStyle.Part, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
-                    }
                     if (!IsDownloadingBouncerBacklog)
                     {
                         // modify this list only if we are not downloading a backlog because in that case
@@ -631,6 +630,9 @@ namespace Pidgeon
                         channel.RedrawUsers();
                         channel.UpdateInfo();
                     }
+                } else
+                {
+
                 }
             }
         }
@@ -665,17 +667,11 @@ namespace Pidgeon
             {
                 foreach (Channel channel in this.Channels.Values)
                 {
-                    User user = channel.UserFromName(args.SourceInfo.Nick);
-                    if (user != null)
+                    Graphics.Window window = channel.RetrieveWindow();
+                    if (window != null)
                     {
-                        Graphics.Window window = channel.RetrieveWindow();
-                        if (window != null)
-                        {
-                            window.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage,
-                                                           new List<string> { args.OldNick, args.NewNick }),
-                                                           Pidgeon.ContentLine.MessageStyle.Channel,
-                                                           !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
-                        }
+                        window.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string> { args.OldNick, args.NewNick }),
+                                                     ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                     }
                 }
             }
@@ -760,9 +756,8 @@ namespace Pidgeon
             {
                 foreach (Channel channel in this.Channels.Values)
                 {
-                    User user_ = channel.UserFromName(args.SourceInfo.Nick);
                     Graphics.Window window_ = channel.RetrieveWindow();
-                    if (window_ != null && user_ != null)
+                    if (window_ != null)
                     {
                         window_.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                                       new List<string> { "%L%" + args.SourceInfo.Nick + "%/L%!%D%" +
