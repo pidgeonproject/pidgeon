@@ -84,6 +84,11 @@ namespace Pidgeon
         /// Descriptions for channel and user modes
         /// </summary>
         public Dictionary<char, string> Descriptions = new Dictionary<char, string>();
+        /// <summary>
+        /// Network cache that is used to handle the problem with users who part but we don't have
+        /// them in user list yet, because that is handled by services
+        /// </summary>
+        private Dictionary<string, List<string>> ServiceBuffer = new Dictionary<string, List<string>>();
 
         public override bool IsConnected
         {
@@ -95,6 +100,7 @@ namespace Pidgeon
             {
                 base.IsConnected = value;
                 this.SystemWindow.NeedsIcon = true;
+                this.ServiceBuffer.Clear();
                 lock (this.Channels)
                 {
                     foreach (Channel channel in this.Channels.Values)
@@ -134,6 +140,33 @@ namespace Pidgeon
                 {
                     return RandomuQID + ServerName;
                 }
+            }
+        }
+
+        private void RegisterUser(string channel, string user)
+        {
+            lock (ServiceBuffer)
+            {
+                if (!ServiceBuffer.ContainsKey(channel))
+                {
+                    ServiceBuffer.Add(channel, new List<string>() { user });
+                    return;
+                }
+                if (!ServiceBuffer[channel].Contains(user))
+                    ServiceBuffer[channel].Add(user);
+            }
+        }
+
+        private void RemoveUserFromSB(string channel, string user)
+        {
+            lock (this.ServiceBuffer)
+            {
+                if (!this.ServiceBuffer.ContainsKey(channel))
+                {
+                    return;
+                }
+                //if (this.ServiceBuffer[channel].Contains(user))
+                    this.ServiceBuffer[channel].Remove(user);
             }
         }
 
@@ -610,6 +643,7 @@ namespace Pidgeon
 
         public override void __evt_PART(libirc.Network.NetworkChannelDataEventArgs args)
         {
+            RemoveUserFromSB(args.ChannelName, args.SourceInfo.Nick);
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
             {
@@ -640,6 +674,7 @@ namespace Pidgeon
         public override void __evt_JOIN(libirc.Network.NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
+            this.RegisterUser(args.ChannelName, args.SourceInfo.Nick);
             if (channel != null)
             {
                 Graphics.Window w = channel.RetrieveWindow();
@@ -668,11 +703,26 @@ namespace Pidgeon
                 foreach (Channel channel in this.Channels.Values)
                 {
                     Graphics.Window window = channel.RetrieveWindow();
-                    if (window != null)
+                    User user = channel.UserFromName(args.OldNick);
+                    bool known = user != null;
+                    if (!known)
+                    {
+                        // let's check if they are in services buffer now
+                        if (this.ServiceBuffer.ContainsKey(channel.Name) && this.ServiceBuffer[channel.Name].Contains(args.OldNick))
+                        {
+                            known = true;
+                            this.ServiceBuffer[channel.Name].Remove(args.OldNick);
+                            // insert a new nick so that we can keep a track of users that are in channel
+                            this.ServiceBuffer[channel.Name].Add(args.NewNick);
+                        }
+                    }
+                    if (window != null && known)
                     {
                         window.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string> { args.OldNick, args.NewNick }),
                                                      ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                     }
+                    if (!IsDownloadingBouncerBacklog && known)
+                        channel.RedrawUsers();
                 }
             }
         }
@@ -757,14 +807,26 @@ namespace Pidgeon
                 foreach (Channel channel in this.Channels.Values)
                 {
                     Graphics.Window window_ = channel.RetrieveWindow();
-                    if (window_ != null)
+                    User user = channel.UserFromName(args.SourceInfo.Nick);
+                    bool known = user != null;
+                    if (!known)
+                    {
+                        // let's check if they are in services buffer now
+                        if (this.ServiceBuffer.ContainsKey(channel.Name) && this.ServiceBuffer[channel.Name].Contains(args.SourceInfo.Nick))
+                        {
+                            known = true;
+                            // we need to remove them
+                            this.ServiceBuffer[channel.Name].Remove(args.SourceInfo.Nick);
+                        }
+                    }
+                    if (window_ != null && known)
                     {
                         window_.scrollback.InsertText(messages.get("protocol-quit", Core.SelectedLanguage,
                                                       new List<string> { "%L%" + args.SourceInfo.Nick + "%/L%!%D%" +
                                                       args.SourceInfo.Ident + "%/D%@%H%" + args.SourceInfo.Host + "%/H%", args.Message }),
                                                       ContentLine.MessageStyle.Join, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
                     }
-                    if (!IsDownloadingBouncerBacklog)
+                    if (!IsDownloadingBouncerBacklog && known)
                     {
                         channel.RemoveUser(args.SourceInfo.Nick);
                         channel.UpdateInfo();
