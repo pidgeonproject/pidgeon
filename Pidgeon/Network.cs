@@ -721,7 +721,7 @@ namespace Pidgeon
                         window.scrollback.InsertText(messages.get("protocol-nick", Core.SelectedLanguage, new List<string> { args.OldNick, args.NewNick }),
                                                      ContentLine.MessageStyle.Channel, !channel.TemporarilyHidden, args.Date, IsDownloadingBouncerBacklog);
                     }
-                    if (!IsDownloadingBouncerBacklog && known)
+                    if (!IsDownloadingBouncerBacklog)
                         channel.RedrawUsers();
                 }
             }
