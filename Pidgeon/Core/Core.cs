@@ -401,7 +401,7 @@ namespace Pidgeon
                         ThreadManager.RegisterThread(ThreadManager.ThUp);
                     }
                     Syslog.DebugLog("Loading log writer thread");
-                    ThreadManager.Thread_logs = new Thread(IO.Load);
+                    ThreadManager.Thread_logs = new Thread(Writer.Load);
                     ThreadManager.Thread_logs.Name = "Pidgeon:Writer";
                     ThreadManager.RegisterThread(ThreadManager.Thread_logs);
                     ThreadManager.Thread_logs.Start();
@@ -1256,6 +1256,17 @@ namespace Pidgeon
                 Thread.Sleep(100);
             }
             return 0;
+        }
+
+        /// <summary>
+        /// Convert a Color to Gdk version
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Gdk.Color FromColor(System.Drawing.Color color)
+        {
+            Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
+            return xx;
         }
         
         /// <summary>

@@ -92,7 +92,7 @@ namespace Pidgeon
                     {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText(stamp + Protocol.DecodeText(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory, time) + ".txt");
+                    Writer.InsertText(stamp + Protocol.DecodeText(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory, time) + ".txt");
                 }
                 if (Configuration.Logs.logs_html)
                 {
@@ -101,11 +101,11 @@ namespace Pidgeon
                     {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
                     }
-                    Core.IO.InsertText("<font size=\"" + Configuration.CurrentSkin.FontSize.ToString() + "px\" face=" + Configuration.CurrentSkin.LocalFont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
+                    Writer.InsertText("<font size=\"" + Configuration.CurrentSkin.FontSize.ToString() + "px\" face=" + Configuration.CurrentSkin.LocalFont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
                 }
                 if (Configuration.Logs.logs_xml)
                 {
-                    Core.IO.InsertText("<line time=\"" + time.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.DecodeText(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory, time) + ".xml");
+                    Writer.InsertText("<line time=\"" + time.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.DecodeText(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory, time) + ".xml");
                 }
             }
             catch (Exception fail)

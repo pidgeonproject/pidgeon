@@ -62,7 +62,6 @@ namespace Pidgeon
         public Channel(Network network, string name) : base((libirc.Network)network)
         {
             this._Network = network;
-            this.lName = name.ToLower();
             this.Name = name;
             this.Chat = WindowsManager.CreateChat(name, Configuration.UserData.SwitchWindowOnJoin, network,
                                                   true, name, true, true, network);
@@ -132,7 +131,7 @@ namespace Pidgeon
 
         public override void RemoveUser(libirc.User user)
         {
-            string nick = user.LowNick;
+            string nick = user.LowerNick;
             lock (this.UserList)
             {
                 if (this.UserList.ContainsKey(nick))
@@ -324,7 +323,7 @@ namespace Pidgeon
         {
             lock (this.UserList)
             {
-                string ln = user.LowNick;
+                string ln = user.LowerNick;
                 if (!this.UserList.ContainsKey(ln))
                 {
                     User user_ = new User(user, this._Network);
@@ -338,7 +337,7 @@ namespace Pidgeon
         {
             lock (this.UserList)
             {
-                string ln = user.LowNick;
+                string ln = user.LowerNick;
                 user.Channel = this;
                 if (!this.UserList.ContainsKey(ln))
                 {
