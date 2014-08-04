@@ -4,6 +4,12 @@ pidgeon (1.6.1.0) stable; urgency=medium
 
  -- Petr Bena <benapetr@gmail.com>  Mon, 04 Aug 2014 13:26:10 +0200
 
+pidgeon (1.6.0.0) stable; urgency=medium
+
+  * Fixes
+
+ -- Petr Bena <petanb@debian>  Fri, 18 Apr 2014 18:36:23 +0200
+
 pidgeon (1.2.6.0) stable; urgency=medium
 
   * Initial release
