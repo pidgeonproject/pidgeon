@@ -28,13 +28,7 @@ namespace Pidgeon
         /// </summary>
         public class LanguageContainer
         {
-            /// <summary>
-            /// ID
-            /// </summary>
             public string language = null;
-            /// <summary>
-            /// Values
-            /// </summary>
             public Dictionary<string, string> Cache;
 
             /// <summary>
@@ -65,26 +59,20 @@ namespace Pidgeon
                 lock (text)
                 {
                     if (text.ContainsKey(language))
-                    {
                         return text[language];
-                    }
-                }
 
+                }
                 string value = null;
 
-                if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
+                if (System.IO.Directory.Exists(Configuration.Kernel.Lang) && System.IO.File.Exists(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language))
                 {
-                    if (System.IO.File.Exists(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language))
+                    value = System.IO.File.ReadAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language);
+                    lock (text)
                     {
-                        value = System.IO.File.ReadAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language);
-                        lock (text)
-                        {
-                            text.Add(language, value);
-                            return value;
-                        }
+                        text.Add(language, value);
+                        return value;
                     }
                 }
-
                 switch (language)
                 {
                     case "en":
@@ -94,21 +82,13 @@ namespace Pidgeon
                         value = Pidgeon.Resources.cs_czech;
                         break;
                 }
-
                 if (value == null && text.ContainsKey("en"))
-                {
                     return text["en"];
-                }
-
                 if (System.IO.Directory.Exists(Configuration.Kernel.Lang))
-                {
                     System.IO.File.WriteAllText(Configuration.Kernel.Lang + System.IO.Path.DirectorySeparatorChar + language, value);
-                }
-
                 lock (text)
-                {
                     text.Add(language, value);
-                }
+
                 return value;
             }
         }
@@ -117,12 +97,10 @@ namespace Pidgeon
         /// Default language
         /// </summary>
         public static string Language = "en";
-
         /// <summary>
         /// List of all loaded data
         /// </summary>
         public static Dictionary<string, LanguageContainer> data = new Dictionary<string, LanguageContainer>();
-
         /// <summary>
         /// Convert a text to localized version
         /// </summary>

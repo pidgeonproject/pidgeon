@@ -24,11 +24,11 @@ using System.Xml.Serialization;
 namespace Pidgeon
 {
     /// <summary>
-    /// Helper class
+    /// Helper class that is used for writing of IRC logs to a file
     /// </summary>
-    public static class Scrollback_LineLogs
+    public static class Scrollback_LogWriter
     {
-        private static string validpath(string path)
+        private static string ValidPath(string path)
         {
             return path.Replace("?", "1_").Replace("|", "2_").Replace(":", "3_").Replace("\\", "4_").Replace("/", "5_").Replace("*", "6_");
         }
@@ -39,7 +39,7 @@ namespace Pidgeon
         /// <param name="owner"></param>
         /// <param name="directory"></param>
         /// <returns></returns>
-        public static string validpath(Graphics.Window owner, string directory)
+        public static string ValidPath(Graphics.Window owner, string directory)
         {
             if (directory != null)
             {
@@ -53,11 +53,11 @@ namespace Pidgeon
             return directory;
         }
 
-        private static string _getFileName(Graphics.Window owner, string directory, DateTime time)
+        private static string GetFileName(Graphics.Window owner, string directory, DateTime time)
         {
-            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + validpath(owner._Network.ServerName) + 
-                Path.DirectorySeparatorChar + validpath(owner.WindowName) + Path.DirectorySeparatorChar + 
-                time.ToString(Configuration.Logs.logs_name).Replace("$1", validpath(owner, directory));
+            string name = Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + ValidPath(owner._Network.ServerName) + 
+                Path.DirectorySeparatorChar + ValidPath(owner.WindowName) + Path.DirectorySeparatorChar + 
+                time.ToString(Configuration.Logs.logs_name).Replace("$1", ValidPath(owner, directory));
             return name;
         }
 
@@ -74,38 +74,35 @@ namespace Pidgeon
             try
             {
                 if (!Directory.Exists(Configuration.Logs.logs_dir))
-                {
                     Directory.CreateDirectory(Configuration.Logs.logs_dir);
-                }
+
                 if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName))
-                {
                     System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName);
-                }
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath(owner, directory)))
-                {
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + validpath(owner, directory));
-                }
+
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + ValidPath(owner, directory)))
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + ValidPath(owner, directory));
+
                 if (Configuration.Logs.logs_txt)
                 {
                     string stamp = "";
                     if (Configuration.Scrollback.chat_timestamp)
-                    {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
-                    }
-                    Writer.InsertText(stamp + Protocol.DecodeText(Core.RemoveSpecial(text)) + "\n", _getFileName(owner, directory, time) + ".txt");
+                    Writer.InsertText(stamp + Protocol.DecodeText(Core.RemoveSpecial(text)) + "\n", GetFileName(owner, directory, time) + ".txt");
                 }
                 if (Configuration.Logs.logs_html)
                 {
                     string stamp = "";
                     if (Configuration.Scrollback.chat_timestamp)
-                    {
                         stamp = Configuration.Scrollback.format_date.Replace("$1", time.ToString(Configuration.Scrollback.timestamp_mask));
-                    }
-                    Writer.InsertText("<font size=\"" + Configuration.CurrentSkin.FontSize.ToString() + "px\" face=" + Configuration.CurrentSkin.LocalFont + ">" + System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + "</font><br>\n", _getFileName(owner, directory, time) + ".html");
+                    Writer.InsertText("<font size=\"" + Configuration.CurrentSkin.FontSize.ToString() + "px\" face=" + Configuration.CurrentSkin.LocalFont + ">" +
+                        System.Web.HttpUtility.HtmlEncode(stamp + Protocol.DecodeText(Core.RemoveSpecial(text))) + 
+                        "</font><br>\n", GetFileName(owner, directory, time) + ".html");
                 }
                 if (Configuration.Logs.logs_xml)
                 {
-                    Writer.InsertText("<line time=\"" + time.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" + System.Web.HttpUtility.HtmlEncode(Protocol.DecodeText(Core.RemoveSpecial(text))) + "</line>\n", _getFileName(owner, directory, time) + ".xml");
+                    Writer.InsertText("<line time=\"" + time.ToBinary().ToString() + "\" style=\"" + InputStyle.ToString() + "\">" +
+                        System.Web.HttpUtility.HtmlEncode(Protocol.DecodeText(Core.RemoveSpecial(text))) + "</line>\n", 
+                        GetFileName(owner, directory, time) + ".xml");
                 }
             }
             catch (Exception fail)

@@ -160,7 +160,7 @@
     <Compile Include="RichTBox\Classes.cs" />
     <Compile Include="RichTBox\Data.cs" />
     <Compile Include="RichTBox\RichTBox_Core.cs" />
-    <Compile Include="Scrollback\LineLogs.cs" />
+    <Compile Include="Scrollback\Logs.cs" />
     <Compile Include="Scrollback\Menu.cs" />
     <Compile Include="Scrollback\Parser.cs" />
     <Compile Include="Scrollback\ProcessingLine.cs" />

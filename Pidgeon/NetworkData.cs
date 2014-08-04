@@ -19,7 +19,8 @@ using System.Collections.Generic;
 namespace Pidgeon
 {
     /// <summary>
-    /// Network
+    /// This is used for a list of known networks in configuration file, it's not being used much now
+    /// however we could use it later
     /// </summary>
     public static class NetworkData
     {

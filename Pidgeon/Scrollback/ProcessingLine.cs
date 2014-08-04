@@ -510,9 +510,7 @@ namespace Pidgeon
         {
             // we need to finish the previous partial line
             if (!IsEmtpy)
-            {
                 Flush();
-            }
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {
@@ -539,20 +537,15 @@ namespace Pidgeon
                 time = DateTime.Now;
             }
             if (owner != null && owner.MicroBox)
-            {
                 Core.SystemForm.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
-            }
+
             bool Matched = false;
             if (!SuppressPing)
-            {
                 Matched = Match(text);
-            }
-            if (Matched && owner != null && owner.Highlights)
+
+            if (Matched && owner != null && owner.Highlights && Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
             {
-                if (Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
-                {
-                    Core.DisplayNote(text, owner.WindowName);
-                }
+                Core.DisplayNote(text, owner.WindowName);
             }
             if (!IgnoreUpdate && owner != null && owner != Core.SystemForm.Chat && owner._Network != null &&
                 owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
@@ -605,13 +598,11 @@ namespace Pidgeon
                         lock (logs)
                         {
                             foreach (LI item in logs)
-                            {
-                                Scrollback_LineLogs.Log(item.text, item.style, owner, LogfilePath, item.date);
-                            }
+                                Scrollback_LogWriter.Log(item.text, item.style, owner, LogfilePath, item.date);
                             logs.Clear();
                         }
                     }
-                    Scrollback_LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
+                    Scrollback_LogWriter.Log(text, InputStyle, owner, LogfilePath, time);
                 }
                 else
                 {
@@ -649,12 +640,8 @@ namespace Pidgeon
                 if (!RequireReload(time))
                 {
                     lock (UndrawnLines)
-                    {
                         if (!UndrawnLines.Contains(line))
-                        {
                             UndrawnLines.Add(line);
-                        }
-                    }
                     lastDate = time;
                 }
                 else

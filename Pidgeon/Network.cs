@@ -133,13 +133,9 @@ namespace Pidgeon
             get
             {
                 if (_Protocol.GetType() != typeof(Protocols.Services.ProtocolSv))
-                {
                     return "system";
-                }
                 else
-                {
                     return RandomuQID + ServerName;
-                }
             }
         }
 
@@ -162,10 +158,8 @@ namespace Pidgeon
             lock (this.ServiceBuffer)
             {
                 if (!this.ServiceBuffer.ContainsKey(channel))
-                {
                     return;
-                }
-                //if (this.ServiceBuffer[channel].Contains(user))
+                if (this.ServiceBuffer[channel].Contains(user))
                     this.ServiceBuffer[channel].Remove(user);
             }
         }
@@ -214,9 +208,8 @@ namespace Pidgeon
         public void DisplayChannelWindow()
         {
             if (wChannelList == null)
-            {
                 wChannelList = new Forms.Channels(this);
-            }
+
             wChannelList.Show();
         }
 
@@ -311,9 +304,7 @@ namespace Pidgeon
                 }
             }
             if (WindowsManager.CurrentWindow == window)
-            {
                 Core.SystemForm.SwitchRoot();
-            }
             WindowsManager.UnregisterWindow(user.Nick, this);
             window._Destroy();
         }
@@ -329,12 +320,8 @@ namespace Pidgeon
             lock (this.PrivateWins)
             {
                 foreach (User user in PrivateWins.Keys)
-                {
                     if (user.Nick.ToLower() == nickname)
-                    {
                         return user;
-                    }
-                }
             }
             return null;
         }
@@ -347,16 +334,12 @@ namespace Pidgeon
         public new Channel GetChannel(string name)
         {
             if (name == null)
-            {
                 return null;
-            }
             lock (this.Channels)
             {
                 Channel channel = null;
                 if (this.Channels.TryGetValue(name.ToLower(), out channel))
-                {
                     return channel;
-                }
                 return null;
             }
         }
@@ -531,16 +514,13 @@ namespace Pidgeon
         {
             Graphics.Window window = null;
             if (args.SourceUser == null)
-            {
                 args.SourceUser = new libirc.User(args.Source);
-            }
             if (args.ParameterLine.StartsWith(this.ChannelPrefix))
             {
                 Channel channel = this.GetChannel(args.ParameterLine);
                 if (channel != null)
-                {
                     window = channel.RetrieveWindow();
-                }
+
             }
             if (window == null) window = this.SystemWindow;
             window.scrollback.InsertText("[" + args.SourceUser.Nick + "] " + args.Message, ContentLine.MessageStyle.Message, WriteLogs(),

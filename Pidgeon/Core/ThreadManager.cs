@@ -43,10 +43,13 @@ namespace Pidgeon
             {
                 get
                 {
+                    List<Thread> rs = new List<Thread>();
                     lock (ThreadPool)
                     {
-                        return new List<Thread>(ThreadPool);
+                         rs.AddRange(ThreadPool);
                     }
+                    rs.AddRange(libirc.ThreadManager.ThreadList);
+                    return rs;
                 }
             }
 
