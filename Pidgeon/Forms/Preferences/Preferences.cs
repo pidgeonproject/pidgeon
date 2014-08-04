@@ -85,15 +85,11 @@ namespace Pidgeon.Forms
                     lradiobutton3.Active = true;
                     break;
             }
-
             ListStore sl = new ListStore(typeof(string));
             ListStore lg = new ListStore(typeof(string));
-
             combobox2.Model = lg;
-
             int selectedSkin = 0;
             int currentSkin = 0;
-
             foreach (Skin skin in Configuration.SL)
             {
                 if (Configuration.CurrentSkin == skin)
@@ -105,7 +101,6 @@ namespace Pidgeon.Forms
             }
             combobox1.Model = sl;
             combobox1.Active = selectedSkin;
-
             int selectedLanguage = 0;
             int current = 0;
             foreach (string language in messages.data.Keys)
@@ -118,13 +113,10 @@ namespace Pidgeon.Forms
                 current++;
             }
             combobox2.Active = selectedLanguage;
-
             ReloadHL();
-
             item.AppendValues("IRC", 1);
             item.AppendValues("System", 2);
             item.AppendValues("Logs", 3);
-            //item.AppendValues("Network", 4);
             item.AppendValues("Highlighting", 5);
             item.AppendValues("Ignore list", 6);
             item.AppendValues("Keyboard", 7);
@@ -217,7 +209,7 @@ namespace Pidgeon.Forms
             Extensions.Clear();
             foreach (Extension ex in ExtensionPool.Extensions)
             {
-                Extensions.AppendValues(ex.Name, ex.Version, ex.Description, "Extension", ex);
+                Extensions.AppendValues(ex.Name, ex.Version.ToString(), ex.Description, "Extension", ex);
             }
         }
 
@@ -275,9 +267,7 @@ namespace Pidgeon.Forms
                 Configuration.irc.FirewallCTCP = checkButton_BlockCtcp.Active;
                 Configuration.irc.ConfirmAll = checkButton_request.Active;
                 Core.SelectedLanguage = combobox2.ActiveText;
-
                 Skin.ReloadSkin(combobox1.ActiveText);
-
                 if (lradiobutton1.Active)
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.full;

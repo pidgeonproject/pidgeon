@@ -566,7 +566,7 @@ namespace Pidgeon
                     {
                         #pragma warning disable
                         InsertPart(curr.text, curr.style, false, curr.date.ToBinary());
-                        #pragma warning enable
+                        #pragma warning restore
                     }
                     UndrawnTextParts.Clear();
                 }

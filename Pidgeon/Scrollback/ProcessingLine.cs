@@ -606,12 +606,12 @@ namespace Pidgeon
                         {
                             foreach (LI item in logs)
                             {
-                                LineLogs.Log(item.text, item.style, owner, LogfilePath, item.date);
+                                Scrollback_LineLogs.Log(item.text, item.style, owner, LogfilePath, item.date);
                             }
                             logs.Clear();
                         }
                     }
-                    LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
+                    Scrollback_LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
                 }
                 else
                 {

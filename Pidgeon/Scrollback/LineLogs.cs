@@ -26,7 +26,7 @@ namespace Pidgeon
     /// <summary>
     /// Helper class
     /// </summary>
-    public static class LineLogs
+    public static class Scrollback_LineLogs
     {
         private static string validpath(string path)
         {

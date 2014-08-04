@@ -22,7 +22,7 @@ using System.Text;
 
 namespace Pidgeon
 {
-    class RestrictedModule : Extension
+    class FreenodeTools : Extension
     {
         public override bool Hook_OnLoad()
         {
@@ -32,7 +32,32 @@ namespace Pidgeon
             Commands.RegisterCommand("op", new Commands.Command(Commands.Type.Plugin, Op));
             Commands.RegisterCommand("jhostban", new Commands.Command(Commands.Type.Plugin, JoinHostBan));
             Commands.RegisterCommand("jb", new Commands.Command(Commands.Type.Plugin, OpenBan));
+            Commands.RegisterCommand("remove", new Commands.Command(Commands.Type.Plugin, Remove));
             return true;
+        }
+
+        private void Remove(string text)
+        {
+            if (text == "")
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("You need to specify at least 1 parameter", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            string user = text;
+            string reason = Configuration.irc.DefaultReason;
+            if (text.Contains(" "))
+            {
+                reason = text.Substring(text.IndexOf(" " + 1));
+                user = text.Substring(0, text.IndexOf(" "));
+            }
+            if (!Core.SystemForm.Chat.IsChannel)
+            {
+                Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
+                return;
+            }
+            GetOp(Core.SystemForm.Chat.WindowName);
+            System.Threading.Thread.Sleep(100);
+            Core.SelectedNetwork.Transfer("REMOVE " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
         }
 
         public override void Initialise()
@@ -57,8 +82,8 @@ namespace Pidgeon
             }
             if (!user.IsOp)
             {
-                Core.DebugLog("Modes: " + channel_.ChannelMode.ToString());
-                Core.network.Transfer("PRIVMSG ChanServ :OP " + channel_.Name, libirc.Defs.Priority.High);
+                Syslog.DebugLog("Modes: " + channel_.ChannelMode.ToString());
+                Core.SelectedNetwork.Transfer("PRIVMSG ChanServ :OP " + channel_.Name, libirc.Defs.Priority.High);
             }
         }
 
@@ -83,7 +108,7 @@ namespace Pidgeon
             }
             GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
-            Core.network.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
+            Core.SelectedNetwork.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
         }
 
         public void Op(string text)
@@ -93,7 +118,7 @@ namespace Pidgeon
                 Core.SystemForm.Chat.scrollback.InsertText("This command can be only used in channels", ContentLine.MessageStyle.User, false);
                 return;
             }
-            Core.network._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, libirc.Defs.Priority.High);
+            Core.SelectedNetwork._Protocol.Transfer("PRIVMSG ChanServ :OP " + Core.SystemForm.Chat.WindowName, libirc.Defs.Priority.High);
         }
 
         public void Quiet(string text)
@@ -114,7 +139,7 @@ namespace Pidgeon
                 return;
             }
             User host = null;
-            Channel curr = Core.network.GetChannel(Core.SystemForm.Chat.WindowName);
+            Channel curr = Core.SelectedNetwork.GetChannel(Core.SystemForm.Chat.WindowName);
             if (curr != null)
             {
                 host = curr.UserFromName(user);
@@ -124,7 +149,7 @@ namespace Pidgeon
                     {
                         GetOp(Core.SystemForm.Chat.WindowName);
                         System.Threading.Thread.Sleep(100);
-                        Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +q *!*@" + host.Host, libirc.Defs.Priority.High);
+                        Core.SelectedNetwork.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +q *!*@" + host.Host, libirc.Defs.Priority.High);
                         return;
                     }
                     Core.SystemForm.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);
@@ -157,11 +182,11 @@ namespace Pidgeon
             GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
 
-            Channel curr = Core.network.GetChannel(Core.SystemForm.Chat.WindowName);
+            Channel curr = Core.SelectedNetwork.GetChannel(Core.SystemForm.Chat.WindowName);
                 
             if (curr != null)
             {
-                Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b " + user + "!*@*$##fix_your_connection", libirc.Defs.Priority.High);
+                Core.SelectedNetwork.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b " + user + "!*@*$##fix_your_connection", libirc.Defs.Priority.High);
                 return;
             }
             Core.SystemForm.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
@@ -187,10 +212,10 @@ namespace Pidgeon
             GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
 
-            Channel curr = Core.network.GetChannel(Core.SystemForm.Chat.WindowName);
+            Channel curr = Core.SelectedNetwork.GetChannel(Core.SystemForm.Chat.WindowName);
             if (curr != null)
             {
-                Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b *!*@" + user + "$##fix_your_connection", libirc.Defs.Priority.High);
+                Core.SelectedNetwork.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b *!*@" + user + "$##fix_your_connection", libirc.Defs.Priority.High);
                 return;
             }
             Core.SystemForm.Chat.scrollback.InsertText("Unable to ban this user, because I couldn't find the channel in system", ContentLine.MessageStyle.System, false);
@@ -217,9 +242,9 @@ namespace Pidgeon
             }
             GetOp(Core.SystemForm.Chat.WindowName);
             System.Threading.Thread.Sleep(100);
-            Core.network.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
+            Core.SelectedNetwork.Transfer("KICK " + Core.SystemForm.Chat.WindowName + " " + user + " :" + reason, libirc.Defs.Priority.High);
             User host = null;
-            Channel curr = Core.network.GetChannel(Core.SystemForm.Chat.WindowName);
+            Channel curr = Core.SelectedNetwork.GetChannel(Core.SystemForm.Chat.WindowName);
             if (curr != null)
             {
                 host = curr.UserFromName(user);
@@ -227,7 +252,7 @@ namespace Pidgeon
                 {
                     if (host.Host != "")
                     {
-                        Core.network.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b *!*@" + host.Host, libirc.Defs.Priority.High);
+                        Core.SelectedNetwork.Transfer("MODE " + Core.SystemForm.Chat.WindowName + " +b *!*@" + host.Host, libirc.Defs.Priority.High);
                         return;
                     }
                     Core.SystemForm.Chat.scrollback.InsertText("Can't resolve hostname of user", ContentLine.MessageStyle.System, false);

@@ -315,8 +315,8 @@ OutFile "pidgeon_setup.exe"
 !define COMPANYNAME "Pidgeon"
 # These three must be integers
 !define VERSIONMAJOR 1
-!define VERSIONMINOR 2
-!define VERSIONBUILD 6
+!define VERSIONMINOR 6
+!define VERSIONBUILD 1
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link
@@ -358,7 +358,8 @@ SectionIn RO
   
   ;ADD YOUR OWN FILES HERE...
   file "tcl84.dll"
-  file "Pidgeon.exe" 
+  file "Pidgeon.exe"
+  file "libirc.dll"
   file "gtk-sharp-2.12.21.msi"
   CreateDirectory $INSTDIR\skins
   file /oname=skins\mono.ps "skins\mono.ps"
@@ -419,8 +420,14 @@ Section "Uninstall"
 
   ;ADD YOUR OWN FILES HERE...
   ;
+	delete $INSTDIR\modules\IgnoredText.pmod
         delete $INSTDIR\modules\NetworkInfo.pmod
+	delete $INSTDIR\modules\pidgeon_notice.pmod
+	delete $INSTDIR\modules\SearchData.pmod
+	delete $INSTDIR\modules\TopicDiff.pmod
 	delete $INSTDIR\modules\pidgeon_tab.pmod
+	delete $INSTDIR\modules\pidgeon_chan.pmod
+	delete $INSTDIR\libirc.dll
 	delete $INSTDIR\tcl84.dll
 	delete $INSTDIR\Pidgeon.exe
   Delete "$INSTDIR\Uninstall.exe"

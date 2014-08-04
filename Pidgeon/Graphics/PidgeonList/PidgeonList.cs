@@ -490,10 +490,6 @@ namespace Pidgeon.Graphics
                             Syslog.DebugLog("UserListRendererTool(Gtk.TreeViewColumn column, Gtk.CellRenderer cell, Gtk.TreeModel model, Gtk.TreeIter iter): NULL dc");
                             return;
                         }
-                        if (dc.IsDestroyed)
-                        {
-                            vTree.Remove(ref iter);
-                        }
                         if (dc.SystemWindow.NeedsIcon)
                         {
                             dc.SystemWindow.NeedsIcon = false;
@@ -578,7 +574,7 @@ namespace Pidgeon.Graphics
         /// Insert a user to list (thread safe)
         /// </summary>
         /// <param name="user"></param>
-        public void insertUser(User user)
+        public void InsertUser(User user)
         {
             lock (queueUsers)
             {
@@ -618,7 +614,7 @@ namespace Pidgeon.Graphics
             return false;
         }
 
-        private void _insertUser(User user)
+        private void insertUser(User user)
         {
             lock (ServerList)
             {
@@ -647,7 +643,7 @@ namespace Pidgeon.Graphics
 
         private void insertService(Protocols.Services.ProtocolSv service)
         {
-            string tx = "Root window of services [port: " + service.Port.ToString() + " Encrypted: " + service.UsingSSL.ToString() + "]";
+            string tx = "Root window of services [Port: " + service.Port.ToString() + " Encrypted: " + service.UsingSSL.ToString() + "]";
             TreeIter text = vTree.AppendValues(service.Server, service, ItemType.Services, service.SystemWindow, tx, Configuration.CurrentSkin.Icon_ExclamationMark);
             lock (ServiceList)
             {

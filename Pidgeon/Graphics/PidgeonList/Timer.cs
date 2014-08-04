@@ -144,7 +144,7 @@ namespace Pidgeon.Graphics
                 }
 
                 List<Channel> _channels = new List<Channel>();
-                lock (ChannelList)
+                /*lock (ChannelList)
                 {
                     foreach (var chan in ChannelList)
                     {
@@ -162,7 +162,7 @@ namespace Pidgeon.Graphics
                             _channels.Add(chan.Key);
                         }
                     }
-                }
+                }*/
 
                 foreach (Channel chan in _channels)
                 {
@@ -182,7 +182,7 @@ namespace Pidgeon.Graphics
                 {
                     foreach (User user in queueUsers)
                     {
-                        _insertUser(user);
+                        insertUser(user);
                     }
                     queueUsers.Clear();
                 }

@@ -31,22 +31,13 @@ namespace Pidgeon
         /// Window handle
         /// </summary>
         public Graphics.Window window = null;
+        public string WindowName = null;
         /// <summary>
-        /// Name
+        /// When this is true the newly created window will be switched on
         /// </summary>
-        public string name = null;
-        /// <summary>
-        /// Focus
-        /// </summary>
-        public bool focus = false;
-        /// <summary>
-        /// new window has a user list
-        /// </summary>
-        public bool hasUserList = true;
-        /// <summary>
-        /// Text
-        /// </summary>
-        public bool hasTextBox = true;
+        public bool Focus = false;
+        public bool UserList = true;
+        public bool TextBox = true;
         public object Parent = null;
     }
 
@@ -107,11 +98,9 @@ namespace Pidgeon
                         Core.SelectedNetwork.RenderedChannel = Core.SelectedNetwork.GetChannel (CurrentWindow.WindowName);
                     }
                 }
-                Core.SystemForm.SetChannel (chat.WindowName);
-                if (CurrentWindow.Making == false)
-                {
+                Core.SystemForm.SetRenderedWindowTitle (chat.WindowName);
+                if (!CurrentWindow.Making)
                     CurrentWindow.textbox.setFocus ();
-                }
                 Core.SystemForm.Chat = chat;
                 CurrentWindow.Making = false;
                 Core.SystemForm.UpdateStatus ();
@@ -195,10 +184,10 @@ namespace Pidgeon
             {
                 foreach (WindowRequest item in WindowRequests)
                 {
-                    item.window.CreateChat(item.hasUserList, item.hasTextBox, item.focus);
-                    if (item.focus)
+                    item.window.CreateChat(item.UserList, item.TextBox, item.Focus);
+                    if (item.Focus)
                     {
-                        WindowsManager.ShowChat(item.name, item.Parent);
+                        WindowsManager.ShowChat(item.WindowName, item.Parent);
                     }
                 }
                 WindowRequests.Clear();
@@ -229,13 +218,13 @@ namespace Pidgeon
             {
                 id = name;
             }
-            request.name = name;
+            request.WindowName = name;
             request.window = new Graphics.Window();
-            request.focus = focus;
+            request.Focus = focus;
             request.window._Network = network;
             request.window.WindowName = name;
-            request.hasUserList = hasUserList;
-            request.hasTextBox = hasTextBox;
+            request.UserList = hasUserList;
+            request.TextBox = hasTextBox;
             request.Parent = parent;
 
             if (network != null && !name.Contains("!"))

@@ -47,9 +47,6 @@
     <ApplicationIcon>pigeon_clip_art_hight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Eagle">
-      <HintPath>Eagle.dll</HintPath>
-    </Reference>
     <Reference Include="libirc">
       <HintPath>libirc.dll</HintPath>
     </Reference>
@@ -177,7 +174,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Protocol.cs" />
     <Compile Include="RevisionInfo.cs" />
-    <Compile Include="ScriptingCore.cs" />
     <Compile Include="Scrollback\ScrollbackLine.cs" />
     <Compile Include="SkinCl.cs" />
     <Compile Include="Timer.cs" />
@@ -263,8 +259,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="pigeon_clip_art_hight.ico" />
-  </ItemGroup>
-  <ItemGroup>
   </ItemGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(ProjectDir)update.cmd" "$(ProjectDir)" "$(ProjectDir)version.txt"</PreBuildEvent>

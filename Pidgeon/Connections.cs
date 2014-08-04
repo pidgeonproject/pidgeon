@@ -113,7 +113,7 @@ namespace Pidgeon
         {
             Protocols.Services.ProtocolSv protocol = new Protocols.Services.ProtocolSv();
             protocol.Server = server;
-            protocol.nick = Configuration.UserData.nick;
+            protocol.Username = Configuration.UserData.nick;
             protocol.Port = port;
             protocol.UsingSSL = secured;
             protocol.password = password;

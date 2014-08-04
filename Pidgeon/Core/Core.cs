@@ -420,6 +420,11 @@ namespace Pidgeon
                         Extension.Init();
                         if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                         {
+                            foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.dll"))
+                            {
+                                Syslog.DebugLog("Registering plugin " + dll);
+                                ExtensionPool.RegisterPlugin(dll);
+                            }
                             foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
                             {
                                 Syslog.DebugLog("Registering plugin " + dll);

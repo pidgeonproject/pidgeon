@@ -40,7 +40,7 @@ namespace Pidgeon
             {
                 if (_m == null)
                 {
-                    Core.DebugLog("No handle to main");
+                    DebugLog("No handle to main");
                     return false;
                 }
 
@@ -65,7 +65,7 @@ namespace Pidgeon
             main.HelpMenu.Append(item);
             separator.Show();
             item.Show();
-            Core.DebugLog("Registered #pidgeon in menu");
+            DebugLog("Registered #pidgeon in menu");
         }
 
         private bool join()

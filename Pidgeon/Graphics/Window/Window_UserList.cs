@@ -28,131 +28,37 @@ namespace Pidgeon.Graphics
     /// </summary>
     public partial class Window : Gtk.Bin
     {
-        /// <summary>
-        /// User list
-        /// </summary>
         public Gtk.ListStore UserList = new Gtk.ListStore(typeof(string), typeof(User), typeof(string));
-        // menu
-        /// <summary>
-        /// Version menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu vERSIONToolStripMenuItem = new PidgeonGtkToolkit.Menu("VERSION");
-        /// <summary>
-        /// Time menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu tIMEToolStripMenuItem = new PidgeonGtkToolkit.Menu("TIME");
-        /// <summary>
-        /// Ping menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu pINGToolStripMenuItem = new PidgeonGtkToolkit.Menu("PING");
-        /// <summary>
-        /// Page menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu pAGEToolStripMenuItem = new PidgeonGtkToolkit.Menu("PAGE");
-        /// <summary>
-        /// Message menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu messageToolStripMenuItem = new PidgeonGtkToolkit.Menu("Message");
-        /// <summary>
-        /// Mode menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu modeToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("mode", Core.SelectedLanguage));
-        /// <summary>
-        /// Kb menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu kbToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("kickban+text", Core.SelectedLanguage));
-        /// <summary>
-        /// Kick with reason menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu krToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("kick-text", Core.SelectedLanguage));
-        /// <summary>
-        /// +V menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu vToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+v", Core.SelectedLanguage));
-        /// <summary>
-        /// +H menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu hToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+h", Core.SelectedLanguage));
-        /// <summary>
-        /// +O menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu oToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+o", Core.SelectedLanguage));
-        /// <summary>
-        /// +A menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu aToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+a", Core.SelectedLanguage));
-        /// <summary>
-        /// +Q menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu qToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("give+q", Core.SelectedLanguage));
-        /// <summary>
-        /// -V menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu vToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-v", Core.SelectedLanguage));
-        /// <summary>
-        /// -H menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu hToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-h", Core.SelectedLanguage));
-        /// <summary>
-        /// -O menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu oToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-o", Core.SelectedLanguage));
-        /// <summary>
-        /// -A menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu aToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-a", Core.SelectedLanguage));
-        /// <summary>
-        /// -Q menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu qToolStripMenuItem1 = new PidgeonGtkToolkit.Menu(messages.get("give-q", Core.SelectedLanguage));
-        /// <summary>
-        /// Ban
-        /// </summary>
         public PidgeonGtkToolkit.Menu banToolStripMenuItem = new PidgeonGtkToolkit.Menu(messages.get("ban", Core.SelectedLanguage));
-        /// <summary>
-        /// Whois
-        /// </summary>
         public PidgeonGtkToolkit.Menu whoisToolStripMenuItem = new PidgeonGtkToolkit.Menu("Whois");
-        /// <summary>
-        /// DirectCC
-        /// </summary>
         public PidgeonGtkToolkit.Menu dccToolStripMenu = new PidgeonGtkToolkit.Menu("DCC");
-        /// <summary>
-        /// Secure chat
-        /// </summary>
         public PidgeonGtkToolkit.Menu dccSChatToolStripMenuItem = new PidgeonGtkToolkit.Menu("Secure chat");
-        /// <summary>
-        /// Chat
-        /// </summary>
         public PidgeonGtkToolkit.Menu dccChatToolStripMenuItem = new PidgeonGtkToolkit.Menu("Chat");
-        /// <summary>
-        /// File
-        /// </summary>
         public PidgeonGtkToolkit.Menu dccFileToolStripMenuItem = new PidgeonGtkToolkit.Menu("File");
-        /// <summary>
-        /// Ctcp
-        /// </summary>
         public PidgeonGtkToolkit.Menu ctToolStripMenuItem = new PidgeonGtkToolkit.Menu("CTCP");
-        /// <summary>
-        /// Refresh menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu refreshToolStripMenuItem = new PidgeonGtkToolkit.Menu("Refresh");
-        /// <summary>
-        /// KickBan menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu kickBanToolStripMenuItem = new PidgeonGtkToolkit.Menu("Kick + Ban");
-        /// <summary>
-        /// Kick menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu kickToolStripMenuItem = new PidgeonGtkToolkit.Menu("Kick");
-        /// <summary>
-        /// Reload menu
-        /// </summary>
         public PidgeonGtkToolkit.Menu synchroToolStripMenuItem = new PidgeonGtkToolkit.Menu("Reload");
-        
-        /// <summary>
-        /// List of selected users
-        /// </summary>
+
         public List<User> SelectedUsers
         {
             get
@@ -771,6 +677,7 @@ namespace Pidgeon.Graphics
                     if (_channel != null)
                     {
                         _channel.ClearUsers();
+                        _channel.IsParsingWhoData = true;
                         _Network.Transfer("WHO " + _channel.Name);
                     }
                 }

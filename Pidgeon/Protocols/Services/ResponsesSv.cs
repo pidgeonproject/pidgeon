@@ -68,7 +68,6 @@ namespace Pidgeon.Protocols.Services
                         message_window = mn.GetPrivateUserWindow(message_target);
                     }
                 }
-
                 if (message_window != null)
                 {
                     message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text), Pidgeon.ContentLine.MessageStyle.Message, true, message_time, true);
@@ -169,7 +168,7 @@ namespace Pidgeon.Protocols.Services
                     server = new Network(name, protocol);
                     protocol.NetworkList.Add(server);
                     protocol.cache.Add(new Cache());
-                    server.Nickname = protocol.nick;
+                    server.Nickname = protocol.Username;
                     server.IsConnected = true;
                 }
                 if (Configuration.Services.UsingCache)
@@ -266,7 +265,7 @@ namespace Pidgeon.Protocols.Services
                     case "OK":
                         Network _network = new Network(network, protocol);
                         _network.IsConnected = true;
-                        _network.Nickname = protocol.nick;
+                        _network.Nickname = protocol.Username;
                         protocol.cache.Add(new Cache());
                         protocol.NetworkList.Add(_network);
                         return;
@@ -332,7 +331,7 @@ namespace Pidgeon.Protocols.Services
             /// <param name="protocol">Protocol which owns this request</param>
             public static void sGlobalNick(XmlNode curr, ProtocolSv protocol)
             {
-                protocol.nick = curr.InnerText;
+                protocol.Username = curr.InnerText;
                 protocol.SystemWindow.scrollback.InsertText(messages.get("pidgeon.globalnick", Core.SelectedLanguage,
                     new List<string> { curr.InnerText }), Pidgeon.ContentLine.MessageStyle.User, true);
             }
@@ -466,7 +465,7 @@ namespace Pidgeon.Protocols.Services
                         {
                             protocol.Deliver(new Datagram("NETWORKINFO", i));
                             Network nw = new Network(i, protocol);
-                            nw.Nickname = protocol.nick;
+                            nw.Nickname = protocol.Username;
                             protocol.cache.Add(new Cache());
                             protocol.NetworkList.Add(nw);
                             // we flag the network as connected until we really know that
@@ -567,35 +566,35 @@ namespace Pidgeon.Protocols.Services
                                     {
                                         if (nw.GetChannel(channel) == null)
                                         {
-                                            Channel xx = nw.MakeChannel(channel);
+                                            Channel channel_ptr = nw.MakeChannel(channel);
                                             if (Configuration.Services.UsingCache)
                                             {
                                                 string ID = protocol.sBuffer.getUID(curr.Attributes[0].Value);
                                                 if (ID != null && protocol.sBuffer.networkInfo.ContainsKey(ID))
                                                 {
-                                                    Graphics.Window window = xx.RetrieveWindow();
-                                                    if (xx != null)
+                                                    Graphics.Window window = channel_ptr.RetrieveWindow();
+                                                    if (channel_ptr != null)
                                                     {
                                                         protocol.sBuffer.networkInfo[ID].recoverWindowText(window, window.WindowName);
                                                     }
                                                     Services.Buffer.ChannelInfo channel_info = protocol.sBuffer.networkInfo[ID].getChannel(channel);
                                                     if (channel_info != null)
                                                     {
-                                                        xx.Bans = channel_info.Bans;
-                                                        xx.Exceptions = channel_info.Exceptions;
-                                                        xx.ChannelWork = channel_info.ChannelWork;
-                                                        xx.Invites = channel_info.Invites;
-                                                        xx.Name = channel_info.Name;
-                                                        xx.IsParsingBanData = channel_info.parsing_bans;
-                                                        xx.IsParsingWhoisData = channel_info.parsing_wh;
-                                                        xx.IsParsingWhoData = channel_info.parsing_who;
-                                                        xx.ChannelMode = new libirc.NetworkMode(channel_info.mode);
-                                                        xx.IsParsingExceptionData = channel_info.parsing_xe;
-                                                        xx.Redraw = channel_info.Redraw;
-                                                        xx.TemporarilyHidden = channel_info.temporary_hide;
-                                                        xx.Topic = channel_info.Topic;
-                                                        xx.TopicDate = channel_info.TopicDate;
-                                                        xx.TopicUser = channel_info.TopicUser;
+                                                        channel_ptr.Bans = channel_info.Bans;
+                                                        channel_ptr.Exceptions = channel_info.Exceptions;
+                                                        channel_ptr.ChannelWork = channel_info.ChannelWork;
+                                                        channel_ptr.Invites = channel_info.Invites;
+                                                        channel_ptr.Name = channel_info.Name;
+                                                        channel_ptr.IsParsingBanData = channel_info.parsing_bans;
+                                                        channel_ptr.IsParsingWhoisData = channel_info.parsing_wh;
+                                                        channel_ptr.IsParsingWhoData = channel_info.parsing_who;
+                                                        channel_ptr.ChannelMode = new libirc.NetworkMode(channel_info.mode);
+                                                        channel_ptr.IsParsingExceptionData = channel_info.parsing_xe;
+                                                        channel_ptr.Redraw = channel_info.Redraw;
+                                                        channel_ptr.TemporarilyHidden = channel_info.temporary_hide;
+                                                        channel_ptr.Topic = channel_info.Topic;
+                                                        channel_ptr.TopicDate = channel_info.TopicDate;
+                                                        channel_ptr.TopicUser = channel_info.TopicUser;
                                                     }
                                                 }
                                             }
@@ -645,7 +644,6 @@ namespace Pidgeon.Protocols.Services
                             }
                         }
                         Channel channel = nw.GetChannel(curr.Attributes[1].Value);
-
                         if (channel != null)
                         {
                             foreach (string user in userlist)
