@@ -100,6 +100,7 @@ namespace Pidgeon
             {
                 thread = new Thread(Wait);
                 thread.Name = "Timer " + ID.ToString();
+                Core.ThreadManager.RegisterThread(thread);
                 Running = true;
                 thread.Start();
             }
@@ -152,11 +153,13 @@ namespace Pidgeon
             {
                 Core.Ringlog("Timer " + ID + " was killed");
                 Running = false;
+                Core.ThreadManager.UnregisterThis();
                 return;
             }
             catch (Exception fail)
             {
                 Core.HandleException(fail);
+                Core.ThreadManager.UnregisterThis();
                 Running = false;
                 return;
             }

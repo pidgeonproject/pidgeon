@@ -85,7 +85,7 @@ namespace Pidgeon
 
             public static void RegisterThread(Thread thread)
             {
-                if (thread.Name == "")
+                if (thread.Name.Length == 0)
                 {
                     Syslog.DebugLog("No thread name provided for: " + thread.ManagedThreadId.ToString());
                 }
@@ -96,6 +96,11 @@ namespace Pidgeon
                         ThreadPool.Add(thread);
                     }
                 }
+            }
+
+            public static void UnregisterThis()
+            {
+                UnregisterThread(System.Threading.Thread.CurrentThread);
             }
 
             public static void UnregisterThread(Thread thread)
