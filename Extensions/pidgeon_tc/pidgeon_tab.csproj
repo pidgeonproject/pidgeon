@@ -48,13 +48,14 @@
     <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f, processorArchitecture=MSIL">
       <Package>gtk-sharp-2.0</Package>
     </Reference>
+    <Reference Include="libirc, Version=1.0.5329.20697, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Pidgeon\libirc.dll</HintPath>
+    </Reference>
     <Reference Include="Pidgeon, Version=1.2.0.0, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <ExecutableExtension>.exe</ExecutableExtension>
       <HintPath>..\..\Pidgeon\bin\Debug\Pidgeon.exe</HintPath>
-    </Reference>
-    <Reference Include="libirc">
-      <HintPath>..\..\Pidgeon\libirc.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
