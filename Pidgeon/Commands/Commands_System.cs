@@ -55,7 +55,7 @@ namespace Pidgeon
                     aliases.Add(alias, new CommandLink(command));
                 }
 
-                Core._Configuration.ConfigSave();
+                Configuration.Save();
             }
 
             public static void External(string parameter)
@@ -223,7 +223,7 @@ namespace Pidgeon
             /// <param name="parameter"></param>
             public static void PidgeonRehash(string parameter)
             {
-                Core._Configuration.ConfigurationLoad();
+                Configuration.Load();
                 Core.SystemForm.Chat.scrollback.InsertText("Reloaded config", Pidgeon.ContentLine.MessageStyle.System, false);
             }
 

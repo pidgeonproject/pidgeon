@@ -336,18 +336,22 @@ namespace Pidgeon
                 if (data.StartsWith("http", StringComparison.Ordinal))
                 {
                     ViewLn(data, ViewType.Link);
+                    return;
                 }
                 if (data.StartsWith("pidgeon://text", StringComparison.Ordinal))
                 {
                     ViewLn(adds, ViewType.User, adds);
+                    return;
                 }
                 if (data.StartsWith("pidgeon://join", StringComparison.Ordinal))
                 {
                     ViewLn(data, ViewType.Channel);
+                    return;
                 }
                 if (data.StartsWith("pidgeon://ident", StringComparison.Ordinal))
                 {
                     ViewLn("*!" + adds + "@*", ViewType.User);
+                    return;
                 }
                 if (data.StartsWith("pidgeon://user", StringComparison.Ordinal))
                 {
@@ -357,22 +361,18 @@ namespace Pidgeon
                         if (channel != null)
                         {
                             libirc.User user = channel.UserFromName(adds);
-                            if (user != null)
+                            if (user != null && !string.IsNullOrEmpty(user.Host))
                             {
-                                if (!string.IsNullOrEmpty(user.Host))
-                                {
-                                    ViewLn("*@" + user.Host, ViewType.User, adds);
-                                    return;
-                                }
+                                ViewLn("*@" + user.Host, ViewType.User, adds);
+                                return;
                             }
                         }
                     }
                     ViewLn(adds + "!*@*", ViewType.User, adds);
+                    return;
                 }
                 if (data.StartsWith("pidgeon://hostname", StringComparison.Ordinal))
-                {
                     ViewLn("*@" + adds, ViewType.User);
-                }
             }
             catch (Exception fail)
             {
@@ -462,24 +462,12 @@ namespace Pidgeon
         {
             try
             {
-                if (e.Event.Button == 3)
-                {
-                    if (SelectedLink != null && SelectedUser != null)
-                    {
+                if (e.Event.Button == 3 && (SelectedLink != null && SelectedUser != null))
                         Click_R(SelectedUser, SelectedLink);
-                    }
-                }
-                if (e.Event.Button == 1)
-                {
-                    if (SelectedLink != null)
-                    {
+                if (e.Event.Button == 1 && SelectedLink != null)
                         Click_L(SelectedLink);
-                    }
-                }
                 if (owner != null)
-                {
                     owner.textbox.setFocus();
-                }
             }
             catch (Exception fail)
             {
@@ -509,13 +497,10 @@ namespace Pidgeon
             }
             if (http.StartsWith("irc://", StringComparison.Ordinal))
             {
-                if (owner != null)
+                if (owner != null && (owner._Network != null && owner._Network.ParentSv != null))
                 {
-                    if (owner._Network != null && owner._Network.ParentSv != null)
-                    {
-                        Core.ParseLink(http, owner._Network.ParentSv);
-                        return;
-                    }
+                    Core.ParseLink(http, owner._Network.ParentSv);
+                    return;
                 }
                 Core.ParseLink(http);
                 return;
@@ -524,9 +509,8 @@ namespace Pidgeon
             {
                 string command = http.Substring("pidgeon://".Length);
                 if (command.EndsWith("/"))
-                {
                     command = command.Substring(0, command.Length - 1);
-                }
+
                 if (command.StartsWith("user/#", StringComparison.Ordinal))
                 {
                     string nick = command.Substring(6);
@@ -670,9 +654,7 @@ namespace Pidgeon
             try
             {
                 if (owner.IsChannel)
-                {
                     owner._Network._Protocol.Transfer("TOPIC " + owner.WindowName);
-                }
             }
             catch (Exception fail)
             {
@@ -685,9 +667,7 @@ namespace Pidgeon
             try
             {
                 if (CreatingMenu)
-                {
                     return;
-                }
                 Switch(false);
             }
             catch (Exception fail)
@@ -701,9 +681,7 @@ namespace Pidgeon
             try
             {
                 if (CreatingMenu)
-                {
                     return;
-                }
                 Switch(true);
             }
             catch (Exception fail)
@@ -717,9 +695,7 @@ namespace Pidgeon
             try
             {
                 if (owner != null)
-                {
                     owner.textbox.richTextBox1.Buffer.Text += mode1b2ToolStripMenuItem.Text;
-                }
             }
             catch (Exception fail)
             {
@@ -732,9 +708,7 @@ namespace Pidgeon
             try
             {
                 if (owner != null)
-                {
                     owner.textbox.richTextBox1.Buffer.Text += mode1q2ToolStripMenuItem.Text;
-                }
             }
             catch (Exception fail)
             {
@@ -747,9 +721,7 @@ namespace Pidgeon
             try
             {
                 if (owner != null)
-                {
                     owner.textbox.richTextBox1.Buffer.Text += mode1I2ToolStripMenuItem.Text;
-                }
             }
             catch (Exception fail)
             {
@@ -762,9 +734,7 @@ namespace Pidgeon
             try
             {
                 if (owner != null)
-                {
                     owner.textbox.richTextBox1.Buffer.Text += mode1e2ToolStripMenuItem.Text;
-                }
             }
             catch (Exception fail)
             {
@@ -777,9 +747,7 @@ namespace Pidgeon
             try
             {
                 if (Link.StartsWith("http", StringComparison.Ordinal))
-                {
                     Hyperlink.OpenLink(Link);
-                }
             }
             catch (Exception fail)
             {
@@ -792,9 +760,7 @@ namespace Pidgeon
             try
             {
                 if (Link.StartsWith("#", StringComparison.Ordinal))
-                {
                     Parser.parse("/join " + Link);
-                }
             }
             catch (Exception fail)
             {

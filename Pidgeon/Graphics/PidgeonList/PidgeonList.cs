@@ -825,9 +825,9 @@ namespace Pidgeon.Graphics
                     }
                     lock (channel._Network.Channels)
                     {
-                        if (channel._Network.Channels.ContainsKey(channel.lName))
+                        if (channel._Network.Channels.ContainsKey(channel.LowerName))
                         {
-                            channel._Network.Channels.Remove(channel.lName);
+                            channel._Network.Channels.Remove(channel.LowerName);
                         }
                     }
                     Core.SystemForm.SwitchRoot();

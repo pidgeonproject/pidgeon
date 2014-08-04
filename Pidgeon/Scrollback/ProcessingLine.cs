@@ -172,41 +172,31 @@ namespace Pidgeon
         /// <returns></returns>
         public bool Reload(bool enforce = false)
         {
-            if (IsDestroyed)
-            {
+            if (IsDestroyed || (!enforce && !Changed))
                 return false;
-            }
-            if (!enforce && !Changed)
-            {
-                return false;
-            }
+
             Changed = false;
             Flush();
             lock (UndrawnLines)
-            {
                 UndrawnLines.Clear();
-            }
+
             lock (UndrawnTextParts)
-            {
                 UndrawnTextParts.Clear();
-            }
+
             if (owner == null || (owner != null && WindowVisible()) || !Configuration.Scrollback.DynamicReload)
             {
                 lock (ContentLines)
                 {
-                    if (Configuration.Memory.MaximumChannelBufferSize != 0)
+                    if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                     {
-                        if (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                        if (SortNeeded)
                         {
-                            if (SortNeeded)
-                            {
-                                ContentLines.Sort();
-                                SortNeeded = false;
-                            }
-                            while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
-                            {
-                                ContentLines.RemoveAt(0);
-                            }
+                            ContentLines.Sort();
+                            SortNeeded = false;
+                        }
+                        while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                        {
+                            ContentLines.RemoveAt(0);
                         }
                     }
                 }
@@ -439,7 +429,8 @@ namespace Pidgeon
             if (Date > 0)
             {
                 time = DateTime.FromBinary(Date);
-            } else if (Date < 0)
+            }
+            else if (Date < 0)
             {
                 // this is a performance trick, in case we want to append a line to bottom, but we don't know
                 // what time it needs to have in order to be most new, we just use the last and append 1ms :)
@@ -447,7 +438,8 @@ namespace Pidgeon
                 // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
                 // be completely processed for such a change)
                 time = lastDate.AddMilliseconds(1);
-            } else
+            }
+            else
             {
                 time = DateTime.Now;
             }
@@ -510,9 +502,7 @@ namespace Pidgeon
         {
             // we need to finish the previous partial line
             if (!IsEmtpy)
-            {
                 Flush();
-            }
             // in case there are multiple lines we call this function for every line
             if (text.Contains('\n'))
             {
@@ -526,7 +516,8 @@ namespace Pidgeon
             if (Date < 0)
             {
                 time = DateTime.FromBinary(Date);
-            } else if (Date > 0 && lastDate > DateTime.Now)
+            }
+            else if (Date > 0 && lastDate > DateTime.Now)
             {
                 // this is a performance trick, in case we want to append a line to bottom, but we don't know
                 // what time it needs to have in order to be most new, we just use the last and append 1ms :)
@@ -534,25 +525,21 @@ namespace Pidgeon
                 // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
                 // be completely processed for such a change)
                 time = lastDate.AddMilliseconds(1);
-            } else
+            }
+            else
             {
                 time = DateTime.Now;
             }
             if (owner != null && owner.MicroBox)
-            {
                 Core.SystemForm.micro.scrollback_mc.InsertText("{" + owner.WindowName + "} " + text, InputStyle, false, Date);
-            }
+
             bool Matched = false;
             if (!SuppressPing)
-            {
                 Matched = Match(text);
-            }
-            if (Matched && owner != null && owner.Highlights)
+
+            if (Matched && owner != null && owner.Highlights && Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
             {
-                if (Hooks._Scrollback.NotificationDisplay(text, InputStyle, ref WriteLog, Date, ref SuppressPing))
-                {
-                    Core.DisplayNote(text, owner.WindowName);
-                }
+                Core.DisplayNote(text, owner.WindowName);
             }
             if (!IgnoreUpdate && owner != null && owner != Core.SystemForm.Chat && owner._Network != null &&
                 owner._Network._Protocol != null && !owner._Network._Protocol.SuppressChanges)
@@ -605,13 +592,11 @@ namespace Pidgeon
                         lock (logs)
                         {
                             foreach (LI item in logs)
-                            {
-                                Scrollback_LineLogs.Log(item.text, item.style, owner, LogfilePath, item.date);
-                            }
+                                Scrollback_LogWriter.Log(item.text, item.style, owner, LogfilePath, item.date);
                             logs.Clear();
                         }
                     }
-                    Scrollback_LineLogs.Log(text, InputStyle, owner, LogfilePath, time);
+                    Scrollback_LogWriter.Log(text, InputStyle, owner, LogfilePath, time);
                 }
                 else
                 {
@@ -649,12 +634,8 @@ namespace Pidgeon
                 if (!RequireReload(time))
                 {
                     lock (UndrawnLines)
-                    {
                         if (!UndrawnLines.Contains(line))
-                        {
                             UndrawnLines.Add(line);
-                        }
-                    }
                     lastDate = time;
                 }
                 else

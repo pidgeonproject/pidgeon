@@ -84,7 +84,7 @@ namespace Pidgeon
             try
             {
                 Core.IgnoreErrors = true;
-                Core._Configuration.ConfigSave();
+                Configuration.Save();
                 Core._KernelThread.Abort();
                 Core.Quit();
             }

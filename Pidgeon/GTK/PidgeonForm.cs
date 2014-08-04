@@ -237,7 +237,7 @@ namespace Pidgeon.PidgeonGtkToolkit
                     info.Width = this.Width;
                     info.Height = this.Height;
                 }
-                #pragma warning enable
+                #pragma warning restore
             }
             catch (Exception fail)
             {

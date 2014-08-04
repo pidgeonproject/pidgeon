@@ -24,7 +24,7 @@ namespace Pidgeon
     /// <summary>
     /// Configuration of pidgeon
     /// </summary>
-    public static class Configuration
+    public static partial class Configuration
     {
         // Static config
         // ===========================================================

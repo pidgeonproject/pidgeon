@@ -383,7 +383,7 @@ namespace Pidgeon
                     LoadSkin();
                     Syslog.DebugLog("Loading configuration file");
                     Configuration.Kernel.Debugging = false;
-                    Core._Configuration.ConfigurationLoad();
+                    Configuration.Load();
                     if (!Directory.Exists(PermanentTemp))
                     {
                         Directory.CreateDirectory(PermanentTemp);
@@ -401,7 +401,7 @@ namespace Pidgeon
                         ThreadManager.RegisterThread(ThreadManager.ThUp);
                     }
                     Syslog.DebugLog("Loading log writer thread");
-                    ThreadManager.Thread_logs = new Thread(IO.Load);
+                    ThreadManager.Thread_logs = new Thread(Writer.Load);
                     ThreadManager.Thread_logs.Name = "Pidgeon:Writer";
                     ThreadManager.RegisterThread(ThreadManager.Thread_logs);
                     ThreadManager.Thread_logs.Start();
@@ -420,6 +420,11 @@ namespace Pidgeon
                         Extension.Init();
                         if (Directory.Exists(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules"))
                         {
+                            foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.dll"))
+                            {
+                                Syslog.DebugLog("Registering plugin " + dll);
+                                ExtensionPool.RegisterPlugin(dll);
+                            }
                             foreach (string dll in Directory.GetFiles(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + Path.DirectorySeparatorChar + "modules", "*.pmod"))
                             {
                                 Syslog.DebugLog("Registering plugin " + dll);
@@ -1252,6 +1257,17 @@ namespace Pidgeon
             }
             return 0;
         }
+
+        /// <summary>
+        /// Convert a Color to Gdk version
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static Gdk.Color FromColor(System.Drawing.Color color)
+        {
+            Gdk.Color xx = new Gdk.Color(color.R, color.G, color.B);
+            return xx;
+        }
         
         /// <summary>
         /// Recover from exception
@@ -1297,7 +1313,7 @@ namespace Pidgeon
                     }
                     SystemForm.Hide();
                     NotificationWidget.Hide();
-                    _Configuration.ConfigSave();
+                    Configuration.Save();
                     try
                     {
                         foreach (Protocol server in Connections.ConnectionList)

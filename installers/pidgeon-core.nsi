@@ -316,7 +316,7 @@ OutFile "pidgeon_setup.exe"
 # These three must be integers
 !define VERSIONMAJOR 1
 !define VERSIONMINOR 6
-!define VERSIONBUILD 0
+!define VERSIONBUILD 1
 # These will be displayed by the "Click here for support information" link in "Add/Remove Programs"
 # It is possible to use "mailto:" links in here to open the email client
 !define HELPURL "http://pidgeonclient.org/wiki" # "Support Information" link

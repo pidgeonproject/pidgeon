@@ -293,7 +293,7 @@ namespace Pidgeon
             }
             if (tempdata.StartsWith(CurrentProtocol, StringComparison.Ordinal))
             {
-                string link = result.Substring(7);
+                string link = result.Substring(CurrentProtocol.Length);
                 if (link.Length > 0)
                 {
                     char sepa = Prefix(link);
@@ -318,7 +318,7 @@ namespace Pidgeon
                 {
                     if (tempdata.Contains(CurrentProtocol))
                     {
-                        string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + 7);
+                        string link = result.Substring(result.IndexOf(CurrentProtocol, StringComparison.Ordinal) + CurrentProtocol.Length);
                         if (link.Length > 0)
                         {
                             foreach (string xx in Configuration.Parser.SeparatorsCache)

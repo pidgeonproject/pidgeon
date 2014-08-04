@@ -122,7 +122,7 @@ namespace Pidgeon
         public void SetConfig(string key, string value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core._Configuration.ConfigSave();
+            Configuration.Save();
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace Pidgeon
         public void SetConfig(string key, bool value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core._Configuration.ConfigSave();
+            Configuration.Save();
         }
 
         /// <summary>
@@ -144,7 +144,7 @@ namespace Pidgeon
         public void SetConfig(string key, long value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core._Configuration.ConfigSave();
+            Configuration.Save();
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace Pidgeon
         public void SetConfig(string key, int value)
         {
             Configuration.SetConfig(Name + "." + key, value);
-            Core._Configuration.ConfigSave();
+            Configuration.Save();
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Pidgeon
         public void RemoveConfig(string key)
         {
             Configuration.RemoveConfig(Name + "." + key);
-            Core._Configuration.ConfigSave();
+            Configuration.Save();
         }
 
         /// <summary>
