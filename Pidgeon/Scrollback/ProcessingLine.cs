@@ -172,41 +172,31 @@ namespace Pidgeon
         /// <returns></returns>
         public bool Reload(bool enforce = false)
         {
-            if (IsDestroyed)
-            {
+            if (IsDestroyed || (!enforce && !Changed))
                 return false;
-            }
-            if (!enforce && !Changed)
-            {
-                return false;
-            }
+
             Changed = false;
             Flush();
             lock (UndrawnLines)
-            {
                 UndrawnLines.Clear();
-            }
+
             lock (UndrawnTextParts)
-            {
                 UndrawnTextParts.Clear();
-            }
+
             if (owner == null || (owner != null && WindowVisible()) || !Configuration.Scrollback.DynamicReload)
             {
                 lock (ContentLines)
                 {
-                    if (Configuration.Memory.MaximumChannelBufferSize != 0)
+                    if (Configuration.Memory.MaximumChannelBufferSize != 0 && Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
                     {
-                        if (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                        if (SortNeeded)
                         {
-                            if (SortNeeded)
-                            {
-                                ContentLines.Sort();
-                                SortNeeded = false;
-                            }
-                            while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
-                            {
-                                ContentLines.RemoveAt(0);
-                            }
+                            ContentLines.Sort();
+                            SortNeeded = false;
+                        }
+                        while (Configuration.Memory.MaximumChannelBufferSize <= ContentLines.Count)
+                        {
+                            ContentLines.RemoveAt(0);
                         }
                     }
                 }
@@ -439,7 +429,8 @@ namespace Pidgeon
             if (Date > 0)
             {
                 time = DateTime.FromBinary(Date);
-            } else if (Date < 0)
+            }
+            else if (Date < 0)
             {
                 // this is a performance trick, in case we want to append a line to bottom, but we don't know
                 // what time it needs to have in order to be most new, we just use the last and append 1ms :)
@@ -447,7 +438,8 @@ namespace Pidgeon
                 // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
                 // be completely processed for such a change)
                 time = lastDate.AddMilliseconds(1);
-            } else
+            }
+            else
             {
                 time = DateTime.Now;
             }
@@ -524,7 +516,8 @@ namespace Pidgeon
             if (Date < 0)
             {
                 time = DateTime.FromBinary(Date);
-            } else if (Date > 0 && lastDate > DateTime.Now)
+            }
+            else if (Date > 0 && lastDate > DateTime.Now)
             {
                 // this is a performance trick, in case we want to append a line to bottom, but we don't know
                 // what time it needs to have in order to be most new, we just use the last and append 1ms :)
@@ -532,7 +525,8 @@ namespace Pidgeon
                 // to be completely redrawn (there is no way to insert text to a middle of buffer, it needs to
                 // be completely processed for such a change)
                 time = lastDate.AddMilliseconds(1);
-            } else
+            }
+            else
             {
                 time = DateTime.Now;
             }
