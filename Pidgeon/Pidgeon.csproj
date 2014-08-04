@@ -179,7 +179,6 @@
     <Compile Include="Scrollback\ScrollbackLine.cs" />
     <Compile Include="SkinCl.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="Core\Config_Core.cs" />
     <Compile Include="Core\Core.cs" />
     <Compile Include="Protocols\ProtocolQuassel.cs" />
     <Compile Include="Protocols\ProtocolXmpp.cs" />
