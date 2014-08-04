@@ -418,12 +418,12 @@ namespace Pidgeon
                 {
                     // we aren't in this channel, which is expected, let's create a new window for it
                     ch = new Pidgeon.Channel(this, channel);
-                    this.Channels.Add(ch.lName, ch);
+                    this.Channels.Add(ch.LowerName, ch);
                     lock (base.Channels)
                     {
-                        if (!base.Channels.ContainsKey(ch.lName))
+                        if (!base.Channels.ContainsKey(ch.LowerName))
                         {
-                            base.Channels.Add(ch.lName, (libirc.Channel)ch);
+                            base.Channels.Add(ch.LowerName, (libirc.Channel)ch);
                         }
                     }
                 }
@@ -431,7 +431,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_Self(NetworkSelfEventArgs args)
+        protected override void __evt_Self(NetworkSelfEventArgs args)
         {
             try
             {
@@ -462,7 +462,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_PRIVMSG(libirc.Network.NetworkPRIVMSGEventArgs args)
+        protected override void __evt_PRIVMSG(libirc.Network.NetworkPRIVMSGEventArgs args)
         {
             try
             {
@@ -527,7 +527,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_NOTICE(libirc.Network.NetworkNOTICEEventArgs args)
+        protected override void __evt_NOTICE(libirc.Network.NetworkNOTICEEventArgs args)
         {
             Graphics.Window window = null;
             if (args.SourceUser == null)
@@ -547,7 +547,7 @@ namespace Pidgeon
                                          args.Date, IsDownloadingBouncerBacklog);
         }
 
-        public override void __evt_ChannelInfo(libirc.Network.NetworkChannelDataEventArgs args)
+        protected override void __evt_ChannelInfo(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null && args.Parameters.Count > 1)
@@ -559,7 +559,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_ParseUser(libirc.Network.NetworkParseUserEventArgs args)
+        protected override void __evt_ParseUser(libirc.Network.NetworkParseUserEventArgs args)
         {
             if (IsDownloadingBouncerBacklog)
                 return;
@@ -598,7 +598,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_ChannelUserList(libirc.Network.ChannelUserListEventArgs args)
+        protected override void __evt_ChannelUserList(libirc.Network.ChannelUserListEventArgs args)
         {
             if (IsDownloadingBouncerBacklog)
                 return;
@@ -610,7 +610,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_FinishChannelParseUser(libirc.Network.NetworkChannelDataEventArgs args)
+        protected override void __evt_FinishChannelParseUser(libirc.Network.NetworkChannelDataEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -620,7 +620,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_KICK(libirc.Network.NetworkKickEventArgs args)
+        protected override void __evt_KICK(libirc.Network.NetworkKickEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -641,7 +641,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_PART(libirc.Network.NetworkChannelDataEventArgs args)
+        protected override void __evt_PART(libirc.Network.NetworkChannelDataEventArgs args)
         {
             RemoveUserFromSB(args.ChannelName, args.SourceInfo.Nick);
             Channel channel = this.GetChannel(args.ChannelName);
@@ -671,7 +671,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_JOIN(libirc.Network.NetworkChannelEventArgs args)
+        protected override void __evt_JOIN(libirc.Network.NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             this.RegisterUser(args.ChannelName, args.SourceInfo.Nick);
@@ -696,7 +696,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_NICK(libirc.Network.NetworkNICKEventArgs args)
+        protected override void __evt_NICK(libirc.Network.NetworkNICKEventArgs args)
         {
             lock (this.Channels)
             {
@@ -727,7 +727,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_MODE(libirc.Network.NetworkMODEEventArgs args)
+        protected override void __evt_MODE(libirc.Network.NetworkMODEEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -800,7 +800,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_QUIT(libirc.Network.NetworkGenericDataEventArgs args)
+        protected override void __evt_QUIT(libirc.Network.NetworkGenericDataEventArgs args)
         {
             lock (this.Channels)
             {
@@ -836,7 +836,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_TOPIC(NetworkTOPICEventArgs args)
+        protected override void __evt_TOPIC(NetworkTOPICEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -857,7 +857,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_TopicData(libirc.Network.NetworkTOPICEventArgs args)
+        protected override void __evt_TopicData(libirc.Network.NetworkTOPICEventArgs args)
         {
             Channel channel = GetChannel(args.ChannelName);
             if (channel != null)
@@ -872,7 +872,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_TopicInfo(NetworkTOPICEventArgs args)
+        protected override void __evt_TopicInfo(NetworkTOPICEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel != null)
@@ -910,7 +910,7 @@ namespace Pidgeon
             return false;
         }
 
-        public override void __evt_CTCP(NetworkCTCPEventArgs args)
+        protected override void __evt_CTCP(NetworkCTCPEventArgs args)
         {
             string reply = null;
             switch (args.CTCP)
@@ -987,7 +987,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_ChannelFinishBan(NetworkChannelEventArgs args)
+        protected override void __evt_ChannelFinishBan(NetworkChannelEventArgs args)
         {
             Channel channel = this.GetChannel(args.ChannelName);
             if (channel == args.Channel)
@@ -1010,7 +1010,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_WHOIS(NetworkWHOISEventArgs args)
+        protected override void __evt_WHOIS(NetworkWHOISEventArgs args)
         {
             try
             {
@@ -1074,7 +1074,7 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_INVITE(NetworkChannelDataEventArgs args)
+        protected override void __evt_INVITE(NetworkChannelDataEventArgs args)
         {
             this.SystemWindow.scrollback.InsertText("INVITE: " + args.Source + " invites you to join " + args.ChannelName + " (click on channel name to join)",
                 Pidgeon.ContentLine.MessageStyle.System, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
@@ -1084,12 +1084,12 @@ namespace Pidgeon
             }
         }
 
-        public override void __evt_OnMOTD(libirc.Network.NetworkGenericDataEventArgs args)
+        protected override void __evt_OnMOTD(libirc.Network.NetworkGenericDataEventArgs args)
         {
             this.SystemWindow.scrollback.InsertText("MOTD: " + args.Message, ContentLine.MessageStyle.Message, WriteLogs(), args.Date, IsDownloadingBouncerBacklog);
         }
 
-        public override bool __evt__IncomingData(IncomingDataEventArgs args)
+        protected override bool __evt__IncomingData(IncomingDataEventArgs args)
         {
             switch (args.Command)
             {

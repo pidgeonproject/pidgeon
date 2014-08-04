@@ -725,7 +725,7 @@ namespace Pidgeon.Protocols.Services
                                     }
                                     ChannelInfo info = new ChannelInfo();
                                     info.Bans = xx.Bans;
-                                    info.dispose = xx.dispose;
+                                    //info.dispose = xx.dispose;
                                     info.Exceptions = xx.Exceptions;
                                     info.Invites = xx.Invites;
                                     info.Name = xx.Name;
