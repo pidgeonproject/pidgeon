@@ -383,7 +383,7 @@ namespace Pidgeon
                     LoadSkin();
                     Syslog.DebugLog("Loading configuration file");
                     Configuration.Kernel.Debugging = false;
-                    Core._Configuration.ConfigurationLoad();
+                    Configuration.Load();
                     if (!Directory.Exists(PermanentTemp))
                     {
                         Directory.CreateDirectory(PermanentTemp);
@@ -1313,7 +1313,7 @@ namespace Pidgeon
                     }
                     SystemForm.Hide();
                     NotificationWidget.Hide();
-                    _Configuration.ConfigSave();
+                    Configuration.Save();
                     try
                     {
                         foreach (Protocol server in Connections.ConnectionList)

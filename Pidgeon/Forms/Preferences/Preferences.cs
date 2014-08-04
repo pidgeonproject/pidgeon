@@ -280,7 +280,7 @@ namespace Pidgeon.Forms
                 {
                     Configuration.Logs.ServicesLogs = Configuration.Logs.ServiceLogs.none;
                 }
-                Core._Configuration.ConfigSave();
+                Configuration.Save();
             }
             catch (Exception f)
             {

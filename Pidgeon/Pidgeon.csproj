@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Commands\ExternalCommand.cs" />
     <Compile Include="Commands\Commands_Sc.cs" />
+    <Compile Include="Configuration\IO.cs" />
     <Compile Include="Core\Eval.cs" />
     <Compile Include="Core\ThreadManager.cs" />
     <Compile Include="Core\Writer.cs" />
@@ -165,7 +166,7 @@
     <Compile Include="Scrollback\ProcessingLine.cs" />
     <Compile Include="Scrollback\Scrollback.cs" />
     <Compile Include="Channel.cs" />
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Configuration\Configuration.cs" />
     <Compile Include="Extensions\Extension.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Ignoring.cs" />

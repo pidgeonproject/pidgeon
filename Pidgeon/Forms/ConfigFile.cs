@@ -125,7 +125,7 @@ namespace Pidgeon.Forms
             if (ValidateXml())
             {
                 File.WriteAllText(Core.ConfigFile, textview1.Buffer.Text);
-                Core._Configuration.ConfigurationLoad();
+                Configuration.Load();
                 Hide();
                 Destroy();
             }

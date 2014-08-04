@@ -222,7 +222,7 @@ namespace Pidgeon
                                 System.Diagnostics.Process.Start(tempdir_ + System.IO.Path.DirectorySeparatorChar + "pidgeon.exe");
                                 // we need to quit application as fast as possible
                                 Core.IgnoreErrors = true;
-                                Core._Configuration.ConfigSave();
+                                Configuration.Save();
                                 Environment.Exit(0);
                                 return;
                         }
