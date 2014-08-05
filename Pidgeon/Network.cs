@@ -379,6 +379,16 @@ namespace Pidgeon
             }
         }
 
+        public override void Disconnect()
+        {
+            if (this.ParentSv != null)
+            {
+                this.ParentSv.DisconnectRemote(this);
+                return;
+            }
+            base.Disconnect();
+        }
+
         public override bool RemoveChannel(string name)
         {
             name = name.ToLower();
