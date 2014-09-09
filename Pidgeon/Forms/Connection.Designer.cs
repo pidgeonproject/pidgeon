@@ -94,6 +94,7 @@ namespace Pidgeon.Forms
             this.comboboxentry1 = global::Gtk.ComboBoxEntry.NewText();
             this.comboboxentry1.WidthRequest = 580;
             this.comboboxentry1.Name = "comboboxentry1";
+            this.comboboxentry1.KeyPressEvent += new KeyPressEventHandler(Enter);
             this.table1.Add(this.comboboxentry1);
             global::Gtk.Table.TableChild w3 = ((global::Gtk.Table.TableChild)(this.table1[this.comboboxentry1]));
             w3.TopAttach = ((uint)(4));
