@@ -716,7 +716,8 @@ namespace Pidgeon
                     }
                     if (!IsDownloadingBouncerBacklog)
                     {
-                        user.Nick = args.NewNick;
+                        if (user != null)
+                            user.Nick = args.NewNick;
                         channel.RedrawUsers();
                     }
                 }
