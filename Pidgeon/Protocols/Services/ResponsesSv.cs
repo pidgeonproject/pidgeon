@@ -69,13 +69,11 @@ namespace Pidgeon.Protocols.Services
                     }
                 }
                 if (message_window != null)
-                {
-                    message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text), Pidgeon.ContentLine.MessageStyle.Message, true, message_time, true);
-                }
+                    message_window.scrollback.InsertTextAndIgnoreUpdate(Protocol.PRIVMSG(message_nick, message_text),
+                                                                        Pidgeon.ContentLine.MessageStyle.Message,
+                                                                        true, message_time, true);
                 else
-                {
                     Syslog.DebugLog("There is no window for " + message_target);
-                }
             }
 
             /// <summary>
@@ -183,9 +181,7 @@ namespace Pidgeon.Protocols.Services
                         }
                     }
                 }
-
                 libirc.ProcessorIRC processor = null;
-
                 if (IsBacklog || range)
                 {
                     if (Core.SystemForm.DisplayingProgress == false)
@@ -197,7 +193,6 @@ namespace Pidgeon.Protocols.Services
                         protocol.SuppressChanges = true;
                         Core.SystemForm.ProgressMax = protocol.cache[protocol.NetworkList.IndexOf(server)].size;
                     }
-
                     Core.SystemForm.Progress = double.Parse(id);
                     Core.SystemForm.Status("Retrieving backlog from " + name + ", got " + id + "/"
                         + protocol.cache[protocol.NetworkList.IndexOf(server)].size.ToString() + " datagrams");
@@ -291,23 +286,15 @@ namespace Pidgeon.Protocols.Services
             public static void sBacklog(XmlNode curr, ProtocolSv protocol)
             {
                 string network = curr.Attributes[0].Value;
-
                 lock (protocol.WaitingNetw)
                 {
                     if (protocol.WaitingNetw.Contains(network))
-                    {
                         protocol.WaitingNetw.Remove(network);
-                    }
                     if (protocol.WaitingNetw.Count == 0)
-                    {
                         Core.SystemForm.Status(protocol.getInfo());
-                    }
                     else
-                    {
                         Core.SystemForm.Status("Waiting for backlog for " + protocol.WaitingNetw[0]);
-                    }
                 }
-
                 Network server = protocol.retrieveNetwork(network);
                 if (server != null)
                 {
@@ -376,17 +363,12 @@ namespace Pidgeon.Protocols.Services
                         if (curr.Attributes[0].Value == s2.ServerName)
                         {
                             if (connected)
-                            {
                                 s2.IsConnected = true;
-                            }
                             else
-                            {
                                 s2.IsConnected = false;
-                            }
                             if (nick != null)
-                            {
                                 s2.Nickname = nick;
-                            }
+
                             break;
                         }
                     }
@@ -451,13 +433,11 @@ namespace Pidgeon.Protocols.Services
                             }
                         }
                     }
-
                     if (Configuration.Services.UsingCache)
                     {
                         Core.SystemForm.Status("Loading disk cache from disk...");
                         protocol.sBuffer.ReadDisk();
                     }
-
                     int id = 0;
                     foreach (string i in _networks)
                     {

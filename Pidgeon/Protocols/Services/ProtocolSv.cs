@@ -59,7 +59,6 @@ namespace Pidgeon.Protocols.Services
         private System.Threading.Thread tPinger = null;
         private object StreamLock = new object();
         private DateTime pong = DateTime.Now;
-
         private System.Net.Sockets.NetworkStream _networkStream;
         private System.IO.StreamReader _StreamReader = null;
         /// <summary>
@@ -402,9 +401,7 @@ namespace Pidgeon.Protocols.Services
             lock (this)
             {
                 if (IsConnected)
-                {
                     Disconnect();
-                }
                 int remaining = 0;
                 lock (RemainingJobs)
                 {
@@ -417,9 +414,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 Syslog.DebugLog("Remaining jobs are now cleared");
                 if (sBuffer == null)
-                {
                     Syslog.DebugLog("Warning sBuffer == null");
-                }
                 if (Configuration.Services.UsingCache && sBuffer != null)
                 {
                     if (FinishedLoading)
@@ -453,9 +448,7 @@ namespace Pidgeon.Protocols.Services
                 tPinger = null;
                 Core.SystemForm.DisplayingProgress = false;
                 if (sBuffer != null)
-                {
                     sBuffer.Wipe();
-                }
                 sBuffer = null;
                 if (_StreamWriter != null) _StreamWriter.Close();
                 if (_StreamReader != null) _StreamReader.Close();
@@ -478,9 +471,7 @@ namespace Pidgeon.Protocols.Services
                 }
                 IsDisconnecting = true;
                 if (System.Threading.Thread.CurrentThread != main)
-                {
                     Core.ThreadManager.KillThread(main);
-                }
                 Core.ThreadManager.KillThread(tPinger);
                 tPinger = null;
                 lock (NetworkList)

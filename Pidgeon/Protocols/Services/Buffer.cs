@@ -380,22 +380,17 @@ namespace Pidgeon.Protocols.Services
                     return;
                 }
                 if (Source.lines == null)
-                {
                     throw new PidgeonException("This window doesn't contain any lines");
-                }
                 target.scrollback.SetText(Source.lines);
                 Source.lines.Clear();
                 Source.lines = null;
                 if (Source.menucolor != 0)
-                {
                     target.MenuColor = System.Drawing.Color.FromArgb(Source.menucolor);
-                }
                 if (target.textbox != null)
                 {
                     if (target.textbox.history == null)
-                    {
                         target.textbox.history = new List<string>();
-                    }
+
                     target.textbox.history.Clear();
                     target.textbox.history.AddRange(Source.history);
                     target.textbox.position = Source.history.Count;
@@ -405,9 +400,7 @@ namespace Pidgeon.Protocols.Services
                 target.IsChannel = Source.isChannel;
                 // once we recover a window we don't longer need it, so remove it from memory
                 if (_windows.Contains(Source))
-                {
                     _windows.Remove(Source);
-                }
                 target.scrollback.SortNeeded = Source.SortNeeded;
             }
 
