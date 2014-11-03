@@ -126,27 +126,17 @@ namespace Pidgeon
                     }
                     
                     if (Read)
-                    {
                         continue;
-                    }
                     
                     if (values == null)
-                    {
                         values = new List<string>();
-                    }
                     
                     values.Add(data);
                 }
-                
                 if (id != null)
-                {
                     ParameterList.Add(new Parameter(id, values));
-                }
-                
                 if (Process(ParameterList))
-                {
                     return false;
-                }
             }
             return true;
         }

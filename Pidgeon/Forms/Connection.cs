@@ -46,25 +46,19 @@ namespace Pidgeon.Forms
             ListStore store2 = new ListStore(typeof(string));
             TreeIter iter = store.AppendValues("irc");
             store.AppendValues("pidgeon services");
-
             if (Configuration.Kernel.Debugging)
             {
                 store.AppendValues("quassel");
                 store.AppendValues("dcc");
             }
-            
             comboboxentry1.Model = store2;
             combobox1.SetActiveIter(iter);
             button1.Clicked += new EventHandler(bConnect_Click);
             checkbutton1.Active = Configuration.UserData.LastSSL;
             if (!string.IsNullOrEmpty(Configuration.UserData.LastPort))
-            {
                 entry3.Text = Configuration.UserData.LastPort;
-            }
             if (!string.IsNullOrEmpty(Configuration.UserData.LastNick))
-            {
                 entry1.Text = Configuration.UserData.LastNick;
-            }
             if (!string.IsNullOrEmpty(Configuration.UserData.LastHost))
             {
                 TreeIter iter2 = store2.AppendValues(Configuration.UserData.LastHost);
@@ -73,13 +67,9 @@ namespace Pidgeon.Forms
             lock (Configuration.UserData.History)
             {
                 foreach (string nw in Configuration.UserData.History)
-                {
                     store2.AppendValues(nw);
-                }
                 if (!Configuration.UserData.History.Contains(comboboxentry1.ActiveText.ToLower()))
-                {
                     Configuration.UserData.History.Add(comboboxentry1.ActiveText);
-                }
             }
         }
 
@@ -100,9 +90,7 @@ namespace Pidgeon.Forms
         {
             int port;
             if (!int.TryParse(this.entry3.Text, out port))
-            {
                 port = 6667;
-            }
             bool st = false;
             switch (port)
             {
@@ -121,21 +109,15 @@ namespace Pidgeon.Forms
             {
                 case "irc":
                     if (!this.checkbutton1.Active)
-                    {
                         this.entry3.Text = Definitions.StandardIrcPort.ToString();
-                    } else
-                    {
+                    else
                         this.entry3.Text = Definitions.StandardIrcSSLPort.ToString();
-                    }
                     break;
                 case "pidgeon services":
                     if (!this.checkbutton1.Active)
-                    {
                         this.entry3.Text = Definitions.StandardServicesPort.ToString();
-                    } else
-                    {
+                    else
                         this.entry3.Text = Definitions.StandardServicesSSLPort.ToString();
-                    }
                     break;
             }
         }
@@ -172,9 +154,7 @@ namespace Pidgeon.Forms
                 lock (Configuration.UserData.History)
                 {
                     if (!Configuration.UserData.History.Contains(comboboxentry1.ActiveText.ToLower()))
-                    {
                         Configuration.UserData.History.Add(comboboxentry1.ActiveText);
-                    }
                     ((ListStore)comboboxentry1.Model).AppendValues(comboboxentry1.ActiveText);
                 }
                 Configuration.UserData.LastPort = entry3.Text;
