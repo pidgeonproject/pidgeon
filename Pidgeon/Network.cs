@@ -900,6 +900,8 @@ namespace Pidgeon
 
         protected override void __evt_CTCP(NetworkCTCPEventArgs args)
         {
+            if (IsDownloadingBouncerBacklog)
+                return;
             string reply = null;
             switch (args.CTCP)
             {
