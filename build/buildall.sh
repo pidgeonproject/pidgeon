@@ -42,6 +42,10 @@ echo "Creating it"
 cd "IgnoredText"
 xbuild $1 && mv bin/$2/IgnoredText.dll "$original_path/bin/$2/modules/IgnoredText.pmod"
 cd -
+echo "Creating ft"
+cd "freenode"
+xbuild $1 && mv bin/$2/freenode.dll "$original_path/bin/$2/modules/freenode.pmod"
+cd -
 echo "Creating channel"
 cd "pidgeon_chan"
 xbuild $1 && mv bin/$2/pidgeon_chan.dll "$original_path/bin/$2/modules/pidgeon_chan.pmod"
