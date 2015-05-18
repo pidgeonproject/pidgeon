@@ -44,6 +44,8 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
+                string ipv6;
+                Core.ExtractIPv6(parameter, out ipv6);
                 string name2 = parameter;
                 string b2 = parameter.Substring(parameter.IndexOf(name2, StringComparison.Ordinal) + name2.Length);
                 int n3;
@@ -52,6 +54,8 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
+                if (ipv6 != null)
+                    name2 = ipv6;
                 // we need to fetch the reference here because SelectedNetwork is property that can change from line to line
                 libirc.Protocol protocol = null;
                 if (Core.SystemForm.Chat._Protocol != null)

@@ -76,11 +76,11 @@ namespace Pidgeon
                 if (!Directory.Exists(Configuration.Logs.logs_dir))
                     Directory.CreateDirectory(Configuration.Logs.logs_dir);
 
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName))
-                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName);
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + ValidPath(owner._Network.ServerName)))
+                    System.IO.Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + ValidPath(owner._Network.ServerName));
 
-                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + ValidPath(owner, directory)))
-                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + owner._Network.ServerName + Path.DirectorySeparatorChar + ValidPath(owner, directory));
+                if (!Directory.Exists(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + ValidPath(owner._Network.ServerName) + Path.DirectorySeparatorChar + ValidPath(owner, directory)))
+                    Directory.CreateDirectory(Configuration.Logs.logs_dir + Path.DirectorySeparatorChar + ValidPath(owner._Network.ServerName) + Path.DirectorySeparatorChar + ValidPath(owner, directory));
 
                 if (Configuration.Logs.logs_txt)
                 {

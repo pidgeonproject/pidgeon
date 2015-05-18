@@ -138,10 +138,9 @@ namespace Pidgeon
             protocol.Port = port;
             protocol.Password = password;
             protocol.UsingSSL = secured;
-            Network network = new Network (server, protocol);
-            protocol.NetworkMeta = network;
-            protocol.IRCNetwork = (libirc.Network)network;
-            Core.SelectedNetwork = network;
+            protocol.NetworkMeta = new Network(server, protocol);
+            protocol.IRCNetwork = (libirc.Network)protocol.NetworkMeta;
+            Core.SelectedNetwork = protocol.NetworkMeta;
             protocol.Open();
             return protocol;
         }

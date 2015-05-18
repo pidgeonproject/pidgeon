@@ -277,11 +277,29 @@ namespace Pidgeon
                 }
                 string name = parameter;
                 string port = null;
+                string ipv6 = null;
+                if (name.Contains("[") && name.Contains("]"))
+                {
+                    // ipv6
+                    ipv6 = name.Substring(name.IndexOf("[") + 1);
+                    if (!ipv6.Contains("]"))
+                    {
+                        Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
+                        return;
+                    }
+                    ipv6 = ipv6.Substring(0, ipv6.IndexOf("]"));
+                    // let's remove ipv6 from server name
+                    name = name.Replace(ipv6, "");
+                }
                 if (name.Contains(":"))
                 {
                     name = name.Substring(0, name.IndexOf(":", StringComparison.Ordinal));
                     port = parameter.Substring(name.Length + 1);
                 }
+
+                if (ipv6 != null)
+                    name = ipv6;
+
                 int n2;
                 bool ssl = false;
                 if (string.IsNullOrEmpty(name))
@@ -289,7 +307,7 @@ namespace Pidgeon
                     Core.SystemForm.Chat.scrollback.InsertText(messages.get("invalid-server", Core.SelectedLanguage), Pidgeon.ContentLine.MessageStyle.System);
                     return;
                 }
-
+                
                 if (name.StartsWith("$", StringComparison.Ordinal))
                 {
                     ssl = true;

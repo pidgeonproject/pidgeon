@@ -475,6 +475,24 @@ namespace Pidgeon
             lastActivityTime = DateTime.Now;
         }
 
+        public static bool ExtractIPv6(string hostname, out string ipv6)
+        {
+            ipv6 = hostname;
+            if (!ipv6.Contains("["))
+            {
+                ipv6 = null;
+                return false;
+            }
+            ipv6 = ipv6.Substring(ipv6.IndexOf("[") + 1);
+            if (!ipv6.Contains("]"))
+            {
+                ipv6 = null;
+                return false;
+            }
+            ipv6 = ipv6.Substring(0, ipv6.IndexOf("]"));
+            return true;
+        }
+
         /// <summary>
         /// Parse irc:// this function will connect you using currently active protocol or to services
         /// </summary>
@@ -483,6 +501,8 @@ namespace Pidgeon
         public static void ParseLink(string text, Protocols.Services.ProtocolSv services = null)
         {
             Syslog.DebugLog("Parsing " + text);
+            string ipv6;
+            ExtractIPv6(text, out ipv6);
             if (text.StartsWith("ircs://", StringComparison.Ordinal) || text.StartsWith("irc://", StringComparison.Ordinal))
             {
                 string channel = null;
@@ -541,6 +561,8 @@ namespace Pidgeon
                 {
                     network = network.Substring(0, network.Length - 1);
                 }
+                if (ipv6 != null)
+                    network = ipv6;
                 if (services != null)
                 {
                     lock (services.NetworkList)
