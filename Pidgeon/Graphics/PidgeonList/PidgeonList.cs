@@ -133,6 +133,8 @@ namespace Pidgeon.Graphics
             this.treeView.CursorChanged += new EventHandler(items_AfterSelect2);
             partToolStripMenuItem.Enabled = true;
             disconnectToolStripMenuItem.Enabled = true;
+            reconnectToolStripMenuItem.Enabled = true;
+            reconnectToolStripMenuItem.Visible = true;
             closeToolStripMenuItem.Enabled = true;
             soundsToolStripMenuItem.Visible = true;
             highlightToolStripMenuItem.Visible = true;

@@ -66,7 +66,6 @@ namespace Pidgeon.Protocols.Services
         /// </summary>
         public List<libirc.Network> NetworkList = new List<libirc.Network>();
         private System.IO.StreamWriter _StreamWriter = null;
-        public string password = "";
         private List<Cache> cache = new List<Cache>();
         private Status ConnectionStatus = Status.WaitingPW;
         private SslStream _networkSsl = null;
@@ -186,12 +185,12 @@ namespace Pidgeon.Protocols.Services
                     _StreamWriter = new System.IO.StreamWriter(_networkSsl);
                     _StreamReader = new System.IO.StreamReader(_networkSsl, Encoding.UTF8);
                 }
-                Connected = true;
+                this.Connected = true;
                 Deliver(new Datagram("PING"));
                 Deliver(new Datagram("LOAD"));
                 Datagram login = new Datagram("AUTH");
-                login.Parameters.Add("user", Username);
-                login.Parameters.Add("pw", password);
+                login.Parameters.Add("user", this.Username);
+                login.Parameters.Add("pw", this.Password);
                 Deliver(login);
                 Deliver(new Datagram("GLOBALNICK"));
                 Deliver(new Datagram("NETWORKLIST"));
@@ -391,6 +390,13 @@ namespace Pidgeon.Protocols.Services
                     network_.IsConnected = false;
                 }
             }
+        }
+
+        public override libirc.IProtocol.Result Reconnect()
+        {
+            Connections.ConnectPS(this.Server, this.Port, this.Password, this.SSL);
+            this.Exit();
+            return Result.Done;
         }
 
         /// <summary>

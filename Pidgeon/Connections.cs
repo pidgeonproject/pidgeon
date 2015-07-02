@@ -116,7 +116,7 @@ namespace Pidgeon
             protocol.Username = Configuration.UserData.nick;
             protocol.Port = port;
             protocol.UsingSSL = secured;
-            protocol.password = password;
+            protocol.Password = password;
             ConnectionList.Add(protocol);
             protocol.Open();
             return protocol;

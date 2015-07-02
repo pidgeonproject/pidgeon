@@ -148,16 +148,13 @@ namespace Pidgeon.Graphics
                     display = true;
                     menu.Append(join);
                 }
-                if (Configuration.Kernel.Debugging)
+                if (reconnectToolStripMenuItem.Visible)
                 {
-                    if (reconnectToolStripMenuItem.Visible)
-                    {
-                        Gtk.MenuItem reconnect = new MenuItem(reconnectToolStripMenuItem.Text);
-                        reconnect.Activated += new EventHandler(reconnectToolStripMenuItem_Click);
-                        reconnect.Sensitive = reconnectToolStripMenuItem.Enabled;
-                        display = true;
-                        menu.Append(reconnect);
-                    }
+                    Gtk.MenuItem reconnect = new MenuItem(reconnectToolStripMenuItem.Text);
+                    reconnect.Activated += new EventHandler(reconnectToolStripMenuItem_Click);
+                    reconnect.Sensitive = reconnectToolStripMenuItem.Enabled;
+                    display = true;
+                    menu.Append(reconnect);
                 }
                 if (display)
                 {
@@ -175,6 +172,7 @@ namespace Pidgeon.Graphics
         {
             partToolStripMenuItem.Visible = false;
             joinToolStripMenuItem.Visible = false;
+            reconnectToolStripMenuItem.Visible = false;
             disconnectToolStripMenuItem.Visible = false;
         }
 
@@ -324,6 +322,7 @@ namespace Pidgeon.Graphics
                         SelectedWindow = server.SystemWindow;
                         Core.SelectedNetwork = server;
                         disconnectToolStripMenuItem.Visible = true;
+                        reconnectToolStripMenuItem.Visible = true;
                         closeToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         return;
@@ -333,6 +332,7 @@ namespace Pidgeon.Graphics
                         SelectedWindow = protocol.SystemWindow;
                         WindowsManager.ShowChat("!root", protocol);
                         Core.SelectedNetwork = null;
+                        reconnectToolStripMenuItem.Visible = true;
                         disconnectToolStripMenuItem.Visible = true;
                         Core.SystemForm.UpdateStatus();
                         return;

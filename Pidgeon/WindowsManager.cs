@@ -23,12 +23,16 @@ using System.Text;
 namespace Pidgeon
 {
     /// <summary>
-    /// Window request, this class represent a request to create a new window and is usually done by a thread which can't control windows
+    /// Window request, this class represent a request to create a new window and is usually made by a thread which can't control windows
+    /// so that another thread which can control them process it
     /// </summary>
     public class WindowRequest
     {
         /// <summary>
         /// Window handle
+        /// 
+        /// Every request already contain an instance of Window class so that from a moment when windows is requested,
+        /// it can be already used, even if it wasn't setup on GUI layer
         /// </summary>
         public Graphics.Window window = null;
         public string WindowName = null;
