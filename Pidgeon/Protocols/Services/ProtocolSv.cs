@@ -395,6 +395,7 @@ namespace Pidgeon.Protocols.Services
         public override libirc.IProtocol.Result Reconnect()
         {
             Connections.ConnectPS(this.Server, this.Port, this.Password, this.SSL);
+            Core.SystemForm.pidgeonlist1.RemoveServ(this);
             this.Exit();
             return Result.Done;
         }
